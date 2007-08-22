@@ -1,0 +1,18 @@
+<project>
+	<target name="compile.pre">
+	    <mkdir dir="${project.dir}/${lib.dir}"/>
+<!--
+	    <copy file="../KeyReader/dist/KeyReader.jar" todir="${project.dir}/${lib.dir}" failonerror="false" verbose="true"/>
+-->
+
+<!--
+		<jarlib-resolve property="KeyReader.library" failonerror="true" checkextension="false">
+			<extension extensionname="KeyReader"/>
+			<location location="${project.dir}/${lib.dir}/KeyReader.jar"/>
+			<url
+				url="http://ipanema.nightlabs.org/~nightly/Ipanema/IpanemaSand.jar"
+				destdir="${project.dir}/${lib.dir}"/>
+		</jarlib-resolve>
+-->
+	</target>
+</project>
