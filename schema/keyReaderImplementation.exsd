@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.nightlabs.keyreader">
+<schema targetNamespace="org.nightlabs.keyreader.ui">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.nightlabs.keyreader" id="keyReaderImplementation" name="Key Reader Implementation"/>
+         <meta.schema plugin="org.nightlabs.keyreader.ui" id="keyReaderImplementation" name="Key Reader Implementation"/>
       </appInfo>
       <documentation>
          This extension point serves for populating the list returned by KeyReaderMan.getKeyReaderImplementations().
@@ -50,7 +50,7 @@
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn="org.nightlabs.keyreader.KeyReader"/>
+                  <meta.attribute kind="java" basedOn="org.nightlabs.keyreader.ui.KeyReader"/>
                </appInfo>
             </annotation>
          </attribute>

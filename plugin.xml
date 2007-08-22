@@ -10,8 +10,8 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            class="org.nightlabs.keyreader.preference.KeyReaderPreferencePage"
-            id="org.nightlabs.keyreader.preference.KeyReaderPreferencePage"
+            class="org.nightlabs.keyreader.ui.preference.KeyReaderPreferencePage"
+            id="org.nightlabs.keyreader.ui.preference.KeyReaderPreferencePage"
             name="Key Reader"/>
    </extension>
 

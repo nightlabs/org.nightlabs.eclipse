@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Keyreader Plug-in
 Bundle-SymbolicName: org.nightlabs.keyreader.ui;singleton:=true
 Bundle-Version: 0.9.1
-Bundle-Activator: org.nightlabs.keyreader.KeyReaderPlugin
+Bundle-Activator: org.nightlabs.keyreader.ui.KeyReaderPlugin
 Bundle-Vendor: NightLabs.com
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
@@ -13,9 +13,9 @@ Require-Bundle: org.eclipse.ui,
  org.nightlabs.jfire.base.j2ee;resolution:=optional,
  org.nightlabs.jfire.base
 Eclipse-LazyStart: true
-Export-Package: org.nightlabs.keyreader,
- org.nightlabs.keyreader.preference
+Export-Package: org.nightlabs.keyreader.ui,
+ org.nightlabs.keyreader.ui.preference
 XEclipse-BuddyPolicy: registered
 XEclipse-RegisterBuddy: org.nightlabs.base,
  org.nightlabs.jfire.base.j2ee
-Bundle-ClassPath: org.nightlabs.keyreader.jar
+Bundle-ClassPath: org.nightlabs.keyreader.ui.jar

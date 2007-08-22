@@ -1,4 +1,4 @@
-package org.nightlabs.keyreader;
+package org.nightlabs.keyreader.ui;
 
 import java.util.List;
 
@@ -7,6 +7,9 @@ import org.eclipse.core.runtime.IExtension;
 import org.nightlabs.base.extensionpoint.AbstractEPProcessor;
 import org.nightlabs.base.extensionpoint.EPProcessorException;
 import org.nightlabs.config.Config;
+import org.nightlabs.keyreader.KeyReader;
+import org.nightlabs.keyreader.KeyReaderImplementation;
+import org.nightlabs.keyreader.KeyReaderMan;
 
 public class KeyReaderImplementationRegistry
 extends AbstractEPProcessor
@@ -28,7 +31,7 @@ extends AbstractEPProcessor
 
 	public String getExtensionPointID()
 	{
-		return "org.nightlabs.keyreader.keyReaderImplementation";
+		return "org.nightlabs.keyreader.ui.keyReaderImplementation";
 	}
 
 	public void processElement(IExtension extension, IConfigurationElement element)

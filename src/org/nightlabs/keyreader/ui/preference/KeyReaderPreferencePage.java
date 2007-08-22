@@ -1,4 +1,4 @@
-package org.nightlabs.keyreader.preference;
+package org.nightlabs.keyreader.ui.preference;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
@@ -10,6 +10,10 @@ import org.nightlabs.jfire.base.preferences.LSDPreferencePage;
 public class KeyReaderPreferencePage
 extends LSDPreferencePage
 {
+	static {
+		System.out.println("KeyReaderPreferencePage static initialiser called");
+	}
+
 	private static final Logger logger = Logger.getLogger(KeyReaderPreferencePage.class);
 	private KeyReaderPreferenceComposite keyReaderPreferenceComposite;
 

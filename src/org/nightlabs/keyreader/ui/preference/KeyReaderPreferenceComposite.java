@@ -1,4 +1,4 @@
-package org.nightlabs.keyreader.preference;
+package org.nightlabs.keyreader.ui.preference;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -27,12 +27,12 @@ import org.nightlabs.connection.ui.ConnectionCfEdit;
 import org.nightlabs.connection.ui.ConnectionCfEditFactory;
 import org.nightlabs.connection.ui.ConnectionCfEditRegistry;
 import org.nightlabs.keyreader.KeyReaderImplementation;
-import org.nightlabs.keyreader.KeyReaderImplementationRegistry;
 import org.nightlabs.keyreader.KeyReaderSharingDevice;
-import org.nightlabs.keyreader.KeyReaderUseCase;
-import org.nightlabs.keyreader.KeyReaderUseCaseRegistry;
 import org.nightlabs.keyreader.config.KeyReaderCf;
 import org.nightlabs.keyreader.config.KeyReaderConfigModule;
+import org.nightlabs.keyreader.ui.KeyReaderImplementationRegistry;
+import org.nightlabs.keyreader.ui.KeyReaderUseCase;
+import org.nightlabs.keyreader.ui.KeyReaderUseCaseRegistry;
 import org.nightlabs.util.Utils;
 
 public class KeyReaderPreferenceComposite

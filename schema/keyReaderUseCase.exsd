@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.nightlabs.keyreader">
+<schema targetNamespace="org.nightlabs.keyreader.ui">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.nightlabs.keyreader" id="keyReaderUseCase" name="Key Reader Use Case"/>
+         <meta.schema plugin="org.nightlabs.keyreader.ui" id="keyReaderUseCase" name="Key Reader Use Case"/>
       </appInfo>
       <documentation>
          A KeyReaderUserCase extension is used to tell the configuration-UI that a certain keyReaderID is in use. For the KeyReaderLibrary itself it&apos;s not necessary, because it will provide a dummy configuration for unknown keyReaderIDs. But in order to manipulate the configurations in the user interface, it&apos;s necessary that you register all keyReaderIDs that you use.

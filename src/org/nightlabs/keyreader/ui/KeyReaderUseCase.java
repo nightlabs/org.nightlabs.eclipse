@@ -1,4 +1,4 @@
-package org.nightlabs.keyreader;
+package org.nightlabs.keyreader.ui;
 
 public class KeyReaderUseCase
 {

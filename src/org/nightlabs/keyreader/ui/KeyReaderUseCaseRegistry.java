@@ -1,4 +1,4 @@
-package org.nightlabs.keyreader;
+package org.nightlabs.keyreader.ui;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -10,6 +10,7 @@ import org.nightlabs.annotation.Implement;
 import org.nightlabs.base.extensionpoint.AbstractEPProcessor;
 import org.nightlabs.base.extensionpoint.EPProcessorException;
 import org.nightlabs.config.Config;
+import org.nightlabs.keyreader.KeyReaderMan;
 
 public class KeyReaderUseCaseRegistry
 		extends AbstractEPProcessor
@@ -32,7 +33,7 @@ public class KeyReaderUseCaseRegistry
 	@Implement
 	public String getExtensionPointID()
 	{
-		return "org.nightlabs.keyreader.keyReaderUseCase";
+		return "org.nightlabs.keyreader.ui.keyReaderUseCase";
 	}
 
 	private Map<String, KeyReaderUseCase> keyReaderUseCases = new HashMap<String, KeyReaderUseCase>();

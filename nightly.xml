@@ -3,13 +3,13 @@
 
 <nightlybuild>
 
-  <project name="org.nightlabs.keyreader">
+  <project name="org.nightlabs.keyreader.ui">
 	<plugin/>
-    <ant path="org.nightlabs.keyreader" file="build-nightlabs.xml" target="deploy"/>
+    <ant path="org.nightlabs.keyreader.ui" file="build-nightlabs.xml" target="deploy"/>
     <requires/>
     <provides/>
-    <publishes description="..." location="org.nightlabs.keyreader/dist/org.nightlabs.keyreader_0.9.1.tar.gz"/>
-    <javadoc path="org.nightlabs.keyreader/src"/>
+    <publishes description="..." location="org.nightlabs.keyreader.ui/dist/org.nightlabs.keyreader.ui_0.9.1.tar.gz"/>
+    <javadoc path="org.nightlabs.keyreader.ui/src"/>
   </project>
 
 </nightlybuild>
