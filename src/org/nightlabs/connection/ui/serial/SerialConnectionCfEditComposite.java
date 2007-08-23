@@ -12,8 +12,8 @@ import org.eclipse.swt.widgets.Label;
 import org.nightlabs.base.composite.ComboComposite;
 import org.nightlabs.base.composite.XComposite;
 import org.nightlabs.base.exceptionhandler.ExceptionHandlerRegistry;
-import org.nightlabs.connection.resource.Messages;
 import org.nightlabs.connection.rxtx.config.SerialConnectionCf;
+import org.nightlabs.connection.ui.resource.Messages;
 
 public class SerialConnectionCfEditComposite
 		extends XComposite
