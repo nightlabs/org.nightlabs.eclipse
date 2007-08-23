@@ -3,13 +3,13 @@
 
 <nightlybuild>
 
-  <project name="org.nightlabs.connection">
+  <project name="org.nightlabs.connection.ui">
 	<plugin/>
-    <ant path="org.nightlabs.connection" file="build-nightlabs.xml" target="deploy"/>
+    <ant path="org.nightlabs.connection.ui" file="build-nightlabs.xml" target="deploy"/>
     <requires/>
     <provides/>
-    <publishes description="..." location="org.nightlabs.connection/dist/org.nightlabs.connection_0.9.1.tar.gz"/>
-    <javadoc path="org.nightlabs.connection/src"/>
+    <publishes description="..." location="org.nightlabs.connection.ui/dist/org.nightlabs.connection.ui_0.9.1.tar.gz"/>
+    <javadoc path="org.nightlabs.connection.ui/src"/>
   </project>
 
 </nightlybuild>

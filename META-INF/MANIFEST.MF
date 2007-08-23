@@ -11,7 +11,7 @@ Require-Bundle: org.eclipse.ui,
  org.nightlabs.base;visibility:=reexport,
  org.nightlabs.jfire.base.j2ee;resolution:=optional
 Eclipse-LazyStart: true
-Bundle-ClassPath: org.nightlabs.connection.jar
+Bundle-ClassPath: org.nightlabs.connection.ui.jar
 Export-Package: org.nightlabs.connection.ui,
  org.nightlabs.connection.ui.parallel,
  org.nightlabs.connection.ui.serial,

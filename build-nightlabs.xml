@@ -1,5 +1,5 @@
 <!--
-  Generic eclipse/rcp-plugin ant build file (version 2006-01-07)
+  Generic eclipse/rcp-plugin ant build file (version 2007-04-03)
   Author: marc [at] nightlabs [dot] de
   Author: marco [at] nightlabs [dot] de
 
@@ -57,6 +57,20 @@
   	<condition property="javac.debug" value="true">
   	  <not>
   	    <isset property="javac.debug"/>
+  	  </not>
+    </condition>
+  	
+  	<!-- java compiler option: source (e.g. "1.3", "1.4", "1.5") -->
+  	<condition property="javac.source" value="1.5">
+  	  <not>
+  	    <isset property="javac.source"/>
+  	  </not>
+    </condition>
+
+ 	<!-- java compiler option: target (e.g. "1.3", "1.4", "1.5") -->
+  	<condition property="javac.target" value="${javac.source}">
+  	  <not>
+  	    <isset property="javac.target"/>
   	  </not>
     </condition>
 
@@ -311,7 +325,7 @@
   <target name="compile" depends="init">
   	<dolocaliftrue boolean="true" target="compile.pre"/>
     <mkdir dir="${project.dir}/${bin.dir}"/>
-    <javac debug="${javac.debug}" destdir="${project.dir}/${bin.dir}" classpath="${project.path}">
+    <javac debug="${javac.debug}" encoding="UTF-8" source="${javac.source}" target="${javac.target}" destdir="${project.dir}/${bin.dir}" classpath="${project.path}">
       <src path="${project.dir}/${src.dir}"/>
     </javac>
     <copy todir="${project.dir}/${bin.dir}">
