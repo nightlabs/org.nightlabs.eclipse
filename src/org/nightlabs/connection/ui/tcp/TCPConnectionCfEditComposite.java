@@ -31,7 +31,7 @@ public class TCPConnectionCfEditComposite
 		this.getGridLayout().numColumns = 2;
 		this.tcpConnectionCfEdit = tcpConnectionCfEdit;
 
-		new Label(this, SWT.NONE).setText(Messages.getString("ui.tcp.TCPConnectionCfEditComposite.hostLabel.text")); //$NON-NLS-1$
+		new Label(this, SWT.NONE).setText(Messages.getString("org.nightlabs.connection.ui.tcp.TCPConnectionCfEditComposite.hostLabel.text")); //$NON-NLS-1$
 		host = new Text(this, SWT.BORDER);
 		host.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		host.addModifyListener(new ModifyListener() {
@@ -41,7 +41,7 @@ public class TCPConnectionCfEditComposite
 			}
 		});
 
-		new Label(this, SWT.NONE).setText(Messages.getString("ui.tcp.TCPConnectionCfEditComposite.portLabel.text")); //$NON-NLS-1$
+		new Label(this, SWT.NONE).setText(Messages.getString("org.nightlabs.connection.ui.tcp.TCPConnectionCfEditComposite.portLabel.text")); //$NON-NLS-1$
 		port = new Spinner(this, SWT.BORDER);
 		port.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		port.addSelectionListener(new SelectionAdapter() {
@@ -58,7 +58,7 @@ public class TCPConnectionCfEditComposite
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = 2;
 		useSSL.setLayoutData(gd);
-		useSSL.setText(Messages.getString("ui.tcp.TCPConnectionCfEditComposite.useSSL.text")); //$NON-NLS-1$
+		useSSL.setText(Messages.getString("org.nightlabs.connection.ui.tcp.TCPConnectionCfEditComposite.useSSL.text")); //$NON-NLS-1$
 		useSSL.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e)
@@ -67,7 +67,7 @@ public class TCPConnectionCfEditComposite
 			}
 		});
 
-		new Label(this, SWT.NONE).setText(Messages.getString("ui.tcp.TCPConnectionCfEditComposite.soTimeoutLabel.text")); //$NON-NLS-1$
+		new Label(this, SWT.NONE).setText(Messages.getString("org.nightlabs.connection.ui.tcp.TCPConnectionCfEditComposite.soTimeoutLabel.text")); //$NON-NLS-1$
 		soTimeout = new Spinner(this, SWT.BORDER);
 		soTimeout.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		soTimeout.addSelectionListener(new SelectionAdapter() {

@@ -33,25 +33,25 @@ public class SerialConnectionCfEditComposite
 
 		getGridLayout().numColumns = 2;
 
-		new Label(this, SWT.NONE).setText(Messages.getString("ui.serial.SerialConnectionCfEditComposite.portLabel.text")); //$NON-NLS-1$
+		new Label(this, SWT.NONE).setText(Messages.getString("org.nightlabs.connection.ui.serial.SerialConnectionCfEditComposite.portLabel.text")); //$NON-NLS-1$
 		addressCombo = new XComboComposite<String>(this, SWT.READ_ONLY);
 
-		new Label(this, SWT.NONE).setText(Messages.getString("ui.serial.SerialConnectionCfEditComposite.baudRateLabel.text")); //$NON-NLS-1$
+		new Label(this, SWT.NONE).setText(Messages.getString("org.nightlabs.connection.ui.serial.SerialConnectionCfEditComposite.baudRateLabel.text")); //$NON-NLS-1$
 		baudRateCombo = new XComboComposite<Integer>(this, SWT.READ_ONLY);
 		for (int baudRate : SerialConnectionCf.BAUD_RATE)
 			baudRateCombo.addElement(baudRate);
 
-		new Label(this, SWT.NONE).setText(Messages.getString("ui.serial.SerialConnectionCfEditComposite.dataBitsLabel.text")); //$NON-NLS-1$
+		new Label(this, SWT.NONE).setText(Messages.getString("org.nightlabs.connection.ui.serial.SerialConnectionCfEditComposite.dataBitsLabel.text")); //$NON-NLS-1$
 		dataBitsCombo = new XComboComposite<Integer>(this, SWT.READ_ONLY);
 		for (int dataBits : SerialConnectionCf.DATA_BITS)
 			dataBitsCombo.addElement(dataBits);
 
-		new Label(this, SWT.NONE).setText(Messages.getString("ui.serial.SerialConnectionCfEditComposite.parityLabel.text")); //$NON-NLS-1$
+		new Label(this, SWT.NONE).setText(Messages.getString("org.nightlabs.connection.ui.serial.SerialConnectionCfEditComposite.parityLabel.text")); //$NON-NLS-1$
 		parityCombo = new XComboComposite<Character>(this, SWT.READ_ONLY);
 		for (char parity : SerialConnectionCf.PARITY)
 			parityCombo.addElement(parity);
 
-		new Label(this, SWT.NONE).setText(Messages.getString("ui.serial.SerialConnectionCfEditComposite.stopBitsLabel.text")); //$NON-NLS-1$
+		new Label(this, SWT.NONE).setText(Messages.getString("org.nightlabs.connection.ui.serial.SerialConnectionCfEditComposite.stopBitsLabel.text")); //$NON-NLS-1$
 		stopBitsCombo = new XComboComposite<Integer>(this, SWT.READ_ONLY);
 		for (int stopBits : SerialConnectionCf.STOP_BITS)
 			stopBitsCombo.addElement(stopBits);
