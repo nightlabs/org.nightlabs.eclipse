@@ -15,8 +15,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.nightlabs.base.composite.ComboComposite;
 import org.nightlabs.base.composite.ListComposite;
+import org.nightlabs.base.composite.XComboComposite;
 import org.nightlabs.base.composite.XComposite;
 import org.nightlabs.config.Config;
 import org.nightlabs.connection.Connection;
@@ -42,12 +42,12 @@ extends XComposite
 	private ListComposite<KeyReaderUseCase> keyReaderUseCaseList;
 
 	private XComposite detailComposite;
-	private ComboComposite<KeyReaderImplementation> keyReaderImplementationCombo;
+	private XComboComposite<KeyReaderImplementation> keyReaderImplementationCombo;
 	private Text keyReaderImplementationClassName;
-	private ComboComposite<ConnectionImplementation> connectionImplementationCombo;
+	private XComboComposite<ConnectionImplementation> connectionImplementationCombo;
 	private Text slot;
 	private Label shareDeviceWithKeyReaderLabel;
-	private ComboComposite<KeyReaderUseCase> shareDeviceWithKeyReaderCombo;
+	private XComboComposite<KeyReaderUseCase> shareDeviceWithKeyReaderCombo;
 
 	private LabelProvider keyReaderUseCaseLabelProvider = new LabelProvider() {
 		@Override
@@ -78,9 +78,10 @@ extends XComposite
 
 		detailComposite = new XComposite(sashForm, SWT.BORDER);
 		detailComposite.getGridLayout().numColumns = 2;
+		sashForm.setWeights(new int[] { 1, 2 });
 
 		new Label(detailComposite, SWT.NONE).setText(Messages.getString("org.nightlabs.keyreader.ui.preference.KeyReaderPreferenceComposite.driverLabel.text")); //$NON-NLS-1$
-		keyReaderImplementationCombo = new ComboComposite<KeyReaderImplementation>(detailComposite, SWT.READ_ONLY | SWT.DROP_DOWN, new LabelProvider() {
+		keyReaderImplementationCombo = new XComboComposite<KeyReaderImplementation>(detailComposite, SWT.READ_ONLY | SWT.DROP_DOWN, new LabelProvider() {
 			@Override
 			public String getText(Object element)
 			{
@@ -143,7 +144,7 @@ extends XComposite
 
 		shareDeviceWithKeyReaderLabel = new Label(detailComposite, SWT.NONE);
 		shareDeviceWithKeyReaderLabel.setText(Messages.getString("org.nightlabs.keyreader.ui.preference.KeyReaderPreferenceComposite.shareDeviceWithKeyReaderLabel.text")); //$NON-NLS-1$
-		shareDeviceWithKeyReaderCombo = new ComboComposite<KeyReaderUseCase>(detailComposite, SWT.DROP_DOWN | SWT.READ_ONLY, keyReaderUseCaseLabelProvider);
+		shareDeviceWithKeyReaderCombo = new XComboComposite<KeyReaderUseCase>(detailComposite, SWT.DROP_DOWN | SWT.READ_ONLY, keyReaderUseCaseLabelProvider);
 
 		KeyReaderUseCase selected = null;
 		for (KeyReaderUseCase useCase : KeyReaderUseCaseRegistry.sharedInstance().getKeyReaderUseCases()) {
@@ -184,7 +185,7 @@ extends XComposite
 
 		connectionLabel = new Label(detailComposite, SWT.NONE);
 		connectionLabel.setText(Messages.getString("org.nightlabs.keyreader.ui.preference.KeyReaderPreferenceComposite.connectionLabel.text")); //$NON-NLS-1$
-		connectionImplementationCombo = new ComboComposite<ConnectionImplementation>(detailComposite, SWT.READ_ONLY | SWT.DROP_DOWN, new LabelProvider() {
+		connectionImplementationCombo = new XComboComposite<ConnectionImplementation>(detailComposite, SWT.READ_ONLY | SWT.DROP_DOWN, new LabelProvider() {
 			@Override
 			public String getText(Object element)
 			{
@@ -199,8 +200,8 @@ extends XComposite
 					ConnectionImplementation connectionImplementation = connectionImplementationCombo.getSelectedElement();
 					connectionCfEdit_dispose();
 					if (connectionImplementation != null) {
-						Class connectionCfClass = ((Connection)connectionImplementation.getConnectionClass().newInstance()).getConnectionCfClass();
-						ConnectionCf connectionCf = (ConnectionCf) connectionCfClass.newInstance();
+						Class<? extends ConnectionCf> connectionCfClass = ((Connection)connectionImplementation.getConnectionClass().newInstance()).getConnectionCfClass();
+						ConnectionCf connectionCf = connectionCfClass.newInstance();
 						connectionCf.init();
 						keyReaderCf.setConnectionCf(connectionCf);
 						connectionCfEdit_create();
