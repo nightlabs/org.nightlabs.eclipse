@@ -30,7 +30,7 @@ public class ConnectionImplementationRegistry
 
 	public String getExtensionPointID()
 	{
-		return "org.nightlabs.connection.connectionImplementation"; //$NON-NLS-1$
+		return "org.nightlabs.connection.ui.connectionImplementation"; //$NON-NLS-1$
 	}
 
 	private Map<String, ConnectionImplementation> connectionClassName2ConnectionImplementation = null;

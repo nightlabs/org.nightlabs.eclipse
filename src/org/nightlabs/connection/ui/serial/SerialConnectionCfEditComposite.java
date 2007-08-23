@@ -1,15 +1,15 @@
 package org.nightlabs.connection.ui.serial;
 
+import gnu.io.CommPortIdentifier;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import gnu.io.CommPortIdentifier;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.nightlabs.base.composite.ComboComposite;
+import org.nightlabs.base.composite.XComboComposite;
 import org.nightlabs.base.composite.XComposite;
 import org.nightlabs.base.exceptionhandler.ExceptionHandlerRegistry;
 import org.nightlabs.connection.rxtx.config.SerialConnectionCf;
@@ -20,11 +20,11 @@ public class SerialConnectionCfEditComposite
 {
 	private SerialConnectionCfEdit serialConnectionCfEdit;
 
-	private ComboComposite<String> addressCombo;
-	private ComboComposite<Integer> baudRateCombo;
-	private ComboComposite<Integer> dataBitsCombo;
-	private ComboComposite<Character> parityCombo;
-	private ComboComposite<Integer> stopBitsCombo;
+	private XComboComposite<String> addressCombo;
+	private XComboComposite<Integer> baudRateCombo;
+	private XComboComposite<Integer> dataBitsCombo;
+	private XComboComposite<Character> parityCombo;
+	private XComboComposite<Integer> stopBitsCombo;
 
 	public SerialConnectionCfEditComposite(Composite parent, SerialConnectionCfEdit serialConnectionCfEdit)
 	{
@@ -34,25 +34,25 @@ public class SerialConnectionCfEditComposite
 		getGridLayout().numColumns = 2;
 
 		new Label(this, SWT.NONE).setText(Messages.getString("ui.serial.SerialConnectionCfEditComposite.portLabel.text")); //$NON-NLS-1$
-		addressCombo = new ComboComposite<String>(this, SWT.READ_ONLY);
+		addressCombo = new XComboComposite<String>(this, SWT.READ_ONLY);
 
 		new Label(this, SWT.NONE).setText(Messages.getString("ui.serial.SerialConnectionCfEditComposite.baudRateLabel.text")); //$NON-NLS-1$
-		baudRateCombo = new ComboComposite<Integer>(this, SWT.READ_ONLY);
+		baudRateCombo = new XComboComposite<Integer>(this, SWT.READ_ONLY);
 		for (int baudRate : SerialConnectionCf.BAUD_RATE)
 			baudRateCombo.addElement(baudRate);
 
 		new Label(this, SWT.NONE).setText(Messages.getString("ui.serial.SerialConnectionCfEditComposite.dataBitsLabel.text")); //$NON-NLS-1$
-		dataBitsCombo = new ComboComposite<Integer>(this, SWT.READ_ONLY);
+		dataBitsCombo = new XComboComposite<Integer>(this, SWT.READ_ONLY);
 		for (int dataBits : SerialConnectionCf.DATA_BITS)
 			dataBitsCombo.addElement(dataBits);
 
 		new Label(this, SWT.NONE).setText(Messages.getString("ui.serial.SerialConnectionCfEditComposite.parityLabel.text")); //$NON-NLS-1$
-		parityCombo = new ComboComposite<Character>(this, SWT.READ_ONLY);
+		parityCombo = new XComboComposite<Character>(this, SWT.READ_ONLY);
 		for (char parity : SerialConnectionCf.PARITY)
 			parityCombo.addElement(parity);
 
 		new Label(this, SWT.NONE).setText(Messages.getString("ui.serial.SerialConnectionCfEditComposite.stopBitsLabel.text")); //$NON-NLS-1$
-		stopBitsCombo = new ComboComposite<Integer>(this, SWT.READ_ONLY);
+		stopBitsCombo = new XComboComposite<Integer>(this, SWT.READ_ONLY);
 		for (int stopBits : SerialConnectionCf.STOP_BITS)
 			stopBitsCombo.addElement(stopBits);
 

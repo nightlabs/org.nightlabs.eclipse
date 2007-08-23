@@ -29,7 +29,7 @@ public class ConnectionCfEditRegistry
 
 	public String getExtensionPointID()
 	{
-		return "org.nightlabs.connection.connectionCfEditFactory"; //$NON-NLS-1$
+		return "org.nightlabs.connection.ui.connectionCfEditFactory"; //$NON-NLS-1$
 	}
 
 	private Map<String, ConnectionCfEditFactory> connectionClassName2ConnectionCfEditFactory = new HashMap<String, ConnectionCfEditFactory>();
