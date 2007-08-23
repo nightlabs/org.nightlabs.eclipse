@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension-point id="connectionImplementation" name="Connection Implementation" schema="schema/connectionImplementation.exsd"/>
+   <extension-point id="connectionCfEditFactory" name="Connection Configuration Edit UI" schema="schema/connectionCfEditFactory.exsd"/>
+   <extension
+         point="org.nightlabs.connection.connectionCfEditFactory">
+      <connectionCfEditFactory
+            class="org.nightlabs.connection.ui.serial.SerialConnectionCfEditFactory"
+            connectionClass="org.nightlabs.connection.rxtx.SerialConnection"/>
+      <connectionCfEditFactory
+            class="org.nightlabs.connection.ui.parallel.ParallelConnectionCfEditFactory"
+            connectionClass="org.nightlabs.connection.rxtx.ParallelConnection"/>
+      <connectionCfEditFactory
+            class="org.nightlabs.connection.ui.tcp.TCPConnectionCfEditFactory"
+            connectionClass="org.nightlabs.connection.tcp.TCPConnection"/>
+   </extension>
+
+</plugin>
