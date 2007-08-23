@@ -33,7 +33,8 @@ import org.nightlabs.keyreader.config.KeyReaderConfigModule;
 import org.nightlabs.keyreader.ui.KeyReaderImplementationRegistry;
 import org.nightlabs.keyreader.ui.KeyReaderUseCase;
 import org.nightlabs.keyreader.ui.KeyReaderUseCaseRegistry;
-import org.nightlabs.util.Utils;
+import org.nightlabs.keyreader.ui.resource.Messages;
+import org.nightlabs.util.Util;
 
 public class KeyReaderPreferenceComposite
 extends XComposite
@@ -53,7 +54,7 @@ extends XComposite
 		public String getText(Object element)
 		{
 			KeyReaderUseCase keyReaderUseCase = (KeyReaderUseCase) element;
-			return keyReaderUseCase.getName() + " (" + keyReaderUseCase.getKeyReaderID() + ')';
+			return keyReaderUseCase.getName() + " (" + keyReaderUseCase.getKeyReaderID() + ')'; //$NON-NLS-1$
 		}
 	};
 
@@ -78,7 +79,7 @@ extends XComposite
 		detailComposite = new XComposite(sashForm, SWT.BORDER);
 		detailComposite.getGridLayout().numColumns = 2;
 
-		new Label(detailComposite, SWT.NONE).setText("Driver:");
+		new Label(detailComposite, SWT.NONE).setText(Messages.getString("org.nightlabs.keyreader.ui.preference.KeyReaderPreferenceComposite.driverLabel.text")); //$NON-NLS-1$
 		keyReaderImplementationCombo = new ComboComposite<KeyReaderImplementation>(detailComposite, SWT.READ_ONLY | SWT.DROP_DOWN, new LabelProvider() {
 			@Override
 			public String getText(Object element)
@@ -94,11 +95,11 @@ extends XComposite
 			}
 		});
 
-		new Label(detailComposite, SWT.NONE).setText("Class:");
+		new Label(detailComposite, SWT.NONE).setText(Messages.getString("org.nightlabs.keyreader.ui.preference.KeyReaderPreferenceComposite.classLabel.text")); //$NON-NLS-1$
 		keyReaderImplementationClassName = new Text(detailComposite, SWT.BORDER | SWT.READ_ONLY);
 		keyReaderImplementationClassName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		new Label(detailComposite, SWT.NONE).setText("Slot:");
+		new Label(detailComposite, SWT.NONE).setText(Messages.getString("org.nightlabs.keyreader.ui.preference.KeyReaderPreferenceComposite.slotLabel.text")); //$NON-NLS-1$
 		slot = new Text(detailComposite, SWT.BORDER);
 		slot.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		slot.addModifyListener(new ModifyListener() {
@@ -116,7 +117,7 @@ extends XComposite
 	{
 		KeyReaderImplementation keyReaderImplementation = keyReaderImplementationCombo.getSelectedElement();
 		if (keyReaderImplementation == null)
-			keyReaderImplementationClassName.setText("");
+			keyReaderImplementationClassName.setText(""); //$NON-NLS-1$
 		else {
 			keyReaderImplementationClassName.setText(
 					keyReaderImplementation.getKeyReaderClassName());
@@ -129,7 +130,7 @@ extends XComposite
 			shareDeviceWithKeyReaderCombo_create();
 		}
 		else {
-			keyReaderCf.setShareDeviceWith("");
+			keyReaderCf.setShareDeviceWith(""); //$NON-NLS-1$
 			shareDeviceWithKeyReaderCombo_dispose();
 			connectionImplementationCombo_create();
 		}
@@ -141,7 +142,7 @@ extends XComposite
 		shareDeviceWithKeyReaderCombo_dispose();
 
 		shareDeviceWithKeyReaderLabel = new Label(detailComposite, SWT.NONE);
-		shareDeviceWithKeyReaderLabel.setText("Share:");
+		shareDeviceWithKeyReaderLabel.setText(Messages.getString("org.nightlabs.keyreader.ui.preference.KeyReaderPreferenceComposite.shareDeviceWithKeyReaderLabel.text")); //$NON-NLS-1$
 		shareDeviceWithKeyReaderCombo = new ComboComposite<KeyReaderUseCase>(detailComposite, SWT.DROP_DOWN | SWT.READ_ONLY, keyReaderUseCaseLabelProvider);
 
 		KeyReaderUseCase selected = null;
@@ -158,7 +159,7 @@ extends XComposite
 			{
 				KeyReaderUseCase selected = shareDeviceWithKeyReaderCombo.getSelectedElement();
 				if (selected == null)
-					keyReaderCf.setShareDeviceWith("");
+					keyReaderCf.setShareDeviceWith(""); //$NON-NLS-1$
 				else
 					keyReaderCf.setShareDeviceWith(selected.getKeyReaderID());
 			}
@@ -182,7 +183,7 @@ extends XComposite
 		connectionImplementationCombo_dispose();
 
 		connectionLabel = new Label(detailComposite, SWT.NONE);
-		connectionLabel.setText("Connection:");
+		connectionLabel.setText(Messages.getString("org.nightlabs.keyreader.ui.preference.KeyReaderPreferenceComposite.connectionLabel.text")); //$NON-NLS-1$
 		connectionImplementationCombo = new ComboComposite<ConnectionImplementation>(detailComposite, SWT.READ_ONLY | SWT.DROP_DOWN, new LabelProvider() {
 			@Override
 			public String getText(Object element)
@@ -247,7 +248,7 @@ extends XComposite
 			keyReaderCf = keyReaderID2keyReaderCfClone.get(keyReaderUseCase.getKeyReaderID());
 			if (keyReaderCf == null) {
 				keyReaderCf = keyReaderConfigModule._getKeyReaderCf(keyReaderUseCase.getKeyReaderID()); // guaranteed to return a non-null result
-				keyReaderCf = Utils.cloneSerializable(keyReaderCf);
+				keyReaderCf = Util.cloneSerializable(keyReaderCf);
 				keyReaderID2keyReaderCfClone.put(keyReaderUseCase.getKeyReaderID(), keyReaderCf);
 			}
 
@@ -259,7 +260,7 @@ extends XComposite
 			keyReaderImplementationClassName.setText(keyReaderClass);
 
 			String s = keyReaderCf.getSlot();
-			slot.setText(s == null ? "" : s);
+			slot.setText(s == null ? "" : s); //$NON-NLS-1$
 
 			keyReaderImplementationSelected();
 		}
@@ -327,7 +328,7 @@ extends XComposite
 	public void save()
 	{
 		for (KeyReaderCf clone : keyReaderID2keyReaderCfClone.values())
-			keyReaderConfigModule._addKeyReaderCf(Utils.cloneSerializable(clone));
+			keyReaderConfigModule._addKeyReaderCf(Util.cloneSerializable(clone));
 	}
 
 }

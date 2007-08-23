@@ -33,7 +33,7 @@ public class KeyReaderUseCaseRegistry
 	@Implement
 	public String getExtensionPointID()
 	{
-		return "org.nightlabs.keyreader.ui.keyReaderUseCase";
+		return "org.nightlabs.keyreader.ui.keyReaderUseCase"; //$NON-NLS-1$
 	}
 
 	private Map<String, KeyReaderUseCase> keyReaderUseCases = new HashMap<String, KeyReaderUseCase>();
@@ -42,17 +42,17 @@ public class KeyReaderUseCaseRegistry
 	public void processElement(IExtension extension, IConfigurationElement element)
 			throws Exception
 	{
-		String keyReaderID = element.getAttribute("keyReaderID");
-		if (keyReaderID == null || "".equals(keyReaderID))
-			throw new EPProcessorException("The attribute 'keyReaderID' is missing or empty!", extension);
+		String keyReaderID = element.getAttribute("keyReaderID"); //$NON-NLS-1$
+		if (keyReaderID == null || "".equals(keyReaderID)) //$NON-NLS-1$
+			throw new EPProcessorException("The attribute 'keyReaderID' is missing or empty!", extension); //$NON-NLS-1$
 
 		if (keyReaderUseCases.containsKey(keyReaderID))
-			throw new EPProcessorException("Duplicate definition of keyReaderID: " + keyReaderID, extension);
+			throw new EPProcessorException("Duplicate definition of keyReaderID: " + keyReaderID, extension); //$NON-NLS-1$
 
-		String name = element.getAttribute("name");
-		if (name == null) name = "";
-		String description = element.getAttribute("description");
-		if (description == null) description = "";
+		String name = element.getAttribute("name"); //$NON-NLS-1$
+		if (name == null) name = ""; //$NON-NLS-1$
+		String description = element.getAttribute("description"); //$NON-NLS-1$
+		if (description == null) description = ""; //$NON-NLS-1$
 
 		keyReaderUseCases.put(keyReaderID, new KeyReaderUseCase(keyReaderID, name, description));
 	}
@@ -61,7 +61,7 @@ public class KeyReaderUseCaseRegistry
 	{
 		KeyReaderUseCase res = keyReaderUseCases.get(keyReaderID);
 		if (throwExceptionIfNotFound && res == null)
-			throw new IllegalArgumentException("No KeyReaderUseCase registered for keyReaderID=" + keyReaderID);
+			throw new IllegalArgumentException("No KeyReaderUseCase registered for keyReaderID=" + keyReaderID); //$NON-NLS-1$
 		return res;
 	}
 

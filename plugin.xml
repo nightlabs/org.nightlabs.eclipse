@@ -3,16 +3,18 @@
 <plugin>
    <extension-point id="keyReaderImplementation" name="Key Reader Implementation" schema="schema/keyReaderImplementation.exsd"/>
    <extension-point id="keyReaderUseCase" name="Key Reader Use Case" schema="schema/keyReaderUseCase.exsd"/>
+<!--
    <extension
          point="org.nightlabs.jfire.base.j2ee.remoteResourceFilter">
       <exclusion pattern="XXXorg\/nightlabs\/keyreader\/.* DEACTIVATED BECAUSE WE NOW LOAD IT FROM THE SERVER (or from a fragment if client-only-functionality is required)"/>
    </extension>
+-->
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
             class="org.nightlabs.keyreader.ui.preference.KeyReaderPreferencePage"
             id="org.nightlabs.keyreader.ui.preference.KeyReaderPreferencePage"
-            name="Key Reader"/>
+            name="%org.nightlabs.keyreader.ui.preference.KeyReaderPreferencePage.name"/>
    </extension>
 
 </plugin>

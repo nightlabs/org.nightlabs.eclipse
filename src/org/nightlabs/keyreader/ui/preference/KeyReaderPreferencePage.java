@@ -11,7 +11,7 @@ public class KeyReaderPreferencePage
 extends LSDPreferencePage
 {
 	static {
-		System.out.println("KeyReaderPreferencePage static initialiser called");
+		System.out.println("KeyReaderPreferencePage static initialiser called"); //$NON-NLS-1$
 	}
 
 	private static final Logger logger = Logger.getLogger(KeyReaderPreferencePage.class);
@@ -34,20 +34,20 @@ extends LSDPreferencePage
 	@Override
 	protected void performDefaults()
 	{
-		logger.debug("performDefaults");
+		logger.debug("performDefaults"); //$NON-NLS-1$
 		super.performDefaults();
 	}
 
 	@Override
 	public boolean performCancel()
 	{
-		logger.debug("performCancel");
+		logger.debug("performCancel"); //$NON-NLS-1$
 		return super.performCancel();
 	}
 	@Override
 	public boolean performOk()
 	{
-		logger.debug("performOk");
+		logger.debug("performOk"); //$NON-NLS-1$
 		keyReaderPreferenceComposite.save();
 		return super.performOk();
 	}

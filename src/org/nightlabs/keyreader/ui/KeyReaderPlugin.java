@@ -9,11 +9,11 @@ import org.osgi.framework.BundleContext;
 public class KeyReaderPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.nightlabs.keyreader.ui";
+	public static final String PLUGIN_ID = "org.nightlabs.keyreader.ui"; //$NON-NLS-1$
 
 	// The shared instance
 	private static KeyReaderPlugin plugin;
-	
+
 	/**
 	 * The constructor
 	 */

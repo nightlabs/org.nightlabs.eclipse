@@ -31,17 +31,17 @@ extends AbstractEPProcessor
 
 	public String getExtensionPointID()
 	{
-		return "org.nightlabs.keyreader.ui.keyReaderImplementation";
+		return "org.nightlabs.keyreader.ui.keyReaderImplementation"; //$NON-NLS-1$
 	}
 
 	public void processElement(IExtension extension, IConfigurationElement element)
 			throws Exception
 	{
 		try {
-			KeyReader keyReader = (KeyReader) element.createExecutableExtension("class");
+			KeyReader keyReader = (KeyReader) element.createExecutableExtension("class"); //$NON-NLS-1$
 			KeyReaderMan.sharedInstance().getKeyReaderImplementations().add(new KeyReaderImplementation(keyReader));
 		} catch (Throwable e) {
-			throw new EPProcessorException("Loading extension failed!", extension, e);
+			throw new EPProcessorException("Loading extension failed!", extension, e); //$NON-NLS-1$
 		}
 	}
 
