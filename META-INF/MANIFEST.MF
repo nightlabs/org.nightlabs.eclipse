@@ -9,7 +9,7 @@ Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.nightlabs.base;visibility:=reexport,
- org.nightlabs.connection;visibility:=reexport,
+ org.nightlabs.connection.ui;visibility:=reexport,
  org.nightlabs.jfire.base.j2ee;resolution:=optional,
  org.nightlabs.jfire.base
 Eclipse-LazyStart: true
