@@ -10,7 +10,7 @@
 			<extension extensionname="KeyReader"/>
 			<location location="${project.dir}/${lib.dir}/KeyReader.jar"/>
 			<url
-				url="http://ipanema.nightlabs.org/~nightly/Ipanema/IpanemaSand.jar"
+				url="http://ipanema.nightlabs.org/~nightly/Ipanema/CrossTicketTLD.jar"
 				destdir="${project.dir}/${lib.dir}"/>
 		</jarlib-resolve>
 -->
