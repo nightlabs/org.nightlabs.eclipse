@@ -8,7 +8,7 @@ Bundle-Vendor: NightLabs.com
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.nightlabs.base;visibility:=reexport,
+ org.nightlabs.base.ui;visibility:=reexport,
  org.nightlabs.jfire.base.j2ee;resolution:=optional
 Eclipse-LazyStart: true
 Bundle-ClassPath: org.nightlabs.connection.ui.jar
