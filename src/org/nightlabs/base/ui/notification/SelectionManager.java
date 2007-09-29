@@ -156,7 +156,7 @@ public class SelectionManager extends NotificationManager
 
 			// Can we call this directly? Does this break any other code? Marco.
 			// Please do not switch it back to asynchronous notification, if it works this way, because
-			// we have now code that relies on the listener being triggered before this method returns: org.nightlabs.jfire.trade.legalentity.view.LegalEntitySelectionComposite#initGUI()
+			// we have now code that relies on the listener being triggered before this method returns: org.nightlabs.jfire.trade.ui.legalentity.view.LegalEntitySelectionComposite#initGUI()
 			SelectionManager.this.notify(event, listener);
 //			Display.getDefault().asyncExec(
 //					new Runnable() {
