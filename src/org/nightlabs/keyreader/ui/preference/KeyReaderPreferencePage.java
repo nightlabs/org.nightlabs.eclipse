@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.nightlabs.base.ui.composite.XComposite.LayoutDataMode;
-import org.nightlabs.jfire.base.preferences.LSDPreferencePage;
+import org.nightlabs.jfire.base.ui.preferences.LSDPreferencePage;
 
 //TODO LSDPreferencePage should only be used when KeyReaderConfigModule comes from server not when used as lib in client
 public class KeyReaderPreferencePage
