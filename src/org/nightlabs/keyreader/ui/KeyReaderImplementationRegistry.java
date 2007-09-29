@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
-import org.nightlabs.base.extensionpoint.AbstractEPProcessor;
-import org.nightlabs.base.extensionpoint.EPProcessorException;
+import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
+import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
 import org.nightlabs.config.Config;
 import org.nightlabs.keyreader.KeyReader;
 import org.nightlabs.keyreader.KeyReaderImplementation;

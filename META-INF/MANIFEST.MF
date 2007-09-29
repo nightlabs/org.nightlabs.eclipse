@@ -16,6 +16,6 @@ Eclipse-LazyStart: true
 Export-Package: org.nightlabs.keyreader.ui,
  org.nightlabs.keyreader.ui.preference
 XEclipse-BuddyPolicy: registered
-XEclipse-RegisterBuddy: org.nightlabs.base,
+XEclipse-RegisterBuddy: org.nightlabs.base.ui,
  org.nightlabs.jfire.base.j2ee
 Bundle-ClassPath: org.nightlabs.keyreader.ui.jar
