@@ -57,10 +57,10 @@
             <annotation>
                <documentation>
                   a fully qualified name of the class that implements 
-&lt;samp&gt;org.nightlabs.jfire.base.exceptionhandler.IExceptionHandler&lt;/samp&gt;
+&lt;samp&gt;org.nightlabs.jfire.base.ui.exceptionhandler.IExceptionHandler&lt;/samp&gt;
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn="org.nightlabs.jfire.base.exceptionhandler.IExceptionHandler"/>
+                  <meta.attribute kind="java" basedOn="org.nightlabs.base.ui.exceptionhandler.IExceptionHandler"/>
                </appInfo>
             </annotation>
          </attribute>

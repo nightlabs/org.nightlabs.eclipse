@@ -10,7 +10,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.nightlabs.util.CollectionUtil;
 
 /**
- * This class springs from org.nightlabs.jfire.base.jdo.JDOObjectDAO
+ * This class springs from org.nightlabs.jfire.base.ui.jdo.JDOObjectDAO
  * that is used to retrieve JDOObjects for a JFire Server.
  * This derivation of an ObjectDAO uses the {@link CacheRegistry}
  * instead and is intended to be used for non JDO objects.

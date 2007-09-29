@@ -133,7 +133,7 @@ public abstract class EntityTreeCategory implements IEntityTreeCategory
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.nightlabs.jfire.base.admin.IEntityTreeCategory#getId()
+	 * @see org.nightlabs.jfire.base.admin.ui.IEntityTreeCategory#getId()
 	 */
 	public String getId()
 	{
@@ -141,7 +141,7 @@ public abstract class EntityTreeCategory implements IEntityTreeCategory
 	}
 
 	/* (non-Javadoc)
-	 * @see org.nightlabs.jfire.base.admin.IEntityTreeCategory#getIcon()
+	 * @see org.nightlabs.jfire.base.admin.ui.IEntityTreeCategory#getIcon()
 	 */
 	public Image getImage()
 	{
@@ -149,7 +149,7 @@ public abstract class EntityTreeCategory implements IEntityTreeCategory
 	}
 
 	/* (non-Javadoc)
-	 * @see org.nightlabs.jfire.base.admin.IEntityTreeCategory#getName()
+	 * @see org.nightlabs.jfire.base.admin.ui.IEntityTreeCategory#getName()
 	 */
 	public String getName()
 	{
@@ -157,7 +157,7 @@ public abstract class EntityTreeCategory implements IEntityTreeCategory
 	}
 
 	/* (non-Javadoc)
-	 * @see org.nightlabs.jfire.base.admin.entityeditor.IEntityTreeCategory#getIcon(java.lang.Object)
+	 * @see org.nightlabs.jfire.base.admin.ui.entityeditor.IEntityTreeCategory#getIcon(java.lang.Object)
 	 */
 	public Image getImage(Object o)
 	{
@@ -165,7 +165,7 @@ public abstract class EntityTreeCategory implements IEntityTreeCategory
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.nightlabs.jfire.base.admin.entityeditor.IEntityTreeCategory#getText(java.lang.Object)
+	 * @see org.nightlabs.jfire.base.admin.ui.entityeditor.IEntityTreeCategory#getText(java.lang.Object)
 	 */
 	public String getText(Object o)
 	{
