@@ -16,5 +16,5 @@ Export-Package: org.nightlabs.connection.ui,
  org.nightlabs.connection.ui.parallel,
  org.nightlabs.connection.ui.serial,
  org.nightlabs.connection.ui.tcp
-Eclipse-RegisterBuddy: org.nightlabs.base,
+Eclipse-RegisterBuddy: org.nightlabs.base.ui,
  org.nightlabs.jfire.base.j2ee

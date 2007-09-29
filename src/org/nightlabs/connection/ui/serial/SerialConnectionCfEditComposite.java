@@ -9,9 +9,9 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.nightlabs.base.composite.XComboComposite;
-import org.nightlabs.base.composite.XComposite;
-import org.nightlabs.base.exceptionhandler.ExceptionHandlerRegistry;
+import org.nightlabs.base.ui.composite.XComboComposite;
+import org.nightlabs.base.ui.composite.XComposite;
+import org.nightlabs.base.ui.exceptionhandler.ExceptionHandlerRegistry;
 import org.nightlabs.connection.rxtx.config.SerialConnectionCf;
 import org.nightlabs.connection.ui.resource.Messages;
 
