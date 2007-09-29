@@ -36,16 +36,16 @@
     <extension-point id="entityEditorActionBarContribution"
         name="entityEditorActionBarContribution" schema="schema/entityEditorActionBarContribution.exsd"/>
     <extension-point id="workbenchListener" name="workbenchListener" schema="schema/workbenchListener.exsd"/>
-    <extension point="org.nightlabs.base.exceptionhandler">
+    <extension point="org.nightlabs.base.ui.exceptionhandler">
         <exceptionHandler
-            class="org.nightlabs.base.exceptionhandler.ThrowableHandler"
+            class="org.nightlabs.base.ui.exceptionhandler.ThrowableHandler"
             name="Default Handler for all Throwables" targetType="java.lang.Throwable"/>
         <exceptionHandler
-            class="org.nightlabs.base.exceptionhandler.OutOfMemoryHandler"
+            class="org.nightlabs.base.ui.exceptionhandler.OutOfMemoryHandler"
             name="Handler for OutOfMemoryError" targetType="java.lang.OutOfMemoryError"/>
     </extension>
     <extension point="org.eclipse.ui.elementFactories">
-        <factory class="org.nightlabs.base.io.FileEditorInputFactory" id="org.nightlabs.base.io.FileEditorInputFactory"/>
+        <factory class="org.nightlabs.base.ui.io.FileEditorInputFactory" id="org.nightlabs.base.ui.io.FileEditorInputFactory"/>
     </extension>
     <extension point="org.eclipse.ui.preferencePages">
         <page category="%category.general"
@@ -58,20 +58,20 @@
             class="org.eclipse.ui.internal.dialogs.ContentTypesPreferencePage"
             id="org.eclipse.ui.internal.dialogs.ContentTypesPreferencePage" name="%preferencePage.contentTypes.label"/>
         <page category=""
-            class="org.nightlabs.base.print.pref.PrinterPreferencePage"
-            id="org.nightlabs.base.print.pref.PrinterPreferencePage" name="%preferencePage.printer.label"/>
+            class="org.nightlabs.base.ui.print.pref.PrinterPreferencePage"
+            id="org.nightlabs.base.ui.print.pref.PrinterPreferencePage" name="%preferencePage.printer.label"/>
         <page
-            category="org.nightlabs.base.print.pref.PrinterPreferencePage"
-            class="org.nightlabs.base.print.pref.PrinterConfigurationPreferencePage"
-            id="org.nightlabs.base.print.pref.PrinterConfigurationPreferencePage" name="%preferencePage.printerConfiguration.label"/>
+            category="org.nightlabs.base.ui.print.pref.PrinterPreferencePage"
+            class="org.nightlabs.base.ui.print.pref.PrinterConfigurationPreferencePage"
+            id="org.nightlabs.base.ui.print.pref.PrinterConfigurationPreferencePage" name="%preferencePage.printerConfiguration.label"/>
         <page
-            category="org.nightlabs.base.print.pref.PrinterPreferencePage"
-            class="org.nightlabs.base.print.pref.DocumentPrinterPreferencePage"
-            id="org.nightlabs.base.print.pref.DocumentPrinterPreferencePage" name="%preferencePage.documentPrinter.label"/>
+            category="org.nightlabs.base.ui.print.pref.PrinterPreferencePage"
+            class="org.nightlabs.base.ui.print.pref.DocumentPrinterPreferencePage"
+            id="org.nightlabs.base.ui.print.pref.DocumentPrinterPreferencePage" name="%preferencePage.documentPrinter.label"/>
     </extension>
     <extension point="org.eclipse.ui.actionSets">
-        <actionSet id="org.nightlabs.base.KeyAssistantActionSet"
-            label="org.nightlabs.base.KeyAssistantActionSet" visible="true">
+        <actionSet id="org.nightlabs.base.ui.KeyAssistantActionSet"
+            label="org.nightlabs.base.ui.KeyAssistantActionSet" visible="true">
             <action
                 class="org.eclipse.ui.internal.handlers.ShowKeyAssistHandler"
                 definitionId="org.eclipse.ui.window.showKeyAssist"
@@ -80,22 +80,22 @@
                 menubarPath="help/group.assist" style="push"/>
         </actionSet>
     </extension>
-    <extension point="org.nightlabs.base.printerConfiguration">
+    <extension point="org.nightlabs.base.ui.printerConfiguration">
         <printerConfiguratorFactory
-            class="org.nightlabs.base.print.PrinterConfiguratorFactoryDefault" id="org.nightlabs.base.print.PrinterConfiguratorFactoryDefault"/>
+            class="org.nightlabs.base.ui.print.PrinterConfiguratorFactoryDefault" id="org.nightlabs.base.ui.print.PrinterConfiguratorFactoryDefault"/>
         <printerUseCase
-            defaultConfigurator="org.nightlabs.base.print.PrinterConfiguratorFactoryDefault"
+            defaultConfigurator="org.nightlabs.base.ui.print.PrinterConfiguratorFactoryDefault"
             description="%printerUseCase.default.description"
             id="PrinterUseCase-Default" name="%printerUseCase.default.name"/>
     </extension>
-    <extension point="org.nightlabs.base.unit">
+    <extension point="org.nightlabs.base.ui.unit">
         <unit context="Editor2D"
             factor="2.8346278133681047678439820851522"
             name="%unit.point.name" symbol="pt" unitID="point"/>
     </extension>
     <!--
  <extension
-       point="org.nightlabs.base.simpleExceptionHandler">
+       point="org.nightlabs.base.ui.simpleExceptionHandler">
     <simpleExceptionHandler
           message="Ein Laufzeit-Fehler ist aufgetreten. Wenden Sie sich bitte an Ihren System-Administrator..."
           targetType="java.lang.RuntimeException"/>
@@ -103,12 +103,12 @@
  <extension
        point="org.eclipse.ui.actionSets">
     <actionSet
-          id="org.nightlabs.base.actionSet2"
-          label="org.nightlabs.base.actionSet2"
+          id="org.nightlabs.base.ui.actionSet2"
+          label="org.nightlabs.base.ui.actionSet2"
           visible="true">
        <action
-             class="org.nightlabs.base.exceptionhandler.TestExceptionAction"
-             definitionId="org.nightlabs.base.TriggerTestException"
+             class="org.nightlabs.base.ui.exceptionhandler.TestExceptionAction"
+             definitionId="org.nightlabs.base.ui.TriggerTestException"
              icon="icons/NLBasePlugin-Delete.24x24.png"
              id="TriggerTestException"
              label="TriggerTestException"
@@ -134,7 +134,7 @@
        point="org.eclipse.ui.bindings">
     <key
       sequence="Shift+Ctrl+A"
-      commandId="org.nightlabs.base.TriggerTestException"
+      commandId="org.nightlabs.base.ui.TriggerTestException"
       schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
 	</key>
  </extension>
@@ -142,23 +142,23 @@
        point="org.eclipse.ui.commands">
     <command
           description="TriggerTestException"
-          id="org.nightlabs.base.TriggerTestException"
-          name="org.nightlabs.base.TriggerTestException"
-          categoryId="org.nightlabs.base.TestExceptionCategory">
+          id="org.nightlabs.base.ui.TriggerTestException"
+          name="org.nightlabs.base.ui.TriggerTestException"
+          categoryId="org.nightlabs.base.ui.TestExceptionCategory">
     </command>
 	<category
           name="TestExceptionCategory"
           description="TestExceptionCategory"
-          id="org.nightlabs.base.TestExceptionCategory">
+          id="org.nightlabs.base.ui.TestExceptionCategory">
     </category>
  </extension>
 -->
-    <extension point="org.nightlabs.base.cache">
-        <cacheFactory class="org.nightlabs.base.cache.DummyCacheFactory"/>
+    <extension point="org.nightlabs.base.ui.cache">
+        <cacheFactory class="org.nightlabs.base.ui.cache.DummyCacheFactory"/>
     </extension>
     <!--   
    <extension
-         point="org.nightlabs.base.removeExtension">
+         point="org.nightlabs.base.ui.removeExtension">
       <removeExtension
             attributeName="id"
             attributePattern="org.eclipse.ui.edit.text.actionSet.navigation"

@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.nightlabs.base">
+<schema targetNamespace="org.nightlabs.base.ui">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.nightlabs.base" id="printerConfiguration" name="PrinterConfiguration Extension Point"/>
+         <meta.schema plugin="org.nightlabs.base.ui" id="printerConfiguration" name="PrinterConfiguration Extension Point"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]
@@ -60,10 +60,10 @@
          <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
-                  Fully qualified class name of an implementation of org.nightlabs.base.print.PrinterConfiguratorFactory.
+                  Fully qualified class name of an implementation of org.nightlabs.base.ui.print.PrinterConfiguratorFactory.
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn="org.nightlabs.base.print.PrinterConfiguratorFactory"/>
+                  <meta.attribute kind="java" basedOn="org.nightlabs.base.ui.print.PrinterConfiguratorFactory"/>
                </appInfo>
             </annotation>
          </attribute>

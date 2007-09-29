@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.nightlabs.base">
+<schema targetNamespace="org.nightlabs.base.ui">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.nightlabs.base" id="exceptionhandler" name="Defines handler for uncaught exception within the workbench."/>
+         <meta.schema plugin="org.nightlabs.base.ui" id="exceptionhandler" name="Defines handler for uncaught exception within the workbench."/>
       </appInfo>
       <documentation>
          Defines hander for EventLoopExceptions

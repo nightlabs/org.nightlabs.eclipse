@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.nightlabs.base">
+<schema targetNamespace="org.nightlabs.base.ui">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.nightlabs.base" id="newfileaction" name="newfileaction"/>
+         <meta.schema plugin="org.nightlabs.base.ui" id="newfileaction" name="newfileaction"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]
@@ -87,7 +87,7 @@ Optional you can declare an category to which this action should be added
          <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
-                  The Name (java.lang.String) of the class file which determines the action (org.nightlabs.base.action.NewFileAction)
+                  The Name (java.lang.String) of the class file which determines the action (org.nightlabs.base.ui.action.NewFileAction)
                </documentation>
                <appInfo>
                   <meta.attribute kind="java"/>

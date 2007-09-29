@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.nightlabs.base">
+<schema targetNamespace="org.nightlabs.base.ui">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.nightlabs.base" id="workbenchListener" name="workbenchListener"/>
+         <meta.schema plugin="org.nightlabs.base.ui" id="workbenchListener" name="workbenchListener"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]
@@ -13,7 +13,7 @@
    <element name="extension">
       <annotation>
          <documentation>
-            registers org.nightlabs.base.app.IWorkbenchListener to listen for workbench creation
+            registers org.nightlabs.base.ui.app.IWorkbenchListener to listen for workbench creation
          </documentation>
       </annotation>
       <complexType>
@@ -52,7 +52,7 @@
          <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
-                  an implementation of the interface org.nightlabs.base.app.IWorkbenchListener to listen for workbench creation
+                  an implementation of the interface org.nightlabs.base.ui.app.IWorkbenchListener to listen for workbench creation
                </documentation>
                <appInfo>
                   <meta.attribute kind="java" basedOn="org.eclipse.ui.IWorkbenchListener"/>

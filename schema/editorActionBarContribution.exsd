@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.nightlabs.base">
+<schema targetNamespace="org.nightlabs.base.ui">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.nightlabs.base" id="editorActionBarContribution" name="EditorActionBarContribution Extension-Point"/>
+         <meta.schema plugin="org.nightlabs.base.ui" id="editorActionBarContribution" name="EditorActionBarContribution Extension-Point"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]

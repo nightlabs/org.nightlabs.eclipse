@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.nightlabs.base">
+<schema targetNamespace="org.nightlabs.base.ui">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.nightlabs.base" id="login" name="Login"/>
+         <meta.schema plugin="org.nightlabs.base.ui" id="login" name="Login"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]
@@ -50,7 +50,7 @@
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn="org.nightlabs.base.login.ILogin"/>
+                  <meta.attribute kind="java" basedOn="org.nightlabs.base.ui.login.ILogin"/>
                </appInfo>
             </annotation>
          </attribute>

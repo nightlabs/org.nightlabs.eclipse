@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.nightlabs.base">
+<schema targetNamespace="org.nightlabs.base.ui">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.nightlabs.base" id="perspectiveExtension" name="perspectiveExtension"/>
+         <meta.schema plugin="org.nightlabs.base.ui" id="perspectiveExtension" name="perspectiveExtension"/>
       </appInfo>
       <documentation>
-         similiar to the org.eclipse.ui.perpsectiveExtension you can define here extensions linked to perspectives, e.g. link an IXContributionItem registered with the org.nightlabs.base.contributionItemSet Extension Point to a certain perspective
+         similiar to the org.eclipse.ui.perpsectiveExtension you can define here extensions linked to perspectives, e.g. link an IXContributionItem registered with the org.nightlabs.base.ui.contributionItemSet Extension Point to a certain perspective
       </documentation>
    </annotation>
 

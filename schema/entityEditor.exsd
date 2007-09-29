@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.nightlabs.base">
+<schema targetNamespace="org.nightlabs.base.ui">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.nightlabs.base" id="entityEditor" name="org.nightlabs.base.entityEditor"/>
+         <meta.schema plugin="org.nightlabs.base.ui" id="entityEditor" name="org.nightlabs.base.ui.entityEditor"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]
@@ -90,7 +90,7 @@ the values defined in the extension will automatically set for this category.
                   The fully qualified class-name of an implementation of IEntityTreeCategory
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn="org.nightlabs.base.entity.tree.IEntityTreeCategory"/>
+                  <meta.attribute kind="java" basedOn="org.nightlabs.base.ui.entity.tree.IEntityTreeCategory"/>
                </appInfo>
             </annotation>
          </attribute>
@@ -110,7 +110,7 @@ the values defined in the extension will automatically set for this category.
                   The fully qualified class-name of an implementation of IEntityEditorPageFactory the factory that will create an IFormPage when necessary.
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn="org.nightlabs.base.entity.editor.IEntityEditorPageFactory"/>
+                  <meta.attribute kind="java" basedOn="org.nightlabs.base.ui.entity.editor.IEntityEditorPageFactory"/>
                </appInfo>
             </annotation>
          </attribute>
@@ -144,7 +144,7 @@ the values defined in the extension will automatically set for this category.
                   Optional implementation of IEntityTreeCategoryViewBinding. If omitted, a default implementation will be instantiated that delegates its work to the category it is bound to.
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn="org.nightlabs.base.entity.tree.IEntityTreeCategoryViewBinding"/>
+                  <meta.attribute kind="java" basedOn="org.nightlabs.base.ui.entity.tree.IEntityTreeCategoryViewBinding"/>
                </appInfo>
             </annotation>
          </attribute>

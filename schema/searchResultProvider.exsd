@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.nightlabs.base">
+<schema targetNamespace="org.nightlabs.base.ui">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.nightlabs.base" id="searchResultProvider" name="searchResultProvider"/>
+         <meta.schema plugin="org.nightlabs.base.ui" id="searchResultProvider" name="searchResultProvider"/>
       </appInfo>
       <documentation>
          Extension-Point for registering ISearchResultProvider
@@ -46,17 +46,17 @@
    <element name="searchResultProviderFactory">
       <annotation>
          <documentation>
-            this element registers an implementation of interface org.nightlabs.base.search.ISearchResultProviderFactory which generates  org.nightlabs.base.search.ISearchResultProvider
+            this element registers an implementation of interface org.nightlabs.base.ui.search.ISearchResultProviderFactory which generates  org.nightlabs.base.ui.search.ISearchResultProvider
          </documentation>
       </annotation>
       <complexType>
          <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
-                  an implementation of the interface org.nightlabs.base.search.ISearchResultProviderFactory
+                  an implementation of the interface org.nightlabs.base.ui.search.ISearchResultProviderFactory
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn="org.nightlabs.base.search.ISearchResultProviderFactory"/>
+                  <meta.attribute kind="java" basedOn="org.nightlabs.base.ui.search.ISearchResultProviderFactory"/>
                </appInfo>
             </annotation>
          </attribute>
@@ -110,17 +110,17 @@
    <element name="searchResultActionHandler">
       <annotation>
          <documentation>
-            registers an implementation of the interface org.nightlabs.base.search.ISearchResultActionHandler
+            registers an implementation of the interface org.nightlabs.base.ui.search.ISearchResultActionHandler
          </documentation>
       </annotation>
       <complexType>
          <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
-                  an implementation of the interface org.nightlabs.base.search.ISearchResultActionHandler
+                  an implementation of the interface org.nightlabs.base.ui.search.ISearchResultActionHandler
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn="org.nightlabs.base.search.ISearchResultActionHandler"/>
+                  <meta.attribute kind="java" basedOn="org.nightlabs.base.ui.search.ISearchResultActionHandler"/>
                </appInfo>
             </annotation>
          </attribute>

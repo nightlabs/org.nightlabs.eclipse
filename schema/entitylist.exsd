@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.nightlabs.base">
+<schema targetNamespace="org.nightlabs.base.ui">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.nightlabs.base" id="entitylist" name="EntityList ExtensionPoint"/>
+         <meta.schema plugin="org.nightlabs.base.ui" id="entitylist" name="EntityList ExtensionPoint"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]
@@ -61,10 +61,10 @@
          <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
-                  The fully qualified classname of this EntityList. This should point to an implementation of org.nightlabs.base.entitylist.EntityList.
+                  The fully qualified classname of this EntityList. This should point to an implementation of org.nightlabs.base.ui.entitylist.EntityList.
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn="org.nightlabs.base.entitylist.EntityList"/>
+                  <meta.attribute kind="java" basedOn="org.nightlabs.base.ui.entitylist.EntityList"/>
                </appInfo>
             </annotation>
          </attribute>

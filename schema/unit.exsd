@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.nightlabs.base">
+<schema targetNamespace="org.nightlabs.base.ui">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.nightlabs.base" id="unit" name="unit"/>
+         <meta.schema plugin="org.nightlabs.base.ui" id="unit" name="unit"/>
       </appInfo>
       <documentation>
          adds custom units (e.g. inch, cm)

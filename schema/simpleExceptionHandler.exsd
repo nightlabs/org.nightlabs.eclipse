@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.nightlabs.base">
+<schema targetNamespace="org.nightlabs.base.ui">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.nightlabs.base" id="simpleexceptionhandler" name="simpleexceptionhandler"/>
+         <meta.schema plugin="org.nightlabs.base.ui" id="simpleexceptionhandler" name="simpleexceptionhandler"/>
       </appInfo>
       <documentation>
          Defines simple exception handlers that only display a specified message in the default error dialog.
