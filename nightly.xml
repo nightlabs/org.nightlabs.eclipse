@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nightlybuild PUBLIC "-//NightLabs//DTD NightlyBuild V 0.9//EN" "http://www.nightlabs.de/dtd/nightlybuild_0_9.dtd">
+
+<nightlybuild>
+  <project name="org.nightlabs.base">
+	<plugin/>
+    <ant path="org.nightlabs.base" file="build-nightlabs.xml" target="deploy"/>
+    <requires/>
+
+    <!-- For the build-nightlabs-compile.pre.xml to work, NightLabsBase must be built before. -->
+    <requires path="/NightLabsBase"/>
+    <requires path="LOG4J"/> <!-- is provided by project JBOSS -->
+
+<!--
+    <requires path="lib/NightLabsBase.jar"/>
+	<requires path="NightLabsBase/dist/NightLabsBase.jar"/>
+-->
+    <provides/>
+    
+    <provides path="org.nightlabs.base" location="org.nightlabs.base/lib/activation.jar"/>
+    <provides path="org.nightlabs.base" location="org.nightlabs.base/lib/mailapi.jar"/>
+    <provides path="org.nightlabs.base" location="org.nightlabs.base/lib/smtp.jar"/>
+    <provides path="org.nightlabs.base" location="org.nightlabs.base/lib/swtcalendar.jar"/>
+<!--
+    <provides path="org.nightlabs.base" location="org.nightlabs.base/lib/activation.jar"/>
+    <provides path="org.nightlabs.base" location="org.nightlabs.base/lib/mailapi.jar"/>
+    <provides path="org.nightlabs.base" location="org.nightlabs.base/lib/xercesImpl.jar"/>
+    <provides path="org.nightlabs.base" location="org.nightlabs.base/lib/log4j.jar"/>
+    <provides path="org.nightlabs.base" location="org.nightlabs.base/lib/commons-collections.jar"/>
+    <provides path="org.nightlabs.base" location="org.nightlabs.base/lib/commons-lang.jar"/>
+    <provides path="org.nightlabs.base" location="org.nightlabs.base/lib/commons-beanutils.jar"/>
+    <provides path="org.nightlabs.base" location="org.nightlabs.base/lib/commons-logging.jar"/>
+-->
+<!--    <provides path="org.nightlabs.base" location="lib/log4j/jars/log4j-1.2.8.jar"/> -->
+    <provides path="org.nightlabs.base" location="lib/xerces/jars/xercesImpl-2.6.2.jar"/>
+    <provides path="org.nightlabs.base" location="org.nightlabs.base/lib/commons-beanutils.jar"/>
+    <provides path="org.nightlabs.base" location="lib/commons-logging/jars/commons-logging-1.0.4.jar"/>
+    <provides path="org.nightlabs.base" location="org.nightlabs.base/lib/commons-collections.jar"/>
+    <provides path="org.nightlabs.base" location="org.nightlabs.base/lib/commons-lang.jar"/>
+
+    <provides path="org.nightlabs.base" location="org.nightlabs.base/lib/NightLabsBase.jar"/>
+    <provides path="/org.nightlabs.base/lib/NightLabsBase.jar" location="org.nightlabs.base/lib/NightLabsBase.jar"/>
+
+    <publishes description="..." location="org.nightlabs.base/dist/org.nightlabs.base_1.0.4.tar.gz"/>
+    <javadoc path="org.nightlabs.base/src"/>
+  </project>
+</nightlybuild>

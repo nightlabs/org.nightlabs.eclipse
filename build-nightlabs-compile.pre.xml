@@ -1,0 +1,41 @@
+<project>
+
+	<!-- MACRO TO GET A REMOTE JAR -->
+  <macrodef name="getremote">
+    <attribute name="remotepath" />
+    <attribute name="targetpath" />
+    <sequential>
+      <jarlib-resolve property="@{targetpath}" failonerror="true" checkextension="false">
+     			<extension extensionname="@{targetpath}"/>
+     			<location location="@{targetpath}"/>
+     			<url
+     				url="@{remotepath}"
+     				destfile="@{targetpath}"/>
+      </jarlib-resolve>
+    </sequential>
+  </macrodef>
+
+	<!-- MACRO TO COPY A LOCAL JAR OR TO GET IT REMOTE WHEN LOCALLY UNAVAILABLE -->
+  <macrodef name="getlocalorremote">
+    <attribute name="localpath" />
+    <attribute name="remotepath" />
+    <attribute name="targetpath" />
+    <sequential>
+      <copy file="@{localpath}" tofile="@{targetpath}" failonerror="false" verbose="true"/>
+      <getremote remotepath="@{remotepath}" targetpath="@{targetpath}"/>
+    </sequential>
+  </macrodef>
+	
+	
+	<target name="compile.pre">
+	  <mkdir dir="${project.dir}/${lib.dir}"/>
+
+		<copy file="../NightLabsBase/dist/NightLabsBase.jar" todir="${project.dir}/${lib.dir}" failonerror="true" verbose="true"/>
+
+		<getlocalorremote 
+		  localpath="../deploy/jboss/server/default/lib/log4j.jar" 
+		  remotepath="http://download.nightlabs.de/lib/log4j/jars/log4j-1.2.8.jar"
+		  targetpath="${project.dir}/${lib.dir}/log4j.jar"/>
+		
+	</target>
+</project>
