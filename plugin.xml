@@ -6,21 +6,21 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            category="org.nightlabs.editor2d.category"
+            category="org.nightlabs.editor2d.ui.category"
             class="org.nightlabs.editor2d.ui.views.LayerView"
             icon="icons/views/LayerView.16x16.png"
-            id="org.nightlabs.editor2d.views.LayerView"
+            id="org.nightlabs.editor2d.ui.views.LayerView"
             name="%view.layer.name">
 	  </view>
       <category
-            id="org.nightlabs.editor2d.category"
+            id="org.nightlabs.editor2d.ui.category"
             name="%category.name"/>
       <view
             allowMultiple="false"
-            category="org.nightlabs.editor2d.category"
+            category="org.nightlabs.editor2d.ui.category"
             class="org.nightlabs.editor2d.ui.views.QuickOptionsView"
             icon="icons/views/QuickOptionsView.16x16.png"
-            id="org.nightlabs.editor2d.views.QuickOptionsView"
+            id="org.nightlabs.editor2d.ui.views.QuickOptionsView"
             name="%view.quickOptions.name"/>            
    </extension>
    <extension
@@ -35,7 +35,7 @@
          id="product"
          point="org.eclipse.core.runtime.products">
       <product
-            application="org.nightlabs.editor2d.app"
+            application="org.nightlabs.editor2d.ui.app"
             name="%product.name">
          <property
                name="appName"
@@ -59,7 +59,7 @@
       <perspective
             class="org.nightlabs.editor2d.ui.EditorPerspective"
             icon="icons/EditorPlugin-Logo.16x16.png"
-            id="org.nightlabs.editor2d.EditorPerspective"
+            id="org.nightlabs.editor2d.ui.EditorPerspective"
             name="%perspective.name"/>
    </extension>
    <extension
@@ -70,7 +70,7 @@
             default="false"
             extensions="e2d, e2t"
             icon="icons/EditorPlugin-Logo.16x16.png"
-            id="org.nightlabs.editor2d.Editor"
+            id="org.nightlabs.editor2d.ui.Editor"
             name="%editor.name"/>
    </extension>
 
@@ -94,59 +94,59 @@
    <extension
          point="org.nightlabs.base.ui.editor2perspective">
       <registry
-            editorID="org.nightlabs.editor2d.Editor"
-            perspectiveID="org.nightlabs.editor2d.EditorPerspective"/>
+            editorID="org.nightlabs.editor2d.ui.Editor"
+            perspectiveID="org.nightlabs.editor2d.ui.EditorPerspective"/>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
       <command
-            categoryId="org.nightlabs.editor2d"
+            categoryId="org.nightlabs.editor2d.ui"
             description="%command.rotate.description"
-            id="org.nightlabs.editor2d.rotate"
+            id="org.nightlabs.editor2d.ui.rotate"
             name="%command.rotate.name"/>
       <command
-            categoryId="org.nightlabs.editor2d"
+            categoryId="org.nightlabs.editor2d.ui"
             description="%command.editShape.description"
-            id="org.nightlabs.editor2d.editShape"
+            id="org.nightlabs.editor2d.ui.editShape"
             name="%command.editShape.name"/>
       <command
-            categoryId="org.nightlabs.editor2d"
+            categoryId="org.nightlabs.editor2d.ui"
             description="%command.orderOneUp.description"
-            id="org.nightlabs.editor2d.orderOneUp"
+            id="org.nightlabs.editor2d.ui.orderOneUp"
             name="%command.orderOneUp.name"/>
       <command
-            categoryId="org.nightlabs.editor2d"
+            categoryId="org.nightlabs.editor2d.ui"
             description="%command.orderOneDown.description"
-            id="org.nightlabs.editor2d.orderOneDown"
+            id="org.nightlabs.editor2d.ui.orderOneDown"
             name="%command.orderOneDown.name"/>
       <command
-            categoryId="org.nightlabs.editor2d"
+            categoryId="org.nightlabs.editor2d.ui"
             description="%command.orderToLocalBack.description"
-            id="org.nightlabs.editor2d.orderToLocalBack"
+            id="org.nightlabs.editor2d.ui.orderToLocalBack"
             name="%command.orderToLocalBack.name"/>
       <command
-            categoryId="org.nightlabs.editor2d"
+            categoryId="org.nightlabs.editor2d.ui"
             description="%command.orderToLocalFront.description"
-            id="org.nightlabs.editor2d.orderToLocaFront"
+            id="org.nightlabs.editor2d.ui.orderToLocaFront"
             name="%command.orderToLocalFront.name"/>
       <command
-            categoryId="org.nightlabs.editor2d"
+            categoryId="org.nightlabs.editor2d.ui"
             description="%command.showFigureToolTip.description"
-            id="org.nightlabs.editor2d.showFigureToolTip"
+            id="org.nightlabs.editor2d.ui.showFigureToolTip"
             name="%command.showFigureToolTip.name"/>
       <command
-            categoryId="org.nightlabs.editor2d"
+            categoryId="org.nightlabs.editor2d.ui"
             description="%command.zoomSelection.description"
-            id="org.nightlabs.editor2d.zoomSelection"
+            id="org.nightlabs.editor2d.ui.zoomSelection"
             name="%command.zoomSelection.name"/>
       <command
-            categoryId="org.nightlabs.editor2d"
+            categoryId="org.nightlabs.editor2d.ui"
             description="%command.zoomAll.description"
-            id="org.nightlabs.editor2d.zoomAll"
+            id="org.nightlabs.editor2d.ui.zoomAll"
             name="%command.zoomAll.name"/>
       <category
             description="%command.category.editor2d.description"
-            id="org.nightlabs.editor2d"
+            id="org.nightlabs.editor2d.ui"
             name="%command.category.editor2d.name"/>
       <context
             description="%command.context.editor2d.description"
@@ -154,52 +154,52 @@
             name="%command.context.editor2d.name"
             parentId="org.eclipse.ui.contexts.window"/>
       <command
-            categoryId="org.nightlabs.editor2d"
+            categoryId="org.nightlabs.editor2d.ui"
             description="%command.zoomPage.description"
-            id="org.nightlabs.editor2d.zoomPage"
+            id="org.nightlabs.editor2d.ui.zoomPage"
             name="%command.zoomPage.name">
       </command>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
       <key
-            commandId="org.nightlabs.editor2d.rotate"
+            commandId="org.nightlabs.editor2d.ui.rotate"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="CTRL+R"/>
       <key
-            commandId="org.nightlabs.editor2d.editShape"
+            commandId="org.nightlabs.editor2d.ui.editShape"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="CTRL+ALT+E"/>
       <key
-            commandId="org.nightlabs.editor2d.orderOneUp"
+            commandId="org.nightlabs.editor2d.ui.orderOneUp"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="CTRL+ARROW_UP"/>
       <key
-            commandId="org.nightlabs.editor2d.orderOneDown"
+            commandId="org.nightlabs.editor2d.ui.orderOneDown"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="CTRL+ARROW_DOWN"/>
       <key
-            commandId="org.nightlabs.editor2d.orderToLocaFront"
+            commandId="org.nightlabs.editor2d.ui.orderToLocaFront"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="CTRL+Shift+ARROW_UP"/>
       <key
-            commandId="org.nightlabs.editor2d.orderToLocalBack"
+            commandId="org.nightlabs.editor2d.ui.orderToLocalBack"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="CTRL+Shift+ARROW_DOWN"/>
       <key
-            commandId="org.nightlabs.editor2d.showFigureToolTip"
+            commandId="org.nightlabs.editor2d.ui.showFigureToolTip"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="CTRL+Shift+T"/>
       <key
-            commandId="org.nightlabs.editor2d.zoomSelection"
+            commandId="org.nightlabs.editor2d.ui.zoomSelection"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="CTRL+Alt+S"/>
       <key
-            commandId="org.nightlabs.editor2d.zoomAll"
+            commandId="org.nightlabs.editor2d.ui.zoomAll"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="CTRL+Alt+A"/>
       <key
-            commandId="org.nightlabs.editor2d.zoomPage"
+            commandId="org.nightlabs.editor2d.ui.zoomPage"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="CTRL+Alt+P">
       </key>
@@ -248,12 +248,12 @@
          point="org.eclipse.ui.preferencePages">
       <page
             class="org.nightlabs.editor2d.ui.preferences.EditorPreferencePage"
-            id="org.nightlabs.editor2d"
+            id="org.nightlabs.editor2d.ui.preferences.EditorPreferencePage"
             name="%preferences.category.name"/>
       <page
-            category="org.nightlabs.editor2d"
+            category="org.nightlabs.editor2d.ui"
             class="org.nightlabs.editor2d.ui.preferences.DocumentPropertiesPreferencePage"
-            id="org.nightlabs.editor2d.resolution"
+            id="org.nightlabs.editor2d.ui.preferences.DocumentPropertiesPreferencePage"
             name="%preferences.document.properties.title"/>
    </extension>
    <extension
@@ -265,14 +265,14 @@
    </extension>
       
   <extension
-         id="org.nightlabs.editor2d.decorator"
+         id="org.nightlabs.editor2d.ui.decorator"
          name="Visiblet Decorator"
          point="org.eclipse.ui.decorators">
       <decorator
             adaptable="true"
             class="org.nightlabs.editor2d.ui.decorators.VisibleDecorator"
             icon="icons\edit\tree\VisibleCompositeImage.8x8.gif"
-            id="org.nightlabs.editor2d.decorators.VisibleDecorator"
+            id="org.nightlabs.editor2d.ui.decorators.VisibleDecorator"
             label="Visible Decorator"
             lightweight="true"
             location="BOTTOM_LEFT"
@@ -284,10 +284,10 @@
       </decorator>
    </extension>
   <extension
-        point="org.nightlabs.editor2d.documentProperties">
+        point="org.nightlabs.editor2d.ui.documentProperties">
      <documentProperties
            editorClass="org.nightlabs.editor2d.ui.Editor"
-           editorID="org.nightlabs.editor2d.Editor"
+           editorID="org.nightlabs.editor2d.ui.Editor"
            orientation="vertical"
            predefinedPageID="A4"
            resolution="762"
