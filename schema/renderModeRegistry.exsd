@@ -1,0 +1,177 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.nightlabs.editor2d.viewer">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.nightlabs.editor2d.viewer" id="renderModeRegistry" name="renderModeRegistry"/>
+      </appInfo>
+      <documentation>
+         [Enter description of this extension point.]
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="registry" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="registry">
+      <complexType>
+         <sequence>
+            <element ref="renderContext" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="renderer" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a Renderer Class which implements the org.nightlabs.editor2d.render.Renderer-Interface
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn=":org.nightlabs.editor2d.render.Renderer"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="drawComponentClass" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the DrawComponent Class for the Renderer which should be used for the render Mode.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn=":org.nightlabs.editor2d.DrawComponent"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the (optional) name of the Renderer
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="description" type="string">
+            <annotation>
+               <documentation>
+                  the (optional) description of the Renderer
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="icon" type="string">
+            <annotation>
+               <documentation>
+                  the (optional) icon of the Renderer
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="resource"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="mode" type="string" use="required">
+            <annotation>
+               <documentation>
+                  an unique String which determines the renderMode
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="renderContext">
+      <complexType>
+         <attribute name="renderContextType" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a unique identifier (String) which determines the renderContextType, and corresponds to the renderContextType of the RenderContext
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="renderContext" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a Class which implements the org.nightlabs.editor2d.render.RenderContext-Interface
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn=":org.nightlabs.editor2d.render.RenderContext"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         [Enter the first release in which this extension point appears.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         [Enter extension point usage example here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         [Enter API information here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         [Enter information about supplied implementation of this extension point.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+</schema>
