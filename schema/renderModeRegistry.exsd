@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.nightlabs.editor2d.viewer">
+<schema targetNamespace="org.nightlabs.editor2d.viewer.ui">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.nightlabs.editor2d.viewer" id="renderModeRegistry" name="renderModeRegistry"/>
+         <meta.schema plugin="org.nightlabs.editor2d.viewer.ui" id="renderModeRegistry" name="renderModeRegistry"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]

@@ -3,29 +3,29 @@
 
 <nightlybuild>
 
-  <project name="org.nightlabs.editor2d.viewer">
+  <project name="org.nightlabs.editor2d.viewer.ui">
 	<plugin/>
-    <ant path="org.nightlabs.editor2d.viewer" file="build-nightlabs.xml" target="deploy"/>
+    <ant path="org.nightlabs.editor2d.viewer.ui" file="build-nightlabs.xml" target="deploy"/>
     <requires/>
 
     <!-- For the build-nightlabs-compile.pre.xml to work, the following projects must be built before. -->
     <requires path="/NightLabsEditor2D"/>
 
     <provides/>
-    <provides path="org.nightlabs.editor2d.viewer" location="org.nightlabs.editor2d.viewer/lib/NightLabsEditor2D.jar"/>
-    <provides path="org.nightlabs.editor2d.viewer" location="org.nightlabs.editor2d.viewer/lib/xpp3-1.1.3.4.jar"/>
-    <provides path="org.nightlabs.editor2d.viewer" location="org.nightlabs.editor2d.viewer/lib/xstream-1.2.jar"/>    
-    <provides path="org.nightlabs.editor2d.viewer" location="org.nightlabs.editor2d.viewer/lib/batik-awt-util.jar"/>    
-    <provides path="org.nightlabs.editor2d.viewer" location="org.nightlabs.editor2d.viewer/lib/batik-dom.jar"/>        
-    <provides path="org.nightlabs.editor2d.viewer" location="org.nightlabs.editor2d.viewer/lib/batik-svggen.jar"/>            
-    <provides path="org.nightlabs.editor2d.viewer" location="org.nightlabs.editor2d.viewer/lib/batik-util.jar"/>                
-    <provides path="org.nightlabs.editor2d.viewer" location="org.nightlabs.editor2d.viewer/lib/batik-xml.jar"/>                    
-    <provides path="org.nightlabs.editor2d.viewer" location="org.nightlabs.editor2d.viewer/lib/jai_core.jar"/>
-    <provides path="org.nightlabs.editor2d.viewer" location="org.nightlabs.editor2d.viewer/lib/jai_codec.jar"/>
-    <provides path="org.nightlabs.editor2d.viewer" location="org.nightlabs.editor2d.viewer/lib/itext-1.4.8.jar"/>
+    <provides path="org.nightlabs.editor2d.viewer.ui" location="org.nightlabs.editor2d.viewer.ui/lib/NightLabsEditor2D.jar"/>
+    <provides path="org.nightlabs.editor2d.viewer.ui" location="org.nightlabs.editor2d.viewer.ui/lib/xpp3-1.1.3.4.jar"/>
+    <provides path="org.nightlabs.editor2d.viewer.ui" location="org.nightlabs.editor2d.viewer.ui/lib/xstream-1.2.jar"/>    
+    <provides path="org.nightlabs.editor2d.viewer.ui" location="org.nightlabs.editor2d.viewer.ui/lib/batik-awt-util.jar"/>    
+    <provides path="org.nightlabs.editor2d.viewer.ui" location="org.nightlabs.editor2d.viewer.ui/lib/batik-dom.jar"/>        
+    <provides path="org.nightlabs.editor2d.viewer.ui" location="org.nightlabs.editor2d.viewer.ui/lib/batik-svggen.jar"/>            
+    <provides path="org.nightlabs.editor2d.viewer.ui" location="org.nightlabs.editor2d.viewer.ui/lib/batik-util.jar"/>                
+    <provides path="org.nightlabs.editor2d.viewer.ui" location="org.nightlabs.editor2d.viewer.ui/lib/batik-xml.jar"/>                    
+    <provides path="org.nightlabs.editor2d.viewer.ui" location="org.nightlabs.editor2d.viewer.ui/lib/jai_core.jar"/>
+    <provides path="org.nightlabs.editor2d.viewer.ui" location="org.nightlabs.editor2d.viewer.ui/lib/jai_codec.jar"/>
+    <provides path="org.nightlabs.editor2d.viewer.ui" location="org.nightlabs.editor2d.viewer.ui/lib/itext-1.4.8.jar"/>
     
-    <publishes description="..." location="org.nightlabs.editor2d.viewer/dist/org.nightlabs.editor2d.viewer_1.0.2.tar.gz"/>
-    <javadoc path="org.nightlabs.editor2d.viewer/src"/>
+    <publishes description="..." location="org.nightlabs.editor2d.viewer.ui/dist/org.nightlabs.editor2d.viewer_1.0.2.tar.gz"/>
+    <javadoc path="org.nightlabs.editor2d.viewer.ui/src"/>
   </project>
 
 </nightlybuild>

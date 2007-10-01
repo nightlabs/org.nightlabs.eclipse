@@ -4,7 +4,7 @@
    <extension-point id="renderModeRegistry" name="renderModeRegistry" schema="schema/renderModeRegistry.exsd"/>
 
    <extension
-         point="org.nightlabs.editor2d.viewer.renderModeRegistry">
+         point="org.nightlabs.editor2d.viewer.ui.renderModeRegistry">
       <registry
             description="%renderMode.default.shape.description"
             drawComponentClass="org.nightlabs.editor2d.ShapeDrawComponent"
@@ -15,7 +15,7 @@
                renderContext="org.nightlabs.editor2d.render.j2d.J2DShapeDefaultRenderer"
                renderContextType="Java2D"/>
          <renderContext
-               renderContext="org.nightlabs.editor2d.viewer.render.swt.SWTShapeDefaultRenderer"
+               renderContext="org.nightlabs.editor2d.viewer.ui.render.swt.SWTShapeDefaultRenderer"
                renderContextType="SWT"/>
       </registry>
       <registry
@@ -28,7 +28,7 @@
                renderContext="org.nightlabs.editor2d.render.j2d.J2DImageDefaultRenderer"
                renderContextType="Java2D"/>
          <renderContext
-               renderContext="org.nightlabs.editor2d.viewer.render.swt.SWTImageRenderer"
+               renderContext="org.nightlabs.editor2d.viewer.ui.render.swt.SWTImageRenderer"
                renderContextType="SWT"/>
       </registry>
       <registry
@@ -41,7 +41,7 @@
                renderContext="org.nightlabs.editor2d.render.j2d.J2DBaseRenderer"
                renderContextType="Java2D"/>
          <renderContext
-               renderContext="org.nightlabs.editor2d.viewer.render.swt.SWTBaseRenderer"
+               renderContext="org.nightlabs.editor2d.viewer.ui.render.swt.SWTBaseRenderer"
                renderContextType="SWT"/>
       </registry>
       <registry
@@ -79,22 +79,22 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            class="org.nightlabs.editor2d.viewer.preferences.ViewerPreferencePage"
+            class="org.nightlabs.editor2d.viewer.ui.preferences.ViewerPreferencePage"
             id="org.nightlabs.editor2d.viewer"
             name="%preferences.category.name"/>
       <page
             category="org.nightlabs.editor2d.viewer"
-            class="org.nightlabs.editor2d.viewer.preferences.AutoScrollPreferencePage"
+            class="org.nightlabs.editor2d.viewer.ui.preferences.AutoScrollPreferencePage"
             id="org.nightlabs.editor2d.viewer.buffer"
             name="%preferences.autoScroll.name"/>
       <page
             category="org.nightlabs.editor2d.viewer"
-            class="org.nightlabs.editor2d.viewer.preferences.RenderingPreferencePage"
+            class="org.nightlabs.editor2d.viewer.ui.preferences.RenderingPreferencePage"
             id="org.nightlabs.editor2d.viewer.rendering"
             name="%preferences.rendering.name"/>
       <page
             category="org.nightlabs.editor2d.viewer"
-            class="org.nightlabs.editor2d.viewer.preferences.BufferPreferencePage"
+            class="org.nightlabs.editor2d.viewer.ui.preferences.BufferPreferencePage"
             id="org.nightlabs.editor2d.viewer.buffer"
             name="%preferences.buffer.name"/>
    </extension>
@@ -103,7 +103,7 @@
          name="%application.name"
          point="org.eclipse.core.runtime.applications">
       <application>
-         <run class="org.nightlabs.editor2d.viewer.app.ViewerApplication"/>
+         <run class="org.nightlabs.editor2d.viewer.ui.app.ViewerApplication"/>
       </application>
    </extension>
 
