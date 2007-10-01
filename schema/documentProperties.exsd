@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.nightlabs.editor2d">
+<schema targetNamespace="org.nightlabs.editor2d.ui">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.nightlabs.editor2d" id="documentProperties" name="documentProperties"/>
+         <meta.schema plugin="org.nightlabs.editor2d.ui" id="documentProperties" name="documentProperties"/>
       </appInfo>
       <documentation>
          Here you can define document Properties (default page, resolution etc) per editor
@@ -50,7 +50,7 @@
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn="org.nightlabs.editor2d.AbstractEditor"/>
+                  <meta.attribute kind="java" basedOn="org.nightlabs.editor2d.ui.AbstractEditor"/>
                </appInfo>
             </annotation>
          </attribute>

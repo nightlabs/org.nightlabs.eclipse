@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.nightlabs.editor2d">
+<schema targetNamespace="org.nightlabs.editor2d.ui">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.nightlabs.editor2d" id="drawComponentProperty" name="drawComponentProperty"/>
+         <meta.schema plugin="org.nightlabs.editor2d.ui" id="drawComponentProperty" name="drawComponentProperty"/>
       </appInfo>
       <documentation>
          adds a PropertyDescriptor to the PropertySource of a DrawComponent
@@ -50,7 +50,7 @@
                   The class of the drawComponent you want to add a DrawComponentProperty to
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn="org.nightlabs.editor2d.DrawComponent"/>
+                  <meta.attribute kind="java" basedOn="org.nightlabs.editor2d.ui.DrawComponent"/>
                </appInfo>
             </annotation>
          </attribute>
@@ -60,7 +60,7 @@
                   The DrawComponentProperty to add for the given Class
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn="org.nightlabs.editor2d.model.DrawComponentProperty"/>
+                  <meta.attribute kind="java" basedOn="org.nightlabs.editor2d.ui.model.DrawComponentProperty"/>
                </appInfo>
             </annotation>
          </attribute>
@@ -70,7 +70,7 @@
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn="org.nightlabs.editor2d.MultiLayerDrawComponent"/>
+                  <meta.attribute kind="java" basedOn="org.nightlabs.editor2d.ui.MultiLayerDrawComponent"/>
                </appInfo>
             </annotation>
          </attribute>

@@ -7,7 +7,7 @@
          point="org.eclipse.ui.views">
       <view
             category="org.nightlabs.editor2d.category"
-            class="org.nightlabs.editor2d.views.LayerView"
+            class="org.nightlabs.editor2d.ui.views.LayerView"
             icon="icons/views/LayerView.16x16.png"
             id="org.nightlabs.editor2d.views.LayerView"
             name="%view.layer.name">
@@ -18,7 +18,7 @@
       <view
             allowMultiple="false"
             category="org.nightlabs.editor2d.category"
-            class="org.nightlabs.editor2d.views.QuickOptionsView"
+            class="org.nightlabs.editor2d.ui.views.QuickOptionsView"
             icon="icons/views/QuickOptionsView.16x16.png"
             id="org.nightlabs.editor2d.views.QuickOptionsView"
             name="%view.quickOptions.name"/>            
@@ -28,7 +28,7 @@
          name="%application.name"
          point="org.eclipse.core.runtime.applications">
       <application>
-         <run class="org.nightlabs.editor2d.app.Editor2DApplication"/>
+         <run class="org.nightlabs.editor2d.ui.app.Editor2DApplication"/>
       </application>
    </extension>
    <extension
@@ -57,7 +57,7 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="org.nightlabs.editor2d.EditorPerspective"
+            class="org.nightlabs.editor2d.ui.EditorPerspective"
             icon="icons/EditorPlugin-Logo.16x16.png"
             id="org.nightlabs.editor2d.EditorPerspective"
             name="%perspective.name"/>
@@ -65,8 +65,8 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="org.nightlabs.editor2d.Editor"
-            contributorClass="org.nightlabs.editor2d.EditorActionBarContributor"
+            class="org.nightlabs.editor2d.ui.Editor"
+            contributorClass="org.nightlabs.editor2d.ui.EditorActionBarContributor"
             default="false"
             extensions="e2d, e2t"
             icon="icons/EditorPlugin-Logo.16x16.png"
@@ -208,51 +208,51 @@
    <extension
          point="org.nightlabs.editor2d.viewer.ui.renderModeRegistry">
       <registry
-            drawComponentClass="org.nightlabs.editor2d.ShapeDrawComponent"
+            drawComponentClass="org.nightlabs.editor2d.ui.ShapeDrawComponent"
             mode="default"
             name="Default"
-            renderer="org.nightlabs.editor2d.render.ShapeDefaultRenderer">
+            renderer="org.nightlabs.editor2d.ui.render.ShapeDefaultRenderer">
          <renderContext
-               renderContext="org.nightlabs.editor2d.render.Draw2DShapeDefaultRenderer"
+               renderContext="org.nightlabs.editor2d.ui.render.Draw2DShapeDefaultRenderer"
                renderContextType="Draw2D"/>
       </registry>
       <registry
-            drawComponentClass="org.nightlabs.editor2d.ImageDrawComponent"
+            drawComponentClass="org.nightlabs.editor2d.ui.ImageDrawComponent"
             mode="default"
             name="Default"
-            renderer="org.nightlabs.editor2d.render.ImageDefaultRenderer">
+            renderer="org.nightlabs.editor2d.ui.render.ImageDefaultRenderer">
          <renderContext
-               renderContext="org.nightlabs.editor2d.render.Draw2DImageDefaultRenderer"
+               renderContext="org.nightlabs.editor2d.ui.render.Draw2DImageDefaultRenderer"
                renderContextType="Draw2D"/>
       </registry>
       <registry
-            drawComponentClass="org.nightlabs.editor2d.DrawComponentContainer"
+            drawComponentClass="org.nightlabs.editor2d.ui.DrawComponentContainer"
             mode="default"
             name="Default"
-            renderer="org.nightlabs.editor2d.render.BaseRenderer">
+            renderer="org.nightlabs.editor2d.ui.render.BaseRenderer">
          <renderContext
-               renderContext="org.nightlabs.editor2d.render.Draw2DBaseRenderer"
+               renderContext="org.nightlabs.editor2d.ui.render.Draw2DBaseRenderer"
                renderContextType="Draw2D"/>
       </registry>
       <registry
-            drawComponentClass="org.nightlabs.editor2d.PageDrawComponent"
+            drawComponentClass="org.nightlabs.editor2d.ui.PageDrawComponent"
             mode="default"
             name="Default"
-            renderer="org.nightlabs.editor2d.render.PageRenderer">
+            renderer="org.nightlabs.editor2d.ui.render.PageRenderer">
          <renderContext
-               renderContext="org.nightlabs.editor2d.render.Draw2DPageRenderer"
+               renderContext="org.nightlabs.editor2d.ui.render.Draw2DPageRenderer"
                renderContextType="Draw2D"/>
       </registry>   
 	</extension>
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            class="org.nightlabs.editor2d.preferences.EditorPreferencePage"
+            class="org.nightlabs.editor2d.ui.preferences.EditorPreferencePage"
             id="org.nightlabs.editor2d"
             name="%preferences.category.name"/>
       <page
             category="org.nightlabs.editor2d"
-            class="org.nightlabs.editor2d.preferences.DocumentPropertiesPreferencePage"
+            class="org.nightlabs.editor2d.ui.preferences.DocumentPropertiesPreferencePage"
             id="org.nightlabs.editor2d.resolution"
             name="%preferences.document.properties.title"/>
    </extension>
@@ -270,23 +270,23 @@
          point="org.eclipse.ui.decorators">
       <decorator
             adaptable="true"
-            class="org.nightlabs.editor2d.decorators.VisibleDecorator"
+            class="org.nightlabs.editor2d.ui.decorators.VisibleDecorator"
             icon="icons\edit\tree\VisibleCompositeImage.8x8.gif"
             id="org.nightlabs.editor2d.decorators.VisibleDecorator"
             label="Visible Decorator"
             lightweight="true"
             location="BOTTOM_LEFT"
-            objectClass="org.nightlabs.editor2d.edit.tree.DrawComponentTreeEditPart"
+            objectClass="org.nightlabs.editor2d.ui.edit.tree.DrawComponentTreeEditPart"
             state="true">
          <enablement>
-            <objectClass name="org.nightlabs.editor2d.edit.tree.DrawComponentTreeEditPart"/>
+            <objectClass name="org.nightlabs.editor2d.ui.edit.tree.DrawComponentTreeEditPart"/>
          </enablement>
       </decorator>
    </extension>
   <extension
         point="org.nightlabs.editor2d.documentProperties">
      <documentProperties
-           editorClass="org.nightlabs.editor2d.Editor"
+           editorClass="org.nightlabs.editor2d.ui.Editor"
            editorID="org.nightlabs.editor2d.Editor"
            orientation="vertical"
            predefinedPageID="A4"

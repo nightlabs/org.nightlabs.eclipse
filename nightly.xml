@@ -3,9 +3,9 @@
 
 <nightlybuild>
 
-  <project name="org.nightlabs.editor2d">
+  <project name="org.nightlabs.editor2d.ui">
 	<plugin/>
-    <ant path="org.nightlabs.editor2d" file="build-nightlabs.xml" target="deploy"/>
+    <ant path="org.nightlabs.editor2d.ui" file="build-nightlabs.xml" target="deploy"/>
     <requires/>
 
     <!-- For the build-nightlabs-compile.pre.xml to work, the following projects must be built before. -->
@@ -13,8 +13,8 @@
     <requires path="/NightLabsEditor2D"/>
 -->
     <provides/>
-    <publishes description="..." location="org.nightlabs.editor2d/dist/org.nightlabs.editor2d_1.0.2.tar.gz"/>
-    <javadoc path="org.nightlabs.editor2d/src"/>
+    <publishes description="..." location="org.nightlabs.editor2d.ui/dist/org.nightlabs.editor2d_1.0.2.tar.gz"/>
+    <javadoc path="org.nightlabs.editor2d.ui/src"/>
 
     <product name="JFire-Max" />
     <product name="JFire-Editor2D" />
