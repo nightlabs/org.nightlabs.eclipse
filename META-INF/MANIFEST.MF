@@ -3,7 +3,7 @@ Generated-from: 1140596560679;type=2
 Bundle-ManifestVersion: 2
 Bundle-Name: NightLabs Base plugin
 Bundle-SymbolicName: org.nightlabs.base.ui; singleton:=true
-Bundle-Version: 1.0.4
+Bundle-Version: 1.0.5
 Bundle-ClassPath: org.nightlabs.base.ui.jar,
  lib/NightLabsBase.jar,
  lib/log4j.jar,
