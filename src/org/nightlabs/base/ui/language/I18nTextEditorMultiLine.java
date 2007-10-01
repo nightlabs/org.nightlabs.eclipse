@@ -41,7 +41,7 @@ extends I18nTextEditor
 	 * @param parent
 	 */
 	public I18nTextEditorMultiLine(Composite parent) {
-		super(parent);
+		this(parent, (String) null);
 	}
 
 	/**
@@ -49,7 +49,7 @@ extends I18nTextEditor
 	 * @param caption
 	 */
 	public I18nTextEditorMultiLine(Composite parent, String caption) {
-		super(parent, caption);
+		this(parent, (LanguageChooser) null, caption);
 	}
 
 	/**
@@ -57,7 +57,7 @@ extends I18nTextEditor
 	 * @param languageChooser
 	 */
 	public I18nTextEditorMultiLine(Composite parent, LanguageChooser languageChooser) {
-		super(parent, languageChooser);
+		this(parent, languageChooser, (String) null);
 	}
 
 	/**
@@ -66,7 +66,7 @@ extends I18nTextEditor
 	 * @param caption
 	 */
 	public I18nTextEditorMultiLine(Composite parent, LanguageChooser chooser, String caption) {
-		super(parent, chooser, caption);
+		this(parent, chooser, caption, DEFAULT_LINECOUNT);
 	}
 
 	/**
@@ -74,14 +74,18 @@ extends I18nTextEditor
 	 * @param chooser
 	 * @param caption
 	 */
-	public I18nTextEditorMultiLine(Composite parent, LanguageChooser languageChooser, String caption, int lineCount) {
+	public I18nTextEditorMultiLine(Composite parent, LanguageChooser languageChooser, String caption,
+			int lineCount) 
+	{
 		super(parent, languageChooser, caption, false);
 		this.lineCount = lineCount;
 		createContext(parent, languageChooser, caption);
 	}
 
-	public static final int DEFAULT_LINECOUNT = -1;
-	private int singleLineHeight = 21; // TODO this should be calculated by computeSize
+	// in order to provide a nice editor area without a vertical scrollbar that is properly displayed,
+	// the line_count should be at least 3.
+	public static final int DEFAULT_LINECOUNT = 3;
+	private int singleLineHeight;
 	private int lineCount = DEFAULT_LINECOUNT;
 
 	@Override
@@ -95,11 +99,11 @@ extends I18nTextEditor
 	@Override
 	protected Text createText(Composite parent) 
 	{
-		Text text = new Text(parent, getBorderStyle() | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);		
+		Text text = new Text(parent, getBorderStyle() | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+		singleLineHeight = text.getLineHeight();
 		GridData gridData = new GridData(GridData.FILL_BOTH);
-		if (lineCount != DEFAULT_LINECOUNT && lineCount > 0) {
-			gridData.heightHint = lineCount * singleLineHeight;
-		}
+		int actualLineCount = Math.max(lineCount, DEFAULT_LINECOUNT);
+		gridData.heightHint = actualLineCount * singleLineHeight;
 		text.setLayoutData(gridData);		
 		return text;
 	}
