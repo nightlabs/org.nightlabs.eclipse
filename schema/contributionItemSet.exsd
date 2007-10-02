@@ -12,11 +12,11 @@
 
    <element name="extension">
       <complexType>
-         <sequence>
-            <element ref="contributionItem" minOccurs="1" maxOccurs="unbounded"/>
-            <element ref="menu" minOccurs="1" maxOccurs="unbounded"/>
-            <element ref="separator" minOccurs="1" maxOccurs="unbounded"/>
-            <element ref="groupMarker" minOccurs="1" maxOccurs="unbounded"/>
+         <sequence minOccurs="0" maxOccurs="unbounded">
+            <element ref="contributionItem" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="menu" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="separator" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="groupMarker" minOccurs="0" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
