@@ -69,7 +69,7 @@ public class I18nTextEditor extends XComposite implements II18nTextEditor
 
 	private LanguageChooser languageChooser;
 	private LanguageCf textLanguage;
-	private Text text;
+	protected Text text;
 	protected Text getText() {
 		return text;
 	}

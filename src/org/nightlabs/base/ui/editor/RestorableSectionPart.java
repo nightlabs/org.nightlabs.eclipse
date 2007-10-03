@@ -82,7 +82,11 @@ implements IDirtyStateManager
 	{
 		// set dirty = false
 		super.commit(false);
-		getManagedForm().dirtyStateChanged();
+		
+		// needs to check if global state was dirty, otherwise this would change the state to dirty, 
+		// which contradicts the method name and declaration! (marius)
+		if (getManagedForm().isDirty())
+			getManagedForm().dirtyStateChanged();
 	}
 	
 //	/**

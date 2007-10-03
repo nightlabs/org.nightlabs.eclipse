@@ -101,11 +101,24 @@ extends I18nTextEditor
 	{
 		Text text = new Text(parent, getBorderStyle() | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		singleLineHeight = text.getLineHeight();
-		GridData gridData = new GridData(GridData.FILL_BOTH);
+		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		int actualLineCount = Math.max(lineCount, DEFAULT_LINECOUNT);
-		gridData.heightHint = actualLineCount * singleLineHeight;
+		// TODO: it seems like the minimum height is ignored although grabExcessVerticalSpace = true...
+		gridData.minimumHeight= actualLineCount * singleLineHeight;
 		text.setLayoutData(gridData);		
 		return text;
+	}
+	
+	public void setVisibleLineCount(int lineCount) {
+		if (text == null)
+			throw new IllegalStateException("The text has not been created yet! You should first create "+
+					"the editor widget and then call this method!");
+		if (lineCount < 1)
+			return;
+		
+		GridData gridData = (GridData) text.getLayoutData();
+		gridData.heightHint = lineCount * singleLineHeight;
+		layout(true);
 	}
 	
 }
