@@ -33,13 +33,12 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPathEditorInput;
 import org.eclipse.ui.IPersistableElement;
 
 public class FileEditorInput
 implements IEditorInput,
-					 IPathEditorInput, IPersistableElement
+					 IPathEditorInput // , IPersistableElement
 {
 	protected File file;
 
@@ -74,7 +73,8 @@ implements IEditorInput,
 
 	public IPersistableElement getPersistable()
 	{
-		return this;
+//		return this;
+		return null; // no restore!
 	}
 
 	public String getToolTipText()
@@ -135,11 +135,11 @@ implements IEditorInput,
 		this.saved = saved;
 	}
 
-	public String getFactoryId() {
-		return FileEditorInputFactory.class.getName();
-	}
+//	public String getFactoryId() {
+//		return FileEditorInputFactory.class.getName();
+//	}
 
-	public void saveState(IMemento memento) {
-		FileEditorInputFactory.storeFileEditorInput(memento, this);
-	}
+//	public void saveState(IMemento memento) {
+//		FileEditorInputFactory.storeFileEditorInput(memento, this);
+//	}
 }
