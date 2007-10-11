@@ -1316,7 +1316,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		configureRenderModeManager();
 		
 		if (input instanceof FileEditorInput) {
-			FileEditorInput fileInput = (FileEditorInput) input; 
+			FileEditorInput fileInput = (FileEditorInput) input;
 			root = getRootDrawComponent();        
 			if (!fileInput.isSaved()) {
 				initialzePage();
