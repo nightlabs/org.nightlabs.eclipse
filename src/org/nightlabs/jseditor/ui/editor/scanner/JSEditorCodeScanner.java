@@ -1,4 +1,4 @@
-package org.nightlabs.jseditor.editor.scanner;
+package org.nightlabs.jseditor.ui.editor.scanner;
 
 
 import java.util.ArrayList;
@@ -14,10 +14,10 @@ import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.rules.WhitespaceRule;
 import org.eclipse.jface.text.rules.WordRule;
 import org.eclipse.swt.SWT;
-import org.nightlabs.jseditor.editor.JSEditorConstants;
-import org.nightlabs.jseditor.editor.JSEditorWhitespaceDetector;
-import org.nightlabs.jseditor.editor.colorprovider.JSEditorColorProvider;
-import org.nightlabs.jseditor.editor.detector.JSEditorWordDetector;
+import org.nightlabs.jseditor.ui.editor.JSEditorConstants;
+import org.nightlabs.jseditor.ui.editor.JSEditorWhitespaceDetector;
+import org.nightlabs.jseditor.ui.editor.colorprovider.JSEditorColorProvider;
+import org.nightlabs.jseditor.ui.editor.detector.JSEditorWordDetector;
 
 /**
  * A JScript code scanner.

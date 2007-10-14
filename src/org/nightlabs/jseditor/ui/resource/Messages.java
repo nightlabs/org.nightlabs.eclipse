@@ -1,10 +1,10 @@
-package org.nightlabs.jseditor.resource;
+package org.nightlabs.jseditor.ui.resource;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 public class Messages {
-	private static final String BUNDLE_NAME = "org.nightlabs.jseditor.resource.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.nightlabs.jseditor.ui.resource.messages"; //$NON-NLS-1$
 
 	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 

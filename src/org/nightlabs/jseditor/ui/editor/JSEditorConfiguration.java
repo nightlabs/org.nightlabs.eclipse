@@ -1,4 +1,4 @@
-package org.nightlabs.jseditor.editor;
+package org.nightlabs.jseditor.ui.editor;
 
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.TextAttribute;
@@ -12,11 +12,11 @@ import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.swt.graphics.RGB;
-import org.nightlabs.jseditor.JSEditorPlugin;
-import org.nightlabs.jseditor.editor.colorprovider.JSEditorColorProvider;
-import org.nightlabs.jseditor.editor.contentassist.AbstractContentAssistantVariable;
-import org.nightlabs.jseditor.editor.contentassist.JSCompletionProcessor;
-import org.nightlabs.jseditor.editor.scanner.JSEditorCodeScanner;
+import org.nightlabs.jseditor.ui.JSEditorPlugin;
+import org.nightlabs.jseditor.ui.editor.colorprovider.JSEditorColorProvider;
+import org.nightlabs.jseditor.ui.editor.contentassist.AbstractContentAssistantVariable;
+import org.nightlabs.jseditor.ui.editor.contentassist.JSCompletionProcessor;
+import org.nightlabs.jseditor.ui.editor.scanner.JSEditorCodeScanner;
 
 /**
  * 

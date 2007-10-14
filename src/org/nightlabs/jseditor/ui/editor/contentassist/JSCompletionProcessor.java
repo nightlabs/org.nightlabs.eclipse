@@ -1,7 +1,6 @@
-package org.nightlabs.jseditor.editor.contentassist;
+package org.nightlabs.jseditor.ui.editor.contentassist;
 
 
-import java.lang.reflect.Method;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +16,6 @@ import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationPresenter;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 import org.eclipse.swt.graphics.Image;
-import org.nightlabs.jseditor.JSEditorPlugin;
 
 /**
  * JS completion processor.

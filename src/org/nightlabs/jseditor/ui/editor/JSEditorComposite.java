@@ -1,4 +1,4 @@
-package org.nightlabs.jseditor.editor;
+package org.nightlabs.jseditor.ui.editor;
 
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.Document;
@@ -15,8 +15,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.nightlabs.base.ui.composite.XComposite;
-import org.nightlabs.jseditor.JSEditorPlugin;
-import org.nightlabs.jseditor.editor.colorprovider.JSEditorColorProvider;
+import org.nightlabs.jseditor.ui.JSEditorPlugin;
+import org.nightlabs.jseditor.ui.editor.colorprovider.JSEditorColorProvider;
 
 /**
  * 

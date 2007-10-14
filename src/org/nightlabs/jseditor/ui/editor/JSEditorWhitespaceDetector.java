@@ -11,7 +11,7 @@
  *   Alexander Bieber, NightLabs - initial API and implementation              *
  ******************************************************************************/
 
-package org.nightlabs.jseditor.editor;
+package org.nightlabs.jseditor.ui.editor;
 
 import org.eclipse.jface.text.rules.IWhitespaceDetector;
 

@@ -1,4 +1,4 @@
-package org.nightlabs.jseditor.scriptwizard;
+package org.nightlabs.jseditor.ui.scriptwizard;
 
 import org.eclipse.jface.text.source.SourceViewer;
 import org.nightlabs.base.ui.wizard.DynamicPathWizard;

@@ -1,12 +1,12 @@
-package org.nightlabs.jseditor.editor;
+package org.nightlabs.jseditor.ui.editor;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentPartitioner;
 import org.eclipse.jface.text.rules.FastPartitioner;
 import org.eclipse.ui.editors.text.FileDocumentProvider;
-import org.nightlabs.jseditor.JSEditorPlugin;
-import org.nightlabs.jseditor.editor.scanner.JSEditorPartitionScanner;
+import org.nightlabs.jseditor.ui.JSEditorPlugin;
+import org.nightlabs.jseditor.ui.editor.scanner.JSEditorPartitionScanner;
 
 /**
  * 

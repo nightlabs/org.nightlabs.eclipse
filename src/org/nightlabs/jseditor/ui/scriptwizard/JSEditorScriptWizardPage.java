@@ -1,4 +1,4 @@
-package org.nightlabs.jseditor.scriptwizard;
+package org.nightlabs.jseditor.ui.scriptwizard;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -25,8 +25,8 @@ import org.eclipse.swt.widgets.Text;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.util.RCPUtil;
 import org.nightlabs.base.ui.wizard.WizardHopPage;
-import org.nightlabs.jseditor.editor.JSEditorComposite;
-import org.nightlabs.jseditor.resource.Messages;
+import org.nightlabs.jseditor.ui.editor.JSEditorComposite;
+import org.nightlabs.jseditor.ui.resource.Messages;
 
 public class JSEditorScriptWizardPage
 extends WizardHopPage
@@ -43,11 +43,11 @@ extends WizardHopPage
 	private Text descText;
 	
 	public JSEditorScriptWizardPage(SourceViewer sourceViewer){
-		super(Messages.getString("org.nightlabs.jseditor.scriptwizard.JSEditorScriptWizardPage.pageName")); //$NON-NLS-1$
+		super(Messages.getString("org.nightlabs.jseditor.ui.scriptwizard.JSEditorScriptWizardPage.pageName")); //$NON-NLS-1$
 		this.sourceViewer = sourceViewer;
 		
-		setTitle(Messages.getString("org.nightlabs.jseditor.scriptwizard.JSEditorScriptWizardPage.title")); //$NON-NLS-1$
-		setDescription(Messages.getString("org.nightlabs.jseditor.scriptwizard.JSEditorScriptWizardPage.description")); //$NON-NLS-1$
+		setTitle(Messages.getString("org.nightlabs.jseditor.ui.scriptwizard.JSEditorScriptWizardPage.title")); //$NON-NLS-1$
+		setDescription(Messages.getString("org.nightlabs.jseditor.ui.scriptwizard.JSEditorScriptWizardPage.description")); //$NON-NLS-1$
 	}
 	
 	@Override
@@ -67,11 +67,11 @@ extends WizardHopPage
 		 ******************************/
 		tabItem1 =
 			new TabItem(tabFolder, SWT.NONE);
-		tabItem1.setText(Messages.getString("org.nightlabs.jseditor.scriptwizard.JSEditorScriptWizardPage.availableScriptsTabItem.text")); //$NON-NLS-1$
+		tabItem1.setText(Messages.getString("org.nightlabs.jseditor.ui.scriptwizard.JSEditorScriptWizardPage.availableScriptsTabItem.text")); //$NON-NLS-1$
 		
 		tabItem2 =
 			new TabItem(tabFolder, SWT.NONE);
-		tabItem2.setText(Messages.getString("org.nightlabs.jseditor.scriptwizard.JSEditorScriptWizardPage.seachScriptsTabItem.text")); //$NON-NLS-1$
+		tabItem2.setText(Messages.getString("org.nightlabs.jseditor.ui.scriptwizard.JSEditorScriptWizardPage.seachScriptsTabItem.text")); //$NON-NLS-1$
 
 		/******************************
 		 * Main Composite
@@ -84,7 +84,7 @@ extends WizardHopPage
 		 * Script Group
 		 ******************************/
 		Group scriptGroup = new Group(scriptTabItemComposite, SWT.NONE);
-		scriptGroup.setText(Messages.getString("org.nightlabs.jseditor.scriptwizard.JSEditorScriptWizardPage.scriptGroup.text")); //$NON-NLS-1$
+		scriptGroup.setText(Messages.getString("org.nightlabs.jseditor.ui.scriptwizard.JSEditorScriptWizardPage.scriptGroup.text")); //$NON-NLS-1$
 		scriptGroup.setLayout(new GridLayout());
 
 		gridData = new GridData();
@@ -102,7 +102,7 @@ extends WizardHopPage
 		scriptList.setLayoutData(gridData);
 		
 
-// Marco: This project (org.nightlabs.jseditor) must not have a dependency on JFireTrade stuff.
+// Marco: This project (org.nightlabs.jseditor.ui) must not have a dependency on JFireTrade stuff.
 // 1st, this would create an illegal circular dependency and 2nd we want to use the jseditor in
 // other apps (which might not have JFireTrade deployed).
 // commented the following line:
@@ -142,7 +142,7 @@ extends WizardHopPage
 		 * Button
 		 ******************************/
 		Button addButton = new Button(scriptTabItemComposite, SWT.PUSH);
-		addButton.setText(Messages.getString("org.nightlabs.jseditor.scriptwizard.JSEditorScriptWizardPage.addButton.text")); //$NON-NLS-1$
+		addButton.setText(Messages.getString("org.nightlabs.jseditor.ui.scriptwizard.JSEditorScriptWizardPage.addButton.text")); //$NON-NLS-1$
 		
 		/******************************
 		 * Right Composite
@@ -154,7 +154,7 @@ extends WizardHopPage
 		 * Editor Group
 		 ******************************/
 		Group editorGroup = new Group(rightComposite, SWT.NONE);
-		editorGroup.setText(Messages.getString("org.nightlabs.jseditor.scriptwizard.JSEditorScriptWizardPage.editorGroup.text")); //$NON-NLS-1$
+		editorGroup.setText(Messages.getString("org.nightlabs.jseditor.ui.scriptwizard.JSEditorScriptWizardPage.editorGroup.text")); //$NON-NLS-1$
 		editorGroup.setLayout(new GridLayout());
 		gridData = new GridData(GridData.FILL_BOTH);
 		gridData.verticalSpan = 1;
@@ -189,7 +189,7 @@ extends WizardHopPage
 		 * Evaluation Group
 		 ******************************/
 		Group evalGroup = new Group(rightComposite, SWT.NONE);
-		evalGroup.setText(Messages.getString("org.nightlabs.jseditor.scriptwizard.JSEditorScriptWizardPage.evaluateGroup.text")); //$NON-NLS-1$
+		evalGroup.setText(Messages.getString("org.nightlabs.jseditor.ui.scriptwizard.JSEditorScriptWizardPage.evaluateGroup.text")); //$NON-NLS-1$
 		evalGroup.setLayout(new GridLayout());
 		gridData = new GridData(GridData.FILL_BOTH);
 		gridData.verticalSpan = 1;
@@ -200,7 +200,7 @@ extends WizardHopPage
 		 * Description Group
 		 ******************************/
 		Group descGroup = new Group(scriptTabItemComposite, SWT.NONE);
-		descGroup.setText(Messages.getString("org.nightlabs.jseditor.scriptwizard.JSEditorScriptWizardPage.descriptionGroup.text")); //$NON-NLS-1$
+		descGroup.setText(Messages.getString("org.nightlabs.jseditor.ui.scriptwizard.JSEditorScriptWizardPage.descriptionGroup.text")); //$NON-NLS-1$
 		descGroup.setLayout(new GridLayout());
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 4;

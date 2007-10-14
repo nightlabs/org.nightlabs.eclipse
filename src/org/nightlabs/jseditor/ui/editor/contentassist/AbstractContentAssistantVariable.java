@@ -1,4 +1,4 @@
-package org.nightlabs.jseditor.editor.contentassist;
+package org.nightlabs.jseditor.ui.editor.contentassist;
 
 import java.util.ArrayList;
 import java.util.List;

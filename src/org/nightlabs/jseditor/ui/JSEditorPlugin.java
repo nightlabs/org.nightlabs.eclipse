@@ -1,11 +1,11 @@
-package org.nightlabs.jseditor;
+package org.nightlabs.jseditor.ui;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.rules.RuleBasedScanner;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.nightlabs.jseditor.editor.colorprovider.JSEditorColorProvider;
-import org.nightlabs.jseditor.editor.scanner.JSEditorCodeScanner;
-import org.nightlabs.jseditor.editor.scanner.JSEditorPartitionScanner;
+import org.nightlabs.jseditor.ui.editor.colorprovider.JSEditorColorProvider;
+import org.nightlabs.jseditor.ui.editor.scanner.JSEditorCodeScanner;
+import org.nightlabs.jseditor.ui.editor.scanner.JSEditorPartitionScanner;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -14,7 +14,7 @@ import org.osgi.framework.BundleContext;
 public class JSEditorPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.nightlabs.jseditor"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.nightlabs.jseditor.ui"; //$NON-NLS-1$
 	public final static String JSEDITOR_PARTITIONING= "__js_editor_partitioning";   //$NON-NLS-1$
 
 	// The shared instance

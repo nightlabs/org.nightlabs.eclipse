@@ -3,13 +3,13 @@
 
 <nightlybuild>
 
-  <project name="org.nightlabs.jseditor">
+  <project name="org.nightlabs.jseditor.ui">
 	<plugin/>
-    <ant path="org.nightlabs.jseditor" file="build-nightlabs.xml" target="deploy"/>
+    <ant path="org.nightlabs.jseditor.ui" file="build-nightlabs.xml" target="deploy"/>
     <requires/>
     <provides/>
-    <publishes description="..." location="org.nightlabs.jseditor/dist/org.nightlabs.jseditor_0.9.1.tar.gz"/>
-    <javadoc path="org.nightlabs.jseditor/src"/>
+    <publishes description="..." location="org.nightlabs.jseditor.ui/dist/org.nightlabs.jseditor.ui_0.9.1.tar.gz"/>
+    <javadoc path="org.nightlabs.jseditor.ui/src"/>
 	  
 	<ignore-requires path="org.junit"/>
   </project>

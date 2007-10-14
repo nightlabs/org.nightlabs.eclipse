@@ -1,4 +1,4 @@
-package org.nightlabs.jseditor.editor.colorprovider;
+package org.nightlabs.jseditor.ui.editor.colorprovider;
 
 
 import java.util.HashMap;

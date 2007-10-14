@@ -1,4 +1,4 @@
-package org.nightlabs.jseditor.editor;
+package org.nightlabs.jseditor.ui.editor;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;

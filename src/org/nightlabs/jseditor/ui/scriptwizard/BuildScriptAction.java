@@ -1,4 +1,4 @@
-package org.nightlabs.jseditor.scriptwizard;
+package org.nightlabs.jseditor.ui.scriptwizard;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.text.source.SourceViewer;

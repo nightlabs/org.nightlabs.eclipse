@@ -1,4 +1,4 @@
-package org.nightlabs.jseditor.editor.scanner;
+package org.nightlabs.jseditor.ui.editor.scanner;
 
 
 import java.util.ArrayList;

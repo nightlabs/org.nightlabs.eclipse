@@ -1,3 +1,4 @@
+package org.nightlabs.jseditor.ui.editor.contentassist;
 ///*******************************************************************************
 // * Copyright (c) 2000, 2005 IBM Corporation and others.
 // * All rights reserved. This program and the accompanying materials
@@ -8,7 +9,7 @@
 // * Contributors:
 // *     IBM Corporation - initial API and implementation
 // *******************************************************************************/
-//package org.nightlabs.jseditor.editor.contentassist;
+//package org.nightlabs.jseditor.ui.editor.contentassist;
 //
 //
 //import org.eclipse.jface.text.ITextViewer;

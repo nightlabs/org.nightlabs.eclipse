@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.nightlabs.jseditor.editor.detector;
+package org.nightlabs.jseditor.ui.editor.detector;
 
 
 import org.eclipse.jface.text.rules.IWordDetector;
