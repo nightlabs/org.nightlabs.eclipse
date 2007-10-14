@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: JSEditor Plug-in
+Bundle-SymbolicName: org.nightlabs.jseditor.ui;singleton:=true
+Bundle-Version: 0.9.1
+Bundle-ClassPath: org.nightlabs.jseditor.jar
+Bundle-Activator: org.nightlabs.jseditor.JSEditorPlugin
+Bundle-Localization: plugin
+Export-Package: org.nightlabs.jseditor,
+ org.nightlabs.jseditor.editor,
+ org.nightlabs.jseditor.editor.colorprovider,
+ org.nightlabs.jseditor.editor.contentassist,
+ org.nightlabs.jseditor.editor.detector,
+ org.nightlabs.jseditor.editor.scanner,
+ org.nightlabs.jseditor.scriptwizard
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.eclipse.ui.forms,
+ org.eclipse.jface.text,
+ org.eclipse.ui.editors,
+ org.eclipse.ui.workbench.texteditor,
+ org.nightlabs.base.ui
+Eclipse-LazyStart: true

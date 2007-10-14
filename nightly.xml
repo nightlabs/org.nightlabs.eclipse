@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nightlybuild PUBLIC "-//NightLabs//DTD NightlyBuild V 0.14//EN" "http://www.nightlabs.de/dtd/nightlybuild_0_14.dtd">
+
+<nightlybuild>
+
+  <project name="org.nightlabs.jseditor">
+	<plugin/>
+    <ant path="org.nightlabs.jseditor" file="build-nightlabs.xml" target="deploy"/>
+    <requires/>
+    <provides/>
+    <publishes description="..." location="org.nightlabs.jseditor/dist/org.nightlabs.jseditor_0.9.1.tar.gz"/>
+    <javadoc path="org.nightlabs.jseditor/src"/>
+	  
+	<ignore-requires path="org.junit"/>
+  </project>
+
+</nightlybuild>
