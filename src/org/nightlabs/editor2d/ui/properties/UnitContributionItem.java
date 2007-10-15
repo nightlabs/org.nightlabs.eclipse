@@ -74,30 +74,6 @@ extends XContributionItem
 		return combo;
 	}
 	private List<IUnit> units = null;
-	
-//  /**
-//   * Creates and returns the control for this contribution item
-//   * under the given parent composite.
-//   *
-//   * @param parent the parent composite
-//   * @return the new control
-//   */
-//  protected Control createControl(Composite parent) 
-//  {
-//  	Composite comp = new XComposite(parent, SWT.NONE, LayoutMode.TOP_BOTTOM_WRAPPER);
-//  	combo = new Combo(comp, SWT.BORDER | SWT.READ_ONLY);
-//  	combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-//  	combo.addSelectionListener(comboSelectionListener);  		  	
-////  	for (IUnit unit : units) {
-////			combo.add(unit.getUnitSymbol());
-////		}
-////  	selectUnit(unitManager.getCurrentUnit());
-//  	refresh();
-//  	
-//  	if (toolitem != null)
-//  		toolitem.setWidth(computeWidth(comp));  	
-//  	return comp;
-//  }
 
   /**
    * Creates and returns the control for this contribution item
@@ -111,6 +87,7 @@ extends XContributionItem
   	Composite comp = new XComposite(parent, SWT.NONE, LayoutMode.TOP_BOTTOM_WRAPPER);
   	combo = new Combo(comp, SWT.BORDER | SWT.READ_ONLY);
   	GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+  	// TODO should be width of longest entry in combo
   	gridData.minimumWidth = 40;
   	combo.setLayoutData(gridData);
   	combo.addSelectionListener(comboSelectionListener);  		  	
