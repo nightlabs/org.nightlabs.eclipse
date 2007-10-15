@@ -110,9 +110,11 @@ extends XContributionItem
   {
   	Composite comp = new XComposite(parent, SWT.NONE, LayoutMode.TOP_BOTTOM_WRAPPER);
   	combo = new Combo(comp, SWT.BORDER | SWT.READ_ONLY);
-  	combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  	GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+  	gridData.minimumWidth = 40;
+  	combo.setLayoutData(gridData);
   	combo.addSelectionListener(comboSelectionListener);  		  	
-  	refresh();  	
+  	refresh();
   	if (toolitem != null)
   		toolitem.setWidth(computeWidth(comp));  	
   	return comp;
