@@ -103,8 +103,8 @@ extends I18nTextEditor
 		singleLineHeight = text.getLineHeight();
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		int actualLineCount = Math.max(lineCount, DEFAULT_LINECOUNT);
-		// TODO: it seems like the minimum height is ignored although grabExcessVerticalSpace = true...
-		gridData.minimumHeight= actualLineCount * singleLineHeight;
+		// TODO: why is this minHeight ignored, even if grabExcessiv... == true?? (marius)
+		gridData.minimumHeight = actualLineCount * singleLineHeight;
 		text.setLayoutData(gridData);		
 		return text;
 	}

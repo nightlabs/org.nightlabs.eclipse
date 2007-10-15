@@ -8,7 +8,7 @@ import org.eclipse.jface.action.IContributionItem;
 
 
 /**
- * This interface can be implemented addtionally to {@link IAction} or
+ * This interface can be implemented additionally to {@link IAction} or
  * {@link IContributionItem} in order to support visibility/enabled-calculation.
  *
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
