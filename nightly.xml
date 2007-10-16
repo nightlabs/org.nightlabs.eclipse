@@ -21,6 +21,8 @@
     <provides path="org.nightlabs.base.ui" location="org.nightlabs.base.ui/lib/mailapi.jar"/>
     <provides path="org.nightlabs.base.ui" location="org.nightlabs.base.ui/lib/smtp.jar"/>
     <provides path="org.nightlabs.base.ui" location="org.nightlabs.base.ui/lib/swtcalendar.jar"/>
+    <!-- required by org.nightlabs.jfire.pim.ui -->
+    <provides path="org.nightlabs.base.ui" location="/org.nightlabs.base.ui/lib/swtcalendar.jar"/>
 <!--
     <provides path="org.nightlabs.base.ui" location="org.nightlabs.base.ui/lib/activation.jar"/>
     <provides path="org.nightlabs.base.ui" location="org.nightlabs.base.ui/lib/mailapi.jar"/>
