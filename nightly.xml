@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE nightlybuild PUBLIC "-//NightLabs//DTD NightlyBuild V 0.9//EN" "http://www.nightlabs.de/dtd/nightlybuild_0_9.dtd">
+<!DOCTYPE nightlybuild PUBLIC "-//NightLabs//DTD NightlyBuild V 0.18//EN" "http://www.nightlabs.de/dtd/nightlybuild_0_18.dtd">
 
 <nightlybuild>
   <project name="org.nightlabs.base.ui">
@@ -16,13 +16,15 @@
 	<requires path="NightLabsBase/dist/NightLabsBase.jar"/>
 -->
     <provides/>
-    
+
+	<!-- Mail API should be exported in a separate project, since it is needed from server as well as client projects. (marius+marc) -->    
     <provides path="org.nightlabs.base.ui" location="org.nightlabs.base.ui/lib/activation.jar"/>
     <provides path="org.nightlabs.base.ui" location="org.nightlabs.base.ui/lib/mailapi.jar"/>
     <provides path="org.nightlabs.base.ui" location="org.nightlabs.base.ui/lib/smtp.jar"/>
+
     <provides path="org.nightlabs.base.ui" location="org.nightlabs.base.ui/lib/swtcalendar.jar"/>
-    <!-- required by org.nightlabs.jfire.pim.ui -->
-    <provides path="org.nightlabs.base.ui" location="/org.nightlabs.base.ui/lib/swtcalendar.jar"/>
+    <provides path="/org.nightlabs.base.ui/lib/swtcalendar.jar" location="org.nightlabs.base.ui/lib/swtcalendar.jar"/>
+    <provides path="WORKSPACE/org.nightlabs.base.ui/lib/swtcalendar.jar" location="org.nightlabs.base.ui/lib/swtcalendar.jar"/>
 <!--
     <provides path="org.nightlabs.base.ui" location="org.nightlabs.base.ui/lib/activation.jar"/>
     <provides path="org.nightlabs.base.ui" location="org.nightlabs.base.ui/lib/mailapi.jar"/>
@@ -34,11 +36,25 @@
     <provides path="org.nightlabs.base.ui" location="org.nightlabs.base.ui/lib/commons-logging.jar"/>
 -->
 <!--    <provides path="org.nightlabs.base.ui" location="lib/log4j/jars/log4j-1.2.8.jar"/> -->
-    <provides path="org.nightlabs.base.ui" location="lib/xerces/jars/xercesImpl-2.6.2.jar"/>
+    <provides path="org.nightlabs.base.ui" location="org.nightlabs.base.ui/lib/xercesImpl.jar"/>
+    <provides path="/org.nightlabs.base.ui/lib/xercesImpl.jar" location="org.nightlabs.base.ui/lib/xercesImpl.jar"/>
+    <provides path="WORKSPACE/org.nightlabs.base.ui/lib/xercesImpl.jar" location="org.nightlabs.base.ui/lib/xercesImpl.jar"/>
+
     <provides path="org.nightlabs.base.ui" location="org.nightlabs.base.ui/lib/commons-beanutils.jar"/>
-    <provides path="org.nightlabs.base.ui" location="lib/commons-logging/jars/commons-logging-1.0.4.jar"/>
+    <provides path="/org.nightlabs.base.ui/lib/commons-beanutils.jar" location="org.nightlabs.base.ui/lib/commons-beanutils.jar"/>
+    <provides path="WORKSPACE/org.nightlabs.base.ui/lib/commons-beanutils.jar" location="org.nightlabs.base.ui/lib/commons-beanutils.jar"/>
+
+    <provides path="org.nightlabs.base.ui" location="org.nightlabs.base.ui/lib/commons-logging.jar"/>
+    <provides path="/org.nightlabs.base.ui/lib/commons-logging.jar" location="org.nightlabs.base.ui/lib/commons-logging.jar"/>
+    <provides path="WORKSPACE/org.nightlabs.base.ui/lib/commons-logging.jar" location="org.nightlabs.base.ui/lib/commons-logging.jar"/>
+
     <provides path="org.nightlabs.base.ui" location="org.nightlabs.base.ui/lib/commons-collections.jar"/>
+    <provides path="/org.nightlabs.base.ui/lib/commons-collections.jar" location="org.nightlabs.base.ui/lib/commons-collections.jar"/>
+    <provides path="WORKSPACE/org.nightlabs.base.ui/lib/commons-collections.jar" location="org.nightlabs.base.ui/lib/commons-collections.jar"/>
+
     <provides path="org.nightlabs.base.ui" location="org.nightlabs.base.ui/lib/commons-lang.jar"/>
+    <provides path="/org.nightlabs.base.ui/lib/commons-lang.jar" location="org.nightlabs.base.ui/lib/commons-lang.jar"/>
+    <provides path="WORKSPACE/org.nightlabs.base.ui/lib/commons-lang.jar" location="org.nightlabs.base.ui/lib/commons-lang.jar"/>
 
     <provides path="org.nightlabs.base.ui" location="org.nightlabs.base.ui/lib/NightLabsBase.jar"/>
     <provides path="/org.nightlabs.base.ui/lib/NightLabsBase.jar" location="org.nightlabs.base.ui/lib/NightLabsBase.jar"/>
