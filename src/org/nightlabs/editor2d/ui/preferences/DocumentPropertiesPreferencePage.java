@@ -94,17 +94,22 @@ implements IWorkbenchPreferencePage
 	
 	private ISelectionChangedListener editorListener = new ISelectionChangedListener() {
 		public void selectionChanged(SelectionChangedEvent event) {
-			ISelection selection = event.getSelection();
-			if (!selection.isEmpty() && selection instanceof StructuredSelection) {
-				StructuredSelection structuredSelection = (StructuredSelection) selection;
-				Object firstElement = structuredSelection.getFirstElement();
-				if (firstElement instanceof Class) {
-					DocumentProperties documentProperties = getDocumentConfigModule().getEditorClass2DocumentProperties().get((Class)firstElement);
-					if (documentProperties != null) {
-						setDocumentProperties(documentProperties);
-					}
-				}
-			}
+			Class selectedClass = editorChooseCombo.getSelectedElement();
+			DocumentProperties documentProperties = getDocumentConfigModule().getEditorClass2DocumentProperties().get(selectedClass);
+			if (documentProperties != null) {
+				setDocumentProperties(documentProperties);
+			}			
+//			ISelection selection = event.getSelection();
+//			if (!selection.isEmpty() && selection instanceof StructuredSelection) {
+//				StructuredSelection structuredSelection = (StructuredSelection) selection;
+//				Object firstElement = structuredSelection.getFirstElement();
+//				if (firstElement instanceof Class) {
+//					DocumentProperties documentProperties = getDocumentConfigModule().getEditorClass2DocumentProperties().get((Class)firstElement);
+//					if (documentProperties != null) {
+//						setDocumentProperties(documentProperties);
+//					}
+//				}
+//			}
 		}
 	};
 	
