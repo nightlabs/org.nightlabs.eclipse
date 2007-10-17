@@ -23,6 +23,7 @@
             id="org.nightlabs.editor2d.ui.views.QuickOptionsView"
             name="%view.quickOptions.name"/>            
    </extension>
+<!--   
    <extension
          id="app"
          name="%application.name"
@@ -30,7 +31,7 @@
       <application>
          <run class="org.nightlabs.editor2d.ui.app.Editor2DApplication"/>
       </application>
-   </extension>
+   </extension>   
    <extension
          id="product"
          point="org.eclipse.core.runtime.products">
@@ -62,6 +63,7 @@
             id="org.nightlabs.editor2d.ui.EditorPerspective"
             name="%perspective.name"/>
    </extension>
+-->   
    <extension
          point="org.eclipse.ui.editors">
       <editor
@@ -246,10 +248,12 @@
 	</extension>
    <extension
          point="org.eclipse.ui.preferencePages">
+<!--         
       <page
             class="org.nightlabs.editor2d.ui.preferences.EditorPreferencePage"
             id="org.nightlabs.editor2d.ui.preferences.EditorPreferencePage"
             name="%preferences.category.name"/>
+-->            
       <page
             category="org.nightlabs.editor2d.ui"
             class="org.nightlabs.editor2d.ui.preferences.DocumentPropertiesPreferencePage"
