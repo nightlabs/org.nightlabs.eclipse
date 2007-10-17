@@ -459,7 +459,24 @@ implements IEntityEditorPageController
 	 */
 	protected void fireModifyEvent(Object oldObject, Object newObject)
 	{
-		EntityEditorPageControllerModifyEvent lastModifyEvent = new EntityEditorPageControllerModifyEvent(this, oldObject, newObject);
+		fireModifyEvent(oldObject, newObject, true);
+	}
+	
+	/**
+	 * The <code>resetDirtyState</code> is set to <code>true</code> when a new Object has been loaded
+	 * (fetched form the Cache /server) and <code>false</code> if local changes have been made to the
+	 * model from another page or another section, which needs the GUI to reflect these changes and 
+	 * still keep the old dirty state.
+	 *  
+	 * @param oldObject The old object value.
+	 * @param newObject The new object value.
+	 * @param resetDirtyState whether or not the UI elements (page, sections) should reset their dirty 
+	 * 	state when displaying the changes. 
+	 */
+	protected void fireModifyEvent(Object oldObject, Object newObject, boolean resetDirtyState)
+	{
+		EntityEditorPageControllerModifyEvent lastModifyEvent = 
+			new EntityEditorPageControllerModifyEvent(this, oldObject, newObject, resetDirtyState);
 		this.lastModifyEvent = lastModifyEvent;
 
 		Object[] list = listeners.getListeners();

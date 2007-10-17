@@ -74,6 +74,21 @@ implements IDirtyStateManager
 	}
 	
 	/**
+	 * Mark this section dirty.
+	 * TODO: workaround for ManagedForm.markDirty() not checking the current dirty state and therefore might mark this editor as undirty.
+	 * 	The correct way of handling this situation would be to always check the dirty state before setting a new one. (marius)
+	 */
+	@Override
+	public void markDirty() {
+		// fires dirtyStateChangedEvent of the editor
+		super.markDirty();
+		
+		// if the editor was dirty before the first call it is now undirty -> need to fire it again
+		if (getManagedForm().isDirty())
+			getManagedForm().dirtyStateChanged();
+	}
+	
+	/**
 	 * Mark this section part undirty. Eclipse
 	 * SectionPart lacks this feature, so here is
 	 * a workaround.

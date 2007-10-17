@@ -163,7 +163,7 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 //					}
 //				});
 			}
-			asyncCallback(); // TODO: Maybe chagne this and require the controller to fire change event onLoad() ?!?!
+			asyncCallback(); // TODO: Maybe change this and require the controller to fire change event onLoad() ?!?!
 			// TODO maybe call switchToContent() here?!?!
 			return Status.OK_STATUS;
 		}

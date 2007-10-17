@@ -58,10 +58,10 @@ import org.nightlabs.base.ui.util.RCPUtil;
  * the real contents are hidden.
  * <p>
  * Parts are managed when they register themselves by {@link #registerPart(ControllablePart)}.
- * The registratin of a Part should be done in its constructor. See {@link org.nightlabs.base.ui.part.ControllablePart}
+ * The registration of a Part should be done in its constructor. See {@link org.nightlabs.base.ui.part.ControllablePart}
  * for more information on how to use them with a PartController. 
  * <p>
- * A PartController is responsible for somehow creating or listening to event 
+ * A PartController is responsible for somehow creating or listening to events 
  * that might cause the visibility of its registered parts to change and 
  * use the PartController API like {@link #updateParts()} to update the registered views.
  * <p>
@@ -131,7 +131,7 @@ public abstract class PartController {
 		protected void updatePart() {
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
-					if (!internalPartsCreated)
+					if (!internalPartsCreated || fadeableWrapper.isDisposed())
 						return;
 					doCreateContents();
 					if (part.canDisplayPart()) { 

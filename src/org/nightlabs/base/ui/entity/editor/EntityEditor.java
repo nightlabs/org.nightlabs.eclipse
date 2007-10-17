@@ -27,7 +27,9 @@
 package org.nightlabs.base.ui.entity.editor;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -45,6 +47,7 @@ import org.nightlabs.base.ui.job.FadeableCompositeJob;
 import org.nightlabs.base.ui.job.Job;
 import org.nightlabs.base.ui.progress.RCPProgressMonitor;
 import org.nightlabs.base.ui.resource.Messages;
+import org.nightlabs.notification.NotificationListener;
 import org.nightlabs.progress.ProgressMonitor;
 
 /**
@@ -72,7 +75,7 @@ public class EntityEditor extends CommitableFormEditor
 {
 	/**
 	 * This editor's controller, that will delegate
-	 * loading and saving of the enity to the 
+	 * loading and saving of the entity to the 
 	 * page controllers of the registered pages.
 	 * 
 	 */
@@ -221,12 +224,12 @@ public class EntityEditor extends CommitableFormEditor
 	}
 	
 	/**
-	 * Return the controller assoctiated with this editor.
+	 * Return the controller associated with this editor.
 	 * The controller is created in {@link #init(IEditorSite, IEditorInput)}.
 	 * 
 	 * See {@link #getPageController(IFormPage)} on how to access a single page's controller.
 	 * 
-	 * @return The controller assoctiated with this editor.
+	 * @return The controller associated with this editor.
 	 */
 	public EntityEditorController getController() {
 		return controller;
@@ -287,5 +290,25 @@ public class EntityEditor extends CommitableFormEditor
 		if (controller != null)
 			controller.dispose();
 	}
+
+	/**
+	 * 
+	 * @return all IFormPages attached to this editor.
+	 */
+	public List<IFormPage> getPages() {
+		List<IFormPage> pages = new LinkedList<IFormPage>(); 
+		for (IEntityEditorPageController pageController : controller.getPageControllers()) {
+			for (IFormPage pageControllerPage : pageController.getPages()) {
+				if (this == pageControllerPage.getEditor())
+					pages.add(pageControllerPage);
+			}
+		}
+		return pages;
+	}
+	
+	private Set<NotificationListener> globalNotificationListeners;
+//	FIXME: Mit Alex über eine Möglichkeit der editorweiten Registrierung von NotificationListenern.
+//		Wie wird das bisher gemacht? Sollen wir hier im Editor eine Möglichkeit schaffen sowas zu machen?
+//		Wie kann die aussehen?
 	
 }
