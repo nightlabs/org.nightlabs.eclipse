@@ -28,8 +28,6 @@ package org.nightlabs.base.ui.app;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -42,10 +40,10 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 import org.nightlabs.annotation.Implement;
+import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.exceptionhandler.ExceptionHandlerRegistry;
 import org.nightlabs.base.ui.exceptionhandler.SaveRunnableRunner;
 import org.nightlabs.base.ui.extensionpoint.RemoveExtensionRegistry;
-import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.config.Config;
 import org.nightlabs.config.ConfigException;
 import org.nightlabs.util.IOUtil;
@@ -79,20 +77,20 @@ implements IApplication
 	 */
 	private static final Logger logger = Logger.getLogger(AbstractApplication.class);
 
-	/**
-	 * The system properties hold the name of the application accessible via this key (it's set by {@link #setAppNameSystemProperty()}).
-	 * Use <code>System.getProperty(APPLICATION_SYSTEM_PROPERTY_NAME)</code> to get the application name.
-	 */
-	public static final String APPLICATION_SYSTEM_PROPERTY_NAME = "nightlabs.base.application.name"; //$NON-NLS-1$
-	/**
-	 * This is used to choose the application folder when the application starts.
-	 * After start the system property with this name will point to the applications root folder.
-	 * <p>
-	 * To initialize the application folder the system property can be set before the application 
-	 * starts. It might contain references to system environment variables in the following way:
-	 * $ENV_NAME$, where ENV_NAME is the name of the environment variable.
-	 */
-	public static final String APPLICATION_FOLDER_SYSTEM_PROPERTY_NAME = "nightlabs.base.application.folder"; //$NON-NLS-1$
+//	/**
+//	 * The system properties hold the name of the application accessible via this key (it's set by {@link #setAppNameSystemProperty()}).
+//	 * Use <code>System.getProperty(APPLICATION_SYSTEM_PROPERTY_NAME)</code> to get the application name.
+//	 */
+//	public static final String APPLICATION_SYSTEM_PROPERTY_NAME = "nightlabs.base.application.name"; //$NON-NLS-1$
+//	/**
+//	 * This is used to choose the application folder when the application starts.
+//	 * After start the system property with this name will point to the applications root folder.
+//	 * <p>
+//	 * To initialize the application folder the system property can be set before the application 
+//	 * starts. It might contain references to system environment variables in the following way:
+//	 * $ENV_NAME$, where ENV_NAME is the name of the environment variable.
+//	 */
+//	public static final String APPLICATION_FOLDER_SYSTEM_PROPERTY_NAME = "nightlabs.base.application.folder"; //$NON-NLS-1$
 
 	protected static AbstractApplication sharedInstance;
 
@@ -109,18 +107,18 @@ implements IApplication
 	public AbstractApplication() 
 	{
 		super();
-		applicationName = initApplicationName();
+//		applicationName = initApplicationName();
 		sharedInstance = this;
 	}
 
-	private static String applicationName = "AbstractApplication"; //$NON-NLS-1$
-	/**
-	 * 
-	 * @return the application name set by {@link #initApplicationName()}
-	 */
-	public static String getApplicationName() {
-		return applicationName;
-	}
+//	private static String applicationName = "AbstractApplication"; //$NON-NLS-1$
+//	/**
+//	 * 
+//	 * @return the application name set by {@link #initApplicationName()}
+//	 */
+//	public static String getApplicationName() {
+//		return applicationName;
+//	}
 
 	private static String rootDir = ""; //$NON-NLS-1$
 
@@ -134,38 +132,48 @@ implements IApplication
 	 */
 	public static String getRootDir() {
 		if (rootDir.equals("")) { //$NON-NLS-1$
-			File rootFile = null; 
-			// check system property org.nightlabs.appfolder
-			String initialFolderName = System.getProperty(APPLICATION_FOLDER_SYSTEM_PROPERTY_NAME);
-			if (initialFolderName == null) {
-				// sys property not set, we use the users home dir
-				rootFile = new File(System.getProperty("user.home"), "."+getApplicationName()); //$NON-NLS-1$ //$NON-NLS-2$
+			String osgiInstanceArea = System.getProperty("osgi.instance.area");
+			if (osgiInstanceArea == null) {
+				System.err.println("The system property \"osgi.instance.area\" is not set!!! You might want to set \"osgi.instance.area.default\" in your config.ini! And you should check your OSGI environment, because even without the default, a concrete value should be set!");
+				throw new IllegalStateException("The system property \"osgi.instance.area\" is not set!!! You might want to set \"osgi.instance.area.default\" in your config.ini! And you should check your OSGI environment, because even without the default, a concrete value should be set!");
 			}
-			else {
-				// the sys property is set, parse it
-				String resolvedFolderName = initialFolderName;
-				Pattern envRefs = Pattern.compile("\\$((.*?))\\$"); //$NON-NLS-1$
-				Matcher matcher = envRefs.matcher(initialFolderName);
-				while (matcher.find()) {
-					String envValue = System.getenv(matcher.group(1));
-					if (envValue == null) {
-						System.err.println("Reference to undefined system environment variable "+matcher.group(1)+" in system property "+APPLICATION_FOLDER_SYSTEM_PROPERTY_NAME); //$NON-NLS-1$ //$NON-NLS-2$
-						envValue = ""; //$NON-NLS-1$
-					}
-					resolvedFolderName = resolvedFolderName.replace(matcher.group(0), envValue);
-				}
-				rootFile = new File(resolvedFolderName, "."+getApplicationName()); //$NON-NLS-1$
-			}
-			if (rootFile.exists() && !rootFile.isDirectory()) {
-				System.err.println("[PANIC] The application's root directory exists, but is NOT a directory: "+rootFile); //$NON-NLS-1$
-				System.err.println("[PANIC] The application will probably not run correctly!!"); //$NON-NLS-1$
-			}
-			if (!rootFile.exists() && !rootFile.mkdirs()) {
-				System.err.println("[PANIC] Could not create the application's root directory: "+rootFile); //$NON-NLS-1$
-				System.err.println("[PANIC] The application will probably not run correctly!!"); //$NON-NLS-1$
-			}
-			rootDir = rootFile.getAbsolutePath();
-			setAppFolderSystemProperty(rootDir);
+
+			File f = new File(osgiInstanceArea);
+			f = new File(f, "data");
+			rootDir = f.getAbsolutePath();
+
+//			File rootFile = null; 
+//			// check system property org.nightlabs.appfolder
+//			String initialFolderName = System.getProperty(APPLICATION_FOLDER_SYSTEM_PROPERTY_NAME);
+//			if (initialFolderName == null) {
+//				// sys property not set, we use the users home dir
+//				rootFile = new File(System.getProperty("user.home"), "."+getApplicationName()); //$NON-NLS-1$ //$NON-NLS-2$
+//			}
+//			else {
+//				// the sys property is set, parse it
+//				String resolvedFolderName = initialFolderName;
+//				Pattern envRefs = Pattern.compile("\\$((.*?))\\$"); //$NON-NLS-1$
+//				Matcher matcher = envRefs.matcher(initialFolderName);
+//				while (matcher.find()) {
+//					String envValue = System.getenv(matcher.group(1));
+//					if (envValue == null) {
+//						System.err.println("Reference to undefined system environment variable "+matcher.group(1)+" in system property "+APPLICATION_FOLDER_SYSTEM_PROPERTY_NAME); //$NON-NLS-1$ //$NON-NLS-2$
+//						envValue = ""; //$NON-NLS-1$
+//					}
+//					resolvedFolderName = resolvedFolderName.replace(matcher.group(0), envValue);
+//				}
+//				rootFile = new File(resolvedFolderName, "."+getApplicationName()); //$NON-NLS-1$
+//			}
+//			if (rootFile.exists() && !rootFile.isDirectory()) {
+//				System.err.println("[PANIC] The application's root directory exists, but is NOT a directory: "+rootFile); //$NON-NLS-1$
+//				System.err.println("[PANIC] The application will probably not run correctly!!"); //$NON-NLS-1$
+//			}
+//			if (!rootFile.exists() && !rootFile.mkdirs()) {
+//				System.err.println("[PANIC] Could not create the application's root directory: "+rootFile); //$NON-NLS-1$
+//				System.err.println("[PANIC] The application will probably not run correctly!!"); //$NON-NLS-1$
+//			}
+//			rootDir = rootFile.getAbsolutePath();
+//			setAppFolderSystemProperty(rootDir);
 		}
 		return rootDir;
 	}
@@ -219,44 +227,45 @@ implements IApplication
 			IOUtil.copyResource(AbstractApplication.class ,LOG4J_CONFIG_FILE, logConfFileName);		        
 		}
 		getLogDir();
-		setAppNameSystemProperty();
+//		setAppNameSystemProperty();
 		PropertyConfigurator.configure(logConfFileName);
-		logger.info(getApplicationName()+" started."); //$NON-NLS-1$
+		logger.info("Logging for \"" + System.getProperty("eclipse.product") + "\" started."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+//		logger.info(getApplicationName()+" started."); //$NON-NLS-1$
 	}	
 
-	/**
-	 * sets the System Property for the ApplicationName so that the
-	 * log4j.properties can access this systemProperty
-	 *
-	 */
-	protected static void setAppNameSystemProperty() 
-	{
-		try {
-			System.setProperty(APPLICATION_SYSTEM_PROPERTY_NAME, getApplicationName());    	
-		} catch (SecurityException se) {
-			System.out.println("System Property "+APPLICATION_SYSTEM_PROPERTY_NAME+" could not be set, to "+getApplicationName()+" because:"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			System.out.println("You dont have the permission to set a System Property"); //$NON-NLS-1$
-		} catch (NullPointerException npe) {
-			System.out.println("System Property "+APPLICATION_SYSTEM_PROPERTY_NAME+" could not be set, to "+getApplicationName()+" because:");    	 //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			System.out.println("applicationName == null"); //$NON-NLS-1$
-		}
-	}
+//	/**
+//	 * sets the System Property for the ApplicationName so that the
+//	 * log4j.properties can access this systemProperty
+//	 *
+//	 */
+//	protected static void setAppNameSystemProperty() 
+//	{
+//		try {
+//			System.setProperty(APPLICATION_SYSTEM_PROPERTY_NAME, getApplicationName());    	
+//		} catch (SecurityException se) {
+//			System.out.println("System Property "+APPLICATION_SYSTEM_PROPERTY_NAME+" could not be set, to "+getApplicationName()+" because:"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+//			System.out.println("You dont have the permission to set a System Property"); //$NON-NLS-1$
+//		} catch (NullPointerException npe) {
+//			System.out.println("System Property "+APPLICATION_SYSTEM_PROPERTY_NAME+" could not be set, to "+getApplicationName()+" because:");    	 //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+//			System.out.println("applicationName == null"); //$NON-NLS-1$
+//		}
+//	}
 
-	/**
-	 * Sets the system property for the applications root dir - the application folder.
-	 */
-	protected static void setAppFolderSystemProperty(String appFolder) 
-	{
-		try {
-			System.setProperty(APPLICATION_FOLDER_SYSTEM_PROPERTY_NAME, appFolder);    	
-		} catch (SecurityException se) {
-			System.out.println("System Property "+APPLICATION_FOLDER_SYSTEM_PROPERTY_NAME+" could not be set, to "+appFolder+" because:"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			System.out.println("You dont have the permission to set a System Property"); //$NON-NLS-1$
-		} catch (NullPointerException npe) {
-			System.out.println("System Property "+APPLICATION_SYSTEM_PROPERTY_NAME+" could not be set, to "+appFolder+" because of a NullPointerException"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			npe.printStackTrace();
-		}
-	}
+//	/**
+//	 * Sets the system property for the applications root dir - the application folder.
+//	 */
+//	protected static void setAppFolderSystemProperty(String appFolder) 
+//	{
+//		try {
+//			System.setProperty(APPLICATION_FOLDER_SYSTEM_PROPERTY_NAME, appFolder);    	
+//		} catch (SecurityException se) {
+//			System.out.println("System Property "+APPLICATION_FOLDER_SYSTEM_PROPERTY_NAME+" could not be set, to "+appFolder+" because:"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+//			System.out.println("You dont have the permission to set a System Property"); //$NON-NLS-1$
+//		} catch (NullPointerException npe) {
+//			System.out.println("System Property "+APPLICATION_SYSTEM_PROPERTY_NAME+" could not be set, to "+appFolder+" because of a NullPointerException"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+//			npe.printStackTrace();
+//		}
+//	}
 	
 	/**
 	 * Initializes the Exception Handling by setting the DefaultUncaughtExceptionHandler
@@ -374,14 +383,14 @@ implements IApplication
 		// initialize the Config
 		Config.createSharedInstance(new File(AbstractApplication.getConfigDir(), "config.xml"), true);		 //$NON-NLS-1$
 	}	
-	
-	/**
-	 * Should return the application name for this application.
-	 * This will be used to choose the application folder.
-	 *  
-	 * @return the name of the Application
-	 */
-	protected abstract String initApplicationName();
+
+//	/**
+//	 * Should return the application name for this application.
+//	 * This will be used to choose the application folder.
+//	 *  
+//	 * @return the name of the Application
+//	 */
+//	protected abstract String initApplicationName();
 	
 	/**
 	 * Is called before the Workbench is created, subclasses may override and

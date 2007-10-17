@@ -55,12 +55,12 @@ extends WorkbenchWindowAdvisor
 	/**
 	 * @param configurer
 	 */
-	public DefaultWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer, String applicationTitle) 
+	public DefaultWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) // , String applicationTitle) 
 	{
 		super(configurer);
-		this.applicationName = applicationTitle;
+//		this.applicationName = applicationTitle;
 	}
-	protected String applicationName = "Application"; //$NON-NLS-1$
+//	protected String applicationName = "Application"; //$NON-NLS-1$
 
 	public ActionBarAdvisor createActionBarAdvisor(IActionBarConfigurer configurer) {
 		Collection<ActionBarItem> menuBarItems = new HashSet<ActionBarItem>();
@@ -80,7 +80,7 @@ extends WorkbenchWindowAdvisor
 	{
 		super.preWindowOpen();
 		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
-		configurer.setTitle(applicationName);
+//		configurer.setTitle(applicationName);
 		configurer.setInitialSize(getScreenSize());
 		configurer.setShowMenuBar(true);
 		configurer.setShowStatusLine(true);

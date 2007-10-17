@@ -144,7 +144,7 @@ extends WorkbenchAdvisor
 	 * @return the WorkbenchWindowAdvisor for this WorkbenchAdvisor
 	 */
 	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
-		return new DefaultWorkbenchWindowAdvisor(configurer, AbstractApplication.getApplicationName());
+		return new DefaultWorkbenchWindowAdvisor(configurer); // , AbstractApplication.getApplicationName());
 	}
 
 	@Override
