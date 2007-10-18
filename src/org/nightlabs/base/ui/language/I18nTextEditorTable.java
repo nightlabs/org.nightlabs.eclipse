@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.language.I18nTextEditor.EditMode;
+import org.nightlabs.base.ui.layout.WeightedTableLayout;
 import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.table.TableContentProvider;
 import org.nightlabs.i18n.I18nText;
@@ -110,7 +111,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 		tableLayout.addColumnData(new ColumnPixelData(24, false));
 		tableLayout.addColumnData(new ColumnWeightData(20));
 		tableLayout.addColumnData(new ColumnWeightData(80));
-		table.setLayout(tableLayout);
+		table.setLayout(new WeightedTableLayout(new int[] { -1, 15, 80 }, new int[] { 24, -1, -1 }));
 
 		// Assign the cell editors to the viewer
 		tableViewer.setCellEditors(new CellEditor[] { null, null, new TextCellEditor(table) });

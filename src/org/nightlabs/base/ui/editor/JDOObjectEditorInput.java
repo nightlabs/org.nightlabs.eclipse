@@ -53,6 +53,7 @@ public class JDOObjectEditorInput<ID extends ObjectID> implements IEditorInput
 	 */
 	public JDOObjectEditorInput(ID jdoObjectID)
 	{
+		assert jdoObjectID != null;		
 		this.jdoObjectID = jdoObjectID;
 	}
 	
