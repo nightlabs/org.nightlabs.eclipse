@@ -3,7 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="var" path="WORKSPACE/NightLabsConnection/dist/NightLabsConnection.jar" sourcepath="/WORKSPACE/NightLabsConnection/src"/>
-	<classpathentry kind="var" path="WORKSPACE/KeyReader/dist/KeyReader.jar" sourcepath="/WORKSPACE/KeyReader/src"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/NightLabsConnection"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/KeyReader"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
