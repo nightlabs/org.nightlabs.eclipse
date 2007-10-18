@@ -134,16 +134,20 @@ implements IApplication
 		if (rootDir.equals("")) { //$NON-NLS-1$
 			String osgiInstanceArea = System.getProperty("osgi.instance.area");
 			if (osgiInstanceArea == null) {
-				System.err.println("The system property \"osgi.instance.area\" is not set!!! You might want to set \"osgi.instance.area.default\" in your config.ini! And you should check your OSGI environment, because even without the default, a concrete value should be set!");
-				throw new IllegalStateException("The system property \"osgi.instance.area\" is not set!!! You might want to set \"osgi.instance.area.default\" in your config.ini! And you should check your OSGI environment, because even without the default, a concrete value should be set!");
+				osgiInstanceArea = System.getProperty("osgi.instance.area.default");
+				if (osgiInstanceArea == null) {
+					System.err.println("Neither the system property \"osgi.instance.area\" nor \"osgi.instance.area.default\" is set!!! You might want to set \"osgi.instance.area.default\" in your config.ini! And you should check your OSGI environment, because even without the default, a concrete value should be set!");
+					throw new IllegalStateException("Neither the system property \"osgi.instance.area\" nor \"osgi.instance.area.default\" is set!!! You might want to set \"osgi.instance.area.default\" in your config.ini! And you should check your OSGI environment, because even without the default, a concrete value should be set!");
+				}
 			}
 
-			String prefix = "file:/";
+			String prefix = "file:";
 			if (osgiInstanceArea.startsWith(prefix))
 				osgiInstanceArea = osgiInstanceArea.substring(prefix.length());
 
 			File f = new File(osgiInstanceArea).getAbsoluteFile();
 			f = new File(f, "data");
+			f.mkdirs();
 			rootDir = f.getAbsolutePath();
 
 //			File rootFile = null; 
@@ -223,16 +227,15 @@ implements IApplication
 	 */
 	protected void initializeLogging() 
 	throws IOException
-	{
-		String logConfFileName = getConfigDir() + File.separatorChar + LOG4J_CONFIG_FILE;		
-		File logProp = new File(logConfFileName);
+	{		
+		File logProp = new File(getConfigDir(), LOG4J_CONFIG_FILE);
 		if (!logProp.exists()){
 			// if not there copy
-			IOUtil.copyResource(AbstractApplication.class ,LOG4J_CONFIG_FILE, logConfFileName);		        
+			IOUtil.copyResource(AbstractApplication.class ,LOG4J_CONFIG_FILE, logProp);		        
 		}
 		getLogDir();
 //		setAppNameSystemProperty();
-		PropertyConfigurator.configure(logConfFileName);
+		PropertyConfigurator.configure(logProp.getAbsolutePath());
 		logger.info("Logging for \"" + System.getProperty("eclipse.product") + "\" started."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 //		logger.info(getApplicationName()+" started."); //$NON-NLS-1$
 	}	
