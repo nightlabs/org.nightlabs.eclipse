@@ -1,7 +1,8 @@
 <!--
-  Generic eclipse/rcp-plugin ant build file (version 2007-04-03)
+  Generic eclipse/rcp-plugin ant build file (version 2007-09-19)
   Author: marc [at] nightlabs [dot] de
   Author: marco [at] nightlabs [dot] de
+  Author: marius [at] nightlabs [dot] de
 
   Do NOT modify this file!!! It must be the same in all eclipse/rcp-plugins!
   Instead, you can create local ant build files:
