@@ -138,7 +138,11 @@ implements IApplication
 				throw new IllegalStateException("The system property \"osgi.instance.area\" is not set!!! You might want to set \"osgi.instance.area.default\" in your config.ini! And you should check your OSGI environment, because even without the default, a concrete value should be set!");
 			}
 
-			File f = new File(osgiInstanceArea);
+			String prefix = "file:/";
+			if (osgiInstanceArea.startsWith(prefix))
+				osgiInstanceArea = osgiInstanceArea.substring(prefix.length());
+
+			File f = new File(osgiInstanceArea).getAbsoluteFile();
 			f = new File(f, "data");
 			rootDir = f.getAbsolutePath();
 
