@@ -38,6 +38,8 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -236,7 +238,7 @@ extends ViewPart
 		getToolkit().paintBordersFor(parentComposite);		
 		if (!parentComposite.isDisposed()) 
 		{
-			parentComposite.setLayout(new GridLayout(2, false));
+			parentComposite.setLayout(new GridLayout(3, false));
 			parentComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			
 			// create Visible-Button
@@ -253,20 +255,19 @@ extends ViewPart
 			buttonVisible.setLayoutData(new GridData(GridData.BEGINNING));
 			buttonVisible.addSelectionListener(visibleListener);		
 			
-//			// create Editable-Button
-//			Button buttonEditble = getToolkit().createButton(parentComposite, EditorPlugin.getResourceString("layerView.buttonLocked.text"), buttonStyle);		
-//			buttonEditble.setSelection(!l.isEditable());		
-////			buttonEditble.setImage(LOCK_ICON);
-//			if (l.isEditable()) {
-//				buttonEditble.setImage(UNLOCK_ICON);				
-//				buttonEditble.setToolTipText(EditorPlugin.getResourceString("layerView.buttonLocked.tooltip.locked"));
-//			}
-//			else {				
-//				buttonEditble.setImage(LOCK_ICON);				
-//				buttonEditble.setToolTipText(EditorPlugin.getResourceString("layerView.buttonLocked.tooltip.unlocked"));				
-//			}					
-//			buttonEditble.setLayoutData(new GridData(GridData.CENTER));		
-//			buttonEditble.addSelectionListener(editableListener);		
+			// create Editable-Button
+			Button buttonEditble = getToolkit().createButton(parentComposite, "", buttonStyle);		//$NON-NLS-1$
+			buttonEditble.setSelection(!l.isEditable());		
+			if (l.isEditable()) {
+				buttonEditble.setImage(LOCK_ICON);				
+				buttonEditble.setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.views.LayerView.button.lock.tooltip")); //$NON-NLS-1$
+			}
+			else {				
+				buttonEditble.setImage(UNLOCK_ICON);				
+				buttonEditble.setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.views.LayerView.button.unlock.tooltip")); //$NON-NLS-1$				
+			}
+			buttonEditble.setLayoutData(new GridData(GridData.CENTER));		
+			buttonEditble.addSelectionListener(editableListener);		
 			
 			// create Name-Text		
 			Text text = getToolkit().createText(parentComposite, Messages.getString("org.nightlabs.editor2d.ui.views.LayerView.text.layerName.default")); //$NON-NLS-1$
@@ -276,10 +277,11 @@ extends ViewPart
 			text.setLayoutData(new GridData(GridData.FILL_BOTH));		  								
 			text.addSelectionListener(textListener);
 			text.addFocusListener(focusListener);
+			text.addModifyListener(modifyListener);
 			
 			// add newLayer to button2Layer
 			button2Layer.put(buttonVisible, l);
-//			button2Layer.put(buttonEditble, l);
+			button2Layer.put(buttonEditble, l);
 			button2Layer.put(text, l);
 
 			// set bgColor of currentLayer
@@ -373,8 +375,6 @@ extends ViewPart
 	{ 
 		public void widgetSelected(SelectionEvent e) 
 		{    
-			logger.debug("VISIBLE widgetSelected()"); //$NON-NLS-1$
-			
 			Button b = (Button) e.getSource();
 			if (button2Layer.containsKey(b)) {
 				Layer l = (Layer) button2Layer.get(b);
@@ -399,19 +399,17 @@ extends ViewPart
 	{ 
 		public void widgetSelected(SelectionEvent e) 
 		{    
-		  logger.debug("EDITABLE widgetSelected()"); //$NON-NLS-1$
-			
 			Button b = (Button) e.getSource();
 			if (button2Layer.containsKey(b)) {
 				Layer l = (Layer) button2Layer.get(b);
-				if (b.getSelection()) {
+				if (!b.getSelection()) {
 					l.setEditable(true);
 					b.setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.views.LayerView.button.lock.tooltip")); //$NON-NLS-1$
-					b.setImage(UNLOCK_ICON);					
+					b.setImage(LOCK_ICON);					
 				} else {
 					l.setEditable(false);
 					b.setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.views.LayerView.button.unlock.tooltip")); //$NON-NLS-1$
-					b.setImage(LOCK_ICON);
+					b.setImage(UNLOCK_ICON);
 				}
 				updateViewer();
 			}
@@ -421,6 +419,18 @@ extends ViewPart
 		}
 	};  
 		
+	private ModifyListener modifyListener = new ModifyListener(){
+		public void modifyText(ModifyEvent e) {
+	    if (e.getSource() instanceof Text) 
+      {
+        Text text = (Text) e.getSource();
+        String layerName = text.getText();
+        Layer l = (Layer) button2Layer.get(text);
+        l.setName(layerName);        
+      }		
+		}
+	};
+	
 	protected void updateViewer() 
 	{
 		editor.updateViewer();

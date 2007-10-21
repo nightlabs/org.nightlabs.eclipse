@@ -61,6 +61,9 @@ implements ILightweightLabelDecorator
 			if (dc.isTemplate()) {
 				decoration.addSuffix(" ["+Messages.getString("org.nightlabs.editor2d.ui.decorators.VisibleDecorator.template")+"]");				 //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
+			if (!dc.isEditable()) {
+				decoration.addSuffix(" ["+"Locked"+"]");
+			}			
 		}
 	}
 }

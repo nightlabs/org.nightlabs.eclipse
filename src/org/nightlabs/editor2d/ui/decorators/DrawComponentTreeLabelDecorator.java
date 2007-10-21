@@ -55,9 +55,18 @@ implements ILabelDecorator
 		if (element instanceof DrawComponentTreeEditPart) {
 			DrawComponentTreeEditPart dctep = (DrawComponentTreeEditPart) element;
 			DrawComponent dc = dctep.getDrawComponent();
+			StringBuffer sb = new StringBuffer();
+			sb.append(text);
 			if (!dc.isVisible()) {
-				return text + "["+Messages.getString("org.nightlabs.editor2d.ui.decorators.DrawComponentTreeLabelDecorator.textAddition.invisible")+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			}			
+				sb.append(" ["+Messages.getString("org.nightlabs.editor2d.ui.decorators.DrawComponentTreeLabelDecorator.textAddition.invisible")+"]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			}
+			if (dc.isTemplate()) {
+				sb.append(" ["+"Template"+"]");
+			}
+			if (!dc.isEditable()) {
+				sb.append( "["+"Locked"+"]");
+			}
+			return sb.toString();
 		}		
 		return null;
 	}

@@ -249,6 +249,16 @@ extends AbstractTreeEditPart
 			refreshVisuals();
 			return;
 		}
+		else if (propertyName.equals(DrawComponent.PROP_EDITABLE)) {
+			notifyLabelDecorator();
+			refreshVisuals();
+			return;
+		}
+		else if (propertyName.equals(DrawComponent.PROP_TEMPLATE)) {
+			notifyLabelDecorator();
+			refreshVisuals();
+			return;
+		}				
 	}  
 			
 	protected void notifyLabelDecorator() 

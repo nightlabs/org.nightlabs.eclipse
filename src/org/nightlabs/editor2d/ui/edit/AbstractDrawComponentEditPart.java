@@ -328,6 +328,11 @@ implements EditorRequestConstants
 		else if (propertyName.equals(DrawComponent.PROP_VISIBLE)) {
 			refreshVisuals();
 			return;
+		}
+		else if (propertyName.equals(DrawComponent.PROP_EDITABLE)) {
+			boolean editable = ((Boolean)evt.getNewValue());
+			setContains(editable);
+			return;
 		} 		
 	}
 	  
