@@ -505,10 +505,14 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	}
 
 	// should solve redraw problems when resizing the viewer
-	private ControlListener resizeListener = new ControlAdapter(){		
+	private ControlListener resizeListener = new ControlAdapter(){
 		public void controlResized(ControlEvent e) {
-			updateViewer();
-			logger.debug("Control resized!"); //$NON-NLS-1$
+			Display.getDefault().asyncExec(new Runnable(){
+				public void run() {
+					updateViewer();
+					logger.debug("Control resized!"); //$NON-NLS-1$					
+				}
+			});
 		}		
 	};
 			
