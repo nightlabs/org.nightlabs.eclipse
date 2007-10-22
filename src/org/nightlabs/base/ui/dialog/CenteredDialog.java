@@ -158,7 +158,7 @@ extends Dialog
 	 * </pre>
 	 * </p>
 	 * <p>
-	 * Please do not call this method outside of your implementation oif {@link #configureShell(Shell)}!
+	 * Please do not call this method outside of your implementation of {@link #configureShell(Shell)}!
 	 * Instead (after <code>configureShell(Shell)</code> was called) you should call {@link #setToCenteredLocationPreferredSize(int, int)}.
 	 * </p>
 	 * 

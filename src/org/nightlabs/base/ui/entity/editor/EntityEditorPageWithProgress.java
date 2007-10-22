@@ -413,6 +413,9 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 	public void switchToContent() {
 		Runnable runnable = new Runnable() {
 			public void run() {
+				if (wrapper == null || wrapper.isDisposed())
+					return;
+				
 				stackLayout.topControl = pageWrapper;
 				wrapper.layout(true, true);
 //				pageWrapper.reflow(true);

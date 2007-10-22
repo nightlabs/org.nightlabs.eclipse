@@ -220,7 +220,7 @@ public class EntityEditor extends CommitableFormEditor
 			};
 		}
 //		saveJob.setUser(true);
-		saveJob.schedule();		
+		saveJob.schedule();
 	}
 	
 	/**
