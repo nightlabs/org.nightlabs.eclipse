@@ -9,6 +9,7 @@ import org.nightlabs.connection.ui.AbstractConnectionCfEdit;
 public class ParallelConnectionCfEdit
 extends AbstractConnectionCfEdit
 {
+	@Override
 	protected Composite _createConnectionCfEditComposite(Composite parent)
 	{
 		XComposite page = new XComposite(parent, SWT.NONE);

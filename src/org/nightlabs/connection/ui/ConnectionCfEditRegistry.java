@@ -27,6 +27,7 @@ public class ConnectionCfEditRegistry
 		return _sharedInstance;
 	}
 
+	@Override
 	public String getExtensionPointID()
 	{
 		return "org.nightlabs.connection.ui.connectionCfEditFactory"; //$NON-NLS-1$
@@ -34,6 +35,7 @@ public class ConnectionCfEditRegistry
 
 	private Map<String, ConnectionCfEditFactory> connectionClassName2ConnectionCfEditFactory = new HashMap<String, ConnectionCfEditFactory>();
 
+	@Override
 	public void processElement(IExtension extension, IConfigurationElement element)
 	throws Exception
 	{

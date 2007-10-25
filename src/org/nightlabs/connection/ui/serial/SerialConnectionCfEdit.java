@@ -8,6 +8,7 @@ public class SerialConnectionCfEdit
 		extends AbstractConnectionCfEdit
 {
 
+	@Override
 	@Implement
 	protected Composite _createConnectionCfEditComposite(Composite parent)
 	{
