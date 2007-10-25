@@ -66,6 +66,7 @@ extends AbstractEditorSelectionAction
 	/**
 	 *@return true, if objects are selected, except the RootEditPart or LayerEditParts
 	 */
+	@Override
 	protected boolean calculateEnabled() {
 		return !getDefaultSelection(false).isEmpty();
 	}
@@ -74,6 +75,7 @@ extends AbstractEditorSelectionAction
 	 * executes a Command which changes the order, based on the newIndex and the 
 	 * DrawComponentContainer for all selected Objects
 	 */
+	@Override
 	public void run() 
 	{
 		List<DrawComponent> dcs = getSelectionAsList(DrawComponent.class, true);

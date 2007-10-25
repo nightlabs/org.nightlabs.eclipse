@@ -64,7 +64,8 @@ extends Command
     setLabel(Messages.getString("org.nightlabs.editor2d.ui.command.shape.EditShapeCommand.label")); //$NON-NLS-1$
   }
     
-  public void execute() 
+  @Override
+	public void execute() 
   {        
     oldGeneralShape = (GeneralShape) shape.getGeneralShape().clone();    
     generalShape = new GeneralShape();
@@ -117,12 +118,14 @@ extends Command
     shape.setGeneralShape(generalShape);
   }
   
-  public void undo() 
+  @Override
+	public void undo() 
   {
     shape.setGeneralShape(oldGeneralShape); 
   }
   
-  public void redo() 
+  @Override
+	public void redo() 
   {    
     shape.setGeneralShape(generalShape);
   }

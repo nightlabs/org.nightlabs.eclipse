@@ -66,6 +66,7 @@ extends AbstractEditorAction
 	 * 
 	 * @see org.eclipse.gef.ui.actions.WorkbenchPartAction#calculateEnabled()
 	 */
+	@Override
 	protected boolean calculateEnabled() 
 	{
 		// Changed to Swing way of getting a printer list, 
@@ -79,7 +80,7 @@ extends AbstractEditorAction
 		PrinterInterface printer;
 		try {
 			printer = PrinterInterfaceManager.sharedInstance().getConfiguredPrinterInterface(
-					PrinterInterfaceManager.INTERFACE_FACTORY_AWT,
+					org.nightlabs.print.PrinterInterfaceManager.INTERFACE_FACTORY_AWT,
 					PrintUtil.PRINTER_USE_CASE_EDITOR_2D 
 				);
 		} catch (PrinterException e) {

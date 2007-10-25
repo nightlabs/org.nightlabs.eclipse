@@ -92,6 +92,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
@@ -279,6 +280,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	}    
 
 	private PaletteRoot paletteRoot = null;
+	@Override
 	public PaletteRoot getPaletteRoot() 
 	{
 		if (paletteRoot == null) {
@@ -341,6 +343,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		getPalettePreferences().setDockLocation(PositionConstants.WEST);
 	}
 	
+	@Override
 	protected DefaultEditDomain getEditDomain() 
 	{
 		 if (super.getEditDomain() == null) {
@@ -506,6 +509,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 
 	// should solve redraw problems when resizing the viewer
 	private ControlListener resizeListener = new ControlAdapter(){
+		@Override
 		public void controlResized(ControlEvent e) {
 			Display.getDefault().asyncExec(new Runnable(){
 				public void run() {
@@ -519,6 +523,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	/* (non-Javadoc)
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditor#commandStackChanged(java.util.EventObject)
 	 */    
+	@Override
 	public void commandStackChanged(EventObject event) 
 	{
 		if (isDirty()){
@@ -539,8 +544,10 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	/* (non-Javadoc)
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette#createPaletteViewerProvider()
 	 */
+	@Override
 	protected PaletteViewerProvider createPaletteViewerProvider() {
 		return new PaletteViewerProvider(getEditDomain()) {
+			@Override
 			protected void configurePaletteViewer(PaletteViewer viewer) {
 				super.configurePaletteViewer(viewer);
 //				// create a drag source listener for this palette viewer
@@ -582,6 +589,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		return super.getAdapter(type);
 	}
 
+	@Override
 	protected Control getGraphicalControl() {
 		return rulerComp;
 	}
@@ -614,7 +622,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 			logger.debug("inputName = "+inputName); //$NON-NLS-1$
 
 			if (file.exists() 
-					|| org.eclipse.jface.dialogs.MessageDialogWithToggle.openConfirm(
+					|| MessageDialog.openConfirm(
 							getSite().getShell(),
 							Messages.getString("org.nightlabs.editor2d.ui.AbstractEditor.errorDialog.title"), //$NON-NLS-1$
 							Messages.getString("org.nightlabs.editor2d.ui.AbstractEditor.errorDialog.message.part1") //$NON-NLS-1$
@@ -664,6 +672,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	/**
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette#getPalettePreferences()
 	 */
+	@Override
 	protected FlyoutPreferences getPalettePreferences() {
 		return getPaletteFactory().createPalettePreferences();
 	}
@@ -745,6 +754,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		}		
 	}
 		
+	@Override
 	protected void initializeActionRegistry() 
 	{
 		super.initializeActionRegistry();
@@ -1041,10 +1051,12 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		return (FigureCanvas)getGraphicalViewer().getControl();
 	}
 
+	@Override
 	public boolean isDirty() {
 		return isSaveOnCloseNeeded();
 	}
 
+	@Override
 	public boolean isSaveOnCloseNeeded() {
 		return getCommandStack().isDirty();
 	}
@@ -1088,6 +1100,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	/**
 	 * @see org.eclipse.ui.ISaveablePart#isSaveAsAllowed()
 	 */
+	@Override
 	public boolean isSaveAsAllowed() {
 		return true;
 	}
@@ -1221,7 +1234,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 							wizard.addDynamicWizardPage(hop.getEntryPage());
 							DynamicPathWizardDialog dialog = new DynamicPathWizardDialog(wizard);
 							int returnCode = dialog.open(); 
-							if (returnCode == DynamicPathWizardDialog.OK) {
+							if (returnCode == Window.OK) {
 								
 							}
 						}
@@ -1412,7 +1425,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	}
 
 	public EditPartViewer getEditPartViewer() {
-		return (EditPartViewer) getGraphicalViewer();
+		return getGraphicalViewer();
 	}
 
 	public void updateViewer() 

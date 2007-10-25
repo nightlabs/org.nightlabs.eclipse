@@ -51,6 +51,7 @@ extends CreateDrawComponentCommand
 	
 	private Editor2DFactory factory = null;
 
+	@Override
 	public void execute() 
 	{
 	  drawComponent = factory.createPageDrawComponent();	  
@@ -61,6 +62,7 @@ extends CreateDrawComponentCommand
     getRootDrawComponent().setCurrentPage(getPage());
 	}	
 	
+	@Override
 	public void redo() 
 	{
     super.redo();

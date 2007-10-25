@@ -186,6 +186,7 @@ public class MinimalBufferFreeformLayer
 	
 	/**
 	 */
+	@Override
 	public void paint(Graphics graphics) {
 		if (!(graphics instanceof J2DGraphics)) {
 			super.paint(graphics);

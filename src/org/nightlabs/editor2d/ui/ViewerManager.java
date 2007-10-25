@@ -41,6 +41,7 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartListener;
 import org.eclipse.gef.EditPartViewer;
+import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.RootEditPart;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
@@ -98,6 +99,7 @@ public class ViewerManager
   
   private EditPartListener rootListener = new EditPartListener.Stub()
   {	
+		@Override
 		public void removingChild(EditPart child, int index) 
 		{
 			excludeListRef.getExcludeList().remove(child);
@@ -105,6 +107,7 @@ public class ViewerManager
 				excludeListRef.getExcludeList().remove(it.next());
 			}						
 		}	
+		@Override
 		public void childAdded(EditPart child, int index) 
 		{
 			// exclude the ModelRoot (RootDrawComponent) and its Layers (Layer)
@@ -180,7 +183,8 @@ public class ViewerManager
     
   private MouseMotionListener mouseListener = new MouseMotionListener.Stub() 
   {
-    public void mouseMoved(org.eclipse.draw2d.MouseEvent me) 
+    @Override
+		public void mouseMoved(org.eclipse.draw2d.MouseEvent me) 
     {
     	relativePoint = new Point(me.x, me.y);
     	mousePoint = EditorUtil.toAbsoluteWithScrollOffset(root, me.x, me.y);    	      
@@ -217,7 +221,7 @@ public class ViewerManager
   {
     if (root instanceof ScalableFreeformRootEditPart) {
     	ScalableFreeformRootEditPart rootEditPart = (ScalableFreeformRootEditPart) root;
-    	IFigure feedbackLayer = rootEditPart.getLayer(ScalableFreeformRootEditPart.FEEDBACK_LAYER);
+    	IFigure feedbackLayer = rootEditPart.getLayer(LayerConstants.FEEDBACK_LAYER);
     	return feedbackLayer;
     }
     return null;

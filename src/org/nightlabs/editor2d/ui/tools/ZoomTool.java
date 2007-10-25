@@ -28,6 +28,7 @@
 package org.nightlabs.editor2d.ui.tools;
 
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
@@ -55,10 +56,11 @@ implements EditorRequestConstants
   
   public ZoomTool() 
   {
-    setDefaultCursor(SharedCursors.CROSS);
+    setDefaultCursor(Cursors.CROSS);
   }
   
-  protected String getCommandName() 
+  @Override
+	protected String getCommandName() 
   {
     return REQ_ZOOM_RECT;
   }
@@ -74,7 +76,8 @@ implements EditorRequestConstants
   /**
    * Erases feedback if necessary and puts the tool into the terminal state.
    */
-  public void deactivate() 
+  @Override
+	public void deactivate() 
   {
   	if (isInState(STATE_DRAG_IN_PROGRESS)) {
   		eraseZoomFeedback();
@@ -86,7 +89,8 @@ implements EditorRequestConstants
   /**
    * @see org.eclipse.gef.tools.AbstractTool#getDebugName()
    */
-  protected String getDebugName() 
+  @Override
+	protected String getDebugName() 
   {
   	return "Zoom Tool";//$NON-NLS-1$
   }  
@@ -132,7 +136,8 @@ implements EditorRequestConstants
   /**
    * @see org.eclipse.gef.tools.AbstractTool#handleButtonDown(int)
    */
-  protected boolean handleButtonDown(int button) 
+  @Override
+	protected boolean handleButtonDown(int button) 
   {
   	if (!isGraphicalViewer())
   		return true;
@@ -154,7 +159,8 @@ implements EditorRequestConstants
   /**
    * @see org.eclipse.gef.tools.AbstractTool#handleButtonUp(int)
    */
-  protected boolean handleButtonUp(int button) 
+  @Override
+	protected boolean handleButtonUp(int button) 
   {
   	if (stateTransition(STATE_DRAG_IN_PROGRESS, STATE_TERMINAL)) {
   		eraseZoomFeedback();
@@ -167,7 +173,8 @@ implements EditorRequestConstants
   /**
    * @see org.eclipse.gef.tools.AbstractTool#handleDragInProgress()
    */
-  protected boolean handleDragInProgress() 
+  @Override
+	protected boolean handleDragInProgress() 
   {
   	if (isInState(STATE_DRAG | STATE_DRAG_IN_PROGRESS)) {
   		showZoomFeedback();
@@ -178,7 +185,8 @@ implements EditorRequestConstants
   /**
    * @see org.eclipse.gef.tools.AbstractTool#handleFocusLost()
    */
-  protected boolean handleFocusLost() 
+  @Override
+	protected boolean handleFocusLost() 
   {
   	if (isInState(STATE_DRAG | STATE_DRAG_IN_PROGRESS)) {
   		handleFinished();
@@ -191,7 +199,8 @@ implements EditorRequestConstants
    * This method is called when mouse or keyboard input is invalid and erases the feedback.
    * @return <code>true</code>
    */
-  protected boolean handleInvalidInput() 
+  @Override
+	protected boolean handleInvalidInput() 
   {
   	eraseZoomFeedback();
   	return true;
@@ -200,15 +209,16 @@ implements EditorRequestConstants
   /**
    * @see org.eclipse.gef.Tool#setViewer(org.eclipse.gef.EditPartViewer)
    */
-  public void setViewer(EditPartViewer viewer) 
+  @Override
+	public void setViewer(EditPartViewer viewer) 
   {
   	if (viewer == getCurrentViewer())
   		return;
   	super.setViewer(viewer);
   	if (viewer instanceof GraphicalViewer)
-  		setDefaultCursor(SharedCursors.CROSS);
+  		setDefaultCursor(Cursors.CROSS);
   	else
-  		setDefaultCursor(SharedCursors.NO);
+  		setDefaultCursor(Cursors.NO);
   }
     
   protected void performZoom() 
@@ -234,7 +244,8 @@ extends Figure
   /**
    * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
    */
-  protected void paintFigure(Graphics graphics) 
+  @Override
+	protected void paintFigure(Graphics graphics) 
   {	
   	Rectangle bounds = getBounds().getCopy();
   	graphics.translate(getLocation());

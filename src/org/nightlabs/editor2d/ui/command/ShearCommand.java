@@ -75,7 +75,8 @@ extends AbstractTransformCommand
 		return at;
   }
   
-  public void execute() 
+  @Override
+	public void execute() 
   {
     setAffineTransform(calcAffineTransform());
     super.execute();

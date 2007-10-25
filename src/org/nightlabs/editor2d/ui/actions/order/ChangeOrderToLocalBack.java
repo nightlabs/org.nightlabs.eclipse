@@ -55,6 +55,7 @@ extends AbstractChangeOrderSelectionAction
 		super(editor);
 	}
 
+	@Override
 	public void init() 
 	{
 		setText(Messages.getString("org.nightlabs.editor2d.ui.actions.order.ChangeOrderToLocalBack.text")); //$NON-NLS-1$
@@ -69,6 +70,7 @@ extends AbstractChangeOrderSelectionAction
 	 * @see AbstractChangeOrderSelectionAction#getPrimarySelectedDrawComponent()
 	 *     
 	 */
+	@Override
 	public int getNewIndex() 
 	{
 		return 0;
@@ -78,6 +80,7 @@ extends AbstractChangeOrderSelectionAction
 	 * @return the parent of the primary selected DrawComponent
 	 * @see AbstractChangeOrderSelectionAction#getPrimarySelectedDrawComponent()
 	 */
+	@Override
 	public DrawComponentContainer getContainer() 
 	{
 		return primarySelected.getParent();		 		

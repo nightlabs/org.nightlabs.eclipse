@@ -37,6 +37,7 @@ import org.eclipse.draw2d.J2DGraphics;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.editparts.ZoomListener;
+import org.nightlabs.base.ui.util.ColorUtil;
 import org.nightlabs.editor2d.ShapeDrawComponent;
 import org.nightlabs.editor2d.ShapeDrawComponent.LineStyle;
 import org.nightlabs.editor2d.j2d.GeneralShape;
@@ -54,7 +55,8 @@ implements ShapeFigure
   protected GeneralShape gp;
   protected java.awt.Rectangle gpBounds;
         
-  public void setBounds(Rectangle newBounds) 
+  @Override
+	public void setBounds(Rectangle newBounds) 
   { 
     repaint();                
     super.setBounds(J2DUtil.toDraw2D(getGPBounds())); 
@@ -65,14 +67,15 @@ implements ShapeFigure
   }
   
   protected Graphics2D g2d;
-  protected void fillShape(Graphics graphics)
+  @Override
+	protected void fillShape(Graphics graphics)
   {
     if (graphics instanceof J2DGraphics) 
     {
       j2d = (J2DGraphics) graphics;
       g2d = j2d.createGraphics2D();
       g2d.setClip(null);
-      g2d.setPaint(J2DUtil.toAWTColor(getBackgroundColor()));
+      g2d.setPaint(ColorUtil.toAWTColor(getBackgroundColor()));
       g2d.fill(getGeneralShape());      
       g2d.dispose();      
     }
@@ -81,14 +84,15 @@ implements ShapeFigure
   /* (non-Javadoc)
    * @see org.eclipse.draw2d.Shape#outlineShape(org.eclipse.draw2d.Graphics)
    */
-  protected void outlineShape(Graphics graphics) 
+  @Override
+	protected void outlineShape(Graphics graphics) 
   {
     if (graphics instanceof J2DGraphics) 
     {
       j2d = (J2DGraphics) graphics;
       g2d = j2d.createGraphics2D();
       g2d.setClip(null);      
-      g2d.setPaint(J2DUtil.toAWTColor(getForegroundColor()));
+      g2d.setPaint(ColorUtil.toAWTColor(getForegroundColor()));
 //      g2d.setStroke(RenderUtil.getStroke(lineWidth, lineStyle));
       g2d.setStroke(ShapeDrawComponent.StrokeUtil.getStroke(lineWidth, convertLineStyle(lineStyle), getResolution()));      
       g2d.draw(getGeneralShape());      
@@ -171,7 +175,8 @@ implements ShapeFigure
   /**
    * @see IFigure#containsPoint(int, int)
    */
-  public boolean containsPoint(int x, int y) 
+  @Override
+	public boolean containsPoint(int x, int y) 
   {
     if (isFill())
       return getGeneralShape().contains(x, y);
@@ -219,7 +224,8 @@ implements ShapeFigure
    * @param b fill state
    * @since 2.0
    */
-  public void setFill(boolean b) {
+  @Override
+	public void setFill(boolean b) {
     fill = b;
     super.setFill(b);
   }   
@@ -227,6 +233,7 @@ implements ShapeFigure
    return fill; 
   }  
   
+	@Override
 	public Rectangle getBounds() 
 	{
 		if (getGeneralShape() != null) {

@@ -204,7 +204,8 @@ extends ViewPart
   /**
    * @see org.eclipse.ui.IWorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
    */
-  public void createPartControl(Composite parent) 
+  @Override
+	public void createPartControl(Composite parent) 
   {   	  	
   	init();
         
@@ -333,19 +334,21 @@ extends ViewPart
   /* (non-Javadoc)
    * @see org.eclipse.ui.IWorkbenchPart#setFocus()
    */
-  public void setFocus() 
+  @Override
+	public void setFocus() 
   {
   	getForm().setFocus();
   }
 
   private FocusAdapter focusListener = new FocusAdapter() 
   {
-    public void focusGained(FocusEvent e) 
+    @Override
+		public void focusGained(FocusEvent e) 
     {
 			Text t = (Text) e.getSource();
 			if (button2Layer.containsKey(t)) 
 			{
-				Layer currLayer = (Layer) button2Layer.get(t);
+				Layer currLayer = button2Layer.get(t);
 				if (!root.getCurrentLayer().equals(currLayer)) {
 					root.setCurrentLayer(currLayer);
 					logger.debug("Layer "+currLayer.getName()+" = CurrentLayer"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -359,13 +362,14 @@ extends ViewPart
   
   private SelectionListener textListener = new SelectionAdapter() 
 	{ 
+		@Override
 		public void widgetDefaultSelected(SelectionEvent e) 
 		{    
       if (e.getSource() instanceof Text) 
       {
         Text text = (Text) e.getSource();
         String layerName = text.getText();
-        Layer l = (Layer) button2Layer.get(text);
+        Layer l = button2Layer.get(text);
         l.setName(layerName);        
       }		  
 		}
@@ -373,11 +377,12 @@ extends ViewPart
    	
 	private SelectionListener visibleListener = new SelectionAdapter() 
 	{ 
+		@Override
 		public void widgetSelected(SelectionEvent e) 
 		{    
 			Button b = (Button) e.getSource();
 			if (button2Layer.containsKey(b)) {
-				Layer l = (Layer) button2Layer.get(b);
+				Layer l = button2Layer.get(b);
 				if (!b.getSelection()) {
 					l.setVisible(true);
 					b.setImage(EYE_ICON);
@@ -397,11 +402,12 @@ extends ViewPart
 
 	private SelectionListener editableListener = new SelectionAdapter() 
 	{ 
+		@Override
 		public void widgetSelected(SelectionEvent e) 
 		{    
 			Button b = (Button) e.getSource();
 			if (button2Layer.containsKey(b)) {
-				Layer l = (Layer) button2Layer.get(b);
+				Layer l = button2Layer.get(b);
 				if (!b.getSelection()) {
 					l.setEditable(true);
 					b.setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.views.LayerView.button.lock.tooltip")); //$NON-NLS-1$
@@ -425,7 +431,7 @@ extends ViewPart
       {
         Text text = (Text) e.getSource();
         String layerName = text.getText();
-        Layer l = (Layer) button2Layer.get(text);
+        Layer l = button2Layer.get(text);
         l.setName(layerName);        
       }		
 		}
@@ -440,6 +446,7 @@ extends ViewPart
 	
 	private SelectionListener newListener = new SelectionAdapter() 
 	{ 
+		@Override
 		public void widgetSelected(SelectionEvent e) 
 		{    
 		  logger.debug("NEW widgetSelected()"); //$NON-NLS-1$
@@ -451,6 +458,7 @@ extends ViewPart
 
 	private SelectionListener deleteListener = new SelectionAdapter() 
 	{ 
+		@Override
 		public void widgetSelected(SelectionEvent e) 
 		{    
 		  logger.debug("DELETE widgetSelected()"); //$NON-NLS-1$
@@ -469,6 +477,7 @@ extends ViewPart
 	
 	private SelectionListener upListener = new SelectionAdapter() 
 	{ 
+		@Override
 		public void widgetSelected(SelectionEvent e) 
 		{    
 		  logger.debug("UP widgetSelected()"); //$NON-NLS-1$
@@ -487,6 +496,7 @@ extends ViewPart
 	
 	private SelectionListener downListener = new SelectionAdapter() 
 	{ 
+		@Override
 		public void widgetSelected(SelectionEvent e) 
 		{    
 		  logger.debug("DOWN widgetSelected()");  //$NON-NLS-1$
@@ -553,7 +563,7 @@ extends ViewPart
 			button2Layer.clear();			
 			if (root != null) {
 				for (int i = root.getCurrentPage().getDrawComponents().size()-1; i >= 0; --i) {
-					DrawComponent dc  = (DrawComponent) root.getCurrentPage().getDrawComponents().get(i);
+					DrawComponent dc  = root.getCurrentPage().getDrawComponents().get(i);
 					if (dc instanceof Layer) {
 					  Layer l = (Layer) dc; 
 					  createLayerEntry(layerComposite, l); 

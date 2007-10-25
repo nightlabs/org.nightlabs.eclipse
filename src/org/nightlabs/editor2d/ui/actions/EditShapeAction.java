@@ -51,7 +51,8 @@ implements EditorRequestConstants
   /**
    * @see org.eclipse.gef.ui.actions.WorkbenchPartAction#init()
    */
-  protected void init() 
+  @Override
+	protected void init() 
   {
   	super.init();
   	setText(Messages.getString("org.nightlabs.editor2d.ui.actions.EditShapeAction.text")); //$NON-NLS-1$
@@ -64,7 +65,8 @@ implements EditorRequestConstants
   /**
    * @see org.eclipse.jface.action.IAction#run()
    */
-  public void run() 
+  @Override
+	public void run() 
   {
   	if (getSelectedObjects().size() == 1 && (getSelectedObjects().get(0) instanceof ShapeDrawComponentEditPart)) 
   	{    		
@@ -78,7 +80,8 @@ implements EditorRequestConstants
    * a request of type: {@link EditorRequestConstants#REQ_EDIT_SHAPE}.
    * @return <code>true</code> if enabled
    */
-  protected boolean calculateEnabled() 
+  @Override
+	protected boolean calculateEnabled() 
   {
     if (EditorStateManager.getCurrentState() != EditorStateManager.STATE_EDIT_SHAPE) 
     {

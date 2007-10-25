@@ -61,6 +61,7 @@ extends DrawComponentContainerTreeEditPart
 		return GROUP_ICON;
 	}
 		
+	@Override
 	public IPropertySource getPropertySource()
   {
     if (propertySource == null) {

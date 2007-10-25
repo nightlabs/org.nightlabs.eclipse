@@ -56,7 +56,8 @@ extends Command
     this.rotationCenter = request.getRotationCenter();
   }
 
-  public void execute() 
+  @Override
+	public void execute() 
   {
     dc2Rotation = new HashMap<DrawComponent, Double>(request.getEditParts().size());
     dc2RotationCenter = new HashMap<DrawComponent, Point>(request.getEditParts().size());
@@ -84,7 +85,8 @@ extends Command
     }
   }   
   
-  public void redo() 
+  @Override
+	public void redo() 
   {
     for (Iterator<DrawComponent> it = dc2Rotation.keySet().iterator(); it.hasNext(); ) 
     {
@@ -103,7 +105,8 @@ extends Command
     }    
   }
 
-  public void undo() 
+  @Override
+	public void undo() 
   {
     for (Iterator<DrawComponent> it = dc2Rotation.keySet().iterator(); it.hasNext(); ) 
     {

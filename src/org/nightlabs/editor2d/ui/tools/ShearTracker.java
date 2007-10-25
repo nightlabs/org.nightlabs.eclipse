@@ -29,6 +29,7 @@ package org.nightlabs.editor2d.ui.tools;
 
 import java.util.List;
 
+import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
@@ -56,7 +57,8 @@ extends AbstractDragTracker
   /* (non-Javadoc)
    * @see org.eclipse.gef.tools.SimpleDragTracker#createSourceRequest()
    */
-  protected Request createSourceRequest() 
+  @Override
+	protected Request createSourceRequest() 
   {
     EditorShearRequest request = new EditorShearRequest();
     request.setType(REQ_SHEAR);
@@ -74,7 +76,8 @@ extends AbstractDragTracker
   /* (non-Javadoc)
    * @see org.eclipse.gef.tools.SimpleDragTracker#updateSourceRequest()
    */
-  protected void updateSourceRequest() 
+  @Override
+	protected void updateSourceRequest() 
   {
 //    Point loq = getLocation().getCopy();
 //    loq.translate(getStartLocation());
@@ -89,14 +92,16 @@ extends AbstractDragTracker
   /* (non-Javadoc)
    * @see org.eclipse.gef.tools.AbstractTool#getCommandName()
    */
-  protected String getCommandName() {
+  @Override
+	protected String getCommandName() {
     return REQ_SHEAR;
   }
 
   /**
    * @see org.eclipse.gef.tools.AbstractTool#getDefaultCursor()
    */
-  protected Cursor getDefaultCursor() 
+  @Override
+	protected Cursor getDefaultCursor() 
   {
     switch(direction)
     {
@@ -107,6 +112,6 @@ extends AbstractDragTracker
     	case(PositionConstants.EAST):
     	  return EditorCursors.SHEAR_VERTICAL;    		
     }
-    return EditorCursors.NO;
+    return Cursors.NO;
   }    
 }

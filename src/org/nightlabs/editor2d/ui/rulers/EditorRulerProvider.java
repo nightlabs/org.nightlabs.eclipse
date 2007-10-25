@@ -93,23 +93,28 @@ extends RulerProvider
   	}
   }
 
-  public List getAttachedModelObjects(Object guide) {
+  @Override
+	public List getAttachedModelObjects(Object guide) {
   	return new ArrayList(((EditorGuide)guide).getParts());
   }
 
-  public Command getCreateGuideCommand(int position) {
+  @Override
+	public Command getCreateGuideCommand(int position) {
   	return new CreateGuideCommand(ruler, position);
   }
 
-  public Command getDeleteGuideCommand(Object guide) {
+  @Override
+	public Command getDeleteGuideCommand(Object guide) {
   	return new DeleteGuideCommand((EditorGuide)guide, ruler);
   }
 
-  public Command getMoveGuideCommand(Object guide, int pDelta) {
+  @Override
+	public Command getMoveGuideCommand(Object guide, int pDelta) {
   	return new MoveGuideCommand((EditorGuide)guide, pDelta);
   }
 
-  public int[] getGuidePositions() {
+  @Override
+	public int[] getGuidePositions() {
   	List guides = getGuides();
   	int[] result = new int[guides.size()];
   	for (int i = 0; i < guides.size(); i++) {
@@ -118,23 +123,28 @@ extends RulerProvider
   	return result;
   }
 
-  public Object getRuler() {
+  @Override
+	public Object getRuler() {
   	return ruler;
   }
 
-  public int getUnit() {
+  @Override
+	public int getUnit() {
   	return ruler.getUnit();
   }
 
-  public void setUnit(int newUnit) {
+  @Override
+	public void setUnit(int newUnit) {
   	ruler.setUnit(newUnit);
   }
 
-  public int getGuidePosition(Object guide) {
+  @Override
+	public int getGuidePosition(Object guide) {
   	return ((EditorGuide)guide).getPosition();
   }
 
-  public List getGuides() {
+  @Override
+	public List getGuides() {
   	return ruler.getGuides();
   }
   

@@ -42,7 +42,8 @@ extends EditorTemplateCreationEntry
     super(label, shortDesc, template, factory, iconSmall, iconLarge);
   }
 
-  public Tool createTool() 
+  @Override
+	public Tool createTool() 
   {
     return new LineTool(getModelCreationFactory());
   }

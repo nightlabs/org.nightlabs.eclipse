@@ -62,7 +62,8 @@ extends PropertyDescriptor
    * The editor is configured with the current validator if there is one.
    * </p>
    */
-  public CellEditor createPropertyEditor(Composite parent) 
+  @Override
+	public CellEditor createPropertyEditor(Composite parent) 
   {
   	CellEditor editor = null;  	
   	if (dc.getConstrainedRotationValues() == null)

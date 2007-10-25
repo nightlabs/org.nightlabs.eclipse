@@ -56,7 +56,8 @@ extends ZoomAction
   /**
    * @see org.eclipse.jface.action.IAction#run()
    */
-  public void run() {
+  @Override
+	public void run() {
   	zoomManager.setZoomAsText(ZoomManager.FIT_ALL);
   }
 

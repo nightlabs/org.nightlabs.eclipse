@@ -266,6 +266,7 @@ extends XComposite
 		
 	private ExpansionAdapter expansionListener = new ExpansionAdapter() 
 	{
+		@Override
 		public void expansionStateChanged(ExpansionEvent e) 
 		{
 			// TODO: dont layout detailParent but change size of composite			

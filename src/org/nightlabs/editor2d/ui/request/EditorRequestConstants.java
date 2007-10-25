@@ -45,22 +45,22 @@ extends RequestConstants
   /**
    * Indicates the Editing of a Shape. 
    */  
-  String REQ_EDIT_SHAPE = "edit Shape";//$NON-NLS-2$ //$NON-NLS-1$
+  String REQ_EDIT_SHAPE = "edit Shape";//$NON-NLS-1$
 
   /**
    * Indicates the Zooming of the View (e.g. with a ZoomTool) 
    */    
-  String REQ_ZOOM_RECT = "zoom Rectangle";//$NON-NLS-3$ //$NON-NLS-1$
+  String REQ_ZOOM_RECT = "zoom Rectangle";//$NON-NLS-1$
   
   /**
    * Indicates the Rotation of a DrawComponent
    */
-  String REQ_ROTATE = "rotate";//$NON-NLS-4$ //$NON-NLS-1$
+  String REQ_ROTATE = "rotate";//$NON-NLS-1$
   
   /**
    * Indicates the Editing of the Rotation Center
    */  
-  String REQ_EDIT_ROTATE_CENTER = "edit Rotation Center";//$NON-NLS-5$ //$NON-NLS-1$
+  String REQ_EDIT_ROTATE_CENTER = "edit Rotation Center";//$NON-NLS-1$
   
   /**
    * Indicates the Shearing of a DrawComponent

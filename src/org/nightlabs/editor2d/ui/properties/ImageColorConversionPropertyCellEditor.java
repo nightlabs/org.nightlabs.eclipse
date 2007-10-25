@@ -27,6 +27,7 @@ package org.nightlabs.editor2d.ui.properties;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.DialogCellEditor;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.nightlabs.editor2d.ImageDrawComponent;
@@ -69,7 +70,7 @@ extends DialogCellEditor
 	{
 		imageDialog = new ConvertImageDialog(cellEditorWindow.getShell(), imageDC.getOriginalImage());
 		int returnCode = imageDialog.open();
-		if (returnCode == Dialog.OK) {
+		if (returnCode == Window.OK) {
 			return imageDialog.getConvertImageComposite().getRenderModeMetaDatas();
 		}
 		return null;

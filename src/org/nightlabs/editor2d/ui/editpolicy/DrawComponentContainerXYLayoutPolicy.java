@@ -126,12 +126,14 @@ implements EditorRequestConstants
   /**
    * @see org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy#createAddCommand(org.eclipse.gef.EditPart, java.lang.Object)
    */
-  protected Command createAddCommand(EditPart child, Object constraint) 
+  @Override
+	protected Command createAddCommand(EditPart child, Object constraint) 
   {
     return null;
   }
   
-  protected Command createChangeConstraintCommand(ChangeBoundsRequest request, 
+  @Override
+	protected Command createChangeConstraintCommand(ChangeBoundsRequest request, 
       EditPart child, Object constraint) 
   {
 		SetConstraintCommand cmd = new SetConstraintCommand();
@@ -197,11 +199,13 @@ implements EditorRequestConstants
 	/* (non-Javadoc)
 	 * @see org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy#createChangeConstraintCommand(org.eclipse.gef.EditPart, java.lang.Object)
 	 */
+	@Override
 	protected Command createChangeConstraintCommand(EditPart child, Object constraint) {	  
 		return null;
 	}	
 			
-  protected EditPolicy createChildEditPolicy(EditPart child) 
+  @Override
+	protected EditPolicy createChildEditPolicy(EditPart child) 
   {  	
 //  	return new DrawComponentResizeEditPolicy();
   	return new DrawComponentResizeEditPolicy(rotation, scale);  	
@@ -210,15 +214,18 @@ implements EditorRequestConstants
   /* (non-Javadoc)
    * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getDeleteDependantCommand(org.eclipse.gef.Request)
    */
-  protected Command getDeleteDependantCommand(Request request) {
+  @Override
+	protected Command getDeleteDependantCommand(Request request) {
     return null;
   }
 
-  protected Command getOrphanChildrenCommand(Request request) {
+  @Override
+	protected Command getOrphanChildrenCommand(Request request) {
   	return null;
   }
       
-  protected Command getAddCommand(Request generic) 
+  @Override
+	protected Command getAddCommand(Request generic) 
   {    
 //    LOGGER.debug("getAddCommand()");
     
@@ -310,6 +317,7 @@ implements EditorRequestConstants
 	 * @param request the EditorCreateShapeRequest
 	 * @return a draw2d constraint
 	 */
+	@Override
 	protected Object getConstraintFor(CreateRequest request) 
 	{
 		IFigure figure = getLayoutContainer();
@@ -366,7 +374,8 @@ implements EditorRequestConstants
     return r;
   }	
 	
-  public Command getCommand(Request request) 
+  @Override
+	public Command getCommand(Request request) 
   {  	
     if (request instanceof TextCreateRequest)
       return getCreateTextCommand((TextCreateRequest)request);
@@ -618,6 +627,7 @@ implements EditorRequestConstants
 		return chainGuideDetachmentCommand(request, part, cmd, false);
 	}
 	
+	@Override
 	protected Command getCreateCommand(CreateRequest request) 
 	{ 
 	  if (request instanceof EditorCreateShapeRequest) 
@@ -707,6 +717,7 @@ implements EditorRequestConstants
 	 * @param createRequest the Editor create request
 	 * @return custom feedback figure
 	 */
+	@Override
 	protected IFigure createSizeOnDropFeedback(CreateRequest createRequest) 
 	{	  
 	  logger.debug("createSizeOnDropFeedback!"); //$NON-NLS-1$
@@ -721,6 +732,7 @@ implements EditorRequestConstants
 	}	  
 			
 //************************* BEGIN Text Feedback ******************************
+	@Override
 	protected void eraseSizeOnDropFeedback(Request request) 
 	{
 		logger.debug("eraseSizeOnDropFeedback!"); //$NON-NLS-1$
@@ -731,6 +743,7 @@ implements EditorRequestConstants
 		}		
 	}	
 	
+	@Override
 	protected void showSizeOnDropFeedback(CreateRequest request) 
 	{
 	  if (request instanceof EditorCreateShapeRequest)

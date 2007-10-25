@@ -43,7 +43,8 @@ implements EditorRequestConstants
     super(part);
   }
 
-  protected void init() 
+  @Override
+	protected void init() 
   {
   	super.init();
   	setText(Messages.getString("org.nightlabs.editor2d.ui.actions.RotateAction.text")); //$NON-NLS-1$
@@ -53,7 +54,8 @@ implements EditorRequestConstants
 //  	setAccelerator(SWT.CTRL | 'R');
   } 
   
-  protected boolean calculateEnabled() 
+  @Override
+	protected boolean calculateEnabled() 
   {
   	if (EditorStateManager.getCurrentState() != EditorStateManager.STATE_ROTATE) {
   	  return true;
@@ -61,7 +63,8 @@ implements EditorRequestConstants
   	return false;
   }
     
-  public void run() 
+  @Override
+	public void run() 
   {
   	if (!getSelectedObjects().isEmpty()) {
   	  EditorStateManager.setRotateMode(getSelectedObjects());

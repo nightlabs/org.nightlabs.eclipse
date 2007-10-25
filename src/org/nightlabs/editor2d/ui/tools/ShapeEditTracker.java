@@ -54,14 +54,16 @@ extends AbstractDragTracker
     this.pathSegmentIndex = pathSegmentIndex;
   }
   
-  protected String getCommandName() {
+  @Override
+	protected String getCommandName() {
     return REQ_EDIT_SHAPE;
   }
   
   /**
    * @see org.eclipse.gef.tools.AbstractTool#deactivate()
    */
-  public void deactivate() 
+  @Override
+	public void deactivate() 
   {  	
   	super.deactivate();
 //  	sourceFigure = null;  	
@@ -70,7 +72,8 @@ extends AbstractDragTracker
   /**
    * @see org.eclipse.gef.tools.AbstractTool#getDebugName()
    */
-  protected String getDebugName() 
+  @Override
+	protected String getDebugName() 
   {
   	return "Edit Shape Handle Tracker";//$NON-NLS-1$
   }  
@@ -78,7 +81,8 @@ extends AbstractDragTracker
   /**
    * @see org.eclipse.gef.tools.SimpleDragTracker#createSourceRequest()
    */
-  protected Request createSourceRequest() 
+  @Override
+	protected Request createSourceRequest() 
   {    
   	EditorEditShapeRequest request = new EditorEditShapeRequest();
   	request.setType(REQ_EDIT_SHAPE);
@@ -95,7 +99,8 @@ extends AbstractDragTracker
   /**
    * @see org.eclipse.gef.tools.SimpleDragTracker#updateSourceRequest()
    */
-  protected void updateSourceRequest() 
+  @Override
+	protected void updateSourceRequest() 
   {
     EditorEditShapeRequest request = (EditorEditShapeRequest) getSourceRequest();
 	  request.setLocation(getLocation());    	  		

@@ -62,7 +62,8 @@ extends AbstractEditorSelectionAction
 		super(part);
 	}
 
-  protected void init() 
+  @Override
+	protected void init() 
   {
   	setText(Messages.getString("org.nightlabs.editor2d.ui.actions.copy.CloneAction.text")); //$NON-NLS-1$
   	setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.actions.copy.CloneAction.tooltip")); //$NON-NLS-1$
@@ -92,6 +93,7 @@ extends AbstractEditorSelectionAction
 	/**
 	*@return true, if objects are selected, except the RootEditPart or LayerEditParts
 	*/
+	@Override
 	protected boolean calculateEnabled() {
 		return !getDefaultSelection(false).isEmpty();
 	}
@@ -100,6 +102,7 @@ extends AbstractEditorSelectionAction
 	 * clones all selected DrawComponents and combines them to one Command
 	 *  
 	 */
+	@Override
 	public void run() 
 	{
 		Collection<DrawComponent> dcs = getSelection(DrawComponent.class, true);		

@@ -41,7 +41,8 @@ extends ComboBoxPropertyDescriptor
     super(id, displayName, FontUtil.getFontSizes());
   }
 
-  public CellEditor createPropertyEditor(Composite parent) 
+  @Override
+	public CellEditor createPropertyEditor(Composite parent) 
   {
     CellEditor editor = new FontSizeCellEditor(parent);
     if (getValidator() != null)

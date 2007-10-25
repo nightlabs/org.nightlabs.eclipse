@@ -29,6 +29,7 @@ package org.nightlabs.editor2d.ui.tools;
 
 import java.util.List;
 
+import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.PrecisionRectangle;
 import org.eclipse.gef.GraphicalEditPart;
@@ -60,10 +61,11 @@ implements EditorRequestConstants
   {
     super();
     this.owner = owner;
-    setDisabledCursor(EditorCursors.NO);
+    setDisabledCursor(Cursors.NO);
   }
 
-  public void activate() 
+  @Override
+	public void activate() 
   {
     super.activate();
     if (owner != null) 
@@ -80,7 +82,8 @@ implements EditorRequestConstants
     }
   }
   
-  protected List createOperationSet() 
+  @Override
+	protected List createOperationSet() 
   {
     List list = super.createOperationSet();
     ToolUtilities.filterEditPartsUnderstanding(list, getSourceRequest());
@@ -112,7 +115,8 @@ implements EditorRequestConstants
     setFlag(FLAG_TARGET_FEEDBACK, false);
   }
      
-  public void deactivate() 
+  @Override
+	public void deactivate() 
   {
     eraseTargetFeedback();    
     sourceRect = null;
@@ -123,12 +127,14 @@ implements EditorRequestConstants
   /**
    * @see org.eclipse.gef.tools.AbstractTool#getCommand()
    */
-  protected Command getCommand() 
+  @Override
+	protected Command getCommand() 
   {
     return getTargetEditPart().getCommand(getSourceRequest());
   }
   
-  protected boolean handleButtonUp(int button) 
+  @Override
+	protected boolean handleButtonUp(int button) 
   {
     if (stateTransition(STATE_DRAG_IN_PROGRESS, STATE_TERMINAL)) {
       eraseSourceFeedback();
@@ -140,7 +146,8 @@ implements EditorRequestConstants
     return true;
   }
   
-  protected boolean handleDragInProgress() 
+  @Override
+	protected boolean handleDragInProgress() 
   {
     if (isInState(STATE_DRAG | STATE_DRAG_IN_PROGRESS)) 
     {
@@ -163,14 +170,18 @@ implements EditorRequestConstants
     return isInState(STATE_DRAG_IN_PROGRESS | STATE_ACCESSIBLE_DRAG_IN_PROGRESS);
   }   
   
-  protected String getDebugName() 
+  @Override
+	protected String getDebugName() 
   {
     return "Debug "+getCommandName(); //$NON-NLS-1$
   }   
   
-  protected abstract Request createSourceRequest();
-  protected abstract void updateSourceRequest();   
-  protected abstract String getCommandName();
+  @Override
+	protected abstract Request createSourceRequest();
+  @Override
+	protected abstract void updateSourceRequest();   
+  @Override
+	protected abstract String getCommandName();
 
   protected void performSelection() 
   {

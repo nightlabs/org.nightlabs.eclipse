@@ -88,7 +88,8 @@ import org.nightlabs.editor2d.viewer.ui.render.RendererRegistry;
 public class EditorActionBarContributor 
 extends ActionBarContributor 
 {
-  protected void buildActions() 
+  @Override
+	protected void buildActions() 
   {
   	// Undo / Redo
   	addRetargetAction(new UndoRetargetAction());
@@ -190,7 +191,8 @@ extends ActionBarContributor
   /**
    * @see org.eclipse.ui.part.EditorActionBarContributor#contributeToMenu(IMenuManager)
    */
-  public void contributeToMenu(IMenuManager menubar) 
+  @Override
+	public void contributeToMenu(IMenuManager menubar) 
   {
   	super.contributeToMenu(menubar);  	
   	 
@@ -344,7 +346,8 @@ extends ActionBarContributor
    * Add actions to the given toolbar.
    * @see org.eclipse.ui.part.EditorActionBarContributor#contributeToToolBar(org.eclipse.jface.action.IToolBarManager)
    */
-  public void contributeToToolBar(IToolBarManager tbm) 
+  @Override
+	public void contributeToToolBar(IToolBarManager tbm) 
   {
   	super.contributeToToolBar(tbm);
   	// Undo / Redo
@@ -378,7 +381,8 @@ extends ActionBarContributor
   /**
    * @see org.eclipse.gef.ui.actions.ActionBarContributor#declareGlobalActionKeys()
    */
-  protected void declareGlobalActionKeys() 
+  @Override
+	protected void declareGlobalActionKeys() 
   {
   	addGlobalActionKey(ActionFactory.PRINT.getId());
   	addGlobalActionKey(ActionFactory.SELECT_ALL.getId());
@@ -402,6 +406,7 @@ extends ActionBarContributor
   	addGlobalActionKey(ChangeOrderToLocalFront.ID);  	
   }
 
+	@Override
 	public void dispose() 
 	{
 		super.dispose();

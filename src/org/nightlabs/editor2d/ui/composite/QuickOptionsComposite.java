@@ -42,6 +42,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
 import org.eclipse.ui.forms.events.ExpansionEvent;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
@@ -132,12 +133,13 @@ extends XComposite
 		form.getBody().setLayoutData(new GridData(GridData.FILL_BOTH));
 				
 		Section sectionDuplicate = toolkit.createSection(form.getBody(), 
-			  Section.DESCRIPTION|Section.TITLE_BAR|
-			  Section.TWISTIE|Section.EXPANDED);
+			  Section.DESCRIPTION|ExpandableComposite.TITLE_BAR|
+			  ExpandableComposite.TWISTIE|ExpandableComposite.EXPANDED);
 		TableWrapData td = new TableWrapData(TableWrapData.FILL_GRAB);
 		sectionDuplicate.setLayoutData(td);		
 		
 		sectionDuplicate.addExpansionListener(new ExpansionAdapter() {
+			@Override
 			public void expansionStateChanged(ExpansionEvent e) {
 				form.reflow(true);
 		  }
@@ -151,12 +153,13 @@ extends XComposite
 		sectionDuplicate.setClient(sectionClientDuplicate);
 		
 		Section sectionMove = toolkit.createSection(form.getBody(), 
-			  Section.DESCRIPTION|Section.TITLE_BAR|
-			  Section.TWISTIE|Section.EXPANDED);
+			  Section.DESCRIPTION|ExpandableComposite.TITLE_BAR|
+			  ExpandableComposite.TWISTIE|ExpandableComposite.EXPANDED);
 		TableWrapData tdMove = new TableWrapData(TableWrapData.FILL_GRAB);
 		sectionMove.setLayoutData(tdMove);
 		
 		sectionMove.addExpansionListener(new ExpansionAdapter() {
+			@Override
 			public void expansionStateChanged(ExpansionEvent e) {
 				form.reflow(true);
 		  }
@@ -200,7 +203,7 @@ extends XComposite
 		public void widgetSelected(SelectionEvent e) 
 		{
 			Spinner t = (Spinner) e.getSource();
-			int identifier = ((Integer) spinner2Identifier.get(t)).intValue();
+			int identifier = (spinner2Identifier.get(t)).intValue();
 			int value = t.getSelection();	
 			setValue(identifier, value);
 		}	

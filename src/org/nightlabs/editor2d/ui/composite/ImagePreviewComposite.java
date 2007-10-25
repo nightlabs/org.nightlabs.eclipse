@@ -203,6 +203,7 @@ extends XComposite
 	private float scale = 1.0f;
 	private ControlListener resizeListener = new ControlAdapter()
 	{	
+		@Override
 		public void controlResized(ControlEvent e) 
 		{
 			org.eclipse.swt.graphics.Rectangle canvasSize = originalCanvas.getClientArea();
@@ -249,8 +250,8 @@ extends XComposite
 				
 		if (fitImage) 		
 		{	
-			final int scaledWidth = (int) ((float)originalImage.getWidth() * scale);
-			final int scaledHeight = (int) ((float)originalImage.getHeight() * scale);	
+			final int scaledWidth = (int) (originalImage.getWidth() * scale);
+			final int scaledHeight = (int) (originalImage.getHeight() * scale);	
 			if (logger.isDebugEnabled()) {
 				logger.debug("scaledWidth = "+scaledWidth); //$NON-NLS-1$
 				logger.debug("scaledHeight = "+scaledHeight); //$NON-NLS-1$

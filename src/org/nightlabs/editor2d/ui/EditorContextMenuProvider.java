@@ -94,7 +94,8 @@ extends ContextMenuProvider
    * whose state is enabled, will appear in the context menu.
    * @see org.eclipse.gef.ContextMenuProvider#buildContextMenu(org.eclipse.jface.action.IMenuManager)
    */
-  public void buildContextMenu(IMenuManager manager) 
+  @Override
+	public void buildContextMenu(IMenuManager manager) 
   {
   	// Add standard action groups to the menu
   	GEFActionConstants.addStandardActionGroups(manager);

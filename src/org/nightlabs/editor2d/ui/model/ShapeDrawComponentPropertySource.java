@@ -38,6 +38,7 @@ import org.nightlabs.base.ui.property.AWTColorPropertyDescriptor;
 import org.nightlabs.base.ui.property.CheckboxPropertyDescriptor;
 import org.nightlabs.base.ui.property.GenericComboBoxPropertyDescriptor;
 import org.nightlabs.base.ui.property.SpinnerPropertyDescriptor;
+import org.nightlabs.editor2d.IFillable;
 import org.nightlabs.editor2d.ShapeDrawComponent;
 import org.nightlabs.editor2d.ShapeDrawComponent.LineStyle;
 import org.nightlabs.editor2d.ui.resource.Messages;
@@ -164,7 +165,7 @@ extends DrawComponentPropertySource
 	
 	protected PropertyDescriptor createFillPD() 
 	{
-		PropertyDescriptor desc = new CheckboxPropertyDescriptor(ShapeDrawComponent.PROP_FILL,
+		PropertyDescriptor desc = new CheckboxPropertyDescriptor(IFillable.PROP_FILL,
 				Messages.getString("org.nightlabs.editor2d.ui.model.ShapeDrawComponentPropertySource.fill"));				 //$NON-NLS-1$
 		return desc;		
 	}
@@ -172,6 +173,7 @@ extends DrawComponentPropertySource
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.views.properties.IPropertySource#getPropertyValue(java.lang.Object)
 	 */
+	@Override
 	public Object getPropertyValue(Object id) 
 	{
 		Object o = super.getPropertyValue(id);
@@ -191,7 +193,7 @@ extends DrawComponentPropertySource
 			else if (id.equals(ShapeDrawComponent.PROP_LINE_STYLE)) {
 				return getShapeDrawComponent().getLineStyle();
 			}
-			else if (id.equals(ShapeDrawComponent.PROP_FILL)) {
+			else if (id.equals(IFillable.PROP_FILL)) {
 				return getShapeDrawComponent().isFill();
 			}
 			else if (id.equals(ShapeDrawComponent.PROP_SHOW_STROKE)) {
@@ -205,6 +207,7 @@ extends DrawComponentPropertySource
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.views.properties.IPropertySource#setPropertyValue(java.lang.Object, java.lang.Object)
 	 */
+	@Override
 	public void setPropertyValue(Object id, Object value) 
 	{
 		super.setPropertyValue(id, value);
@@ -222,7 +225,7 @@ extends DrawComponentPropertySource
 //			getShapeDrawComponent().setLineStyle((Integer)value);
 			getShapeDrawComponent().setLineStyle((LineStyle)value);			
 		}
-		else if (id.equals(ShapeDrawComponent.PROP_FILL)) {
+		else if (id.equals(IFillable.PROP_FILL)) {
 			getShapeDrawComponent().setFill((Boolean)value);
 		}
 		else if (id.equals(ShapeDrawComponent.PROP_SHOW_STROKE)) {

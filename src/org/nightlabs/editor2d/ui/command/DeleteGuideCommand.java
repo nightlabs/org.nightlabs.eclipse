@@ -50,11 +50,13 @@ extends Command
   	this.parent = parent;
   }
 
-  public boolean canUndo() {
+  @Override
+	public boolean canUndo() {
   	return true;
   }
 
-  public void execute() 
+  @Override
+	public void execute() 
   {
   	oldParts = new HashMap<DrawComponent, Integer>(guide.getMap());
   	Iterator<DrawComponent> iter = oldParts.keySet().iterator();
@@ -64,7 +66,8 @@ extends Command
   	parent.removeGuide(guide);
   }
   
-  public void undo() 
+  @Override
+	public void undo() 
   {
   	parent.addGuide(guide);
   	Iterator<DrawComponent> iter = oldParts.keySet().iterator();

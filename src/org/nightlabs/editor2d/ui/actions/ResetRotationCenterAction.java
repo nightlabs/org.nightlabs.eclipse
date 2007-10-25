@@ -47,7 +47,8 @@ implements EditorRequestConstants
     super(part);
   }
 
-  protected boolean calculateEnabled() 
+  @Override
+	protected boolean calculateEnabled() 
   {
     for (Iterator it = getSelectedObjects().iterator(); it.hasNext(); ) {
       Object o = it.next();
@@ -66,7 +67,8 @@ implements EditorRequestConstants
     return false;
   }
 
-  public void run() 
+  @Override
+	public void run() 
   { 
     for (Iterator it = getSelectedObjects().iterator(); it.hasNext(); ) 
     {
@@ -85,7 +87,8 @@ implements EditorRequestConstants
     }        
   }
   
-  protected void init() 
+  @Override
+	protected void init() 
   {
   	setText(Messages.getString("org.nightlabs.editor2d.ui.actions.ResetRotationCenterAction.text")); //$NON-NLS-1$
   	setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.actions.ResetRotationCenterAction.tooltip")); //$NON-NLS-1$

@@ -67,6 +67,7 @@ extends DrawComponentPaintable
 	 * 
 	 * @see org.holongate.j2d.IPaintable#paint(org.eclipse.swt.widgets.Control, java.awt.Graphics2D)
 	 */
+	@Override
 	public void paint(Control control, Graphics2D g2d) 
 	{		
 		paintDrawComponent(getDrawComponent(), g2d);

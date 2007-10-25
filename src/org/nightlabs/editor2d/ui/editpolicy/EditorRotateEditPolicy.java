@@ -57,7 +57,8 @@ extends EditorFeedbackPolicy
 	private static final Logger logger = Logger.getLogger(EditorRotateEditPolicy.class);
 	
 	// TODO: find out why this Method is never triggered
-  public Command getCommand(Request request) 
+  @Override
+	public Command getCommand(Request request) 
   {    
     if (request instanceof EditorRotateRequest)
       return getRotateCommand((EditorRotateRequest)request);
@@ -92,7 +93,8 @@ extends EditorFeedbackPolicy
     return cmd;
   }  
 	
-  public void showSourceFeedback(Request request) 
+  @Override
+	public void showSourceFeedback(Request request) 
   {
     if (request.getType().equals(REQ_ROTATE))
       showRotateFeedback((EditorRotateRequest)request);
@@ -180,7 +182,8 @@ extends EditorFeedbackPolicy
     return (ShapeFigure) feedback;
   }  
   
-  public void eraseSourceFeedback(Request request) 
+  @Override
+	public void eraseSourceFeedback(Request request) 
   {
     if (request.getType().equals(REQ_ROTATE))
       eraseRotateFeedback((EditorRotateRequest)request);

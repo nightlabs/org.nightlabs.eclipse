@@ -76,7 +76,8 @@ extends DrawComponentContainerTreeEditPart
   /**
    * Creates and installs pertinent EditPolicies.
    */
-  protected void createEditPolicies() 
+  @Override
+	protected void createEditPolicies() 
   {
     // TODO: Must override EditPolicy.TREE_CONTAINER_ROLE with a EditPolicy which does
     // support dragging of layers   	

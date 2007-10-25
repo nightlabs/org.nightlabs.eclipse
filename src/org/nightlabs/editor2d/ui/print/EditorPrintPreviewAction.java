@@ -26,6 +26,7 @@
 package org.nightlabs.editor2d.ui.print;
 
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.window.Window;
 import org.nightlabs.editor2d.ui.AbstractEditor;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
@@ -52,6 +53,7 @@ extends AbstractEditorPrintAction
 		super(editor);
 	}
 
+	@Override
 	protected void init() 
 	{
 		setId(ID);
@@ -59,6 +61,7 @@ extends AbstractEditorPrintAction
 		setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.print.EditorPrintPreviewAction.tooltip")); //$NON-NLS-1$
 	}
 			
+	@Override
 	public void run() 
 	{
 //		AWTPrinter awtPrinter = getAWTPrinter();
@@ -70,7 +73,7 @@ extends AbstractEditorPrintAction
 //		J2DPrintDialog printDialog = new J2DPrintDialog(getShell(), getDrawComponent(), pf);
 		
 		EditorPrintPreviewDialog printDialog = new EditorPrintPreviewDialog(getDrawComponent(), getShell());		
-		if (printDialog.open() == Dialog.CANCEL)
+		if (printDialog.open() == Window.CANCEL)
 			return;
 		
 //		awtPrinter.getPrinterJob().setPrintable(

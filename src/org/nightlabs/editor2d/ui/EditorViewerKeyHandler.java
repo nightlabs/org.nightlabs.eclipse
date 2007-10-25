@@ -138,6 +138,7 @@ extends GraphicalViewerKeyHandler
 		}	
 	};
 	
+	@Override
 	public boolean keyPressed(KeyEvent event) 
 	{
 //		LOGGER.debug("Key pressed");

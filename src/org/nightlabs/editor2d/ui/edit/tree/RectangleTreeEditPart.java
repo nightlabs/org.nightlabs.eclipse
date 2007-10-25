@@ -49,7 +49,8 @@ extends DrawComponentTreeEditPart
     super(model);
   }
 
-  public IPropertySource getPropertySource()
+  @Override
+	public IPropertySource getPropertySource()
   {
     if (propertySource == null)
     {
@@ -66,7 +67,8 @@ extends DrawComponentTreeEditPart
 //  public Image getImage() {
 //    return RECTANGLE_ICON;
 //  }
-  protected Image getOutlineImage() {
+  @Override
+	protected Image getOutlineImage() {
     return RECTANGLE_ICON;
   }
 }

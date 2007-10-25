@@ -59,6 +59,7 @@ extends AbstractEditorSelectionAction
 		super(editor);
 	}
 
+	@Override
 	public void init() 
 	{
 		setId(ID);
@@ -71,11 +72,13 @@ extends AbstractEditorSelectionAction
   /**
 	 * @return true, if objects are selected, except the RootEditPart or LayerEditParts
 	 */
+	@Override
 	protected boolean calculateEnabled() 
 	{
 		return !getDefaultSelection(true).isEmpty();
 	}
 	
+	@Override
 	public void run() 
 	{
 		Collection<DrawComponent> dcs = getSelection(DrawComponent.class, true);		

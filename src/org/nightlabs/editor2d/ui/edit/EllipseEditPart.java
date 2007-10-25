@@ -51,7 +51,8 @@ extends ShapeDrawComponentEditPart
 		return (EllipseDrawComponent) getModel();
 	}
 	
-  public IPropertySource getPropertySource()
+  @Override
+	public IPropertySource getPropertySource()
   {
     if (propertySource == null)
     {
@@ -61,6 +62,7 @@ extends ShapeDrawComponentEditPart
     return propertySource;
   } 
   
+	@Override
 	protected void propertyChanged(PropertyChangeEvent evt) 
 	{
 		super.propertyChanged(evt);

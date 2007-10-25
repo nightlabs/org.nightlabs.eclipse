@@ -121,6 +121,7 @@ public class SmartUpdateFreeformLayer
 	 * 
 	 * @param graphics the graphics to paint on
 	 */
+	@Override
 	public void paint(Graphics graphics) {
 		
 		if (notifiedDamage == null) {

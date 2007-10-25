@@ -51,6 +51,7 @@ extends CenteredDialog
 		this.image = originalImage;
 	}
 	
+	@Override
 	public void create() 
 	{
 		super.create();
@@ -67,6 +68,7 @@ extends CenteredDialog
 	/**
 	 * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	protected Control createDialogArea(Composite parent) 
 	{
 		convertImageComp = new ConvertImageComposite(parent, SWT.NONE, image);

@@ -64,7 +64,8 @@ implements EditorRequestConstants
    * Creates a {@link EditorCreateShapeRequest} and sets this tool's factory on the request.
    * @see org.eclipse.gef.tools.TargetingTool#createTargetRequest()
    */
-  protected Request createTargetRequest() 
+  @Override
+	protected Request createTargetRequest() 
   {
   	EditorCreateShapeRequest request = new EditorCreateShapeRequest();
   	request.setFactory(getFactory());
@@ -96,7 +97,8 @@ implements EditorRequestConstants
   /**
    * @see org.eclipse.gef.tools.AbstractTool#getDebugName()
    */
-  protected String getDebugName() {
+  @Override
+	protected String getDebugName() {
   	return "EditorCreation Tool";//$NON-NLS-1$
   }   
 }

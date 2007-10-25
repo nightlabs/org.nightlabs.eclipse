@@ -54,7 +54,8 @@ extends AbstractEditorSelectionAction
     super(part); 
   }
 
-  protected void init() 
+  @Override
+	protected void init() 
   {
   	setText(Messages.getString("org.nightlabs.editor2d.ui.actions.zoom.ZoomSelectionAction.text")); //$NON-NLS-1$
   	setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.actions.zoom.ZoomSelectionAction.tooltip")); //$NON-NLS-1$
@@ -83,7 +84,8 @@ extends AbstractEditorSelectionAction
     return false;
   }  
   
-  public void run() 
+  @Override
+	public void run() 
   {
     Rectangle totalBounds = null;
     GraphicalEditPart editPart = null;

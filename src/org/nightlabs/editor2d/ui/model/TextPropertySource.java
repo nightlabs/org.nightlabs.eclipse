@@ -60,6 +60,7 @@ extends ShapeDrawComponentPropertySource
 	
 	public static final String CATEGORY_FONT = Messages.getString("org.nightlabs.editor2d.ui.model.TextPropertySource.category.font");	 //$NON-NLS-1$
 		
+	@Override
 	protected List<IPropertyDescriptor> createPropertyDescriptors() 
 	{
 		List<IPropertyDescriptor> descriptors = getDescriptors();
@@ -156,6 +157,7 @@ extends ShapeDrawComponentPropertySource
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.views.properties.IPropertySource#setPropertyValue(java.lang.Object, java.lang.Object)
 	 */
+	@Override
 	public void setPropertyValue(Object id, Object value) 
 	{		
 		if (id.equals(TextDrawComponent.PROP_FONT_NAME)) {
@@ -197,6 +199,7 @@ extends ShapeDrawComponentPropertySource
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.views.properties.IPropertySource#getPropertyValue(java.lang.Object)
 	 */
+	@Override
 	public Object getPropertyValue(Object id) 
 	{
 		if (id.equals(TextDrawComponent.PROP_FONT_NAME)) {

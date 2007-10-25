@@ -77,6 +77,7 @@ extends ConfigModule
 		setChanged();
 	}
 	
+	@Override
 	public void init() 
 	{
 		

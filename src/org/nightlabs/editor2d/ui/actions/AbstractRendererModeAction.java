@@ -46,12 +46,14 @@ extends EditorPartAction
   }
 
   // TODO: check currentMode in RenderModeManager and if != getRenderMode() return true else false
-  protected boolean calculateEnabled() 
+  @Override
+	protected boolean calculateEnabled() 
   {
     return true;
   }
     
-  public void run() 
+  @Override
+	public void run() 
   {
     if (getEditorPart() instanceof AbstractEditor) {
       AbstractEditor editor = ((AbstractEditor)getEditorPart());
@@ -63,5 +65,6 @@ extends EditorPartAction
   }
     
   public abstract String getRenderMode();
-  protected abstract void init();
+  @Override
+	protected abstract void init();
 }

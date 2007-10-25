@@ -55,7 +55,8 @@ extends SquareHandle
   /* (non-Javadoc)
    * @see org.eclipse.gef.handles.AbstractHandle#createDragTracker()
    */
-  protected DragTracker createDragTracker() {
+  @Override
+	protected DragTracker createDragTracker() {
     return new ShapeEditTracker(owner, pathSegmentIndex);    
   }
   
@@ -75,7 +76,8 @@ extends SquareHandle
 //  	setLocation(getPathSegmentLocation());
   }  
      
-  public void setBounds(Rectangle rect) 
+  @Override
+	public void setBounds(Rectangle rect) 
   {
     super.setBounds(new Rectangle(rect.x, rect.y, DEFAULT_SIZE, DEFAULT_SIZE));
   }

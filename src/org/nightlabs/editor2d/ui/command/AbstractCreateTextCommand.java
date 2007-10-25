@@ -53,7 +53,8 @@ extends CreateDrawComponentCommand
   	return request.getModelCreationFactory().getFactory();
   }
   
-  public void execute() 
+  @Override
+	public void execute() 
   {
     int x = getBounds().x;
     int y = getBounds().y;

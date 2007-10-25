@@ -65,7 +65,8 @@ extends Command
     this.affineTransform = affineTransform;
   }
   
-  public void execute() 
+  @Override
+	public void execute() 
   {
     dc2AffineTransform = new HashMap<DrawComponent, AffineTransform>(getEditParts().size());
     for (Iterator<EditPart> it = getEditParts().iterator(); it.hasNext(); ) 
@@ -79,7 +80,8 @@ extends Command
       dc.setAffineTransform(at); 
     }    
   }
-  public void redo() 
+  @Override
+	public void redo() 
   {
     for (Iterator<DrawComponent> it = dc2AffineTransform.keySet().iterator(); it.hasNext(); ) 
     {
@@ -88,7 +90,8 @@ extends Command
     }        
   }
   
-  public void undo() 
+  @Override
+	public void undo() 
   {
     for (Iterator<DrawComponent> it = dc2AffineTransform.keySet().iterator(); it.hasNext(); ) 
     {

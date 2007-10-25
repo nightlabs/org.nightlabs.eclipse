@@ -76,8 +76,11 @@ extends SelectionAction
 		super(editor);
 	}
 
+	@Override
 	protected abstract boolean calculateEnabled(); 
+	@Override
 	protected abstract void init();	
+	@Override
 	public abstract void run();	
 
 	public boolean isActiveEditor()

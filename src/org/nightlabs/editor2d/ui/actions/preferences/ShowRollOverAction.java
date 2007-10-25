@@ -51,6 +51,7 @@ extends PreferencesAction
 		super(editor, AS_CHECK_BOX);
 	}
 
+	@Override
 	protected void init() 
 	{
 		setId(ID);
@@ -58,10 +59,12 @@ extends PreferencesAction
 		setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.actions.preferences.ShowRollOverAction.tooltip")); //$NON-NLS-1$
 	}	
 	
+	@Override
 	public boolean isChecked() {
 		return prefConfMod.isShowRollOver();
 	}
 
+	@Override
 	public void run() {
 		prefConfMod.setShowRollOver(!isChecked());
 	}		

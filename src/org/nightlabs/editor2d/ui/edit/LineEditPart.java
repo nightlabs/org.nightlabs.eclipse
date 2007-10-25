@@ -29,6 +29,7 @@ package org.nightlabs.editor2d.ui.edit;
 
 import java.beans.PropertyChangeEvent;
 
+import org.nightlabs.editor2d.IConnectable;
 import org.nightlabs.editor2d.LineDrawComponent;
 
 
@@ -46,11 +47,12 @@ extends ShapeDrawComponentEditPart
 	  return (LineDrawComponent) getModel();
 	}
 	
+	@Override
 	protected void propertyChanged(PropertyChangeEvent evt) 
 	{
 		super.propertyChanged(evt);
 		String propertyName = evt.getPropertyName();
-		if (propertyName.equals(LineDrawComponent.PROP_CONNECT)) {
+		if (propertyName.equals(IConnectable.PROP_CONNECT)) {
 			refreshVisuals();			
 		}
 	}

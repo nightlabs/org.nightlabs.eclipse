@@ -53,6 +53,7 @@ extends TreeContainerEditPolicy
 {
 	private static final Logger logger = Logger.getLogger(DrawComponentTreeContainerEditPolicy.class);
 	
+	@Override
 	protected Command getAddCommand(ChangeBoundsRequest request)
 	{
 		if (logger.isDebugEnabled())
@@ -85,6 +86,7 @@ extends TreeContainerEditPolicy
 		return command;
 	}
 
+	@Override
 	protected Command getCreateCommand(CreateRequest request)
 	{
 		if (logger.isDebugEnabled())
@@ -92,6 +94,7 @@ extends TreeContainerEditPolicy
 		return null;
 	}
 
+	@Override
 	protected Command getMoveChildrenCommand(ChangeBoundsRequest request)
 	{
 		if (logger.isDebugEnabled())
@@ -171,7 +174,7 @@ extends TreeContainerEditPolicy
 		CompoundCommand result = 
 			new CompoundCommand(Messages.getString("org.nightlabs.editor2d.ui.editpolicy.treeDrawComponentTreeContainerEditPolicy.command.label.orphan.children")); //$NON-NLS-1$
 		for (int i = 0; i < parts.size(); i++) {
-			DrawComponent child = (DrawComponent)((EditPart)parts.get(i)).getModel();
+			DrawComponent child = (DrawComponent)(parts.get(i)).getModel();
 			OrphanChildCommand orphan = new OrphanChildCommand(child);  		
 			result.add(orphan);
 		}		

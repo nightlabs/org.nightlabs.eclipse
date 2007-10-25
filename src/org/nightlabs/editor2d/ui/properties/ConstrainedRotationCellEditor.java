@@ -45,7 +45,8 @@ extends ComboBoxCellEditor
    *
    * @return text of the combo as double
    */
-  protected Object doGetValue() 
+  @Override
+	protected Object doGetValue() 
   {
     if (getComboBox().getText().equals("")) //$NON-NLS-1$
       return oldValue;

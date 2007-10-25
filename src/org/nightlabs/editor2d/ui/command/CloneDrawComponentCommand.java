@@ -112,6 +112,7 @@ extends Command
 	
 	protected DrawComponent clone = null;	
 	
+	@Override
 	public void execute() 
 	{
 		clone = (DrawComponent) drawComponent.clone(getParent());
@@ -119,11 +120,13 @@ extends Command
 		clone.setBounds(getCloneBounds());
 	}
 		
+	@Override
 	public void redo() 
 	{
 		parent.addDrawComponent(clone);
 	}
 	
+	@Override
 	public void undo() 
 	{
 		parent.removeDrawComponent(clone);

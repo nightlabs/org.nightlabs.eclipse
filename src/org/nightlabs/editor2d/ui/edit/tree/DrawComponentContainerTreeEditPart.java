@@ -57,7 +57,8 @@ extends DrawComponentTreeEditPart
   /**
    * Creates and installs pertinent EditPolicies.
    */
-  protected void createEditPolicies() 
+  @Override
+	protected void createEditPolicies() 
   {
   	super.createEditPolicies();
 //  	installEditPolicy(EditPolicy.CONTAINER_ROLE, new DrawComponentContainerEditPolicy());
@@ -82,11 +83,13 @@ extends DrawComponentTreeEditPart
    *
    * @return  List of children.
    */
-  protected List getModelChildren() 
+  @Override
+	protected List getModelChildren() 
   {
   	return getDrawComponentContainer().getDrawComponents();
   }
   
+	@Override
 	protected void propertyChanged(PropertyChangeEvent evt) 
 	{
 		super.propertyChanged(evt);

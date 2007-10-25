@@ -57,7 +57,8 @@ extends Command
   	}
   }
 
-  public void execute() {
+  @Override
+	public void execute() {
   	// Cache the old values
   	oldGuide = horizontal ? part.getHorizontalGuide() : part.getVerticalGuide();		
   	if (oldGuide != null)
@@ -66,7 +67,8 @@ extends Command
   	redo();
   }
 
-  public void redo() {
+  @Override
+	public void redo() {
   	changeGuide(oldGuide, newGuide, newAlign);
   }
 
@@ -75,7 +77,8 @@ extends Command
   	newAlign = alignment;
   }
 
-  public void undo() {
+  @Override
+	public void undo() {
   	changeGuide(newGuide, oldGuide, oldAlign);
   }
 }

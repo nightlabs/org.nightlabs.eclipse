@@ -56,11 +56,13 @@ extends Command
 //  	this.factory = factory;
 //  }
   
-  public boolean canUndo() {
+  @Override
+	public boolean canUndo() {
   	return true;
   }
 
-  public void execute() 
+  @Override
+	public void execute() 
   {
     if (guide == null)
 //      guide = factory.createEditorGuide();
@@ -71,7 +73,8 @@ extends Command
   	parent.addGuide(guide);  
   }
 
-  public void undo() {
+  @Override
+	public void undo() {
     parent.removeGuide(guide);
   }
 }

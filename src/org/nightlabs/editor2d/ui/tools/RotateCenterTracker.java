@@ -28,6 +28,7 @@
 package org.nightlabs.editor2d.ui.tools;
 
 import org.apache.log4j.Logger;
+import org.eclipse.draw2d.Cursors;
 import org.eclipse.gef.Request;
 import org.eclipse.swt.graphics.Cursor;
 
@@ -52,15 +53,18 @@ extends AbstractDragTracker
     return (AbstractDrawComponentEditPart) owner;
   }
 
-  protected String getCommandName() {
+  @Override
+	protected String getCommandName() {
     return REQ_EDIT_ROTATE_CENTER;
   }
 
-  protected Cursor getDefaultCursor() {
-    return EditorCursors.CROSS;
+  @Override
+	protected Cursor getDefaultCursor() {
+    return Cursors.CROSS;
   } 
   
-  protected Request createSourceRequest() 
+  @Override
+	protected Request createSourceRequest() 
   {
     EditorRotateCenterRequest rotateRequest = new EditorRotateCenterRequest();
     rotateRequest.setType(REQ_EDIT_ROTATE_CENTER);
@@ -69,7 +73,8 @@ extends AbstractDragTracker
     return rotateRequest;
   }  
   
-  protected void updateSourceRequest() 
+  @Override
+	protected void updateSourceRequest() 
   {
     getEditorRotateCenterRequest().setRotationCenter(getLocation());
     logger.debug("rotationCenter = "+getLocation()); //$NON-NLS-1$
@@ -81,6 +86,7 @@ extends AbstractDragTracker
   }
 
   // Override to avoid the single selection of the EditPart whiches handle has been selected
+	@Override
 	protected void performSelection() 
 	{
 	}   

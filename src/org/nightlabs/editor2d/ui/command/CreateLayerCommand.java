@@ -52,6 +52,7 @@ extends CreateDrawComponentCommand
 	/* (non-Javadoc)
 	 * @see org.eclipse.gef.commands.Command#execute()
 	 */
+	@Override
 	public void execute() 
 	{
 	  drawComponent = factory.createLayer();	  
@@ -62,6 +63,7 @@ extends CreateDrawComponentCommand
     getRootDrawComponent().setCurrentLayer(getLayer());
 	}	
 	
+	@Override
 	public void redo() 
 	{
     super.redo();
@@ -69,7 +71,7 @@ extends CreateDrawComponentCommand
 	}	
 			
 	protected RootDrawComponent getRootDrawComponent() {
-	  return (RootDrawComponent) parent.getRoot();
+	  return parent.getRoot();
 	}
   
   protected Layer getLayer() {

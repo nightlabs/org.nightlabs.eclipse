@@ -55,7 +55,8 @@ extends EditorCreationTool
    * Creates a {@link EditorCreateShapeRequest} and sets this tool's factory on the request.
    * @see org.eclipse.gef.tools.TargetingTool#createTargetRequest()
    */
-  protected Request createTargetRequest() 
+  @Override
+	protected Request createTargetRequest() 
   {
   	LineCreateRequest request = new LineCreateRequest();
   	request.setFactory(getFactory());
@@ -83,7 +84,8 @@ extends EditorCreationTool
   
   protected Rectangle creationBounds;
   
-  protected boolean handleButtonDown(int button) 
+  @Override
+	protected boolean handleButtonDown(int button) 
   {
     if (button == 1) 
     {
@@ -135,7 +137,8 @@ extends EditorCreationTool
    * @see org.eclipse.gef.tools.AbstractTool#handleButtonUp(int)
    * @see #handleButtonDown(int)
    */
-  protected boolean handleButtonUp(int button) 
+  @Override
+	protected boolean handleButtonUp(int button) 
   {
     return false;
   }
@@ -144,9 +147,10 @@ extends EditorCreationTool
    * Sets the location (and size if the user is performing size-on-drop) of the request.
    * @see org.eclipse.gef.tools.TargetingTool#updateTargetRequest()
    */
-  protected void updateTargetRequest() 
+  @Override
+	protected void updateTargetRequest() 
   {
-  	LineCreateRequest req = (LineCreateRequest) getLineCreateRequest();
+  	LineCreateRequest req = getLineCreateRequest();
   	if (isInState(STATE_DRAG_IN_PROGRESS)) 
   	{  	    	  
   	  // TODO: Optimize bounds calc, by getting rect which is a union of
@@ -183,7 +187,8 @@ extends EditorCreationTool
   	}
   } 
   
-  protected boolean handleKeyDown(KeyEvent e) 
+  @Override
+	protected boolean handleKeyDown(KeyEvent e) 
   {
     if (e.character == SWT.ESC) {
     	if (stateTransition(STATE_DRAG | STATE_DRAG_IN_PROGRESS, STATE_TERMINAL)) 
@@ -210,7 +215,8 @@ extends EditorCreationTool
       request.setGeneralShape(feedbackGeneralShape);    
   }
     
-  public void performCreation(int button) 
+  @Override
+	public void performCreation(int button) 
   {		
 		if (getCurrentCommand() instanceof CreateShapeCommand) 
 		{
@@ -226,7 +232,8 @@ extends EditorCreationTool
   /**
    * @see org.eclipse.gef.Tool#deactivate()
    */
-  public void deactivate() 
+  @Override
+	public void deactivate() 
   {
   	super.deactivate();
   	helper = null;

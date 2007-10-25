@@ -53,6 +53,7 @@ extends AbstractEditorSelectionAction
 		super(editor);
 	}
 
+	@Override
 	protected abstract void init();
 	
 	@Override

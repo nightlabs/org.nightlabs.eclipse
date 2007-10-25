@@ -42,7 +42,8 @@ extends AbstractCreateTextCommand
     this.request = request; 
   }
   
-  protected TextDrawComponent getTextDrawComponent() {
+  @Override
+	protected TextDrawComponent getTextDrawComponent() {
   	return (TextDrawComponent) getChild();
   }
 

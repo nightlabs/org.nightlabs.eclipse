@@ -57,7 +57,8 @@ extends AbstractHandle
     cursorDirection = direction;
   }
 
-  protected DragTracker createDragTracker() {
+  @Override
+	protected DragTracker createDragTracker() {
     return new RotateTracker((AbstractDrawComponentEditPart)getOwner(), cursorDirection);
   }
 
@@ -95,7 +96,8 @@ extends AbstractHandle
    *
    * @param g The graphics used to paint the figure.
    */
-  public void paintFigure(Graphics g) 
+  @Override
+	public void paintFigure(Graphics g) 
   {
     // TODO: draw Rotate Handles       
     Rectangle r = getBounds();

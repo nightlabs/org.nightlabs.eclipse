@@ -34,7 +34,8 @@ import org.nightlabs.editor2d.ui.util.J2DUtil;
 public class FeedbackShapeFigure 
 extends AbstractShapeFigure 
 {
-  public void setBounds(Rectangle newBounds) 
+  @Override
+	public void setBounds(Rectangle newBounds) 
   {
   	Rectangle oldBounds = getBounds();
   	J2DUtil.transformGeneralShape(getGeneralShape(), oldBounds, newBounds);

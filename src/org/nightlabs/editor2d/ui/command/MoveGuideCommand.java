@@ -47,7 +47,8 @@ extends Command
   	pDelta = positionDelta;
   }
 
-  public void execute() 
+  @Override
+	public void execute() 
   {
   	guide.setPosition(guide.getPosition() + pDelta);
   	Iterator<DrawComponent> iter = guide.getMap().keySet().iterator();
@@ -64,7 +65,8 @@ extends Command
   	}
   }
 
-  public void undo() 
+  @Override
+	public void undo() 
   {
   	guide.setPosition(guide.getPosition() - pDelta);
   	Iterator<DrawComponent> iter = guide.getMap().keySet().iterator();

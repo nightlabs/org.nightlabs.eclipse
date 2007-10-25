@@ -50,7 +50,8 @@ extends ToolEntry
   /* (non-Javadoc)
    * @see org.eclipse.gef.palette.ToolEntry#createTool()
    */
-  public Tool createTool() {
+  @Override
+	public Tool createTool() {
     return new ZoomTool();
   }
 

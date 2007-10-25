@@ -59,7 +59,8 @@ extends PanningSelectionToolEntry
   }
 
   
-  public Tool createTool() {
+  @Override
+	public Tool createTool() {
     return new EditorSelectionTool();
   }
 }

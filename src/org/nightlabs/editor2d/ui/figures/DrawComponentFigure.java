@@ -90,7 +90,8 @@ implements RendererFigure
 //		}					
   }
     
-  public void paint(Graphics graphics) 
+  @Override
+	public void paint(Graphics graphics) 
   {  	
     if (graphics instanceof J2DGraphics) 
     {

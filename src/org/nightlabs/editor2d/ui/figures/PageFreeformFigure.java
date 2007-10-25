@@ -48,6 +48,7 @@ extends ContainerFreeformLayer
 	/**
 	 * Overridden to paint bounds of page and children
 	 */
+	@Override
 	public void paint(Graphics2D graphics) {
 		DrawComponentFigure.paintJ2D(graphics, drawComponent, renderer);
 	}  

@@ -43,34 +43,39 @@ extends AbstractEditor
 	/**
 	 * @see org.nightlabs.editor2d.ui.AbstractEditor#createEditPartFactory()
 	 */	
-  public EditPartFactory createEditPartFactory() {
+  @Override
+	public EditPartFactory createEditPartFactory() {
   	return new GraphicalEditPartFactory();
   }  
     
 	/**
 	 * @see org.nightlabs.editor2d.ui.AbstractEditor#createOutlineEditPartFactory()
 	 */  
-  public EditPartFactory createOutlineEditPartFactory() {
+  @Override
+	public EditPartFactory createOutlineEditPartFactory() {
   	return new TreePartFactory(getFilterManager());
   }   
 
 	/**
 	 * @see org.nightlabs.editor2d.ui.AbstractEditor#createContextMenuProvider()
 	 */    
-  public ContextMenuProvider createContextMenuProvider() {
+  @Override
+	public ContextMenuProvider createContextMenuProvider() {
     return new EditorContextMenuProvider(getGraphicalViewer(), getActionRegistry());
   }
 
 	/**
 	 * @see org.nightlabs.editor2d.ui.AbstractEditor#createNameProvider()
 	 */    
-  public NameProvider createNameProvider() {
+  @Override
+	public NameProvider createNameProvider() {
 		return new EditorNameProvider();
 	}
 
 	/**
 	 * @see org.nightlabs.editor2d.ui.AbstractEditor#createModelFactory()
 	 */  		
+	@Override
 	public Editor2DFactory createModelFactory() {
 		return new Editor2DFactoryImpl();
 	}
@@ -86,6 +91,7 @@ extends AbstractEditor
 	/**
 	 * @see org.nightlabs.editor2d.ui.AbstractEditor#createPaletteFactory()
 	 */  	
+	@Override
 	public AbstractPaletteFactory createPaletteFactory() {
 		return new EditorPaletteFactory(getModelFactory());
 	}

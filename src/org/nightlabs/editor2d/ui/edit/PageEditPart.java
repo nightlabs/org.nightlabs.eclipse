@@ -52,7 +52,8 @@ extends AbstractDrawComponentContainerEditPart
 		return (PageDrawComponent) getDrawComponent();
 	}
 	
-  protected IFigure createFigure() 
+  @Override
+	protected IFigure createFigure() 
   {    
   	RendererFigure f = new PageFreeformFigure();
     f.setDrawComponent(getPageDrawComponent());    
@@ -62,7 +63,8 @@ extends AbstractDrawComponentContainerEditPart
 		return f;  
   }	
   
-  public IPropertySource getPropertySource()
+  @Override
+	public IPropertySource getPropertySource()
   {
     if (propertySource == null) {
       propertySource = new PagePropertySource(getPageDrawComponent());
@@ -70,6 +72,7 @@ extends AbstractDrawComponentContainerEditPart
     return propertySource;
   }  
   
+	@Override
 	protected void propertyChanged(PropertyChangeEvent evt) 
 	{
 		String propertyName = evt.getPropertyName();

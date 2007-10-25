@@ -203,7 +203,8 @@ extends XContributionItem
   /**
    * @see org.eclipse.jface.action.ContributionItem#dispose()
    */
-  public void dispose() {
+  @Override
+	public void dispose() {
   	if (partListener == null)
   		return;
   	service.removePartListener(partListener);
@@ -226,7 +227,8 @@ extends XContributionItem
    * @param parent The ToolBar to add the new control to
    * @param index Index
    */
-  public void fill(ToolBar parent, int index) {
+  @Override
+	public void fill(ToolBar parent, int index) {
   	toolitem = new ToolItem(parent, SWT.SEPARATOR, index);
   	Control control = createControl(parent);
   	toolitem.setControl(control);	
@@ -240,7 +242,8 @@ extends XContributionItem
    * 
    * @param parent The parent of the control to fill
    */
-  public final void fill(Composite parent) {
+  @Override
+	public final void fill(Composite parent) {
   	createControl(parent);
   }
 
@@ -251,7 +254,8 @@ extends XContributionItem
    * @param parent The menu
    * @param index Menu index
    */
-  public final void fill(Menu parent, int index) {
+  @Override
+	public final void fill(Menu parent, int index) {
   	Assert.isTrue(false, "Can't add a control to a menu");//$NON-NLS-1$
   }  
   

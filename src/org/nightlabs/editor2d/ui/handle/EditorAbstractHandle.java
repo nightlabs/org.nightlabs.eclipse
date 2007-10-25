@@ -55,7 +55,8 @@ extends AbstractHandle
     setSize(getPreferredSize());
   }   
   
-  public void setBounds(Rectangle rect) {
+  @Override
+	public void setBounds(Rectangle rect) {
     super.setBounds(new Rectangle(rect.x, rect.y, DEFAULT_HANDLE_SIZE, DEFAULT_HANDLE_SIZE));
   }  
   
@@ -87,7 +88,8 @@ extends AbstractHandle
   /* (non-Javadoc)
    * @see org.eclipse.gef.handles.AbstractHandle#createDragTracker()
    */
-  protected abstract DragTracker createDragTracker();
+  @Override
+	protected abstract DragTracker createDragTracker();
 
   private Color fillColor = ColorConstants.black;
   public Color getFillColor() {

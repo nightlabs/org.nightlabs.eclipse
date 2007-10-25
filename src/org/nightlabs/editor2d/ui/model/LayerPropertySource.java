@@ -43,6 +43,7 @@ extends DrawComponentPropertySource
 		return (Layer) drawComponent;
 	}
 	
+	@Override
 	protected List createPropertyDescriptors() 
 	{
 		List descriptors = getDescriptors();

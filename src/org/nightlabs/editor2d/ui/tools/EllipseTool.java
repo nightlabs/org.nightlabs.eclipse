@@ -54,13 +54,15 @@ extends EditorCreationTool
   /**
    * @see org.eclipse.gef.Tool#deactivate()
    */
-  public void deactivate() 
+  @Override
+	public void deactivate() 
   {
   	super.deactivate();
   	helper = null;
   }   
   
-  protected boolean handleButtonDown(int button) 
+  @Override
+	protected boolean handleButtonDown(int button) 
   {
     if (button == 1) 
     {
@@ -82,7 +84,8 @@ extends EditorCreationTool
   	return true;
   } 
   
-  protected void updateTargetRequest() 
+  @Override
+	protected void updateTargetRequest() 
   {
   	EditorCreateShapeRequest req = (EditorCreateShapeRequest) getCreateRequest();
   	if (isInState(STATE_DRAG_IN_PROGRESS)) 
@@ -107,7 +110,8 @@ extends EditorCreationTool
   	}    
   }
   
-  public void performCreation(int button) 
+  @Override
+	public void performCreation(int button) 
   {
     GeneralShape gs = EditorGeneralShapeFactory.createEllipse(ellipse.getBounds());
 		getEditorCreateRequest().setUseShape(false);

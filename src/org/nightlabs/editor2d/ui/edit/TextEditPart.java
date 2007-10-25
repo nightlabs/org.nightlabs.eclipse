@@ -51,6 +51,7 @@ extends ShapeDrawComponentEditPart
     return (TextDrawComponent) getModel();
   }
   
+	@Override
 	protected void propertyChanged(PropertyChangeEvent evt) 
 	{
 		super.propertyChanged(evt);
@@ -87,7 +88,8 @@ extends ShapeDrawComponentEditPart
 		}		
 	}
 	
-  public IPropertySource getPropertySource()
+  @Override
+	public IPropertySource getPropertySource()
   {
     if (propertySource == null){
       propertySource = new TextPropertySource(getTextDrawComponent());

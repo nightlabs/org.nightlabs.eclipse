@@ -42,7 +42,8 @@ extends AbstractMultipleLocator
     super(editParts);
   }
 
-  protected Point getLocation() 
+  @Override
+	protected Point getLocation() 
   {
     return EditorUtil.getCenter(editParts);
   }

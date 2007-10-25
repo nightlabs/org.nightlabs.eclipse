@@ -38,7 +38,8 @@ import org.eclipse.gef.requests.ChangeBoundsRequest;
 public class DrawComponentTreeEditPolicy 
 extends AbstractEditPolicy 
 {
-  public Command getCommand(Request req){
+  @Override
+	public Command getCommand(Request req){
   	if (REQ_MOVE.equals(req.getType()))
   		return getMoveCommand((ChangeBoundsRequest)req);
   	return null;	

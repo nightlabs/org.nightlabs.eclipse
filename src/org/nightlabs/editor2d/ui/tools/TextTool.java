@@ -30,6 +30,7 @@ package org.nightlabs.editor2d.ui.tools;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.tools.CreationTool;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.window.Window;
 import org.nightlabs.editor2d.ui.dialog.CreateTextDialog;
 import org.nightlabs.editor2d.ui.model.IModelCreationFactory;
 import org.nightlabs.editor2d.ui.request.TextCreateRequest;
@@ -45,7 +46,8 @@ extends CreationTool
    * Creates a {@link TextCreateRequest} and sets this tool's factory on the request.
    * @see org.eclipse.gef.tools.TargetingTool#createTargetRequest()
    */
-  protected Request createTargetRequest() 
+  @Override
+	protected Request createTargetRequest() 
   {
     TextCreateRequest request = new TextCreateRequest();
     request.setFactory(getFactory());
@@ -57,7 +59,8 @@ extends CreationTool
     return (TextCreateRequest) getTargetRequest();
   }
   
-  protected boolean handleButtonDown(int button) 
+  @Override
+	protected boolean handleButtonDown(int button) 
   {
     CreateTextDialog dialog = new CreateTextDialog(
         getCurrentViewer().getControl().getShell(), 
@@ -65,7 +68,7 @@ extends CreationTool
       );
     dialog.open();
         
-    if (dialog.getReturnCode() == Dialog.OK) 
+    if (dialog.getReturnCode() == Window.OK) 
     {
       performCreation(1);
       return true;

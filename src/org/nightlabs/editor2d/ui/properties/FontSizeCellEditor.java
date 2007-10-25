@@ -39,11 +39,13 @@ extends ComboBoxCellEditor
     super(parent, FontUtil.getFontSizes());
   }
  
-  protected Object doGetValue() {      	
+  @Override
+	protected Object doGetValue() {      	
     return new Integer(getItems()[getComboBox().getSelectionIndex()]); 
   }    
   
-  protected void doSetValue(Object value) 
+  @Override
+	protected void doSetValue(Object value) 
   {
     String string = ""; //$NON-NLS-1$
     

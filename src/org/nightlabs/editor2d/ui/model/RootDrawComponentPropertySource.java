@@ -39,6 +39,7 @@ extends DrawComponentPropertySource
 		super(root);
 	}
 
+	@Override
 	protected List createPropertyDescriptors() {
 		return EMPTY_LIST;
 	}		

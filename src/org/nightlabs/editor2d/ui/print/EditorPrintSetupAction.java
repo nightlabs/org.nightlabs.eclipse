@@ -58,6 +58,7 @@ extends AbstractEditorPrintAction
 		super(editor);
 	}
 
+	@Override
 	protected void init() 
 	{
 		setId(ID);
@@ -65,6 +66,7 @@ extends AbstractEditorPrintAction
 		setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.print.EditorPrintSetupAction.tooltip")); //$NON-NLS-1$
 	}
 
+	@Override
 	public void run() 
 	{
 		PrinterInterfaceManager.sharedInstance().editPrinterConfiguration(

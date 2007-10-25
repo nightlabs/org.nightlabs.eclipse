@@ -59,7 +59,8 @@ extends AbstractDragTracker
   /**
    * @see org.eclipse.gef.tools.SimpleDragTracker#createSourceRequest()
    */
-  protected Request createSourceRequest() 
+  @Override
+	protected Request createSourceRequest() 
   {
     EditorRotateRequest rotateRequest = new EditorRotateRequest();
     rotateRequest.setType(REQ_ROTATE);
@@ -72,7 +73,8 @@ extends AbstractDragTracker
     return rotateRequest;
   }
   
-  protected String getCommandName() 
+  @Override
+	protected String getCommandName() 
   {
     return REQ_ROTATE;
   }
@@ -80,7 +82,8 @@ extends AbstractDragTracker
   /**
    * @see org.eclipse.gef.tools.AbstractTool#getDefaultCursor()
    */
-  protected Cursor getDefaultCursor() 
+  @Override
+	protected Cursor getDefaultCursor() 
   {
     return EditorCursors.ROTATE;
   }  
@@ -90,7 +93,8 @@ extends AbstractDragTracker
   /**
    * @see org.eclipse.gef.tools.SimpleDragTracker#updateSourceRequest()
    */
-  protected void updateSourceRequest() 
+  @Override
+	protected void updateSourceRequest() 
   {
     if (getEditorRotateRequest().getRotationCenter() == null && owner != null) 
     {
@@ -115,12 +119,14 @@ extends AbstractDragTracker
     return (EditorRotateRequest) getSourceRequest();
   }
   
-  protected String getDebugName() 
+  @Override
+	protected String getDebugName() 
   {
     return "Rotate Handle Tracker";//$NON-NLS-1$
   }
 
   // Override to avoid the single selection of the EditPart whiches handle has been selected
+	@Override
 	protected void performSelection() 
 	{
 		

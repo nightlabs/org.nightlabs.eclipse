@@ -67,7 +67,8 @@ extends AbstractEditorAction
 		super(part, style);
 	}
 
-  protected void init() 
+  @Override
+	protected void init() 
   {
   	setText(Messages.getString("org.nightlabs.editor2d.ui.actions.copy.PasteAction.text")); //$NON-NLS-1$
   	setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.actions.copy.PasteAction.tooltip")); //$NON-NLS-1$
@@ -77,10 +78,12 @@ extends AbstractEditorAction
 //  	setAccelerator(SWT.CTRL | 'P');
   } 
 		
+	@Override
 	protected boolean calculateEnabled() {
 		return enabled;
 	}	
 	
+	@Override
 	public void run() 
 	{
 		CompoundCommand cmd = new CompoundCommand();

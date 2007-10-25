@@ -39,6 +39,7 @@ extends AbstractDrawComponentEditPart
 		super(drawComponent);
 	}
 	
+	@Override
 	protected void createEditPolicies()
 	{
 		// allow removal of the associated model element

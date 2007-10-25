@@ -52,6 +52,7 @@ extends EditorFeedbackPolicy
 	private static final Logger logger = Logger.getLogger(EditorEditShapePolicy.class);
 	
 	// TODO: find out why this Method is never triggered	
+	@Override
 	public Command getCommand(Request request) 
   {    
   	if (REQ_EDIT_SHAPE.equals(request.getType()))
@@ -88,13 +89,15 @@ extends EditorFeedbackPolicy
 		return editShapeCommand;		
   } 		
   
-  public void showSourceFeedback(Request request) 
+  @Override
+	public void showSourceFeedback(Request request) 
   {
     if (request.getType().equals(REQ_EDIT_SHAPE))
       showEditShapeFeedback((EditorEditShapeRequest)request);
   }
   
-  public void eraseSourceFeedback(Request request) 
+  @Override
+	public void eraseSourceFeedback(Request request) 
   {
     if (request.getType().equals(REQ_EDIT_SHAPE))
       eraseEditShapeFeedback((EditorEditShapeRequest)request);
@@ -159,6 +162,7 @@ extends EditorFeedbackPolicy
 		return super.understandsRequest(req);
 	}
     
+	@Override
 	public EditPart getTargetEditPart(Request request) {
 		return getHost();		
 	}  

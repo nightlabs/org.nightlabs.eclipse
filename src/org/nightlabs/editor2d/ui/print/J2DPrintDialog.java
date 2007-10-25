@@ -83,6 +83,7 @@ extends CenteredDialog
 		init();
 	}
 
+	@Override
 	protected void configureShell(Shell newShell) 
 	{
 		super.configureShell(newShell);		
@@ -139,6 +140,7 @@ extends CenteredDialog
 	
 	private SelectionListener marginListener = new SelectionAdapter()
 	{	
+		@Override
 		public void widgetSelected(SelectionEvent e) 
 		{
 			Spinner t = (Spinner) e.getSource(); 
@@ -185,6 +187,7 @@ extends CenteredDialog
 		pageFormat.setPaper(paper);		
 	}		
 	
+	@Override
 	protected Control createDialogArea(Composite parent) 
 	{
 		Composite comp = new XComposite(parent, SWT.NONE);		
@@ -312,6 +315,7 @@ extends CenteredDialog
 	}
 		
 	private ControlListener canvasResizeListener = new ControlAdapter() {	
+		@Override
 		public void controlResized(ControlEvent e) {
 //			refresh();
 		}	
@@ -353,8 +357,8 @@ extends CenteredDialog
 	protected void setCanvasSize() 
 	{
 		GridData canvasData = new GridData();
-		int newWidth = (int) Math.rint((double)pageRectangle.width / canvasScaleFactor);
-		int newHeight = (int) Math.rint((double)pageRectangle.height / canvasScaleFactor);		
+		int newWidth = (int) Math.rint(pageRectangle.width / canvasScaleFactor);
+		int newHeight = (int) Math.rint(pageRectangle.height / canvasScaleFactor);		
 		canvasData.widthHint = newWidth;
 		canvasData.heightHint = newHeight; 
 		canvas.setLayoutData(canvasData);
@@ -416,8 +420,8 @@ extends CenteredDialog
 	{
 		AffineTransform initalAT = canvas.getPaintableManager().getInitialTransform();
 		AffineTransform at = new AffineTransform(initalAT);
-		translateX = (((double)pageFormat.getImageableX() / canvasScaleFactor) - (drawComponent.getX() * scale ));
-		translateY = (((double)pageFormat.getImageableY() / canvasScaleFactor) - (drawComponent.getY() * scale ));
+		translateX = ((pageFormat.getImageableX() / canvasScaleFactor) - (drawComponent.getX() * scale ));
+		translateY = ((pageFormat.getImageableY() / canvasScaleFactor) - (drawComponent.getY() * scale ));
 		at.setToTranslation(translateX, translateY);		
 		canvas.getPaintableManager().setInitialTransform(at);		
 	}

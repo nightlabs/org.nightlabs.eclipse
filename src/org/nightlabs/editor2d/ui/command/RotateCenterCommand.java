@@ -70,7 +70,8 @@ extends Command
     setLabel(Messages.getString("org.nightlabs.editor2d.ui.command.RotateCenterCommand.label")); //$NON-NLS-1$
   }
 
-  public void execute() 
+  @Override
+	public void execute() 
   {
     dc2RotationCenter = new HashMap<DrawComponent, Point>(request.getEditParts().size());
     for (Iterator<EditPart> it = request.getEditParts().iterator(); it.hasNext(); ) 
@@ -90,7 +91,8 @@ extends Command
     EditorUtil.selectEditParts(request.getEditParts());
   } 
   
-  public void redo() 
+  @Override
+	public void redo() 
   {
     for (Iterator<DrawComponent> it = dc2RotationCenter.keySet().iterator(); it.hasNext(); ) 
     {
@@ -106,12 +108,13 @@ extends Command
     EditorUtil.selectEditParts(request.getEditParts());    
   }
   
-  public void undo() 
+  @Override
+	public void undo() 
   {
     for (Iterator<DrawComponent> it = dc2RotationCenter.keySet().iterator(); it.hasNext(); ) 
     {
       DrawComponent dc = it.next();
-      Point oldRotationCenter = (Point) dc2RotationCenter.get(dc);
+      Point oldRotationCenter = dc2RotationCenter.get(dc);
       if (isMultiple()) {
         dc.setTmpRotationX(DrawComponent.ROTATION_X_DEFAULT);
         dc.setTmpRotationY(DrawComponent.ROTATION_Y_DEFAULT);

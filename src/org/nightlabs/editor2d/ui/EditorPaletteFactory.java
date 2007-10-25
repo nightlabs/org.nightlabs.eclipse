@@ -43,7 +43,8 @@ extends AbstractPaletteFactory
 		super(factory);
 	}
 	
-  public IModelCreationFactory getCreationFactory(Class targetClass) {          
+  @Override
+	public IModelCreationFactory getCreationFactory(Class targetClass) {          
     return new ModelCreationFactory(targetClass, getFactory());
   } 
 	

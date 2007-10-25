@@ -43,6 +43,7 @@ import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.DrawComponentContainer;
+import org.nightlabs.editor2d.IVisible;
 import org.nightlabs.editor2d.ui.figures.DrawComponentFigure;
 import org.nightlabs.editor2d.ui.figures.RendererFigure;
 import org.nightlabs.editor2d.ui.model.DrawComponentPropertySource;
@@ -157,7 +158,8 @@ implements EditorRequestConstants
   /** 
    * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
    */
-  protected abstract void createEditPolicies();
+  @Override
+	protected abstract void createEditPolicies();
   
   /** 
    * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#activate()
@@ -325,7 +327,7 @@ implements EditorRequestConstants
 			setContains(!template);
 			return;
 		}
-		else if (propertyName.equals(DrawComponent.PROP_VISIBLE)) {
+		else if (propertyName.equals(IVisible.PROP_VISIBLE)) {
 			refreshVisuals();
 			return;
 		}

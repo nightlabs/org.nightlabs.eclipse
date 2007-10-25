@@ -41,6 +41,7 @@ extends AbstractWorkbenchAdvisor
 	/**
 	 * @see org.eclipse.ui.application.WorkbenchAdvisor#getInitialWindowPerspectiveId()
 	 */
+	@Override
 	public String getInitialWindowPerspectiveId() {
 		return EditorPerspective.ID_PERSPECTIVE;
 	}

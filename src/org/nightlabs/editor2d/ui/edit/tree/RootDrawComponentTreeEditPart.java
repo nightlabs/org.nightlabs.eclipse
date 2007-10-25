@@ -63,7 +63,8 @@ extends DrawComponentContainerTreeEditPart
 //  public Image getImage() {
 //    return null;
 //  }
-  public Image getOutlineImage() {
+  @Override
+	public Image getOutlineImage() {
     return null;
   }
 
@@ -75,7 +76,8 @@ extends DrawComponentContainerTreeEditPart
 //  	installEditPolicy(EditPolicy.COMPONENT_ROLE, new RootComponentEditPolicy());
 //  }  
   
-  protected List getModelChildren()
+  @Override
+	protected List getModelChildren()
   { 
   	if (getFilterMan().isAllFilterSet()) {
   		return getRootDrawComponent().getDrawComponents(); 
@@ -108,7 +110,8 @@ extends DrawComponentContainerTreeEditPart
     return filterChildren;  		  	
   }
   
-  public IPropertySource getPropertySource()
+  @Override
+	public IPropertySource getPropertySource()
   {
     if (propertySource == null)
     {

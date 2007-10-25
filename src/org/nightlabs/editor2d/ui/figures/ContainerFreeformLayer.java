@@ -36,6 +36,7 @@ implements RendererFigure
 	/**
 	 * Overridden to paint only children
 	 */
+	@Override
 	public void paint(Graphics graphics) 
 	{
 		for (Iterator iter = getChildren().iterator(); iter.hasNext();) {
@@ -57,6 +58,7 @@ implements RendererFigure
 	/**
 	 * @see FreeformFigure#setFreeformBounds(Rectangle)
 	 */
+	@Override
 	public void setFreeformBounds(Rectangle bounds) 
 	{
 //  	clearBuffer();
@@ -64,6 +66,7 @@ implements RendererFigure
 //  	helper.setFreeformBounds(bounds);
 	} 
 	
+	@Override
 	public void setBounds(Rectangle rect) 
 	{
 //	clearBuffer();

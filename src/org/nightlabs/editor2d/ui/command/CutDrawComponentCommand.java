@@ -55,6 +55,7 @@ extends Command
 	
 	protected Map<DrawComponent, Integer> dc2Index = new HashMap<DrawComponent, Integer>();
 	
+	@Override
 	public void execute() 
 	{
 		Clipboard clipboard = Clipboard.getDefault();
@@ -68,11 +69,13 @@ extends Command
 		}
 	}
 
+	@Override
 	public void redo() 
 	{
 		execute();
 	}
 
+	@Override
 	public void undo() 
 	{
 		for (Iterator<DrawComponent> it = dcs.iterator(); it.hasNext(); ) 

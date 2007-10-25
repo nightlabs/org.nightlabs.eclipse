@@ -85,6 +85,7 @@ extends AbstractDrawComponentContainerEditPart
   }
   
 //  public static UpdateManager updateManager = null;	
+	@Override
 	protected IFigure createFigure()
 	{
 //	  SmartUpdateFreeformLayer f = new SmartUpdateFreeformLayer(this);
@@ -115,6 +116,7 @@ extends AbstractDrawComponentContainerEditPart
 		return null;
 	}
 	
+	@Override
 	protected void createEditPolicies()
 	{
 		super.createEditPolicies();
@@ -129,7 +131,8 @@ extends AbstractDrawComponentContainerEditPart
   /** 
    * @return a List of all Layers
    */
-  protected List getModelChildren()
+  @Override
+	protected List getModelChildren()
   {  
     return getRootDrawComponent().getDrawComponents();
   }	
@@ -137,7 +140,8 @@ extends AbstractDrawComponentContainerEditPart
   /**
    * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
    */
-  public Object getAdapter(Class adapter) 
+  @Override
+	public Object getAdapter(Class adapter) 
   {    
   	if (adapter == SnapToHelper.class) {
   		List snapStrategies = new ArrayList();
@@ -154,7 +158,7 @@ extends AbstractDrawComponentContainerEditPart
   		if (snapStrategies.size() == 0)
   			return null;
   		if (snapStrategies.size() == 1)
-  			return (SnapToHelper)snapStrategies.get(0);
+  			return snapStrategies.get(0);
 
   		SnapToHelper ss[] = new SnapToHelper[snapStrategies.size()];
   		for (int i = 0; i < snapStrategies.size(); i++)
@@ -164,7 +168,8 @@ extends AbstractDrawComponentContainerEditPart
   	return super.getAdapter(adapter);
   }  
   
-  public IPropertySource getPropertySource()
+  @Override
+	public IPropertySource getPropertySource()
   {
     if (propertySource == null)
     {

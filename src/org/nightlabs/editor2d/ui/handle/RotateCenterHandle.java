@@ -29,6 +29,7 @@ package org.nightlabs.editor2d.ui.handle;
 
 import java.util.List;
 
+import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.DragTracker;
@@ -52,14 +53,16 @@ extends EditorAbstractHandle
       multiple = true;
     }
     setOwner((AbstractDrawComponentEditPart)editParts.get(0));
-    setCursor(EditorCursors.CROSS);
+    setCursor(Cursors.CROSS);
   }
 
-  protected DragTracker createDragTracker() {
+  @Override
+	protected DragTracker createDragTracker() {
     return new RotateCenterTracker((AbstractDrawComponentEditPart)getOwner());
   }
   
-  public void paintFigure(Graphics g) 
+  @Override
+	public void paintFigure(Graphics g) 
   {
     Rectangle r = getBounds();
     r.shrink(1, 1);

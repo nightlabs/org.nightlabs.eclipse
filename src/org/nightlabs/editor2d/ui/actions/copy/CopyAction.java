@@ -59,7 +59,8 @@ extends AbstractEditorSelectionAction
 		super(editor);
 	}
 
-  protected void init() 
+  @Override
+	protected void init() 
   {
   	setText(Messages.getString("org.nightlabs.editor2d.ui.actions.copy.CopyAction.text")); //$NON-NLS-1$
   	setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.actions.copy.CopyAction.tooltip")); //$NON-NLS-1$
@@ -70,6 +71,7 @@ extends AbstractEditorSelectionAction
 	/**
 	*@return true, if objects are selected, except the RootEditPart or LayerEditParts
 	*/
+	@Override
 	protected boolean calculateEnabled() {
 		return !getDefaultSelection(false).isEmpty();
 	}
@@ -78,6 +80,7 @@ extends AbstractEditorSelectionAction
 	 * adds all selected DrawComponents to the {@link Clipboard} 
 	 *  
 	 */
+	@Override
 	public void run() 
 	{
 		Collection<DrawComponent> dcs = getSelection(DrawComponent.class, true);		

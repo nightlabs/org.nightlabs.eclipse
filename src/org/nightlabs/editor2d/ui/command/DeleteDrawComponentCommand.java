@@ -63,10 +63,12 @@ extends Command
 		this.child = child;
 	}	
 	
+	@Override
 	public boolean canUndo() {
 		return wasRemoved;
 	}
 	
+	@Override
 	public void execute() 
 	{
 	  index = parent.getDrawComponents().indexOf(child);
@@ -76,12 +78,14 @@ extends Command
     wasRemoved = true;
 	}
 	
+	@Override
 	public void redo() 
 	{	  
 //    parent.removeDrawComponent(index);
 		parent.removeDrawComponent(child);		
 	}
 	
+	@Override
 	public void undo() 
 	{	  
     parent.addDrawComponent(child, index);    

@@ -30,6 +30,7 @@ package org.nightlabs.editor2d.ui.edit;
 import java.beans.PropertyChangeEvent;
 
 import org.eclipse.ui.views.properties.IPropertySource;
+import org.nightlabs.editor2d.IFillable;
 import org.nightlabs.editor2d.ShapeDrawComponent;
 import org.nightlabs.editor2d.j2d.GeneralShape;
 import org.nightlabs.editor2d.ui.model.ShapeDrawComponentPropertySource;
@@ -50,7 +51,8 @@ extends DrawComponentEditPart
   	return getShapeDrawComponent().getGeneralShape();
   }
     
-  public IPropertySource getPropertySource()
+  @Override
+	public IPropertySource getPropertySource()
   {
     if (propertySource == null)
     {
@@ -60,6 +62,7 @@ extends DrawComponentEditPart
     return propertySource;
   }
   
+	@Override
 	protected void propertyChanged(PropertyChangeEvent evt) 
 	{
 		super.propertyChanged(evt);
@@ -72,7 +75,7 @@ extends DrawComponentEditPart
 			refreshVisuals();
 			return;
 		}
-		else if (propertyName.equals(ShapeDrawComponent.PROP_FILL)) {
+		else if (propertyName.equals(IFillable.PROP_FILL)) {
 			refreshVisuals();
 			return;
 		}

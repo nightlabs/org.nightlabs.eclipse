@@ -50,7 +50,8 @@ extends Command
   	this.newIndex = newIndex;
   }
 
-  public void execute() 
+  @Override
+	public void execute() 
   {
   	// if the same parent just change index in list
   	if (parent.equals(child.getParent())) {
@@ -66,7 +67,8 @@ extends Command
   	}
   }
   
-  public void undo() 
+  @Override
+	public void undo() 
   {
   	if (oldParent == null) {
     	parent.removeDrawComponent(child);
@@ -78,7 +80,8 @@ extends Command
   	}
   }
   
-  public void redo()
+  @Override
+	public void redo()
   {
   	execute();
   }

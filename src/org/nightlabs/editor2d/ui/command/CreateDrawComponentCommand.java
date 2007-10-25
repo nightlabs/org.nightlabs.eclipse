@@ -59,6 +59,7 @@ extends Command
 	  this.drawOrderIndex = index;
 	}
 	
+	@Override
 	public void execute() 
 	{
     drawComponent.setBounds(J2DUtil.toAWTRectangle(rect));	  
@@ -66,10 +67,12 @@ extends Command
 		drawOrderIndex = parent.getDrawComponents().indexOf(drawComponent);		
 	}	
 		
+	@Override
 	public void redo() { 
     parent.addDrawComponent(drawComponent, drawOrderIndex);    
 	}
 		
+	@Override
 	public void undo() { 
     parent.removeDrawComponent(drawComponent);
 	}	

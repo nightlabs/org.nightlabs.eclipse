@@ -53,6 +53,7 @@ extends Shape
 	/**
 	 * @see org.eclipse.draw2d.Shape#fillShape(org.eclipse.draw2d.Graphics)
 	 */
+	@Override
 	protected void fillShape(Graphics graphics) {
 		graphics.fillPath(path);
 	}
@@ -60,12 +61,14 @@ extends Shape
 	/**
 	 * @see org.eclipse.draw2d.Shape#outlineShape(org.eclipse.draw2d.Graphics)
 	 */
+	@Override
 	protected void outlineShape(Graphics graphics) {
 		graphics.drawPath(path);
 	}
 
 	protected float[] boundsArray = new float[4];
 	
+	@Override
 	public Rectangle getBounds() 
 	{
 		path.getBounds(boundsArray);

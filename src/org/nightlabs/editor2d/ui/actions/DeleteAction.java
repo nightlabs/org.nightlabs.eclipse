@@ -119,6 +119,7 @@ extends AbstractEditorSelectionAction
 	/**
 	 * Performs the delete action on the selected objects.
 	 */
+	@Override
 	public void run() {
 		execute(createDeleteCommand(getSelectedObjects()));
 	}

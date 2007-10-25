@@ -49,6 +49,7 @@ extends org.eclipse.gef.ui.parts.TreeViewer
 		return treeViewer;
 	}
 	
+	@Override
 	public Control createControl(Composite parent) 
 	{
 		Tree tree = new Tree(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);

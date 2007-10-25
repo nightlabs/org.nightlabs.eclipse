@@ -39,6 +39,7 @@ public class DrawComponentEditPolicy
 extends ComponentEditPolicy
 {
 
+	@Override
 	protected Command createDeleteCommand(GroupRequest deleteRequest) 
 	{
 		Object parent = getHost().getParent().getModel();

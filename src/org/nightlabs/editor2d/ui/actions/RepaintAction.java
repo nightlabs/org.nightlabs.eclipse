@@ -56,10 +56,12 @@ extends AbstractEditorAction
 	/**
 	 * @see org.nightlabs.editor2d.ui.actions.AbstractEditorAction#calculateEnabled()
 	 */
+	@Override
 	protected boolean calculateEnabled() {
 		return true;
 	}
 
+	@Override
 	protected void init() 
 	{
 		setId(ID);
@@ -68,6 +70,7 @@ extends AbstractEditorAction
 		setImageDescriptor(SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(), RepaintAction.class));
 	}
 
+	@Override
 	public void run() {
 		getEditor().updateViewer();
 	}

@@ -31,11 +31,9 @@ import java.util.Map;
 
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -237,7 +235,7 @@ implements IWorkbenchPreferencePage
 		@Override
 		public String getText(Object element) 
 		{			
-			String editorID = getDocumentConfigModule().getEditorClass2EditorID().get((Class)element);
+			String editorID = getDocumentConfigModule().getEditorClass2EditorID().get(element);
 			IEditorDescriptor editorDescriptor = PlatformUI.getWorkbench().getEditorRegistry().findEditor(editorID);
 			if (editorDescriptor != null) {
 				return editorDescriptor.getLabel();

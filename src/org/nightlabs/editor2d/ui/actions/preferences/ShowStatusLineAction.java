@@ -52,6 +52,7 @@ extends PreferencesAction
 		super(editor, AS_CHECK_BOX);
 	}
 
+	@Override
 	protected void init() 
 	{
 		setId(ID);
@@ -60,10 +61,12 @@ extends PreferencesAction
 		setActionDefinitionId(EditorCommandConstants.SHOW_STATUSLINE_ID);
 	}	
 	
+	@Override
 	public boolean isChecked() {
 		return prefConfMod.isShowStatusLine();
 	}
 
+	@Override
 	public void run() {
 		prefConfMod.setShowStatusLine(!isChecked());
 	}	

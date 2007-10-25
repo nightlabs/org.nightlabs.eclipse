@@ -138,8 +138,8 @@ extends ColorUtil
 	  {
 		  double ratioX = ((double)w2) / ((double)w1);
 		  double ratioY = ((double)h2) / ((double)h1);	  
-	    double x = (double)x1;
-	    double y = (double)y1;
+	    double x = x1;
+	    double y = y1;
 	    double distanceX = x - (x*ratioX);
 	    double distanceY = y - (y*ratioY);
 	    at.setToIdentity();
@@ -222,8 +222,8 @@ extends ColorUtil
     {
       double ratioX = ((double)w2) / ((double)w1);
       double ratioY = ((double)h2) / ((double)h1);    
-      double x = (double)x1;
-      double y = (double)y1;
+      double x = x1;
+      double y = y1;
       double distanceX = x - (x*ratioX);
       double distanceY = y - (y*ratioY);
       at.setToIdentity();

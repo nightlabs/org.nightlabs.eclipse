@@ -45,6 +45,7 @@ extends ShapeDrawComponentPropertySource
 		return (EllipseDrawComponent) drawComponent;
 	}
 	
+	@Override
 	protected List<IPropertyDescriptor> createPropertyDescriptors() 
 	{
 		List<IPropertyDescriptor> descriptors = super.createPropertyDescriptors();
@@ -61,6 +62,7 @@ extends ShapeDrawComponentPropertySource
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.views.properties.IPropertySource#setPropertyValue(java.lang.Object, java.lang.Object)
 	 */
+	@Override
 	public void setPropertyValue(Object id, Object value) 
 	{
 		super.setPropertyValue(id, value);
@@ -76,6 +78,7 @@ extends ShapeDrawComponentPropertySource
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.views.properties.IPropertySource#getPropertyValue(java.lang.Object)
 	 */
+	@Override
 	public Object getPropertyValue(Object id) 
 	{
 		Object o = super.getPropertyValue(id);

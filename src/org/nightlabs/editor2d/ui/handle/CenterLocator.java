@@ -39,7 +39,8 @@ extends AbstractLocator
     super(owner);
   }
 
-  protected Point getLocation() {
+  @Override
+	protected Point getLocation() {
     return figure.getBounds().getCenter();
   } 
       

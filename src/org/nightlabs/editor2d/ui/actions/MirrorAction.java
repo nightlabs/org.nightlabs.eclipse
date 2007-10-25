@@ -57,7 +57,8 @@ extends AbstractEditorSelectionAction
 		super(editor);
 	}
 
-  protected void init() 
+  @Override
+	protected void init() 
   {
   	setText("Mirror");
   	setToolTipText("Mirrors the current selected objects");
@@ -67,10 +68,12 @@ extends AbstractEditorSelectionAction
 	/**
 	*@return true, if objects are selected, except the RootEditPart or LayerEditParts
 	*/
+	@Override
 	protected boolean calculateEnabled() {
 		return !getDefaultSelection(false).isEmpty();
 	}
 
+	@Override
 	public void run() 
 	{
 		Collection<DrawComponent> dcs = getSelection(DrawComponent.class, true);		

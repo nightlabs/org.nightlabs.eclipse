@@ -54,6 +54,7 @@ extends DrawComponentPropertySource
 		return (ImageDrawComponent) drawComponent;
 	}
 
+	@Override
 	protected List<IPropertyDescriptor> createPropertyDescriptors() 
 	{
 		super.createPropertyDescriptors();
@@ -71,6 +72,7 @@ extends DrawComponentPropertySource
 		return descriptors;
 	}	
 		
+	@Override
 	public Object getPropertyValue(Object id) 
 	{
 		if (id.equals(ImageDrawComponent.PROP_ORIGINAL_FILE_NAME)) {

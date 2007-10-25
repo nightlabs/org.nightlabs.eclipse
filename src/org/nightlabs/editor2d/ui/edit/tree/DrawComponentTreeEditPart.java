@@ -39,6 +39,7 @@ import org.eclipse.ui.internal.decorators.DecoratorDefinition;
 import org.eclipse.ui.internal.decorators.DecoratorManager;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.nightlabs.editor2d.DrawComponent;
+import org.nightlabs.editor2d.IVisible;
 import org.nightlabs.editor2d.ui.editpolicy.DrawComponentEditPolicy;
 import org.nightlabs.editor2d.ui.editpolicy.tree.DrawComponentTreeEditPolicy;
 import org.nightlabs.editor2d.ui.model.DrawComponentPropertySource;
@@ -57,7 +58,8 @@ extends AbstractTreeEditPart
     super(drawComponent);
   } 
   
-  public Object getAdapter(Class key)
+  @Override
+	public Object getAdapter(Class key)
   {
     /* override the default behavior defined in AbstractEditPart
     *  which would expect the model to be a property sourced. 
@@ -101,7 +103,8 @@ extends AbstractTreeEditPart
   	return getText();
   }
   
-  protected Image getImage() {
+  @Override
+	protected Image getImage() {
   	return getOutlineImage();
   }
   
@@ -115,7 +118,8 @@ extends AbstractTreeEditPart
     return propertySource;
   }
   
-  protected String getText()
+  @Override
+	protected String getText()
   {
   	return getDrawComponent().getName();
   }
@@ -128,7 +132,8 @@ extends AbstractTreeEditPart
     return (DrawComponent) getModel();
   }  
     
-  public void activate()
+  @Override
+	public void activate()
   {
     if (isActive())
         return;
@@ -139,7 +144,8 @@ extends AbstractTreeEditPart
     super.activate();
   }
 
-  public void deactivate()
+  @Override
+	public void deactivate()
   {
     if (!isActive())
         return;
@@ -180,7 +186,8 @@ extends AbstractTreeEditPart
    * Creates and installs pertinent EditPolicies
    * for this.
    */
-  protected void createEditPolicies() 
+  @Override
+	protected void createEditPolicies() 
   {
   	installEditPolicy(EditPolicy.COMPONENT_ROLE, new DrawComponentEditPolicy());
 //  	installEditPolicy(EditPolicy.COMPONENT_ROLE, new DrawComponentTreeComponentEditPolicy());  	
@@ -238,7 +245,7 @@ extends AbstractTreeEditPart
 			refreshVisuals();
 			return;			
 		}
-		else if (propertyName.equals(DrawComponent.PROP_VISIBLE)) {
+		else if (propertyName.equals(IVisible.PROP_VISIBLE)) {
 			notifyLabelDecorator();
 			refreshVisuals();
 			return;

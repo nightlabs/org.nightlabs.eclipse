@@ -28,6 +28,7 @@
 package org.nightlabs.editor2d.ui.handle;
 
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -64,7 +65,7 @@ extends EditorAbstractHandle
     	case(PositionConstants.EAST):
     	  return EditorCursors.SHEAR_VERTICAL;    		
     }
-    return EditorCursors.NO;
+    return Cursors.NO;
   } 
 //  public void paintFigure(Graphics g) 
 //  {
@@ -78,7 +79,8 @@ extends EditorAbstractHandle
 //    }    
 //  } 
   
-  public void paintFigure(Graphics g) 
+  @Override
+	public void paintFigure(Graphics g) 
   {
     // TODO: draw Rotate Handles       
     Rectangle r = getBounds();
@@ -124,7 +126,8 @@ extends EditorAbstractHandle
     }
   }
   
-  protected DragTracker createDragTracker() {
+  @Override
+	protected DragTracker createDragTracker() {
     return new ShearTracker(getOwner(), cursorDirection);
   }
 

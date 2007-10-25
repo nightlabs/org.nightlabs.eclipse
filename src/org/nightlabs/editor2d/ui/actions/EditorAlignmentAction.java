@@ -124,7 +124,8 @@ extends SelectionAction
   /**
    * @see org.eclipse.gef.ui.actions.WorkbenchPartAction#calculateEnabled()
    */
-  protected boolean calculateEnabled() {
+  @Override
+	protected boolean calculateEnabled() {
   	operationSet = null;
   	Command cmd = createAlignmentCommand();
   	if (cmd == null)
@@ -152,7 +153,8 @@ extends SelectionAction
   /**
    * @see org.eclipse.gef.Disposable#dispose()
    */
-  public void dispose() {
+  @Override
+	public void dispose() {
   	operationSet = Collections.EMPTY_LIST;
   	super.dispose();
   }
@@ -240,7 +242,8 @@ extends SelectionAction
   /**
    * @see org.eclipse.jface.action.IAction#run()
    */
-  public void run() {
+  @Override
+	public void run() {
   	operationSet = null;
   	execute(createAlignmentCommand());
   }

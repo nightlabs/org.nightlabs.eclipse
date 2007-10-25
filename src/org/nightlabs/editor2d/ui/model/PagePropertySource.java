@@ -53,6 +53,7 @@ extends DrawComponentPropertySource
 		return (PageDrawComponent) drawComponent;
 	}
 	
+	@Override
 	protected List<IPropertyDescriptor> createPropertyDescriptors() 
 	{
 		List<IPropertyDescriptor> descriptors = getDescriptors();
@@ -86,7 +87,7 @@ extends DrawComponentPropertySource
 	
 	protected PropertyDescriptor createPageWidthPD() 
 	{
-		PropertyDescriptor desc = new DoublePropertyDescriptor(PageDrawComponent.PROP_WIDTH,
+		PropertyDescriptor desc = new DoublePropertyDescriptor(DrawComponent.PROP_WIDTH,
 				Messages.getString("org.nightlabs.editor2d.ui.model.PagePropertySource.width"), true); //$NON-NLS-1$
 		desc.setCategory(CATEGORY_GEOM);
 		return desc;
@@ -161,6 +162,7 @@ extends DrawComponentPropertySource
 	/**
 	 * @see org.eclipse.ui.views.properties.IPropertySource#getPropertyValue(java.lang.Object)
 	 */
+	@Override
 	public Object getPropertyValue(Object id) 
 	{
 		if (id.equals(PageDrawComponent.PROP_ORIENTATION)) {
@@ -199,6 +201,7 @@ extends DrawComponentPropertySource
 	/**
 	 * @see org.eclipse.ui.views.properties.IPropertySource#setPropertyValue(java.lang.Object, java.lang.Object)
 	 */	
+	@Override
 	public void setPropertyValue(Object id, Object value) 
 	{
 		if (id.equals(PageDrawComponent.PROP_ORIENTATION)) {

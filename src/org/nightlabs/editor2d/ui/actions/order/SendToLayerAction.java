@@ -57,6 +57,7 @@ extends AbstractChangeOrderSelectionAction
 
 	protected Layer layer = null;
 	
+	@Override
 	public void init() 
 	{
 		setText(layer.getName());
@@ -67,6 +68,7 @@ extends AbstractChangeOrderSelectionAction
 	/**
 	 * @return the index of the primary selected DrawComponent
 	 */
+	@Override
 	public int getNewIndex() {		
 		return indexOf(primarySelected);
 	}
@@ -74,6 +76,7 @@ extends AbstractChangeOrderSelectionAction
 	/**
 	 * @return the layer the selected objects should be send to 
 	 */
+	@Override
 	public DrawComponentContainer getContainer() {
 		return layer;
 	}

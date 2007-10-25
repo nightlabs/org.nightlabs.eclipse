@@ -50,7 +50,8 @@ implements EditorRequestConstants
     super();
   }
   
-  protected boolean handleDoubleClick(int button) 
+  @Override
+	protected boolean handleDoubleClick(int button) 
   {
     if (EditorStateManager.getCurrentState() == EditorStateManager.STATE_NORMAL_SELECTION) 
     {
@@ -71,7 +72,8 @@ implements EditorRequestConstants
     return true;
   }
     
-  protected String getCommandName() 
+  @Override
+	protected String getCommandName() 
   {
     if (isInState(STATE_ROTATE) || isInState(STATE_ROTATE_IN_PROGRESS))
       return REQ_ROTATE;
@@ -79,13 +81,15 @@ implements EditorRequestConstants
     return super.getCommandName();
   }
      
-  public void activate() 
+  @Override
+	public void activate() 
   {
     EditorStateManager.setCurrentState(EditorStateManager.STATE_NORMAL_SELECTION);    
     super.activate();
   }
     
-  protected boolean handleKeyDown(KeyEvent e) 
+  @Override
+	protected boolean handleKeyDown(KeyEvent e) 
   {
     if (e.character == SWT.ESC) 
     {
@@ -98,12 +102,14 @@ implements EditorRequestConstants
 
   // TODO: find out why mouseHover reacts so slow, and how
   // the hover (also with mouseMove workaround) can be speed up
+	@Override
 	public void mouseHover(MouseEvent me, EditPartViewer viewer) 
 	{ 
 		super.mouseHover(me, viewer);
 //		LOGGER.debug("mouseHover!");
 	}
 
+	@Override
 	public void mouseMove(MouseEvent me, EditPartViewer viewer) 
 	{
 		super.mouseMove(me, viewer);				

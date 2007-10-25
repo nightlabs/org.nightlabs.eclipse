@@ -47,7 +47,8 @@ implements EditorRequestConstants
     super(part);
   }
 
-  protected boolean calculateEnabled() 
+  @Override
+	protected boolean calculateEnabled() 
   {
     if (EditorStateManager.getCurrentState() != EditorStateManager.STATE_NORMAL_SELECTION) {
       return true;
@@ -58,7 +59,8 @@ implements EditorRequestConstants
   /**
    * @see org.eclipse.gef.ui.actions.WorkbenchPartAction#init()
    */
-  protected void init() 
+  @Override
+	protected void init() 
   {
   	super.init();
   	setText(Messages.getString("org.nightlabs.editor2d.ui.actions.NormalSelectionAction.text")); //$NON-NLS-1$
@@ -67,7 +69,8 @@ implements EditorRequestConstants
 //  	setImageDescriptor(SharedImages.DESC_SELECTION_TOOL_16);
   }  
     
-  public void run() 
+  @Override
+	public void run() 
   {
   	if (!getSelectedObjects().isEmpty()) {
   		EditorStateManager.setNormalSelectionMode(getSelectedObjects());

@@ -57,7 +57,8 @@ extends EditorConstrainedEditPolicy
   /**
    * @see org.eclipse.gef.EditPolicy#deactivate()
    */
-  public void deactivate() {
+  @Override
+	public void deactivate() {
   	if (feedback != null) {
   		removeFeedback(feedback);
   		feedback = null;

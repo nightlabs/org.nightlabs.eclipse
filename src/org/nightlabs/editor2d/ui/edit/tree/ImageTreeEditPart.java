@@ -51,7 +51,8 @@ extends DrawComponentTreeEditPart
 //  protected Image getImage() {
 //    return IMAGE_ICON;
 //  }
-  protected Image getOutlineImage() {
+  @Override
+	protected Image getOutlineImage() {
     return IMAGE_ICON;
   }
   
@@ -59,7 +60,8 @@ extends DrawComponentTreeEditPart
   	return (ImageDrawComponent) getModel();
   }
   
-  public IPropertySource getPropertySource()
+  @Override
+	public IPropertySource getPropertySource()
   {
     if (propertySource == null) 
     {

@@ -41,7 +41,8 @@ extends AbstractRendererModeAction
     super(editor);
   }
 
-  public void init() 
+  @Override
+	public void init() 
   {
     setText(Messages.getString("org.nightlabs.editor2d.ui.actions.ShowDefaultRenderAction.text")); //$NON-NLS-1$
     setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.actions.ShowDefaultRenderAction.tooltip")); //$NON-NLS-1$
@@ -49,7 +50,8 @@ extends AbstractRendererModeAction
 //    setImageDescriptor(ImageDescriptor.createFromFile(EditorPlugin.class, "icons/sun16.gif"));
   } 
     
-  public String getRenderMode() {
+  @Override
+	public String getRenderMode() {
     return RenderConstants.DEFAULT_MODE;
   }
 }

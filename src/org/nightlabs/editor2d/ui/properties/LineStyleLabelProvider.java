@@ -34,7 +34,8 @@ import org.nightlabs.base.ui.util.ImageUtil;
 public class LineStyleLabelProvider 
 extends LabelProvider 
 {
-  public Image getImage(Object element) 
+  @Override
+	public Image getImage(Object element) 
   {
     if (element instanceof Integer) 
     {
@@ -44,7 +45,8 @@ extends LabelProvider
     return super.getImage(element);
   }
 
-  public String getText(Object element) 
+  @Override
+	public String getText(Object element) 
   {
     if (element instanceof Integer) 
     {

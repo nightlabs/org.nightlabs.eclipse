@@ -58,11 +58,13 @@ extends DrawComponentTreeEditPart
 //  public Image getImage() {
 //    return ELLIPSE_ICON;
 //  }
-  public Image getOutlineImage() {
+  @Override
+	public Image getOutlineImage() {
     return ELLIPSE_ICON;
   }
 
-  public IPropertySource getPropertySource()
+  @Override
+	public IPropertySource getPropertySource()
   {
     if (propertySource == null)
     {
@@ -76,6 +78,7 @@ extends DrawComponentTreeEditPart
   	return (EllipseDrawComponent) getDrawComponent();
   }
   
+	@Override
 	protected void propertyChanged(PropertyChangeEvent evt) 
 	{
 		super.propertyChanged(evt);

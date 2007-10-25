@@ -47,6 +47,7 @@ extends CreateDrawComponentCommand
 		setLabel(Messages.getString("org.nightlabs.editor2d.ui.command.CreateShapeCommand.label")); 	   //$NON-NLS-1$
 	}
 		
+	@Override
 	public void execute() 
 	{		
 	  if (generalShape != null)

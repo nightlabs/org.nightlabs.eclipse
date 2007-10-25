@@ -237,6 +237,7 @@ implements FreeformFigure, BufferedFreeformLayer
 		return bufferedImage;
 	}
 	
+	@Override
 	public void paint(Graphics graphics) 
 	{
 		long time = System.currentTimeMillis();
@@ -349,6 +350,7 @@ implements FreeformFigure, BufferedFreeformLayer
 	/**
 	 * @see IFigure#add(IFigure, Object, int)
 	 */
+	@Override
 	public void add(IFigure child, Object constraint, int index) {
 		super.add(child, constraint, index);
 		helper.hookChild(child);
@@ -388,6 +390,7 @@ implements FreeformFigure, BufferedFreeformLayer
 	/**
 	 * @see Figure#primTranslate(int, int)
 	 */
+	@Override
 	public void primTranslate(int dx, int dy) {
 		bounds.x += dx;
 		bounds.y += dy;
@@ -396,6 +399,7 @@ implements FreeformFigure, BufferedFreeformLayer
 	/**
 	 * @see IFigure#remove(IFigure)
 	 */
+	@Override
 	public void remove(IFigure child) {
 		helper.unhookChild(child);
 		super.remove(child);
@@ -419,6 +423,7 @@ implements FreeformFigure, BufferedFreeformLayer
 //  	helper.setFreeformBounds(bounds);
 	} 
 	
+	@Override
 	public void setBounds(Rectangle rect) 
 	{
 //  	clearBuffer();

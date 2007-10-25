@@ -59,6 +59,7 @@ extends MoveHandle
 	 * Initializes the handle.  Sets the {@link DragTracker} and
 	 * DragCursor.
 	 */
+	@Override
 	protected void initialize() 
 	{	
 //		super.initialize();

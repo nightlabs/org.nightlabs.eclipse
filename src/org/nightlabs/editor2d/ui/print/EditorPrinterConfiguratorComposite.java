@@ -68,6 +68,7 @@ extends PrinterConfiguratorComposite
 		return new EditorPageSetupComposite(dc, getPageFormat(), parent, SWT.NONE); 
 	}
 	
+	@Override
 	protected void initGUI(Composite parent) {
 		
 	}

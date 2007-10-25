@@ -34,6 +34,7 @@ import java.util.List;
 import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.ui.views.properties.IPropertySource;
+import org.nightlabs.editor2d.IVisible;
 import org.nightlabs.editor2d.Layer;
 import org.nightlabs.editor2d.ui.figures.ContainerFreeformLayer;
 import org.nightlabs.editor2d.ui.model.LayerPropertySource;
@@ -49,7 +50,8 @@ extends AbstractDrawComponentContainerEditPart
     super(layer);
   }
 	
-  protected IFigure createFigure() 
+  @Override
+	protected IFigure createFigure() 
   {    
 //    IFigure f = new FreeformLayer();    
   	
@@ -70,7 +72,8 @@ extends AbstractDrawComponentContainerEditPart
     return (Layer) getModel();
   }
   
-  protected List getModelChildren() 
+  @Override
+	protected List getModelChildren() 
   {  
     if (getLayer().isVisible()) {
       return getLayer().getDrawComponents();
@@ -79,18 +82,20 @@ extends AbstractDrawComponentContainerEditPart
     }
   }
       
+	@Override
 	protected void propertyChanged(PropertyChangeEvent evt) 
 	{
 		super.propertyChanged(evt);
 		String propertyName = evt.getPropertyName();
-		if (propertyName.equals(Layer.PROP_VISIBLE)) {
+		if (propertyName.equals(IVisible.PROP_VISIBLE)) {
 			refreshChildren();
 			return;
 		}
 		// TODO: implement Layer.PROP_EDITABLE
 	}
 	
-  public IPropertySource getPropertySource()
+  @Override
+	public IPropertySource getPropertySource()
   {
     if (propertySource == null){
       propertySource = new LayerPropertySource(getLayer());

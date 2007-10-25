@@ -51,6 +51,7 @@ extends Draw2DBaseRenderer
 		super();
 	}
 
+	@Override
 	public void paint(DrawComponent dc, Graphics g) 
 	{
     ShapeDrawComponent sdc = (ShapeDrawComponent) dc;

@@ -104,7 +104,8 @@ implements EditorRequestConstants
    * Creates the figure used for feedback.
    * @return the new feedback figure
    */
-  protected IFigure createDragSourceFeedbackFigure() 
+  @Override
+	protected IFigure createDragSourceFeedbackFigure() 
   {       	
     IFigure figure = getCustomFeedbackFigure(getHost().getModel());
   	figure.setBounds(getInitialFeedbackBounds());
@@ -137,7 +138,8 @@ implements EditorRequestConstants
   	return FeedbackUtil.getCustomFeedbackFigure(modelPart);
   }  
   
-  protected Rectangle getInitialFeedbackBounds() 
+  @Override
+	protected Rectangle getInitialFeedbackBounds() 
   {
 //    LOGGER.debug("InitalFeedbackBounds = "+getHostFigure().getBounds());
   	return getHostFigure().getBounds();
@@ -146,7 +148,8 @@ implements EditorRequestConstants
   /**
    * @see org.eclipse.gef.EditPolicy#understandsRequest(org.eclipse.gef.Request)
    */
-  public boolean understandsRequest(Request request) 
+  @Override
+	public boolean understandsRequest(Request request) 
   {
   	if (REQ_EDIT_SHAPE.equals(request.getType()))
   		return true;
@@ -171,7 +174,8 @@ implements EditorRequestConstants
   	return super.understandsRequest(request);
   }
     
-  protected List createSelectionHandles() 
+  @Override
+	protected List createSelectionHandles() 
   {
   	List list = new ArrayList();  	
     if (EditorStateManager.getCurrentState() == EditorStateManager.STATE_EDIT_SHAPE) 
@@ -267,7 +271,8 @@ implements EditorRequestConstants
   	}
   }  
   
-  protected void removeSelectionHandles() 
+  @Override
+	protected void removeSelectionHandles() 
   {
   	if (handles == null)  	  
   		return;
@@ -284,7 +289,8 @@ implements EditorRequestConstants
   	handles = null;
   }  
   
-  public void eraseSourceFeedback(Request request) 
+  @Override
+	public void eraseSourceFeedback(Request request) 
   {
     if (request.getType().equals(REQ_EDIT_SHAPE))
       eraseEditShapeFeedback((EditorEditShapeRequest)request);
@@ -346,7 +352,8 @@ implements EditorRequestConstants
 //      super.showSourceFeedback(request);
 //  }
 
-  public void showSourceFeedback(Request request) 
+  @Override
+	public void showSourceFeedback(Request request) 
   {
     if (request.getType().equals(REQ_EDIT_SHAPE))
       showEditShapeFeedback((EditorEditShapeRequest)request);    
@@ -638,7 +645,8 @@ implements EditorRequestConstants
    * Lazily creates and returns the feedback figure used during drags.
    * @return the feedback figure
    */
-  protected IFigure getDragSourceFeedbackFigure() 
+  @Override
+	protected IFigure getDragSourceFeedbackFigure() 
   {
   	if (feedback == null)
   		feedback = createDragSourceFeedbackFigure();
@@ -648,7 +656,8 @@ implements EditorRequestConstants
   /**
    * @see org.eclipse.gef.EditPolicy#deactivate()
    */
-  public void deactivate() {
+  @Override
+	public void deactivate() {
   	if (feedback != null) {
   		removeFeedback(feedback);
   		feedback = null;
@@ -662,7 +671,8 @@ implements EditorRequestConstants
   protected boolean showFeedBackText = true;
   protected Label feedbackLabel;
     
-  protected void showChangeBoundsFeedback(ChangeBoundsRequest request) 
+  @Override
+	protected void showChangeBoundsFeedback(ChangeBoundsRequest request) 
   {
   	IFigure feedback = getDragSourceFeedbackFigure();
   	
@@ -686,7 +696,8 @@ implements EditorRequestConstants
    * received of the appropriate type.
    * @param request the request
    */
-  protected void eraseChangeBoundsFeedback(ChangeBoundsRequest request) 
+  @Override
+	protected void eraseChangeBoundsFeedback(ChangeBoundsRequest request) 
   {
   	if (feedback != null) {
   		removeFeedback(feedback);

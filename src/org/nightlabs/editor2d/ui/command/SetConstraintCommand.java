@@ -38,12 +38,14 @@ extends Command
 	private java.awt.Rectangle oldBounds;
 	private java.awt.Rectangle newBounds;
 
+	@Override
 	public void execute() 
 	{
 	  oldBounds = new java.awt.Rectangle(part.getBounds());  
 	  part.setBounds(newBounds);	  
 	}
 	
+	@Override
 	public String getLabel() 
 	{
 	  if ((oldBounds.getWidth() == newBounds.getWidth()) && 
@@ -53,6 +55,7 @@ extends Command
 		return Messages.getString("org.nightlabs.editor2d.ui.command.SetConstraintCommand.label.resize"); //$NON-NLS-1$
 	}	
 	
+	@Override
 	public void redo() {
 	  part.setBounds(newBounds);
 	}
@@ -61,6 +64,7 @@ extends Command
 		this.part = part;
 	}
 		
+	@Override
 	public void undo() {
 	  part.setBounds(oldBounds);
 	}

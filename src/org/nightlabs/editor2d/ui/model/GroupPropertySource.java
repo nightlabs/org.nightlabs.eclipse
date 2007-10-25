@@ -50,6 +50,7 @@ extends DrawComponentPropertySource
 		return (GroupDrawComponent) drawComponent;
 	}
 	
+	@Override
 	protected List<IPropertyDescriptor> createPropertyDescriptors() 
 	{
 		super.createPropertyDescriptors();

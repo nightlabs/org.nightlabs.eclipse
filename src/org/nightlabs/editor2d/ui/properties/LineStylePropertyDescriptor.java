@@ -40,7 +40,8 @@ extends PropertyDescriptor
     setLabelProvider(new LineStyleLabelProvider());
   }
 
-  public CellEditor createPropertyEditor(Composite parent) 
+  @Override
+	public CellEditor createPropertyEditor(Composite parent) 
   {
     CellEditor editor = new LineStyleCellEditor(parent);
     if (getValidator() != null)

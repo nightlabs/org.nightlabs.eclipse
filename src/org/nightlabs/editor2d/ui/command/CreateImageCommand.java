@@ -66,7 +66,8 @@ extends CreateDrawComponentCommand
   	this.renderModeMetaDatas = renderModeMetaDatas;
   }  
   
-  public void execute() 
+  @Override
+	public void execute() 
   {
   	super.execute();  	
     try {

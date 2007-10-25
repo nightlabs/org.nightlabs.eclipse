@@ -95,7 +95,8 @@ implements IAdaptable
     filterMan.addPropertyChangeListener(filterListener);
   }
     
-  public void init(IPageSite pageSite)
+  @Override
+	public void init(IPageSite pageSite)
   {
     super.init(pageSite);
     ActionRegistry registry = editor.getOutlineActionRegistry();
@@ -117,7 +118,7 @@ implements IAdaptable
     getViewer().setContextMenu(provider);
     // TODO: ContextMenu ID Problem      
     getSite().registerContextMenu(
-      EditorContextMenuProvider.CONTEXT_MENU_ID, //$NON-NLS-1$
+      EditorContextMenuProvider.CONTEXT_MENU_ID, 
       provider, getSite().getSelectionProvider());
     getViewer().setKeyHandler(editor.getCommonKeyHandler());
 //    getViewer().addDropTargetListener(
@@ -138,7 +139,8 @@ implements IAdaptable
     
     // Show Outline
     showOutlineAction = new Action() {
-      public void run() {
+      @Override
+			public void run() {
         showPage(ID_OUTLINE);
       }
     };
@@ -148,7 +150,8 @@ implements IAdaptable
     
     // Show Overview
     showOverviewAction = new Action() {
-      public void run() {
+      @Override
+			public void run() {
         showPage(ID_OVERVIEW);
       }
     };
@@ -171,7 +174,8 @@ implements IAdaptable
   private IAction createFilterAction(final Class c) 
   {
 		IAction filterAction = new Action() {
-      public void run() {
+      @Override
+			public void run() {
         filterMan.setFilter(c);
       }  			
 		};
@@ -182,7 +186,8 @@ implements IAdaptable
   private void createFilterEntries(IMenuManager menuMan) 
   {
 		IAction filterNoneAction = new Action() {
-      public void run() {
+      @Override
+			public void run() {
         filterMan.setAllFiltersAvailable();
       }  			
 		};
@@ -200,7 +205,8 @@ implements IAdaptable
   private Canvas overview;  
   private Thumbnail thumbnail;
 //  private PreviewComposite overview;
-  public void createControl(Composite parent){
+  @Override
+	public void createControl(Composite parent){
     pageBook = new PageBook(parent, SWT.NONE);
     outline = getViewer().createControl(pageBook);
     
@@ -221,7 +227,8 @@ implements IAdaptable
     initializeOutlineViewer();    
   }
   
-  public void dispose(){
+  @Override
+	public void dispose(){
     unhookOutlineViewer();
     if (thumbnail != null) {
       thumbnail.deactivate();
@@ -240,7 +247,8 @@ implements IAdaptable
     return null;
   }
 
-  public Control getControl() {
+  @Override
+	public Control getControl() {
     return pageBook;
   }
 

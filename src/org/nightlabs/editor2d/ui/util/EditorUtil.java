@@ -238,30 +238,30 @@ public class EditorUtil
     Rectangle clientArea = zoomManager.getViewport().getClientArea();    
     double zoom = zoomManager.getZoom();
     
-    double absoluteWidth = (double) relativeZoomRectangle.width;
-    double absoluteHeight = (double) relativeZoomRectangle.height;
-    double absoluteX = (double) relativeZoomRectangle.x;	
-    double absoluteY = (double) relativeZoomRectangle.y;    
+    double absoluteWidth = relativeZoomRectangle.width;
+    double absoluteHeight = relativeZoomRectangle.height;
+    double absoluteX = relativeZoomRectangle.x;	
+    double absoluteY = relativeZoomRectangle.y;    
         
-    double absoluteClientWidth = (double) clientArea.width / zoom;
-    double absoluteClientHeight = (double) clientArea.height / zoom;
-    double absoluteClientX = (double) clientArea.x / zoom;
-    double absoluteClientY = (double) clientArea.y / zoom;
+    double absoluteClientWidth = clientArea.width / zoom;
+    double absoluteClientHeight = clientArea.height / zoom;
+    double absoluteClientX = clientArea.x / zoom;
+    double absoluteClientY = clientArea.y / zoom;
         
 	  double zoomX = absoluteClientWidth / absoluteWidth;
 	  double zoomY = absoluteClientHeight / absoluteHeight;
             
     double newZoom = Math.min(zoomX, zoomY);    
-    double realZoom = (double) newZoom * zoom;        
-    double newX = (double) (absoluteX + absoluteClientX) * realZoom;
-    double newY = (double) (absoluteY + absoluteClientY) * realZoom;
+    double realZoom = newZoom * zoom;        
+    double newX = (absoluteX + absoluteClientX) * realZoom;
+    double newY = (absoluteY + absoluteClientY) * realZoom;
     
     zoomManager.setZoom(realZoom);
     // check if the zoom is beyond the max or min zoom
     double z = zoomManager.getZoom();
     if (z != realZoom) {
-    	newX = (double) (absoluteX + absoluteClientX) * z;
-    	newY = (double) (absoluteY + absoluteClientY) * z;    	    	
+    	newX = (absoluteX + absoluteClientX) * z;
+    	newY = (absoluteY + absoluteClientY) * z;    	    	
     } 
     zoomManager.getViewport().setViewLocation((int)newX, (int)newY);    
     zoomManager.getViewport().getUpdateManager().performUpdate(); 
@@ -273,30 +273,30 @@ public class EditorUtil
     Rectangle clientArea = zoomManager.getViewport().getClientArea();
     
     double zoom = zoomManager.getZoom();
-    double absoluteWidth = (double) relativeZoomRectangle.width / zoom;
-    double absoluteHeight = (double) relativeZoomRectangle.height / zoom;
-    double absoluteX = (double) relativeZoomRectangle.x / zoom;	
-    double absoluteY = (double) relativeZoomRectangle.y / zoom;
+    double absoluteWidth = relativeZoomRectangle.width / zoom;
+    double absoluteHeight = relativeZoomRectangle.height / zoom;
+    double absoluteX = relativeZoomRectangle.x / zoom;	
+    double absoluteY = relativeZoomRectangle.y / zoom;
         
-    double absoluteClientWidth = (double) clientArea.width / zoom;
-    double absoluteClientHeight = (double) clientArea.height / zoom;
-    double absoluteClientX = (double) clientArea.x / zoom;
-    double absoluteClientY = (double) clientArea.y / zoom;
+    double absoluteClientWidth = clientArea.width / zoom;
+    double absoluteClientHeight = clientArea.height / zoom;
+    double absoluteClientX = clientArea.x / zoom;
+    double absoluteClientY = clientArea.y / zoom;
         
 	  double zoomX = absoluteClientWidth / absoluteWidth;
 	  double zoomY = absoluteClientHeight / absoluteHeight;
             
     double newZoom = Math.min(zoomX, zoomY);    
-    double realZoom = (double) newZoom * zoom;        
-    double newX = (double) (absoluteX + absoluteClientX) * realZoom;
-    double newY = (double) (absoluteY + absoluteClientY) * realZoom;
+    double realZoom = newZoom * zoom;        
+    double newX = (absoluteX + absoluteClientX) * realZoom;
+    double newY = (absoluteY + absoluteClientY) * realZoom;
     
     zoomManager.setZoom(realZoom);     
     // check if the zoom is beyond the max or min zoom
     double z = zoomManager.getZoom();
     if (z != realZoom) {
-    	newX = (double) (absoluteX + absoluteClientX) * z;
-    	newY = (double) (absoluteY + absoluteClientY) * z;    	    	
+    	newX = (absoluteX + absoluteClientX) * z;
+    	newY = (absoluteY + absoluteClientY) * z;    	    	
     } 
     zoomManager.getViewport().setViewLocation((int)newX, (int)newY);    
     zoomManager.getViewport().getUpdateManager().performUpdate(); 

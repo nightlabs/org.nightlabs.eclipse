@@ -55,7 +55,8 @@ extends AbstractDrawComponentContainerEditPart
 		return (GroupDrawComponent) getModel();
 	}
 	
-  public IPropertySource getPropertySource()
+  @Override
+	public IPropertySource getPropertySource()
   {
     if (propertySource == null) {
       propertySource = new GroupPropertySource(getGroupDrawComponent());

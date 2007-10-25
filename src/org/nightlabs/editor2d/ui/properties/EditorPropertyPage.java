@@ -66,7 +66,8 @@ extends PropertySheetPage
 	}
 
 	private UnitContributionItem unitContributionItem = null;
-  public void makeContributions(IMenuManager menuManager,
+  @Override
+	public void makeContributions(IMenuManager menuManager,
       IToolBarManager toolBarManager, IStatusLineManager statusLineManager) 
   {
 //  	LanguageContributionItem langContribution = new LanguageContributionItem();
@@ -78,6 +79,7 @@ extends PropertySheetPage
   	super.makeContributions(menuManager, toolBarManager, statusLineManager);  	  	
   }
       		
+	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) 
 	{
 		if (!listenerAdded) {

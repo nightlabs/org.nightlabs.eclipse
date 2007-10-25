@@ -60,6 +60,7 @@ extends AbstractEditorAction
 	/**
 	 * @see org.nightlabs.editor2d.ui.actions.AbstractEditorAction#calculateEnabled()
 	 */
+	@Override
 	protected boolean calculateEnabled() {
 //		return isActiveEditor();
 		return true;

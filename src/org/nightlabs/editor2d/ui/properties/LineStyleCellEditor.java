@@ -46,7 +46,8 @@ extends DialogCellEditor
     super(parent, style);
   }
 
-  protected Object openDialogBox(Control cellEditorWindow) 
+  @Override
+	protected Object openDialogBox(Control cellEditorWindow) 
   {
     LineStyleDialog dialog = new LineStyleDialog(cellEditorWindow.getShell());
     dialog.open();
@@ -57,7 +58,8 @@ extends DialogCellEditor
     return new Integer(1);
   }
 
-  protected void updateContents(Object value) 
+  @Override
+	protected void updateContents(Object value) 
   {
     super.updateContents(value);
   }

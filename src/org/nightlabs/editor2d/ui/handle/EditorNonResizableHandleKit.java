@@ -27,6 +27,7 @@ package org.nightlabs.editor2d.ui.handle;
 
 import java.util.List;
 
+import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.GraphicalEditPart;
@@ -154,7 +155,7 @@ extends NonResizableHandleKit
 
 	static Handle createHandle(GraphicalEditPart owner, int direction) {
 		ResizeHandle handle = new ResizeHandle(owner, direction);
-		handle.setCursor(SharedCursors.SIZEALL);
+		handle.setCursor(Cursors.SIZEALL);
 		handle.setDragTracker(new DragEditPartsTracker(owner));
 		return handle;
 	}

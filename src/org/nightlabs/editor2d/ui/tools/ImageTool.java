@@ -39,6 +39,7 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.tools.CreationTool;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.nightlabs.editor2d.image.RenderModeMetaData;
@@ -72,7 +73,8 @@ extends CreationTool
    * Creates a {@link CreateRequest} and sets this tool's factory on the request.
    * @see org.eclipse.gef.tools.TargetingTool#createTargetRequest()
    */
-  protected Request createTargetRequest() 
+  @Override
+	protected Request createTargetRequest() 
   {
     ImageCreateRequest request = new ImageCreateRequest();
     request.setFactory(getFactory());
@@ -103,7 +105,8 @@ extends CreationTool
     return dialog;
   }
    
-  protected boolean handleButtonDown(int button) 
+  @Override
+	protected boolean handleButtonDown(int button) 
   {    
   	FileDialog dialog = openFileDialog();  	  	
     if (!dialog.getFileName().equals(""))  //$NON-NLS-1$
@@ -117,7 +120,7 @@ extends CreationTool
 					originalImage = ImageIO.read(new File(fullPathName));
 					if (originalImage != null) {
 		      	ConvertImageDialog convertDialog = new ConvertImageDialog(getShell(), originalImage);
-		      	if (convertDialog.open() == Dialog.OK) {
+		      	if (convertDialog.open() == Window.OK) {
 		      		renderModeMetaDatas = convertDialog.getConvertImageComposite().getRenderModeMetaDatas();
 		      		doCreation(fullPathName, fileName);		      		
 		      	}											

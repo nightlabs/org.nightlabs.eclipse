@@ -56,6 +56,7 @@ extends PreferencesAction
 		super(editor, AS_CHECK_BOX);
 	}
 
+	@Override
 	protected void init() 
 	{
 		setId(ID);
@@ -64,11 +65,13 @@ extends PreferencesAction
 		setActionDefinitionId(EditorCommandConstants.SHOW_FIGURE_TOOLTIPS_ID);
 	}
 	
+	@Override
 	public boolean isChecked() 
 	{
 		return prefConfMod.isShowToolTips();
 	}
 
+	@Override
 	public void run() 
 	{
 		prefConfMod.setShowToolTips(!isChecked());

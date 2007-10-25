@@ -31,6 +31,7 @@ import java.awt.Font;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -78,7 +79,8 @@ extends CenteredDialog
   private Composite dialogComp;
   private Text previewText;
   
-  protected Control createDialogArea(Composite parent) 
+  @Override
+	protected Control createDialogArea(Composite parent) 
   {
     getShell().setText(Messages.getString("org.nightlabs.editor2d.ui.dialog.CreateTextDialog.title")); //$NON-NLS-1$
     
@@ -128,11 +130,11 @@ extends CenteredDialog
     
   protected void checkEmptyString() 
   {
-  	if (getButton(Dialog.OK) != null) {
+  	if (getButton(Window.OK) != null) {
   		if (text.getText().trim().equals("")) //$NON-NLS-1$
-  			getButton(Dialog.OK).setEnabled(false);
+  			getButton(Window.OK).setEnabled(false);
   		else
-  			getButton(Dialog.OK).setEnabled(true);  		
+  			getButton(Window.OK).setEnabled(true);  		
   	}
   }
   
@@ -203,9 +205,9 @@ extends CenteredDialog
 				String text = sizeCombo.getText();
 				try {
 					Integer.parseInt(text);
-					getButton(Dialog.OK).setEnabled(true);
+					getButton(Window.OK).setEnabled(true);
 				} catch (NumberFormatException e) {
-					getButton(Dialog.OK).setEnabled(false);
+					getButton(Window.OK).setEnabled(false);
 				}
 			}
 		});
@@ -245,7 +247,8 @@ extends CenteredDialog
     return fontStyle;  	
   }
   
-  protected void okPressed() 
+  @Override
+	protected void okPressed() 
   {
   	int fontStyle = getFontStyle();
     int size = Integer.parseInt(sizeCombo.getText());    
@@ -264,7 +267,7 @@ extends CenteredDialog
 	@Override
 	protected Control createContents(Composite parent) {
 		Control ctrl = super.createContents(parent);
-		getButton(Dialog.OK).setEnabled(false);
+		getButton(Window.OK).setEnabled(false);
 		return ctrl;
 	}
 }

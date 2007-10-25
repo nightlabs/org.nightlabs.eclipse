@@ -53,6 +53,7 @@ extends AbstractEditorSelectionAction
 	protected EditPart editPart = null;
 	protected List<DrawComponent> drawComponentsWithSameName = null;
 	
+	@Override
 	protected boolean calculateEnabled() 
 	{
 		if (getSelectedObjects().size() == 1) 
@@ -82,10 +83,12 @@ extends AbstractEditorSelectionAction
 		return drawComponentsWithSameName;		
 	}
 
+	@Override
 	public void run() {
 		selectEditParts(drawComponentsWithSameName);
 	}
 
+	@Override
 	protected void init() 
 	{
 		setId(ID);

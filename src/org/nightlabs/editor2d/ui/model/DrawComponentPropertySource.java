@@ -42,6 +42,7 @@ import org.nightlabs.base.ui.property.CheckboxPropertyDescriptor;
 import org.nightlabs.base.ui.property.DoublePropertyDescriptor;
 import org.nightlabs.base.ui.property.IntPropertyDescriptor;
 import org.nightlabs.editor2d.DrawComponent;
+import org.nightlabs.editor2d.IVisible;
 import org.nightlabs.editor2d.ui.EditorPlugin;
 import org.nightlabs.editor2d.ui.properties.NamePropertyDescriptor;
 import org.nightlabs.editor2d.ui.properties.RotationPropertyDescriptor;
@@ -247,7 +248,7 @@ implements IPropertySource
 			return new IPropertyDescriptor[0];
 		
 		List<IPropertyDescriptor> descriptors = getDescriptors();		
-		return (IPropertyDescriptor[])descriptors.toArray(new IPropertyDescriptor[descriptors.size()]);
+		return descriptors.toArray(new IPropertyDescriptor[descriptors.size()]);
 	}
 	
 	/**
@@ -280,7 +281,7 @@ implements IPropertySource
 		else if (id.equals(DrawComponent.PROP_NAME)) {
 			return drawComponent.getI18nText();
 		}		
-		else if (id.equals(DrawComponent.PROP_VISIBLE)) {
+		else if (id.equals(IVisible.PROP_VISIBLE)) {
 			return new Boolean(drawComponent.isVisible());
 		}
 		else if (id.equals(DrawComponent.PROP_TEMPLATE)) {
@@ -352,7 +353,7 @@ implements IPropertySource
 			drawComponent.setI18nText((I18nText)value);
 			return;
 		}
-		else if (id.equals(DrawComponent.PROP_VISIBLE)) {
+		else if (id.equals(IVisible.PROP_VISIBLE)) {
 			drawComponent.setVisible(((Boolean)value).booleanValue());
 			return;
 		}
@@ -371,7 +372,7 @@ implements IPropertySource
 			
 	protected PropertyDescriptor createVisiblePD() 
 	{
-		PropertyDescriptor pd = new CheckboxPropertyDescriptor(DrawComponent.PROP_VISIBLE, 
+		PropertyDescriptor pd = new CheckboxPropertyDescriptor(IVisible.PROP_VISIBLE, 
 				Messages.getString("org.nightlabs.editor2d.ui.model.DrawComponentPropertySource.visible"), false); //$NON-NLS-1$
 		return pd;
 	}

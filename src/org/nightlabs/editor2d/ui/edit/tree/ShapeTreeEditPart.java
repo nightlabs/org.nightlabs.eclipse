@@ -64,6 +64,7 @@ extends DrawComponentTreeEditPart
 		return (ShapeDrawComponent) getDrawComponent();
 	}
 	
+	@Override
 	public IPropertySource getPropertySource()
   {
     if (propertySource == null) {

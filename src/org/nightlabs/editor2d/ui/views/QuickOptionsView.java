@@ -42,6 +42,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
 import org.eclipse.ui.forms.events.ExpansionEvent;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.forms.widgets.TableWrapData;
@@ -89,6 +90,7 @@ extends ViewPart
 	private NightlabsFormsToolkit toolkit = null;
 	private ScrolledForm form = null;	
 	
+	@Override
 	public void createPartControl(Composite parent) 
 	{
 		toolkit = new NightlabsFormsToolkit(parent.getDisplay());		
@@ -102,12 +104,13 @@ extends ViewPart
 //		form.setText(EditorPlugin.getResourceString("quickOptionsView.name"));		
 		
 		Section sectionDuplicate = toolkit.createSection(form.getBody(), 
-			  Section.DESCRIPTION|Section.TITLE_BAR|
-			  Section.TWISTIE|Section.EXPANDED);
+			  Section.DESCRIPTION|ExpandableComposite.TITLE_BAR|
+			  ExpandableComposite.TWISTIE|ExpandableComposite.EXPANDED);
 		TableWrapData td = new TableWrapData(TableWrapData.FILL_GRAB);
 		sectionDuplicate.setLayoutData(td);		
 		
 		sectionDuplicate.addExpansionListener(new ExpansionAdapter() {
+			@Override
 			public void expansionStateChanged(ExpansionEvent e) {
 				form.reflow(true);
 		  }
@@ -121,12 +124,13 @@ extends ViewPart
 		sectionDuplicate.setClient(sectionClientDuplicate);
 		
 		Section sectionMove = toolkit.createSection(form.getBody(), 
-			  Section.DESCRIPTION|Section.TITLE_BAR|
-			  Section.TWISTIE|Section.EXPANDED);
+			  Section.DESCRIPTION|ExpandableComposite.TITLE_BAR|
+			  ExpandableComposite.TWISTIE|ExpandableComposite.EXPANDED);
 		TableWrapData tdMove = new TableWrapData(TableWrapData.FILL_GRAB);
 		sectionMove.setLayoutData(tdMove);
 		
 		sectionMove.addExpansionListener(new ExpansionAdapter() {
+			@Override
 			public void expansionStateChanged(ExpansionEvent e) {
 				form.reflow(true);
 		  }
@@ -162,6 +166,7 @@ extends ViewPart
 		spinner2Identifier.put(spinner, new Integer(identifier));		
 	}	
 	
+	@Override
 	public void setFocus() 
 	{
 		form.setFocus();
@@ -177,7 +182,7 @@ extends ViewPart
 		public void widgetSelected(SelectionEvent e) 
 		{
 			Spinner t = (Spinner) e.getSource();
-			int identifier = ((Integer) spinner2Identifier.get(t)).intValue();
+			int identifier = (spinner2Identifier.get(t)).intValue();
 			int value = t.getSelection();	
 			setValue(identifier, value);
 		}	
