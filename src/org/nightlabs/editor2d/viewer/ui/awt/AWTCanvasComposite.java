@@ -72,6 +72,7 @@ implements IComponentViewer
 		return (Component) getCanvas();
 	}
 			
+	@Override
 	protected IAutoScrollSupport initAutoScrollSupport() 
 	{	
 		IAutoScrollSupport autoScrollSupport = new AWTCanvasAutoScrollSupport(getComponent());
@@ -80,6 +81,7 @@ implements IComponentViewer
 		return autoScrollSupport;
 	}	
 	  
+	@Override
 	public IMouseManager initMouseManager(IViewer viewer) {
 		return new AWTMouseManager(viewer, getComponent());
 	}
@@ -92,6 +94,7 @@ implements IComponentViewer
 		return (IViewport) getCanvas();
 	}
 	
+	@Override
 	public void updateCanvas() 
 	{
 		if (getCanvas() != null)
@@ -100,6 +103,7 @@ implements IComponentViewer
 
 	private Frame frame = null;
 	private DisplayPanel displayPanel = null;	
+	@Override
 	protected ICanvas createCanvas(Composite parent) 
 	{
 		frame = SWT_AWT.new_Frame(parent);

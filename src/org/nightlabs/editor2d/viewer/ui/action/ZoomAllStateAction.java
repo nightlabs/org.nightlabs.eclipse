@@ -36,6 +36,7 @@ extends ZoomAction
 		
 	}
 
+	@Override
 	public void run() {
 		getZoomSupport().setZoomAll(!getZoomSupport().isZoomAll());
 	}

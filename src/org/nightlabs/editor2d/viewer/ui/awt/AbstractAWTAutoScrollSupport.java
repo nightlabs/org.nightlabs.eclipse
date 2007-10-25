@@ -63,6 +63,7 @@ extends AbstractAutoScrollSupport
 	
 	private ComponentListener resizeListener = new ComponentAdapter()
 	{
+		@Override
 		public void componentResized(ComponentEvent evt) 
 		{
 			Component c = evt.getComponent();
@@ -72,6 +73,7 @@ extends AbstractAutoScrollSupport
 	
 	private MouseMotionListener moveListener = new MouseMotionAdapter()
 	{	
+		@Override
 		public void mouseMoved(MouseEvent evt) {
 			AbstractAWTAutoScrollSupport.this.mouseMoved(evt.getX(), evt.getY());
 		}	
@@ -79,6 +81,7 @@ extends AbstractAutoScrollSupport
 	
 	private MouseListener exitListener = new MouseAdapter()
 	{	
+		@Override
 		public void mouseExited(MouseEvent arg0) {
 			AbstractAWTAutoScrollSupport.this.mouseExited();
 		}	

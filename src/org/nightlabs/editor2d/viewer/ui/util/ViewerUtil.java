@@ -72,7 +72,7 @@ public class ViewerUtil
 			if (container.getBounds().contains(x, y) && size != 0) 
 			{
 				for (int i = size - 1; i >= 0; i--) {
-					DrawComponent child = (DrawComponent) container.getDrawComponents().get(i);				
+					DrawComponent child = container.getDrawComponents().get(i);				
 					if (findObjectAt(child, x, y) != null) {
 						return findObjectAt(child, x, y); 
 					}					
@@ -166,7 +166,7 @@ public class ViewerUtil
 			{
 				for (int i = size - 1; i >= 0; i--) 
 				{
-					DrawComponent child = (DrawComponent) container.getDrawComponents().get(i);
+					DrawComponent child = container.getDrawComponents().get(i);
 					List childrenObjects = findObjectsAt(child, x, y);
 					if (!childrenObjects.isEmpty()) {
 						l.addAll(childrenObjects); 
@@ -246,7 +246,7 @@ public class ViewerUtil
 			{
 				for (int i = size - 1; i >= 0; i--) 
 				{
-					DrawComponent child = (DrawComponent) container.getDrawComponents().get(i);
+					DrawComponent child = container.getDrawComponents().get(i);
 					List childrenObjects = findObjectsAt(child, r);
 					if (!childrenObjects.isEmpty()) {
 						l.addAll(childrenObjects); 

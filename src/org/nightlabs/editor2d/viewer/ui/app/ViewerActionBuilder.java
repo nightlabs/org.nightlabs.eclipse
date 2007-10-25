@@ -47,6 +47,7 @@ extends DefaultActionBuilder
 	
 	private AbstractOpenAction openAction = null;
 
+	@Override
 	public void fillMenuBar(IMenuManager menuBar) 
 	{
 		super.fillMenuBar(menuBar);
@@ -54,6 +55,7 @@ extends DefaultActionBuilder
 		getFileMenu().insertAfter(openAction.getId(), new Separator());
 	}
 
+	@Override
 	protected void makeActions(IWorkbenchWindow window) 
 	{
 		super.makeActions(window);

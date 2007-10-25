@@ -80,8 +80,8 @@ extends BaseTool
 			{
 				int startX = getRelativeX(startPoint.x);
 				int startY = getRelativeY(startPoint.y);		
-				int width = (int) Math.abs(currentX - startX);
-				int height = (int) Math.abs(currentY - startY);
+				int width = Math.abs(currentX - startX);
+				int height = Math.abs(currentY - startY);
 
 				if (!rectAdded) {
 					initRectangle();

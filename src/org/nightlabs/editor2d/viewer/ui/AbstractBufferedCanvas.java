@@ -46,14 +46,17 @@ implements IBufferedCanvas, IViewport
 		return pcs;
 	}
 	
+	@Override
 	public void addPropertyChangeListener(PropertyChangeListener pcl) {
 		getPropertyChangeSupport().addPropertyChangeListener(pcl);
 	}
 
+	@Override
 	public void removePropertyChangeListener(PropertyChangeListener pcl) {
 		getPropertyChangeSupport().removePropertyChangeListener(pcl);
 	}
 
+	@Override
 	public void firePropertyChange(String propertyName, Object newVal, Object oldVal) {
 		getPropertyChangeSupport().firePropertyChange(propertyName, oldVal, newVal);
 	}
@@ -92,6 +95,7 @@ implements IBufferedCanvas, IViewport
 	 * paints the drawComponent, if no notifyChange has been called a BitBlockTransfer
 	 * from the BufferedImage is performed
 	 */
+	@Override
 	public void paint(Graphics g) 
 	{
 		Graphics2D g2d = (Graphics2D) g;
@@ -267,8 +271,8 @@ implements IBufferedCanvas, IViewport
 	 */
 	protected void scaleToCenter() 
 	{
-		int newViewX = (int) ((((double)viewBounds.x) / oldScale) * scale);
-		int newViewY = (int) ((((double)viewBounds.y) / oldScale) * scale);
+		int newViewX = (int) (((viewBounds.x) / oldScale) * scale);
+		int newViewY = (int) (((viewBounds.y) / oldScale) * scale);
 //		int newViewX = (int) (((double)viewBounds.x) * scale);
 //		int newViewY = (int) (((double)viewBounds.y) * scale);
 				
@@ -549,6 +553,7 @@ implements IBufferedCanvas, IViewport
 		}
 	}
 		
+	@Override
 	public abstract Rectangle getVisibleRect();
 	
 	protected void componentResized() 

@@ -48,6 +48,7 @@ extends ZoomAction
 		this.zoom = zoomSupport.getZoom();
 	}
 
+	@Override
 	public void init() 
 	{
 		setId(ID);
@@ -61,6 +62,7 @@ extends ZoomAction
 		this.zoom = zoom;
 	}
 	
+	@Override
 	public void run() 
 	{
 		getZoomSupport().zoomAll();

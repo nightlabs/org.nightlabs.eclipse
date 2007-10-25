@@ -62,6 +62,7 @@ extends AbstractContributionItem
 	protected IViewer viewer = null;	
 	protected Button colorButton = null;
 	protected Color bgColor = null;
+	@Override
 	protected Control createControl(Composite parent) 
 	{
 		colorButton = new Button(parent, SWT.NONE);

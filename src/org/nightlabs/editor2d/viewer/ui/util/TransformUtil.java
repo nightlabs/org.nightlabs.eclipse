@@ -86,8 +86,8 @@ public class TransformUtil
 	  {
 		  double ratioX = ((double)w2) / ((double)w1);
 		  double ratioY = ((double)h2) / ((double)h1);	  
-	    double x = (double)x1;
-	    double y = (double)y1;
+	    double x = x1;
+	    double y = y1;
 	    double distanceX = x - (x*ratioX);
 	    double distanceY = y - (y*ratioY);
 	    at.setToIdentity();
@@ -161,10 +161,10 @@ public class TransformUtil
 	{
 		Rectangle r = new Rectangle(rect);
 		if (zoom != 0) {
-			r.x = (int) ((double)rect.x / zoom);
-			r.y = (int) ((double)rect.y / zoom);
-			r.width = (int) ((double)rect.width / zoom);
-			r.height = (int) ((double)rect.height / zoom);
+			r.x = (int) (rect.x / zoom);
+			r.y = (int) (rect.y / zoom);
+			r.width = (int) (rect.width / zoom);
+			r.height = (int) (rect.height / zoom);
 		}
 		return r;
 	}
@@ -180,10 +180,10 @@ public class TransformUtil
 	{
 		Rectangle r = new Rectangle(rect);
 		if (zoom != 0) {
-			r.x = (int) ((double)rect.x * zoom);
-			r.y = (int) ((double)rect.y * zoom);
-			r.width = (int) ((double)rect.width * zoom);
-			r.height = (int) ((double)rect.height * zoom);
+			r.x = (int) (rect.x * zoom);
+			r.y = (int) (rect.y * zoom);
+			r.width = (int) (rect.width * zoom);
+			r.height = (int) (rect.height * zoom);
 		}
 		return r;
 	}	

@@ -71,10 +71,12 @@ extends AbstractMouseManager
 	
 	protected MouseListener mouseListener = new MouseAdapter()
 	{	
+		@Override
 		public void mouseUp(MouseEvent e) {
 			fireMouseReleased(e.x, e.y, e.button);
 		}
 	
+		@Override
 		public void mouseDown(MouseEvent e) {
 			fireMousePressed(e.x, e.y, e.button);
 		}	

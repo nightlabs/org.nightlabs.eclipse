@@ -40,10 +40,12 @@ extends WorkbenchWindowAdvisor
 		super(configurer);
 	}
 
+	@Override
 	public ActionBarAdvisor createActionBarAdvisor(IActionBarConfigurer configurer) {
 		return new ViewerActionBuilder(configurer);
 	}
 
+	@Override
 	public void preWindowOpen() 
 	{
 		super.preWindowOpen();

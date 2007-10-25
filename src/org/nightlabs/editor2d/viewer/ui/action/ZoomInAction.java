@@ -40,6 +40,7 @@ extends ZoomAction
 		super(zoomSupport);
 	}	
 	
+	@Override
 	public void init() 
 	{
 		setId(ID);
@@ -56,6 +57,7 @@ extends ZoomAction
 			setEnabled(false);
 	}
 
+	@Override
 	public void run() {
 		getZoomSupport().setZoomAll(false);
 		getZoomSupport().zoomIn();

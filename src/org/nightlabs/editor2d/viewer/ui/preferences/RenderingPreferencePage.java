@@ -64,6 +64,7 @@ implements IWorkbenchPreferencePage
 	protected Button buttonDefault;
 //	protected Button buttonCustom;
 	
+	@Override
 	protected Control createContents(Composite parent) 
 	{		
 		Composite comp = new XComposite(parent, SWT.NONE);
@@ -127,6 +128,7 @@ implements IWorkbenchPreferencePage
 
 	public void init(IWorkbench workbench) {}	
 	
+	@Override
 	public IPreferenceStore getPreferenceStore() {
 		return ViewerPlugin.getDefault().getPreferenceStore();
 	}
@@ -210,6 +212,7 @@ implements IWorkbenchPreferencePage
 		}
 	}
 
+	@Override
 	public boolean performOk() 
 	{
 		setSelection(selection);
@@ -217,6 +220,7 @@ implements IWorkbenchPreferencePage
 		return true;
 	}
 
+	@Override
 	protected void performDefaults() {
 		super.performDefaults();
 		selection = Preferences.PREFERENCE_DEFAULT;

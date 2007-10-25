@@ -49,6 +49,7 @@ implements IWorkbenchPreferencePage
 	protected IntegerFieldEditor scrollTolerance;
 //protected IntegerFieldEditor bufferScale;	
 	
+	@Override
 	protected void createFieldEditors()
 	{
 		scrollStep = new IntegerFieldEditor(Preferences.PREFERENCE_SCROLL_STEP,
@@ -86,11 +87,13 @@ implements IWorkbenchPreferencePage
 		addField(timerDelay);
 	}
 	
+	@Override
 	protected void performDefaults() {
 		Preferences.initDefaultValues(Preferences.getPreferenceStore());
 		super.performDefaults();		
 	}
 
+	@Override
 	public boolean performOk() 
 	{
 		getPreferenceStore().setValue(Preferences.PREFERENCE_SCROLL_STEP, scrollStep.getIntValue());		

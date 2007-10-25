@@ -40,6 +40,7 @@ public class ViewerPreferencePage
 extends PreferencePage
 implements IWorkbenchPreferencePage
 {
+	@Override
 	protected Control createContents(Composite parent) {
 		Label l = new Label(parent, SWT.NONE);
 		l.setText(Messages.getString("org.nightlabs.editor2d.viewer.ui.preferences.ViewerPreferencePage.text")); //$NON-NLS-1$

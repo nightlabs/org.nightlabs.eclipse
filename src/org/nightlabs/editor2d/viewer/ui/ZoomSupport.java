@@ -253,8 +253,8 @@ implements IZoomSupport
 	  // maybe realZoom is beyond minZoom or maxZoom
 	  double zoom = getZoom();
 
-	  double newX = (double) ((absoluteRect.x) * zoom);
-	  double newY = (double) ((absoluteRect.y) * zoom);	  	
+	  double newX = ((absoluteRect.x) * zoom);
+	  double newY = ((absoluteRect.y) * zoom);	  	
 	  	  	  	  	  
   	getViewport().setViewLocation((int)newX, (int)newY);
 	  		  		

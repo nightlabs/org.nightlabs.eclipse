@@ -59,6 +59,7 @@ extends AbstractMouseManager
 	
 	protected MouseMotionListener mouseMotionListener = new MouseMotionAdapter()
 	{	
+		@Override
 		public void mouseMoved(MouseEvent evt) 
 		{
 			x = evt.getX();
@@ -67,6 +68,7 @@ extends AbstractMouseManager
 			fireMouseMoved(x, y, evt.getButton());
 		}
 		
+		@Override
 		public void mouseDragged(MouseEvent evt)
 		{
 			x = evt.getX();
@@ -78,10 +80,12 @@ extends AbstractMouseManager
 	
 	protected MouseListener mouseListener = new MouseAdapter()
 	{
+		@Override
 		public void mousePressed(MouseEvent me) {
 			fireMousePressed(me.getX(), me.getY(), me.getButton());
 		}
 		
+		@Override
 		public void mouseReleased(MouseEvent me) {
 			fireMouseReleased(me.getX(), me.getY(), me.getButton());
 		}		

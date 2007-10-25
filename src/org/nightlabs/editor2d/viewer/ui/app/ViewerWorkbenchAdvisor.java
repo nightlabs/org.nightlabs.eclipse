@@ -38,10 +38,12 @@ extends AbstractWorkbenchAdvisor
 		super();
 	}
 
+	@Override
 	public String getInitialWindowPerspectiveId() {
 		return ViewerPerspective.ID_PERSPECTIVE;
 	}
 
+	@Override
 	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
 		return new ViewerWorkbenchWindowAdvisor(configurer);
 	}

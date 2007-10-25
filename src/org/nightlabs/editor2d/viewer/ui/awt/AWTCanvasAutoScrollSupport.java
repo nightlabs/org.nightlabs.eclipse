@@ -41,21 +41,25 @@ extends AbstractAWTAutoScrollSupport
 		return (ICanvas) getComponent();
 	}
 	
+	@Override
 	protected void scrollDown(int scrollStep) {
 		getCanvas().translateY(scrollStep);		
 		getCanvas().repaint();
 	}
 
+	@Override
 	protected void scrollUp(int scrollStep) {
 		getCanvas().translateY(-scrollStep);		
 		getCanvas().repaint();
 	}
 
+	@Override
 	protected void scrollLeft(int scrollStep) {		
 		getCanvas().translateX(-scrollStep);		
 		getCanvas().repaint();		
 	}
 
+	@Override
 	protected void scrollRight(int scrollStep) {		
 		getCanvas().translateX(scrollStep);		
 		getCanvas().repaint();		

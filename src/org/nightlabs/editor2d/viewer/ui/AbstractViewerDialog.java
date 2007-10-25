@@ -45,6 +45,7 @@ extends FullScreenDialog
 		this.dc = dc;
 	}
 
+	@Override
 	public void create() 
 	{		
 		super.create();		
@@ -56,6 +57,7 @@ extends FullScreenDialog
 		return viewerComp;
 	}
 	
+	@Override
 	protected Control createDialogArea(Composite parent) 
 	{
 		viewerComp = initViewerComposite(parent);
@@ -65,6 +67,7 @@ extends FullScreenDialog
 		return viewerComp;
 	}
 
+	@Override
 	protected void okPressed() {
 		super.okPressed();
 	}

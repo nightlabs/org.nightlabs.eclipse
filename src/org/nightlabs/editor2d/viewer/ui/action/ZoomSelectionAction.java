@@ -53,6 +53,7 @@ extends ZoomAction
 	
 	protected IViewer viewer = null;
 		
+	@Override
 	public void init() 
 	{
 		setId(ID);
@@ -65,6 +66,7 @@ extends ZoomAction
 
 	}
 
+	@Override
 	public void run() 
 	{
 		Rectangle bounds = getSelectionBounds();

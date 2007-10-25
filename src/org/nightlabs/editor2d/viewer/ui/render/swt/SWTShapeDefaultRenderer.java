@@ -26,6 +26,7 @@ extends SWTBaseRenderer
 		super();
 	}
 
+	@Override
 	public void paint(DrawComponent dc, GC g) 
 	{
     ShapeDrawComponent sdc = (ShapeDrawComponent) dc;

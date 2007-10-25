@@ -59,6 +59,7 @@ extends Action
 		setToolTipText(ViewerPlugin.getResourceString(Messages.getString("org.nightlabs.editor2d.viewer.ui.AbstractOpenAction.tooltip"))); //$NON-NLS-1$
 	}
 	
+	@Override
 	public void run() 
 	{
 		FileDialog fileDialog = new FileDialog(Display.getDefault().getActiveShell());

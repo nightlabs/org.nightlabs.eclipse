@@ -41,6 +41,7 @@ extends AbstractViewerDialog
 		super(arg0, dc);
 	}
 
+	@Override
 	protected AbstractViewerComposite initViewerComposite(Composite parent) {
 		return new AWTViewerComposite(parent, SWT.NONE, dc);
 	}

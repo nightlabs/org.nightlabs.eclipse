@@ -116,6 +116,7 @@ implements IBufferedViewport
 	 * paints the drawComponent, if no notifyChange has been called a BitBlockTransfer
 	 * from the BufferedImage is performed
 	 */
+	@Override
 	public void paint(Graphics g) 
 	{
 		Graphics2D g2d = (Graphics2D) g;
@@ -310,8 +311,8 @@ implements IBufferedViewport
 	 */
 	protected void scaleToCenter() 
 	{
-		int newViewX = (int) ((((double)viewBounds.x) / oldScale) * scale);
-		int newViewY = (int) ((((double)viewBounds.y) / oldScale) * scale);
+		int newViewX = (int) (((viewBounds.x) / oldScale) * scale);
+		int newViewY = (int) (((viewBounds.y) / oldScale) * scale);
 				
 		if (debugBounds) {
 			logger.debug("newViewX = "+newViewX); //$NON-NLS-1$
@@ -405,6 +406,7 @@ implements IBufferedViewport
 	
 	private ComponentListener resizeListener = new ComponentAdapter()
 	{	
+		@Override
 		public void componentResized(ComponentEvent e) 
 		{
 			initViewBounds = getVisibleRect();			

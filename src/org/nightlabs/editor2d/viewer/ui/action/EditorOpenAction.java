@@ -37,11 +37,13 @@ extends AbstractOpenAction
 {
 	public static final String ID = EditorOpenAction.class.getName(); 
 	
+	@Override
 	protected AbstractViewerDialog initViewerDialog(Shell shell, DrawComponent dc) 
 	{
 		return new AWTViewerDialog(shell, dc);
 	}
 
+	@Override
 	protected void init() 
 	{
 		setId(ID);

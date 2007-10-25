@@ -103,16 +103,19 @@ extends AbstractAutoScrollSupport
 		
 	protected MouseTrackListener mouseTrackListener = new MouseTrackAdapter()
 	{	
+		@Override
 		public void mouseExit(MouseEvent e) 
 		{
 			mouseExited();
 		}
 		
+		@Override
 		public void mouseEnter(MouseEvent e) {
 			super.mouseEnter(e);
 		}	
 	};
 	
+	@Override
 	protected void doScrollDown(final int scrollStep) 
 	{
 		Display.getDefault().asyncExec(new Runnable()
@@ -123,6 +126,7 @@ extends AbstractAutoScrollSupport
 		}); 		
 	}
 	
+	@Override
 	protected void doScrollUp(final int scrollStep) 
 	{
 		Display.getDefault().asyncExec(new Runnable()
@@ -133,6 +137,7 @@ extends AbstractAutoScrollSupport
 		}); 		
 	}
 
+	@Override
 	protected void doScrollLeft(final int scrollStep) 
 	{
 		Display.getDefault().asyncExec(new Runnable()
@@ -143,6 +148,7 @@ extends AbstractAutoScrollSupport
 		}); 		
 	}
 
+	@Override
 	protected void doScrollRight(final int scrollStep) 
 	{
 		Display.getDefault().asyncExec(new Runnable()
@@ -153,8 +159,12 @@ extends AbstractAutoScrollSupport
 		}); 		
 	}
 			
+	@Override
 	protected abstract void scrollDown(int scrollStep);
+	@Override
 	protected abstract void scrollUp(int scrollStep);
+	@Override
 	protected abstract void scrollLeft(int scrollStep);
+	@Override
 	protected abstract void scrollRight(int scrollStep); 
 }

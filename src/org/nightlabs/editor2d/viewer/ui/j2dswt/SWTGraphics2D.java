@@ -44,6 +44,7 @@ import java.awt.geom.RoundRectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
+import java.awt.image.ColorModel;
 import java.awt.image.DataBufferByte;
 import java.awt.image.DirectColorModel;
 import java.awt.image.ImageObserver;
@@ -641,16 +642,19 @@ public class SWTGraphics2D extends Graphics2D {
 		return parent;
 	}
 
+	@Override
 	public void addRenderingHints(Map map) {
 		setRenderingHints(map);
 	}
 
+	@Override
 	public void clip(Shape s) {
 		Area clip = new Area(currentClip);
 		clip.intersect(new Area(currentTransform.createTransformedShape(s)));
 		setClip(clip);
 	}
 
+	@Override
 	public void draw(Shape s) {
 		if (!complexPaint) {
 			adjustLineWidth();
@@ -663,10 +667,12 @@ public class SWTGraphics2D extends Graphics2D {
 		}		
 	}
 
+	@Override
 	public void drawGlyphVector(GlyphVector g, float x, float y) {
 		fill(g.getOutline(x, y));
 	}
 
+	@Override
 	public void drawImage(BufferedImage img, BufferedImageOp op, int x, int y) {
 		if (img == null) {
 			return;
@@ -681,6 +687,7 @@ public class SWTGraphics2D extends Graphics2D {
 		swtImg.dispose();
 	}
 
+	@Override
 	public boolean drawImage(Image img, AffineTransform xform, ImageObserver obs) {
 		BufferedImage buf = toBufferedImage(img, null, obs);
 		if (buf == null) {
@@ -690,10 +697,12 @@ public class SWTGraphics2D extends Graphics2D {
 		return true;
 	}
 
+	@Override
 	public void drawRenderableImage(RenderableImage img, AffineTransform xform) {
 		drawRenderedImage(img.createDefaultRendering(), xform);
 	}
 
+	@Override
 	public void drawRenderedImage(RenderedImage img, AffineTransform xform) {
 		Rectangle target = new Rectangle(0, 0, img.getWidth(), img.getHeight());
 		target = xform.createTransformedShape(target).getBounds();
@@ -705,6 +714,7 @@ public class SWTGraphics2D extends Graphics2D {
 		buf = null;
 	}
 
+	@Override
 	public void drawString(AttributedCharacterIterator iterator, float x, float y) {
 		// FIXME: no attribute is currently used!
 		char[] buf = new char[iterator.getEndIndex() - iterator.getBeginIndex()];
@@ -715,6 +725,7 @@ public class SWTGraphics2D extends Graphics2D {
 		buf = null;
 	}
 
+	@Override
 	public void drawString(AttributedCharacterIterator iterator, int x, int y) {
 		drawString(iterator, (float) x, (float) y);
 	}
@@ -724,15 +735,18 @@ public class SWTGraphics2D extends Graphics2D {
 	 * difference of drawString() in AWT and SWT.
 	 */
 
+	@Override
 	public void drawString(String str, float x, float y) {
 		int fh = _gc.getFontMetrics().getAscent() + _gc.getFontMetrics().getDescent();
 		_gc.drawString(str, (int) x, (int) (y - fh), true);
 	}
 
+	@Override
 	public void drawString(String str, int x, int y) {
 		drawString(str, (float) x, (float) y);
 	}
 
+	@Override
 	public void fill(Shape s) {
 		if (!complexPaint) {
 			// toPath may destroy the current fill rule
@@ -746,7 +760,7 @@ public class SWTGraphics2D extends Graphics2D {
 		} else {
 			Rectangle device = s.getBounds();
 			Rectangle user = currentTransform.createTransformedShape(device).getBounds();
-			PaintContext ctx = currentPaint.createContext(DirectColorModel
+			PaintContext ctx = currentPaint.createContext(ColorModel
 				.getRGBdefault(), device, user, currentTransform, hints);
 			Raster ra = ctx.getRaster(user.x, user.y, user.width, user.height);
 			WritableRaster wr = ra.createCompatibleWritableRaster();
@@ -764,6 +778,7 @@ public class SWTGraphics2D extends Graphics2D {
 		}
 	}
 
+	@Override
 	public Color getBackground() {
 		return toAWTColor(_gc.getBackground());
 	}
@@ -772,59 +787,72 @@ public class SWTGraphics2D extends Graphics2D {
 	 * Only SRC rule is meaningful in SWT!
 	 */
 
+	@Override
 	public Composite getComposite() {
 		return AlphaComposite.Src;
 	}
 
+	@Override
 	public GraphicsConfiguration getDeviceConfiguration() {
 		// FIXME
 		return null;
 	}
 
+	@Override
 	public FontRenderContext getFontRenderContext() {
 		return new FontRenderContext(currentTransform, true, true);
 	}
 
+	@Override
 	public Paint getPaint() {
 		return currentPaint;
 	}
 
+	@Override
 	public Object getRenderingHint(Key hintKey) {
 		return hints.get(hintKey);
 	}
 
+	@Override
 	public RenderingHints getRenderingHints() {
 		return hints;
 	}
 
+	@Override
 	public Stroke getStroke() {
 		return currentStroke;
 	}
 
+	@Override
 	public AffineTransform getTransform() {
 		return new AffineTransform(currentTransform);
 	}
 
+	@Override
 	public boolean hit(Rectangle rect, Shape s, boolean onStroke) {
 		// FIXME
 		return false;
 	}
 
+	@Override
 	public void rotate(double theta, double x, double y) {
 		currentTransform.rotate(theta, x, y);
 		updateTransform();
 	}
 
+	@Override
 	public void rotate(double theta) {
 		currentTransform.rotate(theta);
 		updateTransform();
 	}
 
+	@Override
 	public void scale(double sx, double sy) {
 		currentTransform.scale(sx, sy);
 		updateTransform();
 	}
 
+	@Override
 	public void setBackground(Color color) {
 		_gc.setBackground(toSWTColor(color));
 		_gc.setAlpha(color.getAlpha());
@@ -834,6 +862,7 @@ public class SWTGraphics2D extends Graphics2D {
 	 * Composite ops are ignored for SWT compatibility.
 	 */
 
+	@Override
 	public void setComposite(Composite comp) {
 	}
 
@@ -843,6 +872,7 @@ public class SWTGraphics2D extends Graphics2D {
 	 * @see java.awt.Graphics2D#setPaint(java.awt.Paint)
 	 */
 
+	@Override
 	public void setPaint(Paint _paint) {
 		currentPaint = _paint;
 		complexPaint = false;
@@ -887,6 +917,7 @@ public class SWTGraphics2D extends Graphics2D {
 	 * Only honor KEY_ANTIALIASING, KEY_TEXT_ANTIALIASING and KEY_INTERPOLATION.
 	 */
 
+	@Override
 	public void setRenderingHint(Key hintKey, Object hintValue) {
 		hints.put(hintKey, hintValue);
 		if (hintKey == RenderingHints.KEY_ANTIALIASING) {
@@ -912,6 +943,7 @@ public class SWTGraphics2D extends Graphics2D {
 		}
 	}
 
+	@Override
 	public void setRenderingHints(Map hints) {
 		Iterator it = hints.keySet().iterator();
 		while (it.hasNext()) {
@@ -934,6 +966,7 @@ public class SWTGraphics2D extends Graphics2D {
 	 * </p>
 	 */
 
+	@Override
 	public void setStroke(Stroke s) {
 		currentStroke = s;
 		// We can only do useful things with BasicStroke objects!
@@ -989,6 +1022,7 @@ public class SWTGraphics2D extends Graphics2D {
 		}
 	}
 
+	@Override
 	public void setTransform(AffineTransform t) {
 		currentTransform.setTransform(t);
 		updateTransform();
@@ -998,25 +1032,30 @@ public class SWTGraphics2D extends Graphics2D {
 	 * The shear transform is manually computed, no SWT equivalent.
 	 */
 
+	@Override
 	public void shear(double shx, double shy) {
 		currentTransform.shear(shx, shy);
 		updateTransform();
 	}
 
+	@Override
 	public void transform(AffineTransform t) {
 		currentTransform.concatenate(t);
 		updateTransform();
 	}
 
+	@Override
 	public void translate(double tx, double ty) {
 		currentTransform.translate(tx, ty);
 		updateTransform();
 	}
 
+	@Override
 	public void translate(int x, int y) {
 		translate((double) x, (double) y);
 	}
 
+	@Override
 	public void clearRect(int x, int y, int width, int height) {
 		int alpha = _gc.getAlpha();
 		_gc.setAlpha(0);
@@ -1029,10 +1068,12 @@ public class SWTGraphics2D extends Graphics2D {
 	 * clip rectangle.
 	 */
 
+	@Override
 	public void clipRect(int x, int y, int width, int height) {
 		clip(new Rectangle(x, y, width, height));
 	}
 
+	@Override
 	public void copyArea(int x, int y, int width, int height, int dx, int dy) {
 		_gc.copyArea(x, y, width, height, dx, dy);
 	}
@@ -1046,6 +1087,7 @@ public class SWTGraphics2D extends Graphics2D {
 	 * </p>
 	 */
 
+	@Override
 	public Graphics create() {
 		SWTGraphics2D g2d = new SWTGraphics2D();
 		g2d._gc = _gc;
@@ -1060,6 +1102,7 @@ public class SWTGraphics2D extends Graphics2D {
 		return g2d;
 	}
 
+	@Override
 	public void dispose() {
 		_gc = null;
 		_dev = null;
@@ -1067,6 +1110,7 @@ public class SWTGraphics2D extends Graphics2D {
 		hints = null;
 	}
 
+	@Override
 	public void drawArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
 		if (!complexPaint) {
 			Rectangle r = projectRectangle(x, y, width, height);
@@ -1082,15 +1126,18 @@ public class SWTGraphics2D extends Graphics2D {
 		}
 	}
 
+	@Override
 	public boolean drawImage(Image img, int x, int y, Color bgColor,
 		ImageObserver observer) {
 		return drawImage(img, x, y, -1, -1, bgColor, observer);
 	}
 
+	@Override
 	public boolean drawImage(Image img, int x, int y, ImageObserver observer) {
 		return drawImage(img, x, y, null, observer);
 	}
 
+	@Override
 	public boolean drawImage(Image img, int x, int y, int width, int height,
 		Color bgcolor, ImageObserver observer) {
 		BufferedImage buf = toBufferedImage(img, bgcolor, observer);
@@ -1112,11 +1159,13 @@ public class SWTGraphics2D extends Graphics2D {
 		return false;
 	}
 
+	@Override
 	public boolean drawImage(Image img, int x, int y, int width, int height,
 		ImageObserver observer) {
 		return drawImage(img, x, y, width, height, null, observer);
 	}
 
+	@Override
 	public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, int sx1,
 		int sy1, int sx2, int sy2, Color bgcolor, ImageObserver observer) {
 		BufferedImage buf = toBufferedImage(img, bgcolor, observer);
@@ -1132,11 +1181,13 @@ public class SWTGraphics2D extends Graphics2D {
 		return false;
 	}
 
+	@Override
 	public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, int sx1,
 		int sy1, int sx2, int sy2, ImageObserver observer) {
 		return drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, null, observer);
 	}
 
+	@Override
 	public void drawLine(int x1, int y1, int x2, int y2) {
 		if (!complexPaint) {
 			float[] coords = new float[]{x1, y1, x2, y2};
@@ -1151,6 +1202,7 @@ public class SWTGraphics2D extends Graphics2D {
 		}
 	}
 
+	@Override
 	public void drawOval(int x, int y, int width, int height) {
 		if (!complexPaint) {
 			Rectangle r = projectRectangle(x, y, width, height);
@@ -1163,6 +1215,7 @@ public class SWTGraphics2D extends Graphics2D {
 		}
 	}
 
+	@Override
 	public void drawPolygon(int[] xPoints, int[] yPoints, int nPoints) {
 		if (!complexPaint) {
 			int[] coords = projectPoints(xPoints, yPoints, nPoints);
@@ -1175,6 +1228,7 @@ public class SWTGraphics2D extends Graphics2D {
 		}
 	}
 
+	@Override
 	public void drawPolyline(int[] xPoints, int[] yPoints, int nPoints) {
 		if (!complexPaint) {
 			int[] coords = projectPoints(xPoints, yPoints, nPoints);
@@ -1192,6 +1246,7 @@ public class SWTGraphics2D extends Graphics2D {
 		}
 	}
 
+	@Override
 	public void drawRoundRect(int x, int y, int width, int height, int arcWidth,
 		int arcHeight) {
 		if (!complexPaint) {
@@ -1212,6 +1267,7 @@ public class SWTGraphics2D extends Graphics2D {
 	 * 
 	 */
 
+	@Override
 	public void fillArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
 		if (!complexPaint) {
 			swapColors();
@@ -1227,6 +1283,7 @@ public class SWTGraphics2D extends Graphics2D {
 	 * 
 	 */
 
+	@Override
 	public void fillOval(int x, int y, int width, int height) {
 		if (!complexPaint) {
 			swapColors();
@@ -1242,6 +1299,7 @@ public class SWTGraphics2D extends Graphics2D {
 	 * 
 	 */
 
+	@Override
 	public void fillPolygon(int[] xPoints, int[] yPoints, int nPoints) {
 		if (!complexPaint) {
 			int[] coords = projectPoints(xPoints, yPoints, nPoints);
@@ -1259,6 +1317,7 @@ public class SWTGraphics2D extends Graphics2D {
 	 * 
 	 */
 
+	@Override
 	public void fillRect(int x, int y, int width, int height) {
 		if (!complexPaint) {
 			swapColors();
@@ -1274,6 +1333,7 @@ public class SWTGraphics2D extends Graphics2D {
 	 * 
 	 */
 
+	@Override
 	public void fillRoundRect(int x, int y, int width, int height, int arcWidth,
 		int arcHeight) {
 		if (!complexPaint) {
@@ -1285,30 +1345,37 @@ public class SWTGraphics2D extends Graphics2D {
 		}
 	}
 
+	@Override
 	public Shape getClip() {
 		return currentClip;
 	}
 
+	@Override
 	public Rectangle getClipBounds() {
 		return (currentClip != null) ? currentClip.getBounds() : null;
 	}
 
+	@Override
 	public Color getColor() {
 		return toAWTColor(_gc.getForeground());
 	}
 
+	@Override
 	public Font getFont() {
 		return currentFont;
 	}
 
+	@Override
 	public FontMetrics getFontMetrics(Font f) {
 		return Toolkit.getDefaultToolkit().getFontMetrics(f);
 	}
 
+	@Override
 	public void setClip(int x, int y, int width, int height) {
 		setClip(new Rectangle(x, y, width, height));
 	}
 
+	@Override
 	public void setClip(Shape clip) {
 		// If clip is not null, sets the GC clip to the transformed
 		// shape
@@ -1325,6 +1392,7 @@ public class SWTGraphics2D extends Graphics2D {
 		}
 	}
 
+	@Override
 	public void setColor(Color c) {
 		_gc.setForeground(toSWTColor(c));
 		_gc.setAlpha(c.getAlpha());
@@ -1339,6 +1407,7 @@ public class SWTGraphics2D extends Graphics2D {
 	 * </p>
 	 */
 
+	@Override
 	public void setFont(Font font) {
 		currentFont = font;
 		if (_theFont != null) {
@@ -1375,10 +1444,12 @@ public class SWTGraphics2D extends Graphics2D {
 		_gc.setFont(_theFont);
 	}
 
+	@Override
 	public void setPaintMode() {
 		_gc.setXORMode(false);
 	}
 
+	@Override
 	public void setXORMode(Color c1) {
 		// FIXME: alternate color should be set to c1?
 		_gc.setXORMode(true);

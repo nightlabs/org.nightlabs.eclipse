@@ -64,6 +64,7 @@ extends AbstractEPProcessor
 		super();
 	}
 
+	@Override
 	public String getExtensionPointID() {
 		return EXTENSION_POINT_ID;
 	}
@@ -81,6 +82,7 @@ extends AbstractEPProcessor
 	public static final String ATTRIBUTE_RENDER_CONTEXT_TYPE = "renderContextType"; //$NON-NLS-1$
 	public static final String ATTRIBUTE_RENDER_CONTEXT = "renderContext"; //$NON-NLS-1$
 		
+	@Override
 	public void processElement(IExtension extension, IConfigurationElement element)
 	throws Exception 
 	{
@@ -153,7 +155,7 @@ extends AbstractEPProcessor
 				if (!checkString(renderContextType))
 					throw new IllegalArgumentException("Attribute renderContextType must not be null nor empty"); //$NON-NLS-1$
 								
-				Object renderContext = (Object) element.createExecutableExtension(ATTRIBUTE_RENDER_CONTEXT);
+				Object renderContext = element.createExecutableExtension(ATTRIBUTE_RENDER_CONTEXT);
 				if (!(renderContext instanceof RenderContext))
 					throw new IllegalArgumentException("Attribute renderContext must implement "+RenderContext.class.getName()+" "+renderContext.getClass().getName()+" does not!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				RenderContext rc = (RenderContext) renderContext;

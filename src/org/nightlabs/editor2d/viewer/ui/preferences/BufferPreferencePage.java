@@ -46,6 +46,7 @@ implements IWorkbenchPreferencePage
 	}
 	
 	protected DoubleFieldEditor bufferScale = null;
+	@Override
 	protected void createFieldEditors() 
 	{
 		bufferScale = new DoubleFieldEditor(Preferences.PREFERENCE_BUFFER_SCALE,
@@ -56,12 +57,14 @@ implements IWorkbenchPreferencePage
 	}
 	
 	
+	@Override
 	protected void performDefaults() 
 	{
 		Preferences.initDefaultValues(Preferences.getPreferenceStore());
 		super.performDefaults();		
 	}
 		
+	@Override
 	public boolean performOk() 
 	{
 		BufferManager.sharedInstance().setBufferScaleFactor(bufferScale.getDoubleValue());

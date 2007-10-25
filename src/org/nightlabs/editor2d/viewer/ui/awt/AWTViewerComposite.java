@@ -45,6 +45,7 @@ extends AbstractViewerComposite
 		super(parent, style, layoutMode, layoutDataMode, dc);
 	}
 
+	@Override
 	protected AbstractCanvasComposite initCanvasComposite(Composite parent) {
 		return new AWTCanvasComposite(parent, SWT.NONE, getDrawComponent(), true);
 	}

@@ -73,7 +73,8 @@ extends AbstractContributionItem
 //  }	
 
 	protected XCombo combo = null;
-  protected Control createControl(Composite parent) 
+  @Override
+	protected Control createControl(Composite parent) 
   {
   	combo = new XCombo(parent, SWT.BORDER);
   	

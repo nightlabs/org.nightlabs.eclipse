@@ -95,7 +95,7 @@ implements IToolManager
 
 	public void setActiveTool(int id) 
 	{
-		ITool tool = (ITool) id2Tool.get(new Integer(id));
+		ITool tool = id2Tool.get(new Integer(id));
 		if (tool != null)
 			setActiveTool(tool);
 	}
