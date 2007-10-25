@@ -272,6 +272,7 @@ public class RCPUtil
 	/**
 	 * @deprecated Use {@link #getActiveWorkbenchShell()} instead!
 	 */
+	@Deprecated
 	public static Shell getWorkbenchShell() {
 		return getActiveWorkbenchShell();
 	}
@@ -296,6 +297,7 @@ public class RCPUtil
 	/**
 	 * @deprecated Use {@link #getActiveWorkbenchPage()} instead!
 	 */
+	@Deprecated
 	public static IWorkbenchPage getWorkbenchPage() {
 		return getActiveWorkbenchPage();
 	}
@@ -655,7 +657,7 @@ public class RCPUtil
 	 * @param contributionItem The contributionItem to fill the trim with.
 	 * @param prependTo The id of the trim the new trim should be prepended to.
 	 */
-	@SuppressWarnings("restriction") //$NON-NLS-1$
+	@SuppressWarnings("restriction") 
 	public static void addContributionItemTrim(
 			Shell shell, 
 			IContributionItem contributionItem, 
@@ -669,14 +671,16 @@ public class RCPUtil
 			contributionItem.fill(comp);
 			org.eclipse.ui.internal.WindowTrimProxy trimProxy = new org.eclipse.ui.internal.WindowTrimProxy(
 					comp,
-					contributionItem.getId(), //$NON-NLS-1$
+					contributionItem.getId(), 
 					contributionItem.getClass().getSimpleName(), SWT.BOTTOM | SWT.TOP
 			) {
 
+				@Override
 				public void handleClose() {
 					getControl().dispose();
 				}
 
+				@Override
 				public boolean isCloseable() {
 					return true;
 				}

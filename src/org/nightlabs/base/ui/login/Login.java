@@ -100,11 +100,13 @@ extends AbstractEPProcessor
 	private String contributingPluginId = null;
 	private ILoginDelegate loginDelegate = null;
 
+	@Override
 	@Implement
 	public String getExtensionPointID() {
 		return "org.nightlabs.base.ui.login"; //$NON-NLS-1$
 	}
 
+	@Override
 	@Implement
 	public void processElement(IExtension extension, IConfigurationElement element)
 	throws Exception

@@ -180,6 +180,7 @@ public class XComboComposite<T>
 
 		imageCombo.addSelectionListener(new SelectionAdapter() {
 			
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				StructuredSelection selection = new StructuredSelection(
 						imageCombo.getItem(imageCombo.getSelectionIndex()) );

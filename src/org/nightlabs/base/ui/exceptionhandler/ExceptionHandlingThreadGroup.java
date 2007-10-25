@@ -53,6 +53,7 @@ public class ExceptionHandlingThreadGroup extends ThreadGroup {
 	
 	
 
+	@Override
 	public void uncaughtException(Thread t, Throwable e) {
 		if (!ExceptionHandlerRegistry.syncHandleException(t, e))
 			super.uncaughtException(t, e);

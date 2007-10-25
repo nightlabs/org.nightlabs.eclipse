@@ -41,7 +41,7 @@ public abstract class ErrorDialogFactory
 			dialog = errorDialogs.get(dialogClass);
 		if(dialog == null) {			
 			try {
-				dialog = (IErrorDialog) dialogClass.newInstance();
+				dialog = dialogClass.newInstance();
 			} catch(Exception e) {
 				logger.fatal("Error occured when trying to instantiate " + dialogClass.getName() + " with default constructor.", e); //$NON-NLS-1$ //$NON-NLS-2$
 			}						

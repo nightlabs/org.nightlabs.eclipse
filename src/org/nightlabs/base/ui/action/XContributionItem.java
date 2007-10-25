@@ -58,6 +58,7 @@ implements IXContributionItem
 
 	private boolean enabled;
 
+	@Override
 	public boolean isEnabled()
 	{
 		return enabled;

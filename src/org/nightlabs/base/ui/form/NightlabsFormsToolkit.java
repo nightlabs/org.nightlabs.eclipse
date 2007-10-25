@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Layout;
 import org.eclipse.ui.forms.FormColors;
 import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.ColumnLayout;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
@@ -49,6 +50,7 @@ public class NightlabsFormsToolkit extends AbstractToolkit
 	public void adapt(Composite composite) {
 		composite.setBackground(getColors().getBackground());
 		composite.addMouseListener(new MouseAdapter() {
+			@Override
 			public void mouseDown(MouseEvent e) {
 				((Control) e.widget).setFocus();
 			}
@@ -62,8 +64,8 @@ public class NightlabsFormsToolkit extends AbstractToolkit
 		if (composite instanceof Section) {
 			Section section = (Section) composite;
 			adapt(section, true, true); // add key & mouselistener
-			if ((section.getStyle() & Section.TITLE_BAR) != 0
-					|| (section.getStyle() & Section.SHORT_TITLE_BAR) != 0) {
+			if ((section.getStyle() & ExpandableComposite.TITLE_BAR) != 0
+					|| (section.getStyle() & ExpandableComposite.SHORT_TITLE_BAR) != 0) {
 				getColors().initializeSectionToolBarColors();
 				section.setTitleBarBackground(getColors().getColor(IFormColors.TB_BG));
 				section.setTitleBarBorderColor(getColors()

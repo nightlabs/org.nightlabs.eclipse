@@ -92,6 +92,7 @@ extends Action
 	}
 	
 	private File lastDirectory = null; 
+	@Override
 	public void run() 
 	{
 		FileDialog dialog = new FileDialog(Display.getDefault().getActiveShell(), SWT.OPEN);
@@ -165,7 +166,7 @@ extends Action
 		}
 		String[] fileExtensions = new String[extensions.size()];
 		for (int j=0; j<extensions.size(); j++) {
-			String fileExtension = (String) extensions.get(j);
+			String fileExtension = extensions.get(j);
 			fileExtensions[j] = concatExtension(fileExtension); 
 		}
 		return fileExtensions;

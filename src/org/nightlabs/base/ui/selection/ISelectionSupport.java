@@ -51,6 +51,7 @@ extends ISelectionProvider
 	 * @return the Selection as StructuredSelection
 	 * @deprecated Use {@link #getStructuredSelection()} instead!
 	 */
+	@Deprecated
 	StructuredSelection getSelectedObjects();
 
 	IStructuredSelection getStructuredSelection();

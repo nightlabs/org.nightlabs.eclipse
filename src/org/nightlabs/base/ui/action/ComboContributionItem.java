@@ -98,7 +98,7 @@ public abstract class ComboContributionItem extends XContributionItem {
 		nullAddedSelListener.clear();
 
 		for (Iterator iter = entries.iterator(); iter.hasNext();) {
-			Object entry = (Object) iter.next();
+			Object entry = iter.next();
 			combo.add(getImage(entry), getText(entry));
 		}
 		if (entries.size() > 0)
@@ -110,6 +110,7 @@ public abstract class ComboContributionItem extends XContributionItem {
 	/**
 	 * @see org.eclipse.jface.action.IContributionItem#fill(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	public void fill(Composite parent) {
 		createControl(parent);
 	}
@@ -117,6 +118,7 @@ public abstract class ComboContributionItem extends XContributionItem {
 	/**
 	 * @see org.eclipse.jface.action.IContributionItem#fill(org.eclipse.swt.widgets.ToolBar, int)
 	 */
+	@Override
 	public void fill(ToolBar parent, int index) {
 		ToolItem toolitem = new ToolItem(parent, SWT.SEPARATOR, index);
 		Control control = createControl(parent);

@@ -48,6 +48,7 @@ public class ErrorReportWizardEntryPage extends DynamicPathWizardPage
 	/**
 	 * @see org.nightlabs.base.ui.wizard.DynamicPathWizardPage#createPageContents(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	public Control createPageContents(Composite parent)
 	{
     setDescription(Messages.getString("org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportWizardEntryPage.description")); //$NON-NLS-1$
@@ -56,7 +57,8 @@ public class ErrorReportWizardEntryPage extends DynamicPathWizardPage
 		return welcomeText;
 	}
   
-  public void onShow()
+  @Override
+	public void onShow()
   {
     super.onShow();
     getShell().setSize(new Point(600, 500));

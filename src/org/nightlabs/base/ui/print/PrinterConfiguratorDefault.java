@@ -61,7 +61,7 @@ public class PrinterConfiguratorDefault implements PrinterConfigurator {
 	 */
 	public void init(PrinterConfiguration printerConfiguration) {
 		if (printerConfiguration != null)
-			this.initialConfiguration = (PrinterConfiguration)printerConfiguration;
+			this.initialConfiguration = printerConfiguration;
 	}
 
 	/* (non-Javadoc)

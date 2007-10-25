@@ -43,6 +43,7 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.forms.editor.IFormPage;
 import org.eclipse.ui.part.EditorPart;
@@ -203,7 +204,7 @@ public class EntityEditorController
 
 	private IPropertyListener dirtyStateListener = new IPropertyListener(){
 		public void propertyChanged(Object source, int propId) {
-			if (EditorPart.PROP_DIRTY == propId) {
+			if (IEditorPart.PROP_DIRTY == propId) {
 				if (EntityEditorController.this.isSaving()) {
 					EntityEditorController.this.unsetSavingState();
 					return;

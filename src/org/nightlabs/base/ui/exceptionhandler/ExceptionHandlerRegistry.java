@@ -108,7 +108,7 @@ public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 		synchronized(synchronizedObject){
 			checkProcessing();
 			if (exceptionHandlers.containsKey(targetType))
-				return (IExceptionHandler)exceptionHandlers.get(targetType);
+				return exceptionHandlers.get(targetType);
 			else
 				return null;
 		}
@@ -333,6 +333,7 @@ public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 	 * in the {@link ExceptionHandlerRegistry}. 
 	 * @param element
 	 */
+	@Override
 	public void processElement(IExtension extension, IConfigurationElement element) 
 	throws Exception
 	{
@@ -357,6 +358,7 @@ public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 	/* (non-Javadoc)
 	 * @see org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor#getExtensionPointID()
 	 */
+	@Override
 	public String getExtensionPointID() {
 		return ExtensionPointID;
 	}

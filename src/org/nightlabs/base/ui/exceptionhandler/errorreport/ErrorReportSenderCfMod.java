@@ -45,6 +45,7 @@ public class ErrorReportSenderCfMod extends ConfigModule
 	/**
 	 * @see org.nightlabs.config.ConfigModule#init()
 	 */
+	@Override
 	public void init() throws InitException
 	{
 		super.init();

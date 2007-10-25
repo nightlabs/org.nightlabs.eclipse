@@ -32,6 +32,7 @@ import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
 import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
 import org.nightlabs.i18n.unit.IUnit;
 import org.nightlabs.i18n.unit.Unit;
+import org.nightlabs.i18n.unit.UnitConstants;
 import org.nightlabs.i18n.unit.UnitRegistry;
 
 /**
@@ -89,7 +90,7 @@ extends AbstractEPProcessor
 			
 			String context = element.getAttribute(ATTRIBUTE_CONTEXT);
 			if (context == null || context.equals("")) //$NON-NLS-1$
-				context = UnitRegistry.GLOBAL_CONTEXT;
+				context = UnitConstants.GLOBAL_CONTEXT;
 			
 			IUnit unit = new Unit(unitID, name, symbol, factor);
 			getUnitRegistry().addUnit(unit, context);
@@ -98,7 +99,7 @@ extends AbstractEPProcessor
 		{
 			String context = element.getAttribute(ATTRIBUTE_CONTEXT);
 			if (context == null || context.equals("")) //$NON-NLS-1$
-				context = UnitRegistry.GLOBAL_CONTEXT;
+				context = UnitConstants.GLOBAL_CONTEXT;
 			
 			try {
 				IUnit unit = (IUnit) element.createExecutableExtension(ATTRIBUTE_UNIT);

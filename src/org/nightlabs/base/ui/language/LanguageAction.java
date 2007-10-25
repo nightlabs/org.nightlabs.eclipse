@@ -30,8 +30,6 @@ import java.util.Locale;
 
 import org.eclipse.jface.action.Action;
 
-import org.nightlabs.base.ui.resource.SharedImages;
-
 public class LanguageAction 
 extends Action
 {
@@ -54,6 +52,7 @@ extends Action
 		setImageDescriptor(LanguageManager.sharedInstance().getFlag16x16ImageDescriptor(languageID));
 	}
 
+	@Override
 	public void run() 
 	{
 		Locale.setDefault(new Locale(languageID));

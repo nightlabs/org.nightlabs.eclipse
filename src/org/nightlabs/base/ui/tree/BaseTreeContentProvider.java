@@ -45,6 +45,7 @@ public class BaseTreeContentProvider extends TreeContentProvider {
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.viewers.IContentProvider#dispose()
 	 */
+	@Override
 	public void dispose() {
 	}
 	

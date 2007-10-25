@@ -211,7 +211,7 @@ public abstract class PartController {
 	 * @param part
 	 */
 	public void updatePart(ControllablePart part) {
-		ControlledPart controlledPart = (ControlledPart)controlledParts.get(part);
+		ControlledPart controlledPart = controlledParts.get(part);
 		controlledPart.updatePart();
 	}
 
@@ -220,7 +220,7 @@ public abstract class PartController {
 	 * Will return null otherwise
 	 */
 	protected ControlledPart getControlledPart(ControllablePart part) {
-		return (ControlledPart)controlledParts.get(part);
+		return controlledParts.get(part);
 	}
 
 	/**

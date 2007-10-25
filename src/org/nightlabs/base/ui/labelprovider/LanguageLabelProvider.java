@@ -40,7 +40,8 @@ extends LabelProvider
 		this.text = text;
 	}
 	
-  public String getText(Object element) 
+  @Override
+	public String getText(Object element) 
   {
     if (element == null)
         return ""; //$NON-NLS-1$
@@ -54,10 +55,11 @@ extends LabelProvider
     return ""; //$NON-NLS-1$
   }
 
-  public Image getImage(Object element) 
+  @Override
+	public Image getImage(Object element) 
   {
     if (element == null)
-      return null; //$NON-NLS-1$
+      return null; 
 
     return LanguageManager.sharedInstance().getFlag16x16Image(LanguageManager.sharedInstance().getCurrentLanguageID());    
  	}

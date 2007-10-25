@@ -12,6 +12,7 @@ import org.nightlabs.base.ui.composite.XComposite.LayoutMode;
  * @author Niklas Schiffler <nick@nightlabs.de>
  * @deprecated
  */
+@Deprecated
 public class XForm extends Form
 {
 	public XForm(Composite parent, int style)

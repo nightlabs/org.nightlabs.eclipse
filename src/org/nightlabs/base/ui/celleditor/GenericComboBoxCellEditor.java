@@ -92,7 +92,7 @@ extends XCellEditor
 		comboComposite.setFocus();
 	}
 
-	@SuppressWarnings("unchecked") //$NON-NLS-1$
+	@SuppressWarnings("unchecked") 
 	@Override
 	protected void doSetValue(Object value) {
 		comboComposite.selectElement((T) value);

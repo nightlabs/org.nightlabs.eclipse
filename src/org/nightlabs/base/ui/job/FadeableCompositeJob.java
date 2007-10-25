@@ -49,7 +49,8 @@ public abstract class FadeableCompositeJob extends Job
   	this.source = source;
   }
 
-  protected IStatus run(ProgressMonitor monitor) throws Exception
+  @Override
+	protected IStatus run(ProgressMonitor monitor) throws Exception
   {
   	IStatus ret = Status.CANCEL_STATUS;
   	try

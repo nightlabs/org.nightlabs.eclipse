@@ -336,13 +336,13 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 			return COLUMN_VALUE_NAME.equals(property);
 		}
 
-		@SuppressWarnings("unchecked") //$NON-NLS-1$
+		@SuppressWarnings("unchecked") 
 		public Object getValue(Object element, String property)
 		{
 			return ((Map.Entry<String, String>)element).getValue();
 		}
 
-		@SuppressWarnings("unchecked") //$NON-NLS-1$
+		@SuppressWarnings("unchecked") 
 		public void modify(Object element, String property, Object value)
 		{
 			if (COLUMN_VALUE_NAME.equals(property)) {
@@ -381,12 +381,12 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 	extends LabelProvider
 	implements ITableLabelProvider {
 
-		@SuppressWarnings("unchecked") //$NON-NLS-1$
+		@SuppressWarnings("unchecked") 
 		public String getColumnText(Object element, int columnIndex) {
 			Map.Entry<String, String> item = (Map.Entry<String, String>)element;
 			switch (columnIndex) {
 				case COLUMN_FLAG_INDEX:
-					return null; //$NON-NLS-1$
+					return null; 
 				case COLUMN_LANGUAGE_INDEX:
 					return LanguageManager.sharedInstance().getLanguage(item.getKey(), true).getName().getText();
 				case COLUMN_VALUE_INDEX:
@@ -399,7 +399,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 		/**
 		 * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object, int)
 		 */
-		@SuppressWarnings("unchecked") //$NON-NLS-1$
+		@SuppressWarnings("unchecked") 
 		public Image getColumnImage(Object element, int columnIndex) {
 			Map.Entry<String, String> item = (Map.Entry<String, String>)element;
 			switch (columnIndex) {
@@ -426,7 +426,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 		}
 
 		// Return the i18nText as an array of Objects
-		@SuppressWarnings("unchecked") //$NON-NLS-1$
+		@SuppressWarnings("unchecked") 
 		@Override
 		public Object[] getElements(Object parent) {
 			if (i18nText == null)

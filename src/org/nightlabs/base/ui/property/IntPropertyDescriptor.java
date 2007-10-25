@@ -54,7 +54,8 @@ extends XPropertyDescriptor
     super(id, displayName, readOnly);
   }
   
-  public CellEditor createPropertyEditor(Composite parent) 
+  @Override
+	public CellEditor createPropertyEditor(Composite parent) 
   {
   	CellEditor editor = new IntCellEditor(parent, SWT.NONE, readOnly);
   	if (getValidator() != null)

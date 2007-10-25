@@ -39,6 +39,7 @@ import org.eclipse.swt.widgets.Text;
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
  * @deprecated Use {@link org.nightlabs.base.ui.composite.LabeledText} instead!
  */
+@Deprecated
 public class LabeledTextComposite extends TightWrapperComposite {
 	private Label labelCaption;
 	private Text textControl;

@@ -87,7 +87,7 @@ implements ISelectionProvider
 		return getStructuredSelection();
 	}
 
-	@SuppressWarnings("unchecked") //$NON-NLS-1$
+	@SuppressWarnings("unchecked") 
 	public void setSelection(ISelection selection)
 	{
 		if (selection == null) { // TODO unfortunately, it is not documented in the ISelectionProvider, whether this method must support null parameters - I simply do it - I hope it doesn't hurt ;-) Marco.
@@ -118,7 +118,7 @@ implements ISelectionProvider
 		}
 	}
 
-	@SuppressWarnings("unchecked") //$NON-NLS-1$
+	@SuppressWarnings("unchecked") 
 	protected void addSelectedObject(Object o)
 	{
 		selectedObjects.add(o);
@@ -126,7 +126,7 @@ implements ISelectionProvider
 		fireSelectionChangedEvent();
 	}
 
-	@SuppressWarnings("unchecked") //$NON-NLS-1$
+	@SuppressWarnings("unchecked") 
 	protected void addSelectedObjects(Collection objects)
 	{
 		selectedObjects.addAll(objects);
@@ -166,7 +166,7 @@ implements ISelectionProvider
 		fireSelectionChangedEvent();
 	}
 
-	@SuppressWarnings("unchecked") //$NON-NLS-1$
+	@SuppressWarnings("unchecked") 
 	protected void removeSelectedObjects(Collection objects)
 	{
 		selectedObjects.removeAll(objects);
@@ -174,7 +174,7 @@ implements ISelectionProvider
 		fireSelectionChangedEvent();
 	}
 
-	@SuppressWarnings("unchecked") //$NON-NLS-1$
+	@SuppressWarnings("unchecked") 
 	protected void setSelection(Collection selectedObjects)
 	{
 		selectedObjects.clear();

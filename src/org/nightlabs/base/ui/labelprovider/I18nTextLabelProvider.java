@@ -53,7 +53,8 @@ extends LabelProvider
 		this.showImage = showImage;
 	}
 	
-  public String getText(Object element) 
+  @Override
+	public String getText(Object element) 
   {
     if (element == null)
         return ""; //$NON-NLS-1$
@@ -69,7 +70,8 @@ extends LabelProvider
     return super.getText(element);    	
   }
   
-  public Image getImage(Object element) 
+  @Override
+	public Image getImage(Object element) 
   {
   	if (showImage) {
     	if (languageID != null)

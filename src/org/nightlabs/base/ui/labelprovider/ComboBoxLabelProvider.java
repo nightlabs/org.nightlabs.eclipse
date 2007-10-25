@@ -34,11 +34,12 @@ extends org.eclipse.ui.views.properties.ComboBoxLabelProvider
     super(values);
   }
 
-  public String getText(Object element) 
+  @Override
+	public String getText(Object element) 
   {
       if (element == null)
           return ""; //$NON-NLS-1$
       
-      return element.toString(); //$NON-NLS-1$
+      return element.toString(); 
   }   
 }

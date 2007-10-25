@@ -256,7 +256,7 @@ extends AbstractEPProcessor
 				if (element.getAttribute(attributeName) != null) {
 					String attributeValue = element.getAttribute(attributeName);
 					Pattern attrPattern = Pattern.compile(attributePattern);
-					if (attrPattern.matches(attributePattern, attributeValue)) {
+					if (Pattern.matches(attributePattern, attributeValue)) {
 						// attribute pattern matches
 						elements.add(element);
 					}

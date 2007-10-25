@@ -35,13 +35,13 @@ extends Dialog
 	private DateTimeEdit dateTimeEdit;
 	private Calendar calendar;
 	
-	@SuppressWarnings("unused") //$NON-NLS-1$
+	@SuppressWarnings("unused") 
 	private Spinner hour = null;
-	@SuppressWarnings("unused") //$NON-NLS-1$
+	@SuppressWarnings("unused") 
 	private Spinner minute = null;
-	@SuppressWarnings("unused") //$NON-NLS-1$
+	@SuppressWarnings("unused") 
 	private Spinner second = null;
-	@SuppressWarnings("unused") //$NON-NLS-1$
+	@SuppressWarnings("unused") 
 	private Spinner milliSec = null;
 	
 	public CalendarDateTimeEditLookupDialog(Shell parentShell, DateTimeEdit dateTimeEdit)

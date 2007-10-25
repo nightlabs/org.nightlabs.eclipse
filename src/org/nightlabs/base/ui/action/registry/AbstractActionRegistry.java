@@ -998,6 +998,7 @@ extends AbstractEPProcessor
 	protected static final String ATTRIBUTE_NAME_ACTION_VISIBLE_IN_TOOLBAR = "visibleInToolbar"; //$NON-NLS-1$
 	protected static final String ATTRIBUTE_NAME_ACTION_VISIBLE_IN_CONTEXTMENU = "visibleInContextmenu"; //$NON-NLS-1$
 
+	@Override
 	public synchronized void process()
 	{
 //		if (elementNameAction == null)
@@ -1062,6 +1063,7 @@ extends AbstractEPProcessor
 	{
 	}
 
+	@Override
 	public void processElement(IExtension extension, IConfigurationElement element)
 			throws Exception
 	{
@@ -1190,7 +1192,7 @@ extends AbstractEPProcessor
 
 	public ActionDescriptor getActionDescriptor(String actionID, boolean throwExceptionIfNotFound)
 	{
-		ActionDescriptor descriptor = (ActionDescriptor) actionDescriptorsByID.get(actionID);
+		ActionDescriptor descriptor = actionDescriptorsByID.get(actionID);
 
 		if (throwExceptionIfNotFound && descriptor == null)
 			throw new IllegalArgumentException("No ActionDescriptor known for actionID=" + actionID); //$NON-NLS-1$

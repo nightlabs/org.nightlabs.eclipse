@@ -80,6 +80,7 @@ public class FormPageWizardHop extends WizardHop {
 			_toolkit = new FormToolkit(Display.getDefault());
 		}
 		
+		@Override
 		public void dispose() {
 			super.dispose();
 			_toolkit.dispose();

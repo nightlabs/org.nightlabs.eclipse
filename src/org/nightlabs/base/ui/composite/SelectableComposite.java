@@ -58,10 +58,12 @@ public class SelectableComposite extends XComposite {
 	
 	private MouseListener mouseListener = new MouseAdapter() 
 	{
+		@Override
 		public void mouseDoubleClick(MouseEvent evt) {
 			setSelected(true,evt.stateMask);
 		}
 
+		@Override
 		public void mouseUp(MouseEvent evt) {
 			setSelected(true,evt.stateMask);
 		}

@@ -49,6 +49,7 @@ public class SharedImages
 	public static enum ImageDimension {
 		// for image decorators
 		_8x8 {
+			@Override
 			public String toString()
 			{
 				return "8x8"; //$NON-NLS-1$
@@ -56,24 +57,28 @@ public class SharedImages
 		},
 		// for button images in Contribution items
 		_12x12 {
+			@Override
 			public String toString()
 			{
 				return "12x12"; //$NON-NLS-1$
 			}
 		},				
 		_16x16 {
+			@Override
 			public String toString()
 			{
 				return "16x16"; //$NON-NLS-1$
 			}
 		},
 		_24x24 {
+			@Override
 			public String toString()
 			{
 				return "24x24"; //$NON-NLS-1$
 			}
 		},
 		_75x70 {
+			@Override
 			public String toString()
 			{
 				return "75x70"; //$NON-NLS-1$
@@ -83,6 +88,7 @@ public class SharedImages
 		 * @deprecated What's that strange format doing here? Marco.
 		 */
 		_150x15 {
+			@Override
 			public String toString()
 			{
 				return "150x15"; //$NON-NLS-1$
@@ -163,7 +169,7 @@ public class SharedImages
 	public Image getImage(Plugin plugin, Class clazz, String _suffix, String dimension, ImageFormat format) {
 		String suffix = (_suffix != null) ? _suffix : ""; //$NON-NLS-1$
 		String imageKey = getImageKey(plugin, clazz, suffix, dimension, format);
-		Image image = (Image) images.get(imageKey);
+		Image image = images.get(imageKey);
 		if (image == null) {
 			ImageDescriptor imageDescriptor = getImageDescriptor(plugin, clazz, suffix, dimension, format);
 			image = imageDescriptor.createImage();

@@ -64,6 +64,7 @@ extends AbstractActionRegistry
 		super();
 	}
 
+	@Override
 	protected Object createActionOrContributionItem(IExtension extension, IConfigurationElement element) 
 	throws EPProcessorException 
 	{
@@ -89,10 +90,12 @@ extends AbstractActionRegistry
 //		action.init(SELECTION_ZONE, Object.class, "SelectionAction");
 //	}	
 	
+	@Override
 	public String getExtensionPointID() {
 		return EXTENSION_POINT_ID;
 	}
 
+	@Override
 	protected String getActionElementName()
 	{
 		return "selectionAction"; //$NON-NLS-1$

@@ -77,6 +77,7 @@ implements INewFileAction
     return defaultPath;
 	}
 
+	@Override
 	public void run() 
 	{		
 		nextFileCount();		

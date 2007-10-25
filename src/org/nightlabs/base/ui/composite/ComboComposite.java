@@ -60,6 +60,7 @@ import org.eclipse.swt.widgets.Label;
  * @author Marius Heinzmann <marius[AT]nightlabs[DOT]de>
  * @param <T>
  */
+@Deprecated
 public class ComboComposite<T> extends AbstractListComposite<T> {
 
 	// Either initialise here, pass false to all superconstructors, create a constructor pyramid for 
@@ -112,10 +113,12 @@ public class ComboComposite<T> extends AbstractListComposite<T> {
 		super(parent, comboStyle, (String) null, true, labelProvider);
 	}
 
+	@Override
 	protected void addElementToGui(int index, T element) {
 		combo.add(labelProvider.getText(element), index);
 	}
 
+	@Override
 	protected void createGuiControl(Composite parent, int style, String caption) {
 		getGridData().grabExcessVerticalSpace = false;
 		style |= getBorderStyle();
@@ -153,26 +156,32 @@ public class ComboComposite<T> extends AbstractListComposite<T> {
 			throw new IllegalStateException("Cannot access the label if its creation hasn't been requested earlier."); //$NON-NLS-1$
 	}
 
+	@Override
 	protected int internal_getSelectionIndex() {
 		return combo.getSelectionIndex();
 	}
 
+	@Override
 	protected int[] internal_getSelectionIndices() {
 		return new int[] { combo.getSelectionIndex() };
 	}
 
+	@Override
 	protected void removeAllElementsFromGui() {
 		combo.removeAll();
 	}
 
+	@Override
 	protected void removeElementFromGui(int index) {
 		combo.remove(index);
 	}
 
+	@Override
 	protected void internal_setSelection(int index) {
 		combo.select(index);
 	}
 
+	@Override
 	protected void internal_setSelection(int[] indices) {
 		if (indices.length < 1)
 			combo.select(-1); // seems to be ignored - a combo seems to have always
@@ -182,6 +191,7 @@ public class ComboComposite<T> extends AbstractListComposite<T> {
 			combo.select(indices[0]);
 	}
 
+	@Override
 	protected int internal_getSelectionCount() {
 		if (combo.getSelectionIndex() < 0 || combo.getItemCount() < 1)
 			return 0;
@@ -207,6 +217,7 @@ public class ComboComposite<T> extends AbstractListComposite<T> {
 	 * @see org.eclipse.swt.widgets.Combo#addSelectionListener(org.eclipse.swt.events.SelectionListener)
 	 * @deprecated The methods from combo should be completely hidden - there is already an ISelectionProvider implemented in this class
 	 */
+	@Deprecated
 	public void addSelectionListener(SelectionListener listener) {
 		combo.addSelectionListener(listener);
 	}
@@ -224,10 +235,12 @@ public class ComboComposite<T> extends AbstractListComposite<T> {
 	 * @see org.eclipse.swt.widgets.Combo#removeSelectionListener(org.eclipse.swt.events.SelectionListener)
 	 * @deprecated The methods from combo should be completely hidden - there is already an ISelectionProvider implemented in this class
 	 */
+	@Deprecated
 	public void removeSelectionListener(SelectionListener listener) {
 		combo.removeSelectionListener(listener);
 	}
 
+	@Override
 	protected void refreshElement(T element) {
 		int index = getElementIndex(element);
 		combo.setItem(index, labelProvider.getText(element));

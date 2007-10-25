@@ -63,6 +63,7 @@ extends AbstractEPProcessor
 	private static final Logger logger = Logger.getLogger(Editor2PerspectiveRegistry.class);
 	public static final String EXTENSION_POINT_ID = "org.nightlabs.base.ui.editor2perspective"; //$NON-NLS-1$
 	
+	@Override
 	public String getExtensionPointID() {
 		return EXTENSION_POINT_ID;
 	}
@@ -77,7 +78,7 @@ extends AbstractEPProcessor
 	private Map<String, String> editorID2PerspectiveID = new HashMap<String, String>();
 	public String getPerspectiveID(String editorID) {
 		checkProcessing();
-		return (String) editorID2PerspectiveID.get(editorID);
+		return editorID2PerspectiveID.get(editorID);
 	}
 
 //	protected Map<String, Set<String>> editorID2PerspectiveIDs = new HashMap<String, Set<String>>();
@@ -92,6 +93,7 @@ extends AbstractEPProcessor
 		return perspectiveID2editorIDs.get(perspectiveID);
 	}
 	
+	@Override
 	public void processElement(IExtension extension, IConfigurationElement element)
 	throws Exception 
 	{

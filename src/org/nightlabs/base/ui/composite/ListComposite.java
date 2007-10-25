@@ -201,6 +201,7 @@ public class ListComposite<T>
 	/**
 	 * @see AbstractListComposite#refreshElement(T)
 	 */
+	@Override
 	public void refreshElement(T elem)
 	{
 		int index = getElementIndex(elem);

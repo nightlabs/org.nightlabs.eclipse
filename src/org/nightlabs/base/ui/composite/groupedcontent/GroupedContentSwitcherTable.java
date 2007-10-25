@@ -78,6 +78,7 @@ public class GroupedContentSwitcherTable extends AbstractTableComposite {
 		/**
 		 * @see org.nightlabs.base.ui.table.TableContentProvider#getElements(java.lang.Object)
 		 */
+		@Override
 		public Object[] getElements(Object inputElement) {
 			if (inputElement instanceof Collection)
 				return ((Collection)inputElement).toArray();
@@ -86,6 +87,7 @@ public class GroupedContentSwitcherTable extends AbstractTableComposite {
 	}
 	
 	private class LabelProvider extends TableLabelProvider {
+		@Override
 		public Image getColumnImage(Object element, int columnIndex) {
 			if (element instanceof GroupedContentProvider)
 				return ((GroupedContentProvider)element).getGroupIcon();
@@ -111,6 +113,7 @@ public class GroupedContentSwitcherTable extends AbstractTableComposite {
 //		getTable().setForeground(parent.getForeground());
 	}
 
+	@Override
 	protected void createTableColumns(TableViewer tableViewer, Table table) {
 //		column = new TableColumn(table, SWT.LEFT); 
 //		if (groupTitle != null)
@@ -118,6 +121,7 @@ public class GroupedContentSwitcherTable extends AbstractTableComposite {
 //		table.setLayout(new WeightedTableLayout(new int[] {1}));		
 	}
 
+	@Override
 	protected void setTableProvider(TableViewer tableViewer) {		
 		tableViewer.setContentProvider(new ContentProvider());
 		tableViewer.setLabelProvider(new LabelProvider());

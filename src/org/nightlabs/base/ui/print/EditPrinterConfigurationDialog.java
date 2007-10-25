@@ -27,6 +27,7 @@
 package org.nightlabs.base.ui.print;
 
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
@@ -66,6 +67,7 @@ public class EditPrinterConfigurationDialog extends CenteredDialog {
 		setShellStyle(getShellStyle() | SWT.RESIZE);				
 	}
 	
+	@Override
 	protected void configureShell(Shell newShell) 
 	{
 		super.configureShell(newShell);		
@@ -108,7 +110,7 @@ public class EditPrinterConfigurationDialog extends CenteredDialog {
 				printerUseCaseID,
 				preSelectionDoStore
 			);
-		if (dlg.open() == Dialog.OK)
+		if (dlg.open() == Window.OK)
 			return dlg.printerConfiguration;
 		return null;
 	}

@@ -136,6 +136,7 @@ extends AbstractContributionItem
 //		return selectedSearchResultProvider;
 //	}
 	
+	@Override
 	protected Control createControl(Composite parent) {
 		return null;
 	}
@@ -219,6 +220,7 @@ extends AbstractContributionItem
 		return menu;
 	}
 	
+	@Override
 	public void fill(ToolBar parent, int index) 
 	{
 		if (fillToolBar) 

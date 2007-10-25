@@ -36,7 +36,7 @@ public abstract class InvertableSorter<T>
 extends ViewerSorter
 {
 	@Override
-	@SuppressWarnings("unchecked") //$NON-NLS-1$
+	@SuppressWarnings("unchecked") 
 	public int compare(Viewer viewer, Object e1, Object e2)
 	{
 		return _compare(viewer, (T)e1, (T)e2);

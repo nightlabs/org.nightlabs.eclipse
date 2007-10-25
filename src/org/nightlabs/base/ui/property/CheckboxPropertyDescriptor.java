@@ -77,6 +77,7 @@ extends XPropertyDescriptor
 	/*
 	 * @see org.eclipse.ui.views.properties.IPropertyDescriptor#createPropertyEditor(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	public CellEditor createPropertyEditor(Composite parent) 
 	{
 		CellEditor editor = new CheckboxCellEditor(parent);

@@ -33,6 +33,7 @@ import java.util.TreeSet;
 import java.util.Map.Entry;
 
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -245,7 +246,7 @@ public class EditDocumentPrinterTypeRegsComposite extends XComposite {
 
 	public static String openFileExtDlg() {
 		FileExtDialog dlg = new FileExtDialog(RCPUtil.getActiveWorkbenchShell());
-		if (dlg.open() == Dialog.OK)
+		if (dlg.open() == Window.OK)
 			return dlg.getFileExt();
 		else
 			return null;

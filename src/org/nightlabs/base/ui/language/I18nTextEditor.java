@@ -179,6 +179,7 @@ public class I18nTextEditor extends XComposite implements II18nTextEditor
 
 		text = createText(this);
 		text.addFocusListener(new FocusAdapter() {
+			@Override
 			public void focusLost(FocusEvent arg0)
 			{
 				storeText();

@@ -57,6 +57,7 @@ public class ErrorReportWizardCommentPage extends DynamicPathWizardPage
 	/**
 	 * @see org.nightlabs.base.ui.wizard.DynamicPathWizardPage#createPageContents(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	public Control createPageContents(Composite parent)
 	{	
 		XComposite page = new XComposite(parent, SWT.NONE, LayoutMode.TIGHT_WRAPPER);
@@ -84,6 +85,7 @@ public class ErrorReportWizardCommentPage extends DynamicPathWizardPage
 	/**
 	 * @see org.eclipse.jface.wizard.WizardPage#isPageComplete()
 	 */
+	@Override
 	public boolean isPageComplete()
 	{
 		return true;

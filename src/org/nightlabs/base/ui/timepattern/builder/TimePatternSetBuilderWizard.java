@@ -6,6 +6,7 @@ package org.nightlabs.base.ui.timepattern.builder;
 import java.util.Iterator;
 
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.window.Window;
 import org.nightlabs.base.ui.wizard.DynamicPathWizard;
 import org.nightlabs.base.ui.wizard.DynamicPathWizardDialog;
 import org.nightlabs.timepattern.TimePattern;
@@ -65,7 +66,7 @@ public class TimePatternSetBuilderWizard extends DynamicPathWizard {
 		wiz.addBuilderHop(new MonthlyTimePatternBuilderHop());
 		wiz.addBuilderHop(new SingleExecTimePatternBuilderHop());
 		DynamicPathWizardDialog dlg = new DynamicPathWizardDialog(wiz);
-		return dlg.open() == Dialog.OK;
+		return dlg.open() == Window.OK;
 	}
 
 }

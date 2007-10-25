@@ -69,7 +69,8 @@ extends CellEditor
 	  /**
 	   * Creates a XCombo and adds some listener to it
 	   */
-	  protected Control createControl(Composite parent) 
+	  @Override
+		protected Control createControl(Composite parent) 
 	  {	
 		  comboBox = new XCombo(parent, getStyle());
 //	  	comboBox = new Combo(parent, getStyle());
@@ -77,17 +78,20 @@ extends CellEditor
 		
 		  comboBox.addKeyListener(new KeyAdapter() {
 		      // hook key pressed - see PR 14201  
-		      public void keyPressed(KeyEvent e) {
+		      @Override
+					public void keyPressed(KeyEvent e) {
 		          keyReleaseOccured(e);
 		      }
 		  });
 		
 		  comboBox.addSelectionListener(new SelectionAdapter() {
-		      public void widgetDefaultSelected(SelectionEvent event) {
+		      @Override
+					public void widgetDefaultSelected(SelectionEvent event) {
 		          applyEditorValueAndDeactivate();
 		      }
 		
-		      public void widgetSelected(SelectionEvent event) {
+		      @Override
+					public void widgetSelected(SelectionEvent event) {
 		          selection = comboBox.getSelectionIndex();
 		      }
 		  });
@@ -102,7 +106,8 @@ extends CellEditor
 		  });
 		
 		  comboBox.addFocusListener(new FocusAdapter() {
-		      public void focusLost(FocusEvent e) {
+		      @Override
+					public void focusLost(FocusEvent e) {
 		      	AbstractColorComboBoxCellEditor.this.focusLost();
 		      }
 		  });
@@ -112,7 +117,8 @@ extends CellEditor
 	  /**
 	   * sets the focus to the ComboBox
 	   */
-	  protected void doSetFocus() {
+	  @Override
+		protected void doSetFocus() {
 	    if (comboBox != null) {
 	      comboBox.setFocus();    	
 	    }
@@ -121,7 +127,8 @@ extends CellEditor
 	  /**
 	   * @see org.eclipse.jface.viewers.CellEditor#focusLost()
 	   */
-	  protected void focusLost() 
+	  @Override
+		protected void focusLost() 
 	  {
 	    if (isActivated()) {
 	      applyEditorValueAndDeactivate();
@@ -156,7 +163,8 @@ extends CellEditor
 	   * eles it is 60 pixels to make sure the arrow button and some text is visible.
 	   * The list of CCombo will be wide enough to show its longest item.
 	   */
-	  public LayoutData getLayoutData() 
+	  @Override
+		public LayoutData getLayoutData() 
 	  {
 	    LayoutData layoutData = super.getLayoutData();
 	    if ((comboBox == null) || comboBox.isDisposed())
@@ -172,7 +180,8 @@ extends CellEditor
 	  }	  
 	  
 	  protected Object oldValue;
-	  protected void doSetValue(Object value) 
+	  @Override
+		protected void doSetValue(Object value) 
 	  {
 	    oldValue = value;
 	    if (value instanceof String) 
@@ -205,6 +214,7 @@ extends CellEditor
 		 * checks if something is selected ( = the selectionIndex != -1) and if so
 		 * the value of getReturnValue() is returned
 		 */
+		@Override
 		protected Object doGetValue() 
 		{
 			if (getComboBox().getSelectionIndex() != -1)

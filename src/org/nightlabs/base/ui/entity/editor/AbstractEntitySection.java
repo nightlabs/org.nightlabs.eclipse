@@ -38,6 +38,7 @@ import org.nightlabs.base.ui.editor.RestorableSectionPart;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  * @deprecated is never used
  */
+@Deprecated
 public abstract class AbstractEntitySection<T> 
 extends RestorableSectionPart 
 {

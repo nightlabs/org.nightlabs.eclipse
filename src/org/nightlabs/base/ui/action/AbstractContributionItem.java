@@ -93,6 +93,7 @@ extends XContributionItem
 			getControl().setSize(computeWidth(getControl()), computeHeight(getControl()));
 	}
 	  
+	@Override
 	public void fill(Composite parent) 
 	{
 		if (fillComposite) {
@@ -107,6 +108,7 @@ extends XContributionItem
 		return control;
 	}
 	
+	@Override
 	public void fill(CoolBar parent, int index) 
 	{
 		if (fillCoolBar) {
@@ -123,6 +125,7 @@ extends XContributionItem
 		return coolItem;
 	}
 	
+	@Override
 	public void fill(Menu menu, int index) 
 	{
 		if (fillMenuBar) {
@@ -136,6 +139,7 @@ extends XContributionItem
 		return menuItem;
 	}
 	
+	@Override
 	public void fill(ToolBar parent, int index) 
 	{
 		if (fillToolBar) {

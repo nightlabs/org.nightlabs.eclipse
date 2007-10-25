@@ -62,6 +62,7 @@ extends WorkbenchWindowAdvisor
 	}
 //	protected String applicationName = "Application"; //$NON-NLS-1$
 
+	@Override
 	public ActionBarAdvisor createActionBarAdvisor(IActionBarConfigurer configurer) {
 		Collection<ActionBarItem> menuBarItems = new HashSet<ActionBarItem>();
 		menuBarItems.add(ActionBarItem.New);
@@ -76,6 +77,7 @@ extends WorkbenchWindowAdvisor
 		return new DefaultActionBuilder(configurer, menuBarItems, null);				
 	}
 
+	@Override
 	public void preWindowOpen() 
 	{
 		super.preWindowOpen();

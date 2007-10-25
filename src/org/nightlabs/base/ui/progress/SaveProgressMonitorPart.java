@@ -71,6 +71,7 @@ public class SaveProgressMonitorPart extends ProgressMonitorPart {
 	 * (non-Javadoc)
 	 * @see org.eclipse.jface.wizard.ProgressMonitorPart#beginTask(java.lang.String, int)
 	 */
+	@Override
 	public void beginTask(final String title, final int work) {
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
@@ -86,6 +87,7 @@ public class SaveProgressMonitorPart extends ProgressMonitorPart {
 	 * (non-Javadoc)
 	 * @see org.eclipse.jface.wizard.ProgressMonitorPart#done()
 	 */
+	@Override
 	public void done() {
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
@@ -101,6 +103,7 @@ public class SaveProgressMonitorPart extends ProgressMonitorPart {
 	 * (non-Javadoc)
 	 * @see org.eclipse.jface.wizard.ProgressMonitorPart#internalWorked(double)
 	 */
+	@Override
 	public void internalWorked(final double worked) {
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
@@ -116,6 +119,7 @@ public class SaveProgressMonitorPart extends ProgressMonitorPart {
 	 * (non-Javadoc)
 	 * @see org.eclipse.jface.wizard.ProgressMonitorPart#isCanceled()
 	 */
+	@Override
 	public boolean isCanceled() {
 		class BooleanHolder {
 			public boolean bool = false;
@@ -138,6 +142,7 @@ public class SaveProgressMonitorPart extends ProgressMonitorPart {
 	 * (non-Javadoc)
 	 * @see org.eclipse.jface.wizard.ProgressMonitorPart#setCanceled(boolean)
 	 */
+	@Override
 	public void setCanceled(final boolean canceled) {
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
@@ -153,6 +158,7 @@ public class SaveProgressMonitorPart extends ProgressMonitorPart {
 	 * (non-Javadoc)
 	 * @see org.eclipse.jface.wizard.ProgressMonitorPart#setTaskName(java.lang.String)
 	 */
+	@Override
 	public void setTaskName(final String taskName) {
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
@@ -168,6 +174,7 @@ public class SaveProgressMonitorPart extends ProgressMonitorPart {
 	 * (non-Javadoc)
 	 * @see org.eclipse.jface.wizard.ProgressMonitorPart#subTask(java.lang.String)
 	 */
+	@Override
 	public void subTask(final String name) {
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
@@ -183,6 +190,7 @@ public class SaveProgressMonitorPart extends ProgressMonitorPart {
 	 * (non-Javadoc)
 	 * @see org.eclipse.jface.wizard.ProgressMonitorPart#worked(int)
 	 */
+	@Override
 	public void worked(final int worked) {
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {

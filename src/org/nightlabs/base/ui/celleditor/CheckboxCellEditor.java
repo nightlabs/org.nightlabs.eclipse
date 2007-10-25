@@ -69,6 +69,7 @@ extends XCellEditor
 	 * this <code>CellEditor</code> framework method does
 	 * nothing and returns <code>null</code>.
 	 */
+	@Override
 	protected Control createControl(Composite parent) 
 	{
 	   checkbox = new Button(parent, getStyle() | SWT.CHECK);
@@ -82,10 +83,12 @@ extends XCellEditor
 	 *
 	 * @return the Boolean checkbox value
 	 */
+	@Override
 	protected Object doGetValue() {
 		return new Boolean(checkbox.getSelection());
 	}
 	
+	@Override
 	protected void doSetFocus() {
 	  checkbox.setFocus();
 	}
@@ -97,6 +100,7 @@ extends XCellEditor
 	 *
 	 * @param value a Boolean value
 	 */
+	@Override
 	protected void doSetValue(Object value) 
 	{
 		if (isReadOnly())

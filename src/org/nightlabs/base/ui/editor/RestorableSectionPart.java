@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.FormColors;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.SectionPart;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.nightlabs.base.ui.notification.IDirtyStateManager;
@@ -132,8 +133,8 @@ implements IDirtyStateManager
 //					.getColor(FormColors.TB_TOGGLE));
 //		}
 //		section.setFont(boldFontHolder.getBoldFont(parent.getFont()));
-		if ((sectionStyle & Section.TITLE_BAR) != 0
-				|| (sectionStyle & Section.SHORT_TITLE_BAR) != 0) {
+		if ((sectionStyle & ExpandableComposite.TITLE_BAR) != 0
+				|| (sectionStyle & ExpandableComposite.SHORT_TITLE_BAR) != 0) {
 			colors.initializeSectionToolBarColors();
 			section.setTitleBarBackground(colors.getColor(FormColors.TB_GBG));
 			section.setTitleBarBorderColor(colors

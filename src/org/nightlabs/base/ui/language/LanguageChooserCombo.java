@@ -80,6 +80,7 @@ public class LanguageChooserCombo
 		combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		combo.addSelectionListener(
 				new SelectionAdapter() {
+					@Override
 					public void widgetSelected(SelectionEvent selectionEvent)
 					{
 						logger.debug("new language: "+getLanguage().getLanguageID()); //$NON-NLS-1$
@@ -134,6 +135,6 @@ public class LanguageChooserCombo
 	 */
 	public LanguageCf getLanguage()
 	{
-		return (LanguageCf)languages.get(combo.getSelectionIndex());
+		return languages.get(combo.getSelectionIndex());
 	}
 }

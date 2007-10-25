@@ -71,7 +71,7 @@ public class LocalTransferManager {
 	public Object getObject(String key) {
 		synchronized (transferObjects) {
 			
-			WeakReference softReference = (WeakReference) transferObjects.get(key);
+			WeakReference softReference = transferObjects.get(key);
 			if (softReference == null)
 				throw new IllegalArgumentException("Could not find a Object for the given key "+key); //$NON-NLS-1$
 

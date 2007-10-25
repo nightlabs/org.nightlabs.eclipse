@@ -31,6 +31,7 @@ package org.nightlabs.base.ui.selection;
  * @author Daniel Mazurek - daniel dot mazurek at nightlabs dot de
  * @deprecated Use {@link SelectionProvider} instead!
  */
+@Deprecated
 public class SelectionProviderImpl
 extends SelectionProvider
 {

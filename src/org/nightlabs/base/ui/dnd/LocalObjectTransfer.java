@@ -51,20 +51,24 @@ extends ByteArrayTransfer
 		super();
 	}
 
+	@Override
 	protected int[] getTypeIds() {
 		return new int[] { TYPE_ID };
 	}
 
+	@Override
 	protected String[] getTypeNames() {
 		return new String[] { TYPE_NAME };
 	}
 
+	@Override
 	protected void javaToNative(Object object, TransferData transferData) 
 	{
 		String objectKey = LocalTransferManager.sharedInstance().addObject(object);
 		super.javaToNative(objectKey.getBytes(), transferData); // TODO shouldn't we better use objectKey.getBytes(Utils.CHARSET_NAME_UTF_8) ?!!!!
 	}
 
+	@Override
 	protected Object nativeToJava(TransferData transferData) 
 	{
 		byte[] superResult = (byte[])super.nativeToJava(transferData);
@@ -72,6 +76,7 @@ extends ByteArrayTransfer
 		return LocalTransferManager.sharedInstance().popObject(transferKey);
 	}
 	
+	@Override
 	protected boolean validate(Object object) {
 		return true;
 	}

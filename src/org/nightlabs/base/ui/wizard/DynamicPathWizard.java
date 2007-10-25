@@ -109,6 +109,7 @@ public abstract class DynamicPathWizard extends Wizard implements IDynamicPathWi
 	 * @deprecated Because {@link #init()} is not necessary anymore, this constructor
 	 *		isn't either.
 	 */
+	@Deprecated
 	public DynamicPathWizard(boolean init) {
 		setForcePreviousAndNextButtons(true);
 		if (init)
@@ -123,6 +124,7 @@ public abstract class DynamicPathWizard extends Wizard implements IDynamicPathWi
 	 *
 	 * @deprecated
 	 */
+	@Deprecated
 	protected void init() {
 //		addPage(getWizardEntryPage());
 	}
@@ -140,6 +142,7 @@ public abstract class DynamicPathWizard extends Wizard implements IDynamicPathWi
 	/**
 	 * @see org.eclipse.jface.wizard.Wizard#addPages()
 	 */
+	@Override
 	public void addPages()
 	{
 		super.addPages(); // empty super method.
@@ -169,6 +172,7 @@ public abstract class DynamicPathWizard extends Wizard implements IDynamicPathWi
 	 * 
 	 * @deprecated
 	 */
+	@Deprecated
 	public IDynamicPathWizardPage createWizardEntryPage() 
 	{
 		return null;
@@ -177,6 +181,7 @@ public abstract class DynamicPathWizard extends Wizard implements IDynamicPathWi
 	/**
 	 * @deprecated
 	 */
+	@Deprecated
 	private IDynamicPathWizardPage wizardEntryPage = null;
 
 	/**
@@ -192,6 +197,7 @@ public abstract class DynamicPathWizard extends Wizard implements IDynamicPathWi
 	 * 
 	 * @deprecated
 	 */
+	@Deprecated
 	public IDynamicPathWizardPage getWizardEntryPage()
 	{
 		if (wizardEntryPage == null)
@@ -272,7 +278,7 @@ public abstract class DynamicPathWizard extends Wizard implements IDynamicPathWi
 		IWizardPage page = getFirstPage();
 		while (page != null && page != currentPage) {
 			if (page instanceof IDynamicPathWizardPage) {
-				int i = getDynamicWizardPageIndex((IDynamicPathWizardPage)page);
+				int i = getDynamicWizardPageIndex(page);
 				if (i > lastReadOnlyIndex)
 					lastReadOnlyIndex = i;
 			}
@@ -358,7 +364,7 @@ public abstract class DynamicPathWizard extends Wizard implements IDynamicPathWi
 			return;
 
 		assertCanRemoveDynamicWizardPage(
-				(IDynamicPathWizardPage) dynamicWizardPages.get(index));
+				dynamicWizardPages.get(index));
 		dynamicWizardPages.remove(index);
 	}
 
@@ -374,6 +380,7 @@ public abstract class DynamicPathWizard extends Wizard implements IDynamicPathWi
 		dynamicWizardPages.clear();
 	}
 
+	@Override
 	public boolean canFinish() {
 		IWizardPage page = getFirstPage();
 		IWizardPage lastPage = null;
@@ -415,11 +422,13 @@ public abstract class DynamicPathWizard extends Wizard implements IDynamicPathWi
 	/**
 	 * @see org.eclipse.jface.wizard.Wizard#getPreviousPage(org.eclipse.jface.wizard.IWizardPage)
 	 */
+	@Override
 	public IWizardPage getPreviousPage(IWizardPage page)
 	{
 		return super.getPreviousPage(page);
 	}
 
+	@Override
 	public IWizardPage getNextPage(IWizardPage page) {
 
 		IWizardPage[] pages = getPages();
@@ -450,7 +459,7 @@ public abstract class DynamicPathWizard extends Wizard implements IDynamicPathWi
 //			return null;
 		}
 		else if (index >= 0)
-			return (IWizardPage)dynamicWizardPages.get(index + 1);
+			return dynamicWizardPages.get(index + 1);
 		else
 			return null;
 	}

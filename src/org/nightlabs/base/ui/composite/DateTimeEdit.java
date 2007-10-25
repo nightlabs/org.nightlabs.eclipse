@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
@@ -148,6 +149,7 @@ public class DateTimeEdit extends XComposite
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		text.addModifyListener(textModifyListener);
 		text.addFocusListener(new FocusAdapter() {
+			@Override
 			public void focusLost(FocusEvent e) {
 				if (text.getText().equals(""))
 					setDate(null);
@@ -182,7 +184,7 @@ public class DateTimeEdit extends XComposite
 	private void lookupButtonClicked()
 	{
 		CalendarDateTimeEditLookupDialog dialog = new CalendarDateTimeEditLookupDialog(getShell(), this, lookupButton.toDisplay(0, 0));
-		if (dialog.open() == CalendarDateTimeEditLookupDialog.OK) {
+		if (dialog.open() == Window.OK) {
 			setDate(dialog.getDate());
 		}
 //		DateTimeEditLookupDialog dialog = new DateTimeEditLookupDialog(getShell(), this);
@@ -212,6 +214,7 @@ public class DateTimeEdit extends XComposite
 	/**
 	 * @see org.eclipse.swt.widgets.Widget#dispose()
 	 */
+	@Override
 	public void dispose()
 	{
 		text.removeModifyListener(textModifyListener);

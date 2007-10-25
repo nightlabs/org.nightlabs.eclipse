@@ -64,6 +64,7 @@ extends InputDialog
 		return inputValidator;
 	}
 
+	@Override
 	protected abstract void okPressed();
 
 	protected DialogCfMod getDialogCfMod()

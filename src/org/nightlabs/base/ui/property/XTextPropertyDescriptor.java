@@ -65,7 +65,8 @@ extends XPropertyDescriptor
    * The editor is configured with the current validator if there is one. 
    * </p>
    */
-  public CellEditor createPropertyEditor(Composite parent) 
+  @Override
+	public CellEditor createPropertyEditor(Composite parent) 
   {
     CellEditor editor = new XTextCellEditor(parent, SWT.NONE, readOnly);
     if (getValidator() != null)

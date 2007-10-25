@@ -139,6 +139,7 @@ public class ExpandableAreaDialog extends Dialog {
 		this.expandText = expandText;
 	}
 	
+	@Override
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
 		shell.setText(dialogTitle);
@@ -149,6 +150,7 @@ public class ExpandableAreaDialog extends Dialog {
 	/** Do not override this method.
 	 * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	protected Control createDialogArea(Composite parent) {
 		dialogAreaComp = new ExpandableAreaComp();		
 		return dialogAreaComp.createComposite(parent,this,expandText);
@@ -216,6 +218,7 @@ public class ExpandableAreaDialog extends Dialog {
 	/**
 	 * Overrides {@link Dialog#create()} and adds a call to {@link #doRelayout()}
 	 */
+	@Override
 	public void create() {
 		super.create();
 
@@ -342,6 +345,7 @@ public class ExpandableAreaDialog extends Dialog {
 			ec.setLayoutData(gd);
 			// the ExpansionListener re-packs the dialog
 			ec.addExpansionListener(new ExpansionAdapter() {
+				@Override
 				public void expansionStateChanged(ExpansionEvent e) {
 					getComp().layout(true);
 					getDialog().doRelayout();

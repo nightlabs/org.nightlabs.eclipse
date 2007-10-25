@@ -80,14 +80,16 @@ extends AbstractComboBoxCellEditor
    *
    * @return the list of choices for the combo box
    */
-  public String[] getItems() {
+  @Override
+	public String[] getItems() {
     return this.items;
   }
 
   /**
    * Updates the list of choices for the combo box for the current control.
    */
-  protected void populateComboBoxItems() 
+  @Override
+	protected void populateComboBoxItems() 
   {
     if (getComboBox() != null && items != null) {
     	getComboBox().removeAll();
@@ -109,7 +111,8 @@ extends AbstractComboBoxCellEditor
    *
    * @return the String of the Selection
    */
-  protected Object getReturnValue() {
+  @Override
+	protected Object getReturnValue() {
 		return items[getComboBox().getSelectionIndex()];
   }
     

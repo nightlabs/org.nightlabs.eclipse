@@ -45,6 +45,7 @@ public class TestExceptionAction extends Action implements IWorkbenchWindowActio
 	public void run(IAction action) {
 		final int DELAY = 1000;
 		Thread thread1 = new Thread() {
+			@Override
 			public void run()
 			{
 				try
@@ -57,6 +58,7 @@ public class TestExceptionAction extends Action implements IWorkbenchWindowActio
 		};
 		
 		Thread thread2 = new Thread() {
+			@Override
 			public void run()
 			{
 				try
@@ -69,6 +71,7 @@ public class TestExceptionAction extends Action implements IWorkbenchWindowActio
 		};
 		
 		Thread thread3 = new Thread() {
+			@Override
 			public void run()
 			{
 				try
@@ -81,6 +84,7 @@ public class TestExceptionAction extends Action implements IWorkbenchWindowActio
 		};
 		
 		Thread thread4 = new Thread() {
+			@Override
 			public void run()
 			{
 				try

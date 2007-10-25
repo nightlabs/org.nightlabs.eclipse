@@ -53,6 +53,7 @@ public class OutOfMemoryErrorDialog extends DefaultErrorDialog {
 //		super.createCustomButtons(parent);
 	}
 	
+	@Override
 	protected void buttonPressed(int id) {
 		if (id == RESTART_WORKBENCH_ID) {
 			restartWorkbenchButton.getVisible(); // to avoid warning

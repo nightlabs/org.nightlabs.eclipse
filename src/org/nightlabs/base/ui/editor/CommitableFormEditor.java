@@ -35,7 +35,6 @@ import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.IFormPage;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.nightlabs.base.ui.form.NightlabsFormsToolkit;
-import org.nightlabs.base.ui.job.Job;
 
 /**
  * An abstract form editor that allows commiting

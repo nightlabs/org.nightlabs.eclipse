@@ -38,7 +38,8 @@ public class ErrorReportWizardDialog extends DynamicPathWizardDialog
   {
     super(errorReportWizard);
   }
-  public int open()
+  @Override
+	public int open()
   {
     return super.open();
   }

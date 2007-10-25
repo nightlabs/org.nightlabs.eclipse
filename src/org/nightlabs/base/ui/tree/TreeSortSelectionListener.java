@@ -84,6 +84,7 @@ implements SelectionListener
 	 * @deprecated This constructor is deprecated, because the behaviour "keepDirection"
 	 *		should be global (=> configuration) and not differ from view to view. (Marco)
 	 */	
+	@Deprecated
 	public TreeSortSelectionListener(TreeViewer viewer, TreeColumn column,
 			InvertableSorter sorter, int defaultDirection,
 			boolean keepDirection) {

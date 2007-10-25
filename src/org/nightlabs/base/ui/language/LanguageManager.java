@@ -231,7 +231,7 @@ implements ILanguageManager
 	 */
 	public LanguageCf getLanguage(String languageID, boolean throwExceptionIfNotFound)
 	{
-		LanguageCf res = (LanguageCf) languageID2LanguageCf.get(languageID);
+		LanguageCf res = languageID2LanguageCf.get(languageID);
 
 		if (res == null && throwExceptionIfNotFound)
 			throw new IllegalArgumentException("No language registered for languageID=\"" + languageID + "\"!"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -271,6 +271,7 @@ implements ILanguageManager
 	 * @deprecated The current language should be controlled by {@link Locale}. And changing the language on the fly is not that easy as all the labels
 	 * are already loaded.
 	 */
+	@Deprecated
 	public void setCurrentLanguage(LanguageCf newCurrentLanguage) 
 	{
 		LanguageCf oldLanguage = currentLanguage;
@@ -282,10 +283,11 @@ implements ILanguageManager
 	 * @deprecated The current language should be controlled by {@link Locale}. And changing the language on the fly is not that easy as all the labels
 	 * are already loaded.
 	 */
+	@Deprecated
 	public void setCurrentLanguageID(String newLanguageID) 
 	{
 		if (languageID2LanguageCf.containsKey(newLanguageID)) {
-			LanguageCf langCf = (LanguageCf) languageID2LanguageCf.get(newLanguageID);
+			LanguageCf langCf = languageID2LanguageCf.get(newLanguageID);
 			setCurrentLanguage(langCf);
 		} 
 		else {

@@ -87,7 +87,8 @@ extends StringFieldEditor
    * Method declared on StringFieldEditor.
    * Checks whether the entered String is a valid integer or not.
    */
-  protected boolean checkState() {
+  @Override
+	protected boolean checkState() {
 
       Text text = getTextControl();
 
@@ -115,7 +116,8 @@ extends StringFieldEditor
   /* (non-Javadoc)
    * Method declared on FieldEditor.
    */
-  protected void doLoad() {
+  @Override
+	protected void doLoad() {
       Text text = getTextControl();
       if (text != null) {
           float value = getPreferenceStore().getFloat(getPreferenceName());
@@ -127,7 +129,8 @@ extends StringFieldEditor
   /* (non-Javadoc)
    * Method declared on FieldEditor.
    */
-  protected void doLoadDefault() {
+  @Override
+	protected void doLoadDefault() {
       Text text = getTextControl();
       if (text != null) {
           float value = getPreferenceStore().getDefaultFloat(getPreferenceName());
@@ -139,7 +142,8 @@ extends StringFieldEditor
   /* (non-Javadoc)
    * Method declared on FieldEditor.
    */
-  protected void doStore() {
+  @Override
+	protected void doStore() {
       Text text = getTextControl();
       if (text != null) {
           Float f = new Float(text.getText());

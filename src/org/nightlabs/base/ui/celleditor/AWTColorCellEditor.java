@@ -80,6 +80,7 @@ extends DialogCellEditor
 	 * Internal class for laying out this cell editor.
 	 */
 	private class ColorCellLayout extends Layout {
+		@Override
 		public Point computeSize(
 			Composite editor, 
 			int wHint, 
@@ -99,6 +100,7 @@ extends DialogCellEditor
 				return rgbLabel.computeSize(SWT.DEFAULT, SWT.DEFAULT, force);
 			}
 		}
+		@Override
 		public void layout(Composite editor, boolean force) 
 		{
 			if (showColor) {
@@ -174,6 +176,7 @@ extends DialogCellEditor
 	/* 
 	 * Method declared on DialogCellEditor.
 	 */
+	@Override
 	protected Control createContents(Composite cell) 
 	{
 		Color bg = cell.getBackground();
@@ -193,6 +196,7 @@ extends DialogCellEditor
 	/* 
 	 * Method declared on CellEditor.
 	 */
+	@Override
 	public void dispose() 
 	{
 		if (image != null) {
@@ -205,6 +209,7 @@ extends DialogCellEditor
 	/*
 	 * Method declared on DialogCellEditor.
 	 */
+	@Override
 	protected Object openDialogBox(Control cellEditorWindow) 
 	{
 		ColorDialog dialog = new ColorDialog(cellEditorWindow.getShell());
@@ -227,6 +232,7 @@ extends DialogCellEditor
 	/*
 	 * Method declared on DialogCellEditor.
 	 */
+	@Override
 	protected void updateContents(Object value) 
 	{
 	  if (value != null) {

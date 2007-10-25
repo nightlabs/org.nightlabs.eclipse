@@ -82,6 +82,7 @@ public class TableSortSelectionListener implements SelectionListener {
 	 * @deprecated This constructor is deprecated, because the behaviour "keepDirection"
 	 *		should be global (=> configuration) and not differ from view to view. (Marco)
 	 */
+	@Deprecated
 	public TableSortSelectionListener(TableViewer viewer, TableColumn column,
 //			AbstractInvertableTableSorter sorter, int defaultDirection,
 			InvertableSorter sorter, int defaultDirection,

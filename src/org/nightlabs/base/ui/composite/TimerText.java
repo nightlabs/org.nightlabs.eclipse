@@ -107,6 +107,7 @@ public class TimerText extends XComposite
 
 				if (event != null) {
 					timer.timerTask = new TimerTask() {
+						@Override
 						public void run()
 						{
 							synchronized (delayedModifyListenersMutex) {
@@ -245,6 +246,7 @@ public class TimerText extends XComposite
 	/**
 	 * @see org.eclipse.swt.widgets.Control#getBackground()
 	 */
+	@Override
 	public Color getBackground()
 	{
 		return text.getBackground();
@@ -277,6 +279,7 @@ public class TimerText extends XComposite
 	/**
 	 * @see org.eclipse.swt.widgets.Control#getEnabled()
 	 */
+	@Override
 	public boolean getEnabled()
 	{
 		return text.getEnabled();
@@ -285,6 +288,7 @@ public class TimerText extends XComposite
 	/**
 	 * @see org.eclipse.swt.widgets.Control#getFont()
 	 */
+	@Override
 	public Font getFont()
 	{
 		return text.getFont();
@@ -293,6 +297,7 @@ public class TimerText extends XComposite
 	/**
 	 * @see org.eclipse.swt.widgets.Control#getForeground()
 	 */
+	@Override
 	public Color getForeground()
 	{
 		return text.getForeground();
@@ -301,6 +306,7 @@ public class TimerText extends XComposite
 	/**
 	 * @see org.eclipse.swt.widgets.Control#getMenu()
 	 */
+	@Override
 	public Menu getMenu()
 	{
 		return text.getMenu();
@@ -309,6 +315,7 @@ public class TimerText extends XComposite
 	/**
 	 * @see org.eclipse.swt.widgets.Control#getMonitor()
 	 */
+	@Override
 	public Monitor getMonitor()
 	{
 		return text.getMonitor();
@@ -317,6 +324,7 @@ public class TimerText extends XComposite
 	/**
 	 * @see org.eclipse.swt.widgets.Widget#getStyle()
 	 */
+	@Override
 	public int getStyle()
 	{
 		return text.getStyle();
@@ -357,6 +365,7 @@ public class TimerText extends XComposite
 	/**
 	 * @see org.eclipse.swt.widgets.Control#getToolTipText()
 	 */
+	@Override
 	public String getToolTipText()
 	{
 		return text.getToolTipText();
@@ -365,6 +374,7 @@ public class TimerText extends XComposite
 	/**
 	 * @see org.eclipse.swt.widgets.Control#isFocusControl()
 	 */
+	@Override
 	public boolean isFocusControl()
 	{
 		return text.isFocusControl();
@@ -381,6 +391,7 @@ public class TimerText extends XComposite
 	/**
 	 * @see org.eclipse.swt.widgets.Control#setBackground(org.eclipse.swt.graphics.Color)
 	 */
+	@Override
 	public void setBackground(Color color)
 	{
 		if (text != null)
@@ -390,6 +401,7 @@ public class TimerText extends XComposite
 	/**
 	 * @see org.eclipse.swt.widgets.Control#setForeground(org.eclipse.swt.graphics.Color)
 	 */
+	@Override
 	public void setForeground(Color color)
 	{
 		if (text != null)
@@ -407,6 +419,7 @@ public class TimerText extends XComposite
 	/**
 	 * @see org.eclipse.swt.widgets.Control#setEnabled(boolean)
 	 */
+	@Override
 	public void setEnabled(boolean enabled)
 	{
 		super.setEnabled(enabled);
@@ -416,6 +429,7 @@ public class TimerText extends XComposite
 	/**
 	 * @see org.eclipse.swt.widgets.Control#setFocus()
 	 */
+	@Override
 	public boolean setFocus()
 	{
 		return text.setFocus();
@@ -424,6 +438,7 @@ public class TimerText extends XComposite
 	/**
 	 * @see org.eclipse.swt.widgets.Control#setMenu(org.eclipse.swt.widgets.Menu)
 	 */
+	@Override
 	public void setMenu(Menu menu)
 	{
 		text.setMenu(menu);
@@ -475,6 +490,7 @@ public class TimerText extends XComposite
 	/**
 	 * @see org.eclipse.swt.widgets.Control#setToolTipText(java.lang.String)
 	 */
+	@Override
 	public void setToolTipText(String string)
 	{
 		text.setToolTipText(string);
@@ -491,6 +507,7 @@ public class TimerText extends XComposite
 	/**
 	 * @see org.eclipse.swt.widgets.Control#traverse(int)
 	 */
+	@Override
 	public boolean traverse(int traversal)
 	{
 		return text.traverse(traversal);
@@ -499,6 +516,7 @@ public class TimerText extends XComposite
 	/**
 	 * @see org.eclipse.swt.widgets.Control#update()
 	 */
+	@Override
 	public void update()
 	{
 		text.update();

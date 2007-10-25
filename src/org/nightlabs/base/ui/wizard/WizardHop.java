@@ -204,7 +204,7 @@ public class WizardHop implements IWizardHop
 				return wizard.getNextPage(entryPage);
 			}
 
-			return (IWizardPage) hopPages.get(0);
+			return hopPages.get(0);
 		}
 
 		int currIdx = hopPages.indexOf(currentPage);
@@ -215,7 +215,7 @@ public class WizardHop implements IWizardHop
 
 		if (nextIdx >= 0) {
 			if (nextIdx < hopPages.size())
-				return (IWizardPage) hopPages.get(nextIdx);
+				return hopPages.get(nextIdx);
 
 			if (exitPage != null)
 				return exitPage;
@@ -284,7 +284,7 @@ public class WizardHop implements IWizardHop
 		if (hopPages.isEmpty())
 			return null;
 
-		return (IWizardHopPage) hopPages.get(0);
+		return hopPages.get(0);
 	}
 
 	/**
@@ -295,7 +295,7 @@ public class WizardHop implements IWizardHop
 		if (hopPages.isEmpty())
 			return null;
 
-		return (IWizardHopPage) hopPages.get(hopPages.size() - 1);
+		return hopPages.get(hopPages.size() - 1);
 	}
 
 	/**
@@ -330,6 +330,7 @@ public class WizardHop implements IWizardHop
 	 * @see IWizardHop#hookWizard(IDynamicPathWizard)
 	 * @deprecated Hook a WizardHop simply by adding its entry page to the wizard
 	 */
+	@Deprecated
 	public void hookWizard(IDynamicPathWizard wizard) {
 		wizard.addDynamicWizardPage(getEntryPage());
 //		setHopPagesWizard(wizard, this);
@@ -338,6 +339,7 @@ public class WizardHop implements IWizardHop
 	 * @see IWizardHop#unhookWizard(IDynamicPathWizard)
 	 * @deprecated Hook a WizardHop into a wizard 
 	 */
+	@Deprecated
 	public void unhookWizard(IDynamicPathWizard wizard) {
 		wizard.removeDynamicWizardPage(getEntryPage());
 //		setHopPagesWizard(null, this);

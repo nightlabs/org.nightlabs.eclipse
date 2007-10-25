@@ -77,10 +77,12 @@ extends AbstractEPProcessor
 	
 	protected CategoryRegistry categoryRegistry = new CategoryRegistry();
 	
+	@Override
 	public String getExtensionPointID() {
 		return EXTENSION_POINT_ID;
 	}
 
+	@Override
 	public void processElement(IExtension extension, IConfigurationElement element)
 	throws Exception 
 	{
@@ -147,6 +149,7 @@ extends AbstractEPProcessor
 	{ 
 		protected Map<String, String> categoryID2name = new HashMap<String, String>();
 		
+		@Override
 		public String getExtensionPointID() {
 			return EXTENSION_POINT_ID;
 		}
@@ -157,6 +160,7 @@ extends AbstractEPProcessor
 			return categoryID2name.get(categoryID);
 		}
 
+		@Override
 		public void processElement(IExtension extension, IConfigurationElement element) 
 		throws Exception 
 		{

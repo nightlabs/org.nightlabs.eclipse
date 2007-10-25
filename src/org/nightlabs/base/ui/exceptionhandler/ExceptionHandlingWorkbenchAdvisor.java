@@ -34,6 +34,7 @@ import org.eclipse.ui.application.WorkbenchAdvisor;
  */
 public abstract class ExceptionHandlingWorkbenchAdvisor extends WorkbenchAdvisor {
 			
+	@Override
 	public void eventLoopException(Throwable exception) {
 		if (!ExceptionHandlerRegistry.syncHandleException(exception))
 			super.eventLoopException(exception);

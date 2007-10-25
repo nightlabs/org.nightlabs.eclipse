@@ -48,6 +48,7 @@ extends Dialog
 		setShellStyle(getShellStyle() | SWT.RESIZE | SWT.MIN | SWT.MAX );		
 	}
 
+	@Override
 	public void create() 
 	{
 		super.create();

@@ -35,6 +35,7 @@ import org.nightlabs.base.ui.composite.XComposite;
  * @author Daniel.Mazurek <at> Nightlabs <dot> de
  * @deprecated don't use this -> @see {@link XComposite}
  */
+@Deprecated
 public class XSection 
 extends Section 
 {
@@ -48,22 +49,27 @@ extends Section
 		super(parent, style);
 	}
 
+	@Override
 	public Color getTitleBarBackground() {
 		return getBackground();
 	}	
 
+	@Override
 	public Color getTitleBarBorderColor() {
 		return getBackground();		
 	}	
 	
+	@Override
 	public Color getTitleBarGradientBackground() {
 		return getBackground();	
 	}	
 	
+	@Override
 	protected void internalSetExpanded(boolean expanded) {
 		super.internalSetExpanded(expanded);
 	}
 	
+	@Override
 	protected void onPaint(PaintEvent e) {
 	}	
 	

@@ -42,6 +42,7 @@ extends AbstractContributionItem
 		super(ID, Messages.getString("org.nightlabs.base.ui.language.LanguageContributionItem.name")); //$NON-NLS-1$
 	}
 
+	@Override
 	protected Control createControl(Composite parent) 
 	{
 		langChooser = new LanguageChooserImageCombo(parent, true, true);

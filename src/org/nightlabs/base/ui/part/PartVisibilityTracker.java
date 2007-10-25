@@ -331,7 +331,7 @@ public class PartVisibilityTracker {
 	 * will be created for the given part and partRef.
 	 */
 	private PartStatus getPartStatus(IWorkbenchPartReference partRef, IWorkbenchPart part) {
-		PartStatus status = (PartStatus)partStati.get(part);
+		PartStatus status = partStati.get(part);
 		if (status == null) {			
 			status = new PartStatus(part, partRef);
 			partStati.put(part, status);

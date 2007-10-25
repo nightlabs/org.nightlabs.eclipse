@@ -90,6 +90,7 @@ public interface IWizardHop
 	 * @deprecated Don't use the exit page any more, you can add the entry page 
 	 * 		of an other WizardHop directly to the hop pages of this wizard ({@link #addHopPage(IWizardHopPage)}).
 	 */
+	@Deprecated
 	void setExitPage(IWizardHopPage exitPage);
 
 	/**
@@ -101,6 +102,7 @@ public interface IWizardHop
 	 * @deprecated Don't use the exit page any more, you can add the entry page 
 	 * 		of an other WizardHop directly to the hop pages of this wizard ({@link #addHopPage(IWizardHopPage)}).
 	 */
+	@Deprecated
 	IWizardHopPage getExitPage();
 
 	/**
@@ -165,6 +167,7 @@ public interface IWizardHop
 	 * @deprecated WizardHops should now be added to a wizard simply by adding 
 	 * 		its entry page to the wizard 
 	 */
+	@Deprecated
 	void hookWizard(IDynamicPathWizard wizard);
 
 	/**
@@ -176,6 +179,7 @@ public interface IWizardHop
 	 * @deprecated WizardHops should now be added to a wizard simply by adding 
 	 * 		its entry page to the wizard
 	 */
+	@Deprecated
 	void unhookWizard(IDynamicPathWizard wizard);
 	
 //	IWizardPage getPreviousPage(IWizardPage currentPage);

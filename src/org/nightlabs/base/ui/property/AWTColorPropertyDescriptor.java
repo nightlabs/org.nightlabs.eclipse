@@ -45,7 +45,8 @@ extends PropertyDescriptor
     setLabelProvider(new AWTColorLabelProvider());    
   }
 
-  public CellEditor createPropertyEditor(Composite parent) 
+  @Override
+	public CellEditor createPropertyEditor(Composite parent) 
   {
   	CellEditor editor = new AWTColorCellEditor(parent);
   	if (getValidator() != null)

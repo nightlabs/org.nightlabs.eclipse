@@ -49,6 +49,7 @@ extends org.nightlabs.notification.NotificationManager
 	/**
 	 * @see org.nightlabs.notification.NotificationManager#getNotificationModeForListener(org.nightlabs.notification.NotificationListener)
 	 */
+	@Override
 	protected String getNotificationModeForListener(NotificationListener listener)
 	{
 		if (listener instanceof NotificationListenerJob)
@@ -66,6 +67,7 @@ extends org.nightlabs.notification.NotificationManager
 	/**
 	 * @see org.nightlabs.notification.NotificationManager#performNotification(java.lang.String, org.nightlabs.notification.NotificationListener, org.nightlabs.notification.NotificationEvent)
 	 */
+	@Override
 	protected void performNotification(String notificationMode, final NotificationListener listener,
 			final NotificationEvent event)
 	{
@@ -80,6 +82,7 @@ extends org.nightlabs.notification.NotificationManager
 					jobName = Messages.getString("org.nightlabs.base.ui.notification.NotificationManager.jobName"); //$NON-NLS-1$
 
 				job = new Job(jobName) {
+					@Override
 					protected IStatus run(IProgressMonitor monitor)
 					{
 						((NotificationListenerJob)listener).setProgressMonitor(monitor);

@@ -60,6 +60,7 @@ extends ConfigModule
 		return languageIDs;
 	}
 
+	@Override
 	public void init() 
 	throws InitException 
 	{

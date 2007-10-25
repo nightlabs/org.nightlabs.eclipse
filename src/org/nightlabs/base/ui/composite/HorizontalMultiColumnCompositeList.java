@@ -197,7 +197,7 @@ public class HorizontalMultiColumnCompositeList extends Composite implements ISe
 		child.addSelectionChangeListener(selectionChangeListener);
 		children.add(idx,child);
 		for (int i=idx+1; i<children.size(); i++){
-			SelectableComposite comp = (SelectableComposite)children.get(i);
+			SelectableComposite comp = children.get(i);
 			comp.compositeListIdx = i;
 		}
 	}
@@ -212,12 +212,12 @@ public class HorizontalMultiColumnCompositeList extends Composite implements ISe
 	public void removeChild(int idx, boolean dispose) {
 		selectedChildren.remove(children.get(idx));
 		if (dispose) {
-			((SelectableComposite)children.get(idx)).dispose();
+			(children.get(idx)).dispose();
 		}
-		((SelectableComposite)children.get(idx)).removeSelectionChangeListener(selectionChangeListener);
+		(children.get(idx)).removeSelectionChangeListener(selectionChangeListener);
 		children.remove(idx);
 		for (int i=idx; i<children.size(); i++) {
-			SelectableComposite comp = (SelectableComposite)children.get(i);
+			SelectableComposite comp = children.get(i);
 			comp.compositeListIdx = i;
 		}
 	}
@@ -293,8 +293,8 @@ public class HorizontalMultiColumnCompositeList extends Composite implements ISe
 	public void replaceChild(int replacedIdx, SelectableComposite replacing, boolean disposeReplaced) {
 		selectedChildren.remove(children.get(replacedIdx));
 		if (disposeReplaced)
-			((SelectableComposite)children.get(replacedIdx)).dispose();
-		((SelectableComposite)children.get(replacedIdx)).removeSelectionChangeListener(selectionChangeListener);
+			(children.get(replacedIdx)).dispose();
+		(children.get(replacedIdx)).removeSelectionChangeListener(selectionChangeListener);
 		replacing.compositeListIdx = replacedIdx;
 		replacing.addSelectionChangeListener(selectionChangeListener);
 		children.set(replacedIdx,replacing);
@@ -489,7 +489,7 @@ public class HorizontalMultiColumnCompositeList extends Composite implements ISe
 		Object[] sel = new Object[selectedChildren.size()];
 		Object[] comps = selectedChildren.toArray();
 		for (int i=0; i<comps.length; i++) {
-			Object selObj = (Object) ((SelectableComposite)comps[i]).getSelectionObject();
+			Object selObj = ((SelectableComposite)comps[i]).getSelectionObject();
 			sel[i] = selObj;
 		}
 		ISelection result = new StructuredSelection(sel);		

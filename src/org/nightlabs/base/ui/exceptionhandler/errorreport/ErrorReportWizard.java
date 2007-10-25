@@ -67,6 +67,7 @@ public class ErrorReportWizard extends DynamicPathWizard
 	/**
 	 * @see org.eclipse.jface.wizard.IWizard#performFinish()
 	 */
+	@Override
 	public boolean performFinish()
 	{
 		try {

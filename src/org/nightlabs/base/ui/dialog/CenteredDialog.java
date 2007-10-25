@@ -103,6 +103,7 @@ extends Dialog
 		}
 	}
 
+	@Override
 	public void create() 
 	{
 		super.create();

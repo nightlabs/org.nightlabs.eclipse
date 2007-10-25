@@ -292,6 +292,7 @@ public class XComposite extends Composite
 	/**
 	 * @see org.eclipse.swt.widgets.Control#setEnabled(boolean)
 	 */
+	@Override
 	public void setEnabled(boolean enabled)
 	{
 		if (enabled == isEnabled())

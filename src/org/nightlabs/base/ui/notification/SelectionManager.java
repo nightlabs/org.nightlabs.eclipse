@@ -132,6 +132,7 @@ public class SelectionManager extends NotificationManager
 	/**
 	 * @see org.nightlabs.notification.NotificationManager#addNotificationListener(java.lang.String, java.lang.Class, org.nightlabs.notification.NotificationListener)
 	 */
+	@Override
 	public void addNotificationListener(
 			String zone, Class subjectClass, final NotificationListener listener)
 	{
@@ -139,10 +140,10 @@ public class SelectionManager extends NotificationManager
 
 		eventsByZoneMutex.acquireReadLock();
 		try {
-			Map eventsByClass = (Map) eventsByZone.get(zone);
+			Map eventsByClass = eventsByZone.get(zone);
 			if (eventsByClass == null) {
 				if (zone != null) {
-					eventsByClass = (Map) eventsByZone.get(null);
+					eventsByClass = eventsByZone.get(null);
 					if (eventsByClass == null)
 						return;
 				}
@@ -173,6 +174,7 @@ public class SelectionManager extends NotificationManager
 	/**
 	 * @see org.nightlabs.notification.NotificationManager#intercept(org.nightlabs.notification.NotificationEvent)
 	 */
+	@Override
 	protected NotificationEvent intercept(NotificationEvent event)
 	{
 		event = super.intercept(event);

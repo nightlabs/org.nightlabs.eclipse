@@ -65,6 +65,7 @@ import org.nightlabs.base.ui.composite.XComposite.LayoutMode;
  * @author Daniel.Mazurek <at> NightLabs <dot> de
  * @deprecated not needed anymore. Simply use {@link XComposite}
  */
+@Deprecated
 public class XFormToolkit 
 extends FormToolkit 
 {	

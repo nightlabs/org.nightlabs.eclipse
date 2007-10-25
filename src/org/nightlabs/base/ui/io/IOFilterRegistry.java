@@ -46,6 +46,7 @@ extends AbstractEPProcessor
 	
 	public static final String EXTENSION_POINT_ID = "org.nightlabs.base.ui.iofilter"; //$NON-NLS-1$
 	
+	@Override
 	public String getExtensionPointID() {
 		return EXTENSION_POINT_ID;
 	}
@@ -73,6 +74,7 @@ extends AbstractEPProcessor
 	public static final String ATTRIBUTE_FILE_EXTENSION = "fileExtension"; //$NON-NLS-1$
 	
 	
+	@Override
 	public void processElement(IExtension extension, IConfigurationElement element)
 	throws Exception 
 	{

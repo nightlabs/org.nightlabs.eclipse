@@ -62,19 +62,22 @@ extends XCellEditor
     super(parent, style, readOnly);
   }
   
-  protected Control createControl(Composite parent) {
+  @Override
+	protected Control createControl(Composite parent) {
   	text = new Text(parent, getStyle());
   	return text;
   }
 
-  protected Object doGetValue() 
+  @Override
+	protected Object doGetValue() 
   {
     String stringVal = text.getText();
     Integer i = new Integer(stringVal);
     return i;     
   }
 
-  protected void doSetFocus() 
+  @Override
+	protected void doSetFocus() 
   {
   	if (text != null) {
   		text.selectAll();
@@ -82,7 +85,8 @@ extends XCellEditor
   	}    
   }
 
-  protected void doSetValue(Object value) 
+  @Override
+	protected void doSetValue(Object value) 
   {
 		if (isReadOnly())
 			return;

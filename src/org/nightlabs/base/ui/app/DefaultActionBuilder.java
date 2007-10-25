@@ -59,7 +59,6 @@ import org.nightlabs.base.ui.action.INewFileAction;
 import org.nightlabs.base.ui.action.NewFileRegistry;
 import org.nightlabs.base.ui.action.OpenFileAction;
 import org.nightlabs.base.ui.action.ReOpenFileAction;
-import org.nightlabs.base.ui.action.UpdateAction;
 import org.nightlabs.base.ui.config.RecentFileCfMod;
 import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
 import org.nightlabs.base.ui.resource.Messages;
@@ -176,6 +175,7 @@ extends ActionBarAdvisor
 	/**
 	 * @see org.eclipse.ui.application.ActionBarAdvisor#makeActions(org.eclipse.ui.IWorkbenchWindow)
 	 */
+	@Override
 	protected void makeActions(IWorkbenchWindow window) 
 	{
 		if (menuBarItems.contains(ActionBarItem.KeyAssist))			
@@ -305,6 +305,7 @@ extends ActionBarAdvisor
 	/**
 	 * @see org.eclipse.ui.application.ActionBarAdvisor#fillMenuBar(org.eclipse.jface.action.IMenuManager)
 	 */
+	@Override
 	public void fillMenuBar(IMenuManager menuBar) 
 	{		
 	  // File-Menu
@@ -456,6 +457,7 @@ extends ActionBarAdvisor
 		}		
 	}
 
+	@Override
 	public void fillCoolBar(ICoolBarManager coolBar) 
 	{
 		try {
@@ -466,6 +468,7 @@ extends ActionBarAdvisor
 		}
 	}
 	
+	@Override
 	public void dispose() 
 	{
 	  	aboutAction.dispose();

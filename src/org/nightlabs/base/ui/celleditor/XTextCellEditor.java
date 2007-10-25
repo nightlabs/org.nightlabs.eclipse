@@ -74,7 +74,8 @@ implements IReadOnlyCellEditor
    *
    * @param value a text string (type <code>String</code>)
    */
-  protected void doSetValue(Object value) 
+  @Override
+	protected void doSetValue(Object value) 
   {
   	if (isReadOnly())
   		return;

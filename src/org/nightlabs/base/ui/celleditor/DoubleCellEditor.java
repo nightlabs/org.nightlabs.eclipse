@@ -54,6 +54,7 @@ extends XTextCellEditor
 	*
 	* @return the text as double
 	*/
+	@Override
 	protected Object doGetValue() 
 	{
 		if (text.getText().trim().equals("")) //$NON-NLS-1$
@@ -73,7 +74,7 @@ extends XTextCellEditor
 	protected void doSetValue(Object value) {
 		oldValue = value;
 		if (value instanceof Double) {
-			super.doSetValue(String.valueOf((Double)value));
+			super.doSetValue(String.valueOf(value));
 		}
 		else if (value instanceof String)
 			super.doSetValue(value);

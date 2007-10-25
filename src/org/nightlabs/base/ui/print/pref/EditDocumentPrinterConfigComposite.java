@@ -176,7 +176,7 @@ public class EditDocumentPrinterConfigComposite extends XComposite {
 		firstLine.getGridData().grabExcessVerticalSpace = false;
 		firstLine.getGridLayout().numColumns = 2;
 		expectedReturnValue = new LabeledText(firstLine, Messages.getString("org.nightlabs.base.ui.print.pref.EditDocumentPrinterConfigComposite.expectedReturnValue.caption")); //$NON-NLS-1$
-		templates = new XComboComposite<String>(firstLine, XComboComposite.getDefaultWidgetStyle(firstLine), Messages.getString("org.nightlabs.base.ui.print.pref.EditDocumentPrinterConfigComposite.templates.caption")); //$NON-NLS-1$
+		templates = new XComboComposite<String>(firstLine, AbstractListComposite.getDefaultWidgetStyle(firstLine), Messages.getString("org.nightlabs.base.ui.print.pref.EditDocumentPrinterConfigComposite.templates.caption")); //$NON-NLS-1$
 		for (String option : options) {
 			templates.addElement(option);
 		}

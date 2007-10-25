@@ -41,7 +41,8 @@ extends LabelProvider
     super();    
   }
 
-  public Image getImage(Object element) 
+  @Override
+	public Image getImage(Object element) 
   {
     if (element instanceof Color)
       return ImageUtil.createColorImage((Color)element);
@@ -49,7 +50,8 @@ extends LabelProvider
     return null;
   }
 
-  public String getText(Object element) 
+  @Override
+	public String getText(Object element) 
   {
     if (element instanceof Color)
     {
@@ -62,7 +64,8 @@ extends LabelProvider
     return element == null ? "" : element.toString(); //$NON-NLS-1$
   }
 
-  public void dispose() 
+  @Override
+	public void dispose() 
   {
   }
 }

@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+import org.nightlabs.base.ui.composite.AbstractListComposite;
 import org.nightlabs.base.ui.composite.XComboComposite;
 
 public class CComboContributionItem<T> 
@@ -48,7 +49,7 @@ extends XContributionItem
    */
   protected Control createControl(Composite parent) 
   {
-  	comboComposite = new XComboComposite<T>(parent, XComboComposite.getDefaultWidgetStyle(parent), 
+  	comboComposite = new XComboComposite<T>(parent, AbstractListComposite.getDefaultWidgetStyle(parent), 
   			(String)null, labelProvider);
   	comboComposite.setInput(types);
   	return comboComposite;

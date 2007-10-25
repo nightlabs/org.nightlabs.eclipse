@@ -40,6 +40,7 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @deprecated Use {@link org.nightlabs.base.ui.composite.XComposite} directly!
  */
+@Deprecated
 public class OrdinaryWrapperComposite extends XComposite {
 	/**
 	 * This constructor calls {@link #OrdinaryWrapperComposite(Composite, int, boolean)}

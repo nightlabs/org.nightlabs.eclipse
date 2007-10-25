@@ -25,8 +25,6 @@
  ******************************************************************************/
 package org.nightlabs.base.ui.app;
 
-import org.eclipse.ui.application.WorkbenchAdvisor;
-
 
 /**
  * @author Daniel.Mazurek [at] NightLabs [dot] de

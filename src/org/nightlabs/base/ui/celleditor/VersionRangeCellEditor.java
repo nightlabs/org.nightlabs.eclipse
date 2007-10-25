@@ -98,6 +98,7 @@ public class VersionRangeCellEditor
 		
 		});
 		text.addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyReleased(KeyEvent e) {
 				keyReleaseOccured(e);
 			}

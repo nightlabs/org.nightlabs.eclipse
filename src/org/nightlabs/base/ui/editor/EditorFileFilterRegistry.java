@@ -43,10 +43,12 @@ extends AbstractEPProcessor
 
 	private List<String> patterns = new ArrayList<String>();
 	
+	@Override
 	public String getExtensionPointID() {
 		return EXTENSION_POINT_ID;
 	}
 
+	@Override
 	public void processElement(IExtension extension, IConfigurationElement element) 
 	throws Exception 
 	{
@@ -98,6 +100,7 @@ extends AbstractEPProcessor
 	/**
 	 * @deprecated Use {@link #sharedInstance()} instead
 	 */
+	@Deprecated
 	public static EditorFileFilterRegistry getSharedInstance() {
 		if (sharedInstance == null)
 			sharedInstance = new EditorFileFilterRegistry();

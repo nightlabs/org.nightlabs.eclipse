@@ -26,6 +26,7 @@
 package org.nightlabs.base.ui.action;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
 import org.nightlabs.annotation.Implement;
 import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.composite.InheritanceToggleButton;
@@ -42,7 +43,7 @@ extends Action implements IUpdateActionOrContributionItem
 	public static final String ID = InheritanceAction.class.getName();
 	
 	public InheritanceAction() {
-		super("", Action.AS_CHECK_BOX);
+		super("", IAction.AS_CHECK_BOX);
 		setId(ID);
 		setToolTipText(Messages.getString("org.nightlabs.base.ui.action.InheritanceAction.toolTipText")); //$NON-NLS-1$
 		setImageDescriptor(SharedImages.getSharedImageDescriptor(

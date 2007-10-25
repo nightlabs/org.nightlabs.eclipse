@@ -45,6 +45,7 @@ implements ISelectionSupport
 	 * 
 	 * @see org.eclipse.jface.viewers.ISelectionProvider#setSelection(org.eclipse.jface.viewers.ISelection)
 	 */
+	@Override
 	public void setSelection(ISelection arg0) {
 		setSelection(SelectionUtil.checkSelection(arg0, getSelectionClass()));
 	}
@@ -60,6 +61,7 @@ implements ISelectionSupport
 	 * 
 	 * @see org.nightlabs.base.ui.selection.ISelectionSupport#addSelectedObject(java.lang.Object)
 	 */
+	@Override
 	public void addSelectedObject(Object o) 
 	{
 		if (getSelectionClass().isAssignableFrom(o.getClass())) {
@@ -70,6 +72,7 @@ implements ISelectionSupport
 	/**
 	 * @see org.nightlabs.base.ui.selection.ISelectionSupport#addSelectedObjects(java.util.Collection)
 	 */
+	@Override
 	public void addSelectedObjects(Collection objects) 
 	{
 		beginSelectionChange();

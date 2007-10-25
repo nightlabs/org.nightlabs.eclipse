@@ -55,7 +55,8 @@ extends CellEditor
   /**
    * Creates a XCombo and adds some listener to it
    */
-  protected Control createControl(Composite parent) 
+  @Override
+	protected Control createControl(Composite parent) 
   {	
   	Composite panel = new Composite(parent, SWT.DEFAULT);  	
 	  comboBox = new LanguageChooserImageCombo(panel);
@@ -67,16 +68,19 @@ extends CellEditor
   /**
    * sets the focus to the ComboBox
    */
-  protected void doSetFocus() {
+  @Override
+	protected void doSetFocus() {
     if (textEditor != null) {
     	textEditor.setFocus();    	
     }
   }
 
+	@Override
 	protected Object doGetValue() {
 		return textEditor.getEditText();
 	}
 
+	@Override
 	protected void doSetValue(Object value) {
 		if (value instanceof I18nText)
 			textEditor.setI18nText((I18nText)value);

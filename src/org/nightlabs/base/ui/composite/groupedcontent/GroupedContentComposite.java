@@ -110,7 +110,7 @@ public class GroupedContentComposite extends XComposite {
 	}
 
 	protected void selectContentProvider(GroupedContentProvider contentProvider) {
-		Composite providerComp = (Composite)providerComposites.get(contentProvider);
+		Composite providerComp = providerComposites.get(contentProvider);
 		if (providerComp == null) {
 			providerComp = contentProvider.createGroupContent(contentWrapper);
 			providerComposites.put(contentProvider, providerComp);

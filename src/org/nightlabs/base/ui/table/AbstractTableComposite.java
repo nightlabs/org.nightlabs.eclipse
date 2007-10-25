@@ -35,12 +35,10 @@ import java.util.List;
 
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IContentProvider;
-import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
@@ -176,7 +174,7 @@ public abstract class AbstractTableComposite<ElementType> extends XComposite imp
 	 * of the element types of this table.  
 	 * @return the table viewer's selection
 	 */
-	@SuppressWarnings("unchecked")//$NON-NLS-1$
+	@SuppressWarnings("unchecked")
 	public Collection<ElementType> getSelectedElements() {
 		ISelection sel = getTableViewer().getSelection();
 		if (sel == null || sel.isEmpty())
@@ -185,7 +183,7 @@ public abstract class AbstractTableComposite<ElementType> extends XComposite imp
 			Collection<ElementType> result = new ArrayList<ElementType>();
 			IStructuredSelection selection = (IStructuredSelection) sel;
 			for (Iterator iter = selection.iterator(); iter.hasNext();) {
-				Object obj = (Object) iter.next();
+				Object obj = iter.next();
 				result.add((ElementType) obj);
 			}
 			return result;
@@ -203,7 +201,7 @@ public abstract class AbstractTableComposite<ElementType> extends XComposite imp
 	 * 
 	 * @return The first selected element.
 	 */
-	@SuppressWarnings("unchecked")//$NON-NLS-1$
+	@SuppressWarnings("unchecked")
 	public ElementType getFirstSelectedElement() {
 		return (ElementType) getFirstSelectedElementUnchecked();
 	}
@@ -353,7 +351,7 @@ public abstract class AbstractTableComposite<ElementType> extends XComposite imp
 	 * 
 	 * @return a list of all checked Elements.
 	 */
-	@SuppressWarnings("unchecked")//$NON-NLS-1$
+	@SuppressWarnings("unchecked")
 	public List<ElementType> getCheckedElements() {
 		if ((table.getStyle() & SWT.CHECK) == 0)
 			throw new IllegalStateException("Table is not of type SWT.CHECK, can't return checked Items!"); //$NON-NLS-1$

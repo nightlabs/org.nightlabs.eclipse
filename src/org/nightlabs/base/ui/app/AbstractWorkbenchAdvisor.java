@@ -70,6 +70,7 @@ extends WorkbenchAdvisor
 	 * {@link org.eclipse.jface.window.Window.IExceptionHandler#handleException(java.lang.Throwable)} 
 	 * method is invoked on a unique instance of the eventHandler class (plugin.xml). 
 	 */
+	@Override
 	public void eventLoopException(Throwable exception) {
 		if (!ExceptionHandlerRegistry.syncHandleException(exception))
 			super.eventLoopException(exception);
@@ -78,6 +79,7 @@ extends WorkbenchAdvisor
 	/**
 	 * Initializes the workbench 
 	 */
+	@Override
 	public void initialize(IWorkbenchConfigurer configurer) {
 		super.initialize(configurer);
 		configurer.setSaveAndRestore(true);
@@ -143,6 +145,7 @@ extends WorkbenchAdvisor
 	 * @param configurer the IWorkbenchWindowConfigurer
 	 * @return the WorkbenchWindowAdvisor for this WorkbenchAdvisor
 	 */
+	@Override
 	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
 		return new DefaultWorkbenchWindowAdvisor(configurer); // , AbstractApplication.getApplicationName());
 	}

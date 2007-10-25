@@ -63,6 +63,7 @@ public abstract class QuantitySelector extends XComposite
 		varQtySpinner.setMaximum(Integer.MAX_VALUE);
 		varQtySpinner.setSelection(10);
 		varQtySpinner.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				int qty = varQtySpinner.getSelection();
 				varQtyButton.setData(new Integer(qty));
@@ -79,6 +80,7 @@ public abstract class QuantitySelector extends XComposite
 	}
 
 	private SelectionListener buttonSelectionListener = new SelectionAdapter() {
+		@Override
 		public void widgetSelected(SelectionEvent e)
 		{
 			int qty = ((Integer)((Button)e.getSource()).getData()).intValue();

@@ -53,6 +53,7 @@ extends ConfigModule
 		this.maxHistoryLength = maxHistoryLength;
 	}
 	
+	@Override
 	public void init() 
 	throws InitException 
 	{

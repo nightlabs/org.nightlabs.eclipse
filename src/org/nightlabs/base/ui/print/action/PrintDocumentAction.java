@@ -21,6 +21,7 @@ import org.nightlabs.print.PrinterInterface;
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  * @deprecated should be deleted by alex 
  */
+@Deprecated
 public class PrintDocumentAction implements IWorkbenchWindowActionDelegate {
 
 	/**
@@ -51,7 +52,7 @@ public class PrintDocumentAction implements IWorkbenchWindowActionDelegate {
 		if (fileName != null) {
 			try {
 				PrinterInterface printer = PrinterInterfaceManager.sharedInstance().getConfiguredPrinterInterface(
-						PrinterInterfaceManager.INTERFACE_FACTORY_DOCUMENT,
+						org.nightlabs.print.PrinterInterfaceManager.INTERFACE_FACTORY_DOCUMENT,
 						PrinterUseCase.DEFAULT_USE_CASE_ID
 					);
 				if (printer instanceof DocumentPrinter) {

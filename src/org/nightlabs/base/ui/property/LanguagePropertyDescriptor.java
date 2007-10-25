@@ -44,11 +44,13 @@ extends PropertyDescriptor
 		this.text = text;
 	}
 	
-  public ILabelProvider getLabelProvider() 
+  @Override
+	public ILabelProvider getLabelProvider() 
   {
   	return new LanguageLabelProvider(text);
 	}
 
+	@Override
 	public CellEditor createPropertyEditor(Composite parent) 
   {
     CellEditor editor = new LanguageCellEditor(text, parent);

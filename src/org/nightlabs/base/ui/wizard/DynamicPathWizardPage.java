@@ -79,6 +79,7 @@ implements IDynamicPathWizardPage
 	 * 
 	 * @see org.eclipse.jface.dialogs.IDialogPage#getControl()
 	 */
+	@Override
 	public Control getControl() {
 		return contents;
 	}
@@ -126,6 +127,7 @@ implements IDynamicPathWizardPage
 	 * @deprecated if you set all messages to <code>null</code>, the description (which can be set via {@link #setDescription(String)})
 	 * will be displayed. Therefore it's not necessary to manage a default message, since the description behaves already this way.
 	 */
+	@Deprecated
 	protected String getDefaultPageMessage() {
 		return null;
 	}

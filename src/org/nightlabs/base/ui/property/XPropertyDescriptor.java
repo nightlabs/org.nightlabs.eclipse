@@ -26,7 +26,6 @@
 
 package org.nightlabs.base.ui.property;
 
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 
 /**

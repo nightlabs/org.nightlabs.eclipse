@@ -41,7 +41,7 @@ implements TimePatternSetEdit
 			this.timePatternSetComposite = timePatternSetComposite;
 		}
 
-		@SuppressWarnings("unchecked") //$NON-NLS-1$
+		@SuppressWarnings("unchecked") 
 		public Object[] getElements(Object inputElement)
 		{
 			TimePatternSet timePatternSet = (TimePatternSet) inputElement;
@@ -189,6 +189,7 @@ implements TimePatternSetEdit
 		}
 	}
 
+	@Override
 	protected void createTableColumns(TableViewer tableViewer, Table table)
 	{
 		TableColumn tc;
@@ -261,6 +262,7 @@ implements TimePatternSetEdit
 		return timePatternComparator;
 	}
 
+	@Override
 	protected void setTableProvider(TableViewer tableViewer)
 	{
 		tableViewer.setContentProvider(new TimePatternSetContentProvider(this));

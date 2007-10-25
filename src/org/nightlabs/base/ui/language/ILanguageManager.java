@@ -37,6 +37,7 @@ public interface ILanguageManager
 	 * @deprecated use {@link Locale#getDefault()}<code>.getLanguage()</code> instead
 	 * @return the current languageID
 	 */	
+	@Deprecated
 	public String getCurrentLanguageID();
 	
 	/**
@@ -54,5 +55,6 @@ public interface ILanguageManager
 	 * @deprecated use {@link Locale#setDefault(Locale)} instead
 	 * @param newLanguageID the id of the new Language
 	 */
+	@Deprecated
 	public void setCurrentLanguageID(String newLanguageID); 
 }

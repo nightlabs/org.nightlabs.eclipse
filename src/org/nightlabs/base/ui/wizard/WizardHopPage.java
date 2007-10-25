@@ -94,6 +94,7 @@ implements IWizardHopPage
 	 *   
 	 * @see org.eclipse.jface.wizard.WizardPage#getNextPage()
 	 */
+	@Override
 	public IWizardPage getNextPage()
 	{
 		if (wizardHop != null)

@@ -259,6 +259,7 @@ extends XComposite
 	
 	private ControlListener canvasResizeListener = new ControlAdapter() 
 	{	
+		@Override
 		public void controlResized(ControlEvent e) 
 		{
 			updateCanvas();
@@ -277,8 +278,8 @@ extends XComposite
 	protected void setCanvasSize() 
 	{
 		GridData canvasData = new GridData(SWT.CENTER, SWT.CENTER, false, false);
-		int newWidth = (int) Math.rint((double)pageRectangle.width / canvasScaleFactor);
-		int newHeight = (int) Math.rint((double)pageRectangle.height / canvasScaleFactor);		
+		int newWidth = (int) Math.rint(pageRectangle.width / canvasScaleFactor);
+		int newHeight = (int) Math.rint(pageRectangle.height / canvasScaleFactor);		
 		canvasData.widthHint = newWidth;
 		canvasData.heightHint = newHeight; 
 		canvasData.minimumWidth = newWidth;

@@ -84,7 +84,7 @@ public class MonthlyTimePatternBuilderHopPage extends WizardHopPage {
 				if (dayButton.getSelection())
 					selectedDays.add((Integer)dayButton.getData());
 				else
-					selectedDays.remove((Integer)dayButton.getData());
+					selectedDays.remove(dayButton.getData());
 			}
 		}
 		
@@ -99,7 +99,7 @@ public class MonthlyTimePatternBuilderHopPage extends WizardHopPage {
 				if (dayButton.getSelection())
 					selectedMonths.add((Integer)dayButton.getData());
 				else
-					selectedMonths.remove((Integer)dayButton.getData());
+					selectedMonths.remove(dayButton.getData());
 			}
 		}
 		
