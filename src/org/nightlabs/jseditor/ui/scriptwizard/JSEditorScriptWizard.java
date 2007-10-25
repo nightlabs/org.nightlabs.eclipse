@@ -30,6 +30,7 @@ public class JSEditorScriptWizard extends DynamicPathWizard // implements INewWi
 	 * Adding the page to the wizard.
 	 */
 
+	@Override
 	public void addPages() {
 		page = new JSEditorScriptWizardPage(sourceViewer);
 		addPage(page);

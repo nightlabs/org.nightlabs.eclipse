@@ -112,12 +112,14 @@ extends WizardHopPage
 		 * Selection Listener
 		 ******************************/
 		scriptList.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent event) {
 				String[] selected = scriptList.getSelection();
 				if (selected.length > 0){
 					descText.setText(scriptMap.get(selected[0].toString()).toGenericString());
 				}//if
 			}
+			@Override
 			public void widgetDefaultSelected(
 					SelectionEvent event) {
 				String[] selected = scriptList.getSelection();

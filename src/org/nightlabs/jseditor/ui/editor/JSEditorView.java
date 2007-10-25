@@ -14,6 +14,7 @@ public class JSEditorView extends ViewPart {
 	 * This is a callback that will allow us
 	 * to create the viewer and initialize it.
 	 */
+	@Override
 	public void createPartControl(Composite parent) {
 		/*JSEditorComposite c = */new JSEditorComposite(getViewSite().getWorkbenchWindow(), parent);
 	}
@@ -28,6 +29,7 @@ public class JSEditorView extends ViewPart {
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
+	@Override
 	public void setFocus() {
 //		viewer.getControl().setFocus();
 	}

@@ -14,6 +14,7 @@ import org.nightlabs.jseditor.ui.editor.scanner.JSEditorPartitionScanner;
  */
 public class JSEditorDocumentProvider extends FileDocumentProvider {
 
+	@Override
 	protected IDocument createDocument(Object element) throws CoreException {
 		IDocument document = super.createDocument(element);
 		if (document != null) {

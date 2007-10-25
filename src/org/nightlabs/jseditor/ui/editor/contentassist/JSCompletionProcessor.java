@@ -107,7 +107,7 @@ public class JSCompletionProcessor implements IContentAssistProcessor {
 //			}//for
 //		}//if
 		
-		return (ICompletionProposal[])result.toArray(new ICompletionProposal[0]);
+		return result.toArray(new ICompletionProposal[0]);
 	}
 	
 	/* (non-Javadoc)

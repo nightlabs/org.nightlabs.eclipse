@@ -53,9 +53,9 @@ public class JSEditorConstants {
 	"throw", "throws", "transient", "true", "try", "void", "volatile", "while" };
 	
 	public final static String[] JS_TYPES = { "void", "boolean", "char", "byte", "short",
-	"int", "long", "float", "double" }; //$NON-NLS-1$ //$NON-NLS-5$ //$NON-NLS-7$ //$NON-NLS-6$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-2$
+	"int", "long", "float", "double" }; //$NON-NLS-1$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-2$
 	
 	public final static String[] JS_CONSTANTS= { "false", "null", "true" }; //$NON-NLS-3$ //$NON-NLS-2$ //$NON-NLS-1$
 	
-	public final static char[] JS_OPERATORS= { '+', '-', '*' , '/'}; //$NON-NLS-4$ //$NON-NLS-3$ //$NON-NLS-2$ //$NON-NLS-1$
+	public final static char[] JS_OPERATORS= { '+', '-', '*' , '/'}; 
 }
