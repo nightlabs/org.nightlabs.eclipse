@@ -30,6 +30,7 @@ public class KeyReaderUseCaseRegistry
 		return _sharedInstance;
 	}
 
+	@Override
 	@Implement
 	public String getExtensionPointID()
 	{
@@ -38,6 +39,7 @@ public class KeyReaderUseCaseRegistry
 
 	private Map<String, KeyReaderUseCase> keyReaderUseCases = new HashMap<String, KeyReaderUseCase>();
 
+	@Override
 	@Implement
 	public void processElement(IExtension extension, IConfigurationElement element)
 			throws Exception

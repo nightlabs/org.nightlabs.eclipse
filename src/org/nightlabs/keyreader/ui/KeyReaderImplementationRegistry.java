@@ -29,11 +29,13 @@ extends AbstractEPProcessor
 		return _sharedInstance;
 	}
 
+	@Override
 	public String getExtensionPointID()
 	{
 		return "org.nightlabs.keyreader.ui.keyReaderImplementation"; //$NON-NLS-1$
 	}
 
+	@Override
 	public void processElement(IExtension extension, IConfigurationElement element)
 			throws Exception
 	{
