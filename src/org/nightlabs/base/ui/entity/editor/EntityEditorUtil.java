@@ -49,7 +49,6 @@ public class EntityEditorUtil
 	public static Composite createCompositeClient(FormToolkit toolkit, Section section, int numColumns)
 	{
 		Composite client = toolkit.createComposite(section);
-//		XComposite client = new XComposite(section, SWT.NONE);
 //		client.setToolkit(toolkit);
 		GridLayout layout = new GridLayout();
 		layout.marginRight = layout.marginLeft = toolkit.getBorderStyle() != SWT.NULL ? 0 : 2;

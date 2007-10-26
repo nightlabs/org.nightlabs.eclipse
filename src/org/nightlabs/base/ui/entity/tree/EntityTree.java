@@ -377,6 +377,9 @@ implements IOpenListener, DisposeListener, IEntityTreeCategoryContentConsumer
 			public void run() {
 				Object[] selectedElements = ((IStructuredSelection)_selection).toArray();
 				for (Object element : selectedElements) {
+					if (element instanceof String) // User double clicked on a "loading..."-text
+						return;
+					
 					if(element instanceof IEntityTreeCategoryBinding) {
 						if(getTreeViewer().getExpandedState(element))
 							getTreeViewer().collapseToLevel(element, 1);
