@@ -224,7 +224,8 @@ extends Composite
 		if (canvas != null) {
 			paintable = new DrawComponentPaintable(getDrawComponent());
 			canvas.setPaintable(paintable);
-			canvas.repaint();			
+			canvas.repaint();		
+			canvas.redraw();
 		}
 	}
 	
