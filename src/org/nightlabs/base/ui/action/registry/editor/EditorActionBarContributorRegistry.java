@@ -51,14 +51,19 @@ extends AbstractEPProcessor
 			if (!checkString(className))
 				className = null;			
 			AbstractActionRegistry registry = null;
-			if (className != null)
+			
+			registry = editorID2ActionRegistry.get(targetEditorID);
+			
+			if (className != null && registry == null) {
 				try {
 					registry = (AbstractActionRegistry) element.createExecutableExtension("class"); //$NON-NLS-1$
 				} catch (CoreException e) {
 					throw new EPProcessorException("Could not instantiate given class "+className, extension, e); //$NON-NLS-1$
 				}
-			else
+			}
+			else if (registry == null) {
 				registry = new DefaultEditorActionBarContributionRegistry();
+			}
 			
 			IConfigurationElement[] children = element.getChildren();
 			for (IConfigurationElement childElement : children) {
