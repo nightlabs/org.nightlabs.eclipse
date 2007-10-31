@@ -26,7 +26,10 @@
 package org.nightlabs.editor2d.ui.actions.group;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 
+import org.eclipse.gef.EditPart;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.ui.AbstractEditor;
 import org.nightlabs.editor2d.ui.actions.AbstractEditorSelectionAction;
@@ -66,16 +69,29 @@ extends AbstractEditorSelectionAction
 
 	@Override
 	protected boolean calculateEnabled() {
-		return selectionContains(getDefaultIncludes(true), 2, true);
+//		return selectionContains(getDefaultIncludes(true), 2, true);
+		return !selectionContains(getDefaultExcludes(true), Integer.MAX_VALUE, true);
 	}
 
 	@Override
 	public void run() 
 	{
-		Collection<DrawComponent> selection = getSelection(getDefaultIncludes(true), true);		
-		GroupCommand cmd = new GroupCommand(selection);
-		execute(cmd);
-		if (cmd.getGroup() != null)
-			selectEditPart(cmd.getGroup());
+		List selectedObjects = getSelectedObjects();
+		Collection<DrawComponent> selection = new HashSet<DrawComponent>();
+		for (Object o : selectedObjects) {
+			if (o instanceof EditPart) {
+				EditPart ep = (EditPart) o;
+				Object model = ep.getModel();
+				if (model instanceof DrawComponent) {
+					selection.add((DrawComponent)model);
+				}
+			}
+		}
+		if (!selection.isEmpty()) {
+			GroupCommand cmd = new GroupCommand(selection);
+			execute(cmd);
+			if (cmd.getGroup() != null)
+				selectEditPart(cmd.getGroup());			
+		}
 	}
 }

@@ -1431,7 +1431,9 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	public void updateViewer() 
 	{
 		refreshBuffer();    	
-		getGraphicalViewer().getControl().redraw();
+		if (getGraphicalViewer() != null && getGraphicalViewer().getControl() != null) {
+			getGraphicalViewer().getControl().redraw();
+		}
 		logger.debug("updateViewer!"); //$NON-NLS-1$
 	}
 
