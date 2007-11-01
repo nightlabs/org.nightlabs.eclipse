@@ -324,21 +324,65 @@ implements IApplication
 			}
 			display = PlatformUI.createDisplay();
 			try {
-				int returnCode = PlatformUI.createAndRunWorkbench(
-						display, initWorkbenchAdvisor(display));
+				int returnCode = PlatformUI.createAndRunWorkbench(display, initWorkbenchAdvisor(display));
 				if (returnCode == PlatformUI.RETURN_RESTART)
 					return IApplication.EXIT_RESTART;
 				else
 					return IApplication.EXIT_OK;
 			} finally {
+				// When using the Editor2D-viewer (probably because of the SWT-AWT-bridge) the following display.dispose() sometimes hangs forever.
+				// Hence, we launch a surveillance-thread that will call a System.exit after a certain timeout.
+				new ExitThread();
 				display.dispose();
-			}			
-		} finally {
+			}
+		} finally { // TODO Is this necessary? Marco.
 			if (Display.getCurrent() != null)
 				Display.getCurrent().dispose();
 		}
 	}
-	
+
+	private static class ExitThread extends Thread
+	{
+		private long timeoutMSec = 60 * 1000;
+		private Logger logger = Logger.getLogger(ExitThread.class);
+
+		public ExitThread()
+		{
+			setDaemon(true);
+			start();
+		}
+
+		@Override
+		public void run()
+		{
+			long start = System.currentTimeMillis();
+			logger.info("Starting surveillance of application shutdown. Giving it " + timeoutMSec + " msec to finish the JVM cleanly.");
+
+			while (!isInterrupted() && !interruptRequested) {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// silently ignore
+				}
+
+				long duration = System.currentTimeMillis() - start;
+				if (duration > timeoutMSec) {
+					logger.error("The application did not finish cleanly within timeout (" + timeoutMSec + " msec)! Will force immediate termination of JVM now!!!");
+					System.exit(0);
+				}
+			}
+		}
+
+		private volatile boolean interruptRequested = false;
+
+		@Override
+		public void interrupt()
+		{
+			interruptRequested = true;
+			super.interrupt();
+		}
+	}
+
 	/**
 	 * is called when the application is stopped
 	 * and by default closes the workbench
