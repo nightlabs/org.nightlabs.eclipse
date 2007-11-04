@@ -29,24 +29,26 @@ package org.nightlabs.editor2d.ui.edit;
 
 import java.beans.PropertyChangeEvent;
 
+import org.eclipse.ui.views.properties.IPropertySource;
 import org.nightlabs.editor2d.IConnectable;
 import org.nightlabs.editor2d.LineDrawComponent;
+import org.nightlabs.editor2d.ui.model.LinePropertySource;
 
 
 public class LineEditPart 
 extends ShapeDrawComponentEditPart 
 {	
-  /**
-   * @param drawComponent
-   */
-  public LineEditPart(LineDrawComponent drawComponent) {
-    super(drawComponent);
-  }
-  	
-	public LineDrawComponent getLineDrawComponent() {
-	  return (LineDrawComponent) getModel();
+	/**
+	 * @param drawComponent
+	 */
+	public LineEditPart(LineDrawComponent drawComponent) {
+		super(drawComponent);
 	}
-	
+
+	public LineDrawComponent getLineDrawComponent() {
+		return (LineDrawComponent) getModel();
+	}
+
 	@Override
 	protected void propertyChanged(PropertyChangeEvent evt) 
 	{
@@ -56,4 +58,13 @@ extends ShapeDrawComponentEditPart
 			refreshVisuals();			
 		}
 	}
+
+	@Override
+	public IPropertySource getPropertySource()
+	{
+		if (propertySource == null) {
+			propertySource = new LinePropertySource(getLineDrawComponent());
+		}
+		return propertySource;
+	}	
 }

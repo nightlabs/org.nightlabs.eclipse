@@ -35,33 +35,33 @@ import org.nightlabs.editor2d.ShapeDrawComponent;
 import org.nightlabs.editor2d.j2d.GeneralShape;
 import org.nightlabs.editor2d.ui.model.ShapeDrawComponentPropertySource;
 
- 
+
 public class ShapeDrawComponentEditPart
 extends DrawComponentEditPart 
 {	
-  public ShapeDrawComponentEditPart(ShapeDrawComponent shapeDrawComponent) {
-    super(shapeDrawComponent);
-  }
+	public ShapeDrawComponentEditPart(ShapeDrawComponent shapeDrawComponent) {
+		super(shapeDrawComponent);
+	}
 
-  public ShapeDrawComponent getShapeDrawComponent() {
-    return (ShapeDrawComponent) getModel();
-  }
-   
-  public GeneralShape getGeneralShape() {
-  	return getShapeDrawComponent().getGeneralShape();
-  }
-    
-  @Override
+	public ShapeDrawComponent getShapeDrawComponent() {
+		return (ShapeDrawComponent) getModel();
+	}
+
+	public GeneralShape getGeneralShape() {
+		return getShapeDrawComponent().getGeneralShape();
+	}
+
+	@Override
 	public IPropertySource getPropertySource()
-  {
-    if (propertySource == null)
-    {
-      propertySource =
-        new ShapeDrawComponentPropertySource(getShapeDrawComponent());
-    }
-    return propertySource;
-  }
-  
+	{
+		if (propertySource == null)
+		{
+			propertySource =
+				new ShapeDrawComponentPropertySource(getShapeDrawComponent());
+		}
+		return propertySource;
+	}
+
 	@Override
 	protected void propertyChanged(PropertyChangeEvent evt) 
 	{
@@ -96,93 +96,5 @@ extends DrawComponentEditPart
 			return;
 		}				
 	}
-  
-//  /**
-//   * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
-//   */
-//  protected IFigure createFigure() 
-//  {
-//  	Path path = convertShape(getGeneralShape());
-//    PathShapeFigure shapeFigure = new PathShapeFigure(path);
-//    setShapeProperties(getShapeDrawComponent(), shapeFigure);        
-//    return shapeFigure;
-//  }
-//      
-//  protected Path convertShape(Shape s) 
-//  {
-//  	return AWTSWTUtil.convertShape(s, null, null);  	
-//  }
-//  
-//  protected void setShapeProperties(ShapeDrawComponent sdc, PathShapeFigure shapeFigure) 
-//  {
-//  	// TODO: only update Path when PROP_GENERAL_PATH changed
-//  	Path path = AWTSWTUtil.convertShape(getGeneralShape(), null, null);
-//  	shapeFigure.setPath(path);
-//  	shapeFigure.setBackgroundColor(ColorUtil.toSWTColor(sdc.getFillColor()));
-//  	shapeFigure.setForegroundColor(ColorUtil.toSWTColor(sdc.getLineColor()));
-//  	shapeFigure.setLineWidth(sdc.getLineWidth());
-//  	shapeFigure.setLineStyle(convertLineStyle(sdc.getLineStyle()));
-//  	shapeFigure.setFill(sdc.isFill());  	
-//  }
-//  
-//	protected void refreshVisuals() 
-//	{
-//		setShapeProperties(getShapeDrawComponent(), getPathShapeFigure());
-//    updateTooltip();		
-//    updateRoot(getFigure());    
-//    getFigure().repaint();           
-//	}
-//
-//	// TODO: convert ShapeDrawComponent LineStyle to Shape (Draw2D) Line Style 
-//  protected int convertLineStyle(int sdcLineStyle) 
-//  {
-//  	return sdcLineStyle;
-//  }
-//  
-//  protected PathShapeFigure getPathShapeFigure() 
-//  {
-//  	return (PathShapeFigure) getFigure();
-//  }
-  		      
-//  /**
-//   * Overridden to return a default <code>DragTracker</code> for GraphicalEditParts.
-//   * @see org.eclipse.gef.EditPart#getDragTracker(Request)
-//   */
-//  public DragTracker getDragTracker(Request request) 
-//  { 
-//    if (request.getType().equals(REQ_EDIT_SHAPE)) {
-//      EditorEditShapeRequest req = (EditorEditShapeRequest) request; 
-//      return new ShapeEditTracker(this, req.getPathSegmentIndex());
-//    }
-//          
-//  	return super.getDragTracker(request);
-//  }
-//    
-//  public void performRequest(Request req) 
-//  {
-//    // TODO: set somehow the EditShapeMode to the corresponding ShapeFigure 
-//    if (req.getType().equals(REQ_EDIT_SHAPE)) 
-//    {
-//      EditorEditShapeRequest request = (EditorEditShapeRequest) req;
-//      EditorStateManager.setEditShapeMode(this);      
-//    }
-//    
-//    super.performRequest(req);
-//  }
-//          
-//  public boolean understandsRequest(Request req) 
-//  {
-//    if (req.getType().equals(REQ_EDIT_SHAPE))
-//      return true;
-//    
-//    return super.understandsRequest(req);
-//  }
 
-//	@Override
-//	protected void createEditPolicies() 
-//	{
-//		super.createEditPolicies();
-////		installEditPolicy(EditorEditPolicy.EDIT_SHAPE_ROLE, new EditorEditShapePolicy());
-//	}  
-      
 }

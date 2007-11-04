@@ -34,41 +34,38 @@ import org.nightlabs.base.ui.resource.SharedImages.ImageFormat;
 import org.nightlabs.editor2d.LineDrawComponent;
 import org.nightlabs.editor2d.ui.AbstractPaletteFactory;
 import org.nightlabs.editor2d.ui.EditorPlugin;
-import org.nightlabs.editor2d.ui.model.ShapeDrawComponentPropertySource;
+import org.nightlabs.editor2d.ui.model.LinePropertySource;
 
 
 public class LineTreeEditPart 
 extends DrawComponentTreeEditPart 
 {
 //	public static Image LINE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(), 
-//			AbstractPaletteFactory.class, "Line").createImage();	
+//	AbstractPaletteFactory.class, "Line").createImage();	
 	public static Image LINE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(), 
 			AbstractPaletteFactory.class, "Line", ImageFormat.gif).createImage();	 //$NON-NLS-1$
-	
-  public LineTreeEditPart(LineDrawComponent drawComponent) {
-    super(drawComponent);
-  }
 
-//  protected Image getImage() {
-//    return LINE_ICON;
-//  }
-  @Override
+	public LineTreeEditPart(LineDrawComponent drawComponent) {
+		super(drawComponent);
+	}
+
+	@Override
 	protected Image getOutlineImage() {
-    return LINE_ICON;
-  }
+		return LINE_ICON;
+	}
 
 	public LineDrawComponent getLineDrawComponent() {
-	  return (LineDrawComponent) getModel();
+		return (LineDrawComponent) getModel();
 	}
-  
+
 	@Override
 	public IPropertySource getPropertySource()
-  {
-    if (propertySource == null)
-    {
-      propertySource =
-        new ShapeDrawComponentPropertySource(getLineDrawComponent());
-    }
-    return propertySource;
-  }
+	{
+		if (propertySource == null)
+		{
+			propertySource =
+				new LinePropertySource(getLineDrawComponent());
+		}
+		return propertySource;
+	}
 }
