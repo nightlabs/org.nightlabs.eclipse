@@ -23,7 +23,7 @@
             id="org.nightlabs.editor2d.ui.views.QuickOptionsView"
             name="%view.quickOptions.name"/>            
    </extension>
-<!--   
+<!--   -->
    <extension
          id="app"
          name="%application.name"
@@ -63,7 +63,7 @@
             id="org.nightlabs.editor2d.ui.EditorPerspective"
             name="%perspective.name"/>
    </extension>
--->   
+<!-- -->   
    <extension
          point="org.eclipse.ui.editors">
       <editor
@@ -80,7 +80,6 @@
          point="org.nightlabs.base.ui.editorfilefilter">
       <editorFileFilter pattern="org\.nightlabs.*"/>
    </extension>
-<!--   
    <extension
          point="org.nightlabs.base.ui.newfileaction">
       <action
@@ -92,7 +91,6 @@
             id="%category.name"
             name="%category.name"/>
    </extension>
--->   
    <extension
          point="org.nightlabs.base.ui.editor2perspective">
       <registry
@@ -248,12 +246,12 @@
 	</extension>
    <extension
          point="org.eclipse.ui.preferencePages">
-<!--         
+<!--  -->
       <page
             class="org.nightlabs.editor2d.ui.preferences.EditorPreferencePage"
             id="org.nightlabs.editor2d.ui.preferences.EditorPreferencePage"
             name="%preferences.category.name"/>
--->            
+<!-- -->
       <page
             category="org.nightlabs.editor2d.ui"
             class="org.nightlabs.editor2d.ui.preferences.DocumentPropertiesPreferencePage"
