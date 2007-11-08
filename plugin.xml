@@ -177,7 +177,6 @@
                description="Editor2D Template Format"
                fileExtension="e2t"/>
       </ioFilter>
-<!-- Not yet completely functional.
       <ioFilter
             class="org.nightlabs.editor2d.iofilter.PCXFilter"
             description="PCX"
@@ -187,7 +186,6 @@
                fileExtension="pcx">
          </fileExtension>
       </ioFilter>
--->
    </extension>
       <extension
          point="org.nightlabs.base.ui.removeExtension">
