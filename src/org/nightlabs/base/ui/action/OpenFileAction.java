@@ -55,10 +55,13 @@ extends Action
 {
 	public static final String ID = OpenFileAction.class.getName();
 	public static final String FILTER_ALL = "*"; //$NON-NLS-1$
+	public static final String HISTORY_FILE_ADDED = "history file added"; //$NON-NLS-1$
 	
-	protected RecentFileCfMod historyConfig;
-		
-	protected PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+	private RecentFileCfMod historyConfig;		
+	private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+	private File lastDirectory = null;
+	private boolean useFilterAll = true;
+	
 	public void addPropertyChangeListener(PropertyChangeListener pcl) {
 		pcs.addPropertyChangeListener(pcl);
 	};
@@ -90,8 +93,7 @@ extends Action
 		
 		return null;
 	}
-	
-	private File lastDirectory = null; 
+	 
 	@Override
 	public void run() 
 	{
@@ -128,14 +130,12 @@ extends Action
 		}
 	}
 	
-	public static final String HISTORY_FILE_ADDED = "history file added"; //$NON-NLS-1$
 	protected void addFileToHistory(String fileName) 
 	{
 		if (getRecentFileNames() != null) 
 		{
 			// add file only if it is not already contained
-			if (!getRecentFileNames().contains(fileName)) 
-			{				
+			if (!getRecentFileNames().contains(fileName)) {				
 				getRecentFileNames().add(fileName);
 				pcs.firePropertyChange(HISTORY_FILE_ADDED, null, fileName);
 			}
@@ -186,7 +186,6 @@ extends Action
 		return "*." + s; //$NON-NLS-1$
 	}
 		
-	protected boolean useFilterAll = true;
 	public boolean isUseFilterAll() {
 		return useFilterAll;
 	}
