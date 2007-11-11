@@ -332,8 +332,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	/** Create a new Editor instance. This is called by the Workspace. */
 	public AbstractEditor() 
 	{
-		init();
-		filterMan = new FilterManager(getNameProvider()); 
+		init(); 
 //		initJ2DRegistry();
 	}
 	
@@ -341,6 +340,8 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	{
 		getPalettePreferences().setPaletteState(FlyoutPaletteComposite.STATE_PINNED_OPEN);
 		getPalettePreferences().setDockLocation(PositionConstants.WEST);
+		filterMan = new FilterManager(getNameProvider());
+		configureIOFilterMan(getIOFilterMan());
 	}
 	
 	@Override
@@ -1140,6 +1141,10 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	{
 		FileDialog dialog = new FileDialog(getSite().getWorkbenchWindow().getShell(), SWT.SAVE);
 		String inputFileName = getEditorInput().getName();
+		if (getIOFilterMan().getDefaultWriteIOFilter() != null) {
+			String fileExtension = getIOFilterMan().getDefaultWriteIOFilter().getFileExtensions()[0];
+			inputFileName.concat("."+fileExtension);
+		}
 		dialog.setFileName(inputFileName);
 		
 		String[] fileExtensions = getIOFilterMan().getWriteFileExtensions(true);
@@ -1149,10 +1154,10 @@ extends J2DGraphicalEditorWithFlyoutPalette
 //		IEditorDescriptor[] editors = editorRegistry.getEditors(inputFileName);
 //		for (int i=0; i<editors.length; i++) {
 //			IEditorDescriptor descriptor = editors[i];
-//		}
-		
-		if (fileExtensions != null)
+//		}		
+		if (fileExtensions != null) {
 			dialog.setFilterExtensions(fileExtensions);
+		}
 
 		String fullPath = dialog.open();
 		// Cancel pressed
@@ -1171,6 +1176,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 				return false;
 		}
 		try {
+			// TODO should only be done when saving was sucessful and not aborted 
 			getCommandStack().markSaveLocation();
 		} 
 		catch (Exception e) {
@@ -1259,7 +1265,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 			{
 				saveProperties();
 				try {
-					save(file, monitor);      
+					boolean saved = save(file, monitor);      
 				} 
 				catch (Exception e) {
 					throw new RuntimeException(e);
@@ -1282,7 +1288,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	 * @param file the file to save
 	 * @param progressMonitor The ProgressMonitor to show the save Progress
 	 */
-	protected void save(File file, IProgressMonitor progressMonitor)
+	protected boolean save(File file, IProgressMonitor progressMonitor)
 	throws WriteException
 	{
 		if (null == progressMonitor)
@@ -1292,6 +1298,10 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		IOFilter ioFilter = getIOFilterMan().getIOFilter(file);      
 		if (ioFilter != null) 
 		{
+			if (!reactOnSave(ioFilter)) {
+				return false;
+			}
+			
 			try {
 				if (ioFilter instanceof IOFilterWithProgress) {      		
 					IOFilterWithProgress progressFilter = (IOFilterWithProgress) ioFilter;
@@ -1308,6 +1318,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 				progressMonitor.done();
 			}
 		}
+		return true;
 	}     
 
 	protected void saveFile(File file, IOFilter ioFilter, IProgressMonitor monitor) 
@@ -1573,4 +1584,22 @@ extends J2DGraphicalEditorWithFlyoutPalette
 			disposeEditor();
 		}
 	};
+	
+	/**
+	 * By default empty, subclasses can override this method to configure the ioFilterMan
+	 * e.g. set the default fileExtensions for reading and writing files 
+	 */
+	protected void configureIOFilterMan(IOFilterMan ioFilterMan) {
+	}
+	
+	/**
+	 * By default empty, subclasses can override this method to react  
+	 * before ssaving with a iofiter e.g. to display a message before
+	 *   
+	 * @param ioFilter the iofilter to use for saving
+	 * @return true if perform save or false if not
+	 */
+	protected boolean reactOnSave(IOFilter ioFilter) {
+		return true;
+	}
 }

@@ -70,7 +70,7 @@ extends AbstractEditorSelectionAction
 	@Override
 	protected boolean calculateEnabled() {
 //		return selectionContains(getDefaultIncludes(true), 2, true);
-		return !selectionContains(getDefaultExcludes(true), Integer.MAX_VALUE, true);
+		return !selectionContains(getDefaultExcludes(true), Integer.MAX_VALUE, true) && !getSelectedObjects().isEmpty();
 	}
 
 	@Override

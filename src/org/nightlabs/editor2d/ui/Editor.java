@@ -32,9 +32,11 @@ import org.eclipse.gef.EditPartFactory;
 import org.nightlabs.editor2d.Editor2DFactory;
 import org.nightlabs.editor2d.NameProvider;
 import org.nightlabs.editor2d.impl.Editor2DFactoryImpl;
+import org.nightlabs.editor2d.iofilter.XStreamFilter;
 import org.nightlabs.editor2d.ui.edit.GraphicalEditPartFactory;
 import org.nightlabs.editor2d.ui.edit.tree.TreePartFactory;
 import org.nightlabs.editor2d.ui.util.EditorNameProvider;
+import org.nightlabs.io.IOFilterMan;
 
 
 public class Editor  
@@ -94,6 +96,15 @@ extends AbstractEditor
 	@Override
 	public AbstractPaletteFactory createPaletteFactory() {
 		return new EditorPaletteFactory(getModelFactory());
+	}
+
+	/* (non-Javadoc)
+	 * @see org.nightlabs.editor2d.ui.AbstractEditor#configureIOFilterMan()
+	 */
+	@Override
+	protected void configureIOFilterMan(IOFilterMan ioFilterMan) {
+		ioFilterMan.setDefaultReadIOFilter(ioFilterMan.getIOFilter(XStreamFilter.FILE_EXTENSION));
+		ioFilterMan.setDefaultWriteIOFilter(ioFilterMan.getIOFilter(XStreamFilter.FILE_EXTENSION));
 	}
 			
 }

@@ -141,8 +141,8 @@ extends ActionBarContributor
   	addRetargetAction(new RetargetAction(
   			GEFActionConstants.TOGGLE_SNAP_TO_GEOMETRY, 
   			Messages.getString("org.nightlabs.editor2d.ui.EditorActionBarContributor.menu.snapToGeometry"), IAction.AS_CHECK_BOX)); //$NON-NLS-1$
-  	addRetargetAction(new RetargetAction(GEFActionConstants.TOGGLE_GRID_VISIBILITY, 
-  			Messages.getString("org.nightlabs.editor2d.ui.EditorActionBarContributor.menu.showGrid"), IAction.AS_CHECK_BOX)); //$NON-NLS-1$
+//  	addRetargetAction(new RetargetAction(GEFActionConstants.TOGGLE_GRID_VISIBILITY, 
+//  			Messages.getString("org.nightlabs.editor2d.ui.EditorActionBarContributor.menu.showGrid"), IAction.AS_CHECK_BOX)); //$NON-NLS-1$
 
   	// Zoom
   	addRetargetAction(new ZoomInRetargetAction());
@@ -205,9 +205,7 @@ extends ActionBarContributor
   		if (printMenu == null)
   			fileMenu.insertBefore(ActionFactory.QUIT.getId(), getAction(EditorPrintAction.ID));
   		
-//			fileMenu.insertAfter(EditorPrintAction.ID, getAction(EditorPrintPreviewAction.ID));
 //  		fileMenu.insertAfter(EditorPrintPreviewAction.ID, getAction(EditorPrintSetupAction.ID));
-//    	fileMenu.insertAfter(EditorPrintSetupAction.ID, new Separator());
 			fileMenu.insertAfter(EditorPrintAction.ID, getAction(EditorPrintSetupAction.ID));
     	fileMenu.insertAfter(EditorPrintSetupAction.ID, new Separator());  				  		  		
   	}
@@ -251,7 +249,7 @@ extends ActionBarContributor
   	
   	viewMenu.add(new Separator());
   	viewMenu.add(getAction(GEFActionConstants.TOGGLE_RULER_VISIBILITY));
-  	viewMenu.add(getAction(GEFActionConstants.TOGGLE_GRID_VISIBILITY));
+//  	viewMenu.add(getAction(GEFActionConstants.TOGGLE_GRID_VISIBILITY));
   	viewMenu.add(getAction(GEFActionConstants.TOGGLE_SNAP_TO_GEOMETRY));
   	  	
   	viewMenu.add(new Separator());
