@@ -32,6 +32,7 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.nightlabs.base.ui.property.CheckboxPropertyDescriptor;
 import org.nightlabs.editor2d.IConnectable;
 import org.nightlabs.editor2d.LineDrawComponent;
+import org.nightlabs.editor2d.ui.resource.Messages;
 
 /**
  * Author: Daniel Mazurek 
@@ -77,7 +78,7 @@ extends ShapeDrawComponentPropertySource
 
 	protected IPropertyDescriptor createConnectPD() {
 		PropertyDescriptor desc = new CheckboxPropertyDescriptor(IConnectable.PROP_CONNECT,
-				"Connect");
+				Messages.getString("org.nightlabs.editor2d.ui.model.LinePropertySource.label.connect")); //$NON-NLS-1$
 		return desc;
 	}
 }
