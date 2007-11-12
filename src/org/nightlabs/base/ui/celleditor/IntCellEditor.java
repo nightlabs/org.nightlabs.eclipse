@@ -72,8 +72,10 @@ extends XCellEditor
 	protected Object doGetValue() 
   {
     String stringVal = text.getText();
-    Integer i = new Integer(stringVal);
-    return i;     
+    if (stringVal != null && !stringVal.trim().equals("")) {
+      return new Integer(stringVal);      
+    }
+    return null;     
   }
 
   @Override
@@ -91,10 +93,12 @@ extends XCellEditor
 		if (isReadOnly())
 			return;
 		
-  	Assert.isTrue(text != null && (value instanceof Integer));
-  	Integer val = (Integer) value;
-  	String stringVal = Integer.toString(val.intValue());
-  	text.setText(stringVal);    
+//  	Assert.isTrue(text != null && (value instanceof Integer));
+		if (value != null) {
+	  	Integer val = (Integer) value;
+	  	String stringVal = Integer.toString(val.intValue());
+	  	text.setText(stringVal);    			
+		}
   }
 
 }
