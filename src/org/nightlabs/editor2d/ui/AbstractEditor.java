@@ -299,6 +299,9 @@ extends J2DGraphicalEditorWithFlyoutPalette
 
 	private FilterManager filterMan = null;
 	public FilterManager getFilterManager() {
+		if (filterMan == null)
+			filterMan = new FilterManager(getNameProvider());
+
 		return filterMan;
 	}
 
@@ -340,7 +343,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	{
 		getPalettePreferences().setPaletteState(FlyoutPaletteComposite.STATE_PINNED_OPEN);
 		getPalettePreferences().setDockLocation(PositionConstants.WEST);
-		filterMan = new FilterManager(getNameProvider());
+//		filterMan = new FilterManager(getNameProvider()); // too late here
 		configureIOFilterMan(getIOFilterMan());
 	}
 	
