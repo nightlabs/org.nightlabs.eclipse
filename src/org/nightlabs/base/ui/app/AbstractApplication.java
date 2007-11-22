@@ -30,7 +30,6 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.jface.util.SafeRunnable;
@@ -46,6 +45,7 @@ import org.nightlabs.base.ui.exceptionhandler.SaveRunnableRunner;
 import org.nightlabs.base.ui.extensionpoint.RemoveExtensionRegistry;
 import org.nightlabs.config.Config;
 import org.nightlabs.config.ConfigException;
+import org.nightlabs.math.Base62Coder;
 import org.nightlabs.util.IOUtil;
 
 /**
@@ -92,6 +92,10 @@ implements IApplication
 //	 */
 //	public static final String APPLICATION_FOLDER_SYSTEM_PROPERTY_NAME = "nightlabs.base.application.folder"; //$NON-NLS-1$
 
+	public static final String LOG_DIR_PROPERTY_KEY = "org.nightlabs.base.ui.log.dir";
+//	public static final String LOG_FILE_NAME_PROPERTY_KEY = "org.nightlabs.base.ui.log.filename";
+//	public static final String LOG_FILE_WITH_PATH_PROPERTY_KEY = "org.nightlabs.base.ui.log.file";
+
 	protected static AbstractApplication sharedInstance;
 
 	protected static AbstractApplication sharedInstance() {
@@ -99,7 +103,7 @@ implements IApplication
 			throw new IllegalStateException("No application has been created yet!"); //$NON-NLS-1$
 		return sharedInstance;
 	}
-	
+
 	/**
 	 * Constructs a new Application and 
 	 * sets the static members {@link #sharedInstance} and {@link #applicationName}.
@@ -210,16 +214,21 @@ implements IApplication
 	 */
 	public static String getLogDir() {
 		if (logDir.equals("")){ //$NON-NLS-1$
-			File logFile = new File(getRootDir(),"log"); //$NON-NLS-1$
-			if (!logFile.exists())
-				if (!logFile.mkdirs())
-					System.out.println("Could not create log directory "+logFile.getAbsolutePath()); //$NON-NLS-1$
-			logDir = logFile.getAbsolutePath();
+			File logDirF = new File(getRootDir(), "log"); //$NON-NLS-1$
+			if (!logDirF.exists()) {
+				if (!logDirF.mkdirs())
+					System.err.println("Could not create log directory "+logDirF.getAbsolutePath()); //$NON-NLS-1$
+			}
+			logDir = logDirF.getAbsolutePath();
+
+			// the log4j.xml references the log-directory via the system property - hence we need to set it here.
+			System.setProperty(LOG_DIR_PROPERTY_KEY, logDir);
 		}
 		return logDir;
 	}
 
-	protected static final String LOG4J_CONFIG_FILE = "log4j.properties"; //$NON-NLS-1$
+//	protected static final String LOG4J_CONFIG_FILE = "log4j.properties"; //$NON-NLS-1$
+	protected static final String LOG4J_CONFIG_FILE = "log4j.xml"; //$NON-NLS-1$
 
 	/**
 	 * Configures log4j with the file located in {@link #getConfigDir()}+"/log4j.properties"
@@ -227,15 +236,29 @@ implements IApplication
 	 */
 	protected void initializeLogging() 
 	throws IOException
-	{		
-		File logProp = new File(getConfigDir(), LOG4J_CONFIG_FILE);
-		if (!logProp.exists()){
+	{
+		File logConfFile = new File(getConfigDir(), LOG4J_CONFIG_FILE);
+		if (!logConfFile.exists()){
 			// if not there copy
-			IOUtil.copyResource(AbstractApplication.class ,LOG4J_CONFIG_FILE, logProp);		        
+			IOUtil.copyResource(AbstractApplication.class, LOG4J_CONFIG_FILE, logConfFile);		        
 		}
-		getLogDir();
-//		setAppNameSystemProperty();
-		PropertyConfigurator.configure(logProp.getAbsolutePath());
+		getLogDir(); // ensure the directory exists and the system-property is set
+
+		// TODO BEGIN temporary cleanup
+		// Because there was a log4j.properties file used until we switched to the log4j.xml, we
+		// create a backup and delete it, if necessary, in order to make it clear for an administrator
+		// that the file is not used anymore.
+		{
+			File oldConfFile = new File(getConfigDir(), "log4j.properties");
+			if (oldConfFile.exists()) {
+				File backup = new File(oldConfFile.getAbsolutePath() + ".bak-" + Long.toString(System.currentTimeMillis(), 36));
+				oldConfFile.renameTo(backup);
+			}
+		}
+		// END temporary cleanup
+
+//		org.apache.log4j.PropertyConfigurator.configure(logConfFile.getAbsolutePath());
+		org.apache.log4j.xml.DOMConfigurator.configure(logConfFile.toURL());
 		logger.info("Logging for \"" + System.getProperty("eclipse.product") + "\" started."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 //		logger.info(getApplicationName()+" started."); //$NON-NLS-1$
 	}	
