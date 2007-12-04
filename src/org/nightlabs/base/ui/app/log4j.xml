@@ -48,6 +48,17 @@
          <param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%c{1}] %m%n"/>
       </layout>            
    </appender>
+   
+   <!-- ======================== -->
+   <!-- Limit verbose categories -->
+   <!-- ======================== -->
+   
+<!--
+   Example category limited to warn
+   <category name="org.nightlabs.jfire.base.jdo.cache>
+      <priority value="WARN" />
+   </category>
+-->   
 
    <!-- ======================= -->
    <!-- Setup the Root category -->
