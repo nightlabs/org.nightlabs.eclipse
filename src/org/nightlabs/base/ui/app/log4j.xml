@@ -55,7 +55,7 @@
    
 <!--
    Example category limited to warn
-   <category name="org.nightlabs.jfire.base.jdo.cache>
+   <category name="org.nightlabs.jfire.base.jdo.cache">
       <priority value="WARN" />
    </category>
 -->   
