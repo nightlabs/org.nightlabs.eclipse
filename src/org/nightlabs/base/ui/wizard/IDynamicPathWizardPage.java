@@ -62,6 +62,28 @@ public interface IDynamicPathWizardPage extends IWizardPage
 	void onHide();
 	
 	/**
+	 * This method will be called after this page was the current one and the user clicked
+	 * on the next button (after the page was hidden but before the next page becomes
+	 * visible).<br />
+	 * <b>This method is not triggered when the user clicks the finish button.</b>
+	 */
+	void onNext();
+	
+	/**
+	 * This method will be called after this page was the current one and the user clicked
+	 * on the previous button (after the page was hidden but before the next page becomes visible).
+	 */
+	void onPrevious();
+	
+	/**
+	 * This method will be called after this page was the current one and the user clicked
+	 * on the finish button (after the page was hidden but before the next page becomes
+	 * visible).<br />
+	 * <b>This method is not triggered when the user clicks the next button.</b>
+	 */
+	void onFinish();
+	
+	/**
 	 * returns true if the method onShow() has been already called, otherwise false
 	 * @return true if the method onShow() has been already called, otherwise false 
 	 */

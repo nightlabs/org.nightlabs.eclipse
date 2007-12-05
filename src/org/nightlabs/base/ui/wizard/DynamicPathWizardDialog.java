@@ -97,12 +97,22 @@ public class DynamicPathWizardDialog extends WizardDialog
 	@Override
 	protected void backPressed() {
 		buttonBar.setFocus(); // to trigger all GUI-element-to-backend-object-store-methods
+		
+		if (getCurrentPage() instanceof IDynamicPathWizardPage) {
+			((IDynamicPathWizardPage)getCurrentPage()).onPrevious();
+		}
+		
 		super.backPressed();
 	}
 	
 	@Override
 	protected void nextPressed() {
 		buttonBar.setFocus(); // to trigger all GUI-element-to-backend-object-store-methods
+		
+		if (getCurrentPage() instanceof IDynamicPathWizardPage) {
+			((IDynamicPathWizardPage)getCurrentPage()).onNext();
+		}
+		
 //		if (getCurrentPage() == dynamicWizard.getWizardEntryPage()) {
 //			if (dynamicWizard.getPopulator() != null)
 //				dynamicWizard.getPopulator().addDynamicWizardPages(dynamicWizard);

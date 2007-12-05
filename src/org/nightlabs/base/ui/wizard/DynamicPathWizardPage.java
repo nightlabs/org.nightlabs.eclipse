@@ -183,4 +183,13 @@ implements IDynamicPathWizardPage
 	public void onHide()
 	{
 	}
+	
+	public void onNext() {
+	}
+	
+	public void onPrevious() {
+	}
+	
+	public void onFinish() {
+	}
 }
