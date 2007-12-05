@@ -35,9 +35,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
 import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
-import org.nightlabs.base.ui.NLBasePlugin;
 
 public class NewFileRegistry 
 extends AbstractEPProcessor

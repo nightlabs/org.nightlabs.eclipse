@@ -40,8 +40,8 @@ import org.eclipse.core.runtime.IExtension;
 import org.nightlabs.base.ui.entity.editor.EntityEditorPageSettings;
 import org.nightlabs.base.ui.entity.tree.EntityTreeCategoryViewBinding;
 import org.nightlabs.base.ui.entity.tree.IEntityTreeCategory;
-import org.nightlabs.base.ui.entity.tree.IEntityTreeCategoryViewBinding;
 import org.nightlabs.base.ui.entity.tree.IEntityTreeCategoryBinding;
+import org.nightlabs.base.ui.entity.tree.IEntityTreeCategoryViewBinding;
 import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
 import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
 

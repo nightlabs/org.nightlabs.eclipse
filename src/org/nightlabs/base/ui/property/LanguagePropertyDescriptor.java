@@ -30,7 +30,6 @@ import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
-
 import org.nightlabs.base.ui.celleditor.LanguageCellEditor;
 import org.nightlabs.base.ui.labelprovider.LanguageLabelProvider;
 import org.nightlabs.i18n.I18nText;

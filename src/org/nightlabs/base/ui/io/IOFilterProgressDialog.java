@@ -32,7 +32,6 @@ import java.util.Locale;
 
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.widgets.Shell;
-
 import org.nightlabs.io.AbstractIOFilterWithProgress;
 import org.nightlabs.io.IOFilter;
 import org.nightlabs.io.IOFilterWithProgress;

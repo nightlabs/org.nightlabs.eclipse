@@ -46,7 +46,6 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.forms.editor.IFormPage;
-import org.eclipse.ui.part.EditorPart;
 import org.nightlabs.base.ui.entity.editor.EntityEditorPageController.LoadJob;
 import org.nightlabs.base.ui.resource.Messages;
 

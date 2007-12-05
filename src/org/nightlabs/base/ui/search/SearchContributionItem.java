@@ -47,8 +47,8 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
-import org.nightlabs.base.ui.action.AbstractContributionItem;
 import org.nightlabs.base.ui.NLBasePlugin;
+import org.nightlabs.base.ui.action.AbstractContributionItem;
 import org.nightlabs.base.ui.resource.SharedImages;
 import org.nightlabs.base.ui.util.RCPUtil;
 

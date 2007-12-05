@@ -5,7 +5,6 @@ package org.nightlabs.base.ui.timepattern.builder;
 
 import java.util.Iterator;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.window.Window;
 import org.nightlabs.base.ui.wizard.DynamicPathWizard;
 import org.nightlabs.base.ui.wizard.DynamicPathWizardDialog;

@@ -27,9 +27,9 @@
 package org.nightlabs.base.ui;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.nightlabs.base.ui.app.AbstractApplication;
 import org.nightlabs.base.ui.exceptionhandler.ExceptionHandlerRegistry;
 import org.nightlabs.base.ui.exceptionhandler.SimpleExceptionHandlerRegistry;
-import org.nightlabs.base.ui.app.AbstractApplication;
 import org.osgi.framework.BundleContext;
 
 /**

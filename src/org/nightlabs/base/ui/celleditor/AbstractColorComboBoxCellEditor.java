@@ -42,7 +42,6 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.TableItem;
-
 import org.nightlabs.base.ui.custom.XCombo;
 
 public abstract class AbstractColorComboBoxCellEditor 

@@ -45,7 +45,6 @@ import org.nightlabs.base.ui.exceptionhandler.SaveRunnableRunner;
 import org.nightlabs.base.ui.extensionpoint.RemoveExtensionRegistry;
 import org.nightlabs.config.Config;
 import org.nightlabs.config.ConfigException;
-import org.nightlabs.math.Base62Coder;
 import org.nightlabs.util.IOUtil;
 
 /**
