@@ -40,8 +40,6 @@ import org.eclipse.gef.handles.HandleBounds;
 import org.eclipse.gef.tools.ResizeTracker;
 import org.eclipse.gef.tools.SimpleDragTracker;
 import org.eclipse.gef.tools.ToolUtilities;
-
-import org.nightlabs.editor2d.ui.custom.EditorCursors;
 import org.nightlabs.editor2d.ui.request.EditorRequestConstants;
 import org.nightlabs.editor2d.ui.util.EditorUtil;
 

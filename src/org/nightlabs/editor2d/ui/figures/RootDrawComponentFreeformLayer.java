@@ -33,7 +33,6 @@ import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.UpdateListener;
 import org.eclipse.draw2d.UpdateManager;
 import org.eclipse.draw2d.geometry.Rectangle;
-
 import org.nightlabs.editor2d.ui.edit.RootDrawComponentEditPart;
 import org.nightlabs.editor2d.ui.util.EditorUtil;
 

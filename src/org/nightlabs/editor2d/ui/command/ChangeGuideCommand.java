@@ -28,7 +28,6 @@
 package org.nightlabs.editor2d.ui.command;
 
 import org.eclipse.gef.commands.Command;
-
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.EditorGuide;
 

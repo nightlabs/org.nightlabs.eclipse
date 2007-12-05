@@ -25,7 +25,6 @@
  ******************************************************************************/
 package org.nightlabs.editor2d.ui.print;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.window.Window;
 import org.nightlabs.editor2d.ui.AbstractEditor;
 import org.nightlabs.editor2d.ui.resource.Messages;

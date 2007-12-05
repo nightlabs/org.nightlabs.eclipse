@@ -29,7 +29,6 @@ package org.nightlabs.editor2d.ui.properties;
 
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.widgets.Composite;
-
 import org.nightlabs.base.ui.property.ComboBoxPropertyDescriptor;
 import org.nightlabs.util.FontUtil;
 

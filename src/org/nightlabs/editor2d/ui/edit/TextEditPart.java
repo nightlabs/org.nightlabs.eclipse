@@ -31,7 +31,6 @@ import java.beans.PropertyChangeEvent;
 
 import org.apache.log4j.Logger;
 import org.eclipse.ui.views.properties.IPropertySource;
-
 import org.nightlabs.editor2d.TextDrawComponent;
 import org.nightlabs.editor2d.ui.model.TextPropertySource;
 

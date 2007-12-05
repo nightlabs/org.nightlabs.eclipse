@@ -33,7 +33,6 @@ import java.util.List;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Handle;
-
 import org.nightlabs.editor2d.ui.edit.AbstractDrawComponentEditPart;
 
 public class RotateHandleKit 

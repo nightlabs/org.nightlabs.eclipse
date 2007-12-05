@@ -35,7 +35,6 @@ import java.util.List;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.rulers.RulerChangeListener;
 import org.eclipse.gef.rulers.RulerProvider;
-
 import org.nightlabs.editor2d.EditorGuide;
 import org.nightlabs.editor2d.EditorRuler;
 import org.nightlabs.editor2d.ui.command.CreateGuideCommand;

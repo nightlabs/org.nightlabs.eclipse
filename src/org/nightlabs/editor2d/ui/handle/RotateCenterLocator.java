@@ -32,7 +32,6 @@ import org.eclipse.draw2d.Locator;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
-
 import org.nightlabs.editor2d.ui.edit.AbstractDrawComponentEditPart;
 
 

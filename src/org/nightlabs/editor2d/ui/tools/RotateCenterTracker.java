@@ -31,8 +31,6 @@ import org.apache.log4j.Logger;
 import org.eclipse.draw2d.Cursors;
 import org.eclipse.gef.Request;
 import org.eclipse.swt.graphics.Cursor;
-
-import org.nightlabs.editor2d.ui.custom.EditorCursors;
 import org.nightlabs.editor2d.ui.edit.AbstractDrawComponentEditPart;
 import org.nightlabs.editor2d.ui.request.EditorRotateCenterRequest;
 

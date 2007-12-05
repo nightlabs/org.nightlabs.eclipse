@@ -37,7 +37,6 @@ import org.eclipse.gef.handles.AbstractHandle;
 import org.eclipse.gef.handles.RelativeHandleLocator;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
-
 import org.nightlabs.editor2d.ui.custom.EditorCursors;
 import org.nightlabs.editor2d.ui.edit.AbstractDrawComponentEditPart;
 import org.nightlabs.editor2d.ui.tools.RotateTracker;

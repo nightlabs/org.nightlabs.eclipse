@@ -31,7 +31,6 @@ import java.awt.geom.AffineTransform;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Translatable;
-
 import org.nightlabs.editor2d.j2d.GeneralShape;
 import org.nightlabs.editor2d.ui.handle.HandleShape;
 

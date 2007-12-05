@@ -30,7 +30,6 @@ package org.nightlabs.editor2d.ui.handle;
 import java.util.List;
 
 import org.eclipse.draw2d.geometry.Point;
-
 import org.nightlabs.editor2d.ui.util.EditorUtil;
 
 

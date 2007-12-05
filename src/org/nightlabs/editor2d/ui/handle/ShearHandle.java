@@ -36,7 +36,6 @@ import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.handles.RelativeHandleLocator;
 import org.eclipse.swt.graphics.Cursor;
-
 import org.nightlabs.editor2d.ui.custom.EditorCursors;
 import org.nightlabs.editor2d.ui.tools.ShearTracker;
 

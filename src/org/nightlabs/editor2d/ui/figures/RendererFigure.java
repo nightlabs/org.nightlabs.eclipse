@@ -30,7 +30,6 @@ package org.nightlabs.editor2d.ui.figures;
 import java.awt.Graphics2D;
 
 import org.eclipse.draw2d.IFigure;
-
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.render.Renderer;
 

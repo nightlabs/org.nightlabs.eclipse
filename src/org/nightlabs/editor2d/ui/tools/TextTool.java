@@ -29,7 +29,6 @@ package org.nightlabs.editor2d.ui.tools;
 
 import org.eclipse.gef.Request;
 import org.eclipse.gef.tools.CreationTool;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.window.Window;
 import org.nightlabs.editor2d.ui.dialog.CreateTextDialog;
 import org.nightlabs.editor2d.ui.model.IModelCreationFactory;

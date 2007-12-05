@@ -31,7 +31,6 @@ import java.util.List;
 
 import org.eclipse.draw2d.Polyline;
 import org.eclipse.draw2d.geometry.PointList;
-
 import org.nightlabs.editor2d.ui.edit.ShapeDrawComponentEditPart;
 import org.nightlabs.editor2d.ui.util.J2DUtil;
 
