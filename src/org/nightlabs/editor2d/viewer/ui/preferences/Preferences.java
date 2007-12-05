@@ -27,7 +27,6 @@
 package org.nightlabs.editor2d.viewer.ui.preferences;
 
 import org.eclipse.jface.preference.IPreferenceStore;
-
 import org.nightlabs.editor2d.viewer.ui.ViewerPlugin;
 
 public class Preferences 
