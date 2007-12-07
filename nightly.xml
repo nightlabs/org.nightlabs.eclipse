@@ -59,7 +59,7 @@
     <provides path="org.nightlabs.base.ui" location="org.nightlabs.base.ui/lib/NightLabsBase.jar"/>
     <provides path="/org.nightlabs.base.ui/lib/NightLabsBase.jar" location="org.nightlabs.base.ui/lib/NightLabsBase.jar"/>
 
-    <publishes description="..." location="org.nightlabs.base.ui/dist/org.nightlabs.base.ui_1.0.6.jar"/>
+    <publishes description="..." location="org.nightlabs.base.ui/dist/org.nightlabs.base.ui_1.0.7.jar"/>
     <javadoc path="org.nightlabs.base.ui/src"/>
   </project>
 </nightlybuild>
