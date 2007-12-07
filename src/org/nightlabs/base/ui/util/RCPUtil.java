@@ -46,6 +46,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Button;
@@ -67,9 +68,12 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.composite.ChildStatusController;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.resource.Messages;
+import org.nightlabs.base.ui.resource.SharedImages;
+import org.nightlabs.base.ui.table.CheckboxCellEditorHelper;
 import org.nightlabs.util.IOUtil;
 
 /**
@@ -693,6 +697,4 @@ public class RCPUtil
 			comp.setVisible(true);
 		}
 	}
-
-	
 }
