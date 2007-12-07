@@ -3,7 +3,7 @@ Generated-from: 1148177220000;type=2
 Bundle-ManifestVersion: 2
 Bundle-Name: Editor2D Viewer Plug-in
 Bundle-SymbolicName: org.nightlabs.editor2d.viewer.ui;singleton:=true
-Bundle-Version: 1.0.4
+Bundle-Version: 1.0.5
 Bundle-ClassPath: lib/NightLabsEditor2D.jar,
  org.nightlabs.editor2d.viewer.ui.jar,
  lib/batik-awt-util.jar,
