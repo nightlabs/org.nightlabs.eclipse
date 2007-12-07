@@ -386,7 +386,7 @@ public abstract class AbstractTableComposite<ElementType> extends XComposite imp
 	}
 
 	public void addSelectionChangedListener(ISelectionChangedListener listener) {
-		tableViewer.addSelectionChangedListener(listener);
+		getTableViewer().addSelectionChangedListener(listener);
 	}
 
 	/**
