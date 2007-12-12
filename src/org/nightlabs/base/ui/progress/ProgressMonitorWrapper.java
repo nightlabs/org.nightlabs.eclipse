@@ -6,13 +6,11 @@ package org.nightlabs.base.ui.progress;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.nightlabs.progress.ProgressMonitor;
 
-import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
-
 /**
  * This is a wrapper for {@link IProgressMonitor}s to be used inside our {@link ProgressMonitor} based
  * framework. The counter wrapper is {@link RCPProgressMonitor}.
  * <br> <br>
- * Note: Try to not wrap a monitor too many times! Try an {@link INSTANCEOF} and use the getter to 
+ * Note: Try to not wrap a monitor too many times! Try an <b>instanceof</b> and use the getter to 
  * 	extract the wrapped monitor.
  * 
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
