@@ -306,6 +306,15 @@ implements IEntityEditorPageController
 	};
 	
 	/**
+	 * Resets the loaded flag and calls {@link #load(IProgressMonitor)}.
+	 * @param monitor The monitor to report progress to.
+	 */
+	protected void reload(IProgressMonitor monitor) {
+		loaded = false;
+		load(monitor);
+	}
+	
+	/**
 	 * <p>Ensures that this controller's {@link IEntityEditorPageController#doLoad(IProgressMonitor)}
 	 * method has fully run and thus the controller is ready for use.</p> 
 	 * 
