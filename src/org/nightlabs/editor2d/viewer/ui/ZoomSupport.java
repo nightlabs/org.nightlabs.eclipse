@@ -107,18 +107,29 @@ implements IZoomSupport
 	 */
 	public void setZoom(double zoomFactor) 
 	{
-		double oldZoom = zoom;
-		zoom = zoomFactor;
-		
 		if (zoomFactor > getMaxZoom())
-			zoom = getMaxZoom();
-		
+			zoomFactor = getMaxZoom();
+
 		if (zoomFactor < getMinZoom())
-			zoom = getMinZoom();
-		
-		if (oldZoom != zoom)
+			zoomFactor = getMinZoom();
+
+		if (Math.abs(zoomFactor - this.zoom) > 0.0001) {
+			this.zoom = zoomFactor;
 			fireZoomChanged();
-		
+		}
+
+//		double oldZoom = zoom;
+//		zoom = zoomFactor;
+//		
+//		if (zoomFactor > getMaxZoom())
+//			zoom = getMaxZoom();
+//		
+//		if (zoomFactor < getMinZoom())
+//			zoom = getMinZoom();
+//		
+//		if (oldZoom != zoom)
+//			fireZoomChanged();
+
 		doZoomAll();
 	}
 
@@ -281,12 +292,15 @@ implements IZoomSupport
 
 	public void zoomAll() 
 	{
+		double oldScale = getZoom();
 		Rectangle realBounds = getViewport().getInitRealBounds();
 		Rectangle viewBounds = getViewport().getInitViewBounds();
 		double scaleX = viewBounds.getWidth() / realBounds.getWidth();
 		double scaleY = viewBounds.getHeight() / realBounds.getHeight();
 		double scale = Math.min(scaleX, scaleY);
-		setZoom(scale);
+
+		if (Math.abs(oldScale - scale) > 0.0001)
+			setZoom(scale);
 	}
 	
 	protected void doZoomAll() 
