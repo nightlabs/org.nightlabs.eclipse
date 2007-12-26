@@ -29,6 +29,8 @@ package org.nightlabs.base.ui.composite;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,83 +53,104 @@ import org.nightlabs.util.CollectionUtil;
  *
  */
 public class FileListSelectionComposite 
-extends XComposite 
-{
+extends XComposite {
 	private Map<String, InputStream> fileInputStreamMap = new HashMap<String, InputStream>();
 	private org.eclipse.swt.widgets.List fileListWidget;
-	
-	public FileListSelectionComposite(Composite parent, int compositeStyle, LayoutMode layoutMode) 
-	{
+
+	private int type;
+
+	public static int ADD = 1;
+	public static int LIST = 2;
+
+	public FileListSelectionComposite(Composite parent, int compositeStyle, LayoutMode layoutMode, int type) {
 		super(parent, compositeStyle, layoutMode);
+		this.type = type;
 		createContents();
 	}	
 
-	private void createContents() 
-	{
+	private void createContents() {
 		XComposite fileListComposite = new XComposite(this, SWT.NONE, LayoutMode.TIGHT_WRAPPER);
 		fileListComposite.getGridLayout().numColumns = 2;
-		
+
 		fileListWidget = new org.eclipse.swt.widgets.List(fileListComposite, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
 		GridData gridData = new GridData(GridData.FILL_BOTH);
 		fileListWidget.setLayoutData(gridData);
-		
+
 		XComposite buttonComposite = new  XComposite(fileListComposite, SWT.NONE, LayoutMode.TIGHT_WRAPPER);
-		Button addButton = new Button(buttonComposite, SWT.PUSH);
-		addButton.setText("Add");
-		addButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		addButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
-				FileDialog fileDialog = new FileDialog(RCPUtil.getActiveWorkbenchShell());
-				String selectedFile = fileDialog.open();
-				if (selectedFile != null) {
-					File file = getFile(selectedFile);
-					try {
-						fileInputStreamMap.put(file.getName(), new FileInputStream(file));
-					} catch (FileNotFoundException e1) {
-						throw new RuntimeException(e1);
+
+		if(type == ADD) {
+			Button addButton = new Button(buttonComposite, SWT.PUSH);
+			addButton.setText("Add");
+			addButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			addButton.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e)
+				{
+					FileDialog fileDialog = new FileDialog(RCPUtil.getActiveWorkbenchShell(), SWT.OPEN);
+					String selectedFile = fileDialog.open();
+					if (selectedFile != null) {
+						File file = getFile(selectedFile);
+						try {
+							fileInputStreamMap.put(file.getName(), new FileInputStream(file));
+						} catch (FileNotFoundException e1) {
+							throw new RuntimeException(e1);
+						}
+						fileListWidget.add(file.getName());
 					}
-					fileListWidget.add(file.getName());
 				}
-			}
-		});
-		
-		Button removeButton = new Button(buttonComposite, SWT.PUSH);
-		removeButton.setText("Remove");
-		removeButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		removeButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
-				fileInputStreamMap.remove(fileListWidget.getItem(fileListWidget.getSelectionIndex()));
-				fileListWidget.remove(fileListWidget.getSelectionIndex());
-			}
-		});
+			});
+
+			Button removeButton = new Button(buttonComposite, SWT.PUSH);
+			removeButton.setText("Remove");
+			removeButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			removeButton.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					fileInputStreamMap.remove(fileListWidget.getItem(fileListWidget.getSelectionIndex()));
+					fileListWidget.remove(fileListWidget.getSelectionIndex());
+				}
+			});
+		}
+		else {
+			Button download = new Button(buttonComposite, SWT.PUSH);
+			download.setText("Download");
+			download.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			download.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e)
+				{
+					InputStream is = fileInputStreamMap.get(fileListWidget.getItem(fileListWidget.getSelectionIndex()));
+					if (is != null) {
+						try {
+							FileDialog fileDialog = new FileDialog(RCPUtil.getActiveWorkbenchShell(), SWT.SAVE);
+							String selectedFile = fileDialog.open();
+							setFile(is, selectedFile);
+						} catch (Exception ex) {
+							throw new RuntimeException(ex);
+						}
+					}
+				}
+			});
+		}
 		
 		buttonComposite.setLayoutData(new GridData());
-		
+
 		gridData = new GridData(GridData.FILL_BOTH);
 		gridData.grabExcessHorizontalSpace = true;
 		fileListComposite.setLayoutData(gridData);
 	}
-	
+
 	public void setInputStreamMap(Map<String, InputStream> iMap){
 		fileListWidget.removeAll();
 		this.fileInputStreamMap = iMap;
-		for(String name : iMap.keySet()){
+		for(String name : iMap.keySet()) {
 			fileListWidget.add(name);
 		}
 	}
-	
-	public void setFileList(List<File> fileList){
-		for(File file : fileList){
-			try {
-				fileInputStreamMap.put(file.getName(), new FileInputStream(file));
-			} catch (FileNotFoundException e) {
-				throw new RuntimeException(e);
-			}
-		}
+
+	public void addFile(String fileName, InputStream is) {
+		fileInputStreamMap.put(fileName, is);
+		fileListWidget.add(fileName);
 	}
 	
 	public List<FileInputStream> getFileInputStreamList() {
@@ -135,12 +158,21 @@ extends XComposite
 		List<FileInputStream> l = new ArrayList<FileInputStream>(c);
 		return l;
 	}
-	
+
 	public File getFile(String fileText) {
 		return new File(fileText);
 	}
-	
-	public Map<String, InputStream> getInputStreamMap(){
+
+	public Map<String, InputStream> getInputStreamMap() {
 		return fileInputStreamMap;
 	}
+	
+    public void setFile(InputStream io, String fileName) throws IOException {
+        FileOutputStream fos = new FileOutputStream(fileName);
+        byte[] buf = new byte[256];
+        int read = 0;
+        while ((read = io.read(buf)) > 0) {
+            fos.write(buf, 0, read);
+        }
+    }
 }
