@@ -475,4 +475,23 @@ public class EntityEditorController
 
 		return Collections.emptySet();
 	}
+	
+	/**
+	 * This method is a convenience method calling {@link #getPageControllers(Class)} and
+	 * assuming that only one controller matching this class can be found in this editor.
+	 * If more than one controller is found this method will throw an {@link IllegalStateException}.
+	 * 
+	 * @param clazz The class of controller to be returned.
+	 * @return Either the instance of an {@link IEntityEditorPageController} of the given type or <code>null</code>,
+	 * 		if none could be found.
+	 */
+	public <T> T getSinglePageController(Class<T> clazz) {
+		Set<IEntityEditorPageController> res = getPageControllers(clazz);
+		if (res.size() > 1)
+			throw new IllegalStateException("This method expects only one (or none) IEntityEditorPageController to be registered of the given type (" + clazz + ")");
+		if (res.size() == 1)
+			return (T) res.iterator().next();
+		else 
+			return null;
+	}
 }
