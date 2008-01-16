@@ -34,6 +34,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.forms.editor.IFormPage;
+import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.nightlabs.base.ui.action.IUpdateActionOrContributionItem;
 
 /**
@@ -46,10 +47,14 @@ extends MessageSectionPart
 	private ToolBar toolBar;
 	private ToolBarManager toolBarManager;
 	
-	private LinkedList<IAction> registeredActions = null; 
-
+	private LinkedList<IAction> registeredActions = null;
+	
 	public ToolBarSectionPart(IFormPage page, Composite parent, int style, String title) {
-		super(page, parent, style, title);
+		this(page.getEditor().getToolkit(), parent, style, title);
+	}
+	
+	public ToolBarSectionPart(FormToolkit toolkit, Composite parent, int style, String title) {
+		super(toolkit, parent, style, title);
 		toolBar = new ToolBar(getSection(), SWT.NONE);
 		toolBarManager = new ToolBarManager(toolBar);
 		toolBar.setBackground(getSection().getBackground());

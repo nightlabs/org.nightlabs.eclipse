@@ -44,8 +44,11 @@ extends RestorableSectionPart
 implements IMessageDisplayer
 {
 	public MessageSectionPart(IFormPage page, Composite parent, int style, String title) {
-		super(parent, page.getEditor().getToolkit(), style);
-		FormToolkit toolkit = page.getEditor().getToolkit();
+		this(page.getEditor().getToolkit(), parent, style, title);
+	}
+	
+	public MessageSectionPart(FormToolkit toolkit, Composite parent, int style, String title) {
+		super(parent, toolkit, style);
 		Section section = getSection();
 		section.setText(title);
 		section.setExpanded(true);
