@@ -386,6 +386,20 @@ public class RCPUtil
 	}
   
 	/**
+	 * Opens an editor with the given input and editorID and returns it.
+	 * 
+	 * @param input The editors input
+	 * @param editorID The editors id 
+	 * @return The editor opened
+	 * @throws PartInitException
+	 */
+	public static IEditorPart openEditor(IEditorInput input, String editorID, boolean activate) 
+	throws PartInitException 
+	{
+		return getActiveWorkbenchPage().openEditor(input, editorID, activate);
+	}
+	
+	/**
 	 * Finds the editor for the given input in the workbench's 
 	 * active workbenchpage. Returns null if no editor for
 	 * the given input was found.
