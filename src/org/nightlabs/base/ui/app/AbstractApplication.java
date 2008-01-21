@@ -226,7 +226,6 @@ implements IApplication
 		return logDir;
 	}
 
-//	protected static final String LOG4J_CONFIG_FILE = "log4j.properties"; //$NON-NLS-1$
 	protected static final String LOG4J_CONFIG_FILE = "log4j.xml"; //$NON-NLS-1$
 
 	/**
