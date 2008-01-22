@@ -155,6 +155,25 @@ extends XComposite {
 		fileListWidget.add(fileName);
 	}
 	
+	public boolean removeFile(String fileName) {
+		if (fileInputStreamMap.containsKey(fileName)) {
+			fileInputStreamMap.remove(fileName);
+			fileListWidget.remove(fileName);
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean removeFile(String[] fileNames) {
+		boolean result = false;
+		if (fileNames != null) {
+			for (int i = 0; i < fileNames.length; i++) {
+				result = result | removeFile(fileNames[i]);
+			}
+		}
+		return result;
+	}
+	
 	public List<FileInputStream> getFileInputStreamList() {
 		Collection<FileInputStream> c = CollectionUtil.castCollection(fileInputStreamMap.values());
 		List<FileInputStream> l = new ArrayList<FileInputStream>(c);
@@ -177,4 +196,8 @@ extends XComposite {
             fos.write(buf, 0, read);
         }
     }
+    
+    public org.eclipse.swt.widgets.List getFileListWidget() {
+		return fileListWidget;
+	}
 }
