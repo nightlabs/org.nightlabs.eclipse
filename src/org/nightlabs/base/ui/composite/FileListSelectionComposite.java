@@ -119,14 +119,16 @@ extends XComposite {
 				@Override
 				public void widgetSelected(SelectionEvent e)
 				{
-					InputStream is = fileInputStreamMap.get(fileListWidget.getItem(fileListWidget.getSelectionIndex()));
-					if (is != null) {
-						try {
-							FileDialog fileDialog = new FileDialog(RCPUtil.getActiveWorkbenchShell(), SWT.SAVE);
-							String selectedFile = fileDialog.open();
-							setFile(is, selectedFile);
-						} catch (Exception ex) {
-							throw new RuntimeException(ex);
+					if (fileListWidget.getSelectionIndex() != -1) {
+						InputStream is = fileInputStreamMap.get(fileListWidget.getItem(fileListWidget.getSelectionIndex()));
+						if (is != null) {
+							try {
+								FileDialog fileDialog = new FileDialog(RCPUtil.getActiveWorkbenchShell(), SWT.SAVE);
+								String selectedFile = fileDialog.open();
+								setFile(is, selectedFile);
+							} catch (Exception ex) {
+								throw new RuntimeException(ex);
+							}
 						}
 					}
 				}
