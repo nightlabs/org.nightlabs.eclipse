@@ -164,7 +164,7 @@ extends XComposite {
 		return false;
 	}
 	
-	public boolean removeFile(String[] fileNames) {
+	public boolean removeFiles(String[] fileNames) {
 		boolean result = false;
 		if (fileNames != null) {
 			for (int i = 0; i < fileNames.length; i++) {
