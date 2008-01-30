@@ -72,24 +72,14 @@ extends XComposite
 	public AbstractViewerComposite(Composite parent, int style, DrawComponent dc) 
 	{
 		super(parent, style);
-		if (dc == null)
-			throw new IllegalArgumentException("Param dc must not be null!"); //$NON-NLS-1$
-		
-		this.drawComponent = dc;
-		init();
-		createComposite(this);
+		init(dc);
 	}
 
 	public AbstractViewerComposite(Composite parent, int style, LayoutMode layoutMode, 
 			LayoutDataMode layoutDataMode, DrawComponent dc) 
 	{
 		super(parent, style, layoutMode, layoutDataMode);
-		if (dc == null)
-			throw new IllegalArgumentException("Param dc must not be null!"); //$NON-NLS-1$
-		
-		this.drawComponent = dc;
-		init();
-		createComposite(this);		
+		init(dc);
 	}
 
 	protected DrawComponent drawComponent;	
@@ -104,10 +94,15 @@ extends XComposite
 	protected Composite toolsComp;		
 	private Label mouseLabel = null;	
 	
-	protected void init() 
+	protected void init(DrawComponent drawComponent) 
 	{
+		if (drawComponent == null)
+			throw new IllegalArgumentException("Param drawComponent must not be null!"); //$NON-NLS-1$
+
+		this.drawComponent = drawComponent;
 		initRenderModeManager();
 		addDisposeListener(disposeListener);
+		createComposite(this);
 	}
 	
 	protected void initRenderModeManager() 
@@ -290,13 +285,13 @@ extends XComposite
 		PreviewComposite previewComposite = new PreviewComposite(
 				getDrawComponent(), getViewer().getViewport(), comp, SWT.NONE);		
 	}
-	
+
 	protected void initBottomComposite(Composite comp) 
 	{
 		mouseLabel = new Label(comp, SWT.NONE);
 		mouseLabel.setText("X=10000, Y=10000"); //$NON-NLS-1$
 		getViewer().getMouseManager().addMouseChangedListener(mouseListener);
-//		mouseLabel.addDisposeListener(mouseLabelDisposeListener);
+//		mouseLabel.addDisposeListener(mouseLabelDisposeListener); // the viewer is disposed together with the whole composite - I doubt that we need a disposeListener here.
 	}
 
 	private IMouseChangedListener mouseListener = new IMouseChangedListener()
@@ -308,19 +303,20 @@ extends XComposite
 		}
 	};
 
-	private DisposeListener mouseLabelDisposeListener = new DisposeListener()
-	{	
-		public void widgetDisposed(DisposeEvent e) 
-		{
-			if (e.getSource().equals(mouseLabel))
-				getViewer().getMouseManager().removeMouseChangedListener(mouseListener);				
-		}	
-	};
+//	private DisposeListener mouseLabelDisposeListener = new DisposeListener()
+//	{	
+//		public void widgetDisposed(DisposeEvent e) 
+//		{
+//			if (e.getSource().equals(mouseLabel))
+//				getViewer().getMouseManager().removeMouseChangedListener(mouseListener);				
+//		}	
+//	};
 	
 	protected RenderModeListener renderModeListener = new RenderModeListener()
 	{	
 		public void renderModeChanges(String renderMode) {
-			getViewer().updateCanvas();
+			if (getViewer() != null)
+				getViewer().updateCanvas();
 		}	
 	};
 	
