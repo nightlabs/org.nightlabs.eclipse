@@ -49,20 +49,21 @@ import org.nightlabs.base.ui.progress.CompoundProgressMonitor;
 import org.nightlabs.base.ui.progress.SaveProgressMonitorPart;
 import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.toolkit.IToolkit;
+import org.nightlabs.base.ui.util.RCPUtil;
 
 /**
  * <p>An editor page to be used when you need to load data (with the editors controller)
  * in the background and want to provide progress feedback to the user</p>
  * 
  * <p>The page hooks a Composite with a stack layout into its parent Form. 
- * One entry in the stack will be an implemenation of {@link IProgressMonitor}
+ * One entry in the stack will be an implementation of {@link IProgressMonitor}
  * the other the page's actual content. You can switch the vision 
  * by {@link #switchToContent()} and {@link #switchToProgress()}.</p> 
  * 
  * 
  * <p>On the creation of its contents ({@link #createFormContent(IManagedForm)}) 
  * this FormPage will start a job that tries to access the
- * {@link IEntityEditorPageController} associated to this page. It will herefore
+ * {@link IEntityEditorPageController} associated to this page. It will therefore
  * assume that the page is embedded in an {@link EntityEditor} and a page 
  * controller was created by the {@link IEntityEditorPageFactory} of this
  * page. <br/>
@@ -71,7 +72,7 @@ import org.nightlabs.base.ui.toolkit.IToolkit;
  * to let implementations react on to the loading. Implementations could fill the gui with 
  * the obtained data, for example. The callback is on the jobs thread, however, 
  * in order to enable subclasses to extend the background job with own tasks. 
- * Implementators should also not forget to switch to the content view when 
+ * Implementors should also not forget to switch to the content view when 
  * the loading is finished.</p>
  * 
  * <p>Also on creation of its contents this FormPage will call several 
@@ -385,6 +386,14 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 		
 		addSections(pageWrapper.getBody());
 		configureInitialStack();
+		
+		// TODO: WORKAROUND: FIXME: XXX: This is a workaround for wrong size calculation within a form
+		RCPUtil.workaroundFormPageTableLayouts(pageWrapper.getBody(), false);
+		Display.getDefault().asyncExec(new Runnable() {
+			public void run() {
+				RCPUtil.workaroundFormPageTableLayouts(pageWrapper.getBody(), true);
+			}
+		});		
 	}
 
 	/**

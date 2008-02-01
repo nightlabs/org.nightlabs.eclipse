@@ -29,6 +29,9 @@ package org.nightlabs.base.ui.util;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -42,11 +45,14 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.ColumnLayoutData;
+import org.eclipse.jface.viewers.ColumnPixelData;
+import org.eclipse.jface.viewers.ColumnWeightData;
+import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Button;
@@ -56,6 +62,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IPageLayout;
@@ -67,13 +74,12 @@ import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.composite.ChildStatusController;
 import org.nightlabs.base.ui.composite.XComposite;
+import org.nightlabs.base.ui.layout.WeightedTableLayout;
 import org.nightlabs.base.ui.resource.Messages;
-import org.nightlabs.base.ui.resource.SharedImages;
-import org.nightlabs.base.ui.table.CheckboxCellEditorHelper;
 import org.nightlabs.util.IOUtil;
 
 /**
@@ -711,4 +717,133 @@ public class RCPUtil
 			comp.setVisible(true);
 		}
 	}
+	
+	/**
+	 * Used internally for the TableLayout workaround.
+	 */
+	private static class WorkaroundTableLayout extends TableLayout {
+		private List<ColumnLayoutData> originalData;
+		
+		public List<ColumnLayoutData> getOriginalData() {
+			return originalData;
+		}
+		public void setOriginalData(List<ColumnLayoutData> originalData) {
+			this.originalData = originalData;
+		}
+	}
+
+	/**
+	 * Performs {@link RCPUtil#workaroundFormTableLayout(Table, boolean)} for every Table found 
+	 * in the Composite graph of the given parent.
+	 * 
+	 * @param parent The parent to replace layouts for.
+	 * @param doLayout Whether the tables should be re-layouted.
+	 */
+	public static void workaroundFormPageTableLayouts(Control parent, boolean doLayout) {
+		if (parent instanceof Table) {
+			workaroundFormTableLayout((Table) parent, doLayout);
+		} else if (parent instanceof Composite) {
+			Composite comp = (Composite) parent;
+			Control[] children = comp.getChildren();
+			for (Control child : children) {
+				workaroundFormPageTableLayouts(child, doLayout);
+			}
+		} 
+	}
+	
+	/**
+	 * Workaround method to apply normal {@link ColumnLayoutData}s to a table used in a {@link Form} with GridLayout.
+	 * This prevents the table to calculate a wrong size in a {@link Form} and to let the Section grow on every resize.
+	 * 
+	 * @param table The table to layout that has already a TableLayout set.
+	 * @param layoutData The layout data to apply to the table.
+	 */
+	public static void workaroundFormTableLayout(final Table table, final boolean doLayout) {
+		// TODO: WORKAROUND: FIXME: XXX: This is a workaround for wrong size calculation within a form
+		if (
+				!(table.getLayout() instanceof TableLayout) && 
+				!(table.getLayout() instanceof WorkaroundTableLayout) &&
+				!(table.getLayout() instanceof WeightedTableLayout) 
+			)
+			return; // The table does not have a TableLayout set.
+		final WorkaroundTableLayout tableLayout = new WorkaroundTableLayout();
+		List<ColumnLayoutData> lData = null;
+		if (table.getLayout() instanceof WorkaroundTableLayout) {
+			lData = ((WorkaroundTableLayout)table.getLayout()).getOriginalData();
+		} else if (table.getLayout() instanceof WeightedTableLayout) {
+			lData = ((WeightedTableLayout) table.getLayout()).translateToColumnLayoutData();
+		} else if (table.getLayout() instanceof TableLayout) {		
+			final TableLayout oldLayout = (TableLayout) table.getLayout();
+
+//			tableLayout.addColumnData(new ColumnWeightData(10));
+			Field columnsField = null;
+			try {
+				columnsField = TableLayout.class.getDeclaredField("columns");
+			} catch (NoSuchFieldException e) {
+				throw new RuntimeException(e);
+			}
+			columnsField.setAccessible(true);
+
+			try {
+				lData = (List<ColumnLayoutData>) columnsField.get(oldLayout);
+			} catch (IllegalAccessException e) {
+				throw new RuntimeException(e);
+			}
+		} 
+		tableLayout.setOriginalData(new ArrayList<ColumnLayoutData>(lData));
+		table.setLayout(tableLayout);
+		final List<ColumnLayoutData> layoutData = lData;
+		final List<ColumnPixelData> pixelData = new ArrayList<ColumnPixelData>(layoutData.size());		
+		for (ColumnLayoutData columnLayoutData : layoutData) {
+			final ColumnPixelData pData = new ColumnPixelData(0);
+			pixelData.add(pData);
+			tableLayout.addColumnData(pData);
+		}
+		final int clientWidth = table.getClientArea().width;
+		System.err.println("Client area: " + clientWidth);
+		setPixelData(layoutData, pixelData, clientWidth);
+//		table.addControlListener(new ControlAdapter() {
+//			public void controlResized(final ControlEvent e) {
+//				setPixelData(layoutData, pixelData, table.getClientArea().width);
+//				try {
+//					final Field firstTimeField = TableLayout.class.getDeclaredField("firstTime");
+//					firstTimeField.setAccessible(true);
+//					firstTimeField.set(tableLayout, true);
+//				} catch (final Exception ex) {
+//					table.layout(true, true);
+//					return; // well, the workaround broke.
+//				}
+//				table.layout(true, true);
+//			}
+//		});
+		if (doLayout) {
+			table.layout(true, true);
+		}
+	}
+	
+	private static void setPixelData(
+		List<ColumnLayoutData> layoutData, 
+		List<ColumnPixelData> pixelDatas, 
+		int clientWidth
+	) {
+		int clientRest = clientWidth - 25;
+		int weightSum = 0;
+		for (int i = 0; i < layoutData.size(); i++) {
+			final ColumnLayoutData columnData = layoutData.get(i);
+			if (columnData instanceof ColumnPixelData) {
+				clientRest -= ((ColumnPixelData) columnData).width;
+				pixelDatas.get(i).width = ((ColumnPixelData) columnData).width;
+			} else {
+				weightSum += ((ColumnWeightData) columnData).weight;
+			}
+		}
+		for (int i = 0; i < layoutData.size(); i++) {
+			final ColumnLayoutData columnData = layoutData.get(i);
+			final ColumnPixelData pixelData = pixelDatas.get(i);
+			if (columnData instanceof ColumnWeightData) {
+				pixelData.width = clientRest * ((ColumnWeightData) columnData).weight / weightSum;
+				System.err.println("Setting pixeldata to " + pixelData.width);
+			}
+		}
+	}	
 }

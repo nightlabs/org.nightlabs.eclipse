@@ -26,6 +26,12 @@
 
 package org.nightlabs.base.ui.layout;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.jface.viewers.ColumnLayoutData;
+import org.eclipse.jface.viewers.ColumnPixelData;
+import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -118,6 +124,7 @@ extends TableLayout
 		return weights[columnIndex];
 	}
 
+	
 //	private boolean firstTime = true;	
 	@Override
 	public void layout(Composite c, boolean flush) 
@@ -171,6 +178,18 @@ extends TableLayout
 		}
 		
 //		firstTime = false;
+	}
+	
+	public List<ColumnLayoutData> translateToColumnLayoutData() {
+		List<ColumnLayoutData> layoutDatas = new ArrayList<ColumnLayoutData>();
+		int colCount = Math.max(fixedWidths.length, weights.length);
+		for (int i = 0; i < colCount; i++) {
+			if (isFixedWidth(i))
+				layoutDatas.add(new ColumnPixelData(getFixedWidth(i)));
+			else
+				layoutDatas.add(new ColumnWeightData(getWeight(i)));
+		}
+		return layoutDatas;
 	}
 }
 
