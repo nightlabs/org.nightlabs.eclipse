@@ -27,6 +27,7 @@
 package org.nightlabs.base.ui.celleditor;
 
 import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -55,7 +56,7 @@ implements IReadOnlyCellEditor
 	public XTextCellEditor(Composite parent, int style) {
 		super(parent, style);
 	}
-	
+
 	/**
 	 * @param parent
 	 * @param style
@@ -63,33 +64,43 @@ implements IReadOnlyCellEditor
 	 */
 	public XTextCellEditor(Composite parent, int style, boolean readOnly) 
 	{
-		super(parent, style);
-		setReadOnly(readOnly);
+		super(parent, getCellEditorStyle(style, readOnly));
+		this.readOnly = readOnly;
 	}
 	
-  /**
-   * The <code>TextCellEditor</code> implementation of
-   * this <code>CellEditor</code> framework method accepts
-   * a text string (type <code>String</code>).
-   *
-   * @param value a text string (type <code>String</code>)
-   */
-  @Override
+	private static int getCellEditorStyle(int style, boolean readOnly) {
+		if (readOnly)
+			return style | SWT.READ_ONLY;
+		return style;
+	}
+
+	/**
+	 * The <code>TextCellEditor</code> implementation of
+	 * this <code>CellEditor</code> framework method accepts
+	 * a text string (type <code>String</code>).
+	 *
+	 * @param value a text string (type <code>String</code>)
+	 */
+	@Override
 	protected void doSetValue(Object value) 
-  {
-  	if (isReadOnly())
-  		return;
-  	else
-  		super.doSetValue(value);
-  }	
-  
+	{
+		super.doSetValue(value);
+	}
+
 	protected boolean readOnly = false;
 	public boolean isReadOnly() {
 		return readOnly;
 	}
+	
 	public void setReadOnly(boolean readOnly) 
 	{
-		this.readOnly = readOnly;
-		getControl().setEnabled(!readOnly);
+		if (this.readOnly != readOnly) {
+			this.readOnly = readOnly;
+			// its unsafe to dispose the control as it might be referenced by someone
+			// we simply don't do anything here.
+//			Composite parent = getControl().getParent();
+//			getControl().dispose();
+//			createControl(parent);
+		}
 	}  
 }
