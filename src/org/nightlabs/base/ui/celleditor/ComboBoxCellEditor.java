@@ -34,86 +34,96 @@ import org.eclipse.swt.widgets.Composite;
 public class ComboBoxCellEditor 
 extends AbstractComboBoxCellEditor 
 {
-  /**
-   * The list of items to present in the combo box.
-   */
-  private String[] items;
+	/**
+	 * The list of items to present in the combo box.
+	 */
+	private String[] items;
 
-  /**
-   * the list of images to present in the combo box.
-   */
-  private Image[] images;
-  
-  /**
-   * the SWT style parameter for all contained Composites 
-   */
-  private static final int style = SWT.NONE;
-  
-  public ComboBoxCellEditor(Composite parent, String[] items) 
-  {
-    this(parent, items, null, style);
-  }
+	/**
+	 * the list of images to present in the combo box.
+	 */
+	private Image[] images;
 
-  public ComboBoxCellEditor(Composite parent, String[] items, int style) 
-  {
-    this(parent, items, null, style);
-  }
-  
-  public ComboBoxCellEditor(Composite parent, String[] items, Image[] images) 
-  {
-    this(parent, items, images, style);
-  }
-  
-  public ComboBoxCellEditor(Composite parent, String[] items, Image[] images, int style) 
-  {
-    super(parent, style);
-    if (items == null)
-    	throw new IllegalArgumentException("Param items must not be null!"); //$NON-NLS-1$
-    
-    this.items = items;
-    this.images = images;
-    populateComboBoxItems();
-  }
+	/**
+	 * the SWT style parameter for all contained Composites 
+	 */
+	private static final int style = SWT.NONE;
 
-  /**
-   * Returns the list of choices for the combo box
-   *
-   * @return the list of choices for the combo box
-   */
-  @Override
+	public ComboBoxCellEditor(Composite parent, String[] items) 
+	{
+		this(parent, items, null, style);
+	}
+
+	public ComboBoxCellEditor(Composite parent, String[] items, int style) 
+	{
+		this(parent, items, null, style);
+	}
+
+	public ComboBoxCellEditor(Composite parent, String[] items, Image[] images) 
+	{
+		this(parent, items, images, style);
+	}
+
+	public ComboBoxCellEditor(Composite parent, String[] items, Image[] images, int style) 
+	{
+		super(parent, style);
+		if (items == null)
+			throw new IllegalArgumentException("Param items must not be null!"); //$NON-NLS-1$
+
+		this.items = items;
+		this.images = images;
+		populateComboBoxItems();
+	}
+
+	/**
+	 * Returns the list of choices for the combo box
+	 *
+	 * @return the list of choices for the combo box
+	 */
+	@Override
 	public String[] getItems() {
-    return this.items;
-  }
+		return this.items;
+	}
 
-  /**
-   * Updates the list of choices for the combo box for the current control.
-   */
-  @Override
+	public void setItems(String[] items) {
+		setItems(items, null);
+	}
+	
+	public void setItems(String[] items, Image[] images) {
+		this.items = items;
+		this.images = images;
+		populateComboBoxItems();
+	}
+	
+	/**
+	 * Updates the list of choices for the combo box for the current control.
+	 */
+	@Override
 	protected void populateComboBoxItems() 
-  {
-    if (getComboBox() != null && items != null) {
-    	getComboBox().removeAll();
-      for (int i = 0; i < items.length; i++) {
-      	if (images != null && images.length >= i) {
-        	getComboBox().add(images[i], items[i], i);      	      		
-      	} else {
-      		getComboBox().add(null, items[i], i);      	      		      		
-      	}
-      }
-      setValueValid(true);
-    }
-  }
-  
-  /**
-   * The <code>ComboBoxCellEditor</code> implementation of
-   * this <code>CellEditor</code> framework method returns
-   * the String of the Selection
-   *
-   * @return the String of the Selection
-   */
-  @Override
+	{
+		if (getComboBox() != null && items != null) {
+			getComboBox().removeAll();
+			for (int i = 0; i < items.length; i++) {
+				if (images != null && images.length >= i) {
+					getComboBox().add(images[i], items[i], i);      	      		
+				} else {
+					getComboBox().add(null, items[i], i);      	      		      		
+				}
+			}
+			setValueValid(true);
+		}
+	}
+
+	/**
+	 * The <code>ComboBoxCellEditor</code> implementation of
+	 * this <code>CellEditor</code> framework method returns
+	 * the String of the Selection
+	 *
+	 * @return the String of the Selection
+	 */
+	@Override
 	protected Object getReturnValue() {
 		return items[getComboBox().getSelectionIndex()];
-  }
-    
+	}
+
 }
