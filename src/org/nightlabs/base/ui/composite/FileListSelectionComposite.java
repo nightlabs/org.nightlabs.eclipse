@@ -125,7 +125,9 @@ extends XComposite {
 							try {
 								FileDialog fileDialog = new FileDialog(RCPUtil.getActiveWorkbenchShell(), SWT.SAVE);
 								String selectedFile = fileDialog.open();
-								setFile(is, selectedFile);
+								if (selectedFile != null) {
+									setFile(is, selectedFile);
+								}
 							} catch (Exception ex) {
 								throw new RuntimeException(ex);
 							}
