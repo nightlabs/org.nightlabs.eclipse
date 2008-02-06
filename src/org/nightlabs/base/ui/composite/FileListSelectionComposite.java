@@ -111,31 +111,31 @@ extends XComposite {
 				}
 			});
 		}
-		else {
-			Button download = new Button(buttonComposite, SWT.PUSH);
-			download.setText("Download");
-			download.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			download.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e)
-				{
-					if (fileListWidget.getSelectionIndex() != -1) {
-						InputStream is = fileInputStreamMap.get(fileListWidget.getItem(fileListWidget.getSelectionIndex()));
-						if (is != null) {
-							try {
-								FileDialog fileDialog = new FileDialog(RCPUtil.getActiveWorkbenchShell(), SWT.SAVE);
-								String selectedFile = fileDialog.open();
-								if (selectedFile != null) {
-									setFile(is, selectedFile);
-								}
-							} catch (Exception ex) {
-								throw new RuntimeException(ex);
-							}
-						}
-					}
-				}
-			});
-		}
+//		else {
+//			Button download = new Button(buttonComposite, SWT.PUSH);
+//			download.setText("Download");
+//			download.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+//			download.addSelectionListener(new SelectionAdapter() {
+//				@Override
+//				public void widgetSelected(SelectionEvent e)
+//				{
+//					if (fileListWidget.getSelectionIndex() != -1) {
+//						InputStream is = fileInputStreamMap.get(fileListWidget.getItem(fileListWidget.getSelectionIndex()));
+//						if (is != null) {
+//							try {
+//								FileDialog fileDialog = new FileDialog(RCPUtil.getActiveWorkbenchShell(), SWT.SAVE);
+//								String selectedFile = fileDialog.open();
+//								if (selectedFile != null) {
+//									setFile(is, selectedFile);
+//								}
+//							} catch (Exception ex) {
+//								throw new RuntimeException(ex);
+//							}
+//						}
+//					}
+//				}
+//			});
+//		}
 		
 		buttonComposite.setLayoutData(new GridData());
 
@@ -190,7 +190,7 @@ extends XComposite {
 		return fileInputStreamMap;
 	}
 	
-    public void setFile(InputStream io, String fileName) throws IOException {
+    public void saveFile(InputStream io, String fileName) throws IOException {
         FileOutputStream fos = new FileOutputStream(fileName);
         byte[] buf = new byte[256];
         int read = 0;
