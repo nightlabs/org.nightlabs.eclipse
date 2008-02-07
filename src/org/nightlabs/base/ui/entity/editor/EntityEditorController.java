@@ -216,7 +216,7 @@ public class EntityEditorController
 					IEntityEditorPageController pageController = pageID2pageController.get(page.getId());
 					if (pageController != null) {
 						logger.debug("pageControler.markDirty() for page "+page.getId()); //$NON-NLS-1$
-						pageController.markDirty();
+//						pageController.markDirty();
 					}		
 //					}
 				}				

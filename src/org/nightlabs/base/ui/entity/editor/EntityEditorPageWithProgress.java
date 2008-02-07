@@ -36,6 +36,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.ui.forms.IFormPart;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
@@ -45,6 +46,8 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.nightlabs.base.ui.composite.Fadeable;
 import org.nightlabs.base.ui.composite.FadeableComposite;
 import org.nightlabs.base.ui.composite.XComposite;
+import org.nightlabs.base.ui.editor.IFormPartDirtyStateProxy;
+import org.nightlabs.base.ui.editor.IFormPartDirtyStateProxyListener;
 import org.nightlabs.base.ui.progress.CompoundProgressMonitor;
 import org.nightlabs.base.ui.progress.SaveProgressMonitorPart;
 import org.nightlabs.base.ui.resource.Messages;
@@ -110,6 +113,21 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 	 * The stack layout to switch views.
 	 */
 	private StackLayout stackLayout;
+	
+	private IFormPartDirtyStateProxyListener dirtyStateProxyListener = new IFormPartDirtyStateProxyListener() {
+		@Override
+		public void markDiry(IFormPart formPart) {
+			getPageController().markDirty();
+		}
+		@Override
+		public void markUndirty(IFormPart formPart) {
+			// Don't call markUndirty here as this would mark the complete Controller undirty and
+			// this might not be true as only some aspect was set dirty.
+			// Later we could manage the dirty-state in the controller per part also than
+			// we can delegate the markUndirty to the controller as well.
+//			getPageController().markUndirty();
+		}
+	};
 	
 	/**
 	 * Create a new editor page with progress.
@@ -353,6 +371,18 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 	protected void configureInitialStack() {
 		stackLayout.topControl = progressWrapper;
 	}
+	
+	protected void registerToDirtyStateProxies() {
+		if (getManagedForm() != null) {
+			// check for dirty state proxies and register
+			IFormPart[] parts = getManagedForm().getParts();
+			for (IFormPart formPart : parts) {
+				if (formPart instanceof IFormPartDirtyStateProxy) {
+					((IFormPartDirtyStateProxy) formPart).addFormPartDirtyStateProxyListener(dirtyStateProxyListener);
+				}
+			}
+		}
+	}
 
 	/**
 	 * Creates stack layout, progress-stack-item and the page's content
@@ -385,6 +415,7 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 		asyncLoadJob.schedule();		
 		
 		addSections(pageWrapper.getBody());
+		registerToDirtyStateProxies();
 		configureInitialStack();
 		
 		// TODO: WORKAROUND: FIXME: XXX: This is a workaround for wrong size calculation within a form

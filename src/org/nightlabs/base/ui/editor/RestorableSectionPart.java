@@ -23,6 +23,7 @@
  ******************************************************************************/
 package org.nightlabs.base.ui.editor;
 
+import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.FormColors;
@@ -41,7 +42,7 @@ import org.nightlabs.base.ui.notification.IDirtyStateManager;
  */
 public class RestorableSectionPart 
 extends SectionPart
-implements IDirtyStateManager
+implements IDirtyStateManager, IFormPartDirtyStateProxy
 {
 	/**
 	 * Create an instance of this section part and add
@@ -62,7 +63,7 @@ implements IDirtyStateManager
 	 * @param section The section this part is for
 	 * @param managedForm The managed form where this
 	 * 		section part should be added or <code>null</code>
-	 * 		if the section part sould not be added to
+	 * 		if the section part should not be added to
 	 * 		a managed form. 
 	 */
 	public RestorableSectionPart(Section section, IManagedForm managedForm)
@@ -82,11 +83,11 @@ implements IDirtyStateManager
 	@Override
 	public void markDirty() {
 		// fires dirtyStateChangedEvent of the editor
+		notifyDirtyStateListeners(true);		
 		super.markDirty();
-		
-		// if the editor was dirty before the first call it is now undirty -> need to fire it again
-		if (getManagedForm().isDirty())
-			getManagedForm().dirtyStateChanged();
+//		// if the editor was dirty before the first call it is now undirty -> need to fire it again
+//		if (getManagedForm().isDirty())
+//			getManagedForm().dirtyStateChanged();
 	}
 	
 	/**
@@ -96,13 +97,14 @@ implements IDirtyStateManager
 	 */
 	public void markUndirty()
 	{
+		notifyDirtyStateListeners(false);
 		// set dirty = false
 		super.commit(false);
-		
-		// needs to check if global state was dirty, otherwise this would change the state to dirty, 
-		// which contradicts the method name and declaration! (marius)
-		if (getManagedForm().isDirty())
-			getManagedForm().dirtyStateChanged();
+//		
+//		// needs to check if global state was dirty, otherwise this would change the state to dirty, 
+//		// which contradicts the method name and declaration! (marius)
+//		if (getManagedForm().isDirty())
+//			getManagedForm().dirtyStateChanged();
 	}
 	
 //	/**
@@ -145,5 +147,32 @@ implements IDirtyStateManager
 		}
 		getSection().setBackgroundMode(SWT.INHERIT_FORCE);
 	}
+
+	private ListenerList dirtyStateListeners = new ListenerList();
+	
+	@Override
+	public void addFormPartDirtyStateProxyListener(
+			IFormPartDirtyStateProxyListener listener) {
+		dirtyStateListeners.add(listener);
+	}
+
+	@Override
+	public void removeFormPartDirtyStateProxyListener(
+			IFormPartDirtyStateProxyListener listener) {
+		dirtyStateListeners.add(listener);
+	}
+	
+	protected void notifyDirtyStateListeners(boolean dirty) {
+		Object[] listeners = dirtyStateListeners.getListeners();
+		for (Object listener : listeners) {
+			if (listener instanceof IFormPartDirtyStateProxyListener) {
+				if (dirty)
+					((IFormPartDirtyStateProxyListener) listener).markDiry(this);
+				else
+					((IFormPartDirtyStateProxyListener) listener).markUndirty(this);
+			}
+		}
+	}
+	
 	
 }

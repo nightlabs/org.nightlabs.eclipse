@@ -161,9 +161,10 @@ public class EntityEditor extends CommitableFormEditor
 	@Override
 	public boolean isDirty() {
 		boolean controllerDirty = controller != null ? controller.hasDirtyPageControllers() : false;
-		if (controllerDirty)
-			return true;
-		return super.isDirty();
+		return controllerDirty;
+//		if (controllerDirty)
+//			return true;
+//		return super.isDirty();
 	}
 	
 	/**

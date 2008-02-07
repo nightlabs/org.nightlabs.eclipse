@@ -42,6 +42,8 @@ public class JDOObjectEditorInput<ID extends ObjectID> implements IEditorInput
 	 */
 	ID jdoObjectID;
 	
+	long secondaryId;
+	
 	String name;
 	
 	String toolTipText;
@@ -53,9 +55,23 @@ public class JDOObjectEditorInput<ID extends ObjectID> implements IEditorInput
 	 */
 	public JDOObjectEditorInput(ID jdoObjectID)
 	{
+		this(jdoObjectID, false);
+	}
+	
+	/**
+	 * Create an instance of this editor input for a
+	 * JDO Object ID.
+	 * @param jdoObjectID The JDO Object ID
+	 */
+	public JDOObjectEditorInput(ID jdoObjectID, boolean createUniqueInput)
+	{
 		assert jdoObjectID != null;		
 		this.jdoObjectID = jdoObjectID;
-	}
+		if (createUniqueInput)
+			secondaryId = System.currentTimeMillis();
+		else
+			secondaryId = 0L;
+	}	
 	
 	/**
 	 * Get the JDO Object ID
@@ -143,6 +159,7 @@ public class JDOObjectEditorInput<ID extends ObjectID> implements IEditorInput
 		return 
 				other != null && 
 				other instanceof JDOObjectEditorInput && 
-				((JDOObjectEditorInput)other).jdoObjectID.equals(this.jdoObjectID);
+				((JDOObjectEditorInput)other).jdoObjectID.equals(this.jdoObjectID) &&
+				((JDOObjectEditorInput)other).secondaryId == this.secondaryId;
 	}
 }

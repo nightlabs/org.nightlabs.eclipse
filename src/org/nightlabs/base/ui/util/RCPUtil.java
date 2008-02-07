@@ -800,7 +800,6 @@ public class RCPUtil
 			tableLayout.addColumnData(pData);
 		}
 		final int clientWidth = table.getClientArea().width;
-		System.err.println("Client area: " + clientWidth);
 		setPixelData(layoutData, pixelData, clientWidth);
 //		table.addControlListener(new ControlAdapter() {
 //			public void controlResized(final ControlEvent e) {
@@ -842,7 +841,6 @@ public class RCPUtil
 			final ColumnPixelData pixelData = pixelDatas.get(i);
 			if (columnData instanceof ColumnWeightData) {
 				pixelData.width = clientRest * ((ColumnWeightData) columnData).weight / weightSum;
-				System.err.println("Setting pixeldata to " + pixelData.width);
 			}
 		}
 	}	

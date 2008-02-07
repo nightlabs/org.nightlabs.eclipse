@@ -185,7 +185,7 @@ implements IEntityEditorPageController
 	private boolean dirty = false;
 
 	private EntityEditor entityEditor;
-
+	
 	/**
 	 * Create a new page controller that
 	 * will not do background loading. 
@@ -312,6 +312,7 @@ implements IEntityEditorPageController
 	protected void reload(IProgressMonitor monitor) {
 		loaded = false;
 		load(monitor);
+		markUndirty();
 	}
 	
 	/**
@@ -370,9 +371,9 @@ implements IEntityEditorPageController
 	}
 	
 	/**
-	 * determines if the controller is dirty, 
+	 * Determines if the controller is dirty, 
 	 * once the page or one of the pages were dirty the controller
-	 * stys sirty even if the page has been cleaned 
+	 * stays dirty even if the page has been cleaned. 
 	 * (e.g. by a calling of commit of an included section)
 	 */
 	public boolean isDirty() {
