@@ -166,7 +166,7 @@ extends ActionBarAdvisor
 	protected void initRecentFileConfig() 
 	{
 		try {
-			fileHistory = (RecentFileCfMod) Config.sharedInstance().createConfigModule(RecentFileCfMod.class);
+			fileHistory = Config.sharedInstance().createConfigModule(RecentFileCfMod.class);
 		} catch (ConfigException e) {
 			throw new RuntimeException(e);
 		}				

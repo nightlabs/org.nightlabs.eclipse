@@ -105,7 +105,7 @@ implements ILanguageManager
 	{
 		super();
 		try {
-			langCfMod = (LanguageCfMod) Config.sharedInstance().createConfigModule(LanguageCfMod.class);
+			langCfMod = Config.sharedInstance().createConfigModule(LanguageCfMod.class);
 			for (Iterator it = langCfMod.getLanguages().iterator(); it.hasNext(); ) {
 				LanguageCf langCf = (LanguageCf) it.next();
 				languageID2LanguageCf.put(langCf.getLanguageID(), langCf);

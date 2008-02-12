@@ -69,7 +69,7 @@ extends InputDialog
 
 	protected DialogCfMod getDialogCfMod()
 	{
-		return (DialogCfMod) Config.sharedInstance().createConfigModule(DialogCfMod.class);
+		return Config.sharedInstance().createConfigModule(DialogCfMod.class);
 	}
 
 	protected String getDialogIdentifier()

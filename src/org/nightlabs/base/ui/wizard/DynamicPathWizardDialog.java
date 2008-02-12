@@ -206,7 +206,7 @@ public class DynamicPathWizardDialog extends WizardDialog
 
 	private static DialogCfMod getDialogCfMod()
 	{
-		return (DialogCfMod) Config.sharedInstance().createConfigModule(DialogCfMod.class);
+		return Config.sharedInstance().createConfigModule(DialogCfMod.class);
 	}
 
 	private static String getWizardIdentifier(IWizard wizard)

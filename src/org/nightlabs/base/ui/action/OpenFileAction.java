@@ -81,7 +81,7 @@ extends Action
 		setToolTipText(Messages.getString("org.nightlabs.base.ui.action.OpenFileAction.toolTipText")); //$NON-NLS-1$
 
 		try {
-			historyConfig = (RecentFileCfMod) Config.sharedInstance().createConfigModule(RecentFileCfMod.class);
+			historyConfig = Config.sharedInstance().createConfigModule(RecentFileCfMod.class);
 		} catch (ConfigException e) {
 			throw new RuntimeException(e);
 		}

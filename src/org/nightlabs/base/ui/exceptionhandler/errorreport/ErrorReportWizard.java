@@ -75,7 +75,7 @@ public class ErrorReportWizard extends DynamicPathWizard
 			Config configuration = Config.sharedInstance(); 
 
 //			create new ConfigModule or obtain the one read from xml files
-			ErrorReportSenderCfMod cfMod  = (ErrorReportSenderCfMod) configuration.createConfigModule(ErrorReportSenderCfMod.class);  			
+			ErrorReportSenderCfMod cfMod  = configuration.createConfigModule(ErrorReportSenderCfMod.class);  			
 
 			Class clazz;
 			try {

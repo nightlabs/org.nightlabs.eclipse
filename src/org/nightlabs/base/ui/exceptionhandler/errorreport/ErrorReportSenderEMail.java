@@ -55,7 +55,7 @@ public class ErrorReportSenderEMail implements ErrorReportSender
 	public void sendErrorReport(ErrorReport errorReport)
 	{
 		try {
-			ErrorReportEMailCfMod cfMod = (ErrorReportEMailCfMod) Config.sharedInstance().createConfigModule(ErrorReportEMailCfMod.class);		
+			ErrorReportEMailCfMod cfMod = Config.sharedInstance().createConfigModule(ErrorReportEMailCfMod.class);		
 			Properties props = new Properties();
 			props.put("mail.host", cfMod.getSmtpHost()); //$NON-NLS-1$
 			props.put("mail.smtp.localhost", cfMod.getSmtpLocalhost()); //$NON-NLS-1$
