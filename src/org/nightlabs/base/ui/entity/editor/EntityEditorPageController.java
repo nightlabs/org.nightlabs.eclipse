@@ -142,10 +142,15 @@ implements IEntityEditorPageController
 	 * Therefore, all instances have different IDs.
 	 * </p>
 	 */
-	@Implement
+	@Override
 	public String getControllerID()
 	{
 		return this.getClass().getName() + '@' + System.identityHashCode(this);
+	}
+	
+	@Override
+	public String getName() {
+		return this.getClass().getSimpleName();
 	}
 	
 //	/**
@@ -305,22 +310,22 @@ implements IEntityEditorPageController
 		}
 	};
 	
-	/**
-	 * Resets the loaded flag and calls {@link #load(IProgressMonitor)}.
-	 * @param monitor The monitor to report progress to.
-	 */
-	protected void reload(IProgressMonitor monitor) {
-		loaded = false;
-		load(monitor);
-		markUndirty();
-	}
+//	/**
+//	 * Resets the loaded flag and calls {@link #load(IProgressMonitor)}.
+//	 * @param monitor The monitor to report progress to.
+//	 */
+//	public void reload(IProgressMonitor monitor) {
+//		loaded = false;
+//		load(monitor);
+//		markUndirty();
+//	}
 	
 	/**
 	 * <p>Ensures that this controller's {@link IEntityEditorPageController#doLoad(IProgressMonitor)}
 	 * method has fully run and thus the controller is ready for use.</p> 
 	 * 
-	 * <p>If {@link #isLoaded()} returns true this method immeditiately returns.
-	 * If not, it will first check, if the data already began to load in the 
+	 * <p>
+	 * This method will first check, if the data already began to load in the 
 	 * background. If so, it will 'join' the loading job and wait until its finished.</p>
 	 * 
 	 * <p>If the background job was not created or started yet, the data will
@@ -330,8 +335,6 @@ implements IEntityEditorPageController
 	 */
 	public synchronized void load(IProgressMonitor monitor)
 	{
-		if (isLoaded())
-			return;
 		try {
 			if (loadJob != null) {
 				editorController.popLoadJob(this);

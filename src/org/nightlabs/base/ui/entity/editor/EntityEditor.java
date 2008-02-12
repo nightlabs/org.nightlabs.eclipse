@@ -29,7 +29,6 @@ package org.nightlabs.base.ui.entity.editor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -47,7 +46,6 @@ import org.nightlabs.base.ui.job.FadeableCompositeJob;
 import org.nightlabs.base.ui.job.Job;
 import org.nightlabs.base.ui.progress.RCPProgressMonitor;
 import org.nightlabs.base.ui.resource.Messages;
-import org.nightlabs.notification.NotificationListener;
 import org.nightlabs.progress.ProgressMonitor;
 
 /**
@@ -80,6 +78,12 @@ public class EntityEditor extends CommitableFormEditor
 	 * 
 	 */
 	private EntityEditorController controller;
+	
+	/**
+	 * A handler that can show a dialog when
+	 * the editor is stale. 
+	 */
+	private EntityEditorStaleHandler staleHandler;
 	
 	public EntityEditor()
 	{	}
@@ -135,6 +139,7 @@ public class EntityEditor extends CommitableFormEditor
 	public void init(IEditorSite arg0, IEditorInput arg1) throws PartInitException {
 		super.init(arg0, arg1);
 		controller = new EntityEditorController(this);
+		staleHandler = new EntityEditorStaleHandler(this);
 	}
 
 	private IRunnableWithProgress saveRunnable = new IRunnableWithProgress() {
@@ -235,46 +240,17 @@ public class EntityEditor extends CommitableFormEditor
 	public EntityEditorController getController() {
 		return controller;
 	}
-	
-//	/**
-//	 * Convenience method to obtain the page controller for the given page.
-//	 * 
-//	 * Note that page controllers should not be accessed from their associated
-//	 * pages in their constructor, as the controller registration
-//	 * will be initialized immediately after the page was created. 
-//	 * 
-//	 * @param page The page to search the page controller for.
-//	 * @return The page controller for the given page, or <code>null</code> if none found
-//	 */
-//	public IEntityEditorPageController getPageController(IFormPage page) {
-//		return getController().getPageController(page);
-//	}
-//
-//	/**
-//	 * Returns a collection of all pageControllers associated with this'
-//	 * editor {@link EntityEditorController}.
-//	 * 
-//	 * @return All page controllers.
-//	 */
-//	public Collection<IEntityEditorPageController> getPageControllers() {
-//		return getController().getPageControllers();
-//	}
-//
-//	/**
-//	 * returns the associated instance of the given IEntityEditorPageController class or null if not contained
-//	 * 
-//	 * @param clazz the IEntityEditorPageController class you want to get the associated instance for
-//	 * @return the associated instance of the given IEntityEditorPageController class or null if not contained
-//	 */
-//	public IEntityEditorPageController getPageController(Class clazz)
-//	{
-//		for (Map.Entry<String, IEntityEditorPageController> entry : getController().getPageID2pageController().entrySet()) {
-//			if (entry.getValue().getClass().equals(clazz)) {
-//				return entry.getValue();
-//			}
-//		}
-//		return null;
-//	}
+
+	/**
+	 * Get the stale handler for this editor. 
+	 * You can register {@link IEntityEditorPageStaleHandler}s with this
+	 * handler that will be executed after being presented
+	 * to the user.
+	 * @return The stale handler for this editor.
+	 */
+	public EntityEditorStaleHandler getStaleHandler() {
+		return staleHandler;
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -307,9 +283,12 @@ public class EntityEditor extends CommitableFormEditor
 		return pages;
 	}
 	
-	private Set<NotificationListener> globalNotificationListeners;
+//	private Set<NotificationListener> globalNotificationListeners;
 //	FIXME: Mit Alex über eine Möglichkeit der editorweiten Registrierung von NotificationListenern.
 //		Wie wird das bisher gemacht? Sollen wir hier im Editor eine Möglichkeit schaffen sowas zu machen?
 //		Wie kann die aussehen?
+//	Alex: Notification jetzt über den ActiveEntityEditorPageController in Zusammenarbeit mit dem 
+//	StaleHandler gelöst, ich denke das ist ok. Oder waren die NotificationListener noch für etwas
+//	anderes sein als die Reaktion auf remote Veränderungen des Objekts?
 	
 }

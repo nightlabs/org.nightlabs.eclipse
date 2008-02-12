@@ -63,11 +63,11 @@ implements ISelectionProvider
 	/**
 	 * Default set of styles to use when constructing a single-selection viewer. 
 	 */
-	public static int DEFAULT_STYLE_SINGLE = SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL;
+	public static int DEFAULT_STYLE_SINGLE = SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION;
 	/**
 	 * Default set of styles to use when constructing a multi-selection viewer. 
 	 */
-	public static int DEFAULT_STYLE_MULTI = SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL;
+	public static int DEFAULT_STYLE_MULTI = SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL  | SWT.FULL_SELECTION;
 	
 	/**
 	 * Convenience parameter with 

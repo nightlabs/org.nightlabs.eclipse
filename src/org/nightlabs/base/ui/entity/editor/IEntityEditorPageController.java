@@ -77,7 +77,13 @@ extends IDirtyStateManager
 	 *
 	 * @return the identifier of this controller.
 	 */
-	public String getControllerID();
+	String getControllerID();
+	
+	/**
+	 * Return a name for this controller.
+	 * @return A name for this controller.
+	 */
+	String getName();
 	
 	/**
 	 * Adds a page to this controller which is associated with it.
@@ -85,12 +91,12 @@ extends IDirtyStateManager
 	 * @param page the page this controller is associated with. 
 	 * @see #getPages()
 	 */
-	public void addPage(IFormPage page);
+	void addPage(IFormPage page);
 	
 	/**
 	 * Returns a Set of all pages for which the controller is responsible 
 	 */
-	public Set<IFormPage> getPages();
+	Set<IFormPage> getPages();
 
 	/**
 	 * Set the {@link EntityEditorController} this page controller is
@@ -99,7 +105,7 @@ extends IDirtyStateManager
 	 * @param editorController the {@link EntityEditorController} this page controller is
 	 * registered to.
 	 */
-	public void setEntityEditorController(EntityEditorController editorController);
+	void setEntityEditorController(EntityEditorController editorController);
 	
 	/**
 	 * Load the data special to the implementation of a page controller
@@ -108,7 +114,9 @@ extends IDirtyStateManager
 	 * so its better to extend the abstract Controller than to write job management yourself. 
 	 * @param monitor The monitor to write status to.
 	 */
-	public void doLoad(IProgressMonitor monitor);
+	void doLoad(IProgressMonitor monitor);
+	
+	boolean isLoaded();
 	
 	/**
 	 * Save the data special to the implementation of a page controller
@@ -117,17 +125,17 @@ extends IDirtyStateManager
 	 * asynchronous callback job.
 	 * @param monitor The monitor to write status to.
 	 */
-	public void doSave(IProgressMonitor monitor);
+	void doSave(IProgressMonitor monitor);
 	
 	/**
 	 * Performs cleanups when the editor is closed.
 	 */
-	public void dispose();
+	void dispose();
 	
 	/**
 	 * Called when the editor of this controller gets the focus.
 	 */
-	public void editorFocussed();
+	void editorFocussed();
 	
 	
 	/**
@@ -135,12 +143,12 @@ extends IDirtyStateManager
 	 *  
 	 * @param listener The listener to be added.
 	 */
-	public void addModifyListener(IEntityEditorPageControllerModifyListener listener);
+	void addModifyListener(IEntityEditorPageControllerModifyListener listener);
 	
 	/**
 	 * Remove the given {@link IEntityEditorPageControllerModifyListener} from this controller.
 	 * 
 	 * @param listener The listener to remove.
 	 */
-	public void removeModifyListener(IEntityEditorPageControllerModifyListener listener); 	
+	void removeModifyListener(IEntityEditorPageControllerModifyListener listener); 	
 }
