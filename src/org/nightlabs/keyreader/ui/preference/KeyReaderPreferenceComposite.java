@@ -314,7 +314,7 @@ extends XComposite
 
 	public void load()
 	{
-		keyReaderConfigModule = (KeyReaderConfigModule) Config.sharedInstance().createConfigModule(KeyReaderConfigModule.class);
+		keyReaderConfigModule = Config.sharedInstance().createConfigModule(KeyReaderConfigModule.class);
 
 		for (KeyReaderImplementation keyReaderImplementation : KeyReaderImplementationRegistry.sharedInstance().getKeyReaderImplementations())
 			className2KeyReaderImplementation.put(keyReaderImplementation.getKeyReaderClassName(), keyReaderImplementation);
