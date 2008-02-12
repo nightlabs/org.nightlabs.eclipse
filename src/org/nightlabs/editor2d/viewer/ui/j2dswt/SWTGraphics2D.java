@@ -38,6 +38,7 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
+import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
@@ -1236,7 +1237,7 @@ public class SWTGraphics2D extends Graphics2D {
 			updateTransform();
 			coords = null;
 		} else {
-			GeneralPath p = new GeneralPath(GeneralPath.WIND_EVEN_ODD, nPoints);
+			GeneralPath p = new GeneralPath(Path2D.WIND_EVEN_ODD, nPoints);
 			p.moveTo(xPoints[0], yPoints[0]);
 			for (int i = 1; i < nPoints; i++) {
 				p.lineTo(xPoints[i], yPoints[i]);

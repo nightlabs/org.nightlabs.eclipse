@@ -61,6 +61,10 @@ import org.nightlabs.editor2d.viewer.ui.IViewport;
 public class PreviewPanel 
 extends JPanel
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static final Logger logger = Logger.getLogger(PreviewPanel.class);
 	
 	/**
