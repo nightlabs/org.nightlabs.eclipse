@@ -34,6 +34,10 @@ public class QuickOptionsConfigModule
 extends ConfigModule 
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public QuickOptionsConfigModule() {
 		super();
 	}

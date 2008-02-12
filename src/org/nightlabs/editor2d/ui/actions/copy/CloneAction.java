@@ -84,7 +84,7 @@ extends AbstractEditorSelectionAction
 	protected void initConfigModule() 
 	{
 		try {
-			confMod = (QuickOptionsConfigModule) Config.sharedInstance().createConfigModule(QuickOptionsConfigModule.class);
+			confMod = Config.sharedInstance().createConfigModule(QuickOptionsConfigModule.class);
 		} catch (ConfigException e) {
 			throw new RuntimeException(e);
 		} 

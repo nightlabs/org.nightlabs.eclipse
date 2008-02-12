@@ -144,7 +144,7 @@ extends AbstractEPProcessor
 	private DocumentConfigModule documentConfigModule = null;
 	protected DocumentConfigModule getDocumentConfigModule() {
 		if (documentConfigModule == null)
-			documentConfigModule = (DocumentConfigModule) Config.sharedInstance().createConfigModule(DocumentConfigModule.class);
+			documentConfigModule = Config.sharedInstance().createConfigModule(DocumentConfigModule.class);
 		return documentConfigModule;
 	}
 		

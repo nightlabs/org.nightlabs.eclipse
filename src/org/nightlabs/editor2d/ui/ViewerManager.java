@@ -265,7 +265,7 @@ public class ViewerManager
   protected void initConfigModule() 
   {
   	try {
-    	prefConfMod = (PreferencesConfigModule) Config.sharedInstance().createConfigModule(PreferencesConfigModule.class);  		
+    	prefConfMod = Config.sharedInstance().createConfigModule(PreferencesConfigModule.class);  		
   	} catch (ConfigException ce) {
   		throw new RuntimeException(ce);
   	}

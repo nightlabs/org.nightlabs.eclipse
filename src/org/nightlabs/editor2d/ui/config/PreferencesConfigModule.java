@@ -34,6 +34,10 @@ public class PreferencesConfigModule
 extends ConfigModule 
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public PreferencesConfigModule() {
 		super();
 	}
