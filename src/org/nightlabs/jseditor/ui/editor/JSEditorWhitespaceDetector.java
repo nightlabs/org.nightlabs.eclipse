@@ -25,7 +25,7 @@ public class JSEditorWhitespaceDetector implements IWhitespaceDetector {
 		return isWhitespaceChar(c);
 	}
 	
-	public static boolean isWhitespaceChar(char c) { 
+	public static boolean isWhitespaceChar(char c) {
 		return (c == ' ' || c == '\t' || c == '\n' || c == '\r');
 	}
 }

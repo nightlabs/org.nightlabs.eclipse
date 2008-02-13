@@ -125,11 +125,11 @@ public class JSEditorComposite extends XComposite{
 	public String getDocumentText() {
 		if (document == null)
 			throw new IllegalStateException("The document is null!"); //$NON-NLS-1$
-		return document.get();		
+		return document.get();
 	}
 
 	public IDocument getDocument(){
-		return document; 
+		return document;
 	}
 
 	public SourceViewer getSourceViewer(){

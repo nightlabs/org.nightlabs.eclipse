@@ -45,11 +45,11 @@ public class JSEditorConstants {
 	public static final Map<String, String> CONTENT_TYPE_STARTER_TO_CONTENT_TYPES = new HashMap<String, String>();
 
 	public final static String[] JS_KEYWORDS=
-	{ "cell", "abstract", "boolean", "break", "byte", "case", "catch", "char", "class", 
-	"continue", "default", "do", "double", "else", "extends", "false", "final", 
-	"finally", "float", "for", "if", "implements", "import", "instanceof", "int", 
-	"interface", "long", "native", "new", "null", "package", "private", "protected", 
-	"public", "return", "short", "static", "super", "switch", "synchronized", "this", 
+	{ "cell", "abstract", "boolean", "break", "byte", "case", "catch", "char", "class",
+	"continue", "default", "do", "double", "else", "extends", "false", "final",
+	"finally", "float", "for", "if", "implements", "import", "instanceof", "int",
+	"interface", "long", "native", "new", "null", "package", "private", "protected",
+	"public", "return", "short", "static", "super", "switch", "synchronized", "this",
 	"throw", "throws", "transient", "true", "try", "void", "volatile", "while" };
 	
 	public final static String[] JS_TYPES = { "void", "boolean", "char", "byte", "short",
@@ -57,5 +57,5 @@ public class JSEditorConstants {
 	
 	public final static String[] JS_CONSTANTS= { "false", "null", "true" }; //$NON-NLS-3$ //$NON-NLS-2$ //$NON-NLS-1$
 	
-	public final static char[] JS_OPERATORS= { '+', '-', '*' , '/'}; 
+	public final static char[] JS_OPERATORS= { '+', '-', '*' , '/'};
 }

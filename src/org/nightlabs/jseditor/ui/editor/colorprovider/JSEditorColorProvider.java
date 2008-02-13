@@ -30,7 +30,7 @@ public class JSEditorColorProvider {
 
 	/**
 	 * Release all of the color resources held onto by the receiver.
-	 */	
+	 */
 	public void dispose() {
 		Iterator e= fColorTable.values().iterator();
 		while (e.hasNext())

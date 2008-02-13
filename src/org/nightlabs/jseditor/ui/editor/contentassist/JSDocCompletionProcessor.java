@@ -31,35 +31,35 @@ package org.nightlabs.jseditor.ui.editor.contentassist;
 //			result[i]= new CompletionProposal(fgProposals[i], documentOffset, 0, fgProposals[i].length());
 //		return result;
 //	}
-//	
+//
 //	/* (non-Javadoc)
 //	 * Method declared on IContentAssistProcessor
 //	 */
 //	public IContextInformation[] computeContextInformation(ITextViewer viewer, int documentOffset) {
 //		return null;
 //	}
-//	
+//
 //	/* (non-Javadoc)
 //	 * Method declared on IContentAssistProcessor
 //	 */
 //	public char[] getCompletionProposalAutoActivationCharacters() {
 //		return null;
 //	}
-//	
+//
 //	/* (non-Javadoc)
 //	 * Method declared on IContentAssistProcessor
 //	 */
 //	public char[] getContextInformationAutoActivationCharacters() {
 //		return null;
 //	}
-//	
+//
 //	/* (non-Javadoc)
 //	 * Method declared on IContentAssistProcessor
 //	 */
 //	public IContextInformationValidator getContextInformationValidator() {
 //		return null;
 //	}
-//	
+//
 //	/* (non-Javadoc)
 //	 * Method declared on IContentAssistProcessor
 //	 */

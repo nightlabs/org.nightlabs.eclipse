@@ -100,6 +100,6 @@ public class JSEditorPlugin extends AbstractUIPlugin {
 	  * @return the image descriptor
 	  */
 	 public static ImageDescriptor getImageDescriptor(String path) {
-		 return AbstractUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, path); 
+		 return AbstractUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, path);
 	 }
 }

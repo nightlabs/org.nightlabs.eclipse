@@ -19,7 +19,7 @@ public class JSEditorDocumentProvider extends FileDocumentProvider {
 		IDocument document = super.createDocument(element);
 		if (document != null) {
 			configureDocument(document);
-		}		
+		}
 		return document;
 	}
 	
@@ -29,7 +29,7 @@ public class JSEditorDocumentProvider extends FileDocumentProvider {
 			IDocumentPartitioner partitioner= new FastPartitioner(JSEditorPlugin.getDefault().getJSEditorPartitionScanner(), JSEditorPartitionScanner.JS_PARTITION_TYPES);
 			partitioner.connect(document);
 			document.setDocumentPartitioner(partitioner);
-		}		
+		}
 	}
 	
 }

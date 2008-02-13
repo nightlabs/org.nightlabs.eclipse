@@ -61,12 +61,12 @@ public class JSCompletionProcessor implements IContentAssistProcessor {
 //	public void appandClassContentProposal(Class c){
 //		ArrayList<String> result = new ArrayList<String>();
 //		Method[] methods = c.getMethods();
-//		
+//
 //		for(Method m : methods){
 //			String mSig = m.toGenericString();
 //			result.add(mSig.substring(mSig.indexOf(" ") + 1));
 //		}//for
-//		
+//
 //		this.appandedContentProposals = (String[])result.toArray(new String[0]);
 //	}
 	
