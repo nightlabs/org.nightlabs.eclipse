@@ -1356,7 +1356,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 					load(fileInput);
 				} catch (OutOfMemoryError e) {
 					System.gc();
-					MessageDialog.openError(RCPUtil.getActiveWorkbenchShell(),
+					MessageDialog.openError(RCPUtil.getActiveShell(),
 							"Not enough memory", "The opened File needs more memory than is available");
 				}
 				zoomAll();
