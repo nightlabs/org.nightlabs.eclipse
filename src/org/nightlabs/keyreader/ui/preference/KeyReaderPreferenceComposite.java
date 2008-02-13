@@ -66,7 +66,7 @@ extends XComposite
 		SashForm sashForm = new SashForm(this, SWT.HORIZONTAL);
 		sashForm.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		keyReaderUseCaseList = new ListComposite<KeyReaderUseCase>(sashForm, SWT.SINGLE, (String) null, 
+		keyReaderUseCaseList = new ListComposite<KeyReaderUseCase>(sashForm, SWT.SINGLE, (String) null,
 				keyReaderUseCaseLabelProvider);
 		keyReaderUseCaseList.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event)
