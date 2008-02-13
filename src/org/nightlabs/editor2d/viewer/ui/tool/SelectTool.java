@@ -30,15 +30,15 @@ import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.viewer.ui.event.MouseEvent;
 
 
-public class SelectTool 
-//extends AbstractTool 
+public class SelectTool
+//extends AbstractTool
 extends RectangleTool
 {
 	public static final String ID = SelectTool.class.getName();
 
 	private SelectionInterceptor selectionInterceptor = null;
 
-	public SelectTool() 
+	public SelectTool()
 	{
 		super();
 		setID(ID);
@@ -47,13 +47,13 @@ extends RectangleTool
 		setShowRollOver(true);
 	}
 				
-	@Override	
-	public void mouseReleased(MouseEvent me) 
+	@Override
+	public void mouseReleased(MouseEvent me)
 	{
 		super.mouseReleased(me);
 		int currentX = getRelativeX(currentPoint.x);
 		int currentY = getRelativeY(currentPoint.y);
-		checkDrawComponents(currentX, currentY);				
+		checkDrawComponents(currentX, currentY);
 		leftPressed = false;
 		rightPressed = false;
 	}
@@ -84,9 +84,9 @@ extends RectangleTool
 	}
 	
 	protected void checkDrawComponents(int x, int y)
-	{		
-		DrawComponent dc = getDrawComponent(x, y);				
-		if (dc != null) 
+	{
+		DrawComponent dc = getDrawComponent(x, y);
+		if (dc != null)
 		{
 			if (!selectionInterceptor_canSelect(dc))
 				return;
@@ -97,7 +97,7 @@ extends RectangleTool
 				getViewer().getSelectionManager().addSelectedDrawComponent(dc);
 		}
 		else {
-			getViewer().getSelectionManager().clearSelection(true);			
+			getViewer().getSelectionManager().clearSelection(true);
 		}
 	}
 	

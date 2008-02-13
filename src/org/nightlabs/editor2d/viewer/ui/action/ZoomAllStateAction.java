@@ -10,8 +10,8 @@ import org.nightlabs.editor2d.viewer.ui.resource.Messages;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
-public class ZoomAllStateAction 
-extends ZoomAction 
+public class ZoomAllStateAction
+extends ZoomAction
 {
 	public static final String ID = ZoomAllStateAction.class.getName();
 	
@@ -24,12 +24,12 @@ extends ZoomAction
 	}
 
 	@Override
-	public void init() 
+	public void init()
 	{
 		setId(ID);
 		setText(Messages.getString("org.nightlabs.editor2d.viewer.ui.action.ZoomAllStateAction.text")); //$NON-NLS-1$
 		setToolTipText(Messages.getString("org.nightlabs.editor2d.viewer.ui.action.ZoomAllStateAction.tooltip")); //$NON-NLS-1$
-		setImageDescriptor(SharedImages.getSharedImageDescriptor(ViewerPlugin.getDefault(), ZoomAllAction.class));				
+		setImageDescriptor(SharedImages.getSharedImageDescriptor(ViewerPlugin.getDefault(), ZoomAllAction.class));
 	}
 
 	public void zoomChanged(double zoom) {

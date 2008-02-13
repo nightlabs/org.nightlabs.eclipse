@@ -30,7 +30,7 @@ import org.eclipse.jface.action.IAction;
 import org.nightlabs.editor2d.viewer.ui.IZoomListener;
 import org.nightlabs.editor2d.viewer.ui.IZoomSupport;
 
-public interface IZoomAction 
+public interface IZoomAction
 extends IZoomListener, IAction
 {
 	IZoomSupport getZoomSupport();

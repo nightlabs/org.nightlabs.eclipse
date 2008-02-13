@@ -13,7 +13,7 @@ public interface SelectionInterceptor {
 	 * @param dc The <code>DrawComponent</code> to check.
 	 * @return Returns <code>true</code> if the given <code>dc</code> is selectable and
 	 *		<code>false</code> if it shall be ignored (applies to both, selection and
-	 *		UNselection). 
+	 *		UNselection).
 	 */
 	boolean canSelect(DrawComponent dc);
 }

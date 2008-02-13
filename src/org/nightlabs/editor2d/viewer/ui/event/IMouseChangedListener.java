@@ -28,7 +28,7 @@ package org.nightlabs.editor2d.viewer.ui.event;
 
 import java.awt.Point;
 
-public interface IMouseChangedListener 
+public interface IMouseChangedListener
 {
 	void mouseChanged(Point relative, Point absolute);
 }

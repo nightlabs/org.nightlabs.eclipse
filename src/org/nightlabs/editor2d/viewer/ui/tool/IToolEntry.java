@@ -28,7 +28,7 @@ package org.nightlabs.editor2d.viewer.ui.tool;
 
 import org.eclipse.swt.graphics.Image;
 
-public interface IToolEntry 
+public interface IToolEntry
 {
 	/**
 	 * 
@@ -50,7 +50,7 @@ public interface IToolEntry
 	
 	/**
 	 * 
-	 * @param name the name of the toolEntry 
+	 * @param name the name of the toolEntry
 	 */
 	void setName(String name);
 	
@@ -62,18 +62,18 @@ public interface IToolEntry
 	
 	/**
 	 * 
-	 * @param toolTipText the toolTipText of the toolEntry 
+	 * @param toolTipText the toolTipText of the toolEntry
 	 */
 	void setToolTipText(String toolTipText);
 	
 //	/**
-//	 * 
+//	 *
 //	 * @return the Image of the ToolEntry
 //	 */
 //	BufferedImage getImage();
-//	
+//
 //	/**
-//	 * 
+//	 *
 //	 * @param image the Image of the ToolEntry
 //	 */
 //	void setImage(BufferedImage image);

@@ -47,23 +47,23 @@ import org.nightlabs.editor2d.viewer.ui.IViewer;
 import org.nightlabs.editor2d.viewer.ui.event.IColorChangedListener;
 import org.nightlabs.editor2d.viewer.ui.resource.Messages;
 
-public class BackgroundContributionItem 
-extends AbstractContributionItem 
+public class BackgroundContributionItem
+extends AbstractContributionItem
 {
 	public static String ID = BackgroundContributionItem.class.getName();
 	
-	public BackgroundContributionItem(IViewer viewer) 
+	public BackgroundContributionItem(IViewer viewer)
 	{
 		super(ID, Messages.getString("org.nightlabs.editor2d.viewer.ui.action.BackgroundContributionItem.name")); //$NON-NLS-1$
 		this.viewer = viewer;
 		bgColor = viewer.getBgColor();
 	}
 	
-	protected IViewer viewer = null;	
+	protected IViewer viewer = null;
 	protected Button colorButton = null;
 	protected Color bgColor = null;
 	@Override
-	protected Control createControl(Composite parent) 
+	protected Control createControl(Composite parent)
 	{
 		colorButton = new Button(parent, SWT.NONE);
 		colorButton.setText(getName());
@@ -74,11 +74,11 @@ extends AbstractContributionItem
 	}
 	
 	protected SelectionListener selectionListener = new SelectionListener()
-	{	
+	{
 		public void widgetDefaultSelected(SelectionEvent e) {
 			widgetSelected(e);
-		}	
-		public void widgetSelected(SelectionEvent e) 
+		}
+		public void widgetSelected(SelectionEvent e)
 		{
 			ColorDialog colorDialog = new ColorDialog(Display.getCurrent().getActiveShell());
 			RGB rgb = colorDialog.open();
@@ -86,20 +86,20 @@ extends AbstractContributionItem
 				bgColor.dispose();
 				java.awt.Color oldColor = ColorUtil.toAWTColor(bgColor);
 				bgColor = new Color(Display.getCurrent(), rgb);
-				colorButton.setBackground(bgColor);				
+				colorButton.setBackground(bgColor);
 				viewer.setBgColor(bgColor);
 				fireColorChanged(oldColor, ColorUtil.toAWTColor(bgColor));
 				viewer.updateCanvas();
 			}
-		}	
+		}
 	};
 	
 	protected DisposeListener disposeListener = new DisposeListener()
-	{	
+	{
 		public void widgetDisposed(DisposeEvent e) {
 			bgColor.dispose();
 			colorButton.removeSelectionListener(selectionListener);
-		}	
+		}
 	};
 			
 	protected Collection<IColorChangedListener> colorListener = null;
@@ -115,7 +115,7 @@ extends AbstractContributionItem
 		getColorListener().remove(colorListener);
 	}
 	
-	protected void fireColorChanged(java.awt.Color oldColor, java.awt.Color newColor) 
+	protected void fireColorChanged(java.awt.Color oldColor, java.awt.Color newColor)
 	{
 		for (IColorChangedListener cl : getColorListener()) {
 			cl.colorChanged(oldColor, newColor);

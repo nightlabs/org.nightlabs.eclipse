@@ -33,8 +33,8 @@ package org.nightlabs.editor2d.viewer.ui;
  * <p> Creation Date: 04.01.2006 </p>
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public interface IBufferedViewport 
-extends IBufferedCanvas, IViewport 
+public interface IBufferedViewport
+extends IBufferedCanvas, IViewport
 {
 
 }

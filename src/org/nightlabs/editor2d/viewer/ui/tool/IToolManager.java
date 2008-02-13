@@ -30,7 +30,7 @@ import java.util.List;
 
 import org.nightlabs.editor2d.viewer.ui.IViewer;
 
-public interface IToolManager 
+public interface IToolManager
 {
 	/**
 	 * 
@@ -59,7 +59,7 @@ public interface IToolManager
 	
 	/**
 	 * 
-	 * @return the IViewer for the ToolManager 
+	 * @return the IViewer for the ToolManager
 	 */
 	IViewer getViewer();
 	

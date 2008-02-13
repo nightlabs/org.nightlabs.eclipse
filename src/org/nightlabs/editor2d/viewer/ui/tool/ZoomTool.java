@@ -9,12 +9,12 @@ import org.nightlabs.editor2d.viewer.ui.event.MouseEvent;
  * @author Daniel.Mazurek <at> NightLabs <dot> de
  *
  */
-public class ZoomTool 
-extends RectangleTool 
+public class ZoomTool
+extends RectangleTool
 {
 	public static final String ID = ZoomTool.class.getName();
 	
-	public ZoomTool() 
+	public ZoomTool()
 	{
 		super();
 		setID(ID);
@@ -23,9 +23,9 @@ extends RectangleTool
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent me) 
+	public void mouseReleased(MouseEvent me)
 	{
-		super.mouseReleased(me);		
+		super.mouseReleased(me);
 		if (rect != null) {
 			if (leftPressed)
 				getViewer().getZoomSupport().zoomTo(rect.getBounds());
@@ -33,6 +33,6 @@ extends RectangleTool
 		leftPressed = false;
 		rightPressed = false;
 		rect = null;
-	}		
+	}
 			
 }

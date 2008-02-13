@@ -32,11 +32,11 @@ public interface IBufferedCanvas
 extends ICanvas
 {
 	/**
-	 * notifies the Canvas that a repaint has to occur, which 
+	 * notifies the Canvas that a repaint has to occur, which
 	 * clears the buffer and repaints the content
 	 *
 	 */
-	void notifyChange();	
+	void notifyChange();
 	
 	/**
 	 * 

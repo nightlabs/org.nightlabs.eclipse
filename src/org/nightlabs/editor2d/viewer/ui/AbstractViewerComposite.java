@@ -60,8 +60,8 @@ import org.nightlabs.editor2d.viewer.ui.tool.SelectToolEntry;
 import org.nightlabs.editor2d.viewer.ui.tool.ToolEntryManager;
 import org.nightlabs.editor2d.viewer.ui.tool.ZoomToolEntry;
 
-public abstract class AbstractViewerComposite 
-extends XComposite 
+public abstract class AbstractViewerComposite
+extends XComposite
 {
 	private static final Logger logger = Logger.getLogger(AbstractViewerComposite.class);
 	
@@ -69,32 +69,32 @@ extends XComposite
 		super(parent, style);
 	}
 	
-	public AbstractViewerComposite(Composite parent, int style, DrawComponent dc) 
+	public AbstractViewerComposite(Composite parent, int style, DrawComponent dc)
 	{
 		super(parent, style);
 		init(dc);
 	}
 
-	public AbstractViewerComposite(Composite parent, int style, LayoutMode layoutMode, 
-			LayoutDataMode layoutDataMode, DrawComponent dc) 
+	public AbstractViewerComposite(Composite parent, int style, LayoutMode layoutMode,
+			LayoutDataMode layoutDataMode, DrawComponent dc)
 	{
 		super(parent, style, layoutMode, layoutDataMode);
 		init(dc);
 	}
 
-	protected DrawComponent drawComponent;	
+	protected DrawComponent drawComponent;
 	public DrawComponent getDrawComponent() {
 		return drawComponent;
 	}
 	
 	private ToolBarManager upperToolBarMan;
-	private AbstractCanvasComposite canvasComp;	 
+	private AbstractCanvasComposite canvasComp;
 	private Composite sideComp;
 	private Composite bottomComp;
-	protected Composite toolsComp;		
-	private Label mouseLabel = null;	
+	protected Composite toolsComp;
+	private Label mouseLabel = null;
 	
-	protected void init(DrawComponent drawComponent) 
+	protected void init(DrawComponent drawComponent)
 	{
 		if (drawComponent == null)
 			throw new IllegalArgumentException("Param drawComponent must not be null!"); //$NON-NLS-1$
@@ -105,14 +105,14 @@ extends XComposite
 		createComposite(this);
 	}
 	
-	protected void initRenderModeManager() 
+	protected void initRenderModeManager()
 	{
 		drawComponent.setRenderModeManager(RendererRegistry.sharedInstance().getRenderModeManager());
-		getRenderModeManager().addRenderModeListener(renderModeListener);		
+		getRenderModeManager().addRenderModeListener(renderModeListener);
 	}
 		
-	protected void createComposite(Composite parent) 
-	{	
+	protected void createComposite(Composite parent)
+	{
 		// UpperToolBar
 		upperToolBarMan = new ToolBarManager();
 		ToolBar upperToolBar = upperToolBarMan.createControl(parent);
@@ -145,56 +145,56 @@ extends XComposite
 		GridData bottomData = new GridData(GridData.FILL_HORIZONTAL);
 		bottomComp.setLayoutData(bottomData);
 		
-		initToolbars();				
+		initToolbars();
 		getViewer().updateCanvas();
 		
 //		doZoomAll();
 //		addControlListener(resizeListener);
 //		getViewer().getViewport().addPropertyChangeListener(viewChangeListener);
-	}	
+	}
 	
-//	private ControlListener resizeListener = new ControlAdapter(){	
+//	private ControlListener resizeListener = new ControlAdapter(){
 //		public void controlResized(ControlEvent e) {
 //			logger.debug("control resized!");
 //			doZoomAll();
-//		}	
+//		}
 //	};
-//	
-//	private PropertyChangeListener viewChangeListener = new PropertyChangeListener(){	
+//
+//	private PropertyChangeListener viewChangeListener = new PropertyChangeListener(){
 //		public void propertyChange(PropertyChangeEvent evt) {
 //			if (evt.getPropertyName().equals(DisplayPanel.VIEW_CHANGE)) {
 //				logger.debug("view Changed!");
 //				doZoomAll();
 //			}
-//		}	
+//		}
 //	};
 	
-//	protected void doZoomAll() 
+//	protected void doZoomAll()
 //	{
-//		Display.getDefault().asyncExec(new Runnable() {				
+//		Display.getDefault().asyncExec(new Runnable() {
 //			public void run() {
 //				zoomAll();
-//			}				
-//		});						
+//			}
+//		});
 //	}
-//	
+//
 //	protected void zoomAll()
-//	{		
+//	{
 //		Rectangle realBounds = getViewer().getViewport().getInitRealBounds();
-//		Rectangle viewBounds = getViewer().getViewport().getInitViewBounds();				
+//		Rectangle viewBounds = getViewer().getViewport().getInitViewBounds();
 //		ViewerUtil.zoomAll(realBounds, viewBounds, getZoomSupport());
-//		
+//
 ////		getViewer().updateCanvas();
-//		
+//
 //		if (getViewer() instanceof IBufferedViewport) {
 //			IBufferedViewport viewport = (IBufferedViewport) getViewer();
 //			viewport.notifyChange();
 //		}
 //		else
-//			getViewer().updateCanvas();					
+//			getViewer().updateCanvas();
 //	}
 				
-	protected void registerToolEntries() 
+	protected void registerToolEntries()
 	{
 		toolEntryManager = getToolEntryManager();
 		IToolEntry selectToolEntry = new SelectToolEntry();
@@ -204,11 +204,11 @@ extends XComposite
 		
 		toolEntryManager.createToolsComposite(toolsComp);
 		toolEntryManager.setDefaultToolEntry(selectToolEntry);
-		toolEntryManager.setActiveToolEntry(selectToolEntry);		
+		toolEntryManager.setActiveToolEntry(selectToolEntry);
 	}
 	
 	private ToolEntryManager toolEntryManager = null;
-	public ToolEntryManager getToolEntryManager() 
+	public ToolEntryManager getToolEntryManager()
 	{
 		if (toolEntryManager == null)
 			toolEntryManager = new ToolEntryManager(getViewer());
@@ -216,7 +216,7 @@ extends XComposite
 		return toolEntryManager;
 	}
 		
-	protected void initToolbars() 
+	protected void initToolbars()
 	{
 		initUpperToolBar(upperToolBarMan);
 		initSideComposite(sideComp);
@@ -224,15 +224,15 @@ extends XComposite
 		registerToolEntries();
 	}
 	
-	protected void initUpperToolBar(ToolBarManager tbm) 
+	protected void initUpperToolBar(ToolBarManager tbm)
 	{
 		Action action = new ZoomInAction(getZoomSupport());
-		action.setEnabled(true);		
+		action.setEnabled(true);
 		tbm.add(action);
 		
 		action = new ZoomOutAction(getZoomSupport());
 		action.setEnabled(true);
-		tbm.add(action);		
+		tbm.add(action);
 				
 		action = new ZoomAllAction(getZoomSupport());
 		action.setEnabled(true);
@@ -242,26 +242,26 @@ extends XComposite
 //		action.setEnabled(false);
 //		tbm.add(action);
 				
-		tbm.add(new Separator());		
+		tbm.add(new Separator());
 		
 		ZoomContributionItem zoomItem = new ZoomContributionItem(getZoomSupport());
 		zoomItem.setEnabled(true);
-		tbm.add(zoomItem);		
+		tbm.add(zoomItem);
 				
 		tbm.add(new Separator());
 		
-		if (getRenderModeManager().getRenderModes().size() > 1) 
-		{			
+		if (getRenderModeManager().getRenderModes().size() > 1)
+		{
 			IContributionItem item = new RenderModeContributionItem(getRenderModeManager());
 			item.setVisible(true);
-			tbm.add(item);			
-		}		
+			tbm.add(item);
+		}
 		
 		action = new ZoomAllStateAction(getZoomSupport());
 		action.setEnabled(true);
-		tbm.add(action);		
+		tbm.add(action);
 		
-//		tbm.add(new Separator());		
+//		tbm.add(new Separator());
 //		bgColorItem = new BackgroundContributionItem(getViewer());
 //		bgColorItem.setVisible(true);
 //		tbm.add(bgColorItem);
@@ -275,18 +275,18 @@ extends XComposite
 //		return bgColorItem;
 //	}
 	
-	protected void initSideComposite(Composite comp) 
+	protected void initSideComposite(Composite comp)
 	{
 		createPreviewComposite(comp);
 	}
 
-	protected void createPreviewComposite(Composite comp) 
+	protected void createPreviewComposite(Composite comp)
 	{
 		PreviewComposite previewComposite = new PreviewComposite(
-				getDrawComponent(), getViewer().getViewport(), comp, SWT.NONE);		
+				getDrawComponent(), getViewer().getViewport(), comp, SWT.NONE);
 	}
 
-	protected void initBottomComposite(Composite comp) 
+	protected void initBottomComposite(Composite comp)
 	{
 		mouseLabel = new Label(comp, SWT.NONE);
 		mouseLabel.setText("X=10000, Y=10000"); //$NON-NLS-1$
@@ -295,8 +295,8 @@ extends XComposite
 	}
 
 	private IMouseChangedListener mouseListener = new IMouseChangedListener()
-	{	
-		public void mouseChanged(Point relative, Point absolute) 
+	{
+		public void mouseChanged(Point relative, Point absolute)
 		{
 			if (!mouseLabel.isDisposed())
 				mouseLabel.setText("X = "+absolute.x+", Y = "+absolute.y); //$NON-NLS-1$ //$NON-NLS-2$
@@ -304,20 +304,20 @@ extends XComposite
 	};
 
 //	private DisposeListener mouseLabelDisposeListener = new DisposeListener()
-//	{	
-//		public void widgetDisposed(DisposeEvent e) 
+//	{
+//		public void widgetDisposed(DisposeEvent e)
 //		{
 //			if (e.getSource().equals(mouseLabel))
-//				getViewer().getMouseManager().removeMouseChangedListener(mouseListener);				
-//		}	
+//				getViewer().getMouseManager().removeMouseChangedListener(mouseListener);
+//		}
 //	};
 	
 	protected RenderModeListener renderModeListener = new RenderModeListener()
-	{	
+	{
 		public void renderModeChanges(String renderMode) {
 			if (getViewer() != null)
 				getViewer().updateCanvas();
-		}	
+		}
 	};
 	
 	protected IZoomSupport getZoomSupport() {
@@ -335,10 +335,10 @@ extends XComposite
 	protected abstract AbstractCanvasComposite initCanvasComposite(Composite parent);
 		
 	private DisposeListener disposeListener = new DisposeListener()
-	{	
+	{
 		public void widgetDisposed(DisposeEvent e) {
 			getRenderModeManager().removeRenderModeListener(renderModeListener);
 			getViewer().dispose();
-		}	
+		}
 	};
 }

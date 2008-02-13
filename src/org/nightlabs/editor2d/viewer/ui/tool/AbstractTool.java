@@ -36,20 +36,20 @@ import org.nightlabs.editor2d.viewer.ui.event.MouseEvent;
 import org.nightlabs.editor2d.viewer.ui.event.MouseListener;
 import org.nightlabs.editor2d.viewer.ui.event.MouseMoveListener;
 
-public abstract class AbstractTool 
-implements ITool, MouseListener, MouseMoveListener 
+public abstract class AbstractTool
+implements ITool, MouseListener, MouseMoveListener
 {
 	public static final String ID_DEFAULT = "DefaultToolID";  //$NON-NLS-1$
 	
 	private String id = ID_DEFAULT;
 	public String getID() {
 		return id;
-	}	
+	}
 	public void setID(String id) {
 		this.id = id;
 	}
 	
-	public void activate() 
+	public void activate()
 	{
 		leftPressed = false;
 		leftReleased = false;
@@ -58,19 +58,19 @@ implements ITool, MouseListener, MouseMoveListener
 		
 		startPoint = new Point();
 		currentPoint = new Point();
-		deltaPoint = new Point();				
+		deltaPoint = new Point();
 	}
 
-	public void deactivate() 
+	public void deactivate()
 	{
 		leftPressed = false;
 		leftReleased = false;
 		rightPressed = false;
-		rightReleased = false;		
+		rightReleased = false;
 
 		startPoint = null;
 		currentPoint = null;
-		deltaPoint = null;						
+		deltaPoint = null;
 	}
 
 	private IViewer viewer = null;
@@ -91,7 +91,7 @@ implements ITool, MouseListener, MouseMoveListener
 		
 	protected void repaint() {
 		getViewer().getBufferedCanvas().repaint();
-	}	
+	}
 	
 	protected Point startPoint = null;
 	protected Point currentPoint = null;
@@ -102,7 +102,7 @@ implements ITool, MouseListener, MouseMoveListener
 	protected boolean rightPressed = false;
 	protected boolean rightReleased = false;
 	
-	public void mouseMoved(MouseEvent me) 
+	public void mouseMoved(MouseEvent me)
 	{
 		currentPoint.setLocation(me.getX(), me.getY());
 		if (leftPressed) {
@@ -110,28 +110,28 @@ implements ITool, MouseListener, MouseMoveListener
 		}
 	}
 			
-	public void mousePressed(MouseEvent me) 
+	public void mousePressed(MouseEvent me)
 	{
 		if (me.getButton() == MouseEvent.BUTTON1 ){
 			leftPressed = true;
-			leftReleased = false;			
+			leftReleased = false;
 		}
 		if (me.getButton() == MouseEvent.BUTTON3) {
 			rightPressed = true;
-			rightReleased = false;			
+			rightReleased = false;
 		}
 		
-		startPoint.setLocation(me.getX(), me.getY());	
+		startPoint.setLocation(me.getX(), me.getY());
 	}
 
-	public void mouseReleased(MouseEvent me) 
+	public void mouseReleased(MouseEvent me)
 	{
 		if (me.getButton() == MouseEvent.BUTTON1) {
 			leftReleased = true;
 		}
 		if (me.getButton() == MouseEvent.BUTTON2) {
 			rightReleased = true;
-		}				
+		}
 	}
 		
 	protected double getZoom() {
@@ -152,7 +152,7 @@ implements ITool, MouseListener, MouseMoveListener
 
 	protected int getRelativeScrollOffsetY() {
 		return (int) Math.rint(getAbsoluteScrollOffsetY() / getZoom());
-	}	
+	}
 	
 	public int getRelativeX(int x) {
 		return ((int) Math.rint(x / getZoom())) + getRelativeScrollOffsetX();
@@ -160,9 +160,9 @@ implements ITool, MouseListener, MouseMoveListener
 	
 	public int getRelativeY(int y) {
 		return ((int) Math.rint(y / getZoom())) + getRelativeScrollOffsetY();
-	}	
+	}
 	
-	private IDrawComponentConditional conditional = null;	
+	private IDrawComponentConditional conditional = null;
 	public void setConditional(IDrawComponentConditional conditional) {
 		this.conditional = conditional;
 	}
@@ -170,16 +170,16 @@ implements ITool, MouseListener, MouseMoveListener
 		return conditional;
 	}
 	
-	public DrawComponent getDrawComponent(int x, int y, IDrawComponentConditional conditional, Collection excludeList) 
+	public DrawComponent getDrawComponent(int x, int y, IDrawComponentConditional conditional, Collection excludeList)
 	{
-		return getViewer().getHitTestManager().findObjectAt(getViewer().getDrawComponent(), 
-				x, y, conditional, excludeList);			
+		return getViewer().getHitTestManager().findObjectAt(getViewer().getDrawComponent(),
+				x, y, conditional, excludeList);
 	}
 
-	public DrawComponent getDrawComponent(int x, int y) 
+	public DrawComponent getDrawComponent(int x, int y)
 	{
-		return getViewer().getHitTestManager().findObjectAt(getViewer().getDrawComponent(), 
-				x, y, conditional, null);			
+		return getViewer().getHitTestManager().findObjectAt(getViewer().getDrawComponent(),
+				x, y, conditional, null);
 	}
 	 
 }

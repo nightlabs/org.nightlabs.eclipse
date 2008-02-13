@@ -30,7 +30,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 
-public class TempContentManager 
+public class TempContentManager
 implements ITempContentManager
 {
 	public TempContentManager() { }
@@ -40,8 +40,8 @@ implements ITempContentManager
 
 	/**
 	 * @see ITempContentManager#getTempContent()
-	 */	
-	public Collection getTempContent() 
+	 */
+	public Collection getTempContent()
 	{
 		if (readOnlyTempContent == null) {
 			synchronized (tempContent) {
@@ -53,8 +53,8 @@ implements ITempContentManager
 
 	/**
 	 * @see ITempContentManager#removeFromTempContent(Object)
-	 */	
-	public void removeFromTempContent(Object _object) 
+	 */
+	public void removeFromTempContent(Object _object)
 	{
 		synchronized (tempContent) {
 			if (tempContent.remove(_object))
@@ -64,8 +64,8 @@ implements ITempContentManager
 
 	/**
 	 * @see ITempContentManager#removeFromTempContent(Collection)
-	 */	
-	public void removeFromTempContent(Collection c) 
+	 */
+	public void removeFromTempContent(Collection c)
 	{
 		synchronized (tempContent) {
 			if (tempContent.removeAll(c))
@@ -108,8 +108,8 @@ implements ITempContentManager
 	
 	/**
 	 * @see ITempContentManager#addToTempContent(Collection)
-	 */	
-	public void addToTempContent(Collection c) 
+	 */
+	public void addToTempContent(Collection c)
 	{
 		synchronized (tempContent) {
 			tempContent.addAll(c);
@@ -117,7 +117,7 @@ implements ITempContentManager
 		}
 	}
 	
-	public boolean isEmpty() 
+	public boolean isEmpty()
 	{
 		synchronized (tempContent) {
 			return tempContent.isEmpty();

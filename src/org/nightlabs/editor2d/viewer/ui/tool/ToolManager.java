@@ -38,18 +38,18 @@ import org.nightlabs.editor2d.viewer.ui.event.MouseEvent;
 import org.nightlabs.editor2d.viewer.ui.event.MouseListener;
 import org.nightlabs.editor2d.viewer.ui.event.MouseMoveListener;
 
-public class ToolManager 
-implements IToolManager 
+public class ToolManager
+implements IToolManager
 {
 
 	public ToolManager(IViewer viewer) {
 		setViewer(viewer);
 	}
 	
-	protected Map<String, ITool> id2Tool = new HashMap<String, ITool>();	
+	protected Map<String, ITool> id2Tool = new HashMap<String, ITool>();
 	
 	protected List<ITool> tools = null;
-	public List<ITool> getTools() 
+	public List<ITool> getTools()
 	{
 		if (tools == null)
 			tools = new ArrayList();
@@ -61,11 +61,11 @@ implements IToolManager
 		return id2Tool.get(id);
 	}
 	
-	public void addTool(ITool tool) 
+	public void addTool(ITool tool)
 	{
 		tool.setViewer(viewer);
 		id2Tool.put(tool.getID(), tool);
-		getTools().add(tool);		
+		getTools().add(tool);
 	}
 
 	public void removeTool(ITool tool) {
@@ -77,7 +77,7 @@ implements IToolManager
 	public IViewer getViewer() {
 		return viewer;
 	}
-	public void setViewer(IViewer viewer) 
+	public void setViewer(IViewer viewer)
 	{
 		if (viewer != null) {
 			viewer.getMouseManager().removeMouseMoveListener(mouseMoveListener);
@@ -93,7 +93,7 @@ implements IToolManager
 		}
 	}
 
-	public void setActiveTool(int id) 
+	public void setActiveTool(int id)
 	{
 		ITool tool = id2Tool.get(new Integer(id));
 		if (tool != null)
@@ -101,7 +101,7 @@ implements IToolManager
 	}
 	
 	protected ITool activeTool = null;
-	public void setActiveTool(ITool tool) 
+	public void setActiveTool(ITool tool)
 	{
 		if (activeTool != null)
 			activeTool.deactivate();
@@ -113,45 +113,45 @@ implements IToolManager
 		return activeTool;
 	}
 		
-	protected void doMouseMoved(MouseEvent me) 
-	{	
+	protected void doMouseMoved(MouseEvent me)
+	{
 		if (activeTool != null) {
 			activeTool.mouseMoved(me);
-		}		
+		}
 	}
 	
-	protected void doMouseReleased(MouseEvent me) 
+	protected void doMouseReleased(MouseEvent me)
 	{
 		if (activeTool != null) {
 			activeTool.mouseReleased(me);
 		}
 	}
 
-	protected void doMousePressed(MouseEvent me) 
+	protected void doMousePressed(MouseEvent me)
 	{
 		if (activeTool != null) {
 			activeTool.mousePressed(me);
-		}					
+		}
 	}
 	
 	protected MouseMoveListener mouseMoveListener = new MouseMoveListener()
-	{	
+	{
 		public void mouseMoved(MouseEvent me) {
 			doMouseMoved(me);
-		}	
+		}
 	};
 	
 	protected MouseListener mouseListener = new MouseListener()
-	{	
+	{
 		public void mouseReleased(MouseEvent me) {
 			doMouseReleased(me);
-		}	
+		}
 		public void mousePressed(MouseEvent me) {
 			doMousePressed(me);
-		}	
+		}
 	};
 	
-	protected IDrawComponentConditional conditional = null;	
+	protected IDrawComponentConditional conditional = null;
 	public void setConditional(IDrawComponentConditional conditional) {
 		this.conditional = conditional;
 		for (Iterator<ITool> it = getTools().iterator(); it.hasNext(); ) {

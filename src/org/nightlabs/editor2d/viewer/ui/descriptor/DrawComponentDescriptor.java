@@ -39,10 +39,10 @@ import org.nightlabs.editor2d.viewer.ui.resource.Messages;
  * @author Daniel.Mazurek <at> NightLabs <dot> de
  *
  */
-public class DrawComponentDescriptor 
+public class DrawComponentDescriptor
 implements IDrawComponentDescriptor
 {
-	public DrawComponentDescriptor(DrawComponent dc) 
+	public DrawComponentDescriptor(DrawComponent dc)
 	{
 		super();
 		setDrawComponent(dc);
@@ -60,8 +60,8 @@ implements IDrawComponentDescriptor
 	/**
 	 * resets all entries for the new DrawComponent
 	 * @see IDrawComponentDescriptor#setDrawComponent(DrawComponent)
-	 */	
-	public void setDrawComponent(DrawComponent dc) 
+	 */
+	public void setDrawComponent(DrawComponent dc)
 	{
 		this.dc = dc;
 		if (dc != null) {
@@ -91,11 +91,11 @@ implements IDrawComponentDescriptor
 	
 	/**
 	 * @see IDrawComponentDescriptor#addEntry(String, String)
-	 */			 	
-	public void addEntry(String name, String value) 
+	 */
+	public void addEntry(String name, String value)
 	{
 		if (!names.contains(name))
-			names.add(name);		
+			names.add(name);
 		properties.put(name, value);
 	}
 	
@@ -104,13 +104,13 @@ implements IDrawComponentDescriptor
 	/**
 	 * @see IDrawComponentDescriptor#getEntriesAsString(boolean)
 	 */
-	public String getEntriesAsString(boolean lineWrap) 
+	public String getEntriesAsString(boolean lineWrap)
 	{
 		sb = new StringBuffer();
-		if (!lineWrap) 
+		if (!lineWrap)
 		{
 			int lastIndex = names.size()-1;
-			for (int i=0; i<lastIndex; i++) 
+			for (int i=0; i<lastIndex; i++)
 			{
 				String name = names.get(i);
 				String value = properties.get(name);
@@ -119,10 +119,10 @@ implements IDrawComponentDescriptor
 				sb.append(value);
 				if (i != lastIndex)
 					sb.append(", "); //$NON-NLS-1$
-			}			
+			}
 		}
 		else {
-			for (Iterator<String> it = names.iterator(); it.hasNext(); ) 
+			for (Iterator<String> it = names.iterator(); it.hasNext(); )
 			{
 				String name = it.next();
 				String value = properties.get(name);
@@ -130,7 +130,7 @@ implements IDrawComponentDescriptor
 				sb.append(" = "); //$NON-NLS-1$
 				sb.append(value);
 				sb.append("\n"); //$NON-NLS-1$
-			}						
+			}
 		}
 		return sb.toString();
 	}

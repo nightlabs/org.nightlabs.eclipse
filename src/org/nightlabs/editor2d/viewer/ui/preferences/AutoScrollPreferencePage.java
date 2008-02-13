@@ -33,11 +33,11 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.nightlabs.editor2d.viewer.ui.ViewerPlugin;
 import org.nightlabs.editor2d.viewer.ui.resource.Messages;
 
-public class AutoScrollPreferencePage 
+public class AutoScrollPreferencePage
 extends FieldEditorPreferencePage
 implements IWorkbenchPreferencePage
-{	
-	public AutoScrollPreferencePage() 
+{
+	public AutoScrollPreferencePage()
 	{
 		super(GRID);
 		setPreferenceStore(ViewerPlugin.getDefault().getPreferenceStore());
@@ -45,9 +45,9 @@ implements IWorkbenchPreferencePage
 	}
 			
 	protected IntegerFieldEditor scrollStep;
-	protected IntegerFieldEditor timerDelay;	
+	protected IntegerFieldEditor timerDelay;
 	protected IntegerFieldEditor scrollTolerance;
-//protected IntegerFieldEditor bufferScale;	
+//protected IntegerFieldEditor bufferScale;
 	
 	@Override
 	protected void createFieldEditors()
@@ -90,18 +90,18 @@ implements IWorkbenchPreferencePage
 	@Override
 	protected void performDefaults() {
 		Preferences.initDefaultValues(Preferences.getPreferenceStore());
-		super.performDefaults();		
+		super.performDefaults();
 	}
 
 	@Override
-	public boolean performOk() 
+	public boolean performOk()
 	{
-		getPreferenceStore().setValue(Preferences.PREFERENCE_SCROLL_STEP, scrollStep.getIntValue());		
-		getPreferenceStore().setValue(Preferences.PREFERENCE_SCROLL_TOLERANCE, scrollTolerance.getIntValue());		
-		getPreferenceStore().setValue(Preferences.PREFERENCE_TIMER_DELAY, timerDelay.getIntValue());		
+		getPreferenceStore().setValue(Preferences.PREFERENCE_SCROLL_STEP, scrollStep.getIntValue());
+		getPreferenceStore().setValue(Preferences.PREFERENCE_SCROLL_TOLERANCE, scrollTolerance.getIntValue());
+		getPreferenceStore().setValue(Preferences.PREFERENCE_TIMER_DELAY, timerDelay.getIntValue());
 //		return super.performOk();
 		return true;
-	}	
+	}
 	
-	public void init(IWorkbench workbench) {}			
+	public void init(IWorkbench workbench) {}
 }

@@ -47,22 +47,22 @@ import org.nightlabs.editor2d.viewer.ui.IMouseManager;
 import org.nightlabs.editor2d.viewer.ui.IViewer;
 import org.nightlabs.editor2d.viewer.ui.IViewport;
 
-public class AWTCanvasComposite 
-extends AbstractCanvasComposite 
+public class AWTCanvasComposite
+extends AbstractCanvasComposite
 implements IComponentViewer
 {
-//	public static int styleFlag = SWT.EMBEDDED | SWT.DOUBLE_BUFFERED; 
+//	public static int styleFlag = SWT.EMBEDDED | SWT.DOUBLE_BUFFERED;
 	public static int styleFlag = SWT.EMBEDDED;
 	
 	public static final Logger logger = Logger.getLogger(AWTCanvasComposite.class);
 	
-	public AWTCanvasComposite(Composite parent, int style, DrawComponent dc) 
+	public AWTCanvasComposite(Composite parent, int style, DrawComponent dc)
 	{
 		super(parent, style | styleFlag, dc);
-		addDisposeListener(disposeListener);		
+		addDisposeListener(disposeListener);
 	}
 
-	public AWTCanvasComposite(Composite parent, int style, DrawComponent dc, boolean autoScroll) 
+	public AWTCanvasComposite(Composite parent, int style, DrawComponent dc, boolean autoScroll)
 	{
 		super(parent, style | styleFlag, dc, autoScroll);
 		addDisposeListener(disposeListener);
@@ -73,13 +73,13 @@ implements IComponentViewer
 	}
 			
 	@Override
-	protected IAutoScrollSupport initAutoScrollSupport() 
-	{	
+	protected IAutoScrollSupport initAutoScrollSupport()
+	{
 		IAutoScrollSupport autoScrollSupport = new AWTCanvasAutoScrollSupport(getComponent());
 		autoScrollSupport.setScrollStep(10);
 		autoScrollSupport.setTimerDelay(5);
 		return autoScrollSupport;
-	}	
+	}
 	  
 	@Override
 	public IMouseManager initMouseManager(IViewer viewer) {
@@ -95,43 +95,43 @@ implements IComponentViewer
 	}
 	
 	@Override
-	public void updateCanvas() 
+	public void updateCanvas()
 	{
 		if (getCanvas() != null)
 			getBufferedCanvas().notifyChange();
 	}
 
 	private Frame frame = null;
-	private DisplayPanel displayPanel = null;	
+	private DisplayPanel displayPanel = null;
 	@Override
-	protected ICanvas createCanvas(Composite parent) 
+	protected ICanvas createCanvas(Composite parent)
 	{
 		frame = SWT_AWT.new_Frame(parent);
 		frame.setLayout(new BorderLayout());
-		displayPanel = new DisplayPanel(getDrawComponent());		
+		displayPanel = new DisplayPanel(getDrawComponent());
 		frame.add(displayPanel, BorderLayout.CENTER);
 		
-		frame.addWindowListener(new WindowAdapter(){		
+		frame.addWindowListener(new WindowAdapter(){
 			@Override
 			public void windowClosing(WindowEvent e) {
 				if (displayPanel != null)
 					displayPanel.dispose();
-			}		
+			}
 		});
 		
 		return displayPanel;
 	}
 			
 	private DisposeListener disposeListener = new DisposeListener()
-	{	
-		public void widgetDisposed(DisposeEvent e) 
+	{
+		public void widgetDisposed(DisposeEvent e)
 		{
 			if (logger.isDebugEnabled())
 				logger.debug("disposeListener()!"); //$NON-NLS-1$
 			
 			if (getAutoScrollSupport() != null)
-				getAutoScrollSupport().dispose();	
-		}	
+				getAutoScrollSupport().dispose();
+		}
 	};
 			
 }

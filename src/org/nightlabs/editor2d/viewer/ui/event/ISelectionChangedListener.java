@@ -26,7 +26,7 @@
 
 package org.nightlabs.editor2d.viewer.ui.event;
 
-public interface ISelectionChangedListener 
+public interface ISelectionChangedListener
 {
 	/**
 	 * is called when the selection changes

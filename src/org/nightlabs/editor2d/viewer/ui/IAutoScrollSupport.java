@@ -26,7 +26,7 @@
 
 package org.nightlabs.editor2d.viewer.ui;
 
-public interface IAutoScrollSupport 
+public interface IAutoScrollSupport
 {
 	public void setScrollStep(int step);
 	int getScrollStep();

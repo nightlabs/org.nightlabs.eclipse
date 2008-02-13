@@ -34,28 +34,28 @@ import org.nightlabs.editor2d.DrawComponent;
  * @author Daniel.Mazurek <at> NightLabs <dot> de
  *
  */
-public class DescriptorManager 
+public class DescriptorManager
 //implements IDrawComponentDescriptor
 {
 
-	public DescriptorManager() 
+	public DescriptorManager()
 	{
 		super();
 		addDescriptor(defaultDescriptor, DrawComponent.class);
 	}
 
 	protected IDrawComponentDescriptor defaultDescriptor = new DrawComponentDescriptor(null);
-	protected IDrawComponentDescriptor currentDescriptor = defaultDescriptor; 
+	protected IDrawComponentDescriptor currentDescriptor = defaultDescriptor;
 		
 	protected Map<Class, IDrawComponentDescriptor> class2Descriptor = new HashMap<Class, IDrawComponentDescriptor>();
 	public void addDescriptor(IDrawComponentDescriptor desc, Class dcClass) {
 		class2Descriptor.put(dcClass, desc);
 	}
 		
-	protected DrawComponent drawComponent = null;	
-	public void setDrawComponent(DrawComponent dc) 
+	protected DrawComponent drawComponent = null;
+	public void setDrawComponent(DrawComponent dc)
 	{
-		this.drawComponent = dc;		
+		this.drawComponent = dc;
 		if (class2Descriptor.keySet().contains(dc.getClass())) {
 			IDrawComponentDescriptor desc = class2Descriptor.get(dc.getClass());
 			currentDescriptor = desc;

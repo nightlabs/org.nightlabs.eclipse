@@ -9,8 +9,8 @@ import org.eclipse.swt.graphics.Image;
  * @author Daniel.Mazurek <at> NightLabs <dot> de
  *
  */
-public abstract class AbstractToolEntry 
-implements IToolEntry 
+public abstract class AbstractToolEntry
+implements IToolEntry
 {
 
 	public AbstractToolEntry() {
@@ -68,14 +68,14 @@ implements IToolEntry
 	
 	/**
 	 * @see org.nightlabs.editor2d.viewer.ui.tool.IToolEntry#getToolTipText()
-	 */	
+	 */
 	public String getToolTipText() {
 		return toolTipText;
 	}
 	
 	/**
 	 * @see org.nightlabs.editor2d.viewer.ui.tool.IToolEntry#setToolTipText(String)
-	 */	
+	 */
 	public void setToolTipText(String toolTipText) {
 		this.toolTipText = toolTipText;
 	}

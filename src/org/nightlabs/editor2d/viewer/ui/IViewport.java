@@ -30,11 +30,11 @@ import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.beans.PropertyChangeListener;
 
-public interface IViewport 
+public interface IViewport
 {
 	public static final String VIEW_CHANGE = "viewChange";	 //$NON-NLS-1$
 	public static final String REAL_CHANGE = "realChange"; //$NON-NLS-1$
-//	public static final String BUFFER_CHANGE = "bufferChange";	
+//	public static final String BUFFER_CHANGE = "bufferChange";
 	
 	/**
 	 * @param realBounds the bounds of the whole area of the viewport
@@ -79,20 +79,20 @@ public interface IViewport
 	Point2D getViewLocation();
 			
 	/**
-	 * @return the offset in X-direction between the viewBounds and the realBounds 
+	 * @return the offset in X-direction between the viewBounds and the realBounds
 	 */
 	int getOffsetX();
 		
 	/**
-	 * @return the offset in Y-direction between the viewBounds and the realBounds 
+	 * @return the offset in Y-direction between the viewBounds and the realBounds
 	 */
 	int getOffsetY();
 	
 	/**
 	 * 
-	 * @param pcl the PropertyChangeListener which will be notified of 
-	 * changes of the realBounds or the viewBounds, the corresponding 
-	 * propertyName is either <code>VIEW_CHANGE</code> or <code>REAL_CHANGE</code> 
+	 * @param pcl the PropertyChangeListener which will be notified of
+	 * changes of the realBounds or the viewBounds, the corresponding
+	 * propertyName is either <code>VIEW_CHANGE</code> or <code>REAL_CHANGE</code>
 	 */
 	void addPropertyChangeListener(PropertyChangeListener pcl);
 	
@@ -100,7 +100,7 @@ public interface IViewport
 	 * 
 	 * @param pcl the propertyChangeListener to remove
 	 */
-	void removePropertyChangeListener(PropertyChangeListener pcl);	
+	void removePropertyChangeListener(PropertyChangeListener pcl);
 	
 	Rectangle getInitRealBounds();
 	

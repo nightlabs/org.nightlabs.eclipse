@@ -30,8 +30,8 @@ import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 import org.nightlabs.base.ui.app.AbstractWorkbenchAdvisor;
 
-public class ViewerWorkbenchAdvisor 
-extends AbstractWorkbenchAdvisor 
+public class ViewerWorkbenchAdvisor
+extends AbstractWorkbenchAdvisor
 {
 
 	public ViewerWorkbenchAdvisor() {

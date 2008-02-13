@@ -27,7 +27,7 @@
 package org.nightlabs.editor2d.viewer.ui;
 
 
-public interface ICanvas 
+public interface ICanvas
 {
 	/**
 	 * scales the Canvas
@@ -43,9 +43,9 @@ public interface ICanvas
 	
 	/**
 	 * translates the Canvas in X-Direction
-	 * @param translateX the value of the translation 
+	 * @param translateX the value of the translation
 	 */
-	void translateX(float translateX);		
+	void translateX(float translateX);
 //	float getTranslateX();
 	
 	/**
@@ -59,7 +59,7 @@ public interface ICanvas
 	 * 
 	 * repaints the Canvas
 	 */
-	void repaint();	
+	void repaint();
 	
 	/**
 	 * sets the Background Color of the Canvas as RGB which consists of three values

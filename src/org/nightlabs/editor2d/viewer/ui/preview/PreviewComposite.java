@@ -43,8 +43,8 @@ import org.nightlabs.editor2d.viewer.ui.IViewport;
  * <p> Creation Date: 04.01.2006 </p>
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class PreviewComposite 
-extends XComposite 
+public class PreviewComposite
+extends XComposite
 {
 	/**
 	 * @param parent
@@ -53,7 +53,7 @@ extends XComposite
 	public PreviewComposite(DrawComponent dc, IViewport viewport, Composite parent, int style) {
 		super(parent, style | SWT.EMBEDDED);
 		this.dc = dc;
-		this.viewport = viewport;		
+		this.viewport = viewport;
 		init();
 	}
 
@@ -63,8 +63,8 @@ extends XComposite
 	 * @param layoutMode
 	 * @param layoutDataMode
 	 */
-	public PreviewComposite(DrawComponent dc, IViewport viewport, Composite parent, int style, 
-			LayoutMode layoutMode, LayoutDataMode layoutDataMode) 
+	public PreviewComposite(DrawComponent dc, IViewport viewport, Composite parent, int style,
+			LayoutMode layoutMode, LayoutDataMode layoutDataMode)
 	{
 		super(parent, style | SWT.EMBEDDED, layoutMode, layoutDataMode);
 		this.dc = dc;
@@ -76,18 +76,18 @@ extends XComposite
 	private IViewport viewport;
 	private Frame previewFrame;
 	private PreviewPanel previewPanel;
-	private void init() 
+	private void init()
 	{
 		previewFrame = SWT_AWT.new_Frame(this);
 		previewFrame.setLayout(new BorderLayout());
-		previewPanel = new PreviewPanel(dc, viewport, ColorUtil.toAWTColor(getBackground()));		
+		previewPanel = new PreviewPanel(dc, viewport, ColorUtil.toAWTColor(getBackground()));
 		previewFrame.add(previewPanel, BorderLayout.CENTER);
 		
-		previewFrame.addWindowListener(new WindowAdapter(){		
+		previewFrame.addWindowListener(new WindowAdapter(){
 			@Override
 			public void windowClosing(WindowEvent e) {
 				previewPanel.dispose();
-			}		
-		});		
+			}
+		});
 	}
 }

@@ -31,25 +31,25 @@ import org.nightlabs.editor2d.viewer.ui.IZoomSupport;
 import org.nightlabs.editor2d.viewer.ui.ViewerPlugin;
 import org.nightlabs.editor2d.viewer.ui.resource.Messages;
 
-public class ZoomInAction 
+public class ZoomInAction
 extends ZoomAction
 {
 	public static final String ID = ZoomInAction.class.getName();
 	
 	public ZoomInAction(IZoomSupport zoomSupport) {
 		super(zoomSupport);
-	}	
+	}
 	
 	@Override
-	public void init() 
+	public void init()
 	{
 		setId(ID);
 		setText(Messages.getString("org.nightlabs.editor2d.viewer.ui.action.ZoomInAction.text")); //$NON-NLS-1$
 		setToolTipText(Messages.getString("org.nightlabs.editor2d.viewer.ui.action.ZoomInAction.tooltip")); //$NON-NLS-1$
-		setImageDescriptor(SharedImages.getSharedImageDescriptor(ViewerPlugin.getDefault(), ZoomInAction.class));				
+		setImageDescriptor(SharedImages.getSharedImageDescriptor(ViewerPlugin.getDefault(), ZoomInAction.class));
 	}
 
-	public void zoomChanged(double zoom) 
+	public void zoomChanged(double zoom)
 	{
 		if (getZoomSupport().canZoomIn())
 			setEnabled(true);

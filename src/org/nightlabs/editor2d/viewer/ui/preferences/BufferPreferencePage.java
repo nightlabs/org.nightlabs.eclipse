@@ -34,20 +34,20 @@ import org.nightlabs.editor2d.viewer.ui.BufferManager;
 import org.nightlabs.editor2d.viewer.ui.ViewerPlugin;
 import org.nightlabs.editor2d.viewer.ui.resource.Messages;
 
-public class BufferPreferencePage 
+public class BufferPreferencePage
 extends FieldEditorPreferencePage
 implements IWorkbenchPreferencePage
 {
-	public BufferPreferencePage() 
+	public BufferPreferencePage()
 	{
 		super(GRID);
-		setPreferenceStore(ViewerPlugin.getDefault().getPreferenceStore());		
+		setPreferenceStore(ViewerPlugin.getDefault().getPreferenceStore());
 		setTitle(Messages.getString("org.nightlabs.editor2d.viewer.ui.preferences.BufferPreferencePage.title.buffer")); //$NON-NLS-1$
 	}
 	
 	protected DoubleFieldEditor bufferScale = null;
 	@Override
-	protected void createFieldEditors() 
+	protected void createFieldEditors()
 	{
 		bufferScale = new DoubleFieldEditor(Preferences.PREFERENCE_BUFFER_SCALE,
 				Messages.getString("org.nightlabs.editor2d.viewer.ui.preferences.BufferPreferencePage.label.bufferScale"), //$NON-NLS-1$
@@ -58,14 +58,14 @@ implements IWorkbenchPreferencePage
 	
 	
 	@Override
-	protected void performDefaults() 
+	protected void performDefaults()
 	{
 		Preferences.initDefaultValues(Preferences.getPreferenceStore());
-		super.performDefaults();		
+		super.performDefaults();
 	}
 		
 	@Override
-	public boolean performOk() 
+	public boolean performOk()
 	{
 		BufferManager.sharedInstance().setBufferScaleFactor(bufferScale.getDoubleValue());
 		return super.performOk();

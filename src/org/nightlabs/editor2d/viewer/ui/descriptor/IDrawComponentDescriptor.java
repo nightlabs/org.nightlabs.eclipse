@@ -35,7 +35,7 @@ import org.nightlabs.editor2d.DrawComponent;
  * @author Daniel.Mazurek <at> NightLabs <dot> de
  *
  */
-public interface IDrawComponentDescriptor 
+public interface IDrawComponentDescriptor
 {
 	/**
 	 * sets the DrawComponent to get descriptions from
@@ -45,18 +45,18 @@ public interface IDrawComponentDescriptor
 	
 	/**
 	 * returns the described drawComponent
-	 * @return the DrawComponent to get descriptions from 
+	 * @return the DrawComponent to get descriptions from
 	 */
 	DrawComponent getDrawComponent();
 	
 	/**
 	 * returns a single String which contains all properties (key+value) separated by commas (,)
 	 * in the same order as they have been added
-	 *   
+	 * 
 	 * @param linewrap determines if the entries should be returned with a linewrap or not
 	 * @see IDrawComponentDescriptor#getProperties()
 	 * @see IDrawComponentDescriptor#addEntry(String, String)
-	 * @return a single String contained all properties 
+	 * @return a single String contained all properties
 	 */
 	String getEntriesAsString(boolean linewrap);
 	
@@ -65,16 +65,16 @@ public interface IDrawComponentDescriptor
 	 * value: property value
 	 * 
 	 * @see IDrawComponentDescriptor#addEntry(String, String)
-	 * @return a Map containing all properties for the DrawComponent 
+	 * @return a Map containing all properties for the DrawComponent
 	 */
 	Map<String, String> getProperties();
 	
 	/**
 	 * adds a Property Entry to the Descriptor, every time the drawComponent
 	 * is newly set, all values must be adapted
-	 *   
+	 * 
 	 * @param name the property name
-	 * @param value the property value 
+	 * @param value the property value
 	 */
 	void addEntry(String name, String value);
 }

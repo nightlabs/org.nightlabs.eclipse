@@ -52,13 +52,13 @@ import org.nightlabs.editor2d.viewer.ui.IViewport;
 
 /**
  * Shows a preview of an viewport so that the whole content
- * is visible and the viewBounds of the viewport are displayed  
+ * is visible and the viewBounds of the viewport are displayed
  * 
  * <p> Project: org.nightlabs.editor2d.viewer.ui </p>
  * <p> Creation Date: 04.01.2006 </p>
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class PreviewPanel 
+public class PreviewPanel
 extends JPanel
 {
 	/**
@@ -69,9 +69,9 @@ extends JPanel
 	
 	/**
 	 * @param dc The DrawComponent
-	 */ 
+	 */
 	public PreviewPanel(DrawComponent dc, IViewport viewport, Color sysBGColor)
-	{		
+	{
 		super();
 		this.dc = dc;
 		this.viewport = viewport;
@@ -83,11 +83,11 @@ extends JPanel
 	private IViewport viewport = null;
 	private DrawComponent dc = null;
 	
-	protected void init() 
-	{		
+	protected void init()
+	{
 		addComponentListener(resizeListener);
 		viewport.addPropertyChangeListener(viewChangeListener);
-		viewport.addPropertyChangeListener(realChangeListener);	
+		viewport.addPropertyChangeListener(realChangeListener);
 		addMouseListener(mouseListener);
 		addMouseMotionListener(mouseMotionListener);
 	}
@@ -97,11 +97,11 @@ extends JPanel
 	 * @see org.nightlabs.editor2d.viewer.ui.IViewport#getViewBounds()
 	 */
 	private PropertyChangeListener viewChangeListener = new PropertyChangeListener()
-	{	
-		public void propertyChange(PropertyChangeEvent evt) 
+	{
+		public void propertyChange(PropertyChangeEvent evt)
 		{
 			repaint();
-		}	
+		}
 	};
 
 	/**
@@ -109,11 +109,11 @@ extends JPanel
 	 * @see org.nightlabs.editor2d.viewer.ui.IViewport#getRealBounds()
 	 */
 	private PropertyChangeListener realChangeListener = new PropertyChangeListener()
-	{	
-		public void propertyChange(PropertyChangeEvent evt) 
+	{
+		public void propertyChange(PropertyChangeEvent evt)
 		{
 			repaint();
-		}	
+		}
 	};
 				
 	private Color bgColor = Color.WHITE;
@@ -123,7 +123,7 @@ extends JPanel
 	private Color sysBGColor = null;
 	
 	@Override
-	public void paint(Graphics g) 
+	public void paint(Graphics g)
 	{
 		Graphics2D g2d = (Graphics2D) g;
 //		double width = getVisibleRect().getWidth();
@@ -131,7 +131,7 @@ extends JPanel
 		
 		if (bufferImage == null) {
 			double width = getVisibleRect().getWidth();
-			double height = getVisibleRect().getHeight();			
+			double height = getVisibleRect().getHeight();
 			bufferImage = new BufferedImage((int)width, (int)height, BufferedImage.TYPE_INT_RGB);
 			Graphics2D bg2d = (Graphics2D) bufferImage.getGraphics();
 			double scaleX = width / dc.getBounds().getWidth();
@@ -139,54 +139,54 @@ extends JPanel
 			zoom = Math.min(scaleX, scaleY);
 			paintDrawComponent(bg2d, zoom, dc.getBounds(), (int)width, (int)height);
 		}
-		if (bufferImage != null) 
-			g2d.drawImage(bufferImage, 0, 0, this);	
+		if (bufferImage != null)
+			g2d.drawImage(bufferImage, 0, 0, this);
 
 		drawViewRect(g2d);
 	}
 		
 	private Rectangle viewRectangle;
 	
-	private void drawViewRect(Graphics2D g2d) 
+	private void drawViewRect(Graphics2D g2d)
 	{
 		double viewRealWidth = viewport.getRealBounds().getWidth();
 		double viewRealHeight = viewport.getRealBounds().getHeight();
 		double dcWidth = dc.getBounds().getWidth();
 		double dcHeight = dc.getBounds().getHeight();
-		double scaleX = dcWidth / viewRealWidth; 
-		double scaleY = dcHeight / viewRealHeight;		
+		double scaleX = dcWidth / viewRealWidth;
+		double scaleY = dcHeight / viewRealHeight;
 		double scale = Math.min(scaleX, scaleY);
 		proportionScale = scale * zoom;
 		
-		double proportionScaleX = scaleX * zoom; 
+		double proportionScaleX = scaleX * zoom;
 		double proportionScaleY = scaleY * zoom;
 		double translateX = -dc.getBounds().getX() * proportionScale;
 		double translateY = -dc.getBounds().getY() * proportionScale;
 		 
-		viewRectangle = GeomUtil.scaleRect(viewport.getViewBounds(), 
-				proportionScaleX, proportionScaleY, false);				
+		viewRectangle = GeomUtil.scaleRect(viewport.getViewBounds(),
+				proportionScaleX, proportionScaleY, false);
 		g2d.translate(translateX, translateY);
 		g2d.setPaint(Color.RED);
 		g2d.setStroke(new BasicStroke(2));
-		g2d.draw(viewRectangle);		
-	}	
+		g2d.draw(viewRectangle);
+	}
 	
-	private void paintDrawComponent(Graphics2D g2d, double scale, Rectangle bounds, int width, int height) 
+	private void paintDrawComponent(Graphics2D g2d, double scale, Rectangle bounds, int width, int height)
 	{
 //		RenderingHints rh = g2d.getRenderingHints();
 //		RenderingHintsManager.setSpeedRenderMode(rh);
 //		g2d.setRenderingHints(rh);
 		
 		g2d.setPaint(sysBGColor);
-		g2d.fillRect(0, 0, width, height);			
+		g2d.fillRect(0, 0, width, height);
 				
 		g2d.setBackground(bgColor);
-		g2d.setPaint(bgColor);					
-		g2d.translate(-bounds.x, -bounds.y);		
-		g2d.setClip(bounds);		
+		g2d.setPaint(bgColor);
+		g2d.translate(-bounds.x, -bounds.y);
+		g2d.setClip(bounds);
 		g2d.scale(scale, scale);
 		g2d.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
-		DrawComponentPaintable.paintDrawComponent(dc, g2d);					
+		DrawComponentPaintable.paintDrawComponent(dc, g2d);
 	}
 	
 	
@@ -194,7 +194,7 @@ extends JPanel
 		bufferImage = null;
 	}
 	
-	public void dispose() 
+	public void dispose()
 	{
 		if (bufferImage != null)
 			bufferImage.flush();
@@ -203,11 +203,11 @@ extends JPanel
 		viewport.removePropertyChangeListener(viewChangeListener);
 	}
 	
-	private ComponentListener resizeListener = new ComponentAdapter(){	
+	private ComponentListener resizeListener = new ComponentAdapter(){
 		@Override
 		public void componentResized(ComponentEvent e) {
 			clearBuffer();
-		}	
+		}
 	};
 		
 	private boolean pressed = false;
@@ -216,15 +216,15 @@ extends JPanel
 	private int diffX;
 	private int diffY;
 	private int startViewX;
-	private int startViewY;	
+	private int startViewY;
 	
-	private MouseListener mouseListener = new MouseAdapter(){	
+	private MouseListener mouseListener = new MouseAdapter(){
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			pressed = false;
-		}	
+		}
 		@Override
-		public void mousePressed(MouseEvent e) 
+		public void mousePressed(MouseEvent e)
 		{
 			if (viewRectangle.contains(e.getX(), e.getY())) {
 				pressed = true;
@@ -233,13 +233,13 @@ extends JPanel
 				startViewX = viewRectangle.getLocation().x;
 				startViewY = viewRectangle.getLocation().y;
 			}
-		}	
+		}
 	};
 	
 	private MouseMotionListener mouseMotionListener = new MouseMotionAdapter()
-	{	
+	{
 		@Override
-		public void mouseDragged(MouseEvent e) 
+		public void mouseDragged(MouseEvent e)
 		{
 			if (pressed) {
 				diffX = e.getX() - startX;
@@ -248,10 +248,10 @@ extends JPanel
 				double newX = startViewX + diffX;
 				double newY = startViewY + diffY;
 				double realX = newX / proportionScale;
-				double realY = newY / proportionScale;				
-				viewport.setViewLocation((int)realX, (int)realY);					
+				double realY = newY / proportionScale;
+				viewport.setViewLocation((int)realX, (int)realY);
 			}
-		}		
+		}
 	};
 		
 }

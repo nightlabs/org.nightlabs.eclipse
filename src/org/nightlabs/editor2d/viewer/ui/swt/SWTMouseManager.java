@@ -36,11 +36,11 @@ import org.eclipse.swt.widgets.Control;
 import org.nightlabs.editor2d.viewer.ui.AbstractMouseManager;
 import org.nightlabs.editor2d.viewer.ui.IViewer;
 
-public class SWTMouseManager 
-extends AbstractMouseManager 
+public class SWTMouseManager
+extends AbstractMouseManager
 {
 
-	public SWTMouseManager(IViewer viewer, Control c) 
+	public SWTMouseManager(IViewer viewer, Control c)
 	{
 		super(viewer);
 		this.control = c;
@@ -51,26 +51,26 @@ extends AbstractMouseManager
 		return control;
 	}
 	
-	protected void init() 
+	protected void init()
 	{
 		control.addMouseMoveListener(mouseMoveListener);
 		control.addDisposeListener(disposeListener);
 	}
 	
 	protected MouseMoveListener mouseMoveListener = new MouseMoveListener()
-	{	
-		public void mouseMove(MouseEvent e) 
+	{
+		public void mouseMove(MouseEvent e)
 		{
 			x = e.x;
 			y = e.y;
 			
 			fireMouseChanged();
 			fireMouseMoved(x, y, e.button);
-		}	
+		}
 	};
 	
 	protected MouseListener mouseListener = new MouseAdapter()
-	{	
+	{
 		@Override
 		public void mouseUp(MouseEvent e) {
 			fireMouseReleased(e.x, e.y, e.button);
@@ -79,7 +79,7 @@ extends AbstractMouseManager
 		@Override
 		public void mouseDown(MouseEvent e) {
 			fireMousePressed(e.x, e.y, e.button);
-		}	
+		}
 	};
 		
 	protected DisposeListener disposeListener = new DisposeListener() {

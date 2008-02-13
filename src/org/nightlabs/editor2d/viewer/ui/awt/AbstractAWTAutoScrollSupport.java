@@ -38,22 +38,22 @@ import java.awt.event.MouseMotionListener;
 
 import org.nightlabs.editor2d.viewer.ui.AbstractAutoScrollSupport;
 
-public abstract class AbstractAWTAutoScrollSupport 
-extends AbstractAutoScrollSupport 
+public abstract class AbstractAWTAutoScrollSupport
+extends AbstractAutoScrollSupport
 {
-	public AbstractAWTAutoScrollSupport(Component comp) 
+	public AbstractAWTAutoScrollSupport(Component comp)
 	{
 		super();
 		component = comp;
 		init();
 	}
 	
-	private Component component;	
+	private Component component;
 	public Component getComponent() {
 		return component;
 	}
 	
-	protected void init() 
+	protected void init()
 	{
 		component.addComponentListener(resizeListener);
 		component.addMouseListener(exitListener);
@@ -64,7 +64,7 @@ extends AbstractAutoScrollSupport
 	private ComponentListener resizeListener = new ComponentAdapter()
 	{
 		@Override
-		public void componentResized(ComponentEvent evt) 
+		public void componentResized(ComponentEvent evt)
 		{
 			Component c = evt.getComponent();
 			initAutoScroll(c.getBounds());
@@ -72,22 +72,22 @@ extends AbstractAutoScrollSupport
 	};
 	
 	private MouseMotionListener moveListener = new MouseMotionAdapter()
-	{	
+	{
 		@Override
 		public void mouseMoved(MouseEvent evt) {
 			AbstractAWTAutoScrollSupport.this.mouseMoved(evt.getX(), evt.getY());
-		}	
+		}
 	};
 	
 	private MouseListener exitListener = new MouseAdapter()
-	{	
+	{
 		@Override
 		public void mouseExited(MouseEvent arg0) {
 			AbstractAWTAutoScrollSupport.this.mouseExited();
-		}	
+		}
 	};
 	@Override
-	public void dispose() 
+	public void dispose()
 	{
 		component.removeComponentListener(resizeListener);
 		component.removeMouseMotionListener(moveListener);

@@ -39,12 +39,12 @@ import org.nightlabs.editor2d.viewer.ui.event.ISelectionChangedListener;
 import org.nightlabs.editor2d.viewer.ui.event.SelectionEvent;
 import org.nightlabs.editor2d.viewer.ui.resource.Messages;
 
-public class ZoomSelectionAction 
-extends ZoomAction 
+public class ZoomSelectionAction
+extends ZoomAction
 {
 	public static final String ID = ZoomSelectionAction.class.getName();
 	
-	public ZoomSelectionAction(IZoomSupport zoomSupport, IViewer viewer) 
+	public ZoomSelectionAction(IZoomSupport zoomSupport, IViewer viewer)
 	{
 		super(zoomSupport);
 		this.viewer = viewer;
@@ -54,12 +54,12 @@ extends ZoomAction
 	protected IViewer viewer = null;
 		
 	@Override
-	public void init() 
+	public void init()
 	{
 		setId(ID);
 		setText(Messages.getString("org.nightlabs.editor2d.viewer.ui.action.ZoomSelectionAction.text")); //$NON-NLS-1$
 		setToolTipText(Messages.getString("org.nightlabs.editor2d.viewer.ui.action.ZoomSelectionAction.tooltip")); //$NON-NLS-1$
-		setImageDescriptor(SharedImages.getSharedImageDescriptor(ViewerPlugin.getDefault(), ZoomSelectionAction.class));		
+		setImageDescriptor(SharedImages.getSharedImageDescriptor(ViewerPlugin.getDefault(), ZoomSelectionAction.class));
 	}
 
 	public void zoomChanged(double zoom) {
@@ -67,24 +67,24 @@ extends ZoomAction
 	}
 
 	@Override
-	public void run() 
+	public void run()
 	{
 		Rectangle bounds = getSelectionBounds();
 		if (bounds != null) {
 			getZoomSupport().setZoomAll(false);
 			viewer.getZoomSupport().zoomTo(bounds);
 			viewer.updateCanvas();
-		}		
+		}
 	}
 	
-	protected Rectangle getSelectionBounds() 
+	protected Rectangle getSelectionBounds()
 	{
 		List<DrawComponent> selectedDrawComponents = viewer.getSelectionManager().getSelectedDrawComponents();
-		Rectangle totalBounds = null;		
+		Rectangle totalBounds = null;
 		for (Iterator<DrawComponent> it = selectedDrawComponents.iterator(); it.hasNext(); ) {
 			DrawComponent dc = it.next();
 			Rectangle bounds = dc.getBounds();
-			if (totalBounds == null) 
+			if (totalBounds == null)
 				totalBounds = bounds;
 			else
 				totalBounds = totalBounds.union(bounds);
@@ -93,10 +93,10 @@ extends ZoomAction
 	}
 	
 	protected ISelectionChangedListener selectionListener = new ISelectionChangedListener()
-	{	
-		public void selectionChanged(SelectionEvent e) 
+	{
+		public void selectionChanged(SelectionEvent e)
 		{
-			setEnabled(!e.isEmpty());				
-		}	
+			setEnabled(!e.isEmpty());
+		}
 	};
 }

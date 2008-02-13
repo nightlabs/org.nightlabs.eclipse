@@ -29,8 +29,8 @@ package org.nightlabs.editor2d.viewer.ui.swt;
 import org.eclipse.swt.widgets.Control;
 import org.nightlabs.editor2d.viewer.ui.ICanvas;
 
-public class SWTCanvasAutoScrollSupport 
-extends AbstractSWTAutoScrollSupport 
+public class SWTCanvasAutoScrollSupport
+extends AbstractSWTAutoScrollSupport
 {
 	public SWTCanvasAutoScrollSupport(Control control) {
 		super(control);
@@ -54,14 +54,14 @@ extends AbstractSWTAutoScrollSupport
 
 	@Override
 	protected void scrollLeft(int scrollStep) {
-		getCanvas().translateX(scrollStep);		
-		getCanvas().repaint();		
+		getCanvas().translateX(scrollStep);
+		getCanvas().repaint();
 	}
 
 	@Override
 	protected void scrollRight(int scrollStep) {
-		getCanvas().translateX(-scrollStep);		
-		getCanvas().repaint();		
+		getCanvas().translateX(-scrollStep);
+		getCanvas().repaint();
 	}
 
 }

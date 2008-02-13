@@ -48,11 +48,11 @@ import org.nightlabs.editor2d.util.RenderingHintsManager;
 import org.nightlabs.editor2d.viewer.ui.ViewerPlugin;
 import org.nightlabs.editor2d.viewer.ui.resource.Messages;
 
-public class RenderingPreferencePage 
+public class RenderingPreferencePage
 extends PreferencePage
 implements IWorkbenchPreferencePage
-{		
-	public RenderingPreferencePage() 
+{
+	public RenderingPreferencePage()
 	{
 		super();
 		setPreferenceStore(ViewerPlugin.getDefault().getPreferenceStore());
@@ -65,8 +65,8 @@ implements IWorkbenchPreferencePage
 //	protected Button buttonCustom;
 	
 	@Override
-	protected Control createContents(Composite parent) 
-	{		
+	protected Control createContents(Composite parent)
+	{
 		Composite comp = new XComposite(parent, SWT.NONE);
 		GridData compData = new GridData(GridData.FILL_BOTH);
 		comp.setLayoutData(compData);
@@ -85,11 +85,11 @@ implements IWorkbenchPreferencePage
 		buttonQuality.addDisposeListener(disposeListener);
 		Label labelQuality = new Label(comp, SWT.NONE);
 		labelQuality.setText(ViewerPlugin.getResourceString(Messages.getString("org.nightlabs.editor2d.viewer.ui.preferences.RenderingPreferencePage.quality"))); //$NON-NLS-1$
-		labelQuality.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));		
+		labelQuality.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		buttonSpeed = new Button(comp, SWT.RADIO);
 		buttonSpeed.addSelectionListener(buttonListener);
-		buttonSpeed.addDisposeListener(disposeListener);				
+		buttonSpeed.addDisposeListener(disposeListener);
 		Label labelSpeed = new Label(comp, SWT.NONE);
 		labelSpeed.setText(ViewerPlugin.getResourceString(Messages.getString("org.nightlabs.editor2d.viewer.ui.preferences.RenderingPreferencePage.speed")));		 //$NON-NLS-1$
 		labelSpeed.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -98,62 +98,62 @@ implements IWorkbenchPreferencePage
 		
 //		buttonCustom = new Button(comp, SWT.RADIO);
 //		buttonCustom.addSelectionListener(buttonListener);
-//		buttonCustom.addDisposeListener(disposeListener);						
+//		buttonCustom.addDisposeListener(disposeListener);
 //		Label labelCustom = new Label(comp, SWT.NONE);
-//		labelCustom.setText(ViewerPlugin.getResourceString("preferences.rendering.label.custom"));		
+//		labelCustom.setText(ViewerPlugin.getResourceString("preferences.rendering.label.custom"));
 //		labelCustom.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 				
 //		ExpandableWrapperComposite detailComp = new ExpandableWrapperComposite(parent, SWT.NONE);
 //		detailComp.setText(ViewerPlugin.getResourceString("preferences.rendering.label.details"));
 //		GridLayout detailLayout = new GridLayout(4, false);
 //		detailComp.setLayout(detailLayout);
-//		
+//
 //		createDetailEntry(parent, ViewerPlugin.getResourceString("preferences.rendering.label.antiAliasing"),
-//				ViewerPlugin.getResourceString("preferences.rendering.label.default"), 
+//				ViewerPlugin.getResourceString("preferences.rendering.label.default"),
 //				ViewerPlugin.getResourceString("preferences.rendering.label.on"),
 //				ViewerPlugin.getResourceString("preferences.rendering.label.off"));
-//		
+//
 //		createDetailEntry(parent, ViewerPlugin.getResourceString("preferences.rendering.label.textAntiAliasing"),
-//				ViewerPlugin.getResourceString("preferences.rendering.label.default"), 
+//				ViewerPlugin.getResourceString("preferences.rendering.label.default"),
 //				ViewerPlugin.getResourceString("preferences.rendering.label.on"),
 //				ViewerPlugin.getResourceString("preferences.rendering.label.off"));
 //
 //		createDetailEntry(parent, ViewerPlugin.getResourceString("preferences.rendering.label.rendering"),
-//				ViewerPlugin.getResourceString("preferences.rendering.label.default"), 
+//				ViewerPlugin.getResourceString("preferences.rendering.label.default"),
 //				ViewerPlugin.getResourceString("preferences.rendering.label.quality"),
 //				ViewerPlugin.getResourceString("preferences.rendering.label.speed"));
 				
 		return parent;
 	}
 
-	public void init(IWorkbench workbench) {}	
+	public void init(IWorkbench workbench) {}
 	
 	@Override
 	public IPreferenceStore getPreferenceStore() {
 		return ViewerPlugin.getDefault().getPreferenceStore();
 	}
 	
-//	protected void createDetailEntry(Composite parent, String entry, 
-//			String defaultString, String qualityString, String speedString) 
+//	protected void createDetailEntry(Composite parent, String entry,
+//			String defaultString, String qualityString, String speedString)
 //	{
 //		Composite comp = new Composite(parent, SWT.NONE);
 //		GridLayout compLayout = new GridLayout(7, false);
-//		
+//
 //		Label l = new Label(parent, SWT.NONE);
 //		l.setText(entry);
 //		l.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-//		
-//		Button defaultButton = new Button(parent, SWT.RADIO);		
+//
+//		Button defaultButton = new Button(parent, SWT.RADIO);
 //		Label defaultLabel = new Label(comp, SWT.NONE);
 //		defaultLabel.setText(defaultString);
-//		
+//
 //		Button qualityButton = new Button(parent, SWT.RADIO);
 //		Label qualityLabel = new Label(comp, SWT.NONE);
 //		qualityLabel.setText(qualityString);
-//		
+//
 //		Button speedButton = new Button(parent, SWT.RADIO);
 //		Label speedLabel = new Label(comp, SWT.NONE);
-//		speedLabel.setText(speedString);		
+//		speedLabel.setText(speedString);
 //	}
 	
 	protected RenderingHints renderHints = new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_DEFAULT);;
@@ -164,39 +164,39 @@ implements IWorkbenchPreferencePage
 	protected String selection = Preferences.PREFERENCE_DEFAULT;
 	
 	protected SelectionListener buttonListener = new SelectionListener()
-	{	
+	{
 		public void widgetDefaultSelected(SelectionEvent e) {
 			widgetSelected(e);
-		}	
-		public void widgetSelected(SelectionEvent e) 
+		}
+		public void widgetSelected(SelectionEvent e)
 		{
 			if (e.getSource() instanceof Button) {
 				Button b = (Button) e.getSource();
-				if (b.getSelection() == true) 
+				if (b.getSelection() == true)
 				{
 					if (b.equals(buttonDefault)) {
 						selection = Preferences.PREFERENCE_DEFAULT;
 					}
 					else if (b.equals(buttonQuality)) {
-						selection = Preferences.PREFERENCE_QUALITY;						
+						selection = Preferences.PREFERENCE_QUALITY;
 					}
 					else if (b.equals(buttonSpeed)) {
-						selection = Preferences.PREFERENCE_SPEED;						
+						selection = Preferences.PREFERENCE_SPEED;
 					}
 				}
 			}
-		}	
+		}
 	};
 	
 	protected DisposeListener disposeListener = new DisposeListener()
-	{	
+	{
 		public void widgetDisposed(DisposeEvent e) {
 			Button b = (Button) e.getSource();
 			b.removeSelectionListener(buttonListener);
-		}	
+		}
 	};
 		
-	protected void setSelection(String selection) 
+	protected void setSelection(String selection)
 	{
 		if (selection.equals(Preferences.PREFERENCE_DEFAULT)) {
 			RenderingHintsManager.setDefaultRenderMode(getRenderingHints());
@@ -204,16 +204,16 @@ implements IWorkbenchPreferencePage
 		}
 		else if (selection.equals(Preferences.PREFERENCE_QUALITY)) {
 			RenderingHintsManager.setQualityRenderMode(getRenderingHints());
-			buttonQuality.setSelection(true);			
+			buttonQuality.setSelection(true);
 		}
 		else if (selection.equals(Preferences.PREFERENCE_SPEED)) {
 			RenderingHintsManager.setSpeedRenderMode(getRenderingHints());
-			buttonSpeed.setSelection(true);			
+			buttonSpeed.setSelection(true);
 		}
 	}
 
 	@Override
-	public boolean performOk() 
+	public boolean performOk()
 	{
 		setSelection(selection);
 		getPreferenceStore().setValue(Preferences.PREFERENCE_RENDERING, selection);
@@ -224,7 +224,7 @@ implements IWorkbenchPreferencePage
 	protected void performDefaults() {
 		super.performDefaults();
 		selection = Preferences.PREFERENCE_DEFAULT;
-	}			
+	}
 	
 	protected void init() {
 		selection = Preferences.getPreferenceStore().getString(Preferences.PREFERENCE_RENDERING);

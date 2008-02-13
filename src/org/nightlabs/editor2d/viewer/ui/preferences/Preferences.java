@@ -29,7 +29,7 @@ package org.nightlabs.editor2d.viewer.ui.preferences;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.nightlabs.editor2d.viewer.ui.ViewerPlugin;
 
-public class Preferences 
+public class Preferences
 {
 	public static final String PREFERENCE_TIMER_DELAY = "TimerDelay"; //$NON-NLS-1$
 	public static final String PREFERENCE_SCROLL_STEP = "ScrollStep"; //$NON-NLS-1$
@@ -48,7 +48,7 @@ public class Preferences
 		return ViewerPlugin.getDefault().getPreferenceStore();
 	}
 	
-	public static void initDefaultValues(IPreferenceStore store) 
+	public static void initDefaultValues(IPreferenceStore store)
 	{
 		store.setDefault(PREFERENCE_BUFFER_SCALE, 2);
 		

@@ -32,7 +32,7 @@ import java.awt.geom.AffineTransform;
 import org.apache.log4j.Logger;
 import org.nightlabs.editor2d.j2d.GeneralShape;
 
-public class TransformUtil 
+public class TransformUtil
 {
 	/**
 	 * LOG4J logger used by this class
@@ -41,24 +41,24 @@ public class TransformUtil
 	
 	protected static AffineTransform at = new AffineTransform();
 	
-	public static void transformGeneralShape(GeneralShape gs, 
-			Rectangle oldBounds, Rectangle newBounds) 
+	public static void transformGeneralShape(GeneralShape gs,
+			Rectangle oldBounds, Rectangle newBounds)
 	{
 		transformGeneralShape(gs, oldBounds.x, oldBounds.y, oldBounds.width, oldBounds.height,
 		newBounds.x, newBounds.y, newBounds.width, newBounds.height, false);
-	}		
+	}
 	
-	public static void transformGeneralShape(GeneralShape gs, 
-			org.eclipse.swt.graphics.Rectangle oldBounds, 
-			org.eclipse.swt.graphics.Rectangle newBounds) 
+	public static void transformGeneralShape(GeneralShape gs,
+			org.eclipse.swt.graphics.Rectangle oldBounds,
+			org.eclipse.swt.graphics.Rectangle newBounds)
 	{
 		transformGeneralShape(gs, oldBounds.x, oldBounds.y, oldBounds.width, oldBounds.height,
 		newBounds.x, newBounds.y, newBounds.width, newBounds.height, false);
-	}		
+	}
 	
 	public static void transformGeneralShape(GeneralShape generalShape, int x1, int y1, int w1, int h1,
 	    int x2, int y2, int w2, int h2, boolean cloneGS)
-	{ 	 
+	{
 	  // TODO: if cloneGS is true return the cloned GeneralShape in a seperate Method
 	  // else return the transformed generalShape for convience
 	  GeneralShape gs;
@@ -75,17 +75,17 @@ public class TransformUtil
 	  }
 	    	  
 	  // if only a Translation is performed, just translate
-	  if (w1 == w2 && h1 == h2) 
+	  if (w1 == w2 && h1 == h2)
 	  {
 	    at.setToIdentity();
 	    at.translate(x2 - x1, y2 - y1);
 	    gs.transform(at);
 	  }
-	  // translate to origin and scale	  
-	  else 
+	  // translate to origin and scale
+	  else
 	  {
 		  double ratioX = ((double)w2) / ((double)w1);
-		  double ratioY = ((double)h2) / ((double)h1);	  
+		  double ratioY = ((double)h2) / ((double)h1);
 	    double x = x1;
 	    double y = y1;
 	    double distanceX = x - (x*ratioX);
@@ -95,48 +95,48 @@ public class TransformUtil
 	    at.scale(ratioX, ratioY);
 	    gs.transform(at);
 		  
-	    // translate back 
+	    // translate back
 	    distanceX = x2 - x1;
 	    distanceY = y2 - y1;
-	    at.setToIdentity();    
+	    at.setToIdentity();
 	    at.translate(distanceX, distanceY);
-	    gs.transform(at);	   	    
-	  }	  
+	    gs.transform(at);
+	  }
 	}
 
 	/**
 	 * 
-	 * expands a Rectangle, the center is kept constant 
+	 * expands a Rectangle, the center is kept constant
 	 * @param r the source Rectangle
 	 * @param h the horizonal expand
 	 * @param v the vertical expand
 	 * @param clone determines if the source rectangle is expanded or a cloned object is returned
-	 * @return the expanded Rectangle 
+	 * @return the expanded Rectangle
 	 */
-	public static Rectangle expand(Rectangle r, int h, int v, boolean clone) 
+	public static Rectangle expand(Rectangle r, int h, int v, boolean clone)
 	{
 		if (!clone) {
 			r.x = r.x - v;
 			r.width = r.width + v;
 			r.y = r.y - h;
 			r.height = r.y + h;
-			return r;			
+			return r;
 		}
 		else {
 			return new Rectangle(r.x - v, r.y - h, r.width + v, r.y + h);
-		}		
+		}
 	}
 	
 	/**
 	 * 
-	 * shrinks a Rectangle, the center is kept constant 
+	 * shrinks a Rectangle, the center is kept constant
 	 * @param r the source Rectangle
 	 * @param h the horizonal shrink
 	 * @param v the vertical shrink
 	 * @param clone determines if the source rectangle is shrinked or a cloned object is returned
-	 * @return the shrinked Rectangle 
-	 */	
-	public static Rectangle shrink(Rectangle r, int h, int v, boolean clone) 
+	 * @return the shrinked Rectangle
+	 */
+	public static Rectangle shrink(Rectangle r, int h, int v, boolean clone)
 	{
 		if (!clone) {
 			r.x = r.x + v;
@@ -146,7 +146,7 @@ public class TransformUtil
 			return r;
 		}
 		else {
-			return new Rectangle(r.x + v, r.width - v, r.y + h, r.height - h);			
+			return new Rectangle(r.x + v, r.width - v, r.y + h, r.height - h);
 		}
 	}
 	
@@ -170,12 +170,12 @@ public class TransformUtil
 	}
 
 	/**
-	 * returns a rectangle given in absolute coordiantes to a new rectangle in relative coordinates 
+	 * returns a rectangle given in absolute coordiantes to a new rectangle in relative coordinates
 	 * 
 	 * @param rect The Rectangle dimensions (x, y, width, height) multiplied with the given scale
 	 * @param zoom the zoom/scale-factor
 	 * @return a new scaled Rectangle
-	 */	
+	 */
 	public static Rectangle toRelative(Rectangle rect, double zoom)
 	{
 		Rectangle r = new Rectangle(rect);
@@ -186,6 +186,6 @@ public class TransformUtil
 			r.height = (int) (rect.height * zoom);
 		}
 		return r;
-	}	
+	}
 	
 }

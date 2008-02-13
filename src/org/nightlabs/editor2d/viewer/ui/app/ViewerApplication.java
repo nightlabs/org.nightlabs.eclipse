@@ -31,12 +31,12 @@ import org.nightlabs.base.ui.app.AbstractApplication;
 import org.nightlabs.base.ui.app.AbstractWorkbenchAdvisor;
 import org.nightlabs.editor2d.viewer.ui.resource.Messages;
 
-public class ViewerApplication 
-extends AbstractApplication 
+public class ViewerApplication
+extends AbstractApplication
 {
 	public static final String PLUGIN_ID = "org.nightlabs.editor2d.viewer.ui"; //$NON-NLS-1$
 
-	public String initApplicationName() {		
+	public String initApplicationName() {
 		return Messages.getString("org.nightlabs.editor2d.viewer.ui.app.ViewerApplication.application.name"); //$NON-NLS-1$
 	}
 

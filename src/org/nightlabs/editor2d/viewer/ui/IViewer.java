@@ -31,7 +31,7 @@ import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.render.RenderModeManager;
 
 public interface IViewer
-{	
+{
 	/**
 	 * 
 	 * @return the drawComponent to draw
@@ -72,7 +72,7 @@ public interface IViewer
 	 * 
 	 * @return the zoomFactor of the viewer (100% = 1.0)
 	 */
-	double getZoom();		
+	double getZoom();
 	
 	/**
 	 * 
@@ -117,7 +117,7 @@ public interface IViewer
 	* @return the SelectionManager which manages the selection of the viewer
 	* @see SelectionManager
 	*/
-	SelectionManager getSelectionManager();		
+	SelectionManager getSelectionManager();
 	
 	/**
 	 * 
@@ -127,7 +127,7 @@ public interface IViewer
 	HitTestManager getHitTestManager();
 	
 	/**
-	 * releases ressources of the viewer 
+	 * releases ressources of the viewer
 	 */
 	void dispose();
 }

@@ -30,8 +30,8 @@ import java.awt.Component;
 
 import org.nightlabs.editor2d.viewer.ui.IViewer;
 
-public interface IComponentViewer 
-extends IViewer 
+public interface IComponentViewer
+extends IViewer
 {
 	Component getComponent();
 }

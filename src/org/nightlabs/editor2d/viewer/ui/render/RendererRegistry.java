@@ -41,7 +41,7 @@ import org.nightlabs.editor2d.render.RenderModeManager;
 import org.nightlabs.editor2d.render.Renderer;
 import org.osgi.framework.Bundle;
 
-public class RendererRegistry 
+public class RendererRegistry
 extends AbstractEPProcessor
 {
 	public static final String EXTENSION_POINT_ID = "org.nightlabs.editor2d.viewer.ui.renderModeRegistry"; //$NON-NLS-1$
@@ -52,11 +52,11 @@ extends AbstractEPProcessor
 	private static final Logger logger = Logger.getLogger(RendererRegistry.class.getName());
 	
 	private static RendererRegistry _sharedInstance;
-	public static RendererRegistry sharedInstance() 
+	public static RendererRegistry sharedInstance()
 	{
 		if (_sharedInstance == null) {
 			_sharedInstance = new RendererRegistry();
-		}					
+		}
 		return _sharedInstance;
 	}
 	
@@ -84,16 +84,16 @@ extends AbstractEPProcessor
 		
 	@Override
 	public void processElement(IExtension extension, IConfigurationElement element)
-	throws Exception 
+	throws Exception
 	{
-		if (renderModeManager == null) 
+		if (renderModeManager == null)
 			renderModeManager = new RenderModeManager();
 		
-		if (element.getName().equalsIgnoreCase(ELEMENT_REGISTRY)) 
+		if (element.getName().equalsIgnoreCase(ELEMENT_REGISTRY))
 		{
 			try {
 				String mode = element.getAttribute(ATTRIBUTE_MODE);
-				String renderMode = RenderConstants.DEFAULT_MODE;				
+				String renderMode = RenderConstants.DEFAULT_MODE;
 				if (checkString(mode))
 					renderMode = mode;
 				else
@@ -101,40 +101,40 @@ extends AbstractEPProcessor
 							"DrawComponentClass "+element.getAttribute(ATTRIBUTE_DRAWCOMPONENT_CLASS) + " and " + //$NON-NLS-1$ //$NON-NLS-2$
 							"Renderer "+element.getAttribute(ATTRIBUTE_RENDERER)); //$NON-NLS-1$
 
-				String dcClassName = element.getAttribute(ATTRIBUTE_DRAWCOMPONENT_CLASS);				
+				String dcClassName = element.getAttribute(ATTRIBUTE_DRAWCOMPONENT_CLASS);
 //				Class dcClass = null;
 //				try {
 //					dcClass = Platform.getBundle(extension.getNamespaceIdentifier()).loadClass(dcClassName);
 //				} catch (ClassNotFoundException e) {
 //					logger.error("Could not load class "+dcClass+" !"); //$NON-NLS-1$ //$NON-NLS-2$
 //					return;
-//				}				
+//				}
 												
 				String name = element.getAttribute(ATTRIBUTE_NAME);
 				String description = element.getAttribute(ATTRIBUTE_DESCRIPTION);
 				String icon = element.getAttribute(ATTRIBUTE_ICON);
 				
 				RenderModeDescriptor desc = null;
-				if (checkString(name) && checkString(description) && checkString(icon)) 
+				if (checkString(name) && checkString(description) && checkString(icon))
 				{
 					Bundle bundle = Platform.getBundle(extension.getNamespaceIdentifier());
-					ImageDescriptor imgDesc = ImageDescriptor.createFromURL(bundle.getEntry(icon));					
-					desc = new RenderModeDescriptor(renderMode, name, description, 
+					ImageDescriptor imgDesc = ImageDescriptor.createFromURL(bundle.getEntry(icon));
+					desc = new RenderModeDescriptor(renderMode, name, description,
 							ImageUtil.convertToAWT(imgDesc.getImageData()));
 				}
 				else if (checkString(name) && checkString(description)) {
 					desc = new RenderModeDescriptor(renderMode, name, description);
 				}
 				else if (checkString(name)) {
-					desc = new RenderModeDescriptor(renderMode, name);					
+					desc = new RenderModeDescriptor(renderMode, name);
 				}
 				Renderer r = null;
 				if (desc != null) {
-//					r = renderModeManager.addRenderModeDescriptor(desc, dcClass);					
+//					r = renderModeManager.addRenderModeDescriptor(desc, dcClass);
 					r = renderModeManager.addRenderModeDescriptor(desc, dcClassName);
-				}				
+				}
 				if (r != null) {
-					IConfigurationElement[] children = element.getChildren(ELEMENT_RENDER_CONTEXT);				
+					IConfigurationElement[] children = element.getChildren(ELEMENT_RENDER_CONTEXT);
 					for (int i=0; i<children.length; i++) {
 						processRenderContexts(children[i], r);
 					}
@@ -143,12 +143,12 @@ extends AbstractEPProcessor
 				throw new EPProcessorException(e);
 			}
 		}
-	}	
+	}
 	
-	protected void processRenderContexts(IConfigurationElement element, Renderer r) 
+	protected void processRenderContexts(IConfigurationElement element, Renderer r)
 	throws EPProcessorException
 	{
-		if (element.getName().equalsIgnoreCase(ELEMENT_RENDER_CONTEXT)) 
+		if (element.getName().equalsIgnoreCase(ELEMENT_RENDER_CONTEXT))
 		{
 			try {
 				String renderContextType = element.getAttribute(ATTRIBUTE_RENDER_CONTEXT_TYPE);
@@ -164,13 +164,13 @@ extends AbstractEPProcessor
 			} catch (Exception e) {
 				throw new EPProcessorException(e);
 			}
-		}		
+		}
 	}
 	
 	private RenderModeManager renderModeManager;
-	public RenderModeManager getRenderModeManager() 
+	public RenderModeManager getRenderModeManager()
 	{
-		checkProcessing();		
+		checkProcessing();
 //		renderModeManager.logRegisteredRenderer(RenderConstants.DEFAULT_MODE);
 		
 		return renderModeManager;

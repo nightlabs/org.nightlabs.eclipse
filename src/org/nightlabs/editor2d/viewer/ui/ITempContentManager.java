@@ -28,7 +28,7 @@ package org.nightlabs.editor2d.viewer.ui;
 
 import java.util.Collection;
 
-public interface ITempContentManager 
+public interface ITempContentManager
 {
 	/**
 	 * 
@@ -57,7 +57,7 @@ public interface ITempContentManager
 	/**
 	 * clears the Temp Content
 	 */
-	void clear();	
+	void clear();
 	
 	/**
 	 * 

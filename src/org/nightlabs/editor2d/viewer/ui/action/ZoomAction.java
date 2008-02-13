@@ -29,7 +29,7 @@ package org.nightlabs.editor2d.viewer.ui.action;
 import org.eclipse.jface.action.Action;
 import org.nightlabs.editor2d.viewer.ui.IZoomSupport;
 
-public abstract class ZoomAction 
+public abstract class ZoomAction
 extends Action
 implements IZoomAction
 {
@@ -42,19 +42,19 @@ implements IZoomAction
 		super(text, style);
 		init();
 		setZoomSupport(zoomSupport);
-	}	
+	}
 
 	public ZoomAction(IZoomSupport zoomSupport) {
 		super();
 		init();
 		setZoomSupport(zoomSupport);
-	}	
+	}
 	
 	protected IZoomSupport zoomSupport = null;
 	public IZoomSupport getZoomSupport() {
 		return zoomSupport;
 	}
-	public void setZoomSupport(IZoomSupport zoomSupport) 
+	public void setZoomSupport(IZoomSupport zoomSupport)
 	{
 //		this.zoomSupport.removeZoomListener(this);
 		this.zoomSupport = zoomSupport;

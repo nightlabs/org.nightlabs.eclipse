@@ -26,7 +26,7 @@
 
 package org.nightlabs.editor2d.viewer.ui;
 
-public class BufferManager 
+public class BufferManager
 {
 	protected BufferManager() {
 		super();

@@ -26,7 +26,7 @@
 
 package org.nightlabs.editor2d.viewer.ui.event;
 
-public interface MouseListener 
+public interface MouseListener
 {
 	void mousePressed(MouseEvent me);
 	void mouseReleased(MouseEvent me);

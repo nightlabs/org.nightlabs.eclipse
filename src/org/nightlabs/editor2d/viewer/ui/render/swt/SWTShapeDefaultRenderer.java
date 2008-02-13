@@ -17,17 +17,17 @@ import org.nightlabs.editor2d.viewer.ui.util.AWTSWTUtil;
  * @author Daniel.Mazurek <at> NightLabs <dot> de
  *
  */
-public class SWTShapeDefaultRenderer 
-extends SWTBaseRenderer 
+public class SWTShapeDefaultRenderer
+extends SWTBaseRenderer
 {
 
-	public SWTShapeDefaultRenderer() 
+	public SWTShapeDefaultRenderer()
 	{
 		super();
 	}
 
 	@Override
-	public void paint(DrawComponent dc, GC g) 
+	public void paint(DrawComponent dc, GC g)
 	{
     ShapeDrawComponent sdc = (ShapeDrawComponent) dc;
     Path path = convertShape(sdc.getGeneralShape());
@@ -37,23 +37,23 @@ extends SWTBaseRenderer
     }
     g.setForeground(ColorUtil.toSWTColor(sdc.getLineColor()));
 //    g.setLineWidth(sdc.getLineWidth());
-    g.setLineWidth((int)sdc.getLineWidth());    
+    g.setLineWidth((int)sdc.getLineWidth());
     g.setLineStyle(convertLineStyle(sdc.getLineStyle()));
-    g.drawPath(path);   
+    g.drawPath(path);
 	}
 	
-	protected Path convertShape(Shape s) 
+	protected Path convertShape(Shape s)
 	{
 		return AWTSWTUtil.convertShape(s, null, null);
 	}
 	 
-//	protected int convertLineStyle(int lineStyle) 
+//	protected int convertLineStyle(int lineStyle)
 //	{
 //		return lineStyle;
 //	}
-	protected int convertLineStyle(LineStyle lineStyle) 
+	protected int convertLineStyle(LineStyle lineStyle)
 	{
-		switch (lineStyle) 
+		switch (lineStyle)
 		{
 			case SOLID:
 				return 1;
@@ -68,6 +68,6 @@ extends SWTBaseRenderer
 			default:
 				return 1;
 		}
-	}	
+	}
 	
 }

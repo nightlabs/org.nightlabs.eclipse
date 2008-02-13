@@ -36,34 +36,34 @@ import java.awt.event.MouseMotionListener;
 import org.nightlabs.editor2d.viewer.ui.AbstractMouseManager;
 import org.nightlabs.editor2d.viewer.ui.IViewer;
 
-public class AWTMouseManager 
-extends AbstractMouseManager 
+public class AWTMouseManager
+extends AbstractMouseManager
 {
-	public AWTMouseManager(IViewer viewer, Component c) 
+	public AWTMouseManager(IViewer viewer, Component c)
 	{
 		super(viewer);
 		this.component = c;
 		init();
 	}
 	
-	protected Component component = null;	
+	protected Component component = null;
 	public Component getComponent() {
 		return component;
 	}
 	
-	protected void init() 
+	protected void init()
 	{
 		component.addMouseListener(mouseListener);
 		component.addMouseMotionListener(mouseMotionListener);
 	}
 	
 	protected MouseMotionListener mouseMotionListener = new MouseMotionAdapter()
-	{	
+	{
 		@Override
-		public void mouseMoved(MouseEvent evt) 
+		public void mouseMoved(MouseEvent evt)
 		{
 			x = evt.getX();
-			y = evt.getY();			
+			y = evt.getY();
 			fireMouseChanged();
 			fireMouseMoved(x, y, evt.getButton());
 		}
@@ -72,9 +72,9 @@ extends AbstractMouseManager
 		public void mouseDragged(MouseEvent evt)
 		{
 			x = evt.getX();
-			y = evt.getY();			
+			y = evt.getY();
 			fireMouseChanged();
-			fireMouseMoved(x, y, evt.getButton());			
+			fireMouseMoved(x, y, evt.getButton());
 		}
 	};
 	
@@ -88,7 +88,7 @@ extends AbstractMouseManager
 		@Override
 		public void mouseReleased(MouseEvent me) {
 			fireMouseReleased(me.getX(), me.getY(), me.getButton());
-		}		
+		}
 	};
 	
 }

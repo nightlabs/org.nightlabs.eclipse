@@ -30,8 +30,8 @@ import java.awt.Component;
 
 import org.nightlabs.editor2d.viewer.ui.ICanvas;
 
-public class AWTCanvasAutoScrollSupport 
-extends AbstractAWTAutoScrollSupport 
+public class AWTCanvasAutoScrollSupport
+extends AbstractAWTAutoScrollSupport
 {
 	public AWTCanvasAutoScrollSupport(Component comp) {
 		super(comp);
@@ -43,26 +43,26 @@ extends AbstractAWTAutoScrollSupport
 	
 	@Override
 	protected void scrollDown(int scrollStep) {
-		getCanvas().translateY(scrollStep);		
+		getCanvas().translateY(scrollStep);
 		getCanvas().repaint();
 	}
 
 	@Override
 	protected void scrollUp(int scrollStep) {
-		getCanvas().translateY(-scrollStep);		
+		getCanvas().translateY(-scrollStep);
 		getCanvas().repaint();
 	}
 
 	@Override
-	protected void scrollLeft(int scrollStep) {		
-		getCanvas().translateX(-scrollStep);		
-		getCanvas().repaint();		
+	protected void scrollLeft(int scrollStep) {
+		getCanvas().translateX(-scrollStep);
+		getCanvas().repaint();
 	}
 
 	@Override
-	protected void scrollRight(int scrollStep) {		
-		getCanvas().translateX(scrollStep);		
-		getCanvas().repaint();		
+	protected void scrollRight(int scrollStep) {
+		getCanvas().translateX(scrollStep);
+		getCanvas().repaint();
 	}
 
 }

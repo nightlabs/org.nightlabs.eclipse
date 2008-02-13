@@ -18,7 +18,7 @@ import org.nightlabs.editor2d.j2d.GeneralShape;
  * @author Daniel.Mazurek <at> NightLabs <dot> de
  *
  */
-public class ToolUtil 
+public class ToolUtil
 {
 
 	protected ToolUtil() {
@@ -37,15 +37,15 @@ public class ToolUtil
 	 * @return a feedback DrawComponent with the given look, if the DrawComponent is null,
 	 * null is returned
 	 */
-	public static DrawComponent createFeedbackDrawComponent(DrawComponent dc, Color lineColor, 
+	public static DrawComponent createFeedbackDrawComponent(DrawComponent dc, Color lineColor,
 //			int lineWidth, boolean fill, Color fillColor, int lineStyle)
-			int lineWidth, boolean fill, Color fillColor, LineStyle lineStyle)			
+			int lineWidth, boolean fill, Color fillColor, LineStyle lineStyle)
 	{
-		if (dc != null) 
+		if (dc != null)
 		{
 			ShapeDrawComponent sdc = null;
 			if (dc instanceof ShapeDrawComponent) {
-				ShapeDrawComponent original = (ShapeDrawComponent) dc; 
+				ShapeDrawComponent original = (ShapeDrawComponent) dc;
 				sdc = new ShapeDrawComponentImpl();
 				sdc.setGeneralShape((GeneralShape)original.getGeneralShape().clone());
 			}
@@ -58,10 +58,10 @@ public class ToolUtil
 			sdc.setFill(fill);
 			sdc.setLineColor(lineColor);
 			sdc.setFillColor(fillColor);
-			return sdc;					
+			return sdc;
 		}
 		return null;
-	}		
+	}
 	
 	/**
 	 * creates not filled Feedback DrawComponent with the given lineColor
@@ -76,7 +76,7 @@ public class ToolUtil
 		Color fillColor = Color.RED;
 		if (dc instanceof ShapeDrawComponent)
 			fillColor = ((ShapeDrawComponent)dc).getFillColor();
-		return createFeedbackDrawComponent(dc, lineColor, 10, false, fillColor, LineStyle.SOLID);			
+		return createFeedbackDrawComponent(dc, lineColor, 10, false, fillColor, LineStyle.SOLID);
 	}
 	
 	/**
@@ -92,8 +92,8 @@ public class ToolUtil
 		Color fillColor = Color.RED;
 		if (dc instanceof ShapeDrawComponent)
 			fillColor = ((ShapeDrawComponent)dc).getFillColor();
-		return createFeedbackDrawComponent(dc, lineColor, lineWidth, false, fillColor, LineStyle.SOLID);			
-	}	
+		return createFeedbackDrawComponent(dc, lineColor, lineWidth, false, fillColor, LineStyle.SOLID);
+	}
 	
 	/**
 	 * creates not filled Feedback DrawComponent with the given lineColor
@@ -105,9 +105,9 @@ public class ToolUtil
 	 * @return a feedback DrawComponent with the given look, if the DrawComponent is null,
 	 * null is returned
 	 */
-	public static DrawComponent createFeedbackDrawComponent(DrawComponent dc, Color lineColor, 
-			int lineWidth, Color fillColor)	
+	public static DrawComponent createFeedbackDrawComponent(DrawComponent dc, Color lineColor,
+			int lineWidth, Color fillColor)
 	{
-		return createFeedbackDrawComponent(dc, lineColor, lineWidth, false, fillColor, LineStyle.SOLID);			
-	}		
+		return createFeedbackDrawComponent(dc, lineColor, lineWidth, false, fillColor, LineStyle.SOLID);
+	}
 }

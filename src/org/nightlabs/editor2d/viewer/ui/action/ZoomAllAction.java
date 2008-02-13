@@ -32,8 +32,8 @@ import org.nightlabs.editor2d.viewer.ui.IZoomSupport;
 import org.nightlabs.editor2d.viewer.ui.ViewerPlugin;
 import org.nightlabs.editor2d.viewer.ui.resource.Messages;
 
-public class ZoomAllAction 
-extends ZoomAction 
+public class ZoomAllAction
+extends ZoomAction
 {
 	/**
 	 * LOG4J logger used by this class
@@ -42,19 +42,19 @@ extends ZoomAction
 
 	public static final String ID = ZoomAllAction.class.getName();
 	
-	public ZoomAllAction(IZoomSupport zoomSupport) 
+	public ZoomAllAction(IZoomSupport zoomSupport)
 	{
 		super(zoomSupport);
 		this.zoom = zoomSupport.getZoom();
 	}
 
 	@Override
-	public void init() 
+	public void init()
 	{
 		setId(ID);
 		setText(Messages.getString("org.nightlabs.editor2d.viewer.ui.action.ZoomAllAction.text")); //$NON-NLS-1$
 		setToolTipText(Messages.getString("org.nightlabs.editor2d.viewer.ui.action.ZoomAllAction.tooltip")); //$NON-NLS-1$
-		setImageDescriptor(SharedImages.getSharedImageDescriptor(ViewerPlugin.getDefault(), ZoomAllAction.class));		
+		setImageDescriptor(SharedImages.getSharedImageDescriptor(ViewerPlugin.getDefault(), ZoomAllAction.class));
 	}
 
 	double zoom = 1.0d;
@@ -63,7 +63,7 @@ extends ZoomAction
 	}
 	
 	@Override
-	public void run() 
+	public void run()
 	{
 		getZoomSupport().zoomAll();
 	}

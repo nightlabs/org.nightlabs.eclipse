@@ -64,60 +64,60 @@ import org.nightlabs.editor2d.render.StringRenderer;
 import org.nightlabs.editor2d.viewer.ui.ViewerPlugin;
 import org.nightlabs.editor2d.viewer.ui.resource.Messages;
 
-public class RenderModeContributionItem 
+public class RenderModeContributionItem
 extends XContributionItem
 {
-	public static final String ID = RenderModeContributionItem.class.getName();		
+	public static final String ID = RenderModeContributionItem.class.getName();
 	private String initString = "RenderMode TEST"; //$NON-NLS-1$
 	private Button showString;
-	private Button showFillColor;	
-	private XCombo combo;	
-	private ToolItem toolitem;	
-	private IWorkbenchPage page;	
-	private Map<String, Integer> entry2Index = new HashMap<String, Integer>();	
+	private Button showFillColor;
+	private XCombo combo;
+	private ToolItem toolitem;
+	private IWorkbenchPage page;
+	private Map<String, Integer> entry2Index = new HashMap<String, Integer>();
 	private Map<Integer, String> index2RenderMode = new HashMap<Integer, String>();
   private Map<String, String> string2RenderMode = new HashMap<String, String>();
   private Map<String, String> renderMode2String = new HashMap<String, String>();
 	private RenderModeManager renderModeMan;
   private Collection<Renderer> currentRenderers = null;
   
-	public RenderModeContributionItem(IWorkbenchPage page) 
+	public RenderModeContributionItem(IWorkbenchPage page)
 	{
 		super(ID);
 		this.page = page;
 		this.page.addPartListener(partListener);
 	}
 		
-	public RenderModeContributionItem(RenderModeManager renderModeMan) 
-	{		
-		super(ID);		
+	public RenderModeContributionItem(RenderModeManager renderModeMan)
+	{
+		super(ID);
 		setRenderModeMan(renderModeMan);
 	}
 	
 	private IPartListener partListener = new IPartListener()
 	{
-		public void partActivated(IWorkbenchPart part) 
+		public void partActivated(IWorkbenchPart part)
 		{
 		  Object adapter = part.getAdapter(RenderModeManager.class);
 		  if (adapter != null && adapter instanceof RenderModeManager) {
 		  	setRenderModeMan((RenderModeManager)adapter);
 		  }
-		}		
+		}
 		public void partOpened(IWorkbenchPart part) {
 			
-		}	
+		}
 		public void partDeactivated(IWorkbenchPart part) {
 			
-		}	
+		}
 		public void partClosed(IWorkbenchPart part) {
 			
-		}	
+		}
 		public void partBroughtToTop(IWorkbenchPart part) {
 			
-		}	
-	};	
+		}
+	};
 			
-  protected void refresh(boolean repopulateCombo) 
+  protected void refresh(boolean repopulateCombo)
   {
   	if (combo == null || combo.isDisposed())
   		return;
@@ -128,29 +128,29 @@ extends XContributionItem
 			showFillColor.setEnabled(false);
 		}
 		
-		if (renderModeMan != null) 
+		if (renderModeMan != null)
 		{
 			checkRenderers(getCurrentRenderers());
 			
-			if (repopulateCombo) 
+			if (repopulateCombo)
 			{
 				combo.remove(0);
 				populateMaps(renderModeMan);
 				int counter = 0;
-				for (Iterator<String> it = string2RenderMode.keySet().iterator(); it.hasNext(); ) 
-				{				
-					String entry = it.next(); 
+				for (Iterator<String> it = string2RenderMode.keySet().iterator(); it.hasNext(); )
+				{
+					String entry = it.next();
 					combo.add(null, entry, counter);
 					entry2Index.put(entry, counter);
 					index2RenderMode.put(counter, getRenderMode(entry));
 					counter++;
-				}				
-			}			
+				}
+			}
 			String currentRenderMode = renderModeMan.getCurrentRenderMode();
 			String entry = getEntry(currentRenderMode);
 			combo.select(getIndex(entry));
 			combo.setEnabled(true);
-		} 
+		}
   }
     
   /**
@@ -159,11 +159,11 @@ extends XContributionItem
    * @return int The width required
    */
   @Override
-	protected int computeWidth(Control control) 
+	protected int computeWidth(Control control)
   {
   	int width = control.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x;
   	return width;
-  }  
+  }
   
   /**
    * Creates and returns the control for this contribution item
@@ -172,7 +172,7 @@ extends XContributionItem
    * @param parent the parent composite
    * @return the new control
    */
-  protected Control createControl(Composite parent) 
+  protected Control createControl(Composite parent)
   {
   	Composite comp = new XComposite(parent, SWT.NONE, LayoutMode.TIGHT_WRAPPER);
   	GridLayout layout = new GridLayout(3, false);
@@ -182,12 +182,12 @@ extends XContributionItem
 		layout.marginLeft = 0;
 		layout.marginRight = 0;
 		layout.marginTop = 0;
-		layout.marginBottom = 0;  	
+		layout.marginBottom = 0;
   	comp.setLayout(layout);
   	
   	combo = new XCombo(comp, SWT.DROP_DOWN | SWT.BORDER);
   	combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-  	combo.addSelectionListener(comboSelectionListener);  			
+  	combo.addSelectionListener(comboSelectionListener);
   	combo.addFocusListener(comboFocusListener);
   	combo.addDisposeListener(comboDisposeListener);
   	
@@ -212,12 +212,12 @@ extends XContributionItem
   	refresh(true);
   	  	
   	return comp;
-  }  
+  }
   		
 	public RenderModeManager getRenderModeMan() {
 		return renderModeMan;
 	}
-	public void setRenderModeMan(RenderModeManager rm) 
+	public void setRenderModeMan(RenderModeManager rm)
 	{
   	if (renderModeMan == rm)
   		return;
@@ -228,7 +228,7 @@ extends XContributionItem
   	refresh(true);
 
   	if (renderModeMan != null)
-  		renderModeMan.addRenderModeListener(renderModeListener);		
+  		renderModeMan.addRenderModeListener(renderModeListener);
 	}
 	
 	 /**
@@ -243,12 +243,12 @@ extends XContributionItem
    * @param index Index
    */
   @Override
-	public void fill(ToolBar parent, int index) 
+	public void fill(ToolBar parent, int index)
   {
   	toolitem = new ToolItem(parent, SWT.SEPARATOR, index);
   	Control control = createControl(parent);
-  	toolitem.setControl(control);	
-  }  
+  	toolitem.setControl(control);
+  }
   
   /**
    * The control item implementation of this <code>IContributionItem</code>
@@ -273,13 +273,13 @@ extends XContributionItem
   @Override
 	public final void fill(Menu parent, int index) {
   	Assert.isTrue(false, "Can't add a control to a menu");//$NON-NLS-1$
-  } 
+  }
   
   /**
    * @see org.eclipse.jface.action.ContributionItem#dispose()
    */
   @Override
-	public void dispose() 
+	public void dispose()
   {
   	if (partListener != null && page != null)
   		page.removePartListener(partListener);
@@ -289,14 +289,14 @@ extends XContributionItem
   		renderModeMan = null;
   	}
   	if (combo != null) {
-    	combo = null;  		
+    	combo = null;
   	}
   	partListener = null;
-  }  
+  }
     
-  protected void populateMaps(RenderModeManager rmm) 
+  protected void populateMaps(RenderModeManager rmm)
   {
-  	for (Iterator<String> it = rmm.getRenderModes().iterator(); it.hasNext(); ) 
+  	for (Iterator<String> it = rmm.getRenderModes().iterator(); it.hasNext(); )
   	{
   		String renderMode = it.next();
   		RenderModeDescriptor desc = rmm.getRenderModeDescriptor(renderMode);
@@ -311,7 +311,7 @@ extends XContributionItem
   	}
   }
   
-  protected String getRenderMode(String entry) 
+  protected String getRenderMode(String entry)
   {
   	String renderMode = string2RenderMode.get(entry);
   	return renderMode;
@@ -321,17 +321,17 @@ extends XContributionItem
   	return renderMode2String.get(renderMode);
   }
   
-  protected int getIndex(String entry) 
+  protected int getIndex(String entry)
   {
   	Integer i = entry2Index.get(entry);
   	if (i != null)
     	return i.intValue();
   	else
-  		return 0;	 
+  		return 0;
   }
   
   protected String getRenderMode(int index) {
-  	return index2RenderMode.get(index); 
+  	return index2RenderMode.get(index);
   }
    
   protected Collection<Renderer> getCurrentRenderers() {
@@ -339,92 +339,92 @@ extends XContributionItem
   }
   
 	private RenderModeListener renderModeListener = new RenderModeListener()
-	{	
+	{
 		public void renderModeChanges(String renderMode) {
 			refresh(false);
 			currentRenderers = renderModeMan.getRenderers(renderMode);
-		}	
+		}
 	};
 	
 	private SelectionListener comboSelectionListener = new SelectionListener()
 	{
 		public void widgetDefaultSelected(SelectionEvent e) {
 			widgetSelected(e);
-		}	
-		public void widgetSelected(SelectionEvent e) 
+		}
+		public void widgetSelected(SelectionEvent e)
 		{
 			int index = combo.getSelectionIndex();
 			String renderMode = getRenderMode(index);
 			renderModeMan.setCurrentRenderMode(renderMode);
-		}	
+		}
 	};
 	
 	private FocusListener comboFocusListener = new FocusListener()
-	{	
+	{
 		public void focusLost(FocusEvent e) {
 			refresh(false);
-		}	
+		}
 		public void focusGained(FocusEvent e) {
 			// do nothing
-		}	
+		}
 	};
 	
 	private DisposeListener comboDisposeListener = new DisposeListener()
-	{	
-		public void widgetDisposed(DisposeEvent e) 
+	{
+		public void widgetDisposed(DisposeEvent e)
 		{
   		combo.removeSelectionListener(comboSelectionListener);
-  		combo.removeFocusListener(comboFocusListener);			
-		}	
-	};	
+  		combo.removeFocusListener(comboFocusListener);
+		}
+	};
 
 	private DisposeListener showStringDisposeListener = new DisposeListener()
-	{	
+	{
 		public void widgetDisposed(DisposeEvent e) {
 			showString.removeSelectionListener(showStringSelectionListener);
-		}	
+		}
 	};
 	
 	private DisposeListener showFillColorDisposeListener = new DisposeListener()
-	{	
+	{
 		public void widgetDisposed(DisposeEvent e) {
 			showFillColor.removeSelectionListener(showShapeSelectionListener);
-		}	
+		}
 	};
 		
 	private SelectionListener showStringSelectionListener = new SelectionListener()
-	{	
+	{
 		public void widgetDefaultSelected(SelectionEvent e) {
 			widgetSelected(e);
-		}	
+		}
 		public void widgetSelected(SelectionEvent e) {
 			Button b = (Button) e.getSource();
 			boolean selection = b.getSelection();
 			setStringRenderer(getCurrentRenderers(), selection);
-		}	
+		}
 	};
 	
 	private SelectionListener showShapeSelectionListener = new SelectionListener()
-	{	
+	{
 		public void widgetDefaultSelected(SelectionEvent e) {
 			widgetSelected(e);
-		}	
+		}
 		public void widgetSelected(SelectionEvent e) {
 			Button b = (Button) e.getSource();
 			boolean selection = b.getSelection();
 			setShapeRenderer(getCurrentRenderers(), selection);
-		}	
-	};	
+		}
+	};
 	
-	protected void setStringRenderer(Collection<Renderer> renderer, boolean showString) 
+	protected void setStringRenderer(Collection<Renderer> renderer, boolean showString)
 	{
-		if (renderer != null) 
+		if (renderer != null)
 		{
 			String renderContextType = renderModeMan.getCurrentRenderContextType();
 			for (Iterator<Renderer> it = renderer.iterator(); it.hasNext(); ) {
 				Renderer r = it.next();
 				RenderContext rc = r.getRenderContext(renderContextType);
-				if (rc instanceof StringRenderer) {				
+				if (rc instanceof StringRenderer) {
 					StringRenderer stringRenderer = (StringRenderer) rc;
 					stringRenderer.setShowString(showString);
 				}
@@ -433,9 +433,9 @@ extends XContributionItem
 		}
 	}
 
-	protected void setShapeRenderer(Collection<Renderer> renderer, boolean showFillColor) 
+	protected void setShapeRenderer(Collection<Renderer> renderer, boolean showFillColor)
 	{
-		if (renderer != null) 
+		if (renderer != null)
 		{
 			String renderContextType = renderModeMan.getCurrentRenderContextType();
 			for (Iterator<Renderer> it = renderer.iterator(); it.hasNext(); ) {
@@ -444,15 +444,15 @@ extends XContributionItem
 				if (rc instanceof ShapeRenderer) {
 					ShapeRenderer shapeRenderer = (ShapeRenderer) rc;
 					shapeRenderer.setShowFillColor(showFillColor);
-				}									
+				}
 			}
 			updateViewer();
 		}
 	}
 		
-	protected void checkRenderers(Collection<Renderer> renderer) 
+	protected void checkRenderers(Collection<Renderer> renderer)
 	{
-		if (renderer != null) 
+		if (renderer != null)
 		{
 			boolean stringRendererContained = false;
 			boolean shapeRendererContained = false;
@@ -461,15 +461,15 @@ extends XContributionItem
 			for (Iterator<Renderer> it = renderer.iterator(); it.hasNext(); ) {
 				Renderer r = it.next();
 				Object renderContext = r.getRenderContext(renderModeMan.getCurrentRenderContextType());
-				if (renderContext instanceof ShapeRenderer) {				
+				if (renderContext instanceof ShapeRenderer) {
 					ShapeRenderer shapeRenderer = (ShapeRenderer) renderContext;
 					showFillColorActive = shapeRenderer.isShowFillColor();
-					shapeRendererContained = true;					
+					shapeRendererContained = true;
 				}
-				if (renderContext instanceof StringRenderer) {				
+				if (renderContext instanceof StringRenderer) {
 					StringRenderer stringRenderer = (StringRenderer) renderContext;
 					showStringActive = stringRenderer.isShowString();
-					stringRendererContained = true;					
+					stringRendererContained = true;
 				}
 			}
 			showFillColor.setEnabled(shapeRendererContained);
@@ -479,7 +479,7 @@ extends XContributionItem
 			showFillColor.removeSelectionListener(showShapeSelectionListener);
 			showString.removeSelectionListener(showStringSelectionListener);
 			
-			showFillColor.setSelection(showFillColorActive);			
+			showFillColor.setSelection(showFillColorActive);
 			showString.setSelection(showStringActive);
 			
 			showFillColor.addSelectionListener(showShapeSelectionListener);
@@ -487,7 +487,7 @@ extends XContributionItem
 		}
 	}
 		
-	protected void updateViewer() 
+	protected void updateViewer()
 	{
 		renderModeMan.setCurrentRenderMode(renderModeMan.getCurrentRenderMode());
 	}

@@ -11,10 +11,10 @@ import org.nightlabs.editor2d.viewer.ui.resource.Messages;
  * @author Daniel.Mazurek <at> NightLabs <dot> de
  *
  */
-public class SelectToolEntry 
-extends AbstractToolEntry 
+public class SelectToolEntry
+extends AbstractToolEntry
 {
-	public SelectToolEntry() 
+	public SelectToolEntry()
 	{
 		super();
 		setName(Messages.getString("org.nightlabs.editor2d.viewer.ui.tool.SelectToolEntry.name.select")); //$NON-NLS-1$

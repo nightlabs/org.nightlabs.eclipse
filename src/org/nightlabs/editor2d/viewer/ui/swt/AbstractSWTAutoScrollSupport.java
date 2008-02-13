@@ -53,58 +53,58 @@ extends AbstractAutoScrollSupport
 		return control;
 	}
 	
-	public AbstractSWTAutoScrollSupport(Control control) 
+	public AbstractSWTAutoScrollSupport(Control control)
 	{
 		super();
 		this.control = control;
 		init();
 	}
 	
-	protected void init() 
+	protected void init()
 	{
 		control.addControlListener(controlSizeListener);
-		control.addMouseMoveListener(autoScrollListener);	
+		control.addMouseMoveListener(autoScrollListener);
 		control.addMouseTrackListener(mouseTrackListener);
 		control.addDisposeListener(disposeListener);
 		initAutoScroll(GeomUtil.toAWTRectangle(control.getBounds()));
 	}
 	
 	protected DisposeListener disposeListener = new DisposeListener()
-	{	
-		public void widgetDisposed(DisposeEvent e) 
+	{
+		public void widgetDisposed(DisposeEvent e)
 		{
 			control.removeControlListener(controlSizeListener);
 			control.removeMouseMoveListener(autoScrollListener);
 			control.removeMouseTrackListener(mouseTrackListener);
 			stopTimers();
-		}	
+		}
 	};
 	
 	protected ControlListener controlSizeListener = new ControlListener()
-	{	
-		public void controlResized(ControlEvent evt) 
+	{
+		public void controlResized(ControlEvent evt)
 		{
 			logger.debug("Control Resized!"); //$NON-NLS-1$
 			Control c = (Control) evt.getSource();
 			initAutoScroll(GeomUtil.toAWTRectangle(c.getBounds()));
-		}	
+		}
 		public void controlMoved(ControlEvent arg0) {
 			
-		}	
-	};	
+		}
+	};
 		
 	protected MouseMoveListener autoScrollListener = new MouseMoveListener()
-	{	
-		public void mouseMove(MouseEvent e) 
+	{
+		public void mouseMove(MouseEvent e)
 		{
 			mouseMoved(e.x, e.y);
-		}	
+		}
 	};
 		
 	protected MouseTrackListener mouseTrackListener = new MouseTrackAdapter()
-	{	
+	{
 		@Override
-		public void mouseExit(MouseEvent e) 
+		public void mouseExit(MouseEvent e)
 		{
 			mouseExited();
 		}
@@ -112,51 +112,51 @@ extends AbstractAutoScrollSupport
 		@Override
 		public void mouseEnter(MouseEvent e) {
 			super.mouseEnter(e);
-		}	
+		}
 	};
 	
 	@Override
-	protected void doScrollDown(final int scrollStep) 
+	protected void doScrollDown(final int scrollStep)
 	{
 		Display.getDefault().asyncExec(new Runnable()
-		{		
+		{
 			public void run() {
 				scrollDown(scrollStep);
-			}		
-		}); 		
+			}
+		});
 	}
 	
 	@Override
-	protected void doScrollUp(final int scrollStep) 
+	protected void doScrollUp(final int scrollStep)
 	{
 		Display.getDefault().asyncExec(new Runnable()
-		{		
+		{
 			public void run() {
 				scrollUp(scrollStep);
-			}		
-		}); 		
+			}
+		});
 	}
 
 	@Override
-	protected void doScrollLeft(final int scrollStep) 
+	protected void doScrollLeft(final int scrollStep)
 	{
 		Display.getDefault().asyncExec(new Runnable()
-		{		
+		{
 			public void run() {
 				scrollLeft(scrollStep);
-			}		
-		}); 		
+			}
+		});
 	}
 
 	@Override
-	protected void doScrollRight(final int scrollStep) 
+	protected void doScrollRight(final int scrollStep)
 	{
 		Display.getDefault().asyncExec(new Runnable()
-		{		
+		{
 			public void run() {
 				scrollRight(scrollStep);
-			}		
-		}); 		
+			}
+		});
 	}
 			
 	@Override
@@ -166,5 +166,5 @@ extends AbstractAutoScrollSupport
 	@Override
 	protected abstract void scrollLeft(int scrollStep);
 	@Override
-	protected abstract void scrollRight(int scrollStep); 
+	protected abstract void scrollRight(int scrollStep);
 }

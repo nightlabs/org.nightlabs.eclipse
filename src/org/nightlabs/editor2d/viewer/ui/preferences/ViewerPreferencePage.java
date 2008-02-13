@@ -36,7 +36,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.nightlabs.editor2d.viewer.ui.resource.Messages;
 
-public class ViewerPreferencePage 
+public class ViewerPreferencePage
 extends PreferencePage
 implements IWorkbenchPreferencePage
 {
@@ -49,6 +49,6 @@ implements IWorkbenchPreferencePage
 	}
 
 	public void init(IWorkbench workbench) {
-		noDefaultAndApplyButton();	
+		noDefaultAndApplyButton();
 	}
 }

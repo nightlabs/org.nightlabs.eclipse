@@ -36,7 +36,7 @@ public interface IMouseManager
 {
 	/**
 	 * 
-	 * @return the relative X-Position of the Mouse, 
+	 * @return the relative X-Position of the Mouse,
 	 * based on the zoomFactor
 	 * @see IZoomSupport
 	 */
@@ -47,7 +47,7 @@ public interface IMouseManager
 	 * @return the relative Y-Position of the Mouse
 	 * based on the zoomFactor
 	 * @see IZoomSupport
-	 *  
+	 * 
 	 */
 	int getRelativeY();
 	
@@ -66,7 +66,7 @@ public interface IMouseManager
 	/**
 	 * 
 	 * @return the absolute Y-Position of the Mouse
-	 */	
+	 */
 	int getAbsoluteY();
 	
 	/**
@@ -76,16 +76,16 @@ public interface IMouseManager
 	Point getAbsolutePoint();
 	
 //	/**
-//	 * 
+//	 *
 //	 * @return the IZoomListener of the MouseManager
 //	 */
 //	IZoomListener getZoomListener();
 	
 	/**
 	 * adds an IMouseChangedListener which will be notified of
-	 * all mouseMovements 
+	 * all mouseMovements
 	 * @param l the IMouseChangedListener to add
-	 *  
+	 * 
 	 */
 	void addMouseChangedListener(IMouseChangedListener l);
 	
@@ -128,16 +128,16 @@ public interface IMouseManager
 //	 * @param me the MouseEvent
 //	 */
 //	void mouseMoved(MouseEvent me);
-//	
+//
 //	/**
 //	 * called when the mouse is pressed
 //	 * @param me the MouseEvent
 //	 */
 //	void mousePressed(MouseEvent me);
-//	
+//
 //	/**
 //	 * called when the mouse is released
-//	 * @param me the MouseEvent 
+//	 * @param me the MouseEvent
 //	 */
-//	void mouseReleased(MouseEvent me);	
+//	void mouseReleased(MouseEvent me);
 }

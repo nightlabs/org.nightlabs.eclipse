@@ -16,8 +16,8 @@ import org.nightlabs.editor2d.viewer.ui.event.MouseEvent;
  * @author Daniel.Mazurek <at> NightLabs <dot> de
  *
  */
-public abstract class RectangleTool 
-//extends AbstractTool 
+public abstract class RectangleTool
+//extends AbstractTool
 extends BaseTool
 {
 
@@ -25,10 +25,10 @@ extends BaseTool
 		super();
 	}
 
-	protected RectangleDrawComponent rect;		
+	protected RectangleDrawComponent rect;
 	private boolean rectAdded = false;
 
-	private boolean showRectangle = true;	
+	private boolean showRectangle = true;
 	public boolean isShowRectangle() {
 		return showRectangle;
 	}
@@ -37,22 +37,22 @@ extends BaseTool
 	}
 
 	@Override
-	public void activate() 
+	public void activate()
 	{
 		super.activate();
 		if (showRectangle)
 			initRectangle();
 	}
 
-	@Override	
-	public void deactivate() 
+	@Override
+	public void deactivate()
 	{
 		super.deactivate();
 		if (showRectangle)
 			rect = null;
 	}
 	
-	protected RectangleDrawComponent initRectangle() 
+	protected RectangleDrawComponent initRectangle()
 	{
 		rect = new RectangleDrawComponentImpl();
 		Rectangle r = new Rectangle(0, 0, 10, 10);
@@ -60,33 +60,33 @@ extends BaseTool
 		rect.setLineColor(Color.BLACK);
 		rect.setFill(false);
 		rect.setLineWidth(2);
-//		rect.setLineStyle(2);	
-		rect.setLineStyle(LineStyle.DASHED_1);		
+//		rect.setLineStyle(2);
+		rect.setLineStyle(LineStyle.DASHED_1);
 		return rect;
-	}	
+	}
 	
 	@Override
-	public void mouseMoved(MouseEvent me) 
+	public void mouseMoved(MouseEvent me)
 	{
 		super.mouseMoved(me);
 
-		if (showRectangle) 
+		if (showRectangle)
 		{
 			int currentX = getRelativeX(currentPoint.x);
 			int currentY = getRelativeY(currentPoint.y);
 			
 			// Draw Rectangle
-			if (leftPressed) 
+			if (leftPressed)
 			{
 				int startX = getRelativeX(startPoint.x);
-				int startY = getRelativeY(startPoint.y);		
+				int startY = getRelativeY(startPoint.y);
 				int width = Math.abs(currentX - startX);
 				int height = Math.abs(currentY - startY);
 
 				if (!rectAdded) {
 					initRectangle();
 					rect.setLocation(startX, startY);
-					addToTempContent(rect);	
+					addToTempContent(rect);
 					rectAdded = true;
 				}
 
@@ -100,20 +100,20 @@ extends BaseTool
 				if (height != 0)
 					rect.setHeight(height);
 				
-				// TODO: avoid multiple repaints 				
-				repaint();							
-			}					
+				// TODO: avoid multiple repaints
+				repaint();
+			}
 		}
 	}
 	
-	@Override	
-	public void mouseReleased(MouseEvent me) 
+	@Override
+	public void mouseReleased(MouseEvent me)
 	{
-		super.mouseReleased(me);	
+		super.mouseReleased(me);
 		if (showRectangle) {
 			rectAdded = false;
-			removeTempContent(rect);			
-		}		
+			removeTempContent(rect);
+		}
 //		leftPressed = false;
 //		rightPressed = false;
 //		rect = null;

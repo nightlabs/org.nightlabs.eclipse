@@ -37,10 +37,10 @@ import org.nightlabs.base.ui.app.DefaultActionBuilder;
 import org.nightlabs.editor2d.viewer.ui.action.AbstractOpenAction;
 import org.nightlabs.editor2d.viewer.ui.action.EditorOpenAction;
 
-public class ViewerActionBuilder 
+public class ViewerActionBuilder
 extends DefaultActionBuilder
 {
-	public ViewerActionBuilder(IActionBarConfigurer configurer) 
+	public ViewerActionBuilder(IActionBarConfigurer configurer)
 	{
 		super(configurer, Arrays.asList(new ActionBarItem[] {ActionBarItem.Preferences}), null);
 	}
@@ -48,7 +48,7 @@ extends DefaultActionBuilder
 	private AbstractOpenAction openAction = null;
 
 	@Override
-	public void fillMenuBar(IMenuManager menuBar) 
+	public void fillMenuBar(IMenuManager menuBar)
 	{
 		super.fillMenuBar(menuBar);
 		getFileMenu().insertBefore(ActionFactory.QUIT.getId(), openAction);
@@ -56,7 +56,7 @@ extends DefaultActionBuilder
 	}
 
 	@Override
-	protected void makeActions(IWorkbenchWindow window) 
+	protected void makeActions(IWorkbenchWindow window)
 	{
 		super.makeActions(window);
 		openAction = new EditorOpenAction();

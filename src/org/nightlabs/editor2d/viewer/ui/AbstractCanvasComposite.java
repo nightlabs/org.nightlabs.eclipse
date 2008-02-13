@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.render.RenderModeManager;
 
-public abstract class AbstractCanvasComposite 
+public abstract class AbstractCanvasComposite
 extends Composite
 implements IViewer
 {
@@ -42,17 +42,17 @@ implements IViewer
 		this(parent, style, dc, true);
 	}
 
-	public AbstractCanvasComposite(Composite parent, int style, DrawComponent dc, 
-			boolean autoScroll) 
+	public AbstractCanvasComposite(Composite parent, int style, DrawComponent dc,
+			boolean autoScroll)
 	{
 		super(parent, style);
-		this.autoScroll = autoScroll;		
+		this.autoScroll = autoScroll;
 		this.drawComponent = dc;
 		GridLayout layout = new GridLayout(1, true);
 		setLayout(layout);
-		init(this);	
+		init(this);
 		addDisposeListener(disposeListener);
-	}	
+	}
 	
 	private boolean autoScroll = true;
 	private IAutoScrollSupport autoScrollSupport = null;
@@ -60,16 +60,16 @@ implements IViewer
 		return autoScrollSupport;
 	}
 	
-	protected void init(Composite parent) 
+	protected void init(Composite parent)
 	{
 		// TODO: uncomment if used as plugin, renderMode Registration now done by TestDialog
 //		RenderModeManager renderMan = RendererRegistry.sharedInstance().getRenderModeManager();
 //		drawComponent.setRenderModeManager(renderMan);
 		
 		getHitTestManager();
-		canvas = createCanvas(this);		
-		mouseManager = initMouseManager(this);		
-		getZoomSupport().addZoomListener(zoomListener);		
+		canvas = createCanvas(this);
+		mouseManager = initMouseManager(this);
+		getZoomSupport().addZoomListener(zoomListener);
 		updateCanvas();
 		
 		if (autoScroll) {
@@ -94,17 +94,17 @@ implements IViewer
 	public void setDrawComponent(DrawComponent drawComponent) {
 		this.drawComponent = drawComponent;
 		hitTestManager = new HitTestManager(drawComponent);
-	}	
+	}
 				
 	/**
 	 * updates the Canvas
 	 *
 	 */
-	public void updateCanvas() 
+	public void updateCanvas()
 	{
 		if (canvas != null)
-			canvas.repaint();		
-	}	
+			canvas.repaint();
+	}
 	
 	/**
 	 * zooms the viewer to the given zoomFactor
@@ -119,17 +119,17 @@ implements IViewer
 		return canvas;
 	}
 	
-	protected void setZoom(double zoomFactor, boolean internal) 
+	protected void setZoom(double zoomFactor, boolean internal)
 	{
 		if (internal) {
-			getZoomSupport().setZoom(zoomFactor);			
+			getZoomSupport().setZoom(zoomFactor);
 		}
 		double zoom = getZoom();
 		if (canvas != null) {
 			canvas.setScale(zoom);
-			canvas.repaint();			
+			canvas.repaint();
 		}
-	}	
+	}
 		
 	/**
 	 * 
@@ -148,22 +148,22 @@ implements IViewer
 	 */
 	public Color getBgColor() {
 		return bgColor;
-	}	
+	}
 	/**
 	 * 
 	 * @param bgColor the Background Color of the Viewer
 	 */
 	public void setBgColor(Color bgColor) {
 		this.bgColor = bgColor;
-		canvas.setBackground(bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue());		
+		canvas.setBackground(bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue());
 	}
 
-	private SelectionManager selectionManager = null;		
+	private SelectionManager selectionManager = null;
 	/**
 	 * 
 	 * @see org.nightlabs.editor2d.viewer.ui.IViewer#getSelectionManager()
 	 */
-	public SelectionManager getSelectionManager() 
+	public SelectionManager getSelectionManager()
 	{
 		if (selectionManager == null)
 			selectionManager = new SelectionManager(this);
@@ -172,7 +172,7 @@ implements IViewer
 	}
 
 	private IZoomSupport zoomSupport = null;
-	public IZoomSupport getZoomSupport() 
+	public IZoomSupport getZoomSupport()
 	{
 		if (zoomSupport == null)
 			zoomSupport = new ZoomSupport(getViewport());
@@ -184,15 +184,15 @@ implements IViewer
 	 * 
 	 * @see org.nightlabs.editor2d.viewer.ui.IViewer#getRenderModeManager()
 	 */
-	public RenderModeManager getRenderModeManager() {		
+	public RenderModeManager getRenderModeManager() {
 		return getDrawComponent().getRenderModeManager();
 	}
 	
 	private IZoomListener zoomListener = new IZoomListener()
-	{	
+	{
 		public void zoomChanged(double zoom) {
 			setZoom(zoom, false);
-		}	
+		}
 	};
 	
 	private IMouseManager mouseManager = null;
@@ -201,7 +201,7 @@ implements IViewer
 	}
 	
 	private HitTestManager hitTestManager = null;
-	public HitTestManager getHitTestManager() 
+	public HitTestManager getHitTestManager()
 	{
 		if (hitTestManager == null)
 			hitTestManager = new HitTestManager(getDrawComponent());
@@ -209,34 +209,34 @@ implements IViewer
 		return hitTestManager;
 	}
 	
-	protected abstract IMouseManager initMouseManager(IViewer viewer);			
-	protected abstract ICanvas createCanvas(Composite parent);	
+	protected abstract IMouseManager initMouseManager(IViewer viewer);
+	protected abstract ICanvas createCanvas(Composite parent);
 	protected abstract IAutoScrollSupport initAutoScrollSupport();
 
 //	@Override
-//	public void dispose() 
+//	public void dispose()
 //	{
-//		getZoomSupport().removeZoomListener(zoomListener);		
-//		
+//		getZoomSupport().removeZoomListener(zoomListener);
+//
 //		hitTestManager = null;
 //		mouseManager = null;
 //		selectionManager = null;
 //		zoomSupport = null;
-//		
+//
 //		super.dispose();
 //	}
 
 	private DisposeListener disposeListener = new DisposeListener()
-	{	
-		public void widgetDisposed(DisposeEvent e) 
+	{
+		public void widgetDisposed(DisposeEvent e)
 		{
 			getZoomSupport().removeZoomListener(zoomListener);
 			getCanvas().dispose();
 			hitTestManager = null;
 			mouseManager = null;
 			selectionManager = null;
-			zoomSupport = null;							
-		}	
+			zoomSupport = null;
+		}
 	};
 	
 }

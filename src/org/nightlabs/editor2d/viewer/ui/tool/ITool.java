@@ -26,12 +26,11 @@
 
 package org.nightlabs.editor2d.viewer.ui.tool;
 
-import org.nightlabs.editor2d.viewer.ui.HitTestManager;
 import org.nightlabs.editor2d.viewer.ui.IDrawComponentConditional;
 import org.nightlabs.editor2d.viewer.ui.IViewer;
 import org.nightlabs.editor2d.viewer.ui.event.MouseEvent;
 
-public interface ITool 
+public interface ITool
 {
 	/**
 	 * called when the Tool becomes the active Tool for the Viewer
@@ -54,7 +53,7 @@ public interface ITool
 	
 	/**
 	 * returns the Viewer of the Tool
-	 * @return the Viewer for the Tool 
+	 * @return the Viewer for the Tool
 	 */
 	IViewer getViewer();
 	
@@ -72,7 +71,7 @@ public interface ITool
 	
 	/**
 	 * called when the mouse is released
-	 * @param me the MouseEvent 
+	 * @param me the MouseEvent
 	 */
 	void mouseReleased(MouseEvent me);
 	
@@ -80,7 +79,7 @@ public interface ITool
 	 * returns the relative X-Coordinate
 	 * 
 	 * @param x the X-Coordinate to convert to relative (zoom + scrollOffset)
-	 * @return the converted relative X-Coordinate 
+	 * @return the converted relative X-Coordinate
 	 */
 	int getRelativeX(int x);
 	
@@ -119,7 +118,7 @@ public interface ITool
 	 * returns the {@link IDrawComponentConditional} for the Tool
 	 * 
 	 * @return the conditional of the HitTestManager
-	 * @see HitTestManager 
+	 * @see HitTestManager
 	 */
 	IDrawComponentConditional getConditional();
 	

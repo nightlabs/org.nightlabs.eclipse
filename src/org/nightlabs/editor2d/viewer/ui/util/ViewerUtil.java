@@ -43,8 +43,8 @@ import org.nightlabs.editor2d.j2d.GeneralShape;
 import org.nightlabs.editor2d.viewer.ui.IDrawComponentConditional;
 import org.nightlabs.editor2d.viewer.ui.IZoomSupport;
 
-public class ViewerUtil 
-{		
+public class ViewerUtil
+{
 	private static final Logger logger = Logger.getLogger(ViewerUtil.class);
 	
 	protected static int hitTolerance = 3;
@@ -54,29 +54,29 @@ public class ViewerUtil
 	 * @param dc the DrawComponent to iterate through
 	 * @param x the x-Coordinate
 	 * @param y the y-Coordinate
-	 * @return the topmost DrawComponent in the Z-Order which contains x and y or null if 
+	 * @return the topmost DrawComponent in the Z-Order which contains x and y or null if
 	 * no drawComponent is found
 	 */
-	public static DrawComponent findObjectAt(DrawComponent dc, int x, int y) 
+	public static DrawComponent findObjectAt(DrawComponent dc, int x, int y)
 	{
-		if (dc instanceof DrawComponentContainer) 
+		if (dc instanceof DrawComponentContainer)
 		{
-			if (dc instanceof Layer) 
+			if (dc instanceof Layer)
 			{
 				Layer layer = (Layer) dc;
 				if (!layer.isVisible())
 					return null;
-			} 			
+			}
 			DrawComponentContainer container = (DrawComponentContainer) dc;
 			int size = container.getDrawComponents().size();
-			if (container.getBounds().contains(x, y) && size != 0) 
+			if (container.getBounds().contains(x, y) && size != 0)
 			{
 				for (int i = size - 1; i >= 0; i--) {
-					DrawComponent child = container.getDrawComponents().get(i);				
+					DrawComponent child = container.getDrawComponents().get(i);
 					if (findObjectAt(child, x, y) != null) {
-						return findObjectAt(child, x, y); 
-					}					
-				}				
+						return findObjectAt(child, x, y);
+					}
+				}
 			}
 			return null;
 		}
@@ -95,17 +95,17 @@ public class ViewerUtil
 	 * @param dc the DrawComponent to iterate through (if it is a DrawComponentContainer)
 	 * @param x the x-Coordinate
 	 * @param y the y-Coordinate
-	 * @param conditional an optional (maybe null) IDrawComponentConditional to filter the returned Objects 
+	 * @param conditional an optional (maybe null) IDrawComponentConditional to filter the returned Objects
 	 * @param excludeList an optional (mybe null) Collection of excluded DrawComponents
-	 * @return a List which contains all DrawComponents which contain x and y and fullfill 
+	 * @return a List which contains all DrawComponents which contain x and y and fullfill
 	 * the condition as well as are not included in the excludeList
 	 * if no drawComponents are found an empty List is returned
 	 */
-	public static List findObjectsAt(DrawComponent dc, int x, int y, 
-			IDrawComponentConditional conditional, Collection excludeList) 
+	public static List findObjectsAt(DrawComponent dc, int x, int y,
+			IDrawComponentConditional conditional, Collection excludeList)
 	{
 		List objects = findObjectsAt(dc, x, y);
-		for (Iterator it = objects.iterator(); it.hasNext(); ) 
+		for (Iterator it = objects.iterator(); it.hasNext(); )
 		{
 			DrawComponent drawComponent = (DrawComponent) it.next();
 			if (conditional != null) {
@@ -118,24 +118,24 @@ public class ViewerUtil
 			}
 		}
 		return objects;
-	}	
+	}
 
 	/**
 	 * 
 	 * @param dc the DrawComponent to iterate through
 	 * @param x the x-Coordinate
-	 * @param y the y-Coordinate 
-	 * @param conditional an optional (maybe null) IDrawComponentConditional to filter the returned Objects 
+	 * @param y the y-Coordinate
+	 * @param conditional an optional (maybe null) IDrawComponentConditional to filter the returned Objects
 	 * @param excludeList an optional (mybe null) Collection of excluded DrawComponents
-	 * @return the topmost DrawComponent in the Z-Order which contains x and y and 
+	 * @return the topmost DrawComponent in the Z-Order which contains x and y and
 	 * fullfills the condition and is not included in the excludeList
 	 */
-	public static DrawComponent findObjectAt(DrawComponent dc, int x, int y, 
+	public static DrawComponent findObjectAt(DrawComponent dc, int x, int y,
 			IDrawComponentConditional conditional, Collection excludeList)
 	{
 		List objects = findObjectsAt(dc, x, y, conditional, excludeList);
-		return !objects.isEmpty() ? (DrawComponent) objects.get(0) : null; 
-	}	
+		return !objects.isEmpty() ? (DrawComponent) objects.get(0) : null;
+	}
 	
 	/**
 	 * the order of the returned List represents the Z-Order of the hit-testing
@@ -144,35 +144,35 @@ public class ViewerUtil
 	 * 
 	 * @param dc the DrawComponent to iterate through
 	 * @param x the x-Coordinate
-	 * @param y the y-Coordinate 
+	 * @param y the y-Coordinate
 	 * @return a List which contains all DrawComponents which contain x and y,
 	 * if no drawComponents are found an empty List is returned
 	 * 
 	 */
-	public static List findObjectsAt(DrawComponent dc, int x, int y) 
+	public static List findObjectsAt(DrawComponent dc, int x, int y)
 	{
 		List l = new LinkedList();
-		if (dc instanceof DrawComponentContainer) 
+		if (dc instanceof DrawComponentContainer)
 		{
-			if (dc instanceof Layer) 
+			if (dc instanceof Layer)
 			{
 				Layer layer = (Layer) dc;
 				if (!layer.isVisible())
 					return l;
-			} 
+			}
 			DrawComponentContainer container = (DrawComponentContainer) dc;
 			int size = container.getDrawComponents().size();
-			if (container.getBounds().contains(x, y) && size != 0) 
+			if (container.getBounds().contains(x, y) && size != 0)
 			{
-				for (int i = size - 1; i >= 0; i--) 
+				for (int i = size - 1; i >= 0; i--)
 				{
 					DrawComponent child = container.getDrawComponents().get(i);
 					List childrenObjects = findObjectsAt(child, x, y);
 					if (!childrenObjects.isEmpty()) {
-						l.addAll(childrenObjects); 
-					}					
-				}				
-			}			
+						l.addAll(childrenObjects);
+					}
+				}
+			}
 		}
 		else {
 			if (dc instanceof ShapeDrawComponent) {
@@ -192,9 +192,9 @@ public class ViewerUtil
 	 * @param sdc the ShapeDrawComponent to check for containment
 	 * @param x the x-Coordinate
 	 * @param y the y-Coordinate
-	 * @return true if the ShapeDrawComponent contains x,y or false if not 
+	 * @return true if the ShapeDrawComponent contains x,y or false if not
 	 */
-	public static boolean contains(ShapeDrawComponent sdc, double x, double y) 
+	public static boolean contains(ShapeDrawComponent sdc, double x, double y)
 	{
 		if (sdc.isFill())
 			return sdc.getGeneralShape().contains(x, y);
@@ -206,9 +206,9 @@ public class ViewerUtil
       TransformUtil.transformGeneralShape(outerGS, sdc.getBounds(), outerBounds);
       TransformUtil.transformGeneralShape(innerGS, sdc.getBounds(), innerBounds);
       Area outlineArea = new Area(outerGS);
-      Area innerArea = new Area(innerGS); 
-      outlineArea.exclusiveOr(innerArea);        
-      return outlineArea.contains(x,y);							
+      Area innerArea = new Area(innerGS);
+      outlineArea.exclusiveOr(innerArea);
+      return outlineArea.contains(x,y);
 		}
 	}
 	
@@ -216,12 +216,12 @@ public class ViewerUtil
 	 * 
 	 * @param sdc the ShapeDrawComponent to check for intersection
 	 * @param r the Rectangle2D to check for
-	 * @return true if the ShapeDrawComponent intersects r 
+	 * @return true if the ShapeDrawComponent intersects r
 	 */
-	public static boolean intersects(ShapeDrawComponent sdc, Rectangle2D r) 
+	public static boolean intersects(ShapeDrawComponent sdc, Rectangle2D r)
 	{
 		return sdc.getGeneralShape().intersects(r);
-	}	
+	}
 	
 	/**
 	 * 
@@ -229,30 +229,30 @@ public class ViewerUtil
 	 * @param r the Rectangle to check for intersection
 	 * @return a List of DrawCompoennts which intersects the Rectangle
 	 */
-	public static List findObjectsAt(DrawComponent dc, Rectangle2D r) 
+	public static List findObjectsAt(DrawComponent dc, Rectangle2D r)
 	{
 		List l = new LinkedList();
-		if (dc instanceof DrawComponentContainer) 
+		if (dc instanceof DrawComponentContainer)
 		{
-			if (dc instanceof Layer) 
+			if (dc instanceof Layer)
 			{
 				Layer layer = (Layer) dc;
 				if (!layer.isVisible())
 					return l;
-			} 			
+			}
 			DrawComponentContainer container = (DrawComponentContainer) dc;
 			int size = container.getDrawComponents().size();
-			if (container.getBounds().intersects(r) && size != 0) 
+			if (container.getBounds().intersects(r) && size != 0)
 			{
-				for (int i = size - 1; i >= 0; i--) 
+				for (int i = size - 1; i >= 0; i--)
 				{
 					DrawComponent child = container.getDrawComponents().get(i);
 					List childrenObjects = findObjectsAt(child, r);
 					if (!childrenObjects.isEmpty()) {
-						l.addAll(childrenObjects); 
-					}					
-				}				
-			}			
+						l.addAll(childrenObjects);
+					}
+				}
+			}
 		}
 		else {
 			if (dc instanceof ShapeDrawComponent) {
@@ -263,23 +263,23 @@ public class ViewerUtil
 			else if (dc.getBounds().intersects(r))
 			 l.add(dc);
 		}
-		return l;		
+		return l;
 	}
 	
 	/**
 	 * @param dc the DrawComponent to iterate through (if it is a DrawComponentContainer)
 	 * @param r the Rectangel to check for intersection
-	 * @param conditional an optional (maybe null) IDrawComponentConditional to filter the returned Objects 
+	 * @param conditional an optional (maybe null) IDrawComponentConditional to filter the returned Objects
 	 * @param excludeList an optional (maybe null) Collection of excluded DrawComponents
-	 * @return a List which contains all DrawComponents which intersect r and fullfill 
+	 * @return a List which contains all DrawComponents which intersect r and fullfill
 	 * the condition as well as are not included in the excludeList
 	 * if no drawComponents are found an empty List is returned
-	 */	
-	public static List findObjectsAt(DrawComponent dc, Rectangle2D r, 
+	 */
+	public static List findObjectsAt(DrawComponent dc, Rectangle2D r,
 			IDrawComponentConditional conditional, Collection excludeList)
 	{
 		List objects = findObjectsAt(dc, r);
-		for (Iterator it = objects.iterator(); it.hasNext(); ) 
+		for (Iterator it = objects.iterator(); it.hasNext(); )
 		{
 			DrawComponent drawComponent = (DrawComponent) it.next();
 			if (conditional != null) {
@@ -291,33 +291,33 @@ public class ViewerUtil
 					it.remove();
 			}
 		}
-		return objects;		
+		return objects;
 	}
 	
-//	public static void zoomAll(IZoomSupport zoomSupport, double zoom) 
+//	public static void zoomAll(IZoomSupport zoomSupport, double zoom)
 //	{
 //		Rectangle bounds = zoomSupport.getViewport().getRealBounds();
 //		Rectangle absoluteRealBounds = TransformUtil.toAbsolute(bounds, zoom);
-//		zoomSupport.zoomTo(absoluteRealBounds);		
+//		zoomSupport.zoomTo(absoluteRealBounds);
 //	}
 		
-//	public static void zoomAll(IZoomSupport zoomSupport) 
+//	public static void zoomAll(IZoomSupport zoomSupport)
 //	{
 //		Rectangle realBounds = zoomSupport.getViewport().getRealBounds();
-//		Rectangle viewBounds = zoomSupport.getViewport().getViewBounds();		
+//		Rectangle viewBounds = zoomSupport.getViewport().getViewBounds();
 //		double scaleX = viewBounds.getWidth() / realBounds.getWidth();
 //		double scaleY = viewBounds.getHeight() / realBounds.getHeight();
 //		double scale = Math.min(scaleX, scaleY);
 //		zoomSupport.setZoom(scale);
-//		
+//
 //		if (logger.isDebugEnabled()) {
 //			logger.debug("realBounds = "+realBounds);
 //			logger.debug("viewBounds = "+viewBounds);
 //			logger.debug("scale = "+scale);
-//		}								
+//		}
 //	}
 	
-	public static void zoomAll(Rectangle realBounds, Rectangle viewBounds, IZoomSupport zoomSupport) 
+	public static void zoomAll(Rectangle realBounds, Rectangle viewBounds, IZoomSupport zoomSupport)
 	{
 		double scaleX = viewBounds.getWidth() / realBounds.getWidth();
 		double scaleY = viewBounds.getHeight() / realBounds.getHeight();
@@ -328,6 +328,6 @@ public class ViewerUtil
 //			logger.debug("realBounds = "+realBounds);
 //			logger.debug("viewBounds = "+viewBounds);
 //			logger.debug("scale = "+scale);
-//		}										
+//		}
 	}
 }

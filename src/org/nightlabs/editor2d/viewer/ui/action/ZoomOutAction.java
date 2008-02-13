@@ -31,17 +31,17 @@ import org.nightlabs.editor2d.viewer.ui.IZoomSupport;
 import org.nightlabs.editor2d.viewer.ui.ViewerPlugin;
 import org.nightlabs.editor2d.viewer.ui.resource.Messages;
 
-public class ZoomOutAction 
+public class ZoomOutAction
 extends ZoomAction
 {
 	public static final String ID = ZoomOutAction.class.getName();
 	
 	public ZoomOutAction(IZoomSupport zoomSupport) {
 		super(zoomSupport);
-	}	
+	}
 	
 	@Override
-	public void init() 
+	public void init()
 	{
 		setId(ID);
 		setText(Messages.getString("org.nightlabs.editor2d.viewer.ui.action.ZoomOutAction.text")); //$NON-NLS-1$
@@ -49,17 +49,17 @@ extends ZoomAction
 		setImageDescriptor(SharedImages.getSharedImageDescriptor(ViewerPlugin.getDefault(), ZoomOutAction.class));
 	}
 
-	public void zoomChanged(double zoom) 
+	public void zoomChanged(double zoom)
 	{
 		if (getZoomSupport().canZoomOut())
 			setEnabled(true);
 		else
-			setEnabled(false);		
+			setEnabled(false);
 	}
 
 	@Override
 	public void run() {
 		getZoomSupport().setZoomAll(false);
 		getZoomSupport().zoomOut();
-	}	
+	}
 }

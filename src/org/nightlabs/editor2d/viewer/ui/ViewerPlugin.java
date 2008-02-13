@@ -36,8 +36,8 @@ import org.osgi.framework.BundleContext;
 /**
  * The main plugin class to be used in the desktop.
  */
-public class ViewerPlugin 
-extends AbstractUIPlugin 
+public class ViewerPlugin
+extends AbstractUIPlugin
 {
 	//The shared instance.
 	private static ViewerPlugin plugin;
@@ -55,7 +55,7 @@ extends AbstractUIPlugin
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		resourceBundle = Platform.getResourceBundle(getBundle());		
+		resourceBundle = Platform.getResourceBundle(getBundle());
 	}
 
 	/**
@@ -86,7 +86,7 @@ extends AbstractUIPlugin
 		return AbstractUIPlugin.imageDescriptorFromPlugin("org.nightlabs.editor2d.viewer.ui", path); //$NON-NLS-1$
 	}
 	
-	private static ResourceBundle resourceBundle;	
+	private static ResourceBundle resourceBundle;
 	
 	/**
 	 * Returns a string from the resource bundle, knowing its key. Note: the generated

@@ -48,9 +48,9 @@ import org.nightlabs.editor2d.viewer.ui.util.ToolUtil;
  * @author Daniel.Mazurek <at> NightLabs <dot> de
  *
  */
-public class SelectionManager 
-//extends AbstractTypeSafeSelectionSupport 
-{	
+public class SelectionManager
+//extends AbstractTypeSafeSelectionSupport
+{
 	/**
 	 * LOG4J logger used by this class
 	 */
@@ -78,7 +78,7 @@ public class SelectionManager
 	/**
 	 * @return a unmodifiable List of the selected DrawComponents
 	 */
-	public List<DrawComponent> getSelectedDrawComponents() 
+	public List<DrawComponent> getSelectedDrawComponents()
 	{
 		if (readOnlySelectedDrawComponents == null)
 			readOnlySelectedDrawComponents = Collections.unmodifiableList(new ArrayList<DrawComponent>(selectedDrawComponents));
@@ -87,7 +87,7 @@ public class SelectionManager
 	}
 
 	private Collection<ISelectionChangedListener> selectionListener = null;
-	protected Collection<ISelectionChangedListener> getSelectionListener() 
+	protected Collection<ISelectionChangedListener> getSelectionListener()
 	{
 		if (selectionListener == null)
 			selectionListener = new LinkedList<ISelectionChangedListener>();
@@ -101,7 +101,7 @@ public class SelectionManager
 	 * @param l the ISelectionChangedListener to add
 	 * @see ISelectionChangedListener
 	 */
-	public void addSelectionChangedListener(ISelectionChangedListener l) 
+	public void addSelectionChangedListener(ISelectionChangedListener l)
 	{
 		getSelectionListener().add(l);
 	}
@@ -112,12 +112,12 @@ public class SelectionManager
 	 * @param l the ISelectionChangedListener to remove
 	 * @see ISelectionChangedListener
 	 */
-	public void removeSelectionChangedListener(ISelectionChangedListener l) 
+	public void removeSelectionChangedListener(ISelectionChangedListener l)
 	{
 		getSelectionListener().remove(l);
 	}
 	
-	protected void fireSelectionChanged() 
+	protected void fireSelectionChanged()
 	{
 		SelectionEvent evt = new SelectionEvent(getSelectedDrawComponents());
 		for (Iterator<ISelectionChangedListener> it = getSelectionListener().iterator(); it.hasNext(); )
@@ -131,7 +131,7 @@ public class SelectionManager
 	private Map<DrawComponent, DrawComponent> dc2SelectionDC = new HashMap<DrawComponent, DrawComponent>();
 	
 	/**
-	 * dc the DrawComponent to add to the selection and fire a selection change and 
+	 * dc the DrawComponent to add to the selection and fire a selection change and
 	 * repaint the viewer
 	 * 
 	 * @param dc the DrawComponent to add to the selection
@@ -147,7 +147,7 @@ public class SelectionManager
 	 * @param dc the DrawComponent to add to the selection
 	 * @param repaint determines if the viewer should be repainted
 	 */
-	public void addSelectedDrawComponent(DrawComponent dc, boolean repaint) 
+	public void addSelectedDrawComponent(DrawComponent dc, boolean repaint)
 	{
 		addSelectedDrawComponent(dc, repaint, true);
 	}
@@ -159,10 +159,10 @@ public class SelectionManager
 	 * @param repaint determines if the viewer should be repainted
 	 * @param fireNotification determines if a selectionChange should be fired
 	 */
-	public void addSelectedDrawComponent(DrawComponent dc, boolean repaint, 
-			boolean fireNotification) 
+	public void addSelectedDrawComponent(DrawComponent dc, boolean repaint,
+			boolean fireNotification)
 	{
-		if (!selectedDrawComponents.contains(dc)) 
+		if (!selectedDrawComponents.contains(dc))
 		{
 			selectedDrawComponents.add(dc);
 			if (fireNotification)
@@ -171,7 +171,7 @@ public class SelectionManager
 			DrawComponent selectionDC = createSelectionDrawComponent(dc);
 			if (selectionDC != null) {
 				dc2SelectionDC.put(dc, selectionDC);
-				addToTempContent(selectionDC);				
+				addToTempContent(selectionDC);
 			}
 						
 			if (repaint)
@@ -180,15 +180,15 @@ public class SelectionManager
 			readOnlySelectedDrawComponents = null;
 //			LOGGER.debug("dc "+dc.getName()+" selected");
 		}
-	}	
+	}
 		
 	/**
-	 * removes a DrawComponent from the selection and fire a selection change and 
+	 * removes a DrawComponent from the selection and fire a selection change and
 	 * repaints the viewer
 	 * 
 	 * @param dc the DrawComponent to remove from the selection
 	 */
-	public void removeSelectedDrawComponent(DrawComponent dc) 
+	public void removeSelectedDrawComponent(DrawComponent dc)
 	{
 		removeSelectedDrawComponent(dc, true);
 	}
@@ -199,10 +199,10 @@ public class SelectionManager
 	 * @param dc the DrawComponent to remove from the selection
 	 * @param repaint determines if the viewer should be repainted
 	 */
-	public void removeSelectedDrawComponent(DrawComponent dc, boolean repaint) 
+	public void removeSelectedDrawComponent(DrawComponent dc, boolean repaint)
 	{
 		removeSelectedDrawComponent(dc, repaint, true);
-	}	
+	}
 	
 	/**
 	 * removes a DrawComponent from the selection
@@ -211,10 +211,10 @@ public class SelectionManager
 	 * @param repaint determines if the viewer should be repainted
 	 * @param fireNotification determines if a selectionChange should be fired
 	 */
-	public void removeSelectedDrawComponent(DrawComponent dc, boolean repaint, 
+	public void removeSelectedDrawComponent(DrawComponent dc, boolean repaint,
 			boolean fireNotification)
 	{
-		if (selectedDrawComponents.contains(dc)) 
+		if (selectedDrawComponents.contains(dc))
 		{
 			selectedDrawComponents.remove(dc);
 			if (fireNotification)
@@ -222,7 +222,7 @@ public class SelectionManager
 			
 			DrawComponent selectionDC = dc2SelectionDC.get(dc);
 			if (selectionDC != null) {
-				removeTempContent(selectionDC); 
+				removeTempContent(selectionDC);
 			} else {
 				logger.debug("selectionDC for "+dc.getName()+" not in dc2SelectionDC"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
@@ -231,13 +231,13 @@ public class SelectionManager
 				getViewer().getBufferedCanvas().repaint();
 			
 			readOnlySelectedDrawComponents = null;
-//			LOGGER.debug("dc "+dc.getName()+" deselected");			
+//			LOGGER.debug("dc "+dc.getName()+" deselected");
 		}
 	}
 
 	/**
 	 * 
-	 * add a Collection of DrawComponents to the selection and fires a selection change 
+	 * add a Collection of DrawComponents to the selection and fires a selection change
 	 * and repaints the viewer
 	 * 
 	 * @param dcs the Collection of DrawComponents to add to the selection
@@ -253,7 +253,7 @@ public class SelectionManager
 	 * @param dcs the Collection of DrawComponents to add to the selection
 	 * @param repaint determines if the viewer should be repainted
 	 */
-	public void addSelectedDrawComponents(Collection<DrawComponent> dcs, boolean repaint) 
+	public void addSelectedDrawComponents(Collection<DrawComponent> dcs, boolean repaint)
 	{
 		addSelectedDrawComponents(dcs, repaint, true);
 	}
@@ -266,7 +266,7 @@ public class SelectionManager
 	 * @param fireNotification determines if a selectionChange should be fired
 	 */
 	public void addSelectedDrawComponents(Collection<DrawComponent> dcs, boolean repaint,
-			boolean fireNotification) 
+			boolean fireNotification)
 	{
 		selectedDrawComponents.addAll(dcs);
 		
@@ -274,7 +274,7 @@ public class SelectionManager
 			DrawComponent dc = it.next();
 			DrawComponent selectionDC = createSelectionDrawComponent(dc);
 			dc2SelectionDC.put(dc, selectionDC);
-			addToTempContent(selectionDC);			
+			addToTempContent(selectionDC);
 		}
 		
 		if (repaint)
@@ -326,14 +326,14 @@ public class SelectionManager
 			DrawComponent dc = it.next();
 			DrawComponent selectionDC = dc2SelectionDC.get(dc);
 			if (selectionDC != null) {
-				removeTempContent(selectionDC); 
+				removeTempContent(selectionDC);
 			} else {
 				logger.debug("selectionDC for "+dc.getName()+" not in dc2SelectionDC"); //$NON-NLS-1$ //$NON-NLS-2$
-			}			
+			}
 		}
 		
 		if (repaint)
-			getViewer().getBufferedCanvas().repaint();		
+			getViewer().getBufferedCanvas().repaint();
 		
 		readOnlySelectedDrawComponents = null;
 	}
@@ -342,7 +342,7 @@ public class SelectionManager
 	 * clears the selection and fires a selection change and repaints the viewer
 	 *
 	 */
-	public void clearSelection() 
+	public void clearSelection()
 	{
 		clearSelection(true);
 	}
@@ -352,7 +352,7 @@ public class SelectionManager
 	 * 
 	 * @param repaint determines if the viewer should be repainted
 	 */
-	public void clearSelection(boolean repaint) 
+	public void clearSelection(boolean repaint)
 	{
 		clearSelection(repaint, true);
 	}
@@ -363,8 +363,8 @@ public class SelectionManager
 	 * @param repaint determines if the viewer should be repainted
 	 * @param fireNotification determines if a selectionChange should be fired
 	 */
-	public void clearSelection(boolean repaint, boolean fireNotification) 
-	{		
+	public void clearSelection(boolean repaint, boolean fireNotification)
+	{
 		dc2SelectionDC.clear();
 		selectedDrawComponents.clear();
 		clearTempContent();
@@ -373,7 +373,7 @@ public class SelectionManager
 			fireSelectionChanged();
 		
 		if (repaint)
-			getViewer().getBufferedCanvas().repaint();	
+			getViewer().getBufferedCanvas().repaint();
 		
 		readOnlySelectedDrawComponents = null;
 	}
@@ -381,15 +381,15 @@ public class SelectionManager
 	public boolean contains(DrawComponent dc)
 	{
 		return selectedDrawComponents.contains(dc);
-	}	
+	}
 	
 	protected DrawComponent createSelectionDrawComponent(DrawComponent dc)
 	{
 //		return ToolUtil.createFeedbackDrawComponent(dc, Color.YELLOW);
-		return ToolUtil.createFeedbackDrawComponent(dc, Color.BLACK, 5);				
+		return ToolUtil.createFeedbackDrawComponent(dc, Color.BLACK, 5);
 	}
 	
-	protected void clearTempContent() 
+	protected void clearTempContent()
 	{
 		getViewer().getBufferedCanvas().getTempContentManager().clear();
 	}

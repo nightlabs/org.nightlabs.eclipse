@@ -28,7 +28,7 @@ package org.nightlabs.editor2d.viewer.ui.event;
 
 /**
  * An MouseEvent Wrapper to give the opportunity to handle both
- * SWT as well AWT MouseEvents  
+ * SWT as well AWT MouseEvents
  * 
  * <p> Project: org.nightlabs.editor2d.viewer.ui </p>
  * <p> Copyright: Copyright (c) 2005 </p>
@@ -36,8 +36,8 @@ package org.nightlabs.editor2d.viewer.ui.event;
  * <p> Creation Date: 21.12.2005 </p>
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class MouseEvent 
-{ 	
+public class MouseEvent
+{
 //	public static final int BUTTON1 = 1;
 //	public static final int BUTTON2 = 2;
 //	public static final int BUTTON3 = 3;
@@ -45,7 +45,7 @@ public class MouseEvent
 	public static final int BUTTON1 = java.awt.event.MouseEvent.BUTTON1;
 	public static final int BUTTON2 = java.awt.event.MouseEvent.BUTTON2;
 	public static final int BUTTON3 = java.awt.event.MouseEvent.BUTTON3;
-	public static final int NOBUTTON = java.awt.event.MouseEvent.NOBUTTON;	
+	public static final int NOBUTTON = java.awt.event.MouseEvent.NOBUTTON;
 	
 	private int button = NOBUTTON;
 	public int getButton() {
@@ -69,5 +69,5 @@ public class MouseEvent
 	}
 	public void setY(int y) {
 		this.y = y;
-	}	
+	}
 }

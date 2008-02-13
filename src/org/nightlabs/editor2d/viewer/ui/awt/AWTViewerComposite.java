@@ -32,8 +32,8 @@ import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.viewer.ui.AbstractCanvasComposite;
 import org.nightlabs.editor2d.viewer.ui.AbstractViewerComposite;
 
-public class AWTViewerComposite 
-extends AbstractViewerComposite 
+public class AWTViewerComposite
+extends AbstractViewerComposite
 {
 
 	public AWTViewerComposite(Composite parent, int style, DrawComponent dc) {

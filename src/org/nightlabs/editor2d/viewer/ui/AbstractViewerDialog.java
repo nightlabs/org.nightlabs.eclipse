@@ -34,8 +34,8 @@ import org.nightlabs.base.ui.dialog.FullScreenDialog;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.viewer.ui.resource.Messages;
 
-public abstract class AbstractViewerDialog 
-extends FullScreenDialog 
+public abstract class AbstractViewerDialog
+extends FullScreenDialog
 {
 	protected DrawComponent dc;
 	public AbstractViewerDialog(Shell arg0, DrawComponent dc) {
@@ -46,9 +46,9 @@ extends FullScreenDialog
 	}
 
 	@Override
-	public void create() 
-	{		
-		super.create();		
+	public void create()
+	{
+		super.create();
 		getShell().setText(ViewerPlugin.getResourceString(Messages.getString("org.nightlabs.editor2d.viewer.ui.AbstractViewerDialog.title"))); //$NON-NLS-1$
 	}
 		
@@ -58,7 +58,7 @@ extends FullScreenDialog
 	}
 	
 	@Override
-	protected Control createDialogArea(Composite parent) 
+	protected Control createDialogArea(Composite parent)
 	{
 		viewerComp = initViewerComposite(parent);
 		GridData viewerData = new GridData(GridData.FILL_BOTH);

@@ -33,8 +33,8 @@ import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.viewer.ui.AbstractViewerComposite;
 import org.nightlabs.editor2d.viewer.ui.AbstractViewerDialog;
 
-public class AWTViewerDialog 
-extends AbstractViewerDialog 
+public class AWTViewerDialog
+extends AbstractViewerDialog
 {
 
 	public AWTViewerDialog(Shell arg0, DrawComponent dc) {

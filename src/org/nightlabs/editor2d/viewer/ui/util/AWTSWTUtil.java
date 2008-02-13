@@ -45,24 +45,24 @@ import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
-public class AWTSWTUtil 
+public class AWTSWTUtil
 {
 	public static Rectangle toAWTRectangle(org.eclipse.swt.graphics.Rectangle rectangle) {
 	  return new Rectangle(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-	}	
+	}
 	
 	public static org.eclipse.swt.graphics.Rectangle toSWTRectangle(Rectangle rect) {
 		return new org.eclipse.swt.graphics.Rectangle(rect.x, rect.y, rect.width, rect.height);
 	}
 	 
-	public static Path convertShape(Shape s, AffineTransform at, Device device) 
+	public static Path convertShape(Shape s, AffineTransform at, Device device)
 	{
 		float[] coords = new float[6];
 		Path path = new Path(device);
-    for (PathIterator pi = s.getPathIterator(at); !pi.isDone(); pi.next()) 
+    for (PathIterator pi = s.getPathIterator(at); !pi.isDone(); pi.next())
     {
       int segType = pi.currentSegment(coords);
-      switch (segType) 
+      switch (segType)
       {
         case (PathIterator.SEG_MOVETO):
         	path.moveTo(coords[0], coords[1]);
@@ -79,19 +79,19 @@ public class AWTSWTUtil
         case (PathIterator.SEG_CLOSE):
         	path.close();
           break;
-      }      
+      }
     }
 		return path;
 	}
 	
 	/**
-	 * converts an AWT BufferedImage to an SWT ImageData 
+	 * converts an AWT BufferedImage to an SWT ImageData
 	 * taken from http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.swt.snippets/src/org/eclipse/swt/snippets/Snippet156.java
 	 * 
 	 * @param bufferedImage the (@link java.awt.image.BufferedImage) to convert
 	 * @return a (@link org.eclipse.swt.graphics) which can be used to construct a SWT Image
 	 */
-	public static ImageData toSWTImageData(BufferedImage bufferedImage) 
+	public static ImageData toSWTImageData(BufferedImage bufferedImage)
 	{
 		if (bufferedImage.getColorModel() instanceof DirectColorModel) {
 			DirectColorModel colorModel = (DirectColorModel)bufferedImage.getColorModel();
@@ -105,8 +105,8 @@ public class AWTSWTUtil
 					int pixel = palette.getPixel(new RGB(pixelArray[0], pixelArray[1], pixelArray[2]));
 					data.setPixel(x, y, pixel);
 				}
-			}		
-			return data;		
+			}
+			return data;
 		} else if (bufferedImage.getColorModel() instanceof IndexColorModel) {
 			IndexColorModel colorModel = (IndexColorModel)bufferedImage.getColorModel();
 			int size = colorModel.getMapSize();
@@ -136,12 +136,12 @@ public class AWTSWTUtil
 		else
 			return convertToSWTImageData(bufferedImage, Display.getDefault());
 //		return null;
-	}	
+	}
 	
-	public static Image toSWTImage(BufferedImage img, Device dev) 
+	public static Image toSWTImage(BufferedImage img, Device dev)
 	{
 		return new Image(dev, toSWTImageData(img));
-	}	
+	}
 	
 	public static Image convertToSWTImage(java.awt.Image ai, Device display)
 	{
@@ -179,5 +179,5 @@ public class AWTSWTUtil
 	    new ImageData(width, height, 24,
 	      new PaletteData(0xFF0000, 0x00FF00, 0x0000FF));
 	  return imageData;
-	}	
+	}
 }

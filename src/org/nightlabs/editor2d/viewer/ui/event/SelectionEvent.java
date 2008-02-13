@@ -30,7 +30,7 @@ import java.util.List;
 
 import org.nightlabs.editor2d.DrawComponent;
 
-public class SelectionEvent 
+public class SelectionEvent
 {
 	public SelectionEvent(List<DrawComponent> selectedDrawComponents) {
 		this.selectedDrawComponents = selectedDrawComponents;
@@ -44,7 +44,7 @@ public class SelectionEvent
 	 */
 	public List<DrawComponent> getSelectedDrawComponents() {
 		return selectedDrawComponents;
-	}	
+	}
 	
 	/**
 	 * 

@@ -12,23 +12,23 @@ import org.nightlabs.editor2d.viewer.ui.event.MouseEvent;
  * @author Daniel.Mazurek <at> NightLabs <dot> de
  *
  */
-public class MarqueeTool 
+public class MarqueeTool
 extends RectangleTool
 {
-	public static final String ID = MarqueeTool.class.getName(); 
+	public static final String ID = MarqueeTool.class.getName();
 	
-	public MarqueeTool() 
+	public MarqueeTool()
 	{
 		super();
 		setID(ID);
 		setShowRollOver(false);
-		setShowTooltip(false);		
+		setShowTooltip(false);
 	}
 		
-	@Override	
-	public void mouseReleased(MouseEvent me) 
+	@Override
+	public void mouseReleased(MouseEvent me)
 	{
-		super.mouseReleased(me);		
+		super.mouseReleased(me);
 		if (leftPressed)
 			selectDrawComponents(rect == null ? null : rect.getBounds());
 
@@ -42,7 +42,7 @@ extends RectangleTool
 		List drawComponents = null;
 		if (r != null)
 			drawComponents = getViewer().getHitTestManager().findObjectsAt(
-					getViewer().getDrawComponent(), 
+					getViewer().getDrawComponent(),
 					r, getConditional(), null);
 
 		if (drawComponents == null || drawComponents.isEmpty()) {

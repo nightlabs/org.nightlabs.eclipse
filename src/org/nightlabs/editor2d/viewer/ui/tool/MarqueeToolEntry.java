@@ -11,10 +11,10 @@ import org.nightlabs.editor2d.viewer.ui.resource.Messages;
  * @author Daniel.Mazurek <at> NightLabs <dot> de
  *
  */
-public class MarqueeToolEntry 
-extends AbstractToolEntry 
+public class MarqueeToolEntry
+extends AbstractToolEntry
 {
-	public MarqueeToolEntry() 
+	public MarqueeToolEntry()
 	{
 		super();
 		setName(Messages.getString("org.nightlabs.editor2d.viewer.ui.tool.MarqueeToolEntry.name")); //$NON-NLS-1$

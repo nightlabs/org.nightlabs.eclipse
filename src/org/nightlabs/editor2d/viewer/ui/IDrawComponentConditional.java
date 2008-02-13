@@ -28,7 +28,7 @@ package org.nightlabs.editor2d.viewer.ui;
 
 import org.nightlabs.editor2d.DrawComponent;
 
-public interface IDrawComponentConditional 
+public interface IDrawComponentConditional
 {
 	/**
 	 * 

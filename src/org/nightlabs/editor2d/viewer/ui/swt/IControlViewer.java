@@ -29,8 +29,8 @@ package org.nightlabs.editor2d.viewer.ui.swt;
 import org.eclipse.swt.widgets.Control;
 import org.nightlabs.editor2d.viewer.ui.IViewer;
 
-public interface IControlViewer 
-extends IViewer 
+public interface IControlViewer
+extends IViewer
 {
 	Control getControl();
 }

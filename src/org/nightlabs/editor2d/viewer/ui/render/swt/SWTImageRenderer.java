@@ -15,27 +15,27 @@ import org.nightlabs.editor2d.viewer.ui.util.AWTSWTUtil;
  * @author Daniel.Mazurek <at> NightLabs <dot> de
  *
  */
-public class SWTImageRenderer 
-extends SWTBaseRenderer 
+public class SWTImageRenderer
+extends SWTBaseRenderer
 {
 
-	public SWTImageRenderer() 
+	public SWTImageRenderer()
 	{
 		super();
 	}
 
 	@Override
-	public void paint(DrawComponent dc, GC gc) 
+	public void paint(DrawComponent dc, GC gc)
 	{
     ImageDrawComponent image = (ImageDrawComponent) dc;
     if (image.getImage() != null) {
     	Image img = convertImage(image.getImage());
-      gc.drawImage(img, image.getX(), image.getY());    	
+      gc.drawImage(img, image.getX(), image.getY());
     }
 	}
 	
-	protected Image convertImage(BufferedImage img) 
+	protected Image convertImage(BufferedImage img)
 	{
 		return AWTSWTUtil.toSWTImage(img, null);
-	}	
+	}
 }

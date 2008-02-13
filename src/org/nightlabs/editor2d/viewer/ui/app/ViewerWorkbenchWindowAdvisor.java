@@ -33,8 +33,8 @@ import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 import org.nightlabs.editor2d.viewer.ui.resource.Messages;
 
-public class ViewerWorkbenchWindowAdvisor 
-extends WorkbenchWindowAdvisor 
+public class ViewerWorkbenchWindowAdvisor
+extends WorkbenchWindowAdvisor
 {
 	public ViewerWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
 		super(configurer);
@@ -46,7 +46,7 @@ extends WorkbenchWindowAdvisor
 	}
 
 	@Override
-	public void preWindowOpen() 
+	public void preWindowOpen()
 	{
 		super.preWindowOpen();
 		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
@@ -56,5 +56,5 @@ extends WorkbenchWindowAdvisor
     configurer.setShowStatusLine(false);
     configurer.setShowCoolBar(false);
     configurer.setShowPerspectiveBar(false);
-	}	
+	}
 }

@@ -52,7 +52,7 @@ public interface IZoomSupport
 	 * 
 	 * @return the zoomFactor (100% = 1.0)
 	 */
-	double getZoom();	
+	double getZoom();
 	
 	/**
 	 * 
@@ -67,7 +67,7 @@ public interface IZoomSupport
 	void setMinZoom(double minZoom);
 	
 	/**
-	 *  
+	 * 
 	 * @return the maximum zoomFactor
 	 */
 	double getMaxZoom();
@@ -86,7 +86,7 @@ public interface IZoomSupport
 	
 	/**
 	 * 
-	 * @param zoomStep the value of each zoomIncrement to set 
+	 * @param zoomStep the value of each zoomIncrement to set
 	 */
 	void setZoomStep(double zoomStep);
 	
@@ -106,14 +106,14 @@ public interface IZoomSupport
 	
 	/**
 	 * 
-	 * @return if the maxZoomFactor is not yet reached returns true, 
+	 * @return if the maxZoomFactor is not yet reached returns true,
 	 * otherwise false
 	 */
 	boolean canZoomIn();
 	
 	/**
 	 * 
-	 * @return if the minZoomFactor is not yet reached returns true, 
+	 * @return if the minZoomFactor is not yet reached returns true,
 	 * otherwise false
 	 */
 	boolean canZoomOut();
@@ -126,7 +126,7 @@ public interface IZoomSupport
 	
 	/**
 	 * zooms the Viewport to the given Rectangle
-	 * @param r the Rectangle to zoom to 
+	 * @param r the Rectangle to zoom to
 	 */
 	void zoomTo(Rectangle r);
 	
@@ -138,7 +138,7 @@ public interface IZoomSupport
 	
 	/**
 	 * 
-	 * @param viewport the viewport for the ZoomSupport 
+	 * @param viewport the viewport for the ZoomSupport
 	 */
 	void setViewport(IViewport viewport);
 	

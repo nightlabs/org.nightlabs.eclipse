@@ -32,19 +32,19 @@ import org.nightlabs.editor2d.viewer.ui.AbstractViewerDialog;
 import org.nightlabs.editor2d.viewer.ui.awt.AWTViewerDialog;
 import org.nightlabs.editor2d.viewer.ui.resource.Messages;
 
-public class EditorOpenAction 
-extends AbstractOpenAction 
+public class EditorOpenAction
+extends AbstractOpenAction
 {
-	public static final String ID = EditorOpenAction.class.getName(); 
+	public static final String ID = EditorOpenAction.class.getName();
 	
 	@Override
-	protected AbstractViewerDialog initViewerDialog(Shell shell, DrawComponent dc) 
+	protected AbstractViewerDialog initViewerDialog(Shell shell, DrawComponent dc)
 	{
 		return new AWTViewerDialog(shell, dc);
 	}
 
 	@Override
-	protected void init() 
+	protected void init()
 	{
 		setId(ID);
 		setText(Messages.getString("org.nightlabs.editor2d.viewer.ui.action.EditorOpenAction.text")); //$NON-NLS-1$

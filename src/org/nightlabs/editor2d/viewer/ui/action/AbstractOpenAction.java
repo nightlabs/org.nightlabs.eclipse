@@ -41,18 +41,18 @@ import org.nightlabs.io.IOFilter;
 import org.nightlabs.io.IOFilterMan;
 import org.nightlabs.util.IOUtil;
 
-public abstract class AbstractOpenAction 
-extends Action 
+public abstract class AbstractOpenAction
+extends Action
 {
-	public static final String ID = AbstractOpenAction.class.getName(); 
+	public static final String ID = AbstractOpenAction.class.getName();
 	
-	public AbstractOpenAction() 
+	public AbstractOpenAction()
 	{
 		super();
 		init();
 	}
 	
-	protected void init() 
+	protected void init()
 	{
 		setId(ID);
 		setText(ViewerPlugin.getResourceString(Messages.getString("org.nightlabs.editor2d.viewer.ui.AbstractOpenAction.text"))); //$NON-NLS-1$
@@ -60,7 +60,7 @@ extends Action
 	}
 	
 	@Override
-	public void run() 
+	public void run()
 	{
 		FileDialog fileDialog = new FileDialog(Display.getDefault().getActiveShell());
 		IOFilterMan ioFilterMan = IOFilterRegistry.sharedInstance().getIOFilterMan();
@@ -79,11 +79,11 @@ extends Action
 					} catch (Exception e) {
 						throw new RuntimeException(e);
 					}
-					AbstractViewerDialog dialog = initViewerDialog(Display.getCurrent().getActiveShell(), dc);					
-					dialog.open();					
-				}				
+					AbstractViewerDialog dialog = initViewerDialog(Display.getCurrent().getActiveShell(), dc);
+					dialog.open();
+				}
 			}
-		}		 
+		}
 	}
 	
 	protected abstract AbstractViewerDialog initViewerDialog(Shell shell, DrawComponent dc);

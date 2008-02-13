@@ -661,10 +661,10 @@ public class SWTGraphics2D extends Graphics2D {
 			Path p = toPath(s, currentTransform);
 			_gc.drawPath(p);
 			p.dispose();
-			updateTransform();			
+			updateTransform();
 		} else {
 			fill(currentStroke.createStrokedShape(s));
-		}		
+		}
 	}
 
 	@Override

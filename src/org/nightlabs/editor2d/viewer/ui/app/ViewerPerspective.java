@@ -29,12 +29,12 @@ package org.nightlabs.editor2d.viewer.ui.app;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
-public class ViewerPerspective 
-implements IPerspectiveFactory 
+public class ViewerPerspective
+implements IPerspectiveFactory
 {
 	public static final String ID_PERSPECTIVE = "org.nightlabs.editor2d.viewer.ui.perspective"; //$NON-NLS-1$
 	
-	public void createInitialLayout(IPageLayout layout) 
+	public void createInitialLayout(IPageLayout layout)
 	{
 		layout.setEditorAreaVisible(false);
 	}

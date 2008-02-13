@@ -37,10 +37,10 @@ import org.nightlabs.editor2d.viewer.ui.event.MouseEvent;
 import org.nightlabs.editor2d.viewer.ui.event.MouseListener;
 import org.nightlabs.editor2d.viewer.ui.event.MouseMoveListener;
 
-public abstract class AbstractMouseManager 
-implements IMouseManager 
+public abstract class AbstractMouseManager
+implements IMouseManager
 {
-	public AbstractMouseManager(IViewer viewer) 
+	public AbstractMouseManager(IViewer viewer)
 	{
 		super();
 		this.viewer = viewer;
@@ -53,10 +53,10 @@ implements IMouseManager
 	
 //	protected double zoom = 1.0d;
 //	protected IZoomListener zoomListener = new IZoomListener()
-//	{	
+//	{
 //		public void zoomChanged(double zoom) {
 //			AbstractMouseManager.this.zoom = zoom;
-//		}	
+//		}
 //	};
 //	public IZoomListener getZoomListener() {
 //		return zoomListener;
@@ -100,10 +100,10 @@ implements IMouseManager
 	}
 	public int getAbsoluteY() {
 		return y + getAbsoluteScrollOffsetY();
-	}	
+	}
 			
 	protected Point relativePoint = new Point(x,y);
-	public Point getRelativePoint() 
+	public Point getRelativePoint()
 	{
 		relativePoint.x = getRelativeX();
 		relativePoint.y = getRelativeY();
@@ -111,7 +111,7 @@ implements IMouseManager
 	}
 	
 	protected Point absolutePoint = new Point(x,y);
-	public Point getAbsolutePoint() 
+	public Point getAbsolutePoint()
 	{
 		absolutePoint.x = getAbsoluteX();
 		absolutePoint.y = getAbsoluteY();
@@ -119,7 +119,7 @@ implements IMouseManager
 	}
  
 	protected Collection mouseChangedListeners = null;
-	protected Collection getMouseChangedListeners() 
+	protected Collection getMouseChangedListeners()
 	{
 		if (mouseChangedListeners == null)
 			mouseChangedListeners = new ArrayList();
@@ -127,7 +127,7 @@ implements IMouseManager
 		return mouseChangedListeners;
 	}
 
-	protected void doFireMouseChanged() 
+	protected void doFireMouseChanged()
 	{
 		for (Iterator it = getMouseChangedListeners().iterator(); it.hasNext(); ) {
 			IMouseChangedListener l = (IMouseChangedListener) it.next();
@@ -135,13 +135,13 @@ implements IMouseManager
 		}
 	}
 		
-	protected void fireMouseChanged() 
+	protected void fireMouseChanged()
 	{
-		Display.getDefault().asyncExec(new Runnable() 
-		{		
+		Display.getDefault().asyncExec(new Runnable()
+		{
 			public void run() {
 				doFireMouseChanged();
-			}		
+			}
 		});
 	}
 	
@@ -154,7 +154,7 @@ implements IMouseManager
 	}
 		
 	protected Collection mouseMoveListenerer = null;
-	protected Collection getMouseMoveListeners() 
+	protected Collection getMouseMoveListeners()
 	{
 		if (mouseMoveListenerer == null)
 			mouseMoveListenerer = new ArrayList();
@@ -164,36 +164,36 @@ implements IMouseManager
 
 	public void addMouseMoveListener(MouseMoveListener l) {
 		getMouseMoveListeners().add(l);
-	}	
+	}
 	
 	public void removeMouseMoveListener(MouseMoveListener l) {
 		getMouseMoveListeners().remove(l);
 	}
 
 	protected MouseEvent mouseEvent = new MouseEvent();
-	protected void doFireMouseMoved(int x, int y, int mouseButton) 
+	protected void doFireMouseMoved(int x, int y, int mouseButton)
 	{
 		mouseEvent.setX(x);
 		mouseEvent.setY(y);
 		mouseEvent.setButton(mouseButton);
 		for (Iterator it = getMouseMoveListeners().iterator(); it.hasNext(); ) {
-			MouseMoveListener l = (MouseMoveListener) it.next();			
+			MouseMoveListener l = (MouseMoveListener) it.next();
 			l.mouseMoved(mouseEvent);
 		}
 	}
 	
-	protected void fireMouseMoved(final int x, final int y, final int mouseButton) 
+	protected void fireMouseMoved(final int x, final int y, final int mouseButton)
 	{
-		Display.getDefault().asyncExec(new Runnable() 
-		{		
+		Display.getDefault().asyncExec(new Runnable()
+		{
 			public void run() {
 				doFireMouseMoved(x, y, mouseButton);
-			}		
-		});		
+			}
+		});
 	}
 	
 	protected Collection mouseListeners = null;
-	protected Collection getMouseListeners() 
+	protected Collection getMouseListeners()
 	{
 		if (mouseListeners == null)
 			mouseListeners = new ArrayList();
@@ -203,13 +203,13 @@ implements IMouseManager
 
 	public void addMouseListener(MouseListener l) {
 		getMouseListeners().add(l);
-	}	
+	}
 	
 	public void removeMouseListener(MouseListener l) {
 		getMouseListeners().remove(l);
 	}
 
-	protected void doFireMousePressed(int x, int y, int mouseButton) 
+	protected void doFireMousePressed(int x, int y, int mouseButton)
 	{
 		mouseEvent.setX(x);
 		mouseEvent.setY(y);
@@ -220,17 +220,17 @@ implements IMouseManager
 		}
 	}
 	
-	protected void fireMousePressed(final int x, final int y, final int mouseButton) 
+	protected void fireMousePressed(final int x, final int y, final int mouseButton)
 	{
-		Display.getDefault().asyncExec(new Runnable() 
-		{		
+		Display.getDefault().asyncExec(new Runnable()
+		{
 			public void run() {
 				doFireMousePressed(x, y, mouseButton);
-			}		
-		});		
+			}
+		});
 	}
 	
-	protected void doFireMouseReleased(int x, int y, int mouseButton) 
+	protected void doFireMouseReleased(int x, int y, int mouseButton)
 	{
 		mouseEvent.setX(x);
 		mouseEvent.setY(y);
@@ -238,51 +238,51 @@ implements IMouseManager
 		for (Iterator it = getMouseListeners().iterator(); it.hasNext(); ) {
 			MouseListener l = (MouseListener) it.next();
 			l.mouseReleased(mouseEvent);
-		}		
+		}
 	}
 	
-	protected void fireMouseReleased(final int x, final int y, final int mouseButton) 
+	protected void fireMouseReleased(final int x, final int y, final int mouseButton)
 	{
-		Display.getDefault().asyncExec(new Runnable() 
-		{		
+		Display.getDefault().asyncExec(new Runnable()
+		{
 			public void run() {
 				doFireMouseReleased(x, y, mouseButton);
-			}		
-		});		
+			}
+		});
 	}
 	
-//	protected DrawComponent oldDC = null;	
+//	protected DrawComponent oldDC = null;
 //	protected int oldRenderMode = 0;
-//	protected void drawRollOver(DrawComponent dc) 
+//	protected void drawRollOver(DrawComponent dc)
 //	{
-//    if (!dc.equals(oldDC)) {            
+//    if (!dc.equals(oldDC)) {
 //			if (oldDC != null) {
 //				oldDC.setRenderMode(oldRenderMode);
 //				getViewer().getBufferedCanvas().getTempContentManager().removeFromTempContent(oldDC);
 //			}
 //			oldDC = dc;
-//			oldRenderMode = dc.getRenderMode();			
+//			oldRenderMode = dc.getRenderMode();
 //			dc.setRenderMode(RenderModeManager.ROLLOVER_MODE);
-//			getViewer().getBufferedCanvas().getTempContentManager().addToTempContent(dc);	
+//			getViewer().getBufferedCanvas().getTempContentManager().addToTempContent(dc);
 //			getViewer().getBufferedCanvas().repaint();
 //    }
 //	}
-//	
+//
 //	protected void drawSelected(DrawComponent dc)
 //	{
-//		
+//
 //	}
-//		
+//
 //	protected boolean debug = false;
 //	protected boolean wasRepainted = false;
-//	protected void checkDrawComponents(int x, int y) 
+//	protected void checkDrawComponents(int x, int y)
 //	{
 //		long startTime = 0;
 //		if (debug)
-//			startTime = System.currentTimeMillis(); 
-//				
-//		DrawComponent dc = getViewer().findObjectAt(x, y);		
-//		if (dc != null) {			
+//			startTime = System.currentTimeMillis();
+//
+//		DrawComponent dc = getViewer().findObjectAt(x, y);
+//		if (dc != null) {
 //			drawRollOver(dc);
 //		}
 //		else {
@@ -294,11 +294,11 @@ implements IMouseManager
 ////				}
 //			}
 //		}
-//		
+//
 //		if (debug) {
-//			long endTime = System.currentTimeMillis() - startTime;			
-//			LOGGER.debug("findObject took "+endTime+" ms");			
-//		}					
+//			long endTime = System.currentTimeMillis() - startTime;
+//			LOGGER.debug("findObject took "+endTime+" ms");
+//		}
 //	}
 	 	
 	
