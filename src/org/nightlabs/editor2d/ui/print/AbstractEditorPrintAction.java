@@ -43,9 +43,9 @@ import org.nightlabs.print.PrinterInterface;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public abstract class AbstractEditorPrintAction 
-extends AbstractEditorAction 
-{	
+public abstract class AbstractEditorPrintAction
+extends AbstractEditorAction
+{
 	/**
 	 * @param editor
 	 * @param style
@@ -67,21 +67,21 @@ extends AbstractEditorAction
 	 * @see org.eclipse.gef.ui.actions.WorkbenchPartAction#calculateEnabled()
 	 */
 	@Override
-	protected boolean calculateEnabled() 
+	protected boolean calculateEnabled()
 	{
-		// Changed to Swing way of getting a printer list, 
+		// Changed to Swing way of getting a printer list,
 		// as this system is acutally used for printing.
 		PrintService[] pServices = PrintServiceLookup.lookupPrintServices(null, null);
-		return pServices != null && pServices.length > 0;		
+		return pServices != null && pServices.length > 0;
 	}
 
-	protected AWTPrinter getAWTPrinter() 
+	protected AWTPrinter getAWTPrinter()
 	{
 		PrinterInterface printer;
 		try {
 			printer = PrinterInterfaceManager.sharedInstance().getConfiguredPrinterInterface(
 					org.nightlabs.print.PrinterInterfaceManager.INTERFACE_FACTORY_AWT,
-					PrintUtil.PRINTER_USE_CASE_EDITOR_2D 
+					PrintUtil.PRINTER_USE_CASE_EDITOR_2D
 				);
 		} catch (PrinterException e) {
 			throw new RuntimeException(e);
@@ -90,7 +90,7 @@ extends AbstractEditorAction
 	}
 		
 	public Printable getPrintable(PrintConstant printConstant) {
-		return new EditorPrintable(getDrawComponent(), printConstant);		
+		return new EditorPrintable(getDrawComponent(), printConstant);
 	}
 	
 	public DrawComponent getDrawComponent() {

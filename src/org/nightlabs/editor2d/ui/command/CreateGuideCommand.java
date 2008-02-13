@@ -33,14 +33,14 @@ import org.nightlabs.editor2d.EditorRuler;
 import org.nightlabs.editor2d.impl.EditorGuideImpl;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
-public class CreateGuideCommand 
-extends Command 
+public class CreateGuideCommand
+extends Command
 {
-  private EditorGuide guide;  
+  private EditorGuide guide;
   private EditorRuler parent;
   private int position;
 
-  public CreateGuideCommand(EditorRuler parent, int position) 
+  public CreateGuideCommand(EditorRuler parent, int position)
   {
   	super(Messages.getString("org.nightlabs.editor2d.ui.command.CreateGuideCommand.label")); //$NON-NLS-1$
   	this.parent = parent;
@@ -48,7 +48,7 @@ extends Command
   }
 
 //  private Editor2DFactory factory = null;
-//  public CreateGuideCommand(EditorRuler parent, int position, Editor2DFactory factory) 
+//  public CreateGuideCommand(EditorRuler parent, int position, Editor2DFactory factory)
 //  {
 //  	super("Create guide");
 //  	this.parent = parent;
@@ -62,15 +62,15 @@ extends Command
   }
 
   @Override
-	public void execute() 
+	public void execute()
   {
     if (guide == null)
 //      guide = factory.createEditorGuide();
-    	guide = new EditorGuideImpl();    	
+    	guide = new EditorGuideImpl();
     
   	guide.setPosition(position);
   	guide.setHorizontal(!parent.isHorizontal());
-  	parent.addGuide(guide);  
+  	parent.addGuide(guide);
   }
 
   @Override

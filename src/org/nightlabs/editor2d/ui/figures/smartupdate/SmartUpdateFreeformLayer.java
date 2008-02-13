@@ -49,7 +49,7 @@ import org.nightlabs.editor2d.ui.util.EditorUtil;
  * @author Alexander Bieber <alex[AT]nightalbs[DOT]de>
  *
  */
-public class SmartUpdateFreeformLayer 
+public class SmartUpdateFreeformLayer
 	extends FreeformLayer
 	implements BufferedFreeformLayer
 {
@@ -81,13 +81,13 @@ public class SmartUpdateFreeformLayer
 	public void init(EditPart editPart) {
 		this.editPart = editPart;
 		EditPartViewer viewer = editPart.getRoot().getViewer();
-		if (viewer instanceof ScrollingGraphicalViewer) {		  	
+		if (viewer instanceof ScrollingGraphicalViewer) {
 			ScrollingGraphicalViewer graphicalViewer = (ScrollingGraphicalViewer) viewer;
 			Control control = graphicalViewer.getControl();
 			if (control instanceof FigureCanvas) {
-				FigureCanvas figureCanvas = (FigureCanvas)graphicalViewer.getControl();	    
+				FigureCanvas figureCanvas = (FigureCanvas)graphicalViewer.getControl();
 				updateManager = figureCanvas.getLightweightSystem().getUpdateManager();
-				if (updateManager != null) 
+				if (updateManager != null)
 					registerOnDeferredUpdateManager(updateManager);
 			}
 		}
@@ -98,7 +98,7 @@ public class SmartUpdateFreeformLayer
 	 * updateManager.
 	 * 
 	 * @param updateManager The updateManager to register to.
-	 */	
+	 */
 	protected void registerOnDeferredUpdateManager(UpdateManager updateManager) {
 		if (updateManager == null)
 			return;
@@ -107,14 +107,14 @@ public class SmartUpdateFreeformLayer
 	}
 	
 	/**
-	 * Overrides Figure's paint as this will always 
+	 * Overrides Figure's paint as this will always
 	 * paint all its children even if not neccessary.
 	 * This implementation takes the last region notified
 	 * by the UpdateManager (wich will be notified synchronously
-	 * right before this paint method will be invoked 
-	 * whithin UpdateManager.repairDamage) and first asks all 
-	 * its children wether they do intersect this region. 
-	 * If true and the child is an instance of 
+	 * right before this paint method will be invoked
+	 * whithin UpdateManager.repairDamage) and first asks all
+	 * its children wether they do intersect this region.
+	 * If true and the child is an instance of
 	 * {@link ISmartUpdateFigure} its {@link ISmartUpdateFigure#paintRegion(Rectangle)}
 	 * method will be invoked instead of the default
 	 * {@link Figure#paint(Graphics)} method.
@@ -125,7 +125,7 @@ public class SmartUpdateFreeformLayer
 	public void paint(Graphics graphics) {
 		
 		if (notifiedDamage == null) {
-			// no update notification was done 
+			// no update notification was done
 			// before this call
 			// do default painting (all children)
 			super.paint(graphics);
@@ -187,5 +187,5 @@ public class SmartUpdateFreeformLayer
 
 	public void dispose() {
 		
-	}	
+	}
 }

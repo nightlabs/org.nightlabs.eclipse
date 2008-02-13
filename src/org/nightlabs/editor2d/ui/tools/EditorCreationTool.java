@@ -40,8 +40,8 @@ import org.nightlabs.editor2d.ui.request.EditorCreateShapeRequest;
 import org.nightlabs.editor2d.ui.request.EditorRequestConstants;
 
 
-public abstract class EditorCreationTool 
-extends CreationTool 
+public abstract class EditorCreationTool
+extends CreationTool
 implements EditorRequestConstants
 {
   protected SnapToHelper helper;
@@ -65,34 +65,34 @@ implements EditorRequestConstants
    * @see org.eclipse.gef.tools.TargetingTool#createTargetRequest()
    */
   @Override
-	protected Request createTargetRequest() 
+	protected Request createTargetRequest()
   {
   	EditorCreateShapeRequest request = new EditorCreateShapeRequest();
   	request.setFactory(getFactory());
   	return request;
   }
   
-  protected Point getRealLocation() 
+  protected Point getRealLocation()
   {
     Point p = getLocation();
     Point realLocation;
     
     EditPartViewer view = getCurrentViewer();
-    if (view instanceof ScrollingGraphicalViewer) 
+    if (view instanceof ScrollingGraphicalViewer)
     {
       ScrollingGraphicalViewer viewer = (ScrollingGraphicalViewer) view;
       FigureCanvas canvas = (FigureCanvas) viewer.getControl();
       Viewport viewport = canvas.getViewport();
       Point viewLocation = viewport.getViewLocation();
-      realLocation = p.getTranslated(viewLocation);                    
-      return realLocation;      
+      realLocation = p.getTranslated(viewLocation);
+      return realLocation;
     }
     return p;
   }
   
   protected EditorCreateShapeRequest getEditorCreateRequest() {
   	return (EditorCreateShapeRequest)getTargetRequest();
-  }  
+  }
     
   /**
    * @see org.eclipse.gef.tools.AbstractTool#getDebugName()
@@ -100,7 +100,7 @@ implements EditorRequestConstants
   @Override
 	protected String getDebugName() {
   	return "EditorCreation Tool";//$NON-NLS-1$
-  }   
+  }
 }
 
 

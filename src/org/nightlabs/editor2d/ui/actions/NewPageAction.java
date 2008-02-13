@@ -34,8 +34,8 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class NewPageAction 
-extends AbstractEditorAction 
+public class NewPageAction
+extends AbstractEditorAction
 {
 	public static final String ID = NewPageAction.class.getName();
 	
@@ -48,7 +48,7 @@ extends AbstractEditorAction
 	}
 	
 	@Override
-	protected void init() 
+	protected void init()
 	{
 		super.init();
 		setId(ID);
@@ -65,7 +65,7 @@ extends AbstractEditorAction
 
 	@Override
 	public void run() {
-		CreatePageCommand cmd = new CreatePageCommand(getRootDrawComponent(), 
+		CreatePageCommand cmd = new CreatePageCommand(getRootDrawComponent(),
 				getEditor().getModelFactory());
 		execute(cmd);
 	}

@@ -36,33 +36,33 @@ import org.nightlabs.editor2d.ui.model.PagePropertySource;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class PageOrientationComposite 
-extends XComposite 
+public class PageOrientationComposite
+extends XComposite
 {
 
-	public PageOrientationComposite(Composite parent, int style) 
+	public PageOrientationComposite(Composite parent, int style)
 	{
 		super(parent, style);
 		createContents(this);
 	}
 
 	public PageOrientationComposite(Composite parent, int style,
-			LayoutMode layoutMode, LayoutDataMode layoutDataMode) 
+			LayoutMode layoutMode, LayoutDataMode layoutDataMode)
 	{
 		super(parent, style, layoutMode, layoutDataMode);
-		createContents(this);		
+		createContents(this);
 	}
 
 	private Combo combo = null;
-	protected void createContents(Composite parent) 
+	protected void createContents(Composite parent)
 	{
 		combo = new Combo(parent, SWT.BORDER | SWT.READ_ONLY);
 		combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		combo.add(PagePropertySource.getOrientationString(PageDrawComponent.ORIENTATION_VERTICAL), 0);
-		combo.add(PagePropertySource.getOrientationString(PageDrawComponent.ORIENTATION_HORIZONTAL), 1);		
+		combo.add(PagePropertySource.getOrientationString(PageDrawComponent.ORIENTATION_HORIZONTAL), 1);
 	}
 	
-	public int getOrientation() 
+	public int getOrientation()
 	{
 		if (combo.getItem(combo.getSelectionIndex()).equals(
 				PagePropertySource.getOrientationString(PageDrawComponent.ORIENTATION_VERTICAL)))
@@ -74,7 +74,7 @@ extends XComposite
 		}
 	}
 	
-	public void selectOrientation(int orientation) 
+	public void selectOrientation(int orientation)
 	{
 		if (orientation == PageDrawComponent.ORIENTATION_VERTICAL)
 			combo.select(0);

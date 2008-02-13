@@ -33,8 +33,8 @@ import org.nightlabs.editor2d.ui.util.feedback.FeedbackUtil;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class EditorFeedbackPolicy 
-extends EditorConstrainedEditPolicy 
+public class EditorFeedbackPolicy
+extends EditorConstrainedEditPolicy
 {
 
 	public EditorFeedbackPolicy() {
@@ -47,7 +47,7 @@ extends EditorConstrainedEditPolicy
    * Lazily creates and returns the feedback figure used during drags.
    * @return the feedback figure
    */
-  protected IFigure getDragSourceFeedbackFigure() 
+  protected IFigure getDragSourceFeedbackFigure()
   {
   	if (feedback == null)
   		feedback = createDragSourceFeedbackFigure();
@@ -70,21 +70,21 @@ extends EditorConstrainedEditPolicy
    * Creates the figure used for feedback.
    * @return the new feedback figure
    */
-  protected IFigure createDragSourceFeedbackFigure() 
-  {       	
+  protected IFigure createDragSourceFeedbackFigure()
+  {
     IFigure figure = getCustomFeedbackFigure(getHost().getModel());
   	figure.setBounds(getInitialFeedbackBounds());
   	addFeedback(figure);
   	return figure;
   }
   
-  protected ShapeFigure getCustomFeedbackFigure(Object modelPart) 
+  protected ShapeFigure getCustomFeedbackFigure(Object modelPart)
   {
   	return FeedbackUtil.getCustomFeedbackFigure(modelPart);
-  }  
+  }
   
-  protected Rectangle getInitialFeedbackBounds() 
+  protected Rectangle getInitialFeedbackBounds()
   {
   	return getHostFigure().getBounds();
-  }  
+  }
 }

@@ -31,7 +31,7 @@ import org.nightlabs.print.page.IPredefinedPage;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class DocumentProperties 
+public class DocumentProperties
 {
 	private IPredefinedPage predefinedPage;
 	private int orientation;
@@ -39,8 +39,8 @@ public class DocumentProperties
 	private double resolution;
 //	private IUnit unit;
 	
-	public DocumentProperties(IPredefinedPage predefinedPage, int orientation, 
-			IResolutionUnit resolutionUnit, double resolution) 
+	public DocumentProperties(IPredefinedPage predefinedPage, int orientation,
+			IResolutionUnit resolutionUnit, double resolution)
 	{
 		super();
 		this.predefinedPage = predefinedPage;

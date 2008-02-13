@@ -40,33 +40,33 @@ import org.nightlabs.editor2d.ui.request.EditorCreateShapeRequest;
 import org.nightlabs.editor2d.ui.util.EditorGeneralShapeFactory;
 
 
-public class RectangleTool 
-extends EditorCreationTool 
+public class RectangleTool
+extends EditorCreationTool
 {
-//  public RectangleTool(CreationFactory aFactory) 
-  public RectangleTool(IModelCreationFactory aFactory)  
+//  public RectangleTool(CreationFactory aFactory)
+  public RectangleTool(IModelCreationFactory aFactory)
   {
     super(aFactory);
-  }  
+  }
   
   /**
    * @see org.eclipse.gef.Tool#deactivate()
    */
   @Override
-	public void deactivate() 
+	public void deactivate()
   {
   	super.deactivate();
   	helper = null;
-  } 
+  }
   
   protected Rectangle bounds;
   @Override
-	protected boolean handleButtonDown(int button) 
+	protected boolean handleButtonDown(int button)
   {
-    if (button == 1) 
+    if (button == 1)
     {
 	  	Point p = getLocation();
-	  	getEditorCreateRequest().setLocation(p);    		    	  
+	  	getEditorCreateRequest().setLocation(p);
   		lockTargetEditPart(getTargetEditPart());
   		// Snap only when size on drop is employed
   		helper = (SnapToHelper)getTargetEditPart().getAdapter(SnapToHelper.class);
@@ -78,16 +78,16 @@ extends EditorCreationTool
   		getEditorCreateRequest().setShape(rectFigure);
   		
   		stateTransition(STATE_INITIAL, STATE_DRAG_IN_PROGRESS);
-  		setCursor(getDefaultCursor());    		    	
-    }    	  
+  		setCursor(getDefaultCursor());
+    }
   	return true;
-  }   
+  }
   
   @Override
-	protected void updateTargetRequest() 
+	protected void updateTargetRequest()
   {
   	EditorCreateShapeRequest req = (EditorCreateShapeRequest) getCreateRequest();
-  	if (isInState(STATE_DRAG_IN_PROGRESS)) 
+  	if (isInState(STATE_DRAG_IN_PROGRESS))
   	{
   		Point loq = getStartLocation();
   		Rectangle bounds = new Rectangle(loq, loq);
@@ -98,7 +98,7 @@ extends EditorCreationTool
   		if (!getCurrentInput().isAltKeyDown() && helper != null) {
   			PrecisionRectangle baseRect = new PrecisionRectangle(bounds);
   			PrecisionRectangle result = baseRect.getPreciseCopy();
-  			helper.snapRectangle(req, PositionConstants.NSEW, 
+  			helper.snapRectangle(req, PositionConstants.NSEW,
   				baseRect, result);
   			req.setLocation(result.getLocation());
   			req.setSize(result.getSize());
@@ -106,19 +106,19 @@ extends EditorCreationTool
   	} else {
   		req.setSize(null);
   		req.setLocation(getLocation());
-  	}    
+  	}
   }
   
   @Override
-	public void performCreation(int button) 
+	public void performCreation(int button)
   {
     GeneralShape gs = EditorGeneralShapeFactory.createRectangle(bounds);
 		getEditorCreateRequest().setUseShape(false);
 		if (getCurrentCommand() instanceof CreateShapeCommand) {
-		  CreateShapeCommand command = (CreateShapeCommand) getCurrentCommand();		  
-		  command.setGeneralShape(gs);		  
+		  CreateShapeCommand command = (CreateShapeCommand) getCurrentCommand();
+		  command.setGeneralShape(gs);
 		}
 		
 		super.performCreation(button);
-  }   
+  }
 }

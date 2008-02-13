@@ -31,8 +31,8 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class ShowRollOverAction 
-extends PreferencesAction 
+public class ShowRollOverAction
+extends PreferencesAction
 {
 	public static final String ID = ShowRollOverAction.class.getName();
 	
@@ -52,12 +52,12 @@ extends PreferencesAction
 	}
 
 	@Override
-	protected void init() 
+	protected void init()
 	{
 		setId(ID);
 		setText(Messages.getString("org.nightlabs.editor2d.ui.actions.preferences.ShowRollOverAction.text")); //$NON-NLS-1$
 		setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.actions.preferences.ShowRollOverAction.tooltip")); //$NON-NLS-1$
-	}	
+	}
 	
 	@Override
 	public boolean isChecked() {
@@ -67,5 +67,5 @@ extends PreferencesAction
 	@Override
 	public void run() {
 		prefConfMod.setShowRollOver(!isChecked());
-	}		
+	}
 }

@@ -40,10 +40,10 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class GroupCommand 
-extends Command 
+public class GroupCommand
+extends Command
 {
-	public GroupCommand(Collection<DrawComponent> drawComponents) 
+	public GroupCommand(Collection<DrawComponent> drawComponents)
 	{
 		if (drawComponents == null)
 			throw new IllegalArgumentException("Param drawComponents must not be null!"); //$NON-NLS-1$
@@ -52,58 +52,58 @@ extends Command
 		this.drawComponents = drawComponents;
 	}
 
-	private Collection<DrawComponent> drawComponents = null;	
-	private Map<DrawComponent, DrawComponentContainer> drawComponent2OldParent = null;		
-	private Map<DrawComponent, Integer> drawComponent2OldParentIndex = null;	
-	private GroupDrawComponent group = null;	
+	private Collection<DrawComponent> drawComponents = null;
+	private Map<DrawComponent, DrawComponentContainer> drawComponent2OldParent = null;
+	private Map<DrawComponent, Integer> drawComponent2OldParentIndex = null;
+	private GroupDrawComponent group = null;
 	public GroupDrawComponent getGroup() {
 		return group;
 	}
 
 	@Override
-	public void execute() 
+	public void execute()
 	{
-		if (!drawComponents.isEmpty()) 
+		if (!drawComponents.isEmpty())
 		{
 			drawComponent2OldParent = new HashMap<DrawComponent, DrawComponentContainer>();
-			drawComponent2OldParentIndex = new HashMap<DrawComponent, Integer>();		
+			drawComponent2OldParentIndex = new HashMap<DrawComponent, Integer>();
 			Layer currentLayer = null;
-			for (DrawComponent drawComponent : drawComponents) 
+			for (DrawComponent drawComponent : drawComponents)
 			{
 				if (currentLayer == null) {
 					currentLayer = drawComponent.getRoot().getCurrentLayer();
 					group = new GroupDrawComponentImpl();
 					group.setParent(currentLayer);
-				}				
+				}
 				drawComponent2OldParent.put(drawComponent, drawComponent.getParent());
-				drawComponent2OldParentIndex.put(drawComponent, 
-						drawComponent.getParent().getDrawComponents().indexOf(drawComponent));				
+				drawComponent2OldParentIndex.put(drawComponent,
+						drawComponent.getParent().getDrawComponents().indexOf(drawComponent));
 				drawComponent.getParent().removeDrawComponent(drawComponent);
-			}			
-			currentLayer.addDrawComponent(group);						
-			group.addDrawComponents(drawComponents);			
+			}
+			currentLayer.addDrawComponent(group);
+			group.addDrawComponents(drawComponents);
 		}
 	}
 	
 	@Override
-	public void redo() 
+	public void redo()
 	{
 		execute();
 	}
 
 	@Override
-	public void undo() 
+	public void undo()
 	{
-		if (group != null) 
+		if (group != null)
 		{
 			group.removeDrawComponents(drawComponents);
 			group.getParent().removeDrawComponent(group);
-			for (DrawComponent dc : drawComponents) 
+			for (DrawComponent dc : drawComponents)
 			{
 				DrawComponentContainer oldParent = drawComponent2OldParent.get(dc);
 				int oldIndex = drawComponent2OldParentIndex.get(dc);
 				oldParent.addDrawComponent(dc, oldIndex);
-			}			
+			}
 		}
 	}
 	

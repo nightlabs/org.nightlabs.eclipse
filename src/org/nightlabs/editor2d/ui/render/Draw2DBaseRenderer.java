@@ -36,10 +36,10 @@ import org.nightlabs.editor2d.render.Renderer;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class Draw2DBaseRenderer 
-implements Draw2DRenderContext 
+public class Draw2DBaseRenderer
+implements Draw2DRenderContext
 {
-	public Draw2DBaseRenderer() 
+	public Draw2DBaseRenderer()
 	{
 		super();
 		init();
@@ -52,9 +52,9 @@ implements Draw2DRenderContext
 	 * The Standard Implementation of the paint-Method
 	 * does by default nothing.
 	 * It only checks if the given DrawComponent is a DrawComponentContainer
-	 * and if so, it paints all its children. 
+	 * and if so, it paints all its children.
    */
-  public void paint(DrawComponent dc, Graphics g) 
+  public void paint(DrawComponent dc, Graphics g)
   {
   	if (dc instanceof DrawComponentContainer) {
   		DrawComponentContainer container = (DrawComponentContainer) dc;
@@ -64,7 +64,7 @@ implements Draw2DRenderContext
   				Renderer r = d.getRenderer();
   				RenderContext rc = r.getRenderContext(Draw2DRenderContext.RENDER_CONTEXT_TYPE);
   				if (rc != null && rc instanceof Draw2DRenderContext) {
-  					Draw2DRenderContext d2drc = (Draw2DRenderContext) rc; 
+  					Draw2DRenderContext d2drc = (Draw2DRenderContext) rc;
   					d2drc.paint(dc, g);
   				}
   			}
@@ -77,10 +77,10 @@ implements Draw2DRenderContext
    * in order to initialize things, needed for rendering.
    *
    * By Default this Method is empty.
-   * This Method will be called in the Constructor 
+   * This Method will be called in the Constructor
    */
-  protected void init() 
-  {    
+  protected void init()
+  {
   };
   
   protected String renderContextType = Draw2DRenderContext.RENDER_CONTEXT_TYPE;
@@ -89,5 +89,5 @@ implements Draw2DRenderContext
   }
   public void setRenderContextType(String newRenderContextType) {
   	this.renderContextType = newRenderContextType;
-  }  
+  }
 }

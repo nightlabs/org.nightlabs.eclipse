@@ -30,10 +30,10 @@ package org.nightlabs.editor2d.ui.request;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 
-public class LineCreateRequest 
-extends EditorCreateShapeRequest 
+public class LineCreateRequest
+extends EditorCreateShapeRequest
 {
-  protected Rectangle creationBounds;  
+  protected Rectangle creationBounds;
   public Rectangle getCreationBounds() {
     return creationBounds;
   }

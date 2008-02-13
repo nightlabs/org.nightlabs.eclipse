@@ -32,7 +32,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 
 import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.J2DGraphics;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -46,20 +45,20 @@ import org.nightlabs.i18n.unit.resolution.IResolutionUnit;
 import org.nightlabs.i18n.unit.resolution.Resolution;
 import org.nightlabs.i18n.unit.resolution.ResolutionImpl;
 
-public class AbstractShapeFigure 
-extends Shape 
+public class AbstractShapeFigure
+extends Shape
 implements ShapeFigure
 {
-  protected J2DGraphics j2d;  
+  protected J2DGraphics j2d;
   protected AffineTransform at = new AffineTransform();
   protected GeneralShape gp;
   protected java.awt.Rectangle gpBounds;
         
   @Override
-	public void setBounds(Rectangle newBounds) 
-  { 
-    repaint();                
-    super.setBounds(J2DUtil.toDraw2D(getGPBounds())); 
+	public void setBounds(Rectangle newBounds)
+  {
+    repaint();
+    super.setBounds(J2DUtil.toDraw2D(getGPBounds()));
   }
         
 	public AbstractShapeFigure() {
@@ -70,14 +69,14 @@ implements ShapeFigure
   @Override
 	protected void fillShape(Graphics graphics)
   {
-    if (graphics instanceof J2DGraphics) 
+    if (graphics instanceof J2DGraphics)
     {
       j2d = (J2DGraphics) graphics;
       g2d = j2d.createGraphics2D();
       g2d.setClip(null);
       g2d.setPaint(ColorUtil.toAWTColor(getBackgroundColor()));
-      g2d.fill(getGeneralShape());      
-      g2d.dispose();      
+      g2d.fill(getGeneralShape());
+      g2d.dispose();
     }
   }
   
@@ -85,22 +84,22 @@ implements ShapeFigure
    * @see org.eclipse.draw2d.Shape#outlineShape(org.eclipse.draw2d.Graphics)
    */
   @Override
-	protected void outlineShape(Graphics graphics) 
+	protected void outlineShape(Graphics graphics)
   {
-    if (graphics instanceof J2DGraphics) 
+    if (graphics instanceof J2DGraphics)
     {
       j2d = (J2DGraphics) graphics;
       g2d = j2d.createGraphics2D();
-      g2d.setClip(null);      
+      g2d.setClip(null);
       g2d.setPaint(ColorUtil.toAWTColor(getForegroundColor()));
 //      g2d.setStroke(RenderUtil.getStroke(lineWidth, lineStyle));
-      g2d.setStroke(ShapeDrawComponent.StrokeUtil.getStroke(lineWidth, convertLineStyle(lineStyle), getResolution()));      
-      g2d.draw(getGeneralShape());      
+      g2d.setStroke(ShapeDrawComponent.StrokeUtil.getStroke(lineWidth, convertLineStyle(lineStyle), getResolution()));
+      g2d.draw(getGeneralShape());
       g2d.dispose();
-    }    
+    }
   }
     
-  private LineStyle convertLineStyle(int lineStyle) 
+  private LineStyle convertLineStyle(int lineStyle)
   {
   	if (lineStyle == 1)
   		return LineStyle.SOLID;
@@ -116,7 +115,7 @@ implements ShapeFigure
   	return LineStyle.SOLID;
   }
   private Resolution resolution = null;
-  protected Resolution getResolution() 
+  protected Resolution getResolution()
   {
   	if (resolution == null)
   		resolution = new ResolutionImpl(IResolutionUnit.dpiUnit, 72);
@@ -132,7 +131,7 @@ implements ShapeFigure
     outlineArea = null;
   }
   
-  public java.awt.Rectangle getGPBounds() 
+  public java.awt.Rectangle getGPBounds()
   {
     if (gp == null)
       gpBounds = J2DUtil.toAWTRectangle(getBounds());
@@ -142,7 +141,7 @@ implements ShapeFigure
     return gpBounds;
   }
       
-  public void transform(AffineTransform at) 
+  public void transform(AffineTransform at)
   {
     getGeneralShape().transform(at);
     outlineArea = null;
@@ -151,7 +150,7 @@ implements ShapeFigure
   }
         
   public static final double DEFAULT_HIT_TOLERANCE = 5;
-  protected double hitTolerance = DEFAULT_HIT_TOLERANCE;    
+  protected double hitTolerance = DEFAULT_HIT_TOLERANCE;
   public double getHitTolerance() {
     return hitTolerance;
   }
@@ -161,12 +160,12 @@ implements ShapeFigure
   
   protected Area outlineArea;
   
-  protected ZoomListener zoomListener = new ZoomListener() 
+  protected ZoomListener zoomListener = new ZoomListener()
   {
-    public void zoomChanged(double zoom) 
+    public void zoomChanged(double zoom)
     {
       hitTolerance = hitTolerance / zoom;
-    }    
+    }
   };
   public ZoomListener getZoomListener() {
     return zoomListener;
@@ -176,11 +175,11 @@ implements ShapeFigure
    * @see IFigure#containsPoint(int, int)
    */
   @Override
-	public boolean containsPoint(int x, int y) 
+	public boolean containsPoint(int x, int y)
   {
     if (isFill())
       return getGeneralShape().contains(x, y);
-    else 
+    else
     {
       if (outlineArea == null) {
         Rectangle outerBounds = getBounds().getCopy();
@@ -192,22 +191,22 @@ implements ShapeFigure
         J2DUtil.transformGeneralShape(outerGS, getBounds(), outerBounds);
         J2DUtil.transformGeneralShape(innerGS, getBounds(), innerBounds);
         outlineArea = new Area(outerGS);
-        Area innerArea = new Area(innerGS); 
-        outlineArea.exclusiveOr(innerArea);        
+        Area innerArea = new Area(innerGS);
+        outlineArea.exclusiveOr(innerArea);
       }
       return outlineArea.contains(x,y);
-    }      
-  }   
+    }
+  }
   
-  public void performScale(double factor) 
-  {                      
+  public void performScale(double factor)
+  {
     at.setToIdentity();
     at.scale(factor, factor);
     transform(at);
   }
   
-  public void performTranslate(int dx, int dy) 
-  {            
+  public void performTranslate(int dx, int dy)
+  {
     at.setToIdentity();
     at.translate(dx, dy);
     transform(at);
@@ -217,7 +216,7 @@ implements ShapeFigure
     return getGeneralShape();
   }
     
-  protected boolean fill = true;;  
+  protected boolean fill = true;;
   /**
    * Sets whether this shape should fill its region or not. It repaints this figure.
    *
@@ -228,20 +227,20 @@ implements ShapeFigure
 	public void setFill(boolean b) {
     fill = b;
     super.setFill(b);
-  }   
+  }
   public boolean isFill() {
-   return fill; 
-  }  
+   return fill;
+  }
   
 	@Override
-	public Rectangle getBounds() 
+	public Rectangle getBounds()
 	{
 		if (getGeneralShape() != null) {
-		  return J2DUtil.toDraw2D(getGeneralShape().getBounds());      
+		  return J2DUtil.toDraw2D(getGeneralShape().getBounds());
 		}
 		else {
 		  return super.getBounds();
 		}
-	}  
+	}
   
 }

@@ -39,8 +39,8 @@ import org.nightlabs.print.page.A4Page;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class DocumentConfigModule 
-extends ConfigModule 
+public class DocumentConfigModule
+extends ConfigModule
 {
 	/**
 	 * 
@@ -81,13 +81,13 @@ extends ConfigModule
 	}
 
 	@Override
-	public void init() 
-	throws InitException 
+	public void init()
+	throws InitException
 	{
 		super.init();
 		if (editorClass2DocumentProperties == null) {
 			editorClass2DocumentProperties = new HashMap<Class, DocumentProperties>();
-			DocumentProperties documentProperties = new DocumentProperties(new A4Page(), 
+			DocumentProperties documentProperties = new DocumentProperties(new A4Page(),
 					PageDrawComponent.ORIENTATION_VERTICAL, IResolutionUnit.dpiUnit, 762);
 			editorClass2DocumentProperties.put(Editor.class, documentProperties);
 		}

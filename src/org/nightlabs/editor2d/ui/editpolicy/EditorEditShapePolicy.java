@@ -43,38 +43,38 @@ import org.nightlabs.editor2d.ui.util.feedback.FeedbackUtil;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class EditorEditShapePolicy 
-extends EditorFeedbackPolicy 
+public class EditorEditShapePolicy
+extends EditorFeedbackPolicy
 {
 	/**
 	 * LOG4J logger used by this class
 	 */
 	private static final Logger logger = Logger.getLogger(EditorEditShapePolicy.class);
 	
-	// TODO: find out why this Method is never triggered	
+	// TODO: find out why this Method is never triggered
 	@Override
-	public Command getCommand(Request request) 
-  {    
+	public Command getCommand(Request request)
+  {
   	if (REQ_EDIT_SHAPE.equals(request.getType()))
   		return getEditShapeCommand((EditorEditShapeRequest)request);
     
     logger.debug("getCommand(Request = "+request+")"); //$NON-NLS-1$ //$NON-NLS-2$
     
   	return super.getCommand(request);
-  }  
+  }
 
 	 /**
-   * Returns the command contribution for the given edit shape request. 
+   * Returns the command contribution for the given edit shape request.
    * By default, the request is redispatched to the host's parent as a {@link
-   * org.nightlabs.editor2d.ui.request.EditorRequestConstants#REQ_EDIT_SHAPE}.  
+   * org.nightlabs.editor2d.ui.request.EditorRequestConstants#REQ_EDIT_SHAPE}.
    * The parent's editpolicies determine how to perform the resize based on the layout manager in use.
    * @param request the edit shape request
    * @return the command contribution obtained from the parent
    */
-  protected Command getEditShapeCommand(EditorEditShapeRequest request) 
+  protected Command getEditShapeCommand(EditorEditShapeRequest request)
   {
     EditShapeCommand editShapeCommand = null;
-    if (editShapeCommand == null) 
+    if (editShapeCommand == null)
     {
     	editShapeCommand = new EditShapeCommand();
     	ShapeDrawComponentEditPart sdcEP = (ShapeDrawComponentEditPart) request.getTargetEditPart();
@@ -84,20 +84,20 @@ extends EditorFeedbackPolicy
     	editShapeCommand.setLabel(Messages.getString("org.nightlabs.editor2d.ui.editpolicy.EditorEditShapePolicy.command.label.editShape"));       //$NON-NLS-1$
     }
 //  	Point modelPoint = getConstraintPointFor(request.getLocation());
-    Point modelPoint = getConstraintFor(request.getLocation());    
-  	editShapeCommand.setLocation(modelPoint); 
-		return editShapeCommand;		
-  } 		
+    Point modelPoint = getConstraintFor(request.getLocation());
+  	editShapeCommand.setLocation(modelPoint);
+		return editShapeCommand;
+  }
   
   @Override
-	public void showSourceFeedback(Request request) 
+	public void showSourceFeedback(Request request)
   {
     if (request.getType().equals(REQ_EDIT_SHAPE))
       showEditShapeFeedback((EditorEditShapeRequest)request);
   }
   
   @Override
-	public void eraseSourceFeedback(Request request) 
+	public void eraseSourceFeedback(Request request)
   {
     if (request.getType().equals(REQ_EDIT_SHAPE))
       eraseEditShapeFeedback((EditorEditShapeRequest)request);
@@ -107,54 +107,54 @@ extends EditorFeedbackPolicy
    * Erases drag feedback.  This method called whenever an erase feedback request is
    * received of the appropriate type.
    * @param request the request
-   */  
-  protected void eraseEditShapeFeedback(EditorEditShapeRequest request) 
+   */
+  protected void eraseEditShapeFeedback(EditorEditShapeRequest request)
   {
   	if (feedback != null) {
   		removeFeedback(feedback);
   	}
-  	feedback = null;    
-  }  
+  	feedback = null;
+  }
   
-  protected void showEditShapeFeedback(EditorEditShapeRequest request) 
-  {    
+  protected void showEditShapeFeedback(EditorEditShapeRequest request)
+  {
   	Polyline polyline = getPolylineFeedback();
   	Point newPoint = new Point(request.getLocation().x, request.getLocation().y);
   	newPoint.translate(getScrollOffset());
-  	polyline.setPoint(newPoint, request.getPathSegmentIndex());  	         	       
-  }  
+  	polyline.setPoint(newPoint, request.getPathSegmentIndex());
+  }
   
-  protected Polyline getPolylineFeedback() 
+  protected Polyline getPolylineFeedback()
   {
-  	if (feedback == null) {    	
-  	  feedback = createPolylineFigure((GraphicalEditPart)getHost());  	  
-    	addFeedback(feedback);  	  
+  	if (feedback == null) {
+  	  feedback = createPolylineFigure((GraphicalEditPart)getHost());
+    	addFeedback(feedback);
   	}
-  	return (Polyline) feedback;    
-  }  
+  	return (Polyline) feedback;
+  }
   
-  protected Polyline createPolylineFigure(GraphicalEditPart part) 
-  {      
+  protected Polyline createPolylineFigure(GraphicalEditPart part)
+  {
     ShapeDrawComponentEditPart sdcEP = (ShapeDrawComponentEditPart) part;
-    Polyline polyline = J2DUtil.toPolyline(sdcEP.getGeneralShape());      
+    Polyline polyline = J2DUtil.toPolyline(sdcEP.getGeneralShape());
     polyline.setLineStyle(2);
     polyline.setXOR(true);
     polyline.setFill(true);
     polyline.setBackgroundColor(FeedbackUtil.DEFAULT_PAINT_DESCRIPTOR.getBackgroundColor());
-    polyline.setForegroundColor(FeedbackUtil.DEFAULT_PAINT_DESCRIPTOR.getForegroundColor());    
+    polyline.setForegroundColor(FeedbackUtil.DEFAULT_PAINT_DESCRIPTOR.getForegroundColor());
         
     // transform each point to absolute
   	for (int i=0; i<polyline.getPoints().size(); i++) {
   	  Point p = polyline.getPoints().getPoint(i);
   	  Point newPoint = getConstraintFor(p);
   	  polyline.getPoints().setPoint(newPoint, i);
-  	}    
+  	}
     
   	return polyline;
   }
 
 	@Override
-	public boolean understandsRequest(Request req) 
+	public boolean understandsRequest(Request req)
 	{
 		if (REQ_EDIT_SHAPE.equals(req.getType()))
 			return true;
@@ -164,6 +164,6 @@ extends EditorFeedbackPolicy
     
 	@Override
 	public EditPart getTargetEditPart(Request request) {
-		return getHost();		
-	}  
+		return getHost();
+	}
 }

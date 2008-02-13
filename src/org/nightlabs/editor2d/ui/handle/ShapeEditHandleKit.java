@@ -35,7 +35,7 @@ import org.nightlabs.editor2d.ui.edit.ShapeDrawComponentEditPart;
 import org.nightlabs.editor2d.ui.util.J2DUtil;
 
 
-public class ShapeEditHandleKit 
+public class ShapeEditHandleKit
 {
 
   public ShapeEditHandleKit() {
@@ -49,15 +49,15 @@ public class ShapeEditHandleKit
    * @param part the handles' ShapeDrawComponentEditPart
    * @param handles the List to add the handles to
    */
-  public static void addHandles(ShapeDrawComponentEditPart part, List handles) 
-  {        
-    Polyline polyline = J2DUtil.toPolyline(part.getGeneralShape()); 
+  public static void addHandles(ShapeDrawComponentEditPart part, List handles)
+  {
+    Polyline polyline = J2DUtil.toPolyline(part.getGeneralShape());
     PointList points = polyline.getPoints();
-    for (int i=0; i<points.size(); i++) 
+    for (int i=0; i<points.size(); i++)
     {
       ShapeEditHandle handle = new ShapeEditHandle(part, i);
       handles.add(handle);
-    }      
+    }
     
   }
   

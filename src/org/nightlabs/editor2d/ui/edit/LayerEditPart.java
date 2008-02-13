@@ -39,9 +39,9 @@ import org.nightlabs.editor2d.Layer;
 import org.nightlabs.editor2d.ui.figures.ContainerFreeformLayer;
 import org.nightlabs.editor2d.ui.model.LayerPropertySource;
 
-public class LayerEditPart 
+public class LayerEditPart
 extends AbstractDrawComponentContainerEditPart
-{    
+{
   /**
    * @param layer the Layer for the LayerEditPart
    * @see org.nightlabs.editor2d.ui.Layer
@@ -51,21 +51,21 @@ extends AbstractDrawComponentContainerEditPart
   }
 	
   @Override
-	protected IFigure createFigure() 
-  {    
-//    IFigure f = new FreeformLayer();    
+	protected IFigure createFigure()
+  {
+//    IFigure f = new FreeformLayer();
   	
 //  	Figure f = new OversizedBufferFreeformLayer();
 //    ((BufferedFreeformLayer)f).init(this);
   	
 //  	DrawComponentFigure f = new ContainerDrawComponentFigure();
-//    f.setDrawComponent(getDrawComponent());    
+//    f.setDrawComponent(getDrawComponent());
 //    addRenderer(f);
-//    addZoomListener(f);  	
+//    addZoomListener(f);
 
-  	IFigure f = new ContainerFreeformLayer();  	
-		f.setLayoutManager(new FreeformLayout());		    		
-		return f;  
+  	IFigure f = new ContainerFreeformLayer();
+		f.setLayoutManager(new FreeformLayout());
+		return f;
   }
     
   public Layer getLayer() {
@@ -73,8 +73,8 @@ extends AbstractDrawComponentContainerEditPart
   }
   
   @Override
-	protected List getModelChildren() 
-  {  
+	protected List getModelChildren()
+  {
     if (getLayer().isVisible()) {
       return getLayer().getDrawComponents();
     } else {
@@ -83,7 +83,7 @@ extends AbstractDrawComponentContainerEditPart
   }
       
 	@Override
-	protected void propertyChanged(PropertyChangeEvent evt) 
+	protected void propertyChanged(PropertyChangeEvent evt)
 	{
 		super.propertyChanged(evt);
 		String propertyName = evt.getPropertyName();
@@ -101,5 +101,5 @@ extends AbstractDrawComponentContainerEditPart
       propertySource = new LayerPropertySource(getLayer());
     }
     return propertySource;
-  } 
+  }
 }

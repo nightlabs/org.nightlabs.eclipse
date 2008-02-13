@@ -34,8 +34,8 @@ import org.nightlabs.editor2d.ui.edit.ShapeDrawComponentEditPart;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public abstract class AbstractBooleanOperationAction 
-extends AbstractEditorSelectionAction 
+public abstract class AbstractBooleanOperationAction
+extends AbstractEditorSelectionAction
 {
 
 	/**
@@ -57,23 +57,23 @@ extends AbstractEditorSelectionAction
 	protected abstract void init();
 	
 	@Override
-	protected boolean calculateEnabled() 
+	protected boolean calculateEnabled()
 	{
 		if (selectionContains(ShapeDrawComponent.class, 2, true) && getSelectedObjects().size() == 2)
 		{
 			if (getPrimarySelectedShape().getBounds().intersects(getSecondarySelectedShape().getBounds()))
-				return true;			
-		}		
+				return true;
+		}
 		return false;
 	}
 
-	protected ShapeDrawComponent getPrimarySelectedShape() 
+	protected ShapeDrawComponent getPrimarySelectedShape()
 	{
 		ShapeDrawComponentEditPart sep = (ShapeDrawComponentEditPart) getPrimarySelected();
 		return sep.getShapeDrawComponent();
 	}
 	
-	protected ShapeDrawComponent getSecondarySelectedShape() 
+	protected ShapeDrawComponent getSecondarySelectedShape()
 	{
 		ShapeDrawComponentEditPart sep = (ShapeDrawComponentEditPart) getSelectedObjects().get(1);
 		return sep.getShapeDrawComponent();
@@ -83,7 +83,7 @@ extends AbstractEditorSelectionAction
 			ShapeDrawComponent primary, ShapeDrawComponent secondary);
 
 	@Override
-	public void run() 
+	public void run()
 	{
 		execute(getBooleanCommand(getPrimarySelectedShape(), getSecondarySelectedShape()));
 	}

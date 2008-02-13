@@ -34,21 +34,21 @@ import org.nightlabs.editor2d.PageDrawComponent;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class Draw2DPageRenderer 
-extends Draw2DBaseRenderer 
+public class Draw2DPageRenderer
+extends Draw2DBaseRenderer
 {
 	public Draw2DPageRenderer() {
 		super();
 	}
 
 	@Override
-	public void paint(DrawComponent dc, Graphics g) 
+	public void paint(DrawComponent dc, Graphics g)
 	{
     PageDrawComponent page = (PageDrawComponent) dc;
     g.setForegroundColor(ColorConstants.black);
     g.setLineStyle(SWT.LINE_SOLID);
-    g.drawRectangle(page.getBounds().x, page.getBounds().y, 
+    g.drawRectangle(page.getBounds().x, page.getBounds().y,
     		page.getBounds().width, page.getBounds().height);
     super.paint(dc, g);
-	}	
+	}
 }

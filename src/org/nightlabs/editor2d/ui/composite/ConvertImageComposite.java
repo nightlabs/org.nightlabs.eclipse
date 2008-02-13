@@ -71,8 +71,8 @@ import org.nightlabs.editor2d.util.ImageUtil;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class ConvertImageComposite 
-extends XComposite 
+public class ConvertImageComposite
+extends XComposite
 {
 	/**
 	 * LOG4J logger used by this class
@@ -83,8 +83,8 @@ extends XComposite
 	 * @param parent
 	 * @param style
 	 */
-	public ConvertImageComposite(Composite parent, int style, 
-			BufferedImage bi) 
+	public ConvertImageComposite(Composite parent, int style,
+			BufferedImage bi)
 	{
 		super(parent, style);
 		init(bi);
@@ -97,25 +97,25 @@ extends XComposite
 	 * @param layoutDataMode
 	 */
 	public ConvertImageComposite(Composite parent, int style,
-			LayoutMode layoutMode, LayoutDataMode layoutDataMode, 
-			BufferedImage bi) 
+			LayoutMode layoutMode, LayoutDataMode layoutDataMode,
+			BufferedImage bi)
 	{
 		super(parent, style, layoutMode, layoutDataMode);
-		init(bi);		
+		init(bi);
 	}
 	
 	private long start = 0;
-	protected void init(BufferedImage bi) 
-	{ 
+	protected void init(BufferedImage bi)
+	{
 		start = System.currentTimeMillis();
 		originalImage = bi;
 		convertImage = ImageUtil.cloneImage(originalImage);
-		initColorModels();		
-		createComposite(this);		
+		initColorModels();
+		createComposite(this);
 		addDisposeListener(disposeListener);
 	}
 		
-//	private NightlabsFormsToolkit toolkit = null;	
+//	private NightlabsFormsToolkit toolkit = null;
 //	private XFormToolkit toolkit = null;
 //	private TOOLKIT_MODE toolkitMode = TOOLKIT_MODE.COMPOSITE;
 	
@@ -123,24 +123,24 @@ extends XComposite
 	public BufferedImage getOriginalImage() {
 		return originalImage;
 	}
-	private BufferedImage convertImage = null;	
+	private BufferedImage convertImage = null;
 	public BufferedImage getConvertedImage() {
 		return convertImage;
-	}	
+	}
 	
 	private ImagePreviewComposite previewComp = null;
 	private Button fitImageButton = null;
 	private Button ditherButton = null;
-	protected void createComposite(Composite parent) 
+	protected void createComposite(Composite parent)
 	{
 //		toolkit = new XFormToolkit(Display.getCurrent());
 //		toolkit.setCurrentMode(toolkitMode);
 		
-//		toolkit = new NightlabsFormsToolkit(Display.getCurrent());				
-		previewComp = new ImagePreviewComposite(originalImage, parent, SWT.NONE);		
+//		toolkit = new NightlabsFormsToolkit(Display.getCurrent());
+		previewComp = new ImagePreviewComposite(originalImage, parent, SWT.NONE);
 //		parent.setBackground(toolkit.getColors().getBackground());
 		
-//		Composite optionsComp = toolkit.createXComposite(parent, SWT.NONE, 
+//		Composite optionsComp = toolkit.createXComposite(parent, SWT.NONE,
 		Composite optionsComp = new XComposite(parent, SWT.NONE,
 				LayoutMode.TIGHT_WRAPPER, LayoutDataMode.GRID_DATA);
 		optionsComp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -150,8 +150,8 @@ extends XComposite
 		Label colorModeLabel = new Label(optionsComp, SWT.NONE);
 		colorModeLabel.setText(Messages.getString("org.nightlabs.editor2d.ui.composite.ConvertImageComposite.label.colorModel"));		 //$NON-NLS-1$
 		
-		colorModelCombo = new XComboComposite<ColorModel>(optionsComp, 
-				SWT.READ_ONLY | getBorderStyle(), 
+		colorModelCombo = new XComboComposite<ColorModel>(optionsComp,
+				SWT.READ_ONLY | getBorderStyle(),
 				(String)null, colorModelLabelProvider);
 		colorModelCombo.setInput(colorModels);
 		colorModelCombo.setLayoutData(new GridData(
@@ -160,15 +160,15 @@ extends XComposite
 
 //		Label imageScaleLabel = toolkit.createLabel(optionsComp, Messages.getString("org.nightlabs.editor2d.ui.composite.ConvertImageComposite.label.fitImage")); //$NON-NLS-1$
 		Label imageScaleLabel = new Label(optionsComp, SWT.NONE);
-		imageScaleLabel.setText(Messages.getString("org.nightlabs.editor2d.ui.composite.ConvertImageComposite.label.fitImage")); //$NON-NLS-1$		
+		imageScaleLabel.setText(Messages.getString("org.nightlabs.editor2d.ui.composite.ConvertImageComposite.label.fitImage")); //$NON-NLS-1$
 //		fitImageButton = toolkit.createButton(optionsComp, "", SWT.CHECK); //$NON-NLS-1$
 		fitImageButton = new Button(optionsComp, SWT.CHECK);
 		fitImageButton.setSelection(fitImage);
 		fitImageButton.addSelectionListener(fitImageListener);
 
-//		Label ditherLabel = toolkit.createLabel(optionsComp, 
+//		Label ditherLabel = toolkit.createLabel(optionsComp,
 //				Messages.getString("org.nightlabs.editor2d.ui.composite.ConvertImageComposite.label.ditheringMode")); //$NON-NLS-1$
-		Label ditherLabel = new Label(optionsComp, SWT.NONE); 
+		Label ditherLabel = new Label(optionsComp, SWT.NONE);
 		ditherLabel.setText(Messages.getString("org.nightlabs.editor2d.ui.composite.ConvertImageComposite.label.ditheringMode")); //$NON-NLS-1$
 		
 //		ditherButton = toolkit.createButton(optionsComp, "", SWT.CHECK); //$NON-NLS-1$
@@ -176,7 +176,7 @@ extends XComposite
 		ditherButton.setSelection(dithering);
 		ditherButton.addSelectionListener(ditherButtonListener);
 		
-//		detailParent = toolkit.createXComposite(parent, SWT.NONE, 
+//		detailParent = toolkit.createXComposite(parent, SWT.NONE,
 		detailParent = new XComposite(parent, SWT.NONE,
 				LayoutMode.TIGHT_WRAPPER, LayoutDataMode.GRID_DATA);
 		detailParent.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -194,14 +194,14 @@ extends XComposite
 			
 	private boolean dithering = true;
 	private SelectionListener ditherButtonListener = new SelectionListener()
-	{	
+	{
 		public void widgetDefaultSelected(SelectionEvent e) {
 			widgetSelected(e);
-		}	
+		}
 		public void widgetSelected(SelectionEvent e) {
 			dithering = !dithering;
 			setDithering(dithering, true);
-		}	
+		}
 	};
 	
 	private Composite detailComp = null;
@@ -211,20 +211,20 @@ extends XComposite
 	public static String DITHER_MODE_SPEED = "ordereddither"; //$NON-NLS-1$
 	private String ditherMode = DITHER_MODE_QUALITY;
 
-//	private KernelJAI ditherAlgorithm = KernelJAI.ERROR_FILTER_FLOYD_STEINBERG;	
-	private String ditherAlgorithm = BWDitheringColorConvertDelegate.DITHER_ALGORITHM_FLOYD_STEINBERG;	
+//	private KernelJAI ditherAlgorithm = KernelJAI.ERROR_FILTER_FLOYD_STEINBERG;
+	private String ditherAlgorithm = BWDitheringColorConvertDelegate.DITHER_ALGORITHM_FLOYD_STEINBERG;
 	private Button buttonFilterFloydSteinberg = null;
 	private Button buttonFilterJarvis = null;
 	private Button buttonFilterStucki = null;
 	private Button buttonDitherMask441 = null;
-	protected Composite createDitherDetail(Composite parent) 
-	{		
+	protected Composite createDitherDetail(Composite parent)
+	{
 //		ExpandableComposite ec = toolkit.createExpandableComposite(parent, SWT.NONE);#
 		ExpandableComposite ec = new ExpandableComposite(parent, SWT.NONE);
 		ec.setText(Messages.getString("org.nightlabs.editor2d.ui.composite.ConvertImageComposite.text.ditheringOptions")); //$NON-NLS-1$
-		detailComp = ec;				
-		detailComp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));	
-		detailComp.setLayout(new GridLayout());		
+		detailComp = ec;
+		detailComp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		detailComp.setLayout(new GridLayout());
 		
 //		Composite comp = toolkit.createGroup(detailComp, SWT.NONE, ""); //$NON-NLS-1$
 		Group comp = new Group(detailComp, SWT.NONE);
@@ -238,7 +238,7 @@ extends XComposite
 //				Messages.getString("org.nightlabs.editor2d.ui.composite.ConvertImageComposite.button.jarvis"), SWT.RADIO); //$NON-NLS-1$
 //		buttonFilterStucki = toolkit.createButton(comp,
 //				Messages.getString("org.nightlabs.editor2d.ui.composite.ConvertImageComposite.button.stucki"), SWT.RADIO); //$NON-NLS-1$
-//		buttonDitherMask441 = toolkit.createButton(comp, 
+//		buttonDitherMask441 = toolkit.createButton(comp,
 //				Messages.getString("org.nightlabs.editor2d.ui.composite.ConvertImageComposite.button.matrix441"), SWT.RADIO); //$NON-NLS-1$
 		buttonFilterFloydSteinberg = new Button(comp, SWT.RADIO);
 		buttonFilterFloydSteinberg.setText(Messages.getString("org.nightlabs.editor2d.ui.composite.ConvertImageComposite.button.floydSteinberg")); //$NON-NLS-1$
@@ -246,7 +246,7 @@ extends XComposite
 		buttonFilterJarvis.setText(Messages.getString("org.nightlabs.editor2d.ui.composite.ConvertImageComposite.button.jarvis")); //$NON-NLS-1$
 		buttonFilterStucki = new Button(comp, SWT.RADIO);
 		buttonFilterStucki.setText(Messages.getString("org.nightlabs.editor2d.ui.composite.ConvertImageComposite.button.stucki")); //$NON-NLS-1$
-		buttonDitherMask441 = new Button(comp, SWT.RADIO); 
+		buttonDitherMask441 = new Button(comp, SWT.RADIO);
 		buttonDitherMask441.setText(Messages.getString("org.nightlabs.editor2d.ui.composite.ConvertImageComposite.button.matrix441")); //$NON-NLS-1$
 		
 		buttonFilterFloydSteinberg.setSelection(true);
@@ -258,29 +258,29 @@ extends XComposite
 		
 		ec.setClient(comp);
 		ec.setExpanded(true);
-		ec.addExpansionListener(expansionListener);		
+		ec.addExpansionListener(expansionListener);
 		detailParent.layout(true);
 		
 		return detailComp;
 	}
 		
-	private ExpansionAdapter expansionListener = new ExpansionAdapter() 
+	private ExpansionAdapter expansionListener = new ExpansionAdapter()
 	{
 		@Override
-		public void expansionStateChanged(ExpansionEvent e) 
+		public void expansionStateChanged(ExpansionEvent e)
 		{
-			// TODO: dont layout detailParent but change size of composite			
-//			ConvertImageComposite.this.layout();			
+			// TODO: dont layout detailParent but change size of composite
+//			ConvertImageComposite.this.layout();
 			detailParent.layout(true);
-		}		
+		}
 	};
 	
 	private SelectionListener ditherDetailButtonListener = new SelectionListener()
-	{	
+	{
 		public void widgetDefaultSelected(SelectionEvent e) {
 			widgetSelected(e);
-		}	
-		public void widgetSelected(SelectionEvent e) 
+		}
+		public void widgetSelected(SelectionEvent e)
 		{
 			Button b = (Button) e.getSource();
 			if (b.equals(buttonFilterFloydSteinberg)) {
@@ -293,14 +293,14 @@ extends XComposite
 				ditherMode = DITHER_MODE_QUALITY;
 				ditherAlgorithm = BWDitheringColorConvertDelegate.DITHER_ALGORITHM_STUCKI;
 			} else if (b.equals(buttonDitherMask441)) {
-				ditherMode = DITHER_MODE_SPEED; 
-//				ditherAlgorithm = BWDitheringColorConvertDelegate.DITHER_ALGORITHM_441;				
-			} 
+				ditherMode = DITHER_MODE_SPEED;
+//				ditherAlgorithm = BWDitheringColorConvertDelegate.DITHER_ALGORITHM_441;
+			}
 			else {
 				throw new IllegalArgumentException("e.getSource() is an unknown object"); //$NON-NLS-1$
 			}
 			refresh();
-		}	
+		}
 	};
 	
 	private ColorModel bw = null;
@@ -308,8 +308,8 @@ extends XComposite
 	private ColorModel rgb = null;
 	private XComboComposite<ColorModel> colorModelCombo = null;
 	private List<ColorModel> colorModels = null;
-	protected void initColorModels() 
-	{		
+	protected void initColorModels()
+	{
 		colorModels = new LinkedList<ColorModel>();
 		
 		bw = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_GRAY),
@@ -322,16 +322,16 @@ extends XComposite
 		rgb = ImageUtil.getColorModel(BufferedImage.TYPE_INT_RGB);
 		colorModels.add(rgb);
 		
-		colorModel = rgb;		
+		colorModel = rgb;
 		
 	}
 	
-	private LabelProvider colorModelLabelProvider = new LabelProvider() 
+	private LabelProvider colorModelLabelProvider = new LabelProvider()
 	{
 		@Override
-		public String getText(Object element) 
+		public String getText(Object element)
 		{
-			if (element != null && element instanceof ColorModel) 
+			if (element != null && element instanceof ColorModel)
 			{
 				if (element.equals(bw))
 					return Messages.getString("org.nightlabs.editor2d.ui.composite.ConvertImageComposite.mode.blackwhite"); //$NON-NLS-1$
@@ -341,24 +341,24 @@ extends XComposite
 					return Messages.getString("org.nightlabs.editor2d.ui.composite.ConvertImageComposite.mode.rgb");				 //$NON-NLS-1$
 			}
 			return super.getText(element);
-		}		
+		}
 	};
 		
-//	private RenderingHints renderHints = null;		
+//	private RenderingHints renderHints = null;
 	private ColorModel colorModel = null;
 	private SelectionListener colorModelListener = new SelectionListener()
-	{	
+	{
 		public void widgetDefaultSelected(SelectionEvent e) {
 			widgetSelected(e);
-		}	
-		public void widgetSelected(SelectionEvent e) 
+		}
+		public void widgetSelected(SelectionEvent e)
 		{
 			selectColorMode(colorModelCombo.getSelectedElement());
-		}	
+		}
 	};
 
-	protected void setDithering(boolean dithering, boolean refresh) 
-	{				
+	protected void setDithering(boolean dithering, boolean refresh)
+	{
 		RCPUtil.disposeAllChildren(detailParent);
 		if (dithering)
 			detailComp = createDitherDetail(detailParent);
@@ -369,27 +369,27 @@ extends XComposite
 			refresh();
 	}
 	
-	protected void selectColorMode(ColorModel cm) 
+	protected void selectColorMode(ColorModel cm)
 	{
 //		colorModelCombo.selectElement(cm);
 		colorModel = cm;
 		boolean blackwhite = colorModel.equals(bw);
 		ditherButton.setEnabled(blackwhite);
-		setDithering(blackwhite, false);		
+		setDithering(blackwhite, false);
 		refresh();
 	}
 		
 	private boolean fitImage = true;
 	private SelectionListener fitImageListener = new SelectionListener()
-	{	
+	{
 		public void widgetDefaultSelected(SelectionEvent e) {
 			widgetSelected(e);
-		}	
-		public void widgetSelected(SelectionEvent e) 
+		}
+		public void widgetSelected(SelectionEvent e)
 		{
 			fitImage = !fitImage;
 			previewComp.setFitImage(fitImage);
-		}	
+		}
 	};
 			
 	private List<RenderModeMetaData> renderModeMetaDatas = new LinkedList<RenderModeMetaData>();
@@ -397,13 +397,13 @@ extends XComposite
 		return renderModeMetaDatas;
 	}
 	
-	protected void refresh() 
-	{		
+	protected void refresh()
+	{
 		logger.debug("refresh!"); //$NON-NLS-1$
 		long start = System.currentTimeMillis();
 				
-		if (colorModel == bw) {			
-			convertBlackWhite();						
+		if (colorModel == bw) {
+			convertBlackWhite();
 		}
 		else {
 			if (convertImage.getType() == BufferedImage.TYPE_BYTE_BINARY)
@@ -411,27 +411,27 @@ extends XComposite
 			RenderedImage img = colorConvertJDK(originalImage, colorModel);
 			if (img != null)
 				convertImage = convertToBufferedImage(img);
-		}						
-		previewComp.setConvertImage(convertImage);		
+		}
+		previewComp.setConvertImage(convertImage);
 		
 		long end = System.currentTimeMillis() - start;
 		logger.debug("refresh took "+end+" ms!"); //$NON-NLS-1$ //$NON-NLS-2$
-	}		
+	}
 				
-	private RenderedImage colorConvertJDK(BufferedImage original, ColorModel colorModel) 
+	private RenderedImage colorConvertJDK(BufferedImage original, ColorModel colorModel)
 	{
-		long startTime = System.currentTimeMillis();		
+		long startTime = System.currentTimeMillis();
 		String renderDelegateClassName = getImageRenderDelegateClassName(colorModel);
 		Set<String> supportedRenderModes = new HashSet<String>();
 		supportedRenderModes.add(getRenderMode(colorModel));
-		String id = getRenderModeMetaDataID(colorModel);		
-		RenderModeMetaData renderModeMetaData = new RenderModeMetaData(id, supportedRenderModes, 
+		String id = getRenderModeMetaDataID(colorModel);
+		RenderModeMetaData renderModeMetaData = new RenderModeMetaData(id, supportedRenderModes,
 				renderDelegateClassName, null, true);
 		
 		renderModeMetaDatas.clear();
 		renderModeMetaDatas.add(renderModeMetaData);
 		
-		String renderMode = getRenderMode(colorModel); 
+		String renderMode = getRenderMode(colorModel);
 		try {
 			RenderedImage img = renderModeMetaData.getRendererDelegate().render(renderMode, null, original, renderModeMetaData);
 			long end = System.currentTimeMillis() - startTime;
@@ -440,9 +440,9 @@ extends XComposite
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-	}		
+	}
 	
-	protected String getRenderMode(ColorModel cm) 
+	protected String getRenderMode(ColorModel cm)
 	{
 		if (cm.equals(bw)) {
 			return RenderConstants.BLACK_WHITE_MODE;
@@ -454,7 +454,7 @@ extends XComposite
 		return null;
 	}
 
-	protected String getRenderModeMetaDataID(ColorModel cm) 
+	protected String getRenderModeMetaDataID(ColorModel cm)
 	{
 		if (cm.equals(bw)) {
 			return RenderModeConstants.COLOR_CONVERT_BLACK_WHITE;
@@ -466,7 +466,7 @@ extends XComposite
 		return null;
 	}
 		
-	protected String getImageRenderDelegateClassName(ColorModel cm) 
+	protected String getImageRenderDelegateClassName(ColorModel cm)
 	{
 		if (cm.equals(bw)) {
 			return BlackWhiteColorConvertDelegate.class.getName();
@@ -475,16 +475,16 @@ extends XComposite
 		} else if (cm.equals(rgb)) {
 			return RGBColorConvertDelegate.class.getName();
 		}
-		return null;		
+		return null;
 	}
 								
-	private void convertBlackWhite() 
-	{						
+	private void convertBlackWhite()
+	{
 		if (!dithering) {
-			convertImage = convertBlackWhiteWithoutDithering(originalImage);			
+			convertImage = convertBlackWhiteWithoutDithering(originalImage);
 			return;
-		}			
-		try {		
+		}
+		try {
 			RenderedImage img = convertBlackWhiteWithDithering(originalImage);
 			if (img != null) {
 				convertImage = convertToBufferedImage(img);
@@ -493,15 +493,15 @@ extends XComposite
 		} catch (Exception e) {
 			convertImage = convertBlackWhiteWithoutDithering(originalImage);
 		}
-	}		
-		
-	private BufferedImage convertBlackWhiteWithoutDithering(BufferedImage img) 
-	{
-		logger.debug("Dithering skipped!");					 //$NON-NLS-1$
-		return convertToBufferedImage(colorConvertJDK(img, bw));		
 	}
 		
-	private RenderedImage convertBlackWhiteWithDithering(BufferedImage src) 
+	private BufferedImage convertBlackWhiteWithoutDithering(BufferedImage img)
+	{
+		logger.debug("Dithering skipped!");					 //$NON-NLS-1$
+		return convertToBufferedImage(colorConvertJDK(img, bw));
+	}
+		
+	private RenderedImage convertBlackWhiteWithDithering(BufferedImage src)
 	{
 		long startTime = System.currentTimeMillis();
 		
@@ -512,14 +512,14 @@ extends XComposite
 		String renderDelegateClassName = BWDitheringColorConvertDelegate.class.getName();
 		Set<String> supportedRenderModes = new HashSet<String>();
 		supportedRenderModes.add(getRenderMode(bw));
-		String id = getRenderModeMetaDataID(bw);		
-		RenderModeMetaData renderModeMetaData = new RenderModeMetaData(id, supportedRenderModes, 
-				renderDelegateClassName, parameters, false);		
+		String id = getRenderModeMetaDataID(bw);
+		RenderModeMetaData renderModeMetaData = new RenderModeMetaData(id, supportedRenderModes,
+				renderDelegateClassName, parameters, false);
 		
 		renderModeMetaDatas.clear();
 		renderModeMetaDatas.add(renderModeMetaData);
 		
-		String renderMode = getRenderMode(bw); 
+		String renderMode = getRenderMode(bw);
 		try {
 			RenderedImage img = renderModeMetaData.getRendererDelegate().render(renderMode, null, src, renderModeMetaData);
 			long end = System.currentTimeMillis() - startTime;
@@ -528,22 +528,22 @@ extends XComposite
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-	}	
+	}
 		
-	protected BufferedImage convertToBufferedImage(RenderedImage img) 
+	protected BufferedImage convertToBufferedImage(RenderedImage img)
 	{
 		return ImageUtil.convertToBufferedImage(img);
 	}
 			
 	private DisposeListener disposeListener = new DisposeListener()
-	{	
-		public void widgetDisposed(DisposeEvent e) 
+	{
+		public void widgetDisposed(DisposeEvent e)
 		{
 			colorModel = null;
 			convertImage = null;
 			grey = null;
 			rgb = null;
-		}	
+		}
 	};
 	
 }

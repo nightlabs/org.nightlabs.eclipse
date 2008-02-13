@@ -44,8 +44,8 @@ import org.nightlabs.i18n.unit.UnitRegistry;
  * 
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class UnitComposite 
-extends XComposite 
+public class UnitComposite
+extends XComposite
 {
 	public UnitComposite(Composite parent, int style) {
 		super(parent, style);
@@ -60,7 +60,7 @@ extends XComposite
 	}
 	
 	public UnitComposite(Composite parent, int style, LayoutMode layoutMode,
-			LayoutDataMode layoutDataMode, Collection<IUnit> units) 
+			LayoutDataMode layoutDataMode, Collection<IUnit> units)
 	{
 		super(parent, style, layoutMode, layoutDataMode);
 		this.units = new ArrayList<IUnit>(units);
@@ -68,12 +68,12 @@ extends XComposite
 	}
 
 	public UnitComposite(Composite parent, int style, LayoutMode layoutMode,
-			LayoutDataMode layoutDataMode) 
+			LayoutDataMode layoutDataMode)
 	{
 		super(parent, style, layoutMode, layoutDataMode);
 		this.units = new ArrayList<IUnit>(getUnitRegistry().getUnits(UnitConstants.UNIT_CONTEXT_EDITOR2D, true));
 		createComposite(this);
-	}	
+	}
 	
 	private List<IUnit> units = null;
 	private Combo combo = null;
@@ -81,7 +81,7 @@ extends XComposite
 		return combo;
 	}
 	
-	protected void createComposite(Composite parent) 
+	protected void createComposite(Composite parent)
 	{
 		combo = new Combo(parent, SWT.BORDER | SWT.READ_ONLY);
 		combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -94,7 +94,7 @@ extends XComposite
 		return units.get(combo.getSelectionIndex());
 	}
 	
-	public void selectUnit(IUnit unit) 
+	public void selectUnit(IUnit unit)
 	{
 		int index = units.indexOf(unit);
 		if (index != -1)
@@ -103,5 +103,5 @@ extends XComposite
 		
 	protected UnitRegistry getUnitRegistry() {
 		return UnitRegistryEP.sharedInstance().getUnitRegistry();
-	}	
+	}
 }

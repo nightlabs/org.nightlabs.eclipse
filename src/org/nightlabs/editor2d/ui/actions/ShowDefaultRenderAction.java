@@ -32,23 +32,23 @@ import org.nightlabs.editor2d.render.RenderConstants;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
 
-public class ShowDefaultRenderAction 
+public class ShowDefaultRenderAction
 extends AbstractRendererModeAction
 {
-  public static final String ID = ShowDefaultRenderAction.class.getName();  
+  public static final String ID = ShowDefaultRenderAction.class.getName();
   
   public ShowDefaultRenderAction(IEditorPart editor) {
     super(editor);
   }
 
   @Override
-	public void init() 
+	public void init()
   {
     setText(Messages.getString("org.nightlabs.editor2d.ui.actions.ShowDefaultRenderAction.text")); //$NON-NLS-1$
     setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.actions.ShowDefaultRenderAction.tooltip")); //$NON-NLS-1$
     setId(ID);
 //    setImageDescriptor(ImageDescriptor.createFromFile(EditorPlugin.class, "icons/sun16.gif"));
-  } 
+  }
     
   @Override
 	public String getRenderMode() {

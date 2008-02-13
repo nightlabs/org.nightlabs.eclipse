@@ -35,11 +35,11 @@ import org.nightlabs.editor2d.ui.request.TextCreateRequest;
 public abstract class AbstractCreateTextCommand
 extends CreateDrawComponentCommand
 {
-  protected TextCreateRequest request;  
-	public AbstractCreateTextCommand(TextCreateRequest request) 
+  protected TextCreateRequest request;
+	public AbstractCreateTextCommand(TextCreateRequest request)
 	{
-    super();  
-    this.request = request; 
+    super();
+    this.request = request;
 	}
 
 //	public abstract String getLabel();
@@ -54,13 +54,13 @@ extends CreateDrawComponentCommand
   }
   
   @Override
-	public void execute() 
+	public void execute()
   {
     int x = getBounds().x;
     int y = getBounds().y;
     drawComponent = createTextDrawComponent(request, x, y);
     getTextDrawComponent().setName(request.getText());
     parent.addDrawComponent(drawComponent);
-		drawOrderIndex = parent.getDrawComponents().indexOf(drawComponent);    
-  }	
+		drawOrderIndex = parent.getDrawComponents().indexOf(drawComponent);
+  }
 }

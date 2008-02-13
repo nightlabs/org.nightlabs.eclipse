@@ -34,21 +34,21 @@ import org.nightlabs.base.ui.labelprovider.I18nTextLabelProvider;
 import org.nightlabs.base.ui.property.XPropertyDescriptor;
 import org.nightlabs.editor2d.DrawComponent;
 
-public class NamePropertyDescriptor 
+public class NamePropertyDescriptor
 extends XPropertyDescriptor
 {
 	public NamePropertyDescriptor(DrawComponent dc, Object id, String displayName) {
 		this(dc, id, displayName, false);
 	}
 
-	public NamePropertyDescriptor(DrawComponent dc, Object id, String displayName, 
+	public NamePropertyDescriptor(DrawComponent dc, Object id, String displayName,
 			boolean readOnly) {
 		super(id, displayName, readOnly);
 		if (dc != null)
 			setLabelProvider(new I18nTextLabelProvider(dc.getRoot().getLanguageID(), false));
 		else
 			setLabelProvider(new I18nTextLabelProvider(false));
-	}	
+	}
 
 //	public NamePropertyDescriptor(Object id, String displayName) {
 //		this(id, displayName, false);
@@ -57,7 +57,7 @@ extends XPropertyDescriptor
 //	public NamePropertyDescriptor(Object id, String displayName, boolean readOnly) {
 //		super(id, displayName, readOnly);
 //		setLabelProvider(new I18nTextLabelProvider(false));
-//	}	
+//	}
 	
   @Override
   public CellEditor createPropertyEditor(Composite parent) {

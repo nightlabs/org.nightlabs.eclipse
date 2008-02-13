@@ -31,8 +31,8 @@ import org.eclipse.jface.viewers.DialogCellEditor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-public class LineStyleCellEditor 
-extends DialogCellEditor 
+public class LineStyleCellEditor
+extends DialogCellEditor
 {
   public LineStyleCellEditor() {
     super();
@@ -47,19 +47,19 @@ extends DialogCellEditor
   }
 
   @Override
-	protected Object openDialogBox(Control cellEditorWindow) 
+	protected Object openDialogBox(Control cellEditorWindow)
   {
     LineStyleDialog dialog = new LineStyleDialog(cellEditorWindow.getShell());
     dialog.open();
-    Object[] result = dialog.getResult(); 
+    Object[] result = dialog.getResult();
     if (result != null)
-      return result[0];  
+      return result[0];
     
     return new Integer(1);
   }
 
   @Override
-	protected void updateContents(Object value) 
+	protected void updateContents(Object value)
   {
     super.updateContents(value);
   }

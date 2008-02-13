@@ -37,15 +37,14 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.SnapToHelper;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.handles.HandleBounds;
-import org.eclipse.gef.tools.ResizeTracker;
 import org.eclipse.gef.tools.SimpleDragTracker;
 import org.eclipse.gef.tools.ToolUtilities;
 import org.nightlabs.editor2d.ui.request.EditorRequestConstants;
 import org.nightlabs.editor2d.ui.util.EditorUtil;
 
 
-public abstract class AbstractDragTracker 
-extends SimpleDragTracker 
+public abstract class AbstractDragTracker
+extends SimpleDragTracker
 implements EditorRequestConstants
 {
   protected static int FLAG_TARGET_FEEDBACK = SimpleDragTracker.MAX_FLAG << 1;
@@ -53,9 +52,9 @@ implements EditorRequestConstants
   
   protected GraphicalEditPart owner;
   protected PrecisionRectangle sourceRect;
-  protected SnapToHelper snapToHelper; 
+  protected SnapToHelper snapToHelper;
   
-  public AbstractDragTracker(GraphicalEditPart owner) 
+  public AbstractDragTracker(GraphicalEditPart owner)
   {
     super();
     this.owner = owner;
@@ -63,10 +62,10 @@ implements EditorRequestConstants
   }
 
   @Override
-	public void activate() 
+	public void activate()
   {
     super.activate();
-    if (owner != null) 
+    if (owner != null)
     {
       if (getTargetEditPart() != null)
         snapToHelper = (SnapToHelper)getTargetEditPart().getAdapter(SnapToHelper.class);
@@ -81,7 +80,7 @@ implements EditorRequestConstants
   }
   
   @Override
-	protected List createOperationSet() 
+	protected List createOperationSet()
   {
     List list = super.createOperationSet();
     ToolUtilities.filterEditPartsUnderstanding(list, getSourceRequest());
@@ -93,18 +92,18 @@ implements EditorRequestConstants
    * 
    * @return  The target EditPart; may be <code>null</code> in 2.1 applications that use
    * the now deprecated {@link ResizeTracker#ResizeTracker(int) constructor}.
-   */  
-  protected GraphicalEditPart getTargetEditPart() 
+   */
+  protected GraphicalEditPart getTargetEditPart()
   {
     if (owner != null)
     {
       GraphicalEditPart targetEditPart = (GraphicalEditPart)owner.getParent();
-      return targetEditPart;            
-    }    
+      return targetEditPart;
+    }
     return null;
   }
   
-  protected void eraseTargetFeedback() 
+  protected void eraseTargetFeedback()
   {
     if (!getFlag(FLAG_TARGET_FEEDBACK))
       return;
@@ -114,40 +113,40 @@ implements EditorRequestConstants
   }
      
   @Override
-	public void deactivate() 
+	public void deactivate()
   {
-    eraseTargetFeedback();    
+    eraseTargetFeedback();
     sourceRect = null;
     snapToHelper = null;
     super.deactivate();
-  }  
+  }
   
   /**
    * @see org.eclipse.gef.tools.AbstractTool#getCommand()
    */
   @Override
-	protected Command getCommand() 
+	protected Command getCommand()
   {
     return getTargetEditPart().getCommand(getSourceRequest());
   }
   
   @Override
-	protected boolean handleButtonUp(int button) 
+	protected boolean handleButtonUp(int button)
   {
     if (stateTransition(STATE_DRAG_IN_PROGRESS, STATE_TERMINAL)) {
       eraseSourceFeedback();
       eraseTargetFeedback();
       performDrag();
       // added to repaint the handle
-  		performSelection();      
+  		performSelection();
     }
     return true;
   }
   
   @Override
-	protected boolean handleDragInProgress() 
+	protected boolean handleDragInProgress()
   {
-    if (isInState(STATE_DRAG | STATE_DRAG_IN_PROGRESS)) 
+    if (isInState(STATE_DRAG | STATE_DRAG_IN_PROGRESS))
     {
       updateSourceRequest();
       showSourceFeedback();
@@ -157,31 +156,31 @@ implements EditorRequestConstants
     return true;
   }
   
-  protected void showTargetFeedback() 
+  protected void showTargetFeedback()
   {
     setFlag(FLAG_TARGET_FEEDBACK, true);
     if (getTargetEditPart() != null)
       getTargetEditPart().showTargetFeedback(getSourceRequest());
-  } 
+  }
   
   protected boolean isInDragInProgress() {
     return isInState(STATE_DRAG_IN_PROGRESS | STATE_ACCESSIBLE_DRAG_IN_PROGRESS);
-  }   
+  }
   
   @Override
-	protected String getDebugName() 
+	protected String getDebugName()
   {
     return "Debug "+getCommandName(); //$NON-NLS-1$
-  }   
+  }
   
   @Override
 	protected abstract Request createSourceRequest();
   @Override
-	protected abstract void updateSourceRequest();   
+	protected abstract void updateSourceRequest();
   @Override
 	protected abstract String getCommandName();
 
-  protected void performSelection() 
+  protected void performSelection()
   {
   	EditorUtil.selectEditPart(owner);
   }

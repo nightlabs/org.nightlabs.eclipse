@@ -36,10 +36,10 @@ import org.nightlabs.editor2d.ui.edit.AbstractDrawComponentEditPart;
 import org.nightlabs.editor2d.ui.request.EditorRotateRequest;
 import org.nightlabs.editor2d.ui.util.EditorUtil;
 
-public class RotateTracker 
-extends AbstractDragTracker 
+public class RotateTracker
+extends AbstractDragTracker
 {
-  protected int direction; 
+  protected int direction;
   
   public RotateTracker(AbstractDrawComponentEditPart owner, int direction)
   {
@@ -60,11 +60,11 @@ extends AbstractDragTracker
    * @see org.eclipse.gef.tools.SimpleDragTracker#createSourceRequest()
    */
   @Override
-	protected Request createSourceRequest() 
+	protected Request createSourceRequest()
   {
     EditorRotateRequest rotateRequest = new EditorRotateRequest();
     rotateRequest.setType(REQ_ROTATE);
-    rotateRequest.setLocation(getLocation());   
+    rotateRequest.setLocation(getLocation());
     rotateRequest.setEditParts(getCurrentViewer().getSelectedEditParts());
     if (getDrawComponent().getConstrainedRotationValues() != null) {
     	rotateRequest.setConstrainedRotation(true);
@@ -74,7 +74,7 @@ extends AbstractDragTracker
   }
   
   @Override
-	protected String getCommandName() 
+	protected String getCommandName()
   {
     return REQ_ROTATE;
   }
@@ -83,10 +83,10 @@ extends AbstractDragTracker
    * @see org.eclipse.gef.tools.AbstractTool#getDefaultCursor()
    */
   @Override
-	protected Cursor getDefaultCursor() 
+	protected Cursor getDefaultCursor()
   {
     return EditorCursors.ROTATE;
-  }  
+  }
           
   protected Point rotationCenter;
   
@@ -94,41 +94,41 @@ extends AbstractDragTracker
    * @see org.eclipse.gef.tools.SimpleDragTracker#updateSourceRequest()
    */
   @Override
-	protected void updateSourceRequest() 
+	protected void updateSourceRequest()
   {
-    if (getEditorRotateRequest().getRotationCenter() == null && owner != null) 
+    if (getEditorRotateRequest().getRotationCenter() == null && owner != null)
     {
 	    if (getEditorRotateRequest().getEditParts().size() > 1) {
 	      rotationCenter = EditorUtil.getCenter(getEditorRotateRequest().getEditParts());
-	      getEditorRotateRequest().setRotationCenter(rotationCenter);	      
+	      getEditorRotateRequest().setRotationCenter(rotationCenter);
 	      getEditorRotateRequest().setMultiple(true);
 	    }
-	    else {      
+	    else {
         rotationCenter = new Point(
         		getAbstractDrawComponentEditPart().getDrawComponent().getRotationX(),
             getAbstractDrawComponentEditPart().getDrawComponent().getRotationY());
         getEditorRotateRequest().setRotationCenter(rotationCenter);
-        getEditorRotateRequest().setMultiple(false);        
-	    }                  
+        getEditorRotateRequest().setMultiple(false);
+	    }
     }
-    getEditorRotateRequest().setLocation(getLocation());        
+    getEditorRotateRequest().setLocation(getLocation());
   }
   
-  protected EditorRotateRequest getEditorRotateRequest() 
+  protected EditorRotateRequest getEditorRotateRequest()
   {
     return (EditorRotateRequest) getSourceRequest();
   }
   
   @Override
-	protected String getDebugName() 
+	protected String getDebugName()
   {
     return "Rotate Handle Tracker";//$NON-NLS-1$
   }
 
   // Override to avoid the single selection of the EditPart whiches handle has been selected
 	@Override
-	protected void performSelection() 
+	protected void performSelection()
 	{
 		
-	}       
+	}
 }

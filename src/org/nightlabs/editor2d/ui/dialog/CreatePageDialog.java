@@ -36,8 +36,8 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class CreatePageDialog 
-extends CenteredDialog 
+public class CreatePageDialog
+extends CenteredDialog
 {
 	public CreatePageDialog(Shell parentShell) {
 		super(parentShell);
@@ -50,13 +50,13 @@ extends CenteredDialog
 	}
 	
 	@Override
-	protected Control createDialogArea(Composite parent) 
+	protected Control createDialogArea(Composite parent)
 	{
-		return new PageComposite(parent, SWT.NONE); 
+		return new PageComposite(parent, SWT.NONE);
 	}
 
 	@Override
-	public void create() 
+	public void create()
 	{
 		super.create();
 		getShell().setText(Messages.getString("org.nightlabs.editor2d.ui.dialog.CreatePageDialog.title")); //$NON-NLS-1$

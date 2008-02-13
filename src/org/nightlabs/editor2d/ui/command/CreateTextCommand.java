@@ -31,15 +31,15 @@ import org.nightlabs.editor2d.TextDrawComponent;
 import org.nightlabs.editor2d.ui.request.TextCreateRequest;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
-public class CreateTextCommand  
+public class CreateTextCommand
 extends AbstractCreateTextCommand
-{  
-  protected TextCreateRequest request;  
-  public CreateTextCommand(TextCreateRequest request) 
+{
+  protected TextCreateRequest request;
+  public CreateTextCommand(TextCreateRequest request)
   {
-    super(request);  
+    super(request);
     setLabel(Messages.getString("org.nightlabs.editor2d.ui.command.CreateTextCommand.label")); //$NON-NLS-1$
-    this.request = request; 
+    this.request = request;
   }
   
   @Override
@@ -48,10 +48,10 @@ extends AbstractCreateTextCommand
   }
 
 	@Override
-	public TextDrawComponent createTextDrawComponent(TextCreateRequest request, int x, int y) 
+	public TextDrawComponent createTextDrawComponent(TextCreateRequest request, int x, int y)
 	{
 		return getFactory().createTextDrawComponent(
-				request.getText(), request.getFontName(), request.getFontSize(), 
-				request.getFontStyle(), x, y, parent);		 
+				request.getText(), request.getFontName(), request.getFontSize(),
+				request.getFontStyle(), x, y, parent);
 	}
 }

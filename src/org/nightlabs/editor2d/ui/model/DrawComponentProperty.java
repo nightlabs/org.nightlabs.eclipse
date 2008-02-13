@@ -31,7 +31,7 @@ import org.nightlabs.editor2d.DrawComponent;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public interface DrawComponentProperty 
+public interface DrawComponentProperty
 {
 	public PropertyDescriptor getPropertyDescriptor();
 	

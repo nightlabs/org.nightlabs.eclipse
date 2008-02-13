@@ -38,8 +38,8 @@ import org.nightlabs.editor2d.ui.model.PagePropertySource;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class PageEditPart 
-extends AbstractDrawComponentContainerEditPart 
+public class PageEditPart
+extends AbstractDrawComponentContainerEditPart
 {
 	/**
 	 * @param page the PageDrawComponent to initalize this PageEditPart with
@@ -53,15 +53,15 @@ extends AbstractDrawComponentContainerEditPart
 	}
 	
   @Override
-	protected IFigure createFigure() 
-  {    
+	protected IFigure createFigure()
+  {
   	RendererFigure f = new PageFreeformFigure();
-    f.setDrawComponent(getPageDrawComponent());    
+    f.setDrawComponent(getPageDrawComponent());
     addRenderer(f);
     
-		f.setLayoutManager(new FreeformLayout());    
-		return f;  
-  }	
+		f.setLayoutManager(new FreeformLayout());
+		return f;
+  }
   
   @Override
 	public IPropertySource getPropertySource()
@@ -70,10 +70,10 @@ extends AbstractDrawComponentContainerEditPart
       propertySource = new PagePropertySource(getPageDrawComponent());
     }
     return propertySource;
-  }  
+  }
   
 	@Override
-	protected void propertyChanged(PropertyChangeEvent evt) 
+	protected void propertyChanged(PropertyChangeEvent evt)
 	{
 		String propertyName = evt.getPropertyName();
 //		if (propertyName.equals(PageDrawComponent.PROP_RESOLUTION)) {
@@ -91,7 +91,7 @@ extends AbstractDrawComponentContainerEditPart
 		if (propertyName.equals(PageDrawComponent.PROP_PAGE_BOUNDS)) {
 			refreshVisuals();
 			return;
-		}				
-		super.propertyChanged(evt);		
+		}
+		super.propertyChanged(evt);
 	}
 }

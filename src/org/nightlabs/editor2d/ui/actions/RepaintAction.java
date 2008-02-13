@@ -33,8 +33,8 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class RepaintAction 
-extends AbstractEditorAction 
+public class RepaintAction
+extends AbstractEditorAction
 {
 	public static final String ID = RepaintAction.class.getName();
 	
@@ -62,7 +62,7 @@ extends AbstractEditorAction
 	}
 
 	@Override
-	protected void init() 
+	protected void init()
 	{
 		setId(ID);
 		setText(Messages.getString("org.nightlabs.editor2d.ui.actions.RepaintAction.text")); //$NON-NLS-1$

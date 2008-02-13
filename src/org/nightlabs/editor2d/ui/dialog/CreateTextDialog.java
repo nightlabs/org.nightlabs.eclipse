@@ -55,36 +55,36 @@ import org.nightlabs.editor2d.ui.request.TextCreateRequest;
 import org.nightlabs.editor2d.ui.resource.Messages;
 import org.nightlabs.util.FontUtil;
 
-public class CreateTextDialog 
+public class CreateTextDialog
 extends CenteredDialog
-{  
+{
 	private static final Logger logger = Logger.getLogger(CreateTextDialog.class);
 	
-  public CreateTextDialog(Shell parentShell, TextCreateRequest request) 
+  public CreateTextDialog(Shell parentShell, TextCreateRequest request)
   {
     super(parentShell);
     this.request = request;
     setShellStyle(getShellStyle() | SWT.RESIZE);
   }
   
-  private TextCreateRequest request;  
+  private TextCreateRequest request;
   private int defaultSize = 18;
   private Combo fontCombo;
   private Text text;
   private Combo sizeCombo;
-  private Button italicButton; 
+  private Button italicButton;
   private Button boldButton;
   private String[] fonts;
   private Composite dialogComp;
   private Text previewText;
   
   @Override
-	protected Control createDialogArea(Composite parent) 
+	protected Control createDialogArea(Composite parent)
   {
     getShell().setText(Messages.getString("org.nightlabs.editor2d.ui.dialog.CreateTextDialog.title")); //$NON-NLS-1$
     
-    dialogComp = new XComposite(parent, SWT.NONE);    
-    dialogComp.setLayout(new GridLayout(2, false));    
+    dialogComp = new XComposite(parent, SWT.NONE);
+    dialogComp.setLayout(new GridLayout(2, false));
     
     // name
     Label nameLabel = new Label(dialogComp, SWT.NONE);
@@ -100,8 +100,8 @@ extends CenteredDialog
     // font
     Label fontLabel = new Label(dialogComp, SWT.NONE);
     fontLabel.setText(Messages.getString("org.nightlabs.editor2d.ui.dialog.CreateTextDialog.font")); //$NON-NLS-1$
-    Composite detailComp = new XComposite(dialogComp, SWT.NONE, 
-    		LayoutMode.TIGHT_WRAPPER, LayoutDataMode.GRID_DATA_HORIZONTAL, 4);    
+    Composite detailComp = new XComposite(dialogComp, SWT.NONE,
+    		LayoutMode.TIGHT_WRAPPER, LayoutDataMode.GRID_DATA_HORIZONTAL, 4);
     
     createFontCombo(detailComp);
     createSizeCombo(detailComp);
@@ -113,7 +113,7 @@ extends CenteredDialog
     // preview
     Label previewLabel = new Label(dialogComp, SWT.NONE);
     previewLabel.setText(Messages.getString("org.nightlabs.editor2d.ui.dialog.CreateTextDialog.preview")); //$NON-NLS-1$
-    previewText = new Text(dialogComp, SWT.READ_ONLY | SWT.BORDER | SWT.WRAP);    
+    previewText = new Text(dialogComp, SWT.READ_ONLY | SWT.BORDER | SWT.WRAP);
     previewText.setText(previewString);
     previewText.setLayoutData(new GridData(GridData.FILL_BOTH));
     
@@ -125,15 +125,15 @@ extends CenteredDialog
     
     logger.info("getDefaultFont() = "+getDefaultFont());        //$NON-NLS-1$
     return dialogArea;
-  }  
+  }
     
-  protected void checkEmptyString() 
+  protected void checkEmptyString()
   {
   	if (getButton(Window.OK) != null) {
   		if (text.getText().trim().equals("")) //$NON-NLS-1$
   			getButton(Window.OK).setEnabled(false);
   		else
-  			getButton(Window.OK).setEnabled(true);  		
+  			getButton(Window.OK).setEnabled(true);
   	}
   }
   
@@ -147,7 +147,7 @@ extends CenteredDialog
 	};
   
 	private String previewString = Messages.getString("org.nightlabs.editor2d.ui.dialog.CreateTextDialog.previewString"); //$NON-NLS-1$
-  protected void updatePreview() 
+  protected void updatePreview()
   {
   	checkEmptyString();
   	previewText.setText(text.getText());
@@ -157,13 +157,13 @@ extends CenteredDialog
 			((Composite)getDialogArea()).layout(true, true);
   }
   
-  protected void createFontCombo(Composite parent) 
+  protected void createFontCombo(Composite parent)
   {
     fontCombo = new Combo(parent, SWT.READ_ONLY);
-    fontCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));    
+    fontCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     
     fonts = FontUtil.getSystemFonts();
-    fontCombo.setItems(fonts);  
+    fontCombo.setItems(fonts);
     
     for (int i=0; i<fonts.length; i++) {
       String f = fonts[i];
@@ -186,7 +186,7 @@ extends CenteredDialog
   	return new Font(fontData.getName(), fontData.getStyle(), fontData.getHeight());
   }
   
-  protected void createSizeCombo(Composite parent) 
+  protected void createSizeCombo(Composite parent)
   {
     sizeCombo = new Combo(parent, SWT.NONE);
     String[] sizes = getFontSizes();
@@ -213,7 +213,7 @@ extends CenteredDialog
   }
     
   public org.eclipse.swt.graphics.Font getSelectedFont() {
-    int size = Integer.parseInt(sizeCombo.getText());    
+    int size = Integer.parseInt(sizeCombo.getText());
     int fontIndex = fontCombo.getSelectionIndex();
     String fontName = fontCombo.getItem(fontIndex);
     int fontStyle = getSWTFontStyle();
@@ -221,7 +221,7 @@ extends CenteredDialog
     		fontName, size, fontStyle);
   }
   
-  private int getFontStyle() 
+  private int getFontStyle()
   {
   	int fontStyle = Font.PLAIN;
   	
@@ -243,14 +243,14 @@ extends CenteredDialog
     if (italicButton.getSelection())
       fontStyle = fontStyle | SWT.ITALIC;
 
-    return fontStyle;  	
+    return fontStyle;
   }
   
   @Override
-	protected void okPressed() 
+	protected void okPressed()
   {
   	int fontStyle = getFontStyle();
-    int size = Integer.parseInt(sizeCombo.getText());    
+    int size = Integer.parseInt(sizeCombo.getText());
     int fontIndex = fontCombo.getSelectionIndex();
     String fontName = fontCombo.getItem(fontIndex);
     

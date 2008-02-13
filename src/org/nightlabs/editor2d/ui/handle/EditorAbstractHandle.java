@@ -38,8 +38,8 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
 
 
-public abstract class EditorAbstractHandle 
-extends AbstractHandle 
+public abstract class EditorAbstractHandle
+extends AbstractHandle
 {
   /**
    * The default size for the RotateCenterHandle.
@@ -48,22 +48,22 @@ extends AbstractHandle
 
   {
     init();
-  }  
+  }
   
   protected void init() {
     setPreferredSize(new Dimension(DEFAULT_HANDLE_SIZE, DEFAULT_HANDLE_SIZE));
     setSize(getPreferredSize());
-  }   
+  }
   
   @Override
 	public void setBounds(Rectangle rect) {
     super.setBounds(new Rectangle(rect.x, rect.y, DEFAULT_HANDLE_SIZE, DEFAULT_HANDLE_SIZE));
-  }  
+  }
   
-  public EditorAbstractHandle() 
+  public EditorAbstractHandle()
   {
     super();
-    init();    
+    init();
   }
   
   /**

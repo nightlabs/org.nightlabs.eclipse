@@ -58,14 +58,14 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class QuickOptionsComposite 
-extends XComposite 
+public class QuickOptionsComposite
+extends XComposite
 {
 	/**
 	 * @param parent
 	 * @param style
 	 */
-	public QuickOptionsComposite(Composite parent, int style) 
+	public QuickOptionsComposite(Composite parent, int style)
 	{
 		super(parent, style);
 		init();
@@ -78,20 +78,20 @@ extends XComposite
 	 * @param layoutDataMode
 	 */
 	public QuickOptionsComposite(Composite parent, int style,
-			LayoutMode layoutMode, LayoutDataMode layoutDataMode) 
+			LayoutMode layoutMode, LayoutDataMode layoutDataMode)
 	{
 		super(parent, style, layoutMode, layoutDataMode);
 		init();
 	}
 
-	protected void init() 
+	protected void init()
 	{
 		initConfigModule();
 		initLayout();
 		createComposite(this);
 	}
 		
-	protected void initLayout() 
+	protected void initLayout()
 	{
 		GridLayout layout = new GridLayout();
 		layout.marginBottom = 0;
@@ -103,7 +103,7 @@ extends XComposite
 	}
 	
 	private QuickOptionsConfigModule confMod = null;
-	protected QuickOptionsConfigModule getConfigModule() 
+	protected QuickOptionsConfigModule getConfigModule()
 	{
 		if (confMod == null)
 			initConfigModule();
@@ -111,48 +111,48 @@ extends XComposite
 		return confMod;
 	}
 	
-	protected void initConfigModule() 
+	protected void initConfigModule()
 	{
 		try {
 			confMod = Config.sharedInstance().createConfigModule(QuickOptionsConfigModule.class);
 		} catch (ConfigException e) {
 			throw new RuntimeException(e);
-		} 
+		}
 	}
 	
 //	private FormToolkit toolkit = null;
 	private NightlabsFormsToolkit toolkit = null;
-	private ScrolledForm form = null;	
-	protected void createComposite(Composite parent) 
+	private ScrolledForm form = null;
+	protected void createComposite(Composite parent)
 	{
 //		toolkit = new XFormToolkit(parent.getDisplay());
 		toolkit = new NightlabsFormsToolkit(parent.getDisplay());
 		form = toolkit.createScrolledForm(parent);
 		TableWrapLayout layout = new TableWrapLayout();
-		form.getBody().setLayout(layout);		
+		form.getBody().setLayout(layout);
 		form.getBody().setLayoutData(new GridData(GridData.FILL_BOTH));
 				
-		Section sectionDuplicate = toolkit.createSection(form.getBody(), 
+		Section sectionDuplicate = toolkit.createSection(form.getBody(),
 			  Section.DESCRIPTION|ExpandableComposite.TITLE_BAR|
 			  ExpandableComposite.TWISTIE|ExpandableComposite.EXPANDED);
 		TableWrapData td = new TableWrapData(TableWrapData.FILL_GRAB);
-		sectionDuplicate.setLayoutData(td);		
+		sectionDuplicate.setLayoutData(td);
 		
 		sectionDuplicate.addExpansionListener(new ExpansionAdapter() {
 			@Override
 			public void expansionStateChanged(ExpansionEvent e) {
 				form.reflow(true);
 		  }
-		});		
+		});
 		sectionDuplicate.setText(Messages.getString("org.nightlabs.editor2d.ui.composite.QuickOptionsComposite.section.duplicate.text")); //$NON-NLS-1$
 		sectionDuplicate.setDescription(Messages.getString("org.nightlabs.editor2d.ui.composite.QuickOptionsComposite.section.duplicate.description")); //$NON-NLS-1$
-		Composite sectionClientDuplicate = toolkit.createComposite(sectionDuplicate);	
-		sectionClientDuplicate.setLayout(new GridLayout(2, false));				
+		Composite sectionClientDuplicate = toolkit.createComposite(sectionDuplicate);
+		sectionClientDuplicate.setLayout(new GridLayout(2, false));
 		createEntry(sectionClientDuplicate, Messages.getString("org.nightlabs.editor2d.ui.composite.QuickOptionsComposite.label.distanceX"), CLONE_X); //$NON-NLS-1$
 		createEntry(sectionClientDuplicate, Messages.getString("org.nightlabs.editor2d.ui.composite.QuickOptionsComposite.label.distanceY"), CLONE_Y); //$NON-NLS-1$
 		sectionDuplicate.setClient(sectionClientDuplicate);
 		
-		Section sectionMove = toolkit.createSection(form.getBody(), 
+		Section sectionMove = toolkit.createSection(form.getBody(),
 			  Section.DESCRIPTION|ExpandableComposite.TITLE_BAR|
 			  ExpandableComposite.TWISTIE|ExpandableComposite.EXPANDED);
 		TableWrapData tdMove = new TableWrapData(TableWrapData.FILL_GRAB);
@@ -163,55 +163,55 @@ extends XComposite
 			public void expansionStateChanged(ExpansionEvent e) {
 				form.reflow(true);
 		  }
-		});		
+		});
 		sectionMove.setText(Messages.getString("org.nightlabs.editor2d.ui.composite.QuickOptionsComposite.section.move.text")); //$NON-NLS-1$
 		sectionMove.setDescription(Messages.getString("org.nightlabs.editor2d.ui.composite.QuickOptionsComposite.section.move.description")); //$NON-NLS-1$
 		Composite sectionClientMove = toolkit.createComposite(sectionMove);
-		sectionClientMove.setLayout(new GridLayout(2, false));				
+		sectionClientMove.setLayout(new GridLayout(2, false));
 		createEntry(sectionClientMove, Messages.getString("org.nightlabs.editor2d.ui.composite.QuickOptionsComposite.label.distanceX"), MOVE_X); //$NON-NLS-1$
 		createEntry(sectionClientMove, Messages.getString("org.nightlabs.editor2d.ui.composite.QuickOptionsComposite.label.distanceY"), MOVE_Y); //$NON-NLS-1$
 		sectionMove.setClient(sectionClientMove);
 	}
 	
-	private static final int CLONE_X = 1; 
+	private static final int CLONE_X = 1;
 	private static final int CLONE_Y = 2;
 	private static final int MOVE_X = 3;
-	private static final int MOVE_Y = 4;	
+	private static final int MOVE_Y = 4;
 	private Map<Spinner, Integer> spinner2Identifier = new HashMap<Spinner, Integer>();
 	
-	protected void createEntry(Composite parent, String labelText, int identifier) 
+	protected void createEntry(Composite parent, String labelText, int identifier)
 	{
 		toolkit.paintBordersFor(parent);
 		
-		Label l = toolkit.createLabel(parent, labelText);		
+		Label l = toolkit.createLabel(parent, labelText);
 		Spinner spinner = new Spinner(parent, SWT.NONE);
 		spinner.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
-		spinner.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));		
-		spinner.setSelection(getValue(identifier));				
+		spinner.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		spinner.setSelection(getValue(identifier));
 		spinner.addSelectionListener(textListener);
 		spinner.addFocusListener(focusListener);
 		spinner.addDisposeListener(disposeListener);
 		
-		spinner2Identifier.put(spinner, new Integer(identifier));		
-	}	
+		spinner2Identifier.put(spinner, new Integer(identifier));
+	}
 	
 	private SelectionListener textListener = new SelectionListener()
-	{	
+	{
 		public void widgetDefaultSelected(SelectionEvent e) {
 			widgetSelected(e);
-		}	
-		public void widgetSelected(SelectionEvent e) 
+		}
+		public void widgetSelected(SelectionEvent e)
 		{
 			Spinner t = (Spinner) e.getSource();
 			int identifier = (spinner2Identifier.get(t)).intValue();
-			int value = t.getSelection();	
+			int value = t.getSelection();
 			setValue(identifier, value);
-		}	
+		}
 	};
 		
-	protected void setValue(int identifier, int value) 
+	protected void setValue(int identifier, int value)
 	{
-		switch (identifier) 
+		switch (identifier)
 		{
 			case (CLONE_X):
 				getConfigModule().setCloneDistanceX(value);
@@ -224,13 +224,13 @@ extends XComposite
 				break;
 			case (MOVE_Y):
 				getConfigModule().setMoveTranslationY(value);
-				break;								
+				break;
 		}
 	}
 	
-	protected int getValue(int identifier) 
+	protected int getValue(int identifier)
 	{
-		switch (identifier) 
+		switch (identifier)
 		{
 			case (CLONE_X):
 				return getConfigModule().getCloneDistanceX();
@@ -245,27 +245,27 @@ extends XComposite
 	}
 	
 	private FocusListener focusListener = new FocusListener()
-	{	
-		public void focusLost(FocusEvent e) 
+	{
+		public void focusLost(FocusEvent e)
 		{
 //			Spinner t = (Spinner) e.getSource();
 //			int identifier = ((Integer) spinner2Identifier.get(t)).intValue();
-//			int value = t.getSelection();	
-//			setValue(identifier, value);			
-		}	
+//			int value = t.getSelection();
+//			setValue(identifier, value);
+		}
 		public void focusGained(FocusEvent e) {
 			
-		}	
+		}
 	};
 	
 	private DisposeListener disposeListener = new DisposeListener()
-	{	
-		public void widgetDisposed(DisposeEvent e) 
+	{
+		public void widgetDisposed(DisposeEvent e)
 		{
 			Spinner t = (Spinner) e.getSource();
 			t.removeSelectionListener(textListener);
 			t.removeFocusListener(focusListener);
-		}	
+		}
 	};
 	
 }

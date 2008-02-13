@@ -32,16 +32,16 @@ import java.awt.geom.AffineTransform;
 import org.eclipse.draw2d.PositionConstants;
 
 
-public class ShearCommand 
+public class ShearCommand
 extends AbstractTransformCommand
 {
 
-  public ShearCommand() 
+  public ShearCommand()
   {
     super();
   }
 
-  protected double shear;  
+  protected double shear;
   public double getShear() {
     return shear;
   }
@@ -49,7 +49,7 @@ extends AbstractTransformCommand
     this.shear = shear;
   }
   
-  protected int direction;  
+  protected int direction;
   public int getDirection() {
     return direction;
   }
@@ -57,26 +57,26 @@ extends AbstractTransformCommand
     this.direction = direction;
   }
     
-  protected AffineTransform calcAffineTransform() 
+  protected AffineTransform calcAffineTransform()
   {
     AffineTransform at = new AffineTransform();
-    switch (direction) 
-    {    	
+    switch (direction)
+    {
     	case(PositionConstants.EAST):
-    	case(PositionConstants.WEST):    	  
+    	case(PositionConstants.WEST):
     		at.shear(shear, 1.0d);
     		break;
     	case(PositionConstants.NORTH):
     	case(PositionConstants.SOUTH):
     		at.shear(1.0d, shear);
     		setAffineTransform(at);
-    		break;    		
+    		break;
     }
 		return at;
   }
   
   @Override
-	public void execute() 
+	public void execute()
   {
     setAffineTransform(calcAffineTransform());
     super.execute();

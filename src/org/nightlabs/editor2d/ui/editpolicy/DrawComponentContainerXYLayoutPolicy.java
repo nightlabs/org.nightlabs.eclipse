@@ -48,7 +48,6 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.SnapToGuides;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
-import org.eclipse.gef.editpolicies.LayoutEditPolicy;
 import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
@@ -90,8 +89,8 @@ import org.nightlabs.editor2d.ui.util.EditorUtil;
 import org.nightlabs.editor2d.ui.util.J2DUtil;
 import org.nightlabs.editor2d.ui.util.feedback.FeedbackUtil;
 
-public class DrawComponentContainerXYLayoutPolicy 
-extends XYLayoutEditPolicy 
+public class DrawComponentContainerXYLayoutPolicy
+extends XYLayoutEditPolicy
 implements EditorRequestConstants
 {
 	/**
@@ -101,16 +100,16 @@ implements EditorRequestConstants
   
   public DrawComponentContainerXYLayoutPolicy(XYLayout layout) {
   	this(layout, true, true, true);
-  }  
+  }
 
-  public DrawComponentContainerXYLayoutPolicy(XYLayout layout, boolean rotation, 
-  		boolean scale) 
+  public DrawComponentContainerXYLayoutPolicy(XYLayout layout, boolean rotation,
+  		boolean scale)
   {
   	this(layout, rotation, scale, rotation);
   }
   
-  public DrawComponentContainerXYLayoutPolicy(XYLayout layout, boolean rotation, 
-  		boolean scale, boolean rotationCenter) 
+  public DrawComponentContainerXYLayoutPolicy(XYLayout layout, boolean rotation,
+  		boolean scale, boolean rotationCenter)
   {
     super();
     setXyLayout(layout);
@@ -127,14 +126,14 @@ implements EditorRequestConstants
    * @see org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy#createAddCommand(org.eclipse.gef.EditPart, java.lang.Object)
    */
   @Override
-	protected Command createAddCommand(EditPart child, Object constraint) 
+	protected Command createAddCommand(EditPart child, Object constraint)
   {
     return null;
   }
   
   @Override
-	protected Command createChangeConstraintCommand(ChangeBoundsRequest request, 
-      EditPart child, Object constraint) 
+	protected Command createChangeConstraintCommand(ChangeBoundsRequest request,
+      EditPart child, Object constraint)
   {
 		SetConstraintCommand cmd = new SetConstraintCommand();
 		DrawComponent part = (DrawComponent)child.getModel();
@@ -142,13 +141,13 @@ implements EditorRequestConstants
 		cmd.setBounds(J2DUtil.toAWTRectangle((Rectangle)constraint));
 		Command result = cmd;
 		
-		if ((request.getResizeDirection() & PositionConstants.NORTH_SOUTH) != 0) 
+		if ((request.getResizeDirection() & PositionConstants.NORTH_SOUTH) != 0)
 		{
 			Integer guidePos = (Integer)request.getExtendedData().get(SnapToGuides.KEY_HORIZONTAL_GUIDE);
 			if (guidePos != null) {
 			  result = chainGuideAttachmentCommand(request, part, result, true);
-			} 
-			else if (part.getHorizontalGuide() != null) 
+			}
+			else if (part.getHorizontalGuide() != null)
 			{
 				// SnapToGuides didn't provide a horizontal guide, but this part is attached
 				// to a horizontal guide.  Now we check to see if the part is attached to
@@ -165,13 +164,13 @@ implements EditorRequestConstants
 			}
 		}
 		
-		if ((request.getResizeDirection() & PositionConstants.EAST_WEST) != 0) 
+		if ((request.getResizeDirection() & PositionConstants.EAST_WEST) != 0)
 		{
 		  Integer guidePos = (Integer)request.getExtendedData().get(SnapToGuides.KEY_VERTICAL_GUIDE);
 		  if (guidePos != null) {
 		    	result = chainGuideAttachmentCommand(request, part, result, false);
-		  } 
-		  else if (part.getVerticalGuide() != null) 
+		  }
+		  else if (part.getVerticalGuide() != null)
 		  {
 				int alignment = part.getVerticalGuide().getAlignment(part);
 				int edgeBeingResized = 0;
@@ -185,7 +184,7 @@ implements EditorRequestConstants
 		}
 		
 		if (request.getType().equals(REQ_MOVE_CHILDREN)
-		|| request.getType().equals(REQ_ALIGN_CHILDREN)) 
+		|| request.getType().equals(REQ_ALIGN_CHILDREN))
 		{
 			result = chainGuideAttachmentCommand(request, part, result, true);
 			result = chainGuideAttachmentCommand(request, part, result, false);
@@ -194,22 +193,22 @@ implements EditorRequestConstants
 		}
 		
 		return result;
-  }  
+  }
   
 	/* (non-Javadoc)
 	 * @see org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy#createChangeConstraintCommand(org.eclipse.gef.EditPart, java.lang.Object)
 	 */
 	@Override
-	protected Command createChangeConstraintCommand(EditPart child, Object constraint) {	  
+	protected Command createChangeConstraintCommand(EditPart child, Object constraint) {
 		return null;
-	}	
+	}
 			
   @Override
-	protected EditPolicy createChildEditPolicy(EditPart child) 
-  {  	
+	protected EditPolicy createChildEditPolicy(EditPart child)
+  {
 //  	return new DrawComponentResizeEditPolicy();
-  	return new DrawComponentResizeEditPolicy(rotation, scale);  	
-  } 
+  	return new DrawComponentResizeEditPolicy(rotation, scale);
+  }
   
   /* (non-Javadoc)
    * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getDeleteDependantCommand(org.eclipse.gef.Request)
@@ -225,8 +224,8 @@ implements EditorRequestConstants
   }
       
   @Override
-	protected Command getAddCommand(Request generic) 
-  {    
+	protected Command getAddCommand(Request generic)
+  {
 //    LOGGER.debug("getAddCommand()");
     
   	ChangeBoundsRequest request = (ChangeBoundsRequest)generic;
@@ -237,7 +236,7 @@ implements EditorRequestConstants
   	Rectangle r;
   	Object constraint;
 
-  	for (int i = 0; i < editParts.size(); i++) 
+  	for (int i = 0; i < editParts.size(); i++)
   	{
   		childPart = (GraphicalEditPart)editParts.get(i);
   		r = childPart.getFigure().getBounds().getCopy();
@@ -246,25 +245,25 @@ implements EditorRequestConstants
   		//convert r to absolute from childpart figure
   		childPart.getFigure().translateToAbsolute(r);
   		r = request.getTransformedRectangle(r);
-  		//convert this figure to relative 
+  		//convert this figure to relative
   		getLayoutContainer().translateToRelative(r);
   		
-  		// WORKAROUND: reason = size changes when moving, 
+  		// WORKAROUND: reason = size changes when moving,
   		// solution = check old size before transforming, if size changed set old size
   		if ((r.width != oldWidth || r.height != oldHeight) &&
   		    request.getSizeDelta().equals(0,0))
   		  r.setSize(oldWidth, oldHeight);
   		  
-  		getLayoutContainer().translateFromParent(r);  		
+  		getLayoutContainer().translateFromParent(r);
   		r.translate(getLayoutOrigin().getNegated());
-  		constraint = getConstraintFor(r);  		
+  		constraint = getConstraintFor(r);
   		command.add(createAddCommand(generic, childPart,
   			translateToModelConstraint(constraint)));
   	}
   	return command.unwrap();
   }
   
-	protected Command chainGuideAttachmentCommand(Request request, DrawComponent part, Command cmd, boolean horizontal) 
+	protected Command chainGuideAttachmentCommand(Request request, DrawComponent part, Command cmd, boolean horizontal)
 	{
 		Command result = cmd;
 		
@@ -282,7 +281,7 @@ implements EditorRequestConstants
 		}
 
 		return result;
-	}	
+	}
 	
 	protected Command chainGuideDetachmentCommand(Request request, DrawComponent part,
 			Command cmd, boolean horizontal) {
@@ -296,15 +295,15 @@ implements EditorRequestConstants
 			result = result.chain(new ChangeGuideCommand(part, horizontal));
 
 		return result;
-	}	
+	}
   
-	protected EditorGuide findGuideAt(int pos, boolean horizontal) 
+	protected EditorGuide findGuideAt(int pos, boolean horizontal)
 	{
 		RulerProvider provider = ((RulerProvider)getHost().getViewer().getProperty(
-				horizontal ? RulerProvider.PROPERTY_VERTICAL_RULER 
+				horizontal ? RulerProvider.PROPERTY_VERTICAL_RULER
 				: RulerProvider.PROPERTY_HORIZONTAL_RULER));
 		return (EditorGuide)provider.getGuideAt(pos);
-	}		
+	}
 	
 	/**
 	 * Generates a draw2d constraint for the given <code>EditorCreateShapeRequest</code>. If the
@@ -318,7 +317,7 @@ implements EditorRequestConstants
 	 * @return a draw2d constraint
 	 */
 	@Override
-	protected Object getConstraintFor(CreateRequest request) 
+	protected Object getConstraintFor(CreateRequest request)
 	{
 		IFigure figure = getLayoutContainer();
 		Point where = request.getLocation().getCopy();
@@ -326,45 +325,45 @@ implements EditorRequestConstants
 				
 		figure.translateToRelative(where);
 		figure.translateFromParent(where);
-		where.translate(getLayoutOrigin().getNegated());			
+		where.translate(getLayoutOrigin().getNegated());
 		
 		if (size == null || size.isEmpty())
 			return getConstraintFor(where);
-		else 
+		else
 		{
-			//$TODO Probably should use PrecisionRectangle at some point instead of two 
+			//$TODO Probably should use PrecisionRectangle at some point instead of two
 			// geometrical objects
 			size = size.getCopy();
 			figure.translateToRelative(size);
 			figure.translateFromParent(size);
 			
-			return getConstraintFor(new Rectangle(where, size));			
-		}		
+			return getConstraintFor(new Rectangle(where, size));
+		}
 	}
 	
 	private static final Dimension DEFAULT_SIZE = new Dimension(-1, -1);
 	
-  public Rectangle getConstraintRectangleFor(Point point) 
+  public Rectangle getConstraintRectangleFor(Point point)
   {
     Point p = point.getCopy();
 		IFigure figure = getLayoutContainer();
 		figure.translateToRelative(p);
 		figure.translateFromParent(p);
-		p.translate(getLayoutOrigin().getNegated());				
+		p.translate(getLayoutOrigin().getNegated());
 		return new Rectangle(p, DEFAULT_SIZE);
   }
   
-  public Point getConstraintPointFor(Point point) 
+  public Point getConstraintPointFor(Point point)
   {
     Point p = point.getCopy();
 		IFigure figure = getLayoutContainer();
 		figure.translateToRelative(p);
 		figure.translateFromParent(p);
-		p.translate(getLayoutOrigin().getNegated());				
+		p.translate(getLayoutOrigin().getNegated());
 		return p;
-  }  
+  }
   
-  public Rectangle getConstraintRectangleFor(Rectangle rectangle) 
+  public Rectangle getConstraintRectangleFor(Rectangle rectangle)
   {
     Rectangle r = rectangle.getCopy();
 		IFigure figure = getLayoutContainer();
@@ -372,27 +371,27 @@ implements EditorRequestConstants
 		figure.translateFromParent(r);
     r.translate(getLayoutOrigin().getNegated());
     return r;
-  }	
+  }
 	
   @Override
-	public Command getCommand(Request request) 
-  {  	
+	public Command getCommand(Request request)
+  {
     if (request instanceof TextCreateRequest)
       return getCreateTextCommand((TextCreateRequest)request);
     
     if (request instanceof ImageCreateRequest)
       return getCreateImageCommand((ImageCreateRequest)request);
     
-    if (rotation) 
+    if (rotation)
     {
       if (request instanceof EditorRotateRequest)
         return getRotateCommand((EditorRotateRequest)request);
     }
 
     if (rotationCenter)
-    {      
+    {
       if (request instanceof EditorRotateCenterRequest)
-        return getRotateCenterCommand((EditorRotateCenterRequest)request);          	
+        return getRotateCenterCommand((EditorRotateCenterRequest)request);
     }
     
   	if (REQ_RESIZE_CHILDREN.equals(request.getType())) {
@@ -409,9 +408,9 @@ implements EditorRequestConstants
 //	  	return getShearCommand((EditorShearRequest) request);
   	
   	return super.getCommand(request);
-  }  
+  }
   
-  protected Command getShearCommand(EditorShearRequest request) 
+  protected Command getShearCommand(EditorShearRequest request)
   {
     ShearCommand cmd = new ShearCommand();
     cmd.setEditParts(request.getEditParts());
@@ -419,17 +418,17 @@ implements EditorRequestConstants
     return cmd;
   }
   
-  protected Command getRotateCenterCommand(EditorRotateCenterRequest request) 
+  protected Command getRotateCenterCommand(EditorRotateCenterRequest request)
   {
     RotateCenterCommand cmd = new RotateCenterCommand(request);
     Point rotationCenter = request.getRotationCenter().getCopy();
     rotationCenter = EditorUtil.toAbsolute(getHost(), rotationCenter.x, rotationCenter.y);
-    cmd.setRotationCenter(rotationCenter);    
+    cmd.setRotationCenter(rotationCenter);
     logger.debug("cmd.rotationCenter = "+rotationCenter); //$NON-NLS-1$
     return cmd;
   }
   
-  protected Command getRotateCommand(EditorRotateRequest request) 
+  protected Command getRotateCommand(EditorRotateRequest request)
   {
     RotateCommand cmd = new RotateCommand(request);
     double rotation = request.getRotation();
@@ -438,43 +437,43 @@ implements EditorRequestConstants
     return cmd;
   }
   
-  public Command getCreateTextCommand(TextCreateRequest request) 
+  public Command getCreateTextCommand(TextCreateRequest request)
   {
     // TODO: Optimize Command (dont create each time a new Command)
-    CreateTextCommand create = new CreateTextCommand(request);                 
-    create.setParent(getDrawComponentContainer());    
+    CreateTextCommand create = new CreateTextCommand(request);
+    create.setParent(getDrawComponentContainer());
       
     Rectangle constraint = new Rectangle();
-    constraint = (Rectangle)getConstraintFor((EditorBoundsRequest)request);    
+    constraint = (Rectangle)getConstraintFor((EditorBoundsRequest)request);
     create.setBounds(constraint);
     
     return create;
   }
   
-  public Command getCreateImageCommand(ImageCreateRequest request) 
+  public Command getCreateImageCommand(ImageCreateRequest request)
   {
     CreateImageCommand create = new CreateImageCommand();
-    create.setFileName(request.getFileName());    
+    create.setFileName(request.getFileName());
     DrawComponent newPart = (DrawComponent)request.getNewObject();
-    create.setChild(newPart);     
-    create.setParent(getDrawComponentContainer());    
+    create.setChild(newPart);
+    create.setParent(getDrawComponentContainer());
     Rectangle constraint = (Rectangle)getConstraintFor(request);
-    create.setBounds(constraint);  
+    create.setBounds(constraint);
     return create;
   }
   
   /**
-   * Returns the command contribution for the given edit shape request. 
+   * Returns the command contribution for the given edit shape request.
    * By default, the request is redispatched to the host's parent as a {@link
-   * org.nightlabs.editor2d.ui.request.EditorRequestConstants#REQ_EDIT_SHAPE}.  
+   * org.nightlabs.editor2d.ui.request.EditorRequestConstants#REQ_EDIT_SHAPE}.
    * The parent's editpolicies determine how to perform the resize based on the layout manager in use.
    * @param request the edit shape request
    * @return the command contribution obtained from the parent
    */
-  protected Command getEditShapeCommand(EditorEditShapeRequest request) 
+  protected Command getEditShapeCommand(EditorEditShapeRequest request)
   {
     EditShapeCommand editShapeCommand = null;
-    if (editShapeCommand == null) 
+    if (editShapeCommand == null)
     {
     	editShapeCommand = new EditShapeCommand();
     	ShapeDrawComponentEditPart sdcEP = (ShapeDrawComponentEditPart) request.getTargetEditPart();
@@ -484,57 +483,57 @@ implements EditorRequestConstants
     	editShapeCommand.setLabel(Messages.getString("org.nightlabs.editor2d.ui.editpolicy.DrawComponentContainerXYLayoutPolicy.command.label.editShape"));       //$NON-NLS-1$
     }
   	Point modelPoint = getConstraintPointFor(request.getLocation());
-  	editShapeCommand.setLocation(modelPoint); 
-		return editShapeCommand;		
-  } 
+  	editShapeCommand.setLocation(modelPoint);
+		return editShapeCommand;
+  }
       		
   protected Color outlineColor = ColorConstants.black;
   protected Color getOutlineColor() {
   	return outlineColor;
   }
   
-	protected IFigure createSizeOnDropFeedback(EditorCreateShapeRequest editorRequest) 
+	protected IFigure createSizeOnDropFeedback(EditorCreateShapeRequest editorRequest)
 	{
-    Rectangle constrainedBounds = (Rectangle)getConstraintFor((EditorBoundsRequest)editorRequest);	    
+    Rectangle constrainedBounds = (Rectangle)getConstraintFor((EditorBoundsRequest)editorRequest);
     
-    if (editorRequest.isUseShape()) 
+    if (editorRequest.isUseShape())
     {
       Shape shape = editorRequest.getShape();
-      if (shape != null) 
+      if (shape != null)
       {
-        shape.setBounds(constrainedBounds); 
+        shape.setBounds(constrainedBounds);
         shape.setForegroundColor(getOutlineColor());
         addFeedback(shape);
         return shape;
-      }	            
+      }
     }
-    else 
+    else
     {
       GeneralShape gp = editorRequest.getGeneralShape();
-	    if (gp != null) 
+	    if (gp != null)
 	    {
-	      if (editorRequest.getMode() == EditorCreateShapeRequest.BOUNDS_FIX_MODE) 
+	      if (editorRequest.getMode() == EditorCreateShapeRequest.BOUNDS_FIX_MODE)
 	      {
-			    ShapeFigure shapeFigure = new AbstractShapeFigure();			    			    
-			    shapeFigure.setGeneralShape(gp);			    
+			    ShapeFigure shapeFigure = new AbstractShapeFigure();
+			    shapeFigure.setGeneralShape(gp);
 			    shapeFigure.setFill(false);
 			    shapeFigure.setForegroundColor(getOutlineColor());
-			    addFeedback(shapeFigure);		   		    		    
-			    return shapeFigure;	        
+			    addFeedback(shapeFigure);
+			    return shapeFigure;
 	      }
-	      else 
+	      else
 	      {
-			    FeedbackShapeFigure shapeFigure = new FeedbackShapeFigure();			    			    
-			    shapeFigure.setGeneralShape(gp);			    
+			    FeedbackShapeFigure shapeFigure = new FeedbackShapeFigure();
+			    shapeFigure.setGeneralShape(gp);
 			    shapeFigure.setFill(false);
-			    shapeFigure.setForegroundColor(getOutlineColor());			    
-			    addFeedback(shapeFigure);		   		    		    
-			    return shapeFigure;	      		      	        
+			    shapeFigure.setForegroundColor(getOutlineColor());
+			    addFeedback(shapeFigure);
+			    return shapeFigure;
 	      }
 	    }
     }
     return null;
-  } 
+  }
 	  	
 	/**
 	 * Generates a draw2d constraint for the given <code>EditorBoundsRequest</code>. If the
@@ -547,31 +546,31 @@ implements EditorRequestConstants
 	 * @param request the EditorCreateShapeRequest
 	 * @return a draw2d constraint
 	 */
-	protected Object getConstraintFor(EditorBoundsRequest request) 
-	{	  
+	protected Object getConstraintFor(EditorBoundsRequest request)
+	{
 		IFigure figure = getLayoutContainer();
 		Point where = request.getLocation().getCopy();
 		Dimension size = request.getSize();
 				
 		figure.translateToRelative(where);
 		figure.translateFromParent(where);
-		where.translate(getLayoutOrigin().getNegated());		
+		where.translate(getLayoutOrigin().getNegated());
 
 		if (size == null || size.isEmpty())
 			return getConstraintFor(where);
 		else {
-			//TODO Probably should use PrecisionRectangle at some point instead of two 
+			//TODO Probably should use PrecisionRectangle at some point instead of two
 			// geometrical objects
 			size = size.getCopy();
 			figure.translateToRelative(size);
-			figure.translateFromParent(size);									
+			figure.translateFromParent(size);
 			return getConstraintFor(new Rectangle(where, size));
-		}		
+		}
 	}
 	
   /**
    * Generates a draw2d constraint (the Point relative to the zomm)
-   * for the given <code>EditorLocationRequest</code>. 
+   * for the given <code>EditorLocationRequest</code>.
    * {@link #getConstraintPointFor(Point)} is returned.
    * 
    * The EditorLocationRequest location is relative the Viewer. The location is made
@@ -579,30 +578,30 @@ implements EditorRequestConstants
    * @param request the EditorCreateShapeRequest
    * @return a draw2d constraint
    */
-  protected Point getConstraintFor(EditorLocationRequest request) 
-  {   
-    return getConstraintPointFor(request.getLocation());    
-  }	
+  protected Point getConstraintFor(EditorLocationRequest request)
+  {
+    return getConstraintPointFor(request.getLocation());
+  }
   	
-  public DrawComponentContainer getDrawComponentContainer() 
+  public DrawComponentContainer getDrawComponentContainer()
   {
   	// TODO: why current layer and not just the container
     DrawComponentContainer container = (DrawComponentContainer)getHost().getModel();
-    return container.getRoot().getCurrentLayer();    
+    return container.getRoot().getCurrentLayer();
   }
 
-  public RootDrawComponent getModelRoot() 
+  public RootDrawComponent getModelRoot()
   {
   	if (getHost().getModel() instanceof DrawComponent) {
   		DrawComponent dc = (DrawComponent) getHost().getModel();
   		return dc.getRoot();
   	}
   	return null;
-  }  
+  }
   
-	protected Command createAddCommand(Request request, EditPart childEditPart, 
-			Object constraint) 
-	{	  
+	protected Command createAddCommand(Request request, EditPart childEditPart,
+			Object constraint)
+	{
 	  DrawComponent part = (DrawComponent)childEditPart.getModel();
 		Rectangle rect = (Rectangle)constraint;
 
@@ -628,35 +627,35 @@ implements EditorRequestConstants
 	}
 	
 	@Override
-	protected Command getCreateCommand(CreateRequest request) 
-	{ 
-	  if (request instanceof EditorCreateShapeRequest) 
-	  {	      
-	    EditorCreateShapeRequest req = (EditorCreateShapeRequest) request;	    
+	protected Command getCreateCommand(CreateRequest request)
+	{
+	  if (request instanceof EditorCreateShapeRequest)
+	  {
+	    EditorCreateShapeRequest req = (EditorCreateShapeRequest) request;
 	    return getEditorCreateCommand(req);
-	  } 
+	  }
 	  else {
 	    CreateDrawComponentCommand create = new CreateDrawComponentCommand();
 			DrawComponent newPart = (DrawComponent)request.getNewObject();
-			create.setChild(newPart);			
+			create.setChild(newPart);
 			create.setParent(getDrawComponentContainer());
 			
 			Rectangle constraint = (Rectangle)getConstraintFor(request);
-			create.setBounds(constraint);			
+			create.setBounds(constraint);
 			
 			Command cmd = chainGuideAttachmentCommand(request, newPart, create, true);
-			return chainGuideAttachmentCommand(request, newPart, cmd, false);			
-	  }		
+			return chainGuideAttachmentCommand(request, newPart, cmd, false);
+	  }
 	}
 	
-	protected Command getEditorCreateCommand(EditorCreateShapeRequest request) 
+	protected Command getEditorCreateCommand(EditorCreateShapeRequest request)
 	{
 	  // TODO: Optimize Command (dont create each time a new Command)
-    CreateShapeCommand create = new CreateShapeCommand();	    
+    CreateShapeCommand create = new CreateShapeCommand();
     create.setGeneralShape(request.getGeneralShape());
     ShapeDrawComponent newPart = (ShapeDrawComponent)request.getNewObject();
-    create.setChild(newPart);				     
-		create.setParent(getDrawComponentContainer());    
+    create.setChild(newPart);
+		create.setParent(getDrawComponentContainer());
 			
 		Rectangle constraint = new Rectangle();
 		if (request instanceof LineCreateRequest) {
@@ -664,53 +663,53 @@ implements EditorRequestConstants
 		  if (lineRequest.getCreationBounds() != null)
 		    constraint = getConstraintRectangleFor(lineRequest.getCreationBounds());
 		}
-		else 
+		else
 		  constraint = (Rectangle)getConstraintFor((EditorBoundsRequest)request);
 		
 		create.setBounds(constraint);
     
 		Command cmd = chainGuideAttachmentCommand(request, newPart, create, true);
-		return chainGuideAttachmentCommand(request, newPart, cmd, false);				      			    	  
+		return chainGuideAttachmentCommand(request, newPart, cmd, false);
 	}
 		
 	/**
 	 * Places the feedback Polyline where the User indicated.
 	 * @see LayoutEditPolicy#showSizeOnDropFeedback(CreateRequest)
 	 */
-	protected void showSizeOnDropFeedback(EditorCreateShapeRequest request) 
-	{		  	  	  
+	protected void showSizeOnDropFeedback(EditorCreateShapeRequest request)
+	{
 		Point p = request.getLocation().getCopy();
 		Dimension size = request.getSize().getCopy();
-		IFigure feedback = getSizeOnDropFeedback(request);		
+		IFigure feedback = getSizeOnDropFeedback(request);
 		p.translate(getScrollOffset());
 										
-		Rectangle newBounds = new Rectangle(p, size).expand(getCreationFeedbackOffset(request));								
-    feedback.setBounds(newBounds);    
+		Rectangle newBounds = new Rectangle(p, size).expand(getCreationFeedbackOffset(request));
+    feedback.setBounds(newBounds);
 	}
 	
   protected Point getScrollOffset() {
     return EditorUtil.getScrollOffset(getHost());
-  }	
+  }
         
 	/**
 	 * Lazily creates and returns the Figure to use for size-on-drop feedback.
 	 * @return the size-on-drop feedback figure
 	 */
-	protected IFigure createDefaultSizeOnDropFeedback() 
+	protected IFigure createDefaultSizeOnDropFeedback()
 	{
 		IFigure	sizeOnDropFeedbackDefault = new RectangleFigure();
 		sizeOnDropFeedbackDefault.setBackgroundColor(FeedbackUtil.DEFAULT_PAINT_DESCRIPTOR.getBackgroundColor());
 		sizeOnDropFeedbackDefault.setForegroundColor(FeedbackUtil.DEFAULT_PAINT_DESCRIPTOR.getForegroundColor());
-		if (sizeOnDropFeedbackDefault instanceof Shape) 
+		if (sizeOnDropFeedbackDefault instanceof Shape)
 		{
 			Shape s = (Shape) sizeOnDropFeedbackDefault;
 			s.setLineStyle(Graphics.LINE_SOLID);
 			s.setFillXOR(true);
-			s.setOutlineXOR(true);  			
+			s.setOutlineXOR(true);
 		}
 		addFeedback(sizeOnDropFeedbackDefault);
 		return sizeOnDropFeedbackDefault;
-	}    
+	}
   
 	/**
 	 * Override to provide custom feedback figure for the given create request.
@@ -718,33 +717,33 @@ implements EditorRequestConstants
 	 * @return custom feedback figure
 	 */
 	@Override
-	protected IFigure createSizeOnDropFeedback(CreateRequest createRequest) 
-	{	  
+	protected IFigure createSizeOnDropFeedback(CreateRequest createRequest)
+	{
 	  logger.debug("createSizeOnDropFeedback!"); //$NON-NLS-1$
 	  
-	  if (createRequest instanceof EditorCreateShapeRequest) 
+	  if (createRequest instanceof EditorCreateShapeRequest)
 	  {
 	    EditorCreateShapeRequest editorRequest = (EditorCreateShapeRequest) createRequest;
 	    return createSizeOnDropFeedback(editorRequest);
 	  }
 	  else
-	  	return createDefaultSizeOnDropFeedback();	  	  
-	}	  
+	  	return createDefaultSizeOnDropFeedback();
+	}
 			
 //************************* BEGIN Text Feedback ******************************
 	@Override
-	protected void eraseSizeOnDropFeedback(Request request) 
+	protected void eraseSizeOnDropFeedback(Request request)
 	{
 		logger.debug("eraseSizeOnDropFeedback!"); //$NON-NLS-1$
 		
-		super.eraseSizeOnDropFeedback(request);								
+		super.eraseSizeOnDropFeedback(request);
 		if (showFeedbackText) {
 			eraseFeedbackText();
-		}		
-	}	
+		}
+	}
 	
 	@Override
-	protected void showSizeOnDropFeedback(CreateRequest request) 
+	protected void showSizeOnDropFeedback(CreateRequest request)
 	{
 	  if (request instanceof EditorCreateShapeRequest)
 	    showSizeOnDropFeedback((EditorCreateShapeRequest)request);
@@ -754,9 +753,9 @@ implements EditorRequestConstants
 	  if (showFeedbackText) {
 	  	showFeedbackText(request);
 	  }
-	}	
+	}
 		
-	protected boolean showFeedbackText = true;	
+	protected boolean showFeedbackText = true;
   protected Label feedbackText;
   
   protected Label getFeedbackTextFigure()
@@ -766,42 +765,42 @@ implements EditorRequestConstants
   	return feedbackText;
   }
   
-  protected Rectangle getInitialFeedbackBounds() 
+  protected Rectangle getInitialFeedbackBounds()
   {
   	return Rectangle.SINGLETON;
   }
   
-  protected Label createFeedbackTextFigure(String text) 
-  {       	
+  protected Label createFeedbackTextFigure(String text)
+  {
     Label l = new Label(text);
     l.setForegroundColor(getOutlineColor());
   	l.setBounds(getInitialFeedbackBounds());
   	addFeedback(l);
   	return l;
-  }  
+  }
   
-  protected void showFeedbackText(CreateRequest request) 
+  protected void showFeedbackText(CreateRequest request)
   {
-  	Label feedbackText = getFeedbackTextFigure();  	
+  	Label feedbackText = getFeedbackTextFigure();
   	feedbackText.setText(getText(request));
   	feedbackText.setLocation(getFeedbackTextLocation(request));
   	feedbackText.setSize(100, 20);
   	  	
-  	getFeedbackLayer().repaint();  	
+  	getFeedbackLayer().repaint();
   }
   
-  protected Point getFeedbackTextLocation(CreateRequest request) 
+  protected Point getFeedbackTextLocation(CreateRequest request)
   {
-  	// TODO: set location always on mouse location 
+  	// TODO: set location always on mouse location
   	Point loc = request.getLocation();
   	Dimension size = request.getSize();
 //  	Rectangle feedbackBounds = getSizeOnDropFeedback().getBounds();
   	Point location = new Point(loc.x + size.width, loc.y + size.height);
   	location.translate(EditorUtil.getScrollOffset(getHost()));
-  	return location;  	
+  	return location;
   }
     
-  protected String getText(CreateRequest request) 
+  protected String getText(CreateRequest request)
   {
   	Point relativeSize = new Point(request.getSize().width, request.getSize().height);
   	Point absoluteSize = EditorUtil.toAbsolute(getHost(), relativeSize.x, relativeSize.y);
@@ -817,13 +816,13 @@ implements EditorRequestConstants
   	return sb.toString();
   }
   
-  protected void eraseFeedbackText() 
+  protected void eraseFeedbackText()
   {
     if (feedbackText != null)
       removeFeedback(feedbackText);
     
     feedbackText = null;
-  }  
+  }
     
-//************************* END Text Feedback ******************************  
+//************************* END Text Feedback ******************************
 }

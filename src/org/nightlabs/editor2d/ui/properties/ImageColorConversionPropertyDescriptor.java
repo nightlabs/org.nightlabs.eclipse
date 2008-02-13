@@ -33,8 +33,8 @@ import org.nightlabs.editor2d.ImageDrawComponent;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class ImageColorConversionPropertyDescriptor 
-extends XPropertyDescriptor 
+public class ImageColorConversionPropertyDescriptor
+extends XPropertyDescriptor
 {
 
 	/**

@@ -34,8 +34,8 @@ import org.nightlabs.editor2d.ui.config.PreferencesConfigModule;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public abstract class PreferencesAction 
-extends AbstractEditorAction 
+public abstract class PreferencesAction
+extends AbstractEditorAction
 {
 
 	/**
@@ -44,8 +44,8 @@ extends AbstractEditorAction
 	 */
 	public PreferencesAction(AbstractEditor editor, int style) {
 		super(editor, style);
-		initConfigModule();		
-		setChecked(isChecked());		
+		initConfigModule();
+		setChecked(isChecked());
 	}
 
 	/**
@@ -66,11 +66,11 @@ extends AbstractEditorAction
 		return true;
 	}
 
-  protected PreferencesConfigModule prefConfMod = null;	
-  protected void initConfigModule() 
+  protected PreferencesConfigModule prefConfMod = null;
+  protected void initConfigModule()
   {
   	try {
-    	prefConfMod = Config.sharedInstance().createConfigModule(PreferencesConfigModule.class);  		
+    	prefConfMod = Config.sharedInstance().createConfigModule(PreferencesConfigModule.class);
   	} catch (ConfigException ce) {
   		throw new RuntimeException(ce);
   	}

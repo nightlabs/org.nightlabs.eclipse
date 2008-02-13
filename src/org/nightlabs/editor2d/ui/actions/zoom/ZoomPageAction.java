@@ -39,8 +39,8 @@ import org.nightlabs.editor2d.ui.util.J2DUtil;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class ZoomPageAction 
-extends AbstractEditorAction 
+public class ZoomPageAction
+extends AbstractEditorAction
 {
 	public static final String ID = ZoomPageAction.class.getName();
 	
@@ -48,7 +48,7 @@ extends AbstractEditorAction
 	 * @param editor the {@link AbstractEditor}
 	 * @param zoomManager the {@link ZoomManager}
 	 */
-	public ZoomPageAction(AbstractEditor editor, ZoomManager zoomManager) 
+	public ZoomPageAction(AbstractEditor editor, ZoomManager zoomManager)
 	{
 		super(editor);
 		this.zoomManager = zoomManager;
@@ -74,10 +74,10 @@ extends AbstractEditorAction
 	 * @see org.eclipse.jface.action.Action#run()
 	 */
 	@Override
-	public void run() 
+	public void run()
 	{
 		Rectangle pageBounds = J2DUtil.toDraw2D(
 				getRootDrawComponent().getCurrentPage().getPageBounds());
-		EditorUtil.zoomToRelativeRect(pageBounds, zoomManager);		
+		EditorUtil.zoomToRelativeRect(pageBounds, zoomManager);
 	}
 }

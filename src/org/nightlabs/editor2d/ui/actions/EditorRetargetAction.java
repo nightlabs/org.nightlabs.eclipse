@@ -28,13 +28,13 @@ package org.nightlabs.editor2d.ui.actions;
 import org.eclipse.ui.actions.RetargetAction;
 
 /**
- * A wrapper for the RetargetAction to make it possible to hook in 
+ * A wrapper for the RetargetAction to make it possible to hook in
  * for future changes (e.g. to avoid disabling when editor has no focus)
  * 
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class EditorRetargetAction 
-extends RetargetAction 
+public class EditorRetargetAction
+extends RetargetAction
 {
 
 	/**

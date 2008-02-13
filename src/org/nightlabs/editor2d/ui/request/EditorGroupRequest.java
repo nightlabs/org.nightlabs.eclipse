@@ -31,7 +31,7 @@ import java.util.List;
 
 import org.eclipse.gef.EditPart;
 
-public interface EditorGroupRequest 
+public interface EditorGroupRequest
 {
   /**
    * Returns a List containing the EditParts making this Request.

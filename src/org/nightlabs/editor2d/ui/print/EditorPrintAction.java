@@ -60,7 +60,7 @@ extends AbstractEditorPrintAction
 	 * @see org.eclipse.gef.ui.actions.EditorPartAction#init()
 	 */
 	@Override
-	protected void init() 
+	protected void init()
 	{
 		setText(Messages.getString("org.nightlabs.editor2d.ui.print.EditorPrintAction.text")); //$NON-NLS-1$
 		setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.print.EditorPrintAction.tooltip"));		 //$NON-NLS-1$
@@ -69,7 +69,7 @@ extends AbstractEditorPrintAction
 	}
 
 	@Override
-	public void run() 
+	public void run()
 	{
 		AWTPrinter awtPrinter = getAWTPrinter();
 		PrinterJob printJob = awtPrinter.getPrinterJob();

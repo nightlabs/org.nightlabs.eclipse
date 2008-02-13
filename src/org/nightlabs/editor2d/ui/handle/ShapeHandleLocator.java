@@ -38,10 +38,10 @@ import org.nightlabs.editor2d.ui.edit.ShapeDrawComponentEditPart;
 import org.nightlabs.editor2d.ui.util.J2DUtil;
 
 
-public class ShapeHandleLocator  
+public class ShapeHandleLocator
 implements Locator
 {
-  protected IFigure figure;  
+  protected IFigure figure;
   protected IFigure getFigure() {
     return figure;
   }
@@ -51,7 +51,7 @@ implements Locator
     return sdcep.getGeneralShape();
   }
       
-  protected int index;  
+  protected int index;
   public int getIndex() {
     return index;
   }
@@ -59,7 +59,7 @@ implements Locator
     this.index = index;
   }
   
-  public ShapeHandleLocator(ShapeDrawComponentEditPart sdcep, int index) 
+  public ShapeHandleLocator(ShapeDrawComponentEditPart sdcep, int index)
   {
     super();
     this.figure = sdcep.getFigure();
@@ -67,7 +67,7 @@ implements Locator
     this.index = index;
   }
   
-  protected Point getReferencePoint(IFigure target) 
+  protected Point getReferencePoint(IFigure target)
   {
     Point p = getLocation();
     getFigure().translateToAbsolute(p);
@@ -76,25 +76,25 @@ implements Locator
     return p;
   }
   
-  protected Point getLocation() 
+  protected Point getLocation()
   {
     PathSegment ps = getGeneralShape().getPathSegment(index);
     if (ps != null) {
       return J2DUtil.toDraw2D(ps.getPoint());
     }
-    return new Point();    
-  }  
+    return new Point();
+  }
   
   protected IFigure getReference() {
     return figure;
   }
   
-  public void relocate(IFigure target) 
-  {    
-    target.setLocation(calcCenterPoint(target.getBounds(), getReferencePoint(target)));        
+  public void relocate(IFigure target)
+  {
+    target.setLocation(calcCenterPoint(target.getBounds(), getReferencePoint(target)));
   }
   
-  protected Point calcCenterPoint(Rectangle rect, Point point) 
+  protected Point calcCenterPoint(Rectangle rect, Point point)
   {
     Dimension boundsSize = rect.getSize();
     return new Point(point.x - boundsSize.width/2, point.y - boundsSize.height/2);

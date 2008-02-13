@@ -39,8 +39,8 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class CutAction 
-extends AbstractEditorSelectionAction 
+public class CutAction
+extends AbstractEditorSelectionAction
 {
 	public static final String ID = ActionFactory.CUT.getId();
 	
@@ -60,7 +60,7 @@ extends AbstractEditorSelectionAction
 	}
 
 	@Override
-	public void init() 
+	public void init()
 	{
 		setId(ID);
 		setText(Messages.getString("org.nightlabs.editor2d.ui.actions.copy.CutAction.text")); //$NON-NLS-1$
@@ -73,15 +73,15 @@ extends AbstractEditorSelectionAction
 	 * @return true, if objects are selected, except the RootEditPart or LayerEditParts
 	 */
 	@Override
-	protected boolean calculateEnabled() 
+	protected boolean calculateEnabled()
 	{
 		return !getDefaultSelection(true).isEmpty();
 	}
 	
 	@Override
-	public void run() 
+	public void run()
 	{
-		Collection<DrawComponent> dcs = getSelection(DrawComponent.class, true);		
+		Collection<DrawComponent> dcs = getSelection(DrawComponent.class, true);
 		CutDrawComponentCommand cutCmd = new CutDrawComponentCommand(dcs);
 		execute(cutCmd);
 		firePropertyChange(EditorActionConstants.PROP_COPY_TO_CLIPBOARD, null, dcs);

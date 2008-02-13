@@ -35,8 +35,8 @@ import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.EditorGuide;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
-public class MoveGuideCommand 
-extends Command 
+public class MoveGuideCommand
+extends Command
 {
   private int pDelta;
   private EditorGuide guide;
@@ -48,13 +48,13 @@ extends Command
   }
 
   @Override
-	public void execute() 
+	public void execute()
   {
   	guide.setPosition(guide.getPosition() + pDelta);
   	Iterator<DrawComponent> iter = guide.getMap().keySet().iterator();
   	while (iter.hasNext()) {
   		DrawComponent part = iter.next();
-  		Point location = new Point(part.getX(), part.getY()).getCopy();  		  		
+  		Point location = new Point(part.getX(), part.getY()).getCopy();
   		if (guide.isHorizontal()) {
   			location.y += pDelta;
   		} else {
@@ -66,7 +66,7 @@ extends Command
   }
 
   @Override
-	public void undo() 
+	public void undo()
   {
   	guide.setPosition(guide.getPosition() - pDelta);
   	Iterator<DrawComponent> iter = guide.getMap().keySet().iterator();

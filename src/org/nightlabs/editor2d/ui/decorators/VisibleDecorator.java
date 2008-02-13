@@ -40,19 +40,19 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class VisibleDecorator 
-extends LabelProvider 
-implements ILightweightLabelDecorator 
+public class VisibleDecorator
+extends LabelProvider
+implements ILightweightLabelDecorator
 {
-	public void decorate(Object element, IDecoration decoration) 
+	public void decorate(Object element, IDecoration decoration)
 	{
-		if(element instanceof DrawComponentTreeEditPart) 
-		{	
+		if(element instanceof DrawComponentTreeEditPart)
+		{
 			DrawComponentTreeEditPart dctep = (DrawComponentTreeEditPart) element;
 			DrawComponent dc = dctep.getDrawComponent();
 			if (!dc.isVisible()) {
 				ImageDescriptor invisibleImage = SharedImages.getSharedImageDescriptor(
-						EditorPlugin.getDefault(), 
+						EditorPlugin.getDefault(),
 						VisibleCompositeImage.class, "", ImageDimension._8x8, ImageFormat.gif); //$NON-NLS-1$
 				
 				decoration.addOverlay(invisibleImage);
@@ -63,7 +63,7 @@ implements ILightweightLabelDecorator
 			}
 			if (!dc.isEditable()) {
 				decoration.addSuffix(" ["+"Locked"+"]");
-			}			
+			}
 		}
 	}
 }

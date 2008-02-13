@@ -37,37 +37,37 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.GraphicalEditPart;
 
 
-public abstract class AbstractMultipleLocator 
-implements Locator 
+public abstract class AbstractMultipleLocator
+implements Locator
 {
   protected List editParts;
   protected IFigure figure;
-  public AbstractMultipleLocator(List editParts) 
+  public AbstractMultipleLocator(List editParts)
   {
     super();
     this.editParts = editParts;
     this.figure = ((GraphicalEditPart)editParts.get(0)).getFigure();
   }
 
-  public void relocate(IFigure target) 
+  public void relocate(IFigure target)
   {
 //    target.setLocation(calcCenterPoint(target.getBounds(), getLocation()));
     target.setLocation(calcCenterPoint(target.getBounds(), getConstrainedPoint(target)));
   }
   
-  protected abstract Point getLocation();  
+  protected abstract Point getLocation();
   
-  protected Point calcCenterPoint(Rectangle rect, Point point) 
+  protected Point calcCenterPoint(Rectangle rect, Point point)
   {
     Dimension boundsSize = rect.getSize();
     return new Point(point.x - boundsSize.width/2, point.y - boundsSize.height/2);
-  }  
+  }
   
-  protected Point getConstrainedPoint(IFigure target) 
+  protected Point getConstrainedPoint(IFigure target)
   {
     Point p = getLocation();
     figure.translateToAbsolute(p);
-    target.translateToRelative(p);   		
+    target.translateToRelative(p);
     return p;
-  }   
+  }
 }

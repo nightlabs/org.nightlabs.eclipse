@@ -66,32 +66,32 @@ import org.nightlabs.editor2d.util.GeomUtil;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class J2DPrintDialog 
-extends CenteredDialog 
+public class J2DPrintDialog
+extends CenteredDialog
 {
 	/**
 	 * LOG4J logger used by this class
 	 */
 	private static final Logger logger = Logger.getLogger(J2DPrintDialog.class);
 	
-	public J2DPrintDialog(Shell parentShell, DrawComponent dc, PageFormat pageFormat) 
+	public J2DPrintDialog(Shell parentShell, DrawComponent dc, PageFormat pageFormat)
 	{
 		super(parentShell);
-		setShellStyle(getShellStyle() | SWT.RESIZE);				
+		setShellStyle(getShellStyle() | SWT.RESIZE);
 		this.drawComponent = dc;
 		this.pageFormat = pageFormat;
 		init();
 	}
 
 	@Override
-	protected void configureShell(Shell newShell) 
+	protected void configureShell(Shell newShell)
 	{
-		super.configureShell(newShell);		
+		super.configureShell(newShell);
 		newShell.setText(Messages.getString("org.nightlabs.editor2d.ui.print.J2DPrintDialog.title")); //$NON-NLS-1$
-		newShell.setSize(350, 325);		
-	}	
+		newShell.setSize(350, 325);
+	}
 	
-	private PageFormat pageFormat; 
+	private PageFormat pageFormat;
 	public PageFormat getPageFormat() {
 		return pageFormat;
 	}
@@ -107,26 +107,26 @@ extends CenteredDialog
 	public static final int VERTICAL_ALIGNMENT = PageFormat.PORTRAIT;
 	
 	private SelectionListener alignVerticalListener = new SelectionListener()
-	{	
+	{
 		public void widgetDefaultSelected(SelectionEvent e) {
 			widgetSelected(e);
-		}	
+		}
 		public void widgetSelected(SelectionEvent e) {
 			align = VERTICAL_ALIGNMENT;
 			refresh();
-		}	
-	};		
+		}
+	};
 
 	private SelectionListener alignHorizontalListener = new SelectionListener()
-	{	
+	{
 		public void widgetDefaultSelected(SelectionEvent e) {
 			widgetSelected(e);
-		}	
+		}
 		public void widgetSelected(SelectionEvent e) {
 			align = HORIZONTAL_ALIGNMENT;
 			refresh();
-		}	
-	};		
+		}
+	};
 		
 	private Spinner marginTopWidget;
 	private Spinner marginBottomWidget;
@@ -139,11 +139,11 @@ extends CenteredDialog
 	private double marginRight;
 	
 	private SelectionListener marginListener = new SelectionAdapter()
-	{	
+	{
 		@Override
-		public void widgetSelected(SelectionEvent e) 
+		public void widgetSelected(SelectionEvent e)
 		{
-			Spinner t = (Spinner) e.getSource(); 
+			Spinner t = (Spinner) e.getSource();
 			int value = t.getSelection();
 			if (t.equals(marginTopWidget))
 				setMarginValue(SWT.TOP, value);
@@ -152,17 +152,17 @@ extends CenteredDialog
 			if (t.equals(marginLeftWidget))
 				setMarginValue(SWT.LEFT, value);
 			if (t.equals(marginRightWidget))
-				setMarginValue(SWT.RIGHT, value);	
+				setMarginValue(SWT.RIGHT, value);
 			
 			refresh();
-		}	
-	};	
+		}
+	};
 					
-	protected void setMarginValue(int position, double value) 
+	protected void setMarginValue(int position, double value)
 	{
-		Paper paper = pageFormat.getPaper();		
-		switch (position) 
-		{		
+		Paper paper = pageFormat.getPaper();
+		switch (position)
+		{
 			case(SWT.TOP):
 				marginTop = value;
 				break;
@@ -174,37 +174,37 @@ extends CenteredDialog
 				break;
 			case(SWT.BOTTOM):
 				marginBottom = value;
-				break;				
+				break;
 		}
 		if (pageFormat.getOrientation() == PageFormat.PORTRAIT) {
-			paper.setImageableArea(marginLeft, marginTop, (paper.getWidth() - (marginLeft + marginRight)), 
-					(paper.getHeight() - (marginTop + marginBottom)) );					
-		} 
-		else if (pageFormat.getOrientation() == PageFormat.LANDSCAPE) {
-			paper.setImageableArea(marginTop, marginRight, (paper.getWidth() - (marginBottom + marginTop)), 
-					(paper.getHeight() - (marginLeft + marginRight)) );						
+			paper.setImageableArea(marginLeft, marginTop, (paper.getWidth() - (marginLeft + marginRight)),
+					(paper.getHeight() - (marginTop + marginBottom)) );
 		}
-		pageFormat.setPaper(paper);		
-	}		
+		else if (pageFormat.getOrientation() == PageFormat.LANDSCAPE) {
+			paper.setImageableArea(marginTop, marginRight, (paper.getWidth() - (marginBottom + marginTop)),
+					(paper.getHeight() - (marginLeft + marginRight)) );
+		}
+		pageFormat.setPaper(paper);
+	}
 	
 	@Override
-	protected Control createDialogArea(Composite parent) 
+	protected Control createDialogArea(Composite parent)
 	{
-		Composite comp = new XComposite(parent, SWT.NONE);		
+		Composite comp = new XComposite(parent, SWT.NONE);
 		comp.setLayout(new GridLayout(2, false));
 		
-		Composite prefComp = new Composite(comp, SWT.NONE);		
+		Composite prefComp = new Composite(comp, SWT.NONE);
 		prefComp.setLayout(new GridLayout(1, true));
 		
-//		// Fit		
+//		// Fit
 //		Group fitGroup = new Group(prefComp, SWT.NONE);
 //		fitGroup.setText("Details");
-//		fitGroup.setLayout(new GridLayout(1, true));				
+//		fitGroup.setLayout(new GridLayout(1, true));
 //		GridData fitData = new GridData();
 //		fitData.verticalAlignment = SWT.BEGINNING;
 //		fitData.horizontalAlignment = SWT.FILL;
 //		fitGroup.setLayoutData(fitData);
-//		
+//
 //		fitPage = new Button(fitGroup, SWT.RADIO);
 //		fitPage.setText("Fit Page");
 //		fitPage.addSelectionListener(fitPageSelectionListener);
@@ -222,8 +222,8 @@ extends CenteredDialog
 		alignmentGroup.setText(Messages.getString("org.nightlabs.editor2d.ui.print.J2DPrintDialog.group.alignment")); //$NON-NLS-1$
 		alignmentGroup.setLayout(new GridLayout(1, true));
 		GridData alignData = new GridData();
-//		alignData.verticalAlignment = SWT.CENTER;		
-		alignData.verticalAlignment = SWT.BEGINNING;		
+//		alignData.verticalAlignment = SWT.CENTER;
+		alignData.verticalAlignment = SWT.BEGINNING;
 		alignData.horizontalAlignment = SWT.FILL;
 		alignmentGroup.setLayoutData(alignData);
 		
@@ -238,11 +238,11 @@ extends CenteredDialog
 		}
 		if (pageFormat.getOrientation() == PageFormat.PORTRAIT) {
 			align = VERTICAL_ALIGNMENT;
-			alignVertical.setSelection(true);			
+			alignVertical.setSelection(true);
 		}
 		
-		alignHorizontal.addSelectionListener(alignHorizontalListener);		
-		alignVertical.addSelectionListener(alignVerticalListener);		
+		alignHorizontal.addSelectionListener(alignHorizontalListener);
+		alignVertical.addSelectionListener(alignVerticalListener);
 		
 		// Margins
 		Group marginsGroup = new Group(prefComp, SWT.NONE);
@@ -250,31 +250,31 @@ extends CenteredDialog
 		marginsGroup.setText(Messages.getString("org.nightlabs.editor2d.ui.print.J2DPrintDialog.group.margins")); //$NON-NLS-1$
 		marginsGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
-		createMarginsEntry(marginsGroup, SWT.TOP, 
+		createMarginsEntry(marginsGroup, SWT.TOP,
 				Messages.getString("org.nightlabs.editor2d.ui.print.J2DPrintDialog.label.top"), marginTop); //$NON-NLS-1$
-		createMarginsEntry(marginsGroup, SWT.BOTTOM, 
+		createMarginsEntry(marginsGroup, SWT.BOTTOM,
 				Messages.getString("org.nightlabs.editor2d.ui.print.J2DPrintDialog.label.bottom"), marginBottom); //$NON-NLS-1$
-		createMarginsEntry(marginsGroup, SWT.LEFT, 
+		createMarginsEntry(marginsGroup, SWT.LEFT,
 				Messages.getString("org.nightlabs.editor2d.ui.print.J2DPrintDialog.label.left"), marginLeft); //$NON-NLS-1$
-		createMarginsEntry(marginsGroup, SWT.RIGHT, 
+		createMarginsEntry(marginsGroup, SWT.RIGHT,
 				Messages.getString("org.nightlabs.editor2d.ui.print.J2DPrintDialog.label.right"), marginRight);		 //$NON-NLS-1$
 				
-		// Preview 
+		// Preview
 		Composite canvasComp = new XComposite(comp, SWT.BORDER);
 		GridLayout canvasLayout = new GridLayout();
 		canvasComp.setLayout(canvasLayout);
 		canvasComp.setLayoutData(new GridData(GridData.FILL_BOTH));
 		canvas = new J2DCanvas(canvasComp, SWT.NONE, paintable);
 		canvas.setBackground(new Color(comp.getDisplay(), 255, 255, 255));
-		canvas.addControlListener(canvasResizeListener);		
-		canvas.addPaintListener(canvasPaintListener);	
+		canvas.addControlListener(canvasResizeListener);
+		canvas.addPaintListener(canvasPaintListener);
 		
 		refresh();
 		
 		return comp;
-	}	
+	}
 		
-	protected Composite createMarginsEntry(Composite parent, int orientation, String label, double value) 
+	protected Composite createMarginsEntry(Composite parent, int orientation, String label, double value)
 	{
 		Composite comp = new XComposite(parent, SWT.NONE, LayoutMode.TIGHT_WRAPPER);
 		GridLayout layout = new GridLayout(2, false);
@@ -282,11 +282,11 @@ extends CenteredDialog
 		layout.marginWidth = 0;
 		layout.marginLeft = 0;
 		layout.marginTop = 0;
-		layout.marginBottom = 0;		
+		layout.marginBottom = 0;
 		comp.setLayout(layout);
 		comp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		Spinner t = new Spinner(comp, SWT.BORDER);
-//		Text t = new Text(comp, SWT.BORDER);		
+//		Text t = new Text(comp, SWT.BORDER);
 		switch (orientation) {
 			case(SWT.TOP):
 				marginTopWidget = t;
@@ -296,45 +296,45 @@ extends CenteredDialog
 				marginLeftWidget = t;
 			case(SWT.RIGHT):
 				marginRightWidget = t;
-		}		
+		}
 		t.setSelection((int)Math.rint(value));
 		t.addSelectionListener(marginListener);
 		t.setMaximum(200);
 		Label l = new Label(comp, SWT.NONE);
 		l.setText(label);
 		l.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		return comp;		
+		return comp;
 	}
 	
 	protected void setCanvasZoom(double scale) {
-		canvas.getPaintableManager().setScale(scale);		
+		canvas.getPaintableManager().setScale(scale);
 	}
 
 	protected void updateCanvas() {
-		canvas.repaint();	
+		canvas.repaint();
 	}
 		
-	private ControlListener canvasResizeListener = new ControlAdapter() {	
+	private ControlListener canvasResizeListener = new ControlAdapter() {
 		@Override
 		public void controlResized(ControlEvent e) {
 //			refresh();
-		}	
+		}
 	};
 		
 	private Rectangle pageRectangle;
 	private Rectangle imageablePageRectangle;
 					
-	protected void initPage(PageFormat pf) 
+	protected void initPage(PageFormat pf)
 	{
 		pageRectangle = new Rectangle(0, 0, (int)pf.getWidth(), (int)pf.getHeight());
 		imageablePageRectangle = new Rectangle(
-				(int)pf.getImageableX(), (int)pf.getImageableY(), 
+				(int)pf.getImageableX(), (int)pf.getImageableY(),
 				(int)pf.getImageableWidth(), (int)pf.getImageableHeight());
 
 		marginTop = Math.rint(pf.getImageableY());
 		marginBottom = Math.rint((pf.getHeight() - (pf.getImageableY() + pf.getImageableHeight())));
 		marginLeft = Math.rint(pf.getImageableX());
-		marginRight = Math.rint((pf.getWidth() - (pf.getImageableX() + pf.getImageableWidth())));		
+		marginRight = Math.rint((pf.getWidth() - (pf.getImageableX() + pf.getImageableWidth())));
 										
 		if (marginTopWidget != null)
 			marginTopWidget.setSelection((int)marginTop);
@@ -343,8 +343,8 @@ extends CenteredDialog
 		if (marginLeftWidget != null)
 			marginLeftWidget.setSelection((int)marginLeft);
 		if (marginRightWidget != null)
-			marginRightWidget.setSelection((int)marginRight);			
-	}		
+			marginRightWidget.setSelection((int)marginRight);
+	}
 	
 	private Rectangle dcBounds;
 	private Rectangle canvasBounds;
@@ -354,19 +354,19 @@ extends CenteredDialog
 //	private double scaleY = 1;
 		
 	private double canvasScaleFactor = 4;
-	protected void setCanvasSize() 
+	protected void setCanvasSize()
 	{
 		GridData canvasData = new GridData();
 		int newWidth = (int) Math.rint(pageRectangle.width / canvasScaleFactor);
-		int newHeight = (int) Math.rint(pageRectangle.height / canvasScaleFactor);		
+		int newHeight = (int) Math.rint(pageRectangle.height / canvasScaleFactor);
 		canvasData.widthHint = newWidth;
-		canvasData.heightHint = newHeight; 
+		canvasData.heightHint = newHeight;
 		canvas.setLayoutData(canvasData);
-		canvas.setSize(newWidth, newHeight);						
+		canvas.setSize(newWidth, newHeight);
 	}
 				
-	protected void refresh() 
-	{		
+	protected void refresh()
+	{
 		logger.debug("refresh"); //$NON-NLS-1$
 		
 		switch (align) {
@@ -375,18 +375,18 @@ extends CenteredDialog
 				break;
 			case(VERTICAL_ALIGNMENT):
 				pageFormat.setOrientation(PageFormat.PORTRAIT);
-				break;				
+				break;
 		}
-		initPage(pageFormat);	
+		initPage(pageFormat);
 		setCanvasSize();
 
 		Rectangle bounds = getBounds();
-		dcBounds = GeomUtil.translateToOrigin(bounds);				
-		canvasBounds = org.nightlabs.base.ui.util.GeomUtil.toAWTRectangle(canvas.getClientArea());										
-		Rectangle shrinkedCanvasBounds = new Rectangle(0, 0, 
-				(int)(pageFormat.getImageableWidth() / canvasScaleFactor), 
-				(int)(pageFormat.getImageableHeight() / canvasScaleFactor) );		
-		Point2D scales = GeomUtil.calcScale(dcBounds, shrinkedCanvasBounds);		
+		dcBounds = GeomUtil.translateToOrigin(bounds);
+		canvasBounds = org.nightlabs.base.ui.util.GeomUtil.toAWTRectangle(canvas.getClientArea());
+		Rectangle shrinkedCanvasBounds = new Rectangle(0, 0,
+				(int)(pageFormat.getImageableWidth() / canvasScaleFactor),
+				(int)(pageFormat.getImageableHeight() / canvasScaleFactor) );
+		Point2D scales = GeomUtil.calcScale(dcBounds, shrinkedCanvasBounds);
 		
 		scale = Math.min(scales.getX(), scales.getY());
 		translateCanvas();
@@ -400,13 +400,13 @@ extends CenteredDialog
 			logger.debug("translateX = "+translateX);		 //$NON-NLS-1$
 			logger.debug("translateY = "+translateY); //$NON-NLS-1$
 			logger.debug("");			 //$NON-NLS-1$
-		}				
+		}
 		
-		setCanvasZoom(scale);		
+		setCanvasZoom(scale);
 		updateCanvas();
-	}			
+	}
 	
-	protected Rectangle getBounds() 
+	protected Rectangle getBounds()
 	{
 		logger.debug("dcBounds = " + drawComponent.getBounds()); //$NON-NLS-1$
 		drawComponent.clearBounds();
@@ -414,41 +414,41 @@ extends CenteredDialog
 		return drawComponent.getBounds();
 	}
 	
-	private double translateX = 0; 
+	private double translateX = 0;
 	private double translateY = 0;
-	protected void translateCanvas() 
+	protected void translateCanvas()
 	{
 		AffineTransform initalAT = canvas.getPaintableManager().getInitialTransform();
 		AffineTransform at = new AffineTransform(initalAT);
 		translateX = ((pageFormat.getImageableX() / canvasScaleFactor) - (drawComponent.getX() * scale ));
 		translateY = ((pageFormat.getImageableY() / canvasScaleFactor) - (drawComponent.getY() * scale ));
-		at.setToTranslation(translateX, translateY);		
-		canvas.getPaintableManager().setInitialTransform(at);		
+		at.setToTranslation(translateX, translateY);
+		canvas.getPaintableManager().setInitialTransform(at);
 	}
 		
 	private PaintListener canvasPaintListener = new PaintListener()
-	{	
-		public void paintControl(PaintEvent e) 
+	{
+		public void paintControl(PaintEvent e)
 		{
-			GC gc = e.gc; 
-			Transform transform = new Transform(gc.getDevice());			
-			Rectangle canvasBounds = org.nightlabs.base.ui.util.GeomUtil.toAWTRectangle(canvas.getClientArea());			
-			Point2D scales = GeomUtil.calcScale(pageRectangle, canvasBounds);			
-			double gcScale = Math.min(scales.getX(), scales.getY());											
+			GC gc = e.gc;
+			Transform transform = new Transform(gc.getDevice());
+			Rectangle canvasBounds = org.nightlabs.base.ui.util.GeomUtil.toAWTRectangle(canvas.getClientArea());
+			Point2D scales = GeomUtil.calcScale(pageRectangle, canvasBounds);
+			double gcScale = Math.min(scales.getX(), scales.getY());
 			transform.scale((float)gcScale, (float)gcScale);
 			
-			gc.setTransform(transform);			
+			gc.setTransform(transform);
 			gc.setLineWidth(3);
 			gc.setLineStyle(SWT.LINE_DASH);
-			gc.drawRectangle(imageablePageRectangle.x, imageablePageRectangle.y, 
-					imageablePageRectangle.width, imageablePageRectangle.height);						
-		}	
+			gc.drawRectangle(imageablePageRectangle.x, imageablePageRectangle.y,
+					imageablePageRectangle.width, imageablePageRectangle.height);
+		}
 	};
 			
-	protected void init() 
+	protected void init()
 	{
-		paintable = new DrawComponentPaintable(drawComponent);		
-		initPage(pageFormat);		
+		paintable = new DrawComponentPaintable(drawComponent);
+		initPage(pageFormat);
 	}
 	
 }

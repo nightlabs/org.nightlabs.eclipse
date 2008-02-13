@@ -34,17 +34,17 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class ShapeSubtractCommand 
-extends AbstractBooleanOperationCommand 
+public class ShapeSubtractCommand
+extends AbstractBooleanOperationCommand
 {
-	public ShapeSubtractCommand(ShapeDrawComponent primary, ShapeDrawComponent secondary) 
+	public ShapeSubtractCommand(ShapeDrawComponent primary, ShapeDrawComponent secondary)
 	{
 		super(primary, secondary);
 		setLabel(Messages.getString("org.nightlabs.editor2d.ui.command.shape.ShapeSubtractCommand.label")); //$NON-NLS-1$
 	}
 
 	@Override
-	protected GeneralShape performOperation(Area area1, Area area2) 
+	protected GeneralShape performOperation(Area area1, Area area2)
 	{
 		area1.subtract(area2);
 		return new GeneralShape(area1);

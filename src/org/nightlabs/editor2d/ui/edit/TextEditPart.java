@@ -34,8 +34,8 @@ import org.eclipse.ui.views.properties.IPropertySource;
 import org.nightlabs.editor2d.TextDrawComponent;
 import org.nightlabs.editor2d.ui.model.TextPropertySource;
 
-public class TextEditPart 
-extends ShapeDrawComponentEditPart 
+public class TextEditPart
+extends ShapeDrawComponentEditPart
 {
 	/**
 	 * LOG4J logger used by this class
@@ -51,40 +51,40 @@ extends ShapeDrawComponentEditPart
   }
   
 	@Override
-	protected void propertyChanged(PropertyChangeEvent evt) 
+	protected void propertyChanged(PropertyChangeEvent evt)
 	{
 		super.propertyChanged(evt);
 		String propertyName = evt.getPropertyName();
 		if (propertyName.equals(TextDrawComponent.PROP_FONT)) {
 			logger.debug(propertyName +" changed!"); //$NON-NLS-1$
-			refreshVisuals();	
+			refreshVisuals();
 			return;
 		}
 		else if (propertyName.equals(TextDrawComponent.PROP_FONT_NAME)) {
 			logger.debug(propertyName +" changed!"); //$NON-NLS-1$
 			refreshVisuals();
-			return;			
+			return;
 		}
 		else if (propertyName.equals(TextDrawComponent.PROP_FONT_SIZE)) {
 			logger.debug(propertyName +" changed!"); //$NON-NLS-1$
 			refreshVisuals();
-			return;			
+			return;
 		}
 		else if (propertyName.equals(TextDrawComponent.PROP_TEXT)) {
 			logger.debug(propertyName +" changed!"); //$NON-NLS-1$
 			refreshVisuals();
-			return;			
+			return;
 		}
 		else if (propertyName.equals(TextDrawComponent.PROP_BOLD)) {
 			logger.debug(propertyName +" changed!"); //$NON-NLS-1$
 			refreshVisuals();
-			return;			
+			return;
 		}
 		else if (propertyName.equals(TextDrawComponent.PROP_ITALIC)) {
 			logger.debug(propertyName +" changed!"); //$NON-NLS-1$
 			refreshVisuals();
-			return;			
-		}		
+			return;
+		}
 	}
 	
   @Override
@@ -94,29 +94,29 @@ extends ShapeDrawComponentEditPart
       propertySource = new TextPropertySource(getTextDrawComponent());
     }
     return propertySource;
-  } 
+  }
   
-//  protected IFigure createFigure() 
+//  protected IFigure createFigure()
 //  {
 //    TextFigure textFigure = new TextFigure();
 //    textFigure.setAWTFont(getTextDrawComponent().getFont());
 //    textFigure.setText(getTextDrawComponent().getText());
-//    return textFigure; 
+//    return textFigure;
 //  }
-//        
-//  protected void refreshVisuals() 
+//
+//  protected void refreshVisuals()
 //  {
 //    super.refreshVisuals();
 //    setTextProperties();
 //  }
 //
-//  protected void setTextProperties() 
+//  protected void setTextProperties()
 //  {
 //    getTextFigure().setAWTFont(getTextDrawComponent().getFont());
-//    getTextFigure().setText(getTextDrawComponent().getText());    
+//    getTextFigure().setText(getTextDrawComponent().getText());
 //  }
-//  
-//  protected TextFigure getTextFigure() 
+//
+//  protected TextFigure getTextFigure()
 //  {
 //    return (TextFigure) getFigure();
 //  }

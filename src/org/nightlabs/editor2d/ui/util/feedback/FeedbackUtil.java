@@ -37,26 +37,26 @@ import org.nightlabs.editor2d.ui.figures.FeedbackShapeFigure;
 import org.nightlabs.editor2d.ui.figures.ShapeFigure;
 
 
-public class FeedbackUtil 
-{  
-  public FeedbackUtil() 
+public class FeedbackUtil
+{
+  public FeedbackUtil()
   {
-    super(); 
+    super();
   }
     
-  public static final PaintDescriptor DEFAULT_PAINT_DESCRIPTOR = new PaintDescriptor(); 
+  public static final PaintDescriptor DEFAULT_PAINT_DESCRIPTOR = new PaintDescriptor();
   
-  public static ShapeFigure getCustomFeedbackFigure(Object modelPart) 
+  public static ShapeFigure getCustomFeedbackFigure(Object modelPart)
 	//protected IFigure getCustomFeedbackFigure(Object modelPart)
 	{
   	return getCustomFeedbackFigure(modelPart, DEFAULT_PAINT_DESCRIPTOR);
-	}    
+	}
        
-  public static ShapeFigure getCustomFeedbackFigure(Object modelPart, PaintDescriptor pd) 
+  public static ShapeFigure getCustomFeedbackFigure(Object modelPart, PaintDescriptor pd)
 	//protected IFigure getCustomFeedbackFigure(Object modelPart)
 	{
 	  GeneralShape gs = null;
-	  ShapeFigure shapeFigure = new FeedbackShapeFigure();	  
+	  ShapeFigure shapeFigure = new FeedbackShapeFigure();
 	  if (modelPart instanceof ShapeDrawComponent) {
 	    ShapeDrawComponent sdc = (ShapeDrawComponent) modelPart;
 	    gs = (GeneralShape)sdc.getGeneralShape().clone();
@@ -65,25 +65,25 @@ public class FeedbackUtil
 	    ImageDrawComponent idc = (ImageDrawComponent) modelPart;
 	    gs = (GeneralShape) idc.getImageShape().clone();
 	  }
-	  else if (modelPart instanceof DrawComponentContainer) 
+	  else if (modelPart instanceof DrawComponentContainer)
 	  {
 	    DrawComponentContainer container = (DrawComponentContainer) modelPart;
 	    gs = GeneralShapeFactory.createRectangle(1,1,1,1);
 	//    for (Iterator it = container.getDrawComponents().iterator(); it.hasNext(); ) {
-	//      DrawComponent dc = (DrawComponent) it.next(); 
+	//      DrawComponent dc = (DrawComponent) it.next();
 	//      ShapeFigure figure = getCustomFeedbackFigure(dc);
 	//      shapeFigure.add(figure);
-	//    }	          
-	  }    
+	//    }
+	  }
 	  else {
-	    gs = GeneralShapeFactory.createRectangle(0, 0, 10, 10);      
+	    gs = GeneralShapeFactory.createRectangle(0, 0, 10, 10);
 	  }
 	  shapeFigure.setGeneralShape(gs);
 	  shapeFigure.setXOR(pd.isXor());
 	  shapeFigure.setFill(pd.isFill());
-	  shapeFigure.setBackgroundColor(pd.getBackgroundColor());       
+	  shapeFigure.setBackgroundColor(pd.getBackgroundColor());
 	  shapeFigure.setForegroundColor(pd.getForegroundColor());
-	  return shapeFigure;    
+	  return shapeFigure;
 	}
   
   protected static PaintDescriptor pd = new PaintDescriptor();
@@ -103,7 +103,7 @@ public class FeedbackUtil
   
   public static ShapeFigure getCustomFeedbackFigure(Object modelPart, Color bgColor, Color fgColor)
   {
-  	return getCustomFeedbackFigure(modelPart, bgColor, fgColor, PaintDescriptor.DEFAULT_FILL, 
+  	return getCustomFeedbackFigure(modelPart, bgColor, fgColor, PaintDescriptor.DEFAULT_FILL,
   			PaintDescriptor.DEFAULT_OUTLINE, PaintDescriptor.DEFAULT_XOR, PaintDescriptor.DEFAULT_LINE_STYLE,
   			PaintDescriptor.DEFAULT_LINE_WIDTH);
   }

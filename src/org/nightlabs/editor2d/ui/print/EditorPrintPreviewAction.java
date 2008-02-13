@@ -32,7 +32,7 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class EditorPrintPreviewAction  
+public class EditorPrintPreviewAction
 extends AbstractEditorPrintAction
 {
 	public static final String ID = EditorPrintPreviewAction.class.getName();
@@ -53,7 +53,7 @@ extends AbstractEditorPrintAction
 	}
 
 	@Override
-	protected void init() 
+	protected void init()
 	{
 		setId(ID);
 		setText(Messages.getString("org.nightlabs.editor2d.ui.print.EditorPrintPreviewAction.text")); //$NON-NLS-1$
@@ -61,7 +61,7 @@ extends AbstractEditorPrintAction
 	}
 			
 	@Override
-	public void run() 
+	public void run()
 	{
 //		AWTPrinter awtPrinter = getAWTPrinter();
 //		PageFormat pf = null;
@@ -71,18 +71,18 @@ extends AbstractEditorPrintAction
 //			pf = PrinterJob.getPrinterJob().defaultPage();
 //		J2DPrintDialog printDialog = new J2DPrintDialog(getShell(), getDrawComponent(), pf);
 		
-		EditorPrintPreviewDialog printDialog = new EditorPrintPreviewDialog(getDrawComponent(), getShell());		
+		EditorPrintPreviewDialog printDialog = new EditorPrintPreviewDialog(getDrawComponent(), getShell());
 		if (printDialog.open() == Window.CANCEL)
 			return;
 		
 //		awtPrinter.getPrinterJob().setPrintable(
-//				getPrintable(PrintConstant.FIT_PAGE), 
+//				getPrintable(PrintConstant.FIT_PAGE),
 //				printDialog.getPageFormat()
-//			);			
+//			);
 //		try {
-//			awtPrinter.getPrinterJob().print();				
+//			awtPrinter.getPrinterJob().print();
 //		} catch (PrinterException pe) {
 //			throw new RuntimeException(pe);
-//		}			
+//		}
 	}
 }

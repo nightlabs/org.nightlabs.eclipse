@@ -35,10 +35,10 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class ConvertToShapeCommand 
-extends Command 
+public class ConvertToShapeCommand
+extends Command
 {
-	public ConvertToShapeCommand(ShapeDrawComponent sdc) 
+	public ConvertToShapeCommand(ShapeDrawComponent sdc)
 	{
 		super();
 		setLabel(Messages.getString("org.nightlabs.editor2d.ui.command.shape.ConvertToShapeCommand.label")); //$NON-NLS-1$
@@ -46,12 +46,12 @@ extends Command
 	}
 
 	private ShapeDrawComponent sdc = null;
-	private ShapeDrawComponent convertedShape = null;	
+	private ShapeDrawComponent convertedShape = null;
 	private DrawComponentContainer parent = null;
 	private int drawOrderIndex = -1;
 	
 	@Override
-	public void execute() 
+	public void execute()
 	{
 		parent = sdc.getParent();
 		drawOrderIndex = parent.getDrawComponents().indexOf(sdc);
@@ -72,13 +72,13 @@ extends Command
 	}
 
 	@Override
-	public void redo() 
+	public void redo()
 	{
 		execute();
 	}
 
 	@Override
-	public void undo() 
+	public void undo()
 	{
 		parent.removeDrawComponent(convertedShape);
 		parent.addDrawComponent(sdc, drawOrderIndex);

@@ -34,7 +34,7 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class ShapeUnionAction 
+public class ShapeUnionAction
 extends AbstractBooleanOperationAction
 {
 	public static final String ID = ShapeUnionAction.class.getName();
@@ -54,8 +54,8 @@ extends AbstractBooleanOperationAction
 		super(editor);
 	}
 
-	@Override	
-	protected void init() 
+	@Override
+	protected void init()
 	{
 		setId(ID);
 		setText(Messages.getString("org.nightlabs.editor2d.ui.actions.shape.ShapeUnionAction.text")); //$NON-NLS-1$
@@ -64,7 +64,7 @@ extends AbstractBooleanOperationAction
 
 	@Override
 	protected AbstractBooleanOperationCommand getBooleanCommand(
-			ShapeDrawComponent primary, ShapeDrawComponent secondary) 
+			ShapeDrawComponent primary, ShapeDrawComponent secondary)
 	{
 		return new ShapeUnionCommand(primary, secondary);
 	}

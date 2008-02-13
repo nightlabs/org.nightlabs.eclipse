@@ -33,9 +33,9 @@ import org.nightlabs.editor2d.RootDrawComponent;
 import org.nightlabs.editor2d.ui.AbstractEditor;
 
 
-public abstract class AbstractRendererModeAction 
-extends EditorPartAction 
-{  
+public abstract class AbstractRendererModeAction
+extends EditorPartAction
+{
   protected RootDrawComponent root;
   
   /**
@@ -47,21 +47,21 @@ extends EditorPartAction
 
   // TODO: check currentMode in RenderModeManager and if != getRenderMode() return true else false
   @Override
-	protected boolean calculateEnabled() 
+	protected boolean calculateEnabled()
   {
     return true;
   }
     
   @Override
-	public void run() 
+	public void run()
   {
     if (getEditorPart() instanceof AbstractEditor) {
       AbstractEditor editor = ((AbstractEditor)getEditorPart());
       root = editor.getRootDrawComponent();
 //      root.setRenderMode(getRenderMode());
       root.getRenderModeManager().setCurrentRenderMode(getRenderMode());
-      editor.updateViewer();      
-    }    
+      editor.updateViewer();
+    }
   }
     
   public abstract String getRenderMode();

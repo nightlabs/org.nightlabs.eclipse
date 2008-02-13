@@ -31,13 +31,13 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.nightlabs.base.ui.util.ImageUtil;
 
-public class LineStyleLabelProvider 
-extends LabelProvider 
+public class LineStyleLabelProvider
+extends LabelProvider
 {
   @Override
-	public Image getImage(Object element) 
+	public Image getImage(Object element)
   {
-    if (element instanceof Integer) 
+    if (element instanceof Integer)
     {
       int lineStyle = ((Integer)element).intValue();
       return ImageUtil.createLineStyleImage(lineStyle);
@@ -46,9 +46,9 @@ extends LabelProvider
   }
 
   @Override
-	public String getText(Object element) 
+	public String getText(Object element)
   {
-    if (element instanceof Integer) 
+    if (element instanceof Integer)
     {
       int lineStyle = ((Integer)element).intValue();
       return ""; //$NON-NLS-1$

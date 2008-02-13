@@ -48,7 +48,6 @@ import org.eclipse.swt.widgets.Group;
 import org.holongate.j2d.J2DCanvas;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.form.NightlabsFormsToolkit;
-import org.nightlabs.base.ui.form.XFormToolkit;
 import org.nightlabs.editor2d.ui.j2dswt.RenderedImagePaintable;
 import org.nightlabs.editor2d.ui.resource.Messages;
 import org.nightlabs.editor2d.util.ImageUtil;
@@ -56,8 +55,8 @@ import org.nightlabs.editor2d.util.ImageUtil;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class ImagePreviewComposite 
-extends XComposite 
+public class ImagePreviewComposite
+extends XComposite
 {
 	/**
 	 * LOG4J logger used by this class
@@ -70,8 +69,8 @@ extends XComposite
 	 * @param style the style flag
 	 * @param toolkitMode the mode for the {@link XFormToolkit}
 	 */
-	public ImagePreviewComposite(BufferedImage originalImage, Composite parent, 
-			int style) 
+	public ImagePreviewComposite(BufferedImage originalImage, Composite parent,
+			int style)
 	{
 		super(parent, style);
 		this.originalImage = originalImage;
@@ -87,11 +86,11 @@ extends XComposite
 	 * @param toolkitMode the mode for the {@link XFormToolkit}
 	 */
 	public ImagePreviewComposite(BufferedImage originalImage, Composite parent, int style,
-			LayoutMode layoutMode, LayoutDataMode layoutDataMode) 
+			LayoutMode layoutMode, LayoutDataMode layoutDataMode)
 	{
 		super(parent, style, layoutMode, layoutDataMode);
 		this.originalImage = originalImage;
-		convertImage = ImageUtil.cloneImage(originalImage);		
+		convertImage = ImageUtil.cloneImage(originalImage);
 		createComposite(this);
 	}
 
@@ -113,11 +112,11 @@ extends XComposite
 	private ScrolledComposite originalSC = null;
 	private ScrolledComposite convertSC = null;
 	private J2DCanvas originalCanvas = null;
-	private J2DCanvas convertCanvas = null;	
+	private J2DCanvas convertCanvas = null;
 	private RenderedImagePaintable originalPaintable = null;
 	private RenderedImagePaintable convertPaintable = null;
 	
-	protected void createComposite(Composite parent) 
+	protected void createComposite(Composite parent)
 	{
 		toolkit = new NightlabsFormsToolkit(Display.getCurrent());
 		
@@ -132,11 +131,11 @@ extends XComposite
 		originalGroup.setLayoutData(new GridData(GridData.FILL_BOTH));
 		originalGroup.setLayout(new GridLayout());
 		originalSC = new ScrolledComposite(originalGroup, SWT.H_SCROLL | SWT.V_SCROLL);
-		originalSC.setExpandHorizontal(true);		
+		originalSC.setExpandHorizontal(true);
 		originalSC.setExpandVertical(true);
 		originalSC.setLayoutData(new GridData(GridData.FILL_BOTH));
 		originalSC.setLayout(new GridLayout());
-		originalPaintable = new RenderedImagePaintable(originalImage);		
+		originalPaintable = new RenderedImagePaintable(originalImage);
 		originalCanvas = new J2DCanvas(originalSC, originalPaintable);
 		originalCanvas.setLayoutData(new GridData(GridData.FILL_BOTH));
 		originalSC.setContent(originalCanvas);
@@ -147,11 +146,11 @@ extends XComposite
 		convertGroup.setLayoutData(new GridData(GridData.FILL_BOTH));
 		convertGroup.setLayout(new GridLayout());
 		convertSC = new ScrolledComposite(convertGroup, SWT.H_SCROLL | SWT.V_SCROLL);
-		convertSC.setExpandHorizontal(true);		
-		convertSC.setExpandVertical(true);		
+		convertSC.setExpandHorizontal(true);
+		convertSC.setExpandVertical(true);
 		convertSC.setLayoutData(new GridData(GridData.FILL_BOTH));
-		convertSC.setLayout(new GridLayout());		
-		convertPaintable = new RenderedImagePaintable(convertImage);		
+		convertSC.setLayout(new GridLayout());
+		convertPaintable = new RenderedImagePaintable(convertImage);
 		convertCanvas = new J2DCanvas(convertSC, convertPaintable);
 		convertCanvas.setLayoutData(new GridData(GridData.FILL_BOTH));
 		convertSC.setContent(convertCanvas);
@@ -167,30 +166,30 @@ extends XComposite
 	}
 	
 	private SelectionListener horizontalScrollListener = new SelectionListener()
-	{	
+	{
 		public void widgetDefaultSelected(SelectionEvent e) {
 			widgetSelected(e);
-		}	
+		}
 		public void widgetSelected(SelectionEvent e) {
 			repaintCanvas();
-		}	
+		}
 	};
 	
 	private SelectionListener verticalScrollListener = new SelectionListener()
-	{	
+	{
 		public void widgetDefaultSelected(SelectionEvent e) {
 			widgetSelected(e);
-		}	
+		}
 		public void widgetSelected(SelectionEvent e) {
 			repaintCanvas();
-		}	
-	};	
+		}
+	};
 	
-	public void repaintCanvas() 
+	public void repaintCanvas()
 	{
 		originalCanvas.repaint();
-		convertCanvas.repaint();		
-	}	
+		convertCanvas.repaint();
+	}
 	
 	public void repaintOriginal() {
 		originalCanvas.repaint();
@@ -202,9 +201,9 @@ extends XComposite
 	
 	private float scale = 1.0f;
 	private ControlListener resizeListener = new ControlAdapter()
-	{	
+	{
 		@Override
-		public void controlResized(ControlEvent e) 
+		public void controlResized(ControlEvent e)
 		{
 			org.eclipse.swt.graphics.Rectangle canvasSize = originalCanvas.getClientArea();
 			float originalWidth = originalImage.getWidth();
@@ -221,59 +220,59 @@ extends XComposite
 			
 			float tmpScale = Math.min(scaleX, scaleY);
 			if (tmpScale != 1)
-				scale = tmpScale; 				
+				scale = tmpScale;
 			
 			rescaleOp = null;
 			logger.debug("Canvas resized!"); //$NON-NLS-1$
 			
 			rescaleImages();
-		}	
-	};	
+		}
+	};
 	
 	private BufferedImage originalScale = null;
 	private BufferedImage convertScale = null;
 	
 	private boolean fitImage = true;
-	public void setFitImage(boolean b) 
+	public void setFitImage(boolean b)
 	{
-		this.fitImage = b;		
-		rescaleImages();	
-		layoutScrollBars();		
+		this.fitImage = b;
+		rescaleImages();
+		layoutScrollBars();
 	}
 	public boolean isFitImage() {
 		return fitImage;
 	}
 		
-	protected void rescaleImages() 
+	protected void rescaleImages()
 	{
 		long start = System.currentTimeMillis();
 				
-		if (fitImage) 		
-		{	
+		if (fitImage)
+		{
 			final int scaledWidth = (int) (originalImage.getWidth() * scale);
-			final int scaledHeight = (int) (originalImage.getHeight() * scale);	
+			final int scaledHeight = (int) (originalImage.getHeight() * scale);
 			if (logger.isDebugEnabled()) {
 				logger.debug("scaledWidth = "+scaledWidth); //$NON-NLS-1$
 				logger.debug("scaledHeight = "+scaledHeight); //$NON-NLS-1$
 			}
 			originalScale = scaleImage(originalImage, scaledWidth, scaledHeight);
 			originalPaintable.setImage(originalScale);
-			convertScale = scaleImage(convertImage, scaledWidth, scaledHeight);			
-			convertPaintable.setImage(convertScale);			
+			convertScale = scaleImage(convertImage, scaledWidth, scaledHeight);
+			convertPaintable.setImage(convertScale);
 		}
 		else {
 			originalPaintable.setImage(originalImage);
-			convertPaintable.setImage(convertImage);			
+			convertPaintable.setImage(convertImage);
 		}
 		
 		if (logger.isDebugEnabled()) {
 			long end = System.currentTimeMillis() - start;
 			logger.debug("rescaleImages took "+end+" ms!");			 //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		repaintCanvas();		
+		repaintCanvas();
 	}
 	
-	protected BufferedImage scaleImage(BufferedImage img, int width, int height) 
+	protected BufferedImage scaleImage(BufferedImage img, int width, int height)
 	{
 		logger.debug("scale = "+scale); //$NON-NLS-1$
 		if (rescaleOp == null)
@@ -282,47 +281,47 @@ extends XComposite
 		return rescaleOp.filter(img, null);
 	}
 		
-	private int scaleInterpolationType = AffineTransformOp.TYPE_NEAREST_NEIGHBOR;	
-	private AffineTransformOp rescaleOp = null;		
-	protected AffineTransformOp createRescaleOp(float scale) 
+	private int scaleInterpolationType = AffineTransformOp.TYPE_NEAREST_NEIGHBOR;
+	private AffineTransformOp rescaleOp = null;
+	protected AffineTransformOp createRescaleOp(float scale)
 	{
 		AffineTransform at = new AffineTransform();
 		at.scale(scale, scale);
 		logger.debug("image scale factor = "+scale); //$NON-NLS-1$
-		return new AffineTransformOp(at, scaleInterpolationType);		
+		return new AffineTransformOp(at, scaleInterpolationType);
 	}
 		
-	protected void layoutScrollBars() 
+	protected void layoutScrollBars()
 	{
 		Point size = null;
 		if (!fitImage)
-			size = new Point(originalImage.getWidth(), originalImage.getHeight());			
+			size = new Point(originalImage.getWidth(), originalImage.getHeight());
 		else
-			size = new Point(originalScale.getWidth(null), originalScale.getHeight(null));			
+			size = new Point(originalScale.getWidth(null), originalScale.getHeight(null));
 		
 		originalCanvas.computeSize(size.x, size.y);
-		convertCanvas.computeSize(size.x, size.y);		
-		originalSC.setMinSize(size);		
-		convertSC.setMinSize(size);				
-		originalCanvas.layout(true);		
-		convertCanvas.layout(true);		
-	}		
+		convertCanvas.computeSize(size.x, size.y);
+		originalSC.setMinSize(size);
+		convertSC.setMinSize(size);
+		originalCanvas.layout(true);
+		convertCanvas.layout(true);
+	}
 	
 	private DisposeListener disposeListener = new DisposeListener()
-	{	
-		public void widgetDisposed(DisposeEvent e) 
+	{
+		public void widgetDisposed(DisposeEvent e)
 		{
 			convertCanvas.removeControlListener(resizeListener);
 			originalSC.getHorizontalBar().removeSelectionListener(horizontalScrollListener);
 			originalSC.getVerticalBar().removeSelectionListener(verticalScrollListener);
 			convertSC.getHorizontalBar().removeSelectionListener(horizontalScrollListener);
-			convertSC.getVerticalBar().removeSelectionListener(verticalScrollListener);		
+			convertSC.getVerticalBar().removeSelectionListener(verticalScrollListener);
 			
 			originalImage = null;
 			convertImage = null;
 			originalScale = null;
 			convertScale = null;
-		}	
+		}
 	};
 	
 }

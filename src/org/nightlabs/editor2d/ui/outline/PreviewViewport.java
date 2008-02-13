@@ -36,8 +36,8 @@ import org.nightlabs.editor2d.viewer.ui.IViewport;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class PreviewViewport 
-implements IViewport 
+public class PreviewViewport
+implements IViewport
 {
 	public PreviewViewport(Viewport viewport) {
 		this.viewport = viewport;
@@ -69,15 +69,15 @@ implements IViewport
 //	private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 //	public void addPropertyChangeListener(PropertyChangeListener pcl) {
 //		pcs.addPropertyChangeListener(pcl);
-//	}	
-//	
+//	}
+//
 //	public void removePropertyChangeListener(PropertyChangeListener pcl) {
 //		pcs.removePropertyChangeListener(pcl);
 //	}
 
 	public void addPropertyChangeListener(PropertyChangeListener pcl) {
 		viewport.addPropertyChangeListener(pcl);
-	}	
+	}
 	
 	public void removePropertyChangeListener(PropertyChangeListener pcl) {
 		viewport.removePropertyChangeListener(pcl);

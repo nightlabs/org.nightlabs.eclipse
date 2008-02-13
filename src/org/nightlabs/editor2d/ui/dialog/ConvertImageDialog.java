@@ -38,13 +38,13 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class ConvertImageDialog 
-extends CenteredDialog 
+public class ConvertImageDialog
+extends CenteredDialog
 {
 	/**
 	 * @param parentShell
 	 */
-	public ConvertImageDialog(Shell parentShell, BufferedImage originalImage) 
+	public ConvertImageDialog(Shell parentShell, BufferedImage originalImage)
 	{
 		super(parentShell);
 		setShellStyle(getShellStyle() | SWT.RESIZE);
@@ -52,14 +52,14 @@ extends CenteredDialog
 	}
 	
 	@Override
-	public void create() 
+	public void create()
 	{
 		super.create();
 		getShell().setText(Messages.getString("org.nightlabs.editor2d.ui.dialog.ConvertImageDialog.text")); //$NON-NLS-1$
 		getShell().setSize(500, 500);
-	}	
+	}
 		
-	private BufferedImage image = null;	
+	private BufferedImage image = null;
 	private ConvertImageComposite convertImageComp = null;
 	public ConvertImageComposite getConvertImageComposite() {
 		return convertImageComp;
@@ -69,7 +69,7 @@ extends CenteredDialog
 	 * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
-	protected Control createDialogArea(Composite parent) 
+	protected Control createDialogArea(Composite parent)
 	{
 		convertImageComp = new ConvertImageComposite(parent, SWT.NONE, image);
 		return convertImageComp;

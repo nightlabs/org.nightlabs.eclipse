@@ -33,8 +33,8 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class CreatePageCommand 
-extends CreateDrawComponentCommand 
+public class CreatePageCommand
+extends CreateDrawComponentCommand
 {
 	public CreatePageCommand(RootDrawComponent root, Editor2DFactory factory)
 	{
@@ -52,22 +52,22 @@ extends CreateDrawComponentCommand
 	private Editor2DFactory factory = null;
 
 	@Override
-	public void execute() 
+	public void execute()
 	{
-	  drawComponent = factory.createPageDrawComponent();	  
+	  drawComponent = factory.createPageDrawComponent();
     getPage().setParent(getRootDrawComponent());
 		drawOrderIndex = getRootDrawComponent().getDrawComponents().indexOf(
-        getRootDrawComponent().getCurrentPage()) + 1;    
+        getRootDrawComponent().getCurrentPage()) + 1;
     getRootDrawComponent().addDrawComponent(getPage(), drawOrderIndex);
     getRootDrawComponent().setCurrentPage(getPage());
-	}	
+	}
 	
 	@Override
-	public void redo() 
+	public void redo()
 	{
     super.redo();
-		getRootDrawComponent().setCurrentPage(getPage());			  		
-	}	
+		getRootDrawComponent().setCurrentPage(getPage());
+	}
 			
 	protected RootDrawComponent getRootDrawComponent() {
 	  return (RootDrawComponent) parent;
@@ -75,5 +75,5 @@ extends CreateDrawComponentCommand
   
   protected PageDrawComponent getPage() {
     return (PageDrawComponent) drawComponent;
-  }	
+  }
 }

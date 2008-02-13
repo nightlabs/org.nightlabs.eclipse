@@ -31,11 +31,11 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.nightlabs.editor2d.ui.util.J2DUtil;
 
 
-public class FeedbackShapeFigure 
-extends AbstractShapeFigure 
+public class FeedbackShapeFigure
+extends AbstractShapeFigure
 {
   @Override
-	public void setBounds(Rectangle newBounds) 
+	public void setBounds(Rectangle newBounds)
   {
   	Rectangle oldBounds = getBounds();
   	J2DUtil.transformGeneralShape(getGeneralShape(), oldBounds, newBounds);
@@ -43,8 +43,8 @@ extends AbstractShapeFigure
   	super.repaint();
   }
   
-//  public void setBounds(Rectangle newBounds) 
-//  {        
+//  public void setBounds(Rectangle newBounds)
+//  {
 //    Rectangle oldBounds = getBounds();
 //    AffineTransform at = J2DUtil.getAffineTransform(oldBounds, newBounds);
 //    getGeneralShape().transform(at);
@@ -54,15 +54,15 @@ extends AbstractShapeFigure
 //        ShapeFigure shapeFigure = (ShapeFigure) child;
 //        shapeFigure.transform(at);
 //      }
-//    }    
-//    super.setBounds(J2DUtil.toDraw2D(getGPBounds()));       
-//  }  
+//    }
+//    super.setBounds(J2DUtil.toDraw2D(getGPBounds()));
+//  }
    
 //  public Rectangle getBounds()
 //  {
 //    Rectangle totalBounds = new Rectangle();
 //    Rectangle gpBounds = J2DUtil.toDraw2D(getGeneralShape().getBounds());
-//    for (Iterator it = getChildren().iterator(); it.hasNext(); ) 
+//    for (Iterator it = getChildren().iterator(); it.hasNext(); )
 //    {
 //      IFigure child = (IFigure) it.next();
 //      if (child instanceof ShapeFigure) {
@@ -74,7 +74,7 @@ extends AbstractShapeFigure
 //    return gpBounds;
 //  }
   
-//  public void transform(AffineTransform at) 
+//  public void transform(AffineTransform at)
 //  {
 //    getGeneralShape().transform(at);
 //    outlineArea = null;
@@ -86,6 +86,6 @@ extends AbstractShapeFigure
 //        shapeFigure.transform(at);
 //      }
 //    }
-//    repaint();    
-//  }   
+//    repaint();
+//  }
 }

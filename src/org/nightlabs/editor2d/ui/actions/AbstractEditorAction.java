@@ -41,7 +41,7 @@ import org.nightlabs.editor2d.Layer;
 import org.nightlabs.editor2d.RootDrawComponent;
 import org.nightlabs.editor2d.ui.AbstractEditor;
 
-public abstract class AbstractEditorAction 
+public abstract class AbstractEditorAction
 extends EditorPartAction
 {
 	public AbstractEditorAction(AbstractEditor editor, int style) {
@@ -71,7 +71,7 @@ extends EditorPartAction
 	 */
 	public RootDrawComponent getRootDrawComponent() {
 		return getEditor().getRootDrawComponent();
-	}	
+	}
 	
 	/**
 	 * 
@@ -87,7 +87,7 @@ extends EditorPartAction
 	 * @see org.eclipse.gef.GraphicalViewer
 	 */
 	public GraphicalViewer getGraphicalViewer() {
-		return getEditor().getOutlineGraphicalViewer();		
+		return getEditor().getOutlineGraphicalViewer();
 	}
 	
 	/**
@@ -105,10 +105,10 @@ extends EditorPartAction
 	 * @param drawComponents a List of DrawComponents to find a EditParts for
 	 * @return a List of the corresponding EditParts
 	 */
-	public List<EditPart> getEditParts(List<DrawComponent> drawComponents) 
+	public List<EditPart> getEditParts(List<DrawComponent> drawComponents)
 	{
 		List<EditPart> editParts = new ArrayList<EditPart>();
-		for (Iterator<DrawComponent> it = drawComponents.iterator(); it.hasNext(); ) 
+		for (Iterator<DrawComponent> it = drawComponents.iterator(); it.hasNext(); )
 		{
 			DrawComponent dc = it.next();
 			EditPart ep = getEditPart(dc);
@@ -119,14 +119,14 @@ extends EditorPartAction
 	
 	/**
 	 * selects the EditParts in the GraphicalViewer for the the given List
-	 * of drawComponents  
+	 * of drawComponents
 	 * @param drawComponents
 	 */
-	public void selectEditPart(List drawComponents) 
+	public void selectEditPart(List drawComponents)
 	{
 		List editParts = getEditParts(drawComponents);
 		getGraphicalViewer().setSelection(new StructuredSelection(editParts));
-	}	
+	}
 	
 	/**
 	 * 
@@ -136,18 +136,18 @@ extends EditorPartAction
 		return getEditor().getSite().getShell();
 	}
 	
-	/** 
-	 * @return true if the AbstractEditor is the active Editor of the Workbench 
+	/**
+	 * @return true if the AbstractEditor is the active Editor of the Workbench
 	 */
 	public boolean isActiveEditor()
 	{
 		// TODO: find out why getActivePage() always return null
-		if (getWorkbenchPart().getSite().getWorkbenchWindow().getActivePage() != null) 
+		if (getWorkbenchPart().getSite().getWorkbenchWindow().getActivePage() != null)
 		{
 			if (getWorkbenchPart().getSite().getWorkbenchWindow().getActivePage().getActiveEditor().equals(getEditor())) {
 				return true;
-			}			
+			}
 		}
 		return false;
-	}	
+	}
 }

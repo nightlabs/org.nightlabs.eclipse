@@ -42,7 +42,7 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class CloneAction  
+public class CloneAction
 extends AbstractEditorSelectionAction
 {
 	public static final String ID = CloneAction.class.getName();
@@ -63,17 +63,17 @@ extends AbstractEditorSelectionAction
 	}
 
   @Override
-	protected void init() 
+	protected void init()
   {
   	setText(Messages.getString("org.nightlabs.editor2d.ui.actions.copy.CloneAction.text")); //$NON-NLS-1$
   	setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.actions.copy.CloneAction.tooltip")); //$NON-NLS-1$
   	setId(ID);
 //  	setImageDescriptor(ImageDescriptor.createFromFile(EditorPlugin.class,"icons/editShape16.gif"));
   	initConfigModule();
-  } 	
+  }
 	
 	protected QuickOptionsConfigModule confMod = null;
-	protected QuickOptionsConfigModule getConfigModule() 
+	protected QuickOptionsConfigModule getConfigModule()
 	{
 		if (confMod == null)
 			initConfigModule();
@@ -81,14 +81,14 @@ extends AbstractEditorSelectionAction
 		return confMod;
 	}
 	
-	protected void initConfigModule() 
+	protected void initConfigModule()
 	{
 		try {
 			confMod = Config.sharedInstance().createConfigModule(QuickOptionsConfigModule.class);
 		} catch (ConfigException e) {
 			throw new RuntimeException(e);
-		} 
-	}  
+		}
+	}
   
 	/**
 	*@return true, if objects are selected, except the RootEditPart or LayerEditParts
@@ -100,14 +100,14 @@ extends AbstractEditorSelectionAction
 		
 	/**
 	 * clones all selected DrawComponents and combines them to one Command
-	 *  
+	 * 
 	 */
 	@Override
-	public void run() 
+	public void run()
 	{
-		Collection<DrawComponent> dcs = getSelection(DrawComponent.class, true);		
+		Collection<DrawComponent> dcs = getSelection(DrawComponent.class, true);
 		CompoundCommand cmd = new CompoundCommand();
-		for (Iterator<DrawComponent> it = dcs.iterator(); it.hasNext(); ) 
+		for (Iterator<DrawComponent> it = dcs.iterator(); it.hasNext(); )
 		{
 			DrawComponent dc = it.next();
 			CloneDrawComponentCommand cloneCmd = new CloneDrawComponentCommand(dc, dc.getParent());
@@ -116,11 +116,11 @@ extends AbstractEditorSelectionAction
 			if (distX != 0 || distY != 0) {
 				Rectangle dcBounds = new Rectangle(dc.getBounds());
 				dcBounds.setLocation(dcBounds.x + distX, dcBounds.y + distY);
-				cloneCmd.setCloneBounds(dcBounds);			 				
+				cloneCmd.setCloneBounds(dcBounds);
 			}
 			cmd.add(cloneCmd);
 		}
 		execute(cmd);
-	}	
+	}
 	
 }

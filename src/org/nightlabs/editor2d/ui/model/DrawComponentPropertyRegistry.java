@@ -39,7 +39,7 @@ import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class DrawComponentPropertyRegistry 
+public class DrawComponentPropertyRegistry
 extends AbstractEPProcessor
 {
 	private static final Logger logger = Logger.getLogger(DrawComponentPropertyRegistry.class);
@@ -68,12 +68,12 @@ extends AbstractEPProcessor
 	}
 
 	@Override
-	public void processElement(IExtension extension, IConfigurationElement element) 
-	throws Exception 
+	public void processElement(IExtension extension, IConfigurationElement element)
+	throws Exception
 	{
-		if (element.getName().equalsIgnoreCase(ELEMENT_DRAWCOMPONENT_PROPERTY)) 
+		if (element.getName().equalsIgnoreCase(ELEMENT_DRAWCOMPONENT_PROPERTY))
 		{
-			String dcClassName = element.getAttribute(ATTRIBUTE_DRAWCOMPONENT_CLASS);			
+			String dcClassName = element.getAttribute(ATTRIBUTE_DRAWCOMPONENT_CLASS);
 			DrawComponentProperty dcProperty = null;
 			try {
 				dcProperty = (DrawComponentProperty) element.createExecutableExtension(ATTRIBUTE_DRAWCOMPONENT_PROPERTY);
@@ -81,8 +81,8 @@ extends AbstractEPProcessor
 				logger.warn("There occured an error when trying to create the drawComponentProperty "+element.getAttribute(ATTRIBUTE_DRAWCOMPONENT_PROPERTY), e); //$NON-NLS-1$
 			}
 			
-			String rootDrawComponentClassName = element.getAttribute(ATTRIBUTE_ROOT_DRAWCOMPONENT_CLASS);			
-			if (checkString(dcClassName) && dcProperty != null && checkString(rootDrawComponentClassName)) 
+			String rootDrawComponentClassName = element.getAttribute(ATTRIBUTE_ROOT_DRAWCOMPONENT_CLASS);
+			if (checkString(dcClassName) && dcProperty != null && checkString(rootDrawComponentClassName))
 			{
 				Map<String, List<DrawComponentProperty>> dcClass2DrawComponentProperties = rootClass2dcClass2DrawComponentProperties.get(rootDrawComponentClassName);
 				if (dcClass2DrawComponentProperties == null)
@@ -90,7 +90,7 @@ extends AbstractEPProcessor
 				
 				List<DrawComponentProperty> properties = dcClass2DrawComponentProperties.get(dcClassName);
 				if (properties == null) {
-					properties = new LinkedList<DrawComponentProperty>();					
+					properties = new LinkedList<DrawComponentProperty>();
 				}
 				properties.add(dcProperty);
 				dcClass2DrawComponentProperties.put(dcClassName, properties);
@@ -100,7 +100,7 @@ extends AbstractEPProcessor
 		}
 	}
 
-	private Map<String, Map<String, List<DrawComponentProperty>>>  rootClass2dcClass2DrawComponentProperties = 
+	private Map<String, Map<String, List<DrawComponentProperty>>>  rootClass2dcClass2DrawComponentProperties =
 		new HashMap<String, Map<String, List<DrawComponentProperty>>>();
 	
 	public Map<String, List<DrawComponentProperty>> getDrawComponentClass2Properties(String rootDrawComponentClass) {
@@ -108,9 +108,9 @@ extends AbstractEPProcessor
 		return rootClass2dcClass2DrawComponentProperties.get(rootDrawComponentClass);
 	}
 
-	public List<DrawComponentProperty> getDrawComponentProperty(String rootDrawComponentClass, String drawComponentClass) 
+	public List<DrawComponentProperty> getDrawComponentProperty(String rootDrawComponentClass, String drawComponentClass)
 	{
-		Map<String, List<DrawComponentProperty>> dcClass2DrawComponentProperties = 
+		Map<String, List<DrawComponentProperty>> dcClass2DrawComponentProperties =
 			getDrawComponentClass2Properties(rootDrawComponentClass);
 		if (dcClass2DrawComponentProperties != null) {
 			return dcClass2DrawComponentProperties.get(drawComponentClass);

@@ -41,8 +41,8 @@ import org.eclipse.swt.graphics.Cursor;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class EditorNonResizableHandleKit 
-extends NonResizableHandleKit 
+public class EditorNonResizableHandleKit
+extends NonResizableHandleKit
 {
 
 	public EditorNonResizableHandleKit() {
@@ -57,7 +57,7 @@ extends NonResizableHandleKit
 	 * @param tracker the handles' DragTracker
 	 * @param cursor the handles' Cursor
 	 */
-	public static void addCornerHandles(GraphicalEditPart part, List handles, 
+	public static void addCornerHandles(GraphicalEditPart part, List handles,
 										DragTracker tracker, Cursor cursor) {
 		handles.add(createHandle(part, PositionConstants.SOUTH_EAST, tracker, cursor));
 		handles.add(createHandle(part, PositionConstants.SOUTH_WEST, tracker, cursor));
@@ -87,7 +87,7 @@ extends NonResizableHandleKit
 	 * direction
 	 */
 	public static void addHandle(GraphicalEditPart part, List handles, int direction) {
-		handles.add(createHandle(part, direction));	
+		handles.add(createHandle(part, direction));
 	}
 
 	/**
@@ -102,7 +102,7 @@ extends NonResizableHandleKit
 	 */
 	public static void addHandle(GraphicalEditPart part, List handles, int direction,
 								 DragTracker tracker, Cursor cursor) {
-		handles.add(createHandle(part, direction, tracker, cursor));	
+		handles.add(createHandle(part, direction, tracker, cursor));
 	}
 
 	/**
@@ -147,7 +147,7 @@ extends NonResizableHandleKit
 	 * @param handles the List to add the handles to
 	 * @param cursor the Cursor to use when hovering over this handle
 	 */
-	public static void addMoveHandle(GraphicalEditPart f, List handles, DragTracker tracker, 
+	public static void addMoveHandle(GraphicalEditPart f, List handles, DragTracker tracker,
 									 Cursor cursor) {
 		handles.add(moveHandle(f, tracker, cursor));
 	}
@@ -169,7 +169,7 @@ extends NonResizableHandleKit
 
 	/**
 	 * Returns a new {@link MoveHandle} with the given owner.
-	 * @param owner the GraphicalEditPart that is the owner of the new MoveHandle 
+	 * @param owner the GraphicalEditPart that is the owner of the new MoveHandle
 	 * @return the new MoveHandle
 	 */
 	public static Handle moveHandle(GraphicalEditPart owner) {
@@ -180,11 +180,11 @@ extends NonResizableHandleKit
 	 * Returns a new {@link MoveHandle} with the given owner.
 	 * 
 	 * @param tracker the DragTracker to assign to this handle
-	 * @param owner the GraphicalEditPart that is the owner of the new MoveHandle 
+	 * @param owner the GraphicalEditPart that is the owner of the new MoveHandle
 	 * @param cursor the Cursor to use when hovering over this handle
 	 * @return the new MoveHandle
 	 */
-	public static Handle moveHandle(GraphicalEditPart owner, DragTracker tracker, 
+	public static Handle moveHandle(GraphicalEditPart owner, DragTracker tracker,
 									Cursor cursor) {
 		MoveHandle moveHandle = new EditorMoveHandle(owner);
 		moveHandle.setDragTracker(tracker);

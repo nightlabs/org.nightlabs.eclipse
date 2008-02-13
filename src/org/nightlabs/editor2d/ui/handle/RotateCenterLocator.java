@@ -35,37 +35,37 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.nightlabs.editor2d.ui.edit.AbstractDrawComponentEditPart;
 
 
-public class RotateCenterLocator 
-implements Locator 
+public class RotateCenterLocator
+implements Locator
 {
   protected AbstractDrawComponentEditPart owner;
-  public RotateCenterLocator(AbstractDrawComponentEditPart owner) 
+  public RotateCenterLocator(AbstractDrawComponentEditPart owner)
   {
     this.owner = owner;
   }
 
-  protected Point getLocation() 
+  protected Point getLocation()
   {
     return new Point(owner.getDrawComponent().getRotationX(),
-        owner.getDrawComponent().getRotationY()); 
+        owner.getDrawComponent().getRotationY());
   }
   
-  public void relocate(IFigure target) 
-  {    
-    target.setLocation(calcCenterPoint(target.getBounds(), getReferencePoint(target)));    
-  } 
+  public void relocate(IFigure target)
+  {
+    target.setLocation(calcCenterPoint(target.getBounds(), getReferencePoint(target)));
+  }
   
-  protected Point calcCenterPoint(Rectangle rect, Point point) 
+  protected Point calcCenterPoint(Rectangle rect, Point point)
   {
     Dimension boundsSize = rect.getSize();
     return new Point(point.x - boundsSize.width/2, point.y - boundsSize.height/2);
-  }  
+  }
   
-  protected Point getReferencePoint(IFigure target) 
+  protected Point getReferencePoint(IFigure target)
   {
     Point p = getLocation();
     owner.getFigure().translateToAbsolute(p);
-    target.translateToRelative(p);   		
+    target.translateToRelative(p);
     return p;
-  }  
+  }
 }

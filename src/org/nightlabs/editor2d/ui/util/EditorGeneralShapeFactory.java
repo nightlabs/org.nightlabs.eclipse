@@ -32,7 +32,7 @@ import java.awt.geom.Arc2D;
 import org.nightlabs.editor2d.j2d.GeneralShape;
 import org.nightlabs.editor2d.j2d.GeneralShapeFactory;
 
-public class EditorGeneralShapeFactory 
+public class EditorGeneralShapeFactory
 extends GeneralShapeFactory
 {
 
@@ -40,15 +40,15 @@ extends GeneralShapeFactory
 		super();
 	}
 
-	public static GeneralShape createEllipse(org.eclipse.draw2d.geometry.Rectangle rect) 
+	public static GeneralShape createEllipse(org.eclipse.draw2d.geometry.Rectangle rect)
 	{
-	  Arc2D arc = new Arc2D.Double(rect.x, rect.y, rect.width, rect.height, 0, 360, Arc2D.OPEN);      
-	  return new GeneralShape(arc); 
+	  Arc2D arc = new Arc2D.Double(rect.x, rect.y, rect.width, rect.height, 0, 360, Arc2D.OPEN);
+	  return new GeneralShape(arc);
 	}
 	
-	public static GeneralShape createRectangle(org.eclipse.draw2d.geometry.Rectangle rect) 
-	{      
-	  return createRectangle(rect.x, rect.y, rect.width, rect.height); 
+	public static GeneralShape createRectangle(org.eclipse.draw2d.geometry.Rectangle rect)
+	{
+	  return createRectangle(rect.x, rect.y, rect.width, rect.height);
 	}
 	
 }

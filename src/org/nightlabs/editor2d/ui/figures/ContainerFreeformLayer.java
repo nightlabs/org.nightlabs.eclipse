@@ -4,18 +4,17 @@ import java.awt.Graphics2D;
 import java.util.Iterator;
 
 import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.FreeformFigure;
 import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.render.Renderer;
 
-public class ContainerFreeformLayer 
-extends FreeformLayer 
+public class ContainerFreeformLayer
+extends FreeformLayer
 implements RendererFigure
 {
-	public ContainerFreeformLayer() 
+	public ContainerFreeformLayer()
 	{
 		super.setBounds(new Rectangle(-Integer.MAX_VALUE / 2, -Integer.MAX_VALUE / 2, Integer.MAX_VALUE, Integer.MAX_VALUE));
 	}
@@ -23,7 +22,7 @@ implements RendererFigure
 	/**
 	 * Overridden to paint only children
 	 */
-	public void paint(Graphics2D graphics) 
+	public void paint(Graphics2D graphics)
 	{
 		for (Iterator iter = getChildren().iterator(); iter.hasNext();) {
 			Figure figure = (Figure) iter.next();
@@ -31,13 +30,13 @@ implements RendererFigure
 				((DrawComponentFigure)figure).paint(graphics);
 			}
 		}
-	}  
+	}
 	
 	/**
 	 * Overridden to paint only children
 	 */
 	@Override
-	public void paint(Graphics graphics) 
+	public void paint(Graphics graphics)
 	{
 		for (Iterator iter = getChildren().iterator(); iter.hasNext();) {
 			Figure figure = (Figure) iter.next();
@@ -45,12 +44,12 @@ implements RendererFigure
 		}
 	}
 	
-	protected Renderer renderer;   
+	protected Renderer renderer;
 	public void setRenderer(Renderer renderer) {
 		this.renderer = renderer;
 	}
 	
-	protected DrawComponent drawComponent;  
+	protected DrawComponent drawComponent;
 	public void setDrawComponent(DrawComponent drawComponent) {
 		this.drawComponent = drawComponent;
 	}
@@ -59,19 +58,19 @@ implements RendererFigure
 	 * @see FreeformFigure#setFreeformBounds(Rectangle)
 	 */
 	@Override
-	public void setFreeformBounds(Rectangle bounds) 
+	public void setFreeformBounds(Rectangle bounds)
 	{
 //  	clearBuffer();
 //    LOGGER.debug("setFreeformBounds("+bounds+")");
 //  	helper.setFreeformBounds(bounds);
-	} 
+	}
 	
 	@Override
-	public void setBounds(Rectangle rect) 
+	public void setBounds(Rectangle rect)
 	{
 //	clearBuffer();
 //  LOGGER.debug("setFreeformBounds("+bounds+")");
-//	helper.setFreeformBounds(bounds);		
+//	helper.setFreeformBounds(bounds);
 	}
   	
 }

@@ -39,8 +39,8 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class GroupAction 
-extends AbstractEditorSelectionAction 
+public class GroupAction
+extends AbstractEditorSelectionAction
 {
 	public static final String ID = GroupAction.class.getName();
 	
@@ -60,7 +60,7 @@ extends AbstractEditorSelectionAction
 	}
 
 	@Override
-	protected void init() 
+	protected void init()
 	{
 		setId(ID);
 		setText(Messages.getString("org.nightlabs.editor2d.ui.actions.group.GroupAction.text")); //$NON-NLS-1$
@@ -74,7 +74,7 @@ extends AbstractEditorSelectionAction
 	}
 
 	@Override
-	public void run() 
+	public void run()
 	{
 		List selectedObjects = getSelectedObjects();
 		Collection<DrawComponent> selection = new HashSet<DrawComponent>();
@@ -91,7 +91,7 @@ extends AbstractEditorSelectionAction
 			GroupCommand cmd = new GroupCommand(selection);
 			execute(cmd);
 			if (cmd.getGroup() != null)
-				selectEditPart(cmd.getGroup());			
+				selectEditPart(cmd.getGroup());
 		}
 	}
 }

@@ -33,8 +33,8 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class ChangeOrderOneUp 
-extends AbstractChangeOrderSelectionAction 
+public class ChangeOrderOneUp
+extends AbstractChangeOrderSelectionAction
 {
 	public static final String ID = ChangeOrderOneUp.class.getName();
 	
@@ -54,7 +54,7 @@ extends AbstractChangeOrderSelectionAction
 	}
 
 	@Override
-	public void init() 
+	public void init()
 	{
 		setText(Messages.getString("org.nightlabs.editor2d.ui.actions.order.ChangeOrderOneUp.text")); //$NON-NLS-1$
 		setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.actions.order.ChangeOrderOneUp.tooltip")); //$NON-NLS-1$
@@ -67,7 +67,7 @@ extends AbstractChangeOrderSelectionAction
 	 * @see AbstractChangeOrderSelectionAction#getPrimarySelectedDrawComponent()
 	 */
 	@Override
-	public int getNewIndex() 
+	public int getNewIndex()
 	{
 		int index = primarySelected.getParent().getDrawComponents().indexOf(primarySelected);
 		int highestIndex = getLastIndex(primarySelected.getParent());
@@ -82,8 +82,8 @@ extends AbstractChangeOrderSelectionAction
 	 * @see AbstractChangeOrderSelectionAction#getPrimarySelectedDrawComponent()
 	 */
 	@Override
-	public DrawComponentContainer getContainer() 
+	public DrawComponentContainer getContainer()
 	{
-		return primarySelected.getParent();		 		
+		return primarySelected.getParent();
 	}
 }

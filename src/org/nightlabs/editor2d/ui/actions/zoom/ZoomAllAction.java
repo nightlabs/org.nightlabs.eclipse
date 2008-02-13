@@ -34,8 +34,8 @@ import org.nightlabs.editor2d.ui.actions.EditorCommandConstants;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
 
-public class ZoomAllAction 
-extends ZoomAction 
+public class ZoomAllAction
+extends ZoomAction
 {
   public static final String ID = ZoomAllAction.class.getName();
   
@@ -43,11 +43,11 @@ extends ZoomAction
    * Constructor for ZoomInAction.
    * @param zoomManager the zoom manager
    */
-  public ZoomAllAction(ZoomManager zoomManager) 
+  public ZoomAllAction(ZoomManager zoomManager)
   {
   	super(Messages.getString("org.nightlabs.editor2d.ui.actions.zoom.ZoomAllAction.text"), //$NON-NLS-1$
   	    SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(), ZoomAllAction.class),
-  	    zoomManager);  	
+  	    zoomManager);
   	setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.actions.zoom.ZoomAllAction.tooltip")); //$NON-NLS-1$
   	setId(ID);
   	setActionDefinitionId(EditorCommandConstants.ZOOM_ALL_ID);

@@ -32,9 +32,9 @@ import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 
-public class ZoomToolEntry 
-extends ToolEntry 
-{     
+public class ZoomToolEntry
+extends ToolEntry
+{
   /**
    * @param label
    * @param shortDesc
@@ -42,7 +42,7 @@ extends ToolEntry
    * @param iconLarge
    */
   public ZoomToolEntry(String label, String shortDesc,
-      ImageDescriptor iconSmall, ImageDescriptor iconLarge) 
+      ImageDescriptor iconSmall, ImageDescriptor iconLarge)
   {
     super(label, shortDesc, iconSmall, iconLarge);
   }

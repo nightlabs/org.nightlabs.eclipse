@@ -38,10 +38,10 @@ import org.nightlabs.editor2d.ImageDrawComponent;
 import org.nightlabs.editor2d.image.RenderModeMetaData;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
-public class CreateImageCommand 
-extends CreateDrawComponentCommand 
+public class CreateImageCommand
+extends CreateDrawComponentCommand
 {
-  public CreateImageCommand() 
+  public CreateImageCommand()
   {
     super();
     setLabel(Messages.getString("org.nightlabs.editor2d.ui.command.CreateImageCommand.label"));   //$NON-NLS-1$
@@ -56,7 +56,7 @@ extends CreateDrawComponentCommand
     this.fileName = fileName;
   }
   
-  protected String simpleFileName = null;    
+  protected String simpleFileName = null;
   public void setSimpleFileName(String simpleFileName) {
     this.simpleFileName = simpleFileName;
   }
@@ -64,12 +64,12 @@ extends CreateDrawComponentCommand
   protected List<RenderModeMetaData> renderModeMetaDatas = new LinkedList<RenderModeMetaData>();
   public void setRenderModeMetaData(List<RenderModeMetaData> renderModeMetaDatas) {
   	this.renderModeMetaDatas = renderModeMetaDatas;
-  }  
+  }
   
   @Override
-	public void execute() 
+	public void execute()
   {
-  	super.execute();  	
+  	super.execute();
     try {
     	File file = new File(fileName);
     	FileInputStream fis = new FileInputStream(file);
@@ -79,8 +79,8 @@ extends CreateDrawComponentCommand
    		}
     }
     catch (FileNotFoundException e) {
-    	throw new RuntimeException(e);    
+    	throw new RuntimeException(e);
     }
-  }  
+  }
     
 }

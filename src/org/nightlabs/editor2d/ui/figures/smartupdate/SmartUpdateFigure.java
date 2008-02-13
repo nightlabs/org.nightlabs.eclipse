@@ -50,12 +50,12 @@ import org.nightlabs.editor2d.ui.figures.RendererFigure;
  * @author Alexander Bieber <alex[at]nightlabs[DOT]de>
  *
  */
-public class SmartUpdateFigure 
+public class SmartUpdateFigure
 extends Figure
 implements ISmartUpdateFigure
 {
 	/**
-	 * Inner tile class. 
+	 * Inner tile class.
 	 */
 	private static class Tile implements FigureTile {
 		
@@ -71,7 +71,7 @@ implements ISmartUpdateFigure
 			if (key == null)
 				key = getTileKey(bounds.x, bounds.y);
 			return key;
-		}		
+		}
 
 		/**
 		 * @see org.nightlabs.editor2d.ui.figures.smartupdate.FigureTile#intersects(org.eclipse.draw2d.geometry.Rectangle)
@@ -127,7 +127,7 @@ implements ISmartUpdateFigure
 	
 	/**
 	 * key: String: (x,y) upper left tile corner <br/>
-	 * value: FigureTile: The FigureTile for this tile 
+	 * value: FigureTile: The FigureTile for this tile
 	 */
 	private Map tiles = new HashMap();
 	
@@ -138,18 +138,18 @@ implements ISmartUpdateFigure
 	private Map figuresInTiles = new HashMap();
 
 	/**
-	 * The tile dimension calculated in {@link #rebuildTiles()} 
+	 * The tile dimension calculated in {@link #rebuildTiles()}
 	 */
 	private Dimension tileDimension;
 	
 	/**
 	 * EveryTime on rebuild this method is
 	 * consulted for the new tile dimensions.
-	 * This implementation returns 
+	 * This implementation returns
 	 * x = bounds.x/round(sqrt(childCount)) and
-	 * y = bounds.y/round(sqrt(childCount)) 
+	 * y = bounds.y/round(sqrt(childCount))
 	 * May be overridden.
-	 *  
+	 * 
 	 * @return Optimal? tile dimensions for this Figure
 	 */
 	protected Dimension calculateTileDimension() {
@@ -214,12 +214,12 @@ implements ISmartUpdateFigure
 	}
 	
 	/**
-	 * Integrates the given figure in the current tile build. 
+	 * Integrates the given figure in the current tile build.
 	 * Makes sure that the registrations in the tile maps are
 	 * correct after execution.
 	 * 
 	 * @param figure The figure to integrate
-	 */	
+	 */
 	protected void integrateFigure(IFigure figure) {
 		Rectangle figureBounds = figure.getBounds();
 		Point topLefTilePosition = getTileTopLeft(figureBounds.x, figureBounds.y);
@@ -277,10 +277,10 @@ implements ISmartUpdateFigure
 		if (!tilesBuild)
 			rebuildTiles();
 		tilesBuild = true;
-		internalPaintSelf(graphics, region);		
+		internalPaintSelf(graphics, region);
 		if (getChildren().size() == 0)
 			return;
-		Rectangle regionToPaint = getBounds().getIntersection(region);	
+		Rectangle regionToPaint = getBounds().getIntersection(region);
 		if (regionToPaint.width == 0 && regionToPaint.height == 0)
 			return;
 		Point topLefTilePosition = getTileTopLeft(regionToPaint.x, regionToPaint.y);
@@ -294,7 +294,7 @@ implements ISmartUpdateFigure
 					internalPaintChild(figure, graphics, regionToPaint);
 				}
 			}
-		}		
+		}
 	}
 	
 	private void internalPaintSelf(Object graphics, Rectangle region) {
@@ -316,7 +316,7 @@ implements ISmartUpdateFigure
 			Graphics d2dGraphics = (Graphics)graphics;
 			if (child instanceof ISmartUpdateFigure)
 				((ISmartUpdateFigure)child).paintRegion(d2dGraphics, regionToPaint);
-			else 
+			else
 				child.paint(d2dGraphics);
 		}
 		else if (graphics instanceof Graphics2D) {

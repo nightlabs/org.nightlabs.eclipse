@@ -65,7 +65,7 @@ import org.nightlabs.editor2d.ui.edit.RootDrawComponentEditPart;
 import org.nightlabs.editor2d.ui.edit.ShapeDrawComponentEditPart;
 import org.nightlabs.editor2d.ui.edit.TextEditPart;
 
-public abstract class AbstractEditorSelectionAction 
+public abstract class AbstractEditorSelectionAction
 extends SelectionAction
 {
 	public AbstractEditorSelectionAction(AbstractEditor editor, int style) {
@@ -77,11 +77,11 @@ extends SelectionAction
 	}
 
 	@Override
-	protected abstract boolean calculateEnabled(); 
+	protected abstract boolean calculateEnabled();
 	@Override
-	protected abstract void init();	
+	protected abstract void init();
 	@Override
-	public abstract void run();	
+	public abstract void run();
 
 	public boolean isActiveEditor()
 	{
@@ -105,24 +105,24 @@ extends SelectionAction
 	 * @return the RootDrawComponent of the AbstractEditor
 	 * @see org.nightlabs.editor2d.ui.RootDrawComponent
 	 */
-	public RootDrawComponent getRootDrawComponent() 
+	public RootDrawComponent getRootDrawComponent()
 	{
 		return getEditor().getRootDrawComponent();
-	}	
+	}
 	
 	/**
 	 * checks if the selected objects contain minimum so many EditPart or EditPart-Models
 	 * as the given amount of the given class
 	 * 
-	 * @param clazz the Class to search for 
-	 * @param amount the minimum amount of occurences of the given class 
+	 * @param clazz the Class to search for
+	 * @param amount the minimum amount of occurences of the given class
 	 * in the selected objects
 	 * @param model determines if the Class-Check should be performed on the
 	 * selected EditParts or the model (DrawComponent) of the EditParts
 	 * @return true if the selected objects contain minimum so many EditPart
 	 * as the given amount of the given class
 	 */
-	public boolean selectionContains(Class clazz, int amount, boolean model) 
+	public boolean selectionContains(Class clazz, int amount, boolean model)
 	{
 		return selectionContains(new Class[] {clazz}, amount, model);
 	}
@@ -132,35 +132,35 @@ extends SelectionAction
 	 * as the given amount of the given classes
 	 * 
 	 * @param clazzes an Array of classes to search for
-	 * @param amount the minimum amount of occurences of the given class 
+	 * @param amount the minimum amount of occurences of the given class
 	 * in the selected objects
 	 * @param model determines if the Class-Check should be performed on the
 	 * selected EditParts or the model (DrawComponent) of the EditParts
 	 * @return true if the selected objects contain minimum so many EditPart
 	 * as the given amount of the given class
 	 */
-	public boolean selectionContains(Class[] clazzes, int amount, boolean model) 
+	public boolean selectionContains(Class[] clazzes, int amount, boolean model)
 	{
-		if (!getSelectedObjects().isEmpty()) 
+		if (!getSelectedObjects().isEmpty())
 		{
 			int counter = 0;
-			for (Iterator it = getSelectedObjects().iterator(); it.hasNext(); ) 
+			for (Iterator it = getSelectedObjects().iterator(); it.hasNext(); )
 			{
 				EditPart editPart = (EditPart) it.next();
 				Class c = null;
-				if (!model) 
+				if (!model)
 					c = editPart.getClass();
 				else
 					c = editPart.getModel().getClass();
 				
-				for (int i=0; i<clazzes.length; i++) 
+				for (int i=0; i<clazzes.length; i++)
 				{
 					Class clazz = clazzes[i];
 					if (clazz.isAssignableFrom(c)) {
 						counter++;
 						if (amount == counter)
 							return true;
-					}										
+					}
 				}
 			}
 		}
@@ -178,17 +178,17 @@ extends SelectionAction
 		return selectionContains(clazz, 1, model);
 	}
 	
-	private static List EMPTY_LIST = Collections.EMPTY_LIST; 
+	private static List EMPTY_LIST = Collections.EMPTY_LIST;
 			
 	/**
 	 * 
 	 * @param clazz the Class to search for
 	 * @param model determines if the Class-Check should be performed on the
 	 * selected EditParts or the model (DrawComponent) of the EditParts
-	 * @return a Collection of all objects from the selection which are assignable 
+	 * @return a Collection of all objects from the selection which are assignable
 	 * from the given class
 	 */
-	public Collection getSelection(Class clazz, boolean model) 
+	public Collection getSelection(Class clazz, boolean model)
 	{
 		return getSelection(new Class[] {clazz}, model);
 	}
@@ -198,15 +198,15 @@ extends SelectionAction
 	 * @param clazzes the Class[] to search for
 	 * @param model determines if the Class-Check should be performed on the
 	 * selected EditParts or the model (DrawComponent) of the EditParts
-	 * @return a List of all objects from the selection which are assignable 
+	 * @return a List of all objects from the selection which are assignable
 	 * from the given classes
 	 */
-	public Collection getSelection(Class[] clazzes, boolean model) 
+	public Collection getSelection(Class[] clazzes, boolean model)
 	{
-		if (!getSelectedObjects().isEmpty()) 
+		if (!getSelectedObjects().isEmpty())
 		{
-			Collection selection = new HashSet();			
-			for (Iterator it = getSelectedObjects().iterator(); it.hasNext(); ) 
+			Collection selection = new HashSet();
+			for (Iterator it = getSelectedObjects().iterator(); it.hasNext(); )
 			{
 				EditPart editPart = (EditPart) it.next();
 				Class c = null;
@@ -215,16 +215,16 @@ extends SelectionAction
 				else
 					c = editPart.getModel().getClass();
 				
-				for (int i=0; i<clazzes.length; i++) 
+				for (int i=0; i<clazzes.length; i++)
 				{
 					Class clazz = clazzes[i];
-					if (clazz.isAssignableFrom(c)) 
+					if (clazz.isAssignableFrom(c))
 					{
-						if (!model) 
-							selection.add(clazz.cast(editPart));							
+						if (!model)
+							selection.add(clazz.cast(editPart));
 						else
-							selection.add(clazz.cast(editPart.getModel()));							
-					}					
+							selection.add(clazz.cast(editPart.getModel()));
+					}
 				}
 			}
 			return selection;
@@ -237,10 +237,10 @@ extends SelectionAction
 	 * @param clazz the Class to search for
 	 * @param model determines if the Class-Check should be performed on the
 	 * selected EditParts or the model (DrawComponent) of the EditParts
-	 * @return a Collection of all objects from the selection which are assignable 
+	 * @return a Collection of all objects from the selection which are assignable
 	 * from the given class
 	 */
-	public List getSelectionAsList(Class clazz, boolean model) 
+	public List getSelectionAsList(Class clazz, boolean model)
 	{
 		return getSelectionAsList(new Class[] {clazz}, model);
 	}
@@ -250,15 +250,15 @@ extends SelectionAction
 	 * @param clazzes the Class[] to search for
 	 * @param model determines if the Class-Check should be performed on the
 	 * selected EditParts or the model (DrawComponent) of the EditParts
-	 * @return a List of all objects from the selection which are assignable 
+	 * @return a List of all objects from the selection which are assignable
 	 * from the given classes
 	 */
-	public List getSelectionAsList(Class[] clazzes, boolean model) 
+	public List getSelectionAsList(Class[] clazzes, boolean model)
 	{
-		if (!getSelectedObjects().isEmpty()) 
+		if (!getSelectedObjects().isEmpty())
 		{
-			List selection = new LinkedList();			
-			for (Iterator it = getSelectedObjects().iterator(); it.hasNext(); ) 
+			List selection = new LinkedList();
+			for (Iterator it = getSelectedObjects().iterator(); it.hasNext(); )
 			{
 				EditPart editPart = (EditPart) it.next();
 				Class c = null;
@@ -267,10 +267,10 @@ extends SelectionAction
 				else
 					c = editPart.getModel().getClass();
 				
-				for (int i=0; i<clazzes.length; i++) 
+				for (int i=0; i<clazzes.length; i++)
 				{
 					Class clazz = clazzes[i];
-					if (clazz.isAssignableFrom(c)) 
+					if (clazz.isAssignableFrom(c))
 					{
 						Object o = null;
 						if (!model)
@@ -279,8 +279,8 @@ extends SelectionAction
 							o = clazz.cast(editPart.getModel());
 							
 						if (!selection.contains(o))
-							selection.add(o);													
-					}					
+							selection.add(o);
+					}
 				}
 			}
 			return selection;
@@ -288,18 +288,18 @@ extends SelectionAction
 		return EMPTY_LIST;
 	}
 	
-	private Class[] defaultEditPartExcludes = null; 
+	private Class[] defaultEditPartExcludes = null;
 	private Class[] defaultModelExcludes = null;
 	
-	public Class[] getDefaultExcludes(boolean model) 
+	public Class[] getDefaultExcludes(boolean model)
 	{
 		if (!model) {
 			if (defaultEditPartExcludes == null) {
 				defaultEditPartExcludes = new Class[4];
-				defaultEditPartExcludes[0] = RootEditPart.class;							
+				defaultEditPartExcludes[0] = RootEditPart.class;
 				defaultEditPartExcludes[1] = LayerEditPart.class;
 				defaultEditPartExcludes[2] = PageEditPart.class;
-				defaultEditPartExcludes[3] = RootDrawComponentEditPart.class;				
+				defaultEditPartExcludes[3] = RootDrawComponentEditPart.class;
 			}
 			return defaultEditPartExcludes;
 		}
@@ -315,22 +315,22 @@ extends SelectionAction
 	}
 		
 	private Collection<Class> defaultExcludeList = null;
-	public Collection<Class> getDefaultExcludeList(boolean model) 
+	public Collection<Class> getDefaultExcludeList(boolean model)
 	{
-		if (defaultExcludeList == null) 
+		if (defaultExcludeList == null)
 		{
 			Class[] excludes = getDefaultExcludes(model);
-			defaultExcludeList = new ArrayList<Class>(excludes.length);		
+			defaultExcludeList = new ArrayList<Class>(excludes.length);
 			for (int i=0; i<excludes.length; i++) {
 				defaultExcludeList.add(excludes[i]);
-			}			
+			}
 		}
 		return defaultExcludeList;
 	}
 	
-	private Class[] defaultEditPartIncludes = null; 
-	private Class[] defaultModelIncludes = null;	
-	public Class[] getDefaultIncludes(boolean model) 
+	private Class[] defaultEditPartIncludes = null;
+	private Class[] defaultModelIncludes = null;
+	public Class[] getDefaultIncludes(boolean model)
 	{
 		if (!model) {
 			if (defaultEditPartIncludes == null) {
@@ -339,9 +339,9 @@ extends SelectionAction
 				defaultEditPartIncludes[1] = EllipseEditPart.class;
 				defaultEditPartIncludes[2] = LineEditPart.class;
 				defaultEditPartIncludes[3] = ImageEditPart.class;
-				defaultEditPartIncludes[4] = TextEditPart.class;			
+				defaultEditPartIncludes[4] = TextEditPart.class;
 				defaultEditPartIncludes[5] = GroupEditPart.class;
-				defaultEditPartIncludes[6] = ShapeDrawComponentEditPart.class;				
+				defaultEditPartIncludes[6] = ShapeDrawComponentEditPart.class;
 			}
 			return defaultEditPartIncludes;
 		}
@@ -354,32 +354,32 @@ extends SelectionAction
 				defaultModelIncludes[3] = ImageDrawComponent.class;
 				defaultModelIncludes[4] = TextDrawComponent.class;
 				defaultModelIncludes[5] = GroupDrawComponent.class;
-				defaultModelIncludes[6] = ShapeDrawComponent.class;				
+				defaultModelIncludes[6] = ShapeDrawComponent.class;
 			}
 			return defaultModelIncludes;
 		}
-	}	
+	}
 	
 	private Collection<Class> defaultIncludeList = null;
-	public Collection<Class> getDefaultIncludeList(boolean model) 
+	public Collection<Class> getDefaultIncludeList(boolean model)
 	{
 		if (defaultIncludeList == null) {
 			Class[] includes = getDefaultIncludes(model);
-			defaultIncludeList = new ArrayList<Class>(includes.length);		
+			defaultIncludeList = new ArrayList<Class>(includes.length);
 			for (int i=0; i<includes.length; i++) {
 				defaultIncludeList.add(includes[i]);
-			}			
+			}
 		}
-		return defaultIncludeList;		
+		return defaultIncludeList;
 	}
 	
-//	public List getDefaultSelection(boolean model) 
+//	public List getDefaultSelection(boolean model)
 //	{
-//		return getSelection(getDefaultIncludes(model), model);		
+//		return getSelection(getDefaultIncludes(model), model);
 //	}
-	public Collection getDefaultSelection(boolean model) 
+	public Collection getDefaultSelection(boolean model)
 	{
-		return getSelection(getDefaultIncludes(model), model);		
+		return getSelection(getDefaultIncludes(model), model);
 	}
 	
 	public IStructuredSelection getStructuredSelection() {
@@ -396,7 +396,7 @@ extends SelectionAction
 	 * @see org.eclipse.gef.GraphicalViewer
 	 */
 	public GraphicalViewer getGraphicalViewer() {
-		return getEditor().getOutlineGraphicalViewer();		
+		return getEditor().getOutlineGraphicalViewer();
 	}
 	
 	/**
@@ -414,10 +414,10 @@ extends SelectionAction
 	 * @param drawComponents a List of DrawComponents to find a EditParts for
 	 * @return a List of the corresponding EditParts
 	 */
-	public List getEditParts(List drawComponents) 
+	public List getEditParts(List drawComponents)
 	{
 		List editParts = new ArrayList();
-		for (Iterator it = drawComponents.iterator(); it.hasNext(); ) 
+		for (Iterator it = drawComponents.iterator(); it.hasNext(); )
 		{
 			DrawComponent dc = (DrawComponent) it.next();
 			EditPart ep = getEditPart(dc);
@@ -428,10 +428,10 @@ extends SelectionAction
 	
 	/**
 	 * selects the EditParts in the GraphicalViewer for the the given List
-	 * of drawComponents  
+	 * of drawComponents
 	 * @param drawComponents
 	 */
-	public void selectEditParts(List drawComponents) 
+	public void selectEditParts(List drawComponents)
 	{
 		List editParts = getEditParts(drawComponents);
 		getGraphicalViewer().setSelection(new StructuredSelection(editParts));
@@ -439,10 +439,10 @@ extends SelectionAction
 
 	/**
 	 * selects the EditParts in the GraphicalViewer for the the given List
-	 * of drawComponents  
+	 * of drawComponents
 	 * @param dc the DrawComponent to selected its EditPart
 	 */
-	public void selectEditPart(DrawComponent dc) 
+	public void selectEditPart(DrawComponent dc)
 	{
 		EditPart ep = getEditPart(dc);
 		getGraphicalViewer().setSelection(new StructuredSelection(ep));

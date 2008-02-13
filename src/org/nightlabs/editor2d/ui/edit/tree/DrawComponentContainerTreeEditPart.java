@@ -36,8 +36,8 @@ import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
 import org.nightlabs.editor2d.DrawComponentContainer;
 import org.nightlabs.editor2d.ui.editpolicy.tree.DrawComponentTreeContainerEditPolicy;
 
-public abstract class DrawComponentContainerTreeEditPart 
-extends DrawComponentTreeEditPart 
+public abstract class DrawComponentContainerTreeEditPart
+extends DrawComponentTreeEditPart
 {
 	/**
 	 * LOG4J logger used by this class
@@ -58,7 +58,7 @@ extends DrawComponentTreeEditPart
    * Creates and installs pertinent EditPolicies.
    */
   @Override
-	protected void createEditPolicies() 
+	protected void createEditPolicies()
   {
   	super.createEditPolicies();
 //  	installEditPolicy(EditPolicy.CONTAINER_ROLE, new DrawComponentContainerEditPolicy());
@@ -84,24 +84,24 @@ extends DrawComponentTreeEditPart
    * @return  List of children.
    */
   @Override
-	protected List getModelChildren() 
+	protected List getModelChildren()
   {
   	return getDrawComponentContainer().getDrawComponents();
   }
   
 	@Override
-	protected void propertyChanged(PropertyChangeEvent evt) 
+	protected void propertyChanged(PropertyChangeEvent evt)
 	{
 		super.propertyChanged(evt);
 		String propertyName = evt.getPropertyName();
 		if (propertyName.equals(DrawComponentContainer.CHILD_ADDED)) {
 //			logger.debug(propertyName);
-			refreshChildren();			
+			refreshChildren();
 		}
 		else if (propertyName.equals(DrawComponentContainer.CHILD_REMOVED)) {
 //			logger.debug(propertyName);
-			refreshChildren();			
-		}		
-	}  
+			refreshChildren();
+		}
+	}
     
 }

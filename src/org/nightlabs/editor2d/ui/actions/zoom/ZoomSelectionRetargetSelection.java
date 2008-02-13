@@ -34,18 +34,18 @@ import org.nightlabs.editor2d.ui.actions.EditorCommandConstants;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
 
-public class ZoomSelectionRetargetSelection 
-extends RetargetAction 
+public class ZoomSelectionRetargetSelection
+extends RetargetAction
 {
   /**
    * Constructor for ZoomInRetargetAction
    */
-  public ZoomSelectionRetargetSelection() 
+  public ZoomSelectionRetargetSelection()
   {
   	super(ZoomSelectionAction.ID, Messages.getString("org.nightlabs.editor2d.ui.actions.zoom.ZoomSelectionRetargetSelection.text")); //$NON-NLS-1$
   	setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.actions.zoom.ZoomSelectionRetargetSelection.tooltip")); //$NON-NLS-1$
   	setImageDescriptor(SharedImages.getSharedImageDescriptor(
-  			EditorPlugin.getDefault(), ZoomSelectionAction.class));  	
+  			EditorPlugin.getDefault(), ZoomSelectionAction.class));
   	setActionDefinitionId(EditorCommandConstants.ZOOM_SELECTION_ID);
   }
 }

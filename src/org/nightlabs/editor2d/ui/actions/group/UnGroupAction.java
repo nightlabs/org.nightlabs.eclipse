@@ -37,8 +37,8 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class UnGroupAction 
-extends AbstractEditorSelectionAction 
+public class UnGroupAction
+extends AbstractEditorSelectionAction
 {
 	public static final String ID = UnGroupAction.class.getName();
 	
@@ -58,7 +58,7 @@ extends AbstractEditorSelectionAction
 	}
 
 	@Override
-	protected void init() 
+	protected void init()
 	{
 		setId(ID);
 		setText(Messages.getString("org.nightlabs.editor2d.ui.actions.group.UnGroupAction.text")); //$NON-NLS-1$
@@ -74,9 +74,9 @@ extends AbstractEditorSelectionAction
 	}
 
 	@Override
-	public void run() 
+	public void run()
 	{
-		Collection<GroupDrawComponent> selection = getSelection(GroupDrawComponent.class, true);		
+		Collection<GroupDrawComponent> selection = getSelection(GroupDrawComponent.class, true);
 		CompoundCommand cmd = new CompoundCommand();
 		for (GroupDrawComponent group : selection) {
 			UnGroupCommand ungroupCmd = new UnGroupCommand(group);

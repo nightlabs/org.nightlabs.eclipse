@@ -41,7 +41,7 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 import org.nightlabs.i18n.unit.resolution.DPIResolutionUnit;
 import org.nightlabs.i18n.unit.resolution.IResolutionUnit;
 
-public class ImagePropertySource 
+public class ImagePropertySource
 extends DrawComponentPropertySource
 {
 	public static final String CATEGORY_IMAGE = Messages.getString("org.nightlabs.editor2d.ui.model.ImagePropertySource.category.image"); //$NON-NLS-1$
@@ -55,7 +55,7 @@ extends DrawComponentPropertySource
 	}
 
 	@Override
-	protected List<IPropertyDescriptor> createPropertyDescriptors() 
+	protected List<IPropertyDescriptor> createPropertyDescriptors()
 	{
 		super.createPropertyDescriptors();
 		
@@ -63,17 +63,17 @@ extends DrawComponentPropertySource
 		// Bit Per Pixel
 		descriptors.add(createBitsPerPixelPD());
 		// Resolution
-		descriptors.add(createResolutionPD());		
+		descriptors.add(createResolutionPD());
 		// Color Conversion
 		descriptors.add(createColorConversionPD());
 		// Original File Name
 		descriptors.add(createOriginalFileNamePD());
 		
 		return descriptors;
-	}	
+	}
 		
 	@Override
-	public Object getPropertyValue(Object id) 
+	public Object getPropertyValue(Object id)
 	{
 		if (id.equals(ImageDrawComponent.PROP_ORIGINAL_FILE_NAME)) {
 			return getImageDrawComponent().getOriginalImageFileName();
@@ -85,12 +85,12 @@ extends DrawComponentPropertySource
 			return getResolutionInDPI(getImageDrawComponent());
 		}
 		return super.getPropertyValue(id);
-	}	
+	}
 			
 	@Override
-	public void setPropertyValue(Object id, Object value) 
+	public void setPropertyValue(Object id, Object value)
 	{
-		if (id.equals(ImageDrawComponent.PROP_RENDER_MODE_META_DATA)) 
+		if (id.equals(ImageDrawComponent.PROP_RENDER_MODE_META_DATA))
 		{
 			List<RenderModeMetaData> renderModeMetaData = (List<RenderModeMetaData>) value;
 			for (RenderModeMetaData data : renderModeMetaData) {
@@ -103,50 +103,50 @@ extends DrawComponentPropertySource
 	}
 
 	private IResolutionUnit dpiUnit = new DPIResolutionUnit();
-	private Double getResolutionInDPI(ImageDrawComponent img) 
+	private Double getResolutionInDPI(ImageDrawComponent img)
 	{
 		IResolutionUnit unit = img.getImageResolution().getResolutionUnit();
-		double resolution = img.getImageResolution().getResolutionX(); 
+		double resolution = img.getImageResolution().getResolutionX();
 		
 		if (unit.getResolutionID().equals(dpiUnit.getResolutionID()))
 			return new Double(resolution);
-		else { 			
+		else {
 			double oldfactor = dpiUnit.getUnit().getFactor();
 			double dpiResolution = (resolution * unit.getUnit().getFactor()) / oldfactor;
 			return new Double(dpiResolution);
 		}
 	}
 		
-	protected PropertyDescriptor createBitsPerPixelPD() 
+	protected PropertyDescriptor createBitsPerPixelPD()
 	{
-		PropertyDescriptor pd = new IntPropertyDescriptor(ImageDrawComponent.PROP_BITS_PER_PIXEL, 
+		PropertyDescriptor pd = new IntPropertyDescriptor(ImageDrawComponent.PROP_BITS_PER_PIXEL,
 				Messages.getString("org.nightlabs.editor2d.ui.model.ImagePropertySource.label.bitsPerPixel"), true); //$NON-NLS-1$
 		pd.setCategory(CATEGORY_IMAGE);
 		return pd;
 	}
 		
-	protected PropertyDescriptor createResolutionPD() 
+	protected PropertyDescriptor createResolutionPD()
 	{
-		PropertyDescriptor pd = new DoublePropertyDescriptor(ImageDrawComponent.PROP_RESOLUTION, 
+		PropertyDescriptor pd = new DoublePropertyDescriptor(ImageDrawComponent.PROP_RESOLUTION,
 				Messages.getString("org.nightlabs.editor2d.ui.model.ImagePropertySource.label.resolution"), true); //$NON-NLS-1$
 		pd.setCategory(CATEGORY_IMAGE);
-		return pd;		
+		return pd;
 	}
 		
 	protected PropertyDescriptor createColorConversionPD()
 	{
-		PropertyDescriptor pd = new ImageColorConversionPropertyDescriptor(getImageDrawComponent(), 
-				ImageDrawComponent.PROP_RENDER_MODE_META_DATA, 
+		PropertyDescriptor pd = new ImageColorConversionPropertyDescriptor(getImageDrawComponent(),
+				ImageDrawComponent.PROP_RENDER_MODE_META_DATA,
 				Messages.getString("org.nightlabs.editor2d.ui.model.ImagePropertySource.label.ColorConversion")); //$NON-NLS-1$
-		pd.setCategory(CATEGORY_IMAGE);		
+		pd.setCategory(CATEGORY_IMAGE);
 		return pd;
 	}
 	
 	protected PropertyDescriptor createOriginalFileNamePD()
 	{
-		PropertyDescriptor pd = new XTextPropertyDescriptor(ImageDrawComponent.PROP_ORIGINAL_FILE_NAME, 
+		PropertyDescriptor pd = new XTextPropertyDescriptor(ImageDrawComponent.PROP_ORIGINAL_FILE_NAME,
 				Messages.getString("org.nightlabs.editor2d.ui.model.ImagePropertySource.label.originalFileName"), true); //$NON-NLS-1$
-		pd.setCategory(CATEGORY_IMAGE);		
+		pd.setCategory(CATEGORY_IMAGE);
 		return pd;
 	}
 }

@@ -33,8 +33,8 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class Editor2DApplication 
-extends AbstractApplication 
+public class Editor2DApplication
+extends AbstractApplication
 {
 	public String initApplicationName() {
 		return Messages.getString("org.nightlabs.editor2d.ui.app.Editor2DApplication.name"); //$NON-NLS-1$

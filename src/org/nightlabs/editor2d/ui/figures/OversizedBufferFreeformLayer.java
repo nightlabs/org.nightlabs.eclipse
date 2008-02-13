@@ -59,7 +59,7 @@ import org.nightlabs.editor2d.ui.util.EditorUtil;
  * @author Daniel Mazurek
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
  */
-public class OversizedBufferFreeformLayer 
+public class OversizedBufferFreeformLayer
 extends Layer
 implements FreeformFigure, BufferedFreeformLayer
 {
@@ -82,7 +82,7 @@ implements FreeformFigure, BufferedFreeformLayer
 	 */
 	private Control viewerControl;
 	/**
-	 * The editpart is needed for EditorUtil methods and 
+	 * The editpart is needed for EditorUtil methods and
 	 * to retrieve the control. It is passed to the constructor
 	 */
 	private EditPart editPart;
@@ -92,7 +92,7 @@ implements FreeformFigure, BufferedFreeformLayer
 	 */
 	private double currentZoom = 1.0;
 	/**
-	 * The scroll offset at the time when the buffer was (re)created 
+	 * The scroll offset at the time when the buffer was (re)created
 	 */
 	private Point bufferedScrollOffset;
 	/**
@@ -120,7 +120,7 @@ implements FreeformFigure, BufferedFreeformLayer
 	
 	private boolean debug = false;
 	
-	protected Point calculateBufferFactors() 
+	protected Point calculateBufferFactors()
 	{
 		Point result = new Point(1,1);
 		Point realSizeBounds = EditorUtil.toAbsolute(editPart, currentSize.x, currentSize.y);
@@ -130,7 +130,7 @@ implements FreeformFigure, BufferedFreeformLayer
 		if (childBounds == null)
 			return result;
 		if (realSizeBounds.x >= childBound.width && realSizeBounds.y >= childBound.height) {
-			// all children fit in the control 
+			// all children fit in the control
 			// do not overdimension buffer
 			return result;
 		}
@@ -151,15 +151,15 @@ implements FreeformFigure, BufferedFreeformLayer
 	
 	/**
 	 * Returns the offscreen buffer (recrates if neccassary) and sets
-	 * {@link #bufferOrigin} to the correct value concerning the 
+	 * {@link #bufferOrigin} to the correct value concerning the
 	 * current scroll offset.
 	 * 
 	 * @return The offscreen buffer
 	 */
-	protected BufferedImage getBufferedImage() 
-	{	
+	protected BufferedImage getBufferedImage()
+	{
 		double tmpZoom = EditorUtil.getZoom(editPart);
-		if (tmpZoom != currentZoom) {			
+		if (tmpZoom != currentZoom) {
 			// clear buffer if zoom changed
 			currentZoom = EditorUtil.getZoom(editPart);
 			clearBuffer();
@@ -169,7 +169,7 @@ implements FreeformFigure, BufferedFreeformLayer
 		}
 		if (bufferedImage == null) {
 			long time = System.currentTimeMillis();
-			currentSize.setLocation(viewerControl.getSize().x, viewerControl.getSize().y);			
+			currentSize.setLocation(viewerControl.getSize().x, viewerControl.getSize().y);
 			Point factors = calculateBufferFactors();
 			bufferSize.setLocation(currentSize.x * factors.x, currentSize.y * factors.y);
 			if (bufferedImage == null) {
@@ -181,23 +181,23 @@ implements FreeformFigure, BufferedFreeformLayer
 				bufferedGraphics.scale(currentZoom, currentZoom);
 				bufferedScrollOffset = EditorUtil.getScrollOffset(editPart);
 				Point offsetTranslation = EditorUtil.toAbsolute(
-						editPart, 
-						bufferedScrollOffset.x, 
+						editPart,
+						bufferedScrollOffset.x,
 						bufferedScrollOffset.y
 				);
 				bufferTranslation.setLocation((bufferSize.x - currentSize.x) / 2, (bufferSize.y - currentSize.y) / 2);
 				Point absoluteBufferTranslation = EditorUtil.toAbsolute(
-						editPart, 
+						editPart,
 						bufferTranslation.x,
-						bufferTranslation.y						
+						bufferTranslation.y
 				);
 				bufferedGraphics.translate(
-						absoluteBufferTranslation.x-offsetTranslation.x, 
+						absoluteBufferTranslation.x-offsetTranslation.x,
 						absoluteBufferTranslation.y-offsetTranslation.y
 				);
 				J2DRegistry.initGraphics(bufferedGraphics);
 				nonDCFChildren.clear();
-				for (Iterator iter = getChildren().iterator(); iter.hasNext();) 
+				for (Iterator iter = getChildren().iterator(); iter.hasNext();)
 				{
 					Figure figure = (Figure) iter.next();
 					if (figure instanceof RendererFigure) {
@@ -208,7 +208,7 @@ implements FreeformFigure, BufferedFreeformLayer
 						// Figure can not draw on a Graphics2D
 						// will be painted unbuffered
 						nonDCFChildren.add(figure);
-					}				
+					}
 				}
 				if (debug) {
 					logger.debug("buffer created in "+(System.currentTimeMillis()-time)+" ms"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -217,14 +217,14 @@ implements FreeformFigure, BufferedFreeformLayer
 			finally {
 				if (bufferedGraphics != null)
 				bufferedGraphics.dispose();
-			}			
+			}
 		}
 		Point scrollOffset = EditorUtil.getScrollOffset(editPart);
 		bufferOrigin.setLocation(0,0);
 		bufferOrigin.translate(
-			(scrollOffset.x-bufferedScrollOffset.x)+bufferTranslation.x, 
+			(scrollOffset.x-bufferedScrollOffset.x)+bufferTranslation.x,
 			(scrollOffset.y-bufferedScrollOffset.y)+bufferTranslation.y
-		);		
+		);
 		if (
 				(bufferOrigin.x < 0 || bufferOrigin.y < 0) ||
 				(bufferOrigin.x > (bufferSize.x - currentSize.x) || bufferOrigin.y > (bufferSize.y - currentSize.y))
@@ -238,23 +238,23 @@ implements FreeformFigure, BufferedFreeformLayer
 	}
 	
 	@Override
-	public void paint(Graphics graphics) 
+	public void paint(Graphics graphics)
 	{
 		long time = System.currentTimeMillis();
-		if (graphics instanceof J2DGraphics) 
+		if (graphics instanceof J2DGraphics)
 		{
 			J2DGraphics j2dGraphics = (J2DGraphics)graphics;
 			j2dGraphics.clipRect(null);
 			
-			// get / create the buffer 
+			// get / create the buffer
 			BufferedImage buffer = getBufferedImage();
 			
 			// create the Graphics where the buffer is drawn on
 			Graphics2D g2d = j2dGraphics.createGraphics2D();
 			// scale it invers of the current zoom ...
-			g2d.scale(1/currentZoom, 1/currentZoom);			
+			g2d.scale(1/currentZoom, 1/currentZoom);
 			// and translate it with the current scroll offset
-			// so 0,0 will be drawn on top left of the control			
+			// so 0,0 will be drawn on top left of the control
 			Point scrollOffset = EditorUtil.getScrollOffset(editPart);
 			g2d.translate(scrollOffset.x, scrollOffset.y);
 			g2d.setClip(null);
@@ -281,7 +281,7 @@ implements FreeformFigure, BufferedFreeformLayer
 			logger.debug("painted in "+(System.currentTimeMillis()-time)); //$NON-NLS-1$
 	}
 			
-	protected void clearBuffer() 
+	protected void clearBuffer()
 	{
 		// TODO: make sure this is called when editor is closed
 		if (bufferedImage != null) {
@@ -313,25 +313,25 @@ implements FreeformFigure, BufferedFreeformLayer
 		
 	private Rectangle childBounds;
 	
-	protected Rectangle getChildBounds() 
-	{  	
+	protected Rectangle getChildBounds()
+	{
 		if (childBounds == null) {
 			for (Iterator iter = getChildren().iterator(); iter.hasNext();) {
 				Figure figure = (Figure) iter.next();
 				Rectangle figureBounds = figure.getBounds();
-				if (childBounds == null)				
+				if (childBounds == null)
 					childBounds = new Rectangle(figureBounds);
 				else
-					childBounds.union(figureBounds);		
+					childBounds.union(figureBounds);
 			}
 		}
-		return childBounds;  		
+		return childBounds;
 	}
 	
 	/**
 	 * Constructs a new OversizedBufferFreeformLayer.
 	 */
-	public OversizedBufferFreeformLayer() 
+	public OversizedBufferFreeformLayer()
 	{
 		super.setBounds(INIT_BOUNDS);
 	}
@@ -339,12 +339,12 @@ implements FreeformFigure, BufferedFreeformLayer
 	public void init(EditPart editPart) {
 		this.editPart = editPart;
 		EditPartViewer viewer = editPart.getRoot().getViewer();
-		if (viewer instanceof ScrollingGraphicalViewer) {		  	
+		if (viewer instanceof ScrollingGraphicalViewer) {
 			ScrollingGraphicalViewer graphicalViewer = (ScrollingGraphicalViewer) viewer;
 			Control control = graphicalViewer.getControl();
 			this.viewerControl = control;
 			viewerControl.addDisposeListener(viewerControlDisposeListener);
-		}		
+		}
 	}
 	
 	/**
@@ -416,31 +416,31 @@ implements FreeformFigure, BufferedFreeformLayer
 	/**
 	 * @see FreeformFigure#setFreeformBounds(Rectangle)
 	 */
-	public void setFreeformBounds(Rectangle bounds) 
+	public void setFreeformBounds(Rectangle bounds)
 	{
 //  	clearBuffer();
 //    LOGGER.debug("setFreeformBounds("+bounds+")");
 //  	helper.setFreeformBounds(bounds);
-	} 
+	}
 	
 	@Override
-	public void setBounds(Rectangle rect) 
+	public void setBounds(Rectangle rect)
 	{
 //  	clearBuffer();
 //    LOGGER.debug("setBounds("+rect+")");
 //    super.setBounds(rect);
 	}
 
-	public void dispose() 
+	public void dispose()
 	{
-		clearBuffer();		
+		clearBuffer();
 		if (logger.isDebugEnabled())
 			logger.debug("dispose"); //$NON-NLS-1$
 	}
 		
-	private DisposeListener viewerControlDisposeListener = new DisposeListener(){	
+	private DisposeListener viewerControlDisposeListener = new DisposeListener(){
 		public void widgetDisposed(DisposeEvent e) {
 			dispose();
-		}	
+		}
 	};
 }

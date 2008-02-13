@@ -30,9 +30,9 @@ package org.nightlabs.editor2d.ui.util;
 import org.eclipse.swt.graphics.Color;
 
 
-public interface EditorColorConstants 
+public interface EditorColorConstants
 {
   public final static Color highlightColor = new Color(null,66,166,115);
   public final static Color ghostColor = new Color(null, 31, 31, 31);
-  public final static Color backgroundBlue = new Color(null, 200, 200, 240);  
+  public final static Color backgroundBlue = new Color(null, 200, 200, 240);
 }

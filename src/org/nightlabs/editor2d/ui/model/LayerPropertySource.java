@@ -32,8 +32,8 @@ import java.util.List;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.nightlabs.editor2d.Layer;
 
-public class LayerPropertySource 
-extends DrawComponentPropertySource 
+public class LayerPropertySource
+extends DrawComponentPropertySource
 {
 	public LayerPropertySource(Layer layer) {
 		super(layer);
@@ -44,7 +44,7 @@ extends DrawComponentPropertySource
 	}
 	
 	@Override
-	protected List createPropertyDescriptors() 
+	protected List createPropertyDescriptors()
 	{
 		List descriptors = getDescriptors();
 		// Name
@@ -53,10 +53,10 @@ extends DrawComponentPropertySource
 		descriptors.add(createVisiblePD());
 		
 		// PropertyDescriptors from extension point
-		List<IPropertyDescriptor> extensionPointProperties = getExtensionPointProperties(); 
+		List<IPropertyDescriptor> extensionPointProperties = getExtensionPointProperties();
 		if (!extensionPointProperties.isEmpty())
 			descriptors.addAll(extensionPointProperties);
 		
 		return descriptors;
-	}			 		
+	}
 }

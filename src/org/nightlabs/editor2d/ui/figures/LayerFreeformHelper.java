@@ -37,7 +37,7 @@ import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 
-public class LayerFreeformHelper 
+public class LayerFreeformHelper
 implements FreeformListener
 {
   class ChildTracker implements FigureListener {
@@ -54,7 +54,7 @@ implements FreeformListener
   	this.host = host;
   }
 
-  public Rectangle getFreeformExtent() 
+  public Rectangle getFreeformExtent()
   {
   	if (freeformExtent != null)
   		return freeformExtent;
@@ -86,19 +86,19 @@ implements FreeformListener
   	return freeformExtent;
   }
 
-  public void hookChild(IFigure child) 
+  public void hookChild(IFigure child)
   {
 //    if (child instanceof OversizedBufferFreeformLayer) {
 //      return;
-//    }      
-  	invalidate();  	
+//    }
+  	invalidate();
   	if (child instanceof FreeformFigure)
   		((FreeformFigure)child).addFreeformListener(this);
   	else
   		child.addFigureListener(figureListener);
   }
 
-  void invalidate() 
+  void invalidate()
   {
   	freeformExtent = null;
   	host.fireExtentChanged();
@@ -115,12 +115,12 @@ implements FreeformListener
 //  	    LOGGER.debug("host.getParent() instanceof OversizedBufferFreeformLayer!");
   	  }
   	  else {
-    		host.revalidate();  	    
+    		host.revalidate();
   	  }
     
 //  	freeformExtent = null;
 //  	host.fireExtentChanged();
-//  	if (host.getParent() != null)  	  
+//  	if (host.getParent() != null)
 //  		host.getParent().revalidate();
 //  	else
 //  		host.revalidate();

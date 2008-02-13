@@ -32,18 +32,18 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.nightlabs.editor2d.ui.model.IModelCreationFactory;
 
 
-public class RectangleToolEntry 
-//extends CombinedTemplateCreationEntry 
+public class RectangleToolEntry
+//extends CombinedTemplateCreationEntry
 extends EditorTemplateCreationEntry
-{  
-  public RectangleToolEntry(String label, String shortDesc, Object template, 
-      IModelCreationFactory factory, ImageDescriptor iconSmall, ImageDescriptor iconLarge) 
+{
+  public RectangleToolEntry(String label, String shortDesc, Object template,
+      IModelCreationFactory factory, ImageDescriptor iconSmall, ImageDescriptor iconLarge)
   {
     super(label, shortDesc, template, factory, iconSmall, iconLarge);
   }
 
   @Override
-	public Tool createTool() 
+	public Tool createTool()
   {
     return new RectangleTool(getModelCreationFactory());
   }

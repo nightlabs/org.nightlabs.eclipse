@@ -32,10 +32,10 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class RepaintRetargetAction 
-extends EditorRetargetAction 
+public class RepaintRetargetAction
+extends EditorRetargetAction
 {
-	public RepaintRetargetAction() 
+	public RepaintRetargetAction()
 	{
 		super(RepaintAction.ID, Messages.getString("org.nightlabs.editor2d.ui.actions.RepaintRetargetAction.text")); //$NON-NLS-1$
 		setImageDescriptor(SharedImages.getSharedImageDescriptor(

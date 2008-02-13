@@ -51,15 +51,15 @@ import org.nightlabs.i18n.unit.IUnit;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class UnitContributionItem 
-extends XContributionItem 
+public class UnitContributionItem
+extends XContributionItem
 {
 	/**
 	 * LOG4J logger used by this class
 	 */
 	private static final Logger logger = Logger.getLogger(UnitContributionItem.class);
 	
-	public UnitContributionItem(UnitManager unitManager) 
+	public UnitContributionItem(UnitManager unitManager)
 	{
 		super();
 		this.unitManager = unitManager;
@@ -82,7 +82,7 @@ extends XContributionItem
    * @param parent the parent composite
    * @return the new control
    */
-  protected Control createControl(Composite parent) 
+  protected Control createControl(Composite parent)
   {
   	Composite comp = new XComposite(parent, SWT.NONE, LayoutMode.TOP_BOTTOM_WRAPPER);
   	combo = new Combo(comp, SWT.BORDER | SWT.READ_ONLY);
@@ -90,14 +90,14 @@ extends XContributionItem
   	// TODO should be width of longest entry in combo
   	gridData.minimumWidth = 40;
   	combo.setLayoutData(gridData);
-  	combo.addSelectionListener(comboSelectionListener);  		  	
+  	combo.addSelectionListener(comboSelectionListener);
   	refresh();
   	if (toolitem != null)
-  		toolitem.setWidth(computeWidth(comp));  	
+  		toolitem.setWidth(computeWidth(comp));
   	return comp;
   }
 	
-	protected ToolItem toolitem = null;	  
+	protected ToolItem toolitem = null;
 	 /**
    * The control item implementation of this <code>IContributionItem</code>
    * method calls the <code>createControl</code> framework method to
@@ -110,12 +110,12 @@ extends XContributionItem
    * @param index Index
    */
   @Override
-	public void fill(ToolBar parent, int index) 
+	public void fill(ToolBar parent, int index)
   {
   	toolitem = new ToolItem(parent, SWT.SEPARATOR, index);
   	Control control = createControl(parent);
-  	toolitem.setControl(control);	
-  }  
+  	toolitem.setControl(control);
+  }
   
   /**
    * The control item implementation of this <code>IContributionItem</code>
@@ -136,43 +136,43 @@ extends XContributionItem
    * @param index Menu index
    */
   @Override
-	public final void fill(Menu parent, int index) 
+	public final void fill(Menu parent, int index)
   {
-  	Assert.isTrue(false, "Can't add a control to a menu");//$NON-NLS-1$  	
+  	Assert.isTrue(false, "Can't add a control to a menu");//$NON-NLS-1$
   }
   
 	protected SelectionListener comboSelectionListener = new SelectionListener()
 	{
 		public void widgetDefaultSelected(SelectionEvent e) {
 			widgetSelected(e);
-		}	
-		public void widgetSelected(SelectionEvent e) 
+		}
+		public void widgetSelected(SelectionEvent e)
 		{
 			int index = combo.getSelectionIndex();
 			if (index != -1) {
 				IUnit selectedUnit = units.get(index);
 				unitManager.setCurrentUnit(selectedUnit);
 			}
-		}	
-	};  
+		}
+	};
 	
 	protected PropertyChangeListener unitAddedListener = new PropertyChangeListener()
-	{	
+	{
 		public void propertyChange(PropertyChangeEvent evt) {
-			if (evt.getPropertyName().equals(UnitManager.PROP_UNIT_ADDED)) 
+			if (evt.getPropertyName().equals(UnitManager.PROP_UNIT_ADDED))
 				refresh();
-		}	
+		}
 	};
 
 	protected PropertyChangeListener currentUnitListener = new PropertyChangeListener()
-	{	
+	{
 		public void propertyChange(PropertyChangeEvent evt) {
-			if (evt.getPropertyName().equals(UnitManager.PROP_CURRENT_UNIT_CHANGED)) 
+			if (evt.getPropertyName().equals(UnitManager.PROP_CURRENT_UNIT_CHANGED))
 		  	selectUnit(unitManager.getCurrentUnit());
-		}	
+		}
 	};
 	
-	public void selectUnit(IUnit unit) 
+	public void selectUnit(IUnit unit)
 	{
 		int index = units.indexOf(unit);
 		if (index != -1) {
@@ -185,7 +185,7 @@ extends XContributionItem
 			logger.debug("units does not contain IUnit "+unit); //$NON-NLS-1$
 	}
 	
-	public IUnit getSelectedUnit() 
+	public IUnit getSelectedUnit()
 	{
 		int index = combo.getSelectionIndex();
 		if (index != -1)
@@ -193,13 +193,13 @@ extends XContributionItem
 		return null;
 	}
 		
-	protected void refresh() 
+	protected void refresh()
 	{
 		units = new LinkedList<IUnit>(unitManager.getUnits());
 		combo.removeAll();
   	for (IUnit unit : units) {
 			combo.add(unit.getUnitSymbol());
 		}
-  	selectUnit(unitManager.getCurrentUnit());		
+  	selectUnit(unitManager.getCurrentUnit());
 	}
 }

@@ -36,17 +36,17 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.nightlabs.editor2d.DrawComponent;
 
-public class RotationPropertyDescriptor  
+public class RotationPropertyDescriptor
 extends PropertyDescriptor
 {
 //  public static final String[] defaultRotations = new String[] {"-180", "-90", "-45", "0", "45", "90", "180"};
-//  
-//  public RotationPropertyDescriptor(Object id, String displayName) 
+//
+//  public RotationPropertyDescriptor(Object id, String displayName)
 //  {
 //    super(id, displayName);
 //  }
 
-  public RotationPropertyDescriptor(Object id, String displayName, DrawComponent dc) 
+  public RotationPropertyDescriptor(Object id, String displayName, DrawComponent dc)
   {
     super(id, displayName);
     this.dc = dc;
@@ -55,7 +55,7 @@ extends PropertyDescriptor
   private DrawComponent dc = null;
   
   /**
-   * The <code>ComboBoxPropertyDescriptor</code> implementation of this 
+   * The <code>ComboBoxPropertyDescriptor</code> implementation of this
    * <code>IPropertyDescriptor</code> method creates and returns a new
    * <code>ComboBoxCellEditor</code>.
    * <p>
@@ -63,9 +63,9 @@ extends PropertyDescriptor
    * </p>
    */
   @Override
-	public CellEditor createPropertyEditor(Composite parent) 
+	public CellEditor createPropertyEditor(Composite parent)
   {
-  	CellEditor editor = null;  	
+  	CellEditor editor = null;
   	if (dc.getConstrainedRotationValues() == null)
   		editor = new RotationCellEditor(parent, SWT.NONE);
   	else {
@@ -75,9 +75,9 @@ extends PropertyDescriptor
     if (getValidator() != null)
       editor.setValidator(getValidator());
     return editor;
-  }    
+  }
   
-  protected String[] getValuesAsString(Collection<Double> values) 
+  protected String[] getValuesAsString(Collection<Double> values)
   {
   	String[] strings = new String[values.size()];
   	int counter = 0;
@@ -88,11 +88,11 @@ extends PropertyDescriptor
   	return strings;
   }
   
-//  public ILabelProvider getLabelProvider() 
+//  public ILabelProvider getLabelProvider()
 //  {
 //    if (isLabelProviderSet())
 //      return super.getLabelProvider();
 //    else
 //      return new ComboBoxLabelProvider(defaultRotations);
-//  }  
+//  }
 }

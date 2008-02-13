@@ -36,8 +36,8 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class ConvertToShapeAction 
-extends AbstractEditorSelectionAction 
+public class ConvertToShapeAction
+extends AbstractEditorSelectionAction
 {
 	public static final String ID = ConvertToShapeAction.class.getName();
 	
@@ -57,7 +57,7 @@ extends AbstractEditorSelectionAction
 	}
 	
 	@Override
-	protected void init() 
+	protected void init()
 	{
 		setId(ID);
 		setText(Messages.getString("org.nightlabs.editor2d.ui.actions.shape.ConvertToShapeAction.text")); //$NON-NLS-1$
@@ -65,9 +65,9 @@ extends AbstractEditorSelectionAction
 	}
 
 	@Override
-	public void run() 
+	public void run()
 	{
-		Collection<ShapeDrawComponent> shapes = getSelection(ShapeDrawComponent.class, true);		
+		Collection<ShapeDrawComponent> shapes = getSelection(ShapeDrawComponent.class, true);
 		for (ShapeDrawComponent shape : shapes) {
 			ConvertToShapeCommand cmd = new ConvertToShapeCommand(shape);
 			execute(cmd);
@@ -75,7 +75,7 @@ extends AbstractEditorSelectionAction
 	}
 
 	@Override
-	protected boolean calculateEnabled() 
+	protected boolean calculateEnabled()
 	{
 		if (selectionContains(ShapeDrawComponent.class, true) && getSelectedObjects().size() == 1)
 			return true;

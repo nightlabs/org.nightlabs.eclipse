@@ -27,29 +27,28 @@
 
 package org.nightlabs.editor2d.ui.request;
 
-import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 
 /**
  * The set of constants used to identify <code>Requests</code> by their {@link
  * Request#getType() type}. Applications can extend this set of constants with their own.
  */
-public interface EditorRequestConstants 
+public interface EditorRequestConstants
 extends RequestConstants
 {
   /**
-   * Indicates the creation of a new Shape. 
+   * Indicates the creation of a new Shape.
    */
   String REQ_CREATE_SHAPE  = "create Shape";//$NON-NLS-1$
 
   /**
-   * Indicates the Editing of a Shape. 
-   */  
+   * Indicates the Editing of a Shape.
+   */
   String REQ_EDIT_SHAPE = "edit Shape";//$NON-NLS-1$
 
   /**
-   * Indicates the Zooming of the View (e.g. with a ZoomTool) 
-   */    
+   * Indicates the Zooming of the View (e.g. with a ZoomTool)
+   */
   String REQ_ZOOM_RECT = "zoom Rectangle";//$NON-NLS-1$
   
   /**
@@ -59,7 +58,7 @@ extends RequestConstants
   
   /**
    * Indicates the Editing of the Rotation Center
-   */  
+   */
   String REQ_EDIT_ROTATE_CENTER = "edit Rotation Center";//$NON-NLS-1$
   
   /**

@@ -33,8 +33,8 @@ import org.eclipse.draw2d.geometry.Point;
 import org.nightlabs.editor2d.ui.util.EditorUtil;
 
 
-public class MultipleCenterLocator 
-extends AbstractMultipleLocator 
+public class MultipleCenterLocator
+extends AbstractMultipleLocator
 {
 
   public MultipleCenterLocator(List editParts) {
@@ -42,7 +42,7 @@ extends AbstractMultipleLocator
   }
 
   @Override
-	protected Point getLocation() 
+	protected Point getLocation()
   {
     return EditorUtil.getCenter(editParts);
   }

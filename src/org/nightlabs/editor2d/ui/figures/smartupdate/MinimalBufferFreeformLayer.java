@@ -51,7 +51,7 @@ import org.nightlabs.editor2d.ui.util.EditorUtil;
  * @author Alexander Bieber <alex[AT]nightalbs[DOT]de>
  *
  */
-public class MinimalBufferFreeformLayer 
+public class MinimalBufferFreeformLayer
 	extends FreeformLayer
 	implements BufferedFreeformLayer
 {
@@ -68,16 +68,16 @@ public class MinimalBufferFreeformLayer
 	private Control viewerControl;
 	/**
 	 * The region currently viewed in
-	 * screen coordinates. Width and 
+	 * screen coordinates. Width and
 	 * height correspont with the buffers
 	 * width and height.
 	 */
-	private Rectangle viewerRegion = new Rectangle(0,0,0,0);	
+	private Rectangle viewerRegion = new Rectangle(0,0,0,0);
 	/**
 	 * The current region that is drawn
 	 * on the buffer in absolute coordinates.
-	 */	
-	private Rectangle bufferRegion;	
+	 */
+	private Rectangle bufferRegion;
 
 	/**
 	 * The buffer
@@ -97,12 +97,12 @@ public class MinimalBufferFreeformLayer
 	public void init(EditPart editPart) {
 		this.editPart = editPart;
 		EditPartViewer viewer = editPart.getRoot().getViewer();
-		if (viewer instanceof ScrollingGraphicalViewer) {		  	
+		if (viewer instanceof ScrollingGraphicalViewer) {
 			ScrollingGraphicalViewer graphicalViewer = (ScrollingGraphicalViewer) viewer;
 			Control control = graphicalViewer.getControl();
 			this.viewerControl = control;
 			// TODO: add controlListener
-		}		
+		}
 	}
 	
 	/**
@@ -114,7 +114,7 @@ public class MinimalBufferFreeformLayer
 			bufferedGraphics.dispose();
 			bufferedImage.flush();
 			bufferedImage = null;
-			bufferedGraphics = null;			
+			bufferedGraphics = null;
 		}
 		viewerRegion.setLocation(0,0);
 		viewerRegion.setSize(viewerControl.getSize().x, viewerControl.getSize().y);
@@ -126,7 +126,7 @@ public class MinimalBufferFreeformLayer
 		// TODO: implement
 	}
 	
-	/** 
+	/**
 	 * merges the buffer's content with newly painted
 	 * figures to hold the correct view of the given
 	 * region to paint afterwards
@@ -151,15 +151,15 @@ public class MinimalBufferFreeformLayer
 		}
 		// copy the region already drawn to the right position
 		bufferedGraphics.copyArea(
-				0 , 0, 
-				viewerRegion.width, viewerRegion.height, 
+				0 , 0,
+				viewerRegion.width, viewerRegion.height,
 				relDX, relDY
 			);
 		// now draw the region to paint on the buffer
 		Rectangle region1;
 		Rectangle region2;
 		if (absDX >= 0) {
-			// dx pos copy to right 
+			// dx pos copy to right
 			region1 = new Rectangle(0, 0, absDX, bufferRegion.height);
 			if (absDY >= 0)
 				// to bottom
@@ -169,7 +169,7 @@ public class MinimalBufferFreeformLayer
 				region2 = new Rectangle(absDX, bufferRegion.height+absDY, bufferRegion.width-absDX, -absDY);
 		}
 		else {
-			// dx pos copy to left 
+			// dx pos copy to left
 			region1 = new Rectangle(bufferRegion.width + absDX, 0, -absDX, bufferRegion.height);
 			if (absDY >= 0)
 				// to bottom
@@ -196,7 +196,7 @@ public class MinimalBufferFreeformLayer
 		// create the Graphics where the buffer is drawn on
 		Graphics2D g2d = j2dGraphics.createGraphics2D();
 		try {
-			// TODO: implement Minimal ... paint 
+			// TODO: implement Minimal ... paint
 			// check if bufferRegion changed
 			Rectangle regionToPaint = EditorUtil.toAbsolute(editPart, viewerRegion);
 			if (!bufferRegion.equals(regionToPaint)) {
@@ -206,9 +206,9 @@ public class MinimalBufferFreeformLayer
 			// do drawImage(bufferedImage);
 			double currentZoom = EditorUtil.getZoom(editPart);
 			// scale it invers of the current zoom ...
-			g2d.scale(1/currentZoom, 1/currentZoom);			
+			g2d.scale(1/currentZoom, 1/currentZoom);
 			// and translate it with the current scroll offset
-			// so 0,0 will be drawn on top left of the control			
+			// so 0,0 will be drawn on top left of the control
 			Point scrollOffset = EditorUtil.getScrollOffset(editPart);
 			g2d.translate(scrollOffset.x, scrollOffset.y);
 			// now copy the buffer region
@@ -254,7 +254,7 @@ public class MinimalBufferFreeformLayer
 		bufferedGraphics.dispose();
 		bufferedImage.flush();
 		bufferedImage = null;
-		bufferedGraphics = null;			
+		bufferedGraphics = null;
 	}
 		
 }

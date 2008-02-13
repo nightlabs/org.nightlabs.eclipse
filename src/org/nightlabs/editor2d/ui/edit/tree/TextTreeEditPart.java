@@ -39,17 +39,17 @@ import org.nightlabs.editor2d.ui.AbstractPaletteFactory;
 import org.nightlabs.editor2d.ui.EditorPlugin;
 import org.nightlabs.editor2d.ui.model.TextPropertySource;
 
-public class TextTreeEditPart 
-extends DrawComponentTreeEditPart 
+public class TextTreeEditPart
+extends DrawComponentTreeEditPart
 {
 	/**
 	 * LOG4J logger used by this class
 	 */
 	private static final Logger logger = Logger.getLogger(TextTreeEditPart.class);
 	
-//	public static final Image TEXT_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(), 
-//			AbstractPaletteFactory.class, "Text").createImage();		
-	public static final Image TEXT_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(), 
+//	public static final Image TEXT_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
+//			AbstractPaletteFactory.class, "Text").createImage();
+	public static final Image TEXT_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
 			AbstractPaletteFactory.class, "Text", ImageFormat.gif).createImage();   //$NON-NLS-1$
 	
   public TextTreeEditPart(TextDrawComponent drawComponent) {
@@ -62,41 +62,41 @@ extends DrawComponentTreeEditPart
   @Override
 	protected Image getOutlineImage() {
     return TEXT_ICON;
-  }  
+  }
 
   public TextDrawComponent getTextDrawComponent() {
     return (TextDrawComponent) getModel();
   }
   
 	@Override
-	protected void propertyChanged(PropertyChangeEvent evt) 
+	protected void propertyChanged(PropertyChangeEvent evt)
 	{
 		super.propertyChanged(evt);
 		String propertyName = evt.getPropertyName();
 		if (propertyName.equals(TextDrawComponent.PROP_FONT)) {
 			logger.debug(propertyName +" changed!"); //$NON-NLS-1$
-			refreshVisuals();			
+			refreshVisuals();
 		}
 //		else if (propertyName.equals(TextDrawComponent.PROP_FONT_NAME)) {
 //			LOGGER.debug(propertyName +" changed!");
-//			refreshVisuals();			
+//			refreshVisuals();
 //		}
 //		else if (propertyName.equals(TextDrawComponent.PROP_FONT_SIZE)) {
 //			LOGGER.debug(propertyName +" changed!");
-//			refreshVisuals();			
+//			refreshVisuals();
 //		}
 		else if (propertyName.equals(TextDrawComponent.PROP_TEXT)) {
 			logger.debug(propertyName +" changed!"); //$NON-NLS-1$
-			refreshVisuals();			
+			refreshVisuals();
 		}
 //		else if (propertyName.equals(TextDrawComponent.PROP_BOLD)) {
 //			LOGGER.debug(propertyName +" changed!");
-//			refreshVisuals();			
+//			refreshVisuals();
 //		}
 //		else if (propertyName.equals(TextDrawComponent.PROP_ITALIC)) {
 //			LOGGER.debug(propertyName +" changed!");
-//			refreshVisuals();			
-//		}		
+//			refreshVisuals();
+//		}
 	}
 	
 	@Override
@@ -108,5 +108,5 @@ extends DrawComponentTreeEditPart
         new TextPropertySource(getTextDrawComponent());
     }
     return propertySource;
-  }   
+  }
 }

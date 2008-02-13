@@ -38,16 +38,16 @@ import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.ui.request.EditorRotateRequest;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
-public class RotateCommand 
-extends Command 
+public class RotateCommand
+extends Command
 {
-  protected Map<DrawComponent, Double> dc2Rotation; 
+  protected Map<DrawComponent, Double> dc2Rotation;
   protected Map<DrawComponent, Point> dc2RotationCenter;
   protected EditorRotateRequest request;
   protected boolean multiple;
   protected Point rotationCenter;
   
-  public RotateCommand(EditorRotateRequest request) 
+  public RotateCommand(EditorRotateRequest request)
   {
     super();
     setLabel(Messages.getString("org.nightlabs.editor2d.ui.command.RotateCommand.label")); //$NON-NLS-1$
@@ -57,11 +57,11 @@ extends Command
   }
 
   @Override
-	public void execute() 
+	public void execute()
   {
     dc2Rotation = new HashMap<DrawComponent, Double>(request.getEditParts().size());
     dc2RotationCenter = new HashMap<DrawComponent, Point>(request.getEditParts().size());
-    for (Iterator<EditPart> it = request.getEditParts().iterator(); it.hasNext(); ) 
+    for (Iterator<EditPart> it = request.getEditParts().iterator(); it.hasNext(); )
     {
       EditPart editPart = it.next();
       DrawComponent dc = (DrawComponent) editPart.getModel();
@@ -69,7 +69,7 @@ extends Command
       if (multiple) {
         dc2RotationCenter.put(dc, new Point(dc.getTmpRotationX(), dc.getTmpRotationY()));
       } else {
-        dc2RotationCenter.put(dc, new Point(dc.getRotationX(), dc.getRotationY()));        
+        dc2RotationCenter.put(dc, new Point(dc.getRotationX(), dc.getRotationY()));
       }
       double realRotation = rotation + dc.getRotation();
       if (multiple) {
@@ -79,16 +79,16 @@ extends Command
         dc.setRotationX(rotationCenter.x);
         dc.setRotationY(rotationCenter.y);
       }
-      dc.setRotation(realRotation); 
+      dc.setRotation(realRotation);
       dc.setTmpRotationX(DrawComponent.ROTATION_X_DEFAULT);
       dc.setTmpRotationY(DrawComponent.ROTATION_Y_DEFAULT);
     }
-  }   
+  }
   
   @Override
-	public void redo() 
+	public void redo()
   {
-    for (Iterator<DrawComponent> it = dc2Rotation.keySet().iterator(); it.hasNext(); ) 
+    for (Iterator<DrawComponent> it = dc2Rotation.keySet().iterator(); it.hasNext(); )
     {
       DrawComponent dc = it.next();
       if (multiple) {
@@ -101,28 +101,28 @@ extends Command
       double realRotation = rotation + dc.getRotation();
       dc.setRotation(realRotation);
       dc.setTmpRotationX(DrawComponent.ROTATION_X_DEFAULT);
-      dc.setTmpRotationY(DrawComponent.ROTATION_Y_DEFAULT);      
-    }    
+      dc.setTmpRotationY(DrawComponent.ROTATION_Y_DEFAULT);
+    }
   }
 
   @Override
-	public void undo() 
+	public void undo()
   {
-    for (Iterator<DrawComponent> it = dc2Rotation.keySet().iterator(); it.hasNext(); ) 
+    for (Iterator<DrawComponent> it = dc2Rotation.keySet().iterator(); it.hasNext(); )
     {
       DrawComponent dc = it.next();
       double oldRotation = dc2Rotation.get(dc);
       Point oldRotationCenter = dc2RotationCenter.get(dc);
       if (multiple) {
         dc.setTmpRotationX(rotationCenter.x);
-        dc.setTmpRotationY(rotationCenter.y);                
+        dc.setTmpRotationY(rotationCenter.y);
       } else {
         dc.setRotationX(oldRotationCenter.x);
         dc.setRotationY(oldRotationCenter.y);
-      }      
+      }
       dc.setRotation(oldRotation);
       dc.setTmpRotationX(DrawComponent.ROTATION_X_DEFAULT);
-      dc.setTmpRotationY(DrawComponent.ROTATION_Y_DEFAULT);      
+      dc.setTmpRotationY(DrawComponent.ROTATION_Y_DEFAULT);
     }
   }
 

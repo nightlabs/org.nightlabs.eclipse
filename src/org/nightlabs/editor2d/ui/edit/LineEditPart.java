@@ -35,9 +35,9 @@ import org.nightlabs.editor2d.LineDrawComponent;
 import org.nightlabs.editor2d.ui.model.LinePropertySource;
 
 
-public class LineEditPart 
-extends ShapeDrawComponentEditPart 
-{	
+public class LineEditPart
+extends ShapeDrawComponentEditPart
+{
 	/**
 	 * @param drawComponent
 	 */
@@ -50,12 +50,12 @@ extends ShapeDrawComponentEditPart
 	}
 
 	@Override
-	protected void propertyChanged(PropertyChangeEvent evt) 
+	protected void propertyChanged(PropertyChangeEvent evt)
 	{
 		super.propertyChanged(evt);
 		String propertyName = evt.getPropertyName();
 		if (propertyName.equals(IConnectable.PROP_CONNECT)) {
-			refreshVisuals();			
+			refreshVisuals();
 		}
 	}
 
@@ -66,5 +66,5 @@ extends ShapeDrawComponentEditPart
 			propertySource = new LinePropertySource(getLineDrawComponent());
 		}
 		return propertySource;
-	}	
+	}
 }

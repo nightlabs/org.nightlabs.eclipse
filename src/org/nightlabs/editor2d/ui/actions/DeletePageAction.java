@@ -34,8 +34,8 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class DeletePageAction 
-extends AbstractEditorAction 
+public class DeletePageAction
+extends AbstractEditorAction
 {
 	public static final String ID = DeletePageAction.class.getName();
 	
@@ -48,7 +48,7 @@ extends AbstractEditorAction
 	}
 
 	@Override
-	protected boolean calculateEnabled() 
+	protected boolean calculateEnabled()
 	{
 		if (getRootDrawComponent().getDrawComponents().size() > 1)
 			return true;
@@ -57,7 +57,7 @@ extends AbstractEditorAction
 	}
 
 	@Override
-	protected void init() 
+	protected void init()
 	{
 		super.init();
 		setId(ID);
@@ -67,7 +67,7 @@ extends AbstractEditorAction
 	}
 
 	@Override
-	public void run() 
+	public void run()
 	{
 		DeletePageCommand cmd = new DeletePageCommand(getRootDrawComponent(), getRootDrawComponent().getCurrentPage());
 		execute(cmd);

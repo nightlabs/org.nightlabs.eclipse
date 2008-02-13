@@ -40,7 +40,7 @@ import org.nightlabs.editor2d.RootDrawComponent;
 import org.nightlabs.editor2d.ShapeDrawComponent;
 import org.nightlabs.editor2d.TextDrawComponent;
 
-public class GraphicalEditPartFactory 
+public class GraphicalEditPartFactory
 implements EditPartFactory
 {
 

@@ -34,7 +34,7 @@ import org.nightlabs.editor2d.ui.dialog.CreateTextDialog;
 import org.nightlabs.editor2d.ui.model.IModelCreationFactory;
 import org.nightlabs.editor2d.ui.request.TextCreateRequest;
 
-public class TextTool 
+public class TextTool
 extends CreationTool
 {
 	public TextTool(IModelCreationFactory factory) {
@@ -46,33 +46,33 @@ extends CreationTool
    * @see org.eclipse.gef.tools.TargetingTool#createTargetRequest()
    */
   @Override
-	protected Request createTargetRequest() 
+	protected Request createTargetRequest()
   {
     TextCreateRequest request = new TextCreateRequest();
     request.setFactory(getFactory());
     return request;
-  }  
+  }
   
-  public TextCreateRequest getTextCreateRequest() 
+  public TextCreateRequest getTextCreateRequest()
   {
     return (TextCreateRequest) getTargetRequest();
   }
   
   @Override
-	protected boolean handleButtonDown(int button) 
+	protected boolean handleButtonDown(int button)
   {
     CreateTextDialog dialog = new CreateTextDialog(
-        getCurrentViewer().getControl().getShell(), 
+        getCurrentViewer().getControl().getShell(),
         getTextCreateRequest()
       );
     dialog.open();
         
-    if (dialog.getReturnCode() == Window.OK) 
+    if (dialog.getReturnCode() == Window.OK)
     {
       performCreation(1);
       return true;
     }
     return false;
-  } 
+  }
     
 }

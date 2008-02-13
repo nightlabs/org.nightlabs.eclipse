@@ -36,8 +36,8 @@ import org.nightlabs.editor2d.ui.edit.ShapeDrawComponentEditPart;
 import org.nightlabs.editor2d.ui.request.EditorEditShapeRequest;
 
 // TODO; Use SelectEditPartTracker instead to avoid multiple Selections
-public class ShapeEditTracker 
-extends AbstractDragTracker 
+public class ShapeEditTracker
+extends AbstractDragTracker
 {
   protected ShapeDrawComponentEditPart getShapeDrawComponentEditPart() {
     return (ShapeDrawComponentEditPart) owner;
@@ -45,11 +45,11 @@ extends AbstractDragTracker
   protected GeneralShape getGeneralShape() {
     return getShapeDrawComponentEditPart().getGeneralShape();
   }
-//  protected ShapeFigure sourceFigure;  
+//  protected ShapeFigure sourceFigure;
   protected int pathSegmentIndex;
   
-  public ShapeEditTracker(ShapeDrawComponentEditPart owner, int pathSegmentIndex) 
-  {    
+  public ShapeEditTracker(ShapeDrawComponentEditPart owner, int pathSegmentIndex)
+  {
     super(owner);
     this.pathSegmentIndex = pathSegmentIndex;
   }
@@ -63,27 +63,27 @@ extends AbstractDragTracker
    * @see org.eclipse.gef.tools.AbstractTool#deactivate()
    */
   @Override
-	public void deactivate() 
-  {  	
+	public void deactivate()
+  {
   	super.deactivate();
-//  	sourceFigure = null;  	
-  }  
+//  	sourceFigure = null;
+  }
         
   /**
    * @see org.eclipse.gef.tools.AbstractTool#getDebugName()
    */
   @Override
-	protected String getDebugName() 
+	protected String getDebugName()
   {
   	return "Edit Shape Handle Tracker";//$NON-NLS-1$
-  }  
+  }
         
   /**
    * @see org.eclipse.gef.tools.SimpleDragTracker#createSourceRequest()
    */
   @Override
-	protected Request createSourceRequest() 
-  {    
+	protected Request createSourceRequest()
+  {
   	EditorEditShapeRequest request = new EditorEditShapeRequest();
   	request.setType(REQ_EDIT_SHAPE);
   	request.setPathSegmentIndex(pathSegmentIndex);
@@ -91,19 +91,19 @@ extends AbstractDragTracker
   	List selectedEditParts = getCurrentViewer().getSelectedEditParts();
   	if (selectedEditParts != null && !selectedEditParts.isEmpty()) {
   	  EditPart selectedEditPart = (EditPart)selectedEditParts.get(0);
-  		request.setTargetEditPart(selectedEditPart);  	  
-  	}  	  	  	  	
-  	return request;        
-  }  
+  		request.setTargetEditPart(selectedEditPart);
+  	}
+  	return request;
+  }
         
   /**
    * @see org.eclipse.gef.tools.SimpleDragTracker#updateSourceRequest()
    */
   @Override
-	protected void updateSourceRequest() 
+	protected void updateSourceRequest()
   {
     EditorEditShapeRequest request = (EditorEditShapeRequest) getSourceRequest();
-	  request.setLocation(getLocation());    	  		
-  }  
+	  request.setLocation(getLocation());
+  }
     
 }

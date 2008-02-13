@@ -36,12 +36,12 @@ import org.nightlabs.editor2d.ui.model.GroupPropertySource;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class GroupTreeEditPart 
-extends DrawComponentContainerTreeEditPart 
+public class GroupTreeEditPart
+extends DrawComponentContainerTreeEditPart
 {
-//	public static Image GROUP_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(), 
-//			GroupTreeEditPart.class).createImage();	
-	public static Image GROUP_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(), 
+//	public static Image GROUP_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
+//			GroupTreeEditPart.class).createImage();
+	public static Image GROUP_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
 			GroupTreeEditPart.class, "", ImageFormat.gif).createImage();	 //$NON-NLS-1$
 
 	public GroupTreeEditPart(GroupDrawComponent model) {
@@ -68,5 +68,5 @@ extends DrawComponentContainerTreeEditPart
       propertySource = new GroupPropertySource(getGroupDrawComponent());
     }
     return propertySource;
-  } 	
+  }
 }

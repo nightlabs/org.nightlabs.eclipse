@@ -28,9 +28,9 @@
 package org.nightlabs.editor2d.ui.request;
 
 
-public class TextCreateRequest 
-extends EditorCreateShapeRequest 
-{  
+public class TextCreateRequest
+extends EditorCreateShapeRequest
+{
   public TextCreateRequest() {
     super();
   }
@@ -38,31 +38,31 @@ extends EditorCreateShapeRequest
   protected String fontName;
   public String getFontName() {
     return fontName;
-  }  
+  }
   public void setFontName(String fontName) {
     this.fontName = fontName;
   }
   
-  protected String text;  
+  protected String text;
   public String getText() {
     return text;
-  }  
+  }
   public void setText(String text) {
     this.text = text;
   }
   
-  protected int fontSize;  
+  protected int fontSize;
   public int getFontSize() {
     return fontSize;
-  }  
+  }
   public void setFontSize(int fontSize) {
     this.fontSize = fontSize;
   }
   
-  protected int fontStyle;  
+  protected int fontStyle;
   public int getFontStyle() {
     return fontStyle;
-  }  
+  }
   public void setFontStyle(int fontStyle) {
     this.fontStyle = fontStyle;
   }

@@ -42,10 +42,10 @@ import org.nightlabs.editor2d.TextDrawComponent;
 import org.nightlabs.editor2d.ui.outline.filter.FilterManager;
 
 
-public class TreePartFactory 
-implements EditPartFactory 
+public class TreePartFactory
+implements EditPartFactory
 {
-	public TreePartFactory(FilterManager filterMan) 
+	public TreePartFactory(FilterManager filterMan)
 	{
 		if (filterMan == null)
 			throw new IllegalArgumentException("Param filterMan must not be null!"); //$NON-NLS-1$
@@ -54,7 +54,7 @@ implements EditPartFactory
 	}
 	protected FilterManager filterMan;
 	
-  public EditPart createEditPart(EditPart context, Object model) 
+  public EditPart createEditPart(EditPart context, Object model)
   {
   	if (model instanceof RootDrawComponent)
   		return new RootDrawComponentTreeEditPart((RootDrawComponent)model, filterMan);

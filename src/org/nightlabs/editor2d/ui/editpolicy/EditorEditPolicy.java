@@ -30,8 +30,8 @@ import org.eclipse.gef.EditPolicy;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public interface EditorEditPolicy 
-extends EditPolicy 
+public interface EditorEditPolicy
+extends EditPolicy
 {
 	String SNAP_FEEDBACK_ROLE = "Snap Feedback";	 //$NON-NLS-1$
 	String CREATE_ROLE = "Create";	 //$NON-NLS-1$

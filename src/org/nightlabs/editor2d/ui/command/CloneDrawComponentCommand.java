@@ -35,14 +35,14 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class CloneDrawComponentCommand 
-extends Command 
+public class CloneDrawComponentCommand
+extends Command
 {
-	/** 
+	/**
 	 * @param source the DrawComponent to clone
 	 * @param parent the DrawComponentContainer to which the clone should be added
 	 */
-	public CloneDrawComponentCommand(DrawComponent source, DrawComponentContainer parent) 
+	public CloneDrawComponentCommand(DrawComponent source, DrawComponentContainer parent)
 	{
 		super();
 		setLabel(Messages.getString("org.nightlabs.editor2d.ui.command.CloneDrawComponentCommand.label")); 		 //$NON-NLS-1$
@@ -64,14 +64,14 @@ extends Command
 	}
 	public void setParent(DrawComponentContainer parent) {
 		this.parent = parent;
-	}	
+	}
 	
-	protected String cloneName = null;	
+	protected String cloneName = null;
 	/**
 	 * 
 	 * @return the name of the clone
 	 */
-	public String getCloneName() 
+	public String getCloneName()
 	{
 		if (cloneName == null) {
 			if (drawComponent != null) {
@@ -93,9 +93,9 @@ extends Command
 	protected static final Rectangle DEFAULT_CLONE_BOUNDS = new Rectangle(0, 0, 10, 10);
 	
 	protected Rectangle cloneBounds = null;
-	public Rectangle getCloneBounds() 
+	public Rectangle getCloneBounds()
 	{
-		if (cloneBounds == null) 
+		if (cloneBounds == null)
 		{
 			if (drawComponent != null) {
 				cloneBounds = new Rectangle(drawComponent.getBounds());
@@ -108,12 +108,12 @@ extends Command
 	}
 	public void setCloneBounds(Rectangle cloneBounds) {
 		this.cloneBounds = cloneBounds;
-	}		
+	}
 	
-	protected DrawComponent clone = null;	
+	protected DrawComponent clone = null;
 	
 	@Override
-	public void execute() 
+	public void execute()
 	{
 		clone = (DrawComponent) drawComponent.clone(getParent());
 		clone.setName(getCloneName());
@@ -121,18 +121,18 @@ extends Command
 	}
 		
 	@Override
-	public void redo() 
+	public void redo()
 	{
 		parent.addDrawComponent(clone);
 	}
 	
 	@Override
-	public void undo() 
+	public void undo()
 	{
 		parent.removeDrawComponent(clone);
 	}
 			
-	protected String getCopyString() 
+	protected String getCopyString()
 	{
 		return "("+Messages.getString("org.nightlabs.editor2d.ui.command.CloneDrawComponentCommand.copyText")+")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}

@@ -33,8 +33,8 @@ import org.eclipse.swt.graphics.Path;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class PathShapeFigure 
-extends Shape 
+public class PathShapeFigure
+extends Shape
 {
 
 	public PathShapeFigure(Path path) {
@@ -69,14 +69,14 @@ extends Shape
 	protected float[] boundsArray = new float[4];
 	
 	@Override
-	public Rectangle getBounds() 
+	public Rectangle getBounds()
 	{
 		path.getBounds(boundsArray);
-		bounds = createBounds(boundsArray); 
+		bounds = createBounds(boundsArray);
 		return super.getBounds();
 	}
 
-	protected Rectangle createBounds(float[] boundsArray) 
+	protected Rectangle createBounds(float[] boundsArray)
 	{
 		return new Rectangle((int)boundsArray[0], (int)boundsArray[1], (int)boundsArray[2], (int)boundsArray[3]);
 	}

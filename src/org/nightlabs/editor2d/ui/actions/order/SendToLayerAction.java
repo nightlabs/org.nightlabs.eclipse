@@ -33,10 +33,10 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class SendToLayerAction 
-extends AbstractChangeOrderSelectionAction 
+public class SendToLayerAction
+extends AbstractChangeOrderSelectionAction
 {
-	protected static final String ID = SendToLayerAction.class.getName(); 
+	protected static final String ID = SendToLayerAction.class.getName();
 		
 	/**
 	 * @param editor
@@ -58,7 +58,7 @@ extends AbstractChangeOrderSelectionAction
 	protected Layer layer = null;
 	
 	@Override
-	public void init() 
+	public void init()
 	{
 		setText(layer.getName());
 		setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.actions.order.SendToLayerAction.tooltip")); //$NON-NLS-1$
@@ -69,12 +69,12 @@ extends AbstractChangeOrderSelectionAction
 	 * @return the index of the primary selected DrawComponent
 	 */
 	@Override
-	public int getNewIndex() {		
+	public int getNewIndex() {
 		return indexOf(primarySelected);
 	}
 
 	/**
-	 * @return the layer the selected objects should be send to 
+	 * @return the layer the selected objects should be send to
 	 */
 	@Override
 	public DrawComponentContainer getContainer() {

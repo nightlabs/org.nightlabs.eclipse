@@ -37,8 +37,8 @@ import org.holongate.j2d.IPaintable;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class ImagePaintable 
-implements IPaintable 
+public class ImagePaintable
+implements IPaintable
 {
 	private static final Logger logger = Logger.getLogger(ImagePaintable.class);
 	
@@ -59,11 +59,11 @@ implements IPaintable
 		return new Rectangle2D.Double(0, 0, image.getWidth(null), image.getHeight(null));
 	}
 
-	public void paint(Control arg0, Graphics2D g2d) 
+	public void paint(Control arg0, Graphics2D g2d)
 	{
 		if (image == null) {
 			logger.debug("image = null!"); //$NON-NLS-1$
-			return;			
+			return;
 		}
 
 //		RenderingHints renderHints = g2d.getRenderingHints();
@@ -72,7 +72,7 @@ implements IPaintable
 		
 		long start = System.currentTimeMillis();
 		g2d.drawImage(image, 0, 0, null);
-		long end = System.currentTimeMillis() - start;		
+		long end = System.currentTimeMillis() - start;
 		logger.debug("paint took "+end+" ms!"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 

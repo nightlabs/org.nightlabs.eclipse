@@ -30,7 +30,7 @@ package org.nightlabs.editor2d.ui.request;
 import org.nightlabs.editor2d.j2d.GeneralShape;
 
 
-public interface EditorShapeRequest 
+public interface EditorShapeRequest
 {
   public GeneralShape getGeneralShape();
   public void setGeneralShape(GeneralShape generalShape);

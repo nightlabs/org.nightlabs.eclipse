@@ -37,10 +37,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.ListDialog;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
-public class LineStyleDialog 
+public class LineStyleDialog
 extends ListDialog
 {
-  public LineStyleDialog(Shell parent) 
+  public LineStyleDialog(Shell parent)
   {
     super(parent);
     setTitle(Messages.getString("org.nightlabs.editor2d.ui.properties.LineStyleDialog.title")); //$NON-NLS-1$
@@ -50,15 +50,15 @@ extends ListDialog
     setInput(null);
   }
     
-  protected IStructuredContentProvider contentProvider = new IStructuredContentProvider() 
-  {  
+  protected IStructuredContentProvider contentProvider = new IStructuredContentProvider()
+  {
     public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
     }
   
     public void dispose() {
     }
   
-    public Object[] getElements(Object inputElement) 
+    public Object[] getElements(Object inputElement)
     {
       List<Integer> lineStyles = new ArrayList<Integer>();
       lineStyles.add(new Integer(SWT.LINE_SOLID));
@@ -68,6 +68,6 @@ extends ListDialog
       lineStyles.add(new Integer(SWT.LINE_DASHDOTDOT));
       return lineStyles.toArray();
     }
-  }; 
+  };
   
 }

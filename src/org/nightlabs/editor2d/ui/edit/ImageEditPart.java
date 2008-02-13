@@ -33,7 +33,7 @@ import org.eclipse.ui.views.properties.IPropertySource;
 import org.nightlabs.editor2d.ImageDrawComponent;
 import org.nightlabs.editor2d.ui.model.ImagePropertySource;
 
-public class ImageEditPart 
+public class ImageEditPart
 extends DrawComponentEditPart
 {
   public ImageEditPart(ImageDrawComponent drawComponent) {
@@ -44,7 +44,7 @@ extends DrawComponentEditPart
     return (ImageDrawComponent) getModel();
   }
   
-  @Override  
+  @Override
   public IPropertySource getPropertySource()
   {
     if (propertySource == null) {
@@ -53,13 +53,13 @@ extends DrawComponentEditPart
     return propertySource;
   }
   
-  @Override  
-	protected void propertyChanged(PropertyChangeEvent evt) 
+  @Override
+	protected void propertyChanged(PropertyChangeEvent evt)
 	{
 		super.propertyChanged(evt);
 		String propertyName = evt.getPropertyName();
 		if (propertyName.equals(ImageDrawComponent.PROP_IMAGE)) {
-			refreshVisuals();			
+			refreshVisuals();
 		}
-	}      
+	}
 }

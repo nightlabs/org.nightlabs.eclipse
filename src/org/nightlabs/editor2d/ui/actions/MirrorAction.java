@@ -37,8 +37,8 @@ import org.nightlabs.editor2d.ui.command.CreateDrawComponentCommand;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class MirrorAction 
-extends AbstractEditorSelectionAction 
+public class MirrorAction
+extends AbstractEditorSelectionAction
 {
 	public static final String ID = MirrorAction.class.getName();
 	
@@ -58,12 +58,12 @@ extends AbstractEditorSelectionAction
 	}
 
   @Override
-	protected void init() 
+	protected void init()
   {
   	setText("Mirror");
   	setToolTipText("Mirrors the current selected objects");
   	setId(ID);
-  } 		
+  }
 	
 	/**
 	*@return true, if objects are selected, except the RootEditPart or LayerEditParts
@@ -74,9 +74,9 @@ extends AbstractEditorSelectionAction
 	}
 
 	@Override
-	public void run() 
+	public void run()
 	{
-		Collection<DrawComponent> dcs = getSelection(DrawComponent.class, true);		
+		Collection<DrawComponent> dcs = getSelection(DrawComponent.class, true);
 		Command cmd = new CompoundCommand();
 		for (Iterator<DrawComponent> it = dcs.iterator(); it.hasNext(); ) {
 			DrawComponent dc = it.next();
@@ -93,7 +93,7 @@ extends AbstractEditorSelectionAction
 		execute(cmd);
 	}
 	
-	protected String getCopyString() 
+	protected String getCopyString()
 	{
 		return " ("+"Copy"+")";
 	}

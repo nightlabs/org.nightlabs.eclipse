@@ -34,8 +34,8 @@ import org.nightlabs.editor2d.ui.request.EditorRequestConstants;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
 
-public class NormalSelectionAction 
-extends SelectionAction 
+public class NormalSelectionAction
+extends SelectionAction
 implements EditorRequestConstants
 {
   public static final String ID = NormalSelectionAction.class.getName();
@@ -48,7 +48,7 @@ implements EditorRequestConstants
   }
 
   @Override
-	protected boolean calculateEnabled() 
+	protected boolean calculateEnabled()
   {
     if (EditorStateManager.getCurrentState() != EditorStateManager.STATE_NORMAL_SELECTION) {
       return true;
@@ -60,17 +60,17 @@ implements EditorRequestConstants
    * @see org.eclipse.gef.ui.actions.WorkbenchPartAction#init()
    */
   @Override
-	protected void init() 
+	protected void init()
   {
   	super.init();
   	setText(Messages.getString("org.nightlabs.editor2d.ui.actions.NormalSelectionAction.text")); //$NON-NLS-1$
   	setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.actions.NormalSelectionAction.tooltip")); //$NON-NLS-1$
-  	setId(ID);  	
+  	setId(ID);
 //  	setImageDescriptor(SharedImages.DESC_SELECTION_TOOL_16);
-  }  
+  }
     
   @Override
-	public void run() 
+	public void run()
   {
   	if (!getSelectedObjects().isEmpty()) {
   		EditorStateManager.setNormalSelectionMode(getSelectedObjects());

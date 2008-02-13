@@ -32,17 +32,17 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.nightlabs.editor2d.ui.model.IModelCreationFactory;
 
 
-public class EllipseToolEntry  
+public class EllipseToolEntry
 extends EditorTemplateCreationEntry
 {
-  public EllipseToolEntry(String label, String shortDesc, Object template, 
-      IModelCreationFactory factory, ImageDescriptor iconSmall, ImageDescriptor iconLarge) 
+  public EllipseToolEntry(String label, String shortDesc, Object template,
+      IModelCreationFactory factory, ImageDescriptor iconSmall, ImageDescriptor iconLarge)
   {
     super(label, shortDesc, template, factory, iconSmall, iconLarge);
   }
 
   @Override
-	public Tool createTool() 
+	public Tool createTool()
   {
     return new EllipseTool(getModelCreationFactory());
   }

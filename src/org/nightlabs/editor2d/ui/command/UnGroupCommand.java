@@ -37,10 +37,10 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class UnGroupCommand 
-extends Command 
+public class UnGroupCommand
+extends Command
 {
-	public UnGroupCommand(GroupDrawComponent group) 
+	public UnGroupCommand(GroupDrawComponent group)
 	{
 		if (group == null)
 			throw new IllegalArgumentException("Param group must not be null!"); //$NON-NLS-1$
@@ -57,7 +57,7 @@ extends Command
 	}
 	
 	@Override
-	public void execute() 
+	public void execute()
 	{
 		groupParent = group.getParent();
 		groupedDcs = new ArrayList<DrawComponent>(group.getDrawComponents());
@@ -72,7 +72,7 @@ extends Command
 	}
 	
 	@Override
-	public void undo() 
+	public void undo()
 	{
 		groupParent.removeDrawComponents(groupedDcs);
 		group.addDrawComponents(groupedDcs);

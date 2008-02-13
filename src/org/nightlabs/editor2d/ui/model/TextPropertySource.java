@@ -42,8 +42,8 @@ import org.nightlabs.editor2d.TextDrawComponent;
 import org.nightlabs.editor2d.ui.properties.FontNamePropertyDescriptor;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
-public class TextPropertySource 
-extends ShapeDrawComponentPropertySource 
+public class TextPropertySource
+extends ShapeDrawComponentPropertySource
 {
 	/**
 	 * LOG4J logger used by this class
@@ -61,41 +61,41 @@ extends ShapeDrawComponentPropertySource
 	public static final String CATEGORY_FONT = Messages.getString("org.nightlabs.editor2d.ui.model.TextPropertySource.category.font");	 //$NON-NLS-1$
 		
 	@Override
-	protected List<IPropertyDescriptor> createPropertyDescriptors() 
+	protected List<IPropertyDescriptor> createPropertyDescriptors()
 	{
 		List<IPropertyDescriptor> descriptors = getDescriptors();
 		
 		// Name
-		descriptors.add(createNamePD());				
+		descriptors.add(createNamePD());
 		// X
-		descriptors.add(createXPD());		
-		// Y		
-		descriptors.add(createYPD());		
-		// Width		
-		descriptors.add(createWidthPD());		
-		// Height		
-		descriptors.add(createHeightPD());		
-		// Rotation		
+		descriptors.add(createXPD());
+		// Y
+		descriptors.add(createYPD());
+		// Width
+		descriptors.add(createWidthPD());
+		// Height
+		descriptors.add(createHeightPD());
+		// Rotation
 		descriptors.add(createRotationPD());
 		// Color
 		descriptors.add(createColorPD());
 		// Font Name
-		descriptors.add(createFontNamePD());		
+		descriptors.add(createFontNamePD());
 		// Font Size
-		descriptors.add(createFontSizePD());		
+		descriptors.add(createFontSizePD());
 		// Bold
-		descriptors.add(createBoldPD());		
+		descriptors.add(createBoldPD());
 		// Italic
-		descriptors.add(createItalicPD());		
+		descriptors.add(createItalicPD());
 		// Text
 		descriptors.add(createTextPD());
 		// Visible
 		descriptors.add(createVisiblePD());
 		
 		return descriptors;
-	}	
+	}
 	
-	protected PropertyDescriptor createFontNamePD() 
+	protected PropertyDescriptor createFontNamePD()
 	{
 		PropertyDescriptor desc = new FontNamePropertyDescriptor(TextDrawComponent.PROP_FONT_NAME,
 				Messages.getString("org.nightlabs.editor2d.ui.model.TextPropertySource.fontName")); //$NON-NLS-1$
@@ -103,7 +103,7 @@ extends ShapeDrawComponentPropertySource
 		return desc;
 	}
 		
-	protected PropertyDescriptor createBoldPD() 
+	protected PropertyDescriptor createBoldPD()
 	{
 		PropertyDescriptor desc = new CheckboxPropertyDescriptor(TextDrawComponent.PROP_BOLD,
 				Messages.getString("org.nightlabs.editor2d.ui.model.TextPropertySource.bold")); //$NON-NLS-1$
@@ -111,7 +111,7 @@ extends ShapeDrawComponentPropertySource
 		return desc;
 	}
 
-	protected PropertyDescriptor createItalicPD() 
+	protected PropertyDescriptor createItalicPD()
 	{
 		PropertyDescriptor desc = new CheckboxPropertyDescriptor(TextDrawComponent.PROP_ITALIC,
 				Messages.getString("org.nightlabs.editor2d.ui.model.TextPropertySource.italic")); //$NON-NLS-1$
@@ -119,7 +119,7 @@ extends ShapeDrawComponentPropertySource
 		return desc;
 	}
 	
-	protected PropertyDescriptor createTextPD() 
+	protected PropertyDescriptor createTextPD()
 	{
 		PropertyDescriptor desc = new TextPropertyDescriptor(TextDrawComponent.PROP_TEXT,
 				Messages.getString("org.nightlabs.editor2d.ui.model.TextPropertySource.text")); //$NON-NLS-1$
@@ -129,24 +129,24 @@ extends ShapeDrawComponentPropertySource
 	
 	protected PropertyDescriptor createColorPD()
 	{
-		PropertyDescriptor desc = new AWTColorPropertyDescriptor(ShapeDrawComponent.PROP_FILL_COLOR, 
+		PropertyDescriptor desc = new AWTColorPropertyDescriptor(ShapeDrawComponent.PROP_FILL_COLOR,
 				Messages.getString("org.nightlabs.editor2d.ui.model.TextPropertySource.color")); //$NON-NLS-1$
 		desc.setCategory(CATEGORY_COLORS);
 		return desc;
 	}
 	
-//	protected PropertyDescriptor createFontSizePD() 
+//	protected PropertyDescriptor createFontSizePD()
 //	{
 ////	PropertyDescriptor desc = new FontSizePropertyDescriptor(TextDrawComponent.PROP_FONT_SIZE,
 ////	EditorPlugin.getResourceString("property.fontsize.label"));
-////  desc.setCategory(CATEGORY_FONT);		
+////  desc.setCategory(CATEGORY_FONT);
 //		PropertyDescriptor desc = new IntPropertyDescriptor(TextDrawComponent.PROP_FONT_SIZE,
 //				EditorPlugin.getResourceString("property.fontsize.label"));
 //		desc.setCategory(CATEGORY_FONT);
 //		return desc;
 //	}
 
-	protected PropertyDescriptor createFontSizePD() 
+	protected PropertyDescriptor createFontSizePD()
 	{
 		PropertyDescriptor desc = new XTextPropertyDescriptor(TextDrawComponent.PROP_FONT_SIZE,
 				Messages.getString("org.nightlabs.editor2d.ui.model.TextPropertySource.fontSize")); //$NON-NLS-1$
@@ -158,49 +158,49 @@ extends ShapeDrawComponentPropertySource
 	 * @see org.eclipse.ui.views.properties.IPropertySource#setPropertyValue(java.lang.Object, java.lang.Object)
 	 */
 	@Override
-	public void setPropertyValue(Object id, Object value) 
-	{		
+	public void setPropertyValue(Object id, Object value)
+	{
 		if (id.equals(TextDrawComponent.PROP_FONT_NAME)) {
 			getTextDrawComponent().setFontName((String)value);
 			return;
 		}
 		if (id.equals(TextDrawComponent.PROP_BOLD)) {
 			getTextDrawComponent().setBold(((Boolean)value).booleanValue());
-			return;			
+			return;
 		}
 		if (id.equals(TextDrawComponent.PROP_ITALIC)) {
 			getTextDrawComponent().setItalic(((Boolean)value).booleanValue());
-			return;			
+			return;
 		}
 		if (id.equals(TextDrawComponent.PROP_TEXT)) {
 			getTextDrawComponent().setText((String)value);
-			return;			
+			return;
 		}
-		if (id.equals(TextDrawComponent.PROP_FONT_SIZE)) 
+		if (id.equals(TextDrawComponent.PROP_FONT_SIZE))
 		{
 			int fontSize;
 			try {
-				fontSize = Integer.valueOf((String)value);	
+				fontSize = Integer.valueOf((String)value);
 				logger.debug("new fontSize = "+fontSize); //$NON-NLS-1$
 			} catch (NumberFormatException nfe) {
 				fontSize = getTextDrawComponent().getFontSize();
 				logger.debug("NumberFormatException for fontSize = "+value);				 //$NON-NLS-1$
 			}
 			getTextDrawComponent().setFontSize(fontSize);
-			return;			
-		}		
+			return;
+		}
 		if (id.equals(ShapeDrawComponent.PROP_FILL_COLOR)) {
 			getTextDrawComponent().setFillColor((Color)value);
-			getTextDrawComponent().setLineColor((Color)value);			
-		}		
-		super.setPropertyValue(id, value);		
-	}		
+			getTextDrawComponent().setLineColor((Color)value);
+		}
+		super.setPropertyValue(id, value);
+	}
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.views.properties.IPropertySource#getPropertyValue(java.lang.Object)
 	 */
 	@Override
-	public Object getPropertyValue(Object id) 
+	public Object getPropertyValue(Object id)
 	{
 		if (id.equals(TextDrawComponent.PROP_FONT_NAME)) {
 			return getTextDrawComponent().getFontName();
@@ -217,14 +217,14 @@ extends ShapeDrawComponentPropertySource
 //		else if (id.equals(TextDrawComponent.PROP_FONT_SIZE)) {
 //			return new Integer(getTextDrawComponent().getFontSize());
 //		}
-		else if (id.equals(TextDrawComponent.PROP_FONT_SIZE)) 
+		else if (id.equals(TextDrawComponent.PROP_FONT_SIZE))
 		{
 			if (!getTextDrawComponent().isTransformed())
 				return new String(new Integer(getTextDrawComponent().getFontSize()).toString());
 			else
 				return Messages.getString("org.nightlabs.editor2d.ui.model.TextPropertySource.fontSizeInvalid"); //$NON-NLS-1$
-		}				
+		}
 		return super.getPropertyValue(id);
-	}			
+	}
 	
 }

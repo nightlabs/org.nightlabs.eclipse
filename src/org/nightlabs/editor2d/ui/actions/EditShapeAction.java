@@ -35,11 +35,11 @@ import org.nightlabs.editor2d.ui.request.EditorRequestConstants;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
 
-public class EditShapeAction 
-extends SelectionAction 
+public class EditShapeAction
+extends SelectionAction
 implements EditorRequestConstants
-{  
-  public static final String ID = EditShapeAction.class.getName();   
+{
+  public static final String ID = EditShapeAction.class.getName();
   
   /**
    * @param part
@@ -52,7 +52,7 @@ implements EditorRequestConstants
    * @see org.eclipse.gef.ui.actions.WorkbenchPartAction#init()
    */
   @Override
-	protected void init() 
+	protected void init()
   {
   	super.init();
   	setText(Messages.getString("org.nightlabs.editor2d.ui.actions.EditShapeAction.text")); //$NON-NLS-1$
@@ -60,19 +60,19 @@ implements EditorRequestConstants
   	setId(ID);
   	setActionDefinitionId(EditorCommandConstants.EDIT_SHAPE_ID);
 //  	setImageDescriptor(ImageDescriptor.createFromFile(EditorPlugin.class,"icons/editShape16.gif"));
-  }  
+  }
   
   /**
    * @see org.eclipse.jface.action.IAction#run()
    */
   @Override
-	public void run() 
+	public void run()
   {
-  	if (getSelectedObjects().size() == 1 && (getSelectedObjects().get(0) instanceof ShapeDrawComponentEditPart)) 
-  	{    		
-  		ShapeDrawComponentEditPart sdcEP = (ShapeDrawComponentEditPart) getSelectedObjects().get(0); 
+  	if (getSelectedObjects().size() == 1 && (getSelectedObjects().get(0) instanceof ShapeDrawComponentEditPart))
+  	{
+  		ShapeDrawComponentEditPart sdcEP = (ShapeDrawComponentEditPart) getSelectedObjects().get(0);
   	  EditorStateManager.setEditShapeMode(sdcEP);
-  	}   	          
+  	}
   }
     
   /**
@@ -81,14 +81,14 @@ implements EditorRequestConstants
    * @return <code>true</code> if enabled
    */
   @Override
-	protected boolean calculateEnabled() 
+	protected boolean calculateEnabled()
   {
-    if (EditorStateManager.getCurrentState() != EditorStateManager.STATE_EDIT_SHAPE) 
+    if (EditorStateManager.getCurrentState() != EditorStateManager.STATE_EDIT_SHAPE)
     {
-    	if (getSelectedObjects().size() == 1 && (getSelectedObjects().get(0) instanceof ShapeDrawComponentEditPart)) {    		
-        return true;    		
-    	} 
-    }    
+    	if (getSelectedObjects().size() == 1 && (getSelectedObjects().get(0) instanceof ShapeDrawComponentEditPart)) {
+        return true;
+    	}
+    }
     return false;
   }
   

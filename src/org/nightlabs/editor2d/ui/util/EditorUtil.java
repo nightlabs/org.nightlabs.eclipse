@@ -43,7 +43,7 @@ import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.nightlabs.math.MathUtil;
 
-public class EditorUtil 
+public class EditorUtil
 {
   public EditorUtil() {
     super();
@@ -53,23 +53,23 @@ public class EditorUtil
     return MathUtil.calcRotation(mousePoint.x, mousePoint.y, centerPoint.x, centerPoint.y);
   }
   
-  public static Point toAbsolute(GraphicalEditPart part, Point point) 
+  public static Point toAbsolute(GraphicalEditPart part, Point point)
   {
-    Point p = point.getCopy(); 
+    Point p = point.getCopy();
     part.getFigure().translateToAbsolute(p);
 		p.translate(getScrollOffset(part));
 		return p;
-  }  
+  }
 
-  public static Rectangle oldToAbsolute(GraphicalEditPart part, Rectangle rect) 
+  public static Rectangle oldToAbsolute(GraphicalEditPart part, Rectangle rect)
   {
-    Rectangle r = rect.getCopy(); 
+    Rectangle r = rect.getCopy();
     part.getFigure().translateToAbsolute(r);
 		r.translate(getScrollOffset(part));
 		return r;
-  }  
+  }
    
-//  public static Point toRelative(GraphicalEditPart part, Point point) 
+//  public static Point toRelative(GraphicalEditPart part, Point point)
 //  {
 //    Point p = point.getCopy();
 //    part.getFigure().translateToRelative(p);
@@ -77,7 +77,7 @@ public class EditorUtil
 //    return p;
 //  }
 
-//  public static Rectangle toRelative(GraphicalEditPart part, Rectangle rect) 
+//  public static Rectangle toRelative(GraphicalEditPart part, Rectangle rect)
 //  {
 //    Rectangle r = rect.getCopy();
 //    part.getFigure().translateToRelative(r);
@@ -85,16 +85,16 @@ public class EditorUtil
 //    return r;
 //  }
   
-  public static Point getScrollOffset(EditPart part) 
+  public static Point getScrollOffset(EditPart part)
   {
-    EditPartViewer viewer = part.getRoot().getViewer();    
+    EditPartViewer viewer = part.getRoot().getViewer();
     FigureCanvas canvas = (FigureCanvas) viewer.getControl();
     Viewport viewport = canvas.getViewport();
-    Point viewLocation = viewport.getViewLocation(); 
+    Point viewLocation = viewport.getViewLocation();
     return viewLocation;
-  }  
+  }
         
-  public static Point getZoomedScrollOffset(EditPart part) 
+  public static Point getZoomedScrollOffset(EditPart part)
   {
   	Point absoluteScrollOffset = getScrollOffset(part);
   	double zoom = getZoom(part);
@@ -107,7 +107,7 @@ public class EditorUtil
   	return new Point(Math.rint(x), Math.rint(y));
   }
   
-  public static Rectangle toAbsolute(EditPart part, Rectangle rect) 
+  public static Rectangle toAbsolute(EditPart part, Rectangle rect)
   {
     Point xy = EditorUtil.toAbsolute(part, rect.x, rect.y);
     Point wh = EditorUtil.toAbsolute(part, rect.width, rect.height);
@@ -115,7 +115,7 @@ public class EditorUtil
     return absoluteRect;
   }
     
-  public static Rectangle toAbsoluteWithScrollOffset(EditPart part, Rectangle rect) 
+  public static Rectangle toAbsoluteWithScrollOffset(EditPart part, Rectangle rect)
   {
     Point xy = EditorUtil.toAbsolute(part, rect.x, rect.y);
     Point wh = EditorUtil.toAbsolute(part, rect.width, rect.height);
@@ -124,7 +124,7 @@ public class EditorUtil
     return absoluteRect;
   }
     
-  public static Point toAbsolute(EditPart part, double x, double y) 
+  public static Point toAbsolute(EditPart part, double x, double y)
   {
     double zoom = getZoom(part);
     double newX = x / zoom;
@@ -133,18 +133,18 @@ public class EditorUtil
     return p;
   }
        
-  public static Point toAbsoluteWithScrollOffset(EditPart part, double x, double y) 
+  public static Point toAbsoluteWithScrollOffset(EditPart part, double x, double y)
   {
     double zoom = getZoom(part);
     double newX = x / zoom;
     double newY = y / zoom;
     Point p = new Point(newX, newY);
 //    p.translate(getScrollOffset(part));
-    p.translate(getZoomedScrollOffset(part));    
+    p.translate(getZoomedScrollOffset(part));
     return p;
-  }  
+  }
   
-  public static Point toRelative(EditPart part, double x, double y) 
+  public static Point toRelative(EditPart part, double x, double y)
   {
     double zoom = getZoom(part);
     double newX = x * zoom;
@@ -157,26 +157,26 @@ public class EditorUtil
   	return (int)(dimension * getZoom(part));
   }
     
-  public static double getZoom(EditPart part) 
+  public static double getZoom(EditPart part)
   {
   	if (part != null && part.getRoot() != null) {
       if (part.getRoot() instanceof ScalableFreeformRootEditPart) {
         ScalableFreeformRootEditPart root = (ScalableFreeformRootEditPart) part.getRoot();
         return root.getZoomManager().getZoom();
-      }  		
+      }
   	}
     return 1.0;
   }
   
-  public static ZoomManager getZoomManager(EditPart part) 
+  public static ZoomManager getZoomManager(EditPart part)
   {
     if (part.getRoot() instanceof ScalableFreeformRootEditPart) {
       return ((ScalableFreeformRootEditPart) part.getRoot()).getZoomManager();
     }
     return null;
-  }    
+  }
   
-  public static Point getCenter(List editParts) 
+  public static Point getCenter(List editParts)
   {
     Rectangle totalBounds = new Rectangle();
     int counter = 0;
@@ -184,15 +184,15 @@ public class EditorUtil
       GraphicalEditPart editPart = (GraphicalEditPart) it.next();
       Rectangle figureBounds = editPart.getFigure().getBounds();
       if (counter == 0)
-        totalBounds = figureBounds.getCopy();      
+        totalBounds = figureBounds.getCopy();
       totalBounds = totalBounds.getUnion(figureBounds);
       counter++;
     }
-    return totalBounds.getCenter();  
+    return totalBounds.getCenter();
   }
   
-  public static void selectEditParts(List editParts) 
-  { 
+  public static void selectEditParts(List editParts)
+  {
     if (editParts == null)
       throw new IllegalArgumentException("Param editParts must not be null!"); //$NON-NLS-1$
     
@@ -201,32 +201,32 @@ public class EditorUtil
       Object o = editParts.get(0);
       if (o instanceof EditPart) {
         EditPart editPart = (EditPart) o;
-        viewer = editPart.getViewer();        
+        viewer = editPart.getViewer();
       }
     }
     if (viewer != null) {
       StructuredSelection selection = new StructuredSelection(editParts);
       viewer.deselectAll();
-      viewer.setSelection(selection);          
-    }    
+      viewer.setSelection(selection);
+    }
   }
   
-  public static void selectEditPart(EditPart editPart) 
-  { 
+  public static void selectEditPart(EditPart editPart)
+  {
     if (editPart == null)
       throw new IllegalArgumentException("Param editPart must not be null!"); //$NON-NLS-1$
     
-    EditPartViewer viewer = editPart.getViewer();        
+    EditPartViewer viewer = editPart.getViewer();
     if (viewer != null) {
       StructuredSelection selection = new StructuredSelection(editPart);
       viewer.deselectAll();
-      viewer.setSelection(selection);          
-    }    
-  }  
+      viewer.setSelection(selection);
+    }
+  }
     
   public static final Font DEFAULT_FONT = new Font(null, Font.PLAIN, 24);
     
-  public static void zoomToRelativeRect(Rectangle rect, ZoomManager zoomManager) 
+  public static void zoomToRelativeRect(Rectangle rect, ZoomManager zoomManager)
   {
   	if (rect == null)
 			throw new IllegalArgumentException("Param rect must not be null!"); //$NON-NLS-1$
@@ -234,14 +234,14 @@ public class EditorUtil
   	if (zoomManager == null)
 			throw new IllegalArgumentException("Param zoomManager must not be null!"); //$NON-NLS-1$
   	
-    Rectangle relativeZoomRectangle = rect.getCopy();    
-    Rectangle clientArea = zoomManager.getViewport().getClientArea();    
+    Rectangle relativeZoomRectangle = rect.getCopy();
+    Rectangle clientArea = zoomManager.getViewport().getClientArea();
     double zoom = zoomManager.getZoom();
     
     double absoluteWidth = relativeZoomRectangle.width;
     double absoluteHeight = relativeZoomRectangle.height;
-    double absoluteX = relativeZoomRectangle.x;	
-    double absoluteY = relativeZoomRectangle.y;    
+    double absoluteX = relativeZoomRectangle.x;
+    double absoluteY = relativeZoomRectangle.y;
         
     double absoluteClientWidth = clientArea.width / zoom;
     double absoluteClientHeight = clientArea.height / zoom;
@@ -251,8 +251,8 @@ public class EditorUtil
 	  double zoomX = absoluteClientWidth / absoluteWidth;
 	  double zoomY = absoluteClientHeight / absoluteHeight;
             
-    double newZoom = Math.min(zoomX, zoomY);    
-    double realZoom = newZoom * zoom;        
+    double newZoom = Math.min(zoomX, zoomY);
+    double realZoom = newZoom * zoom;
     double newX = (absoluteX + absoluteClientX) * realZoom;
     double newY = (absoluteY + absoluteClientY) * realZoom;
     
@@ -261,13 +261,13 @@ public class EditorUtil
     double z = zoomManager.getZoom();
     if (z != realZoom) {
     	newX = (absoluteX + absoluteClientX) * z;
-    	newY = (absoluteY + absoluteClientY) * z;    	    	
-    } 
-    zoomManager.getViewport().setViewLocation((int)newX, (int)newY);    
-    zoomManager.getViewport().getUpdateManager().performUpdate(); 
-  }  
+    	newY = (absoluteY + absoluteClientY) * z;
+    }
+    zoomManager.getViewport().setViewLocation((int)newX, (int)newY);
+    zoomManager.getViewport().getUpdateManager().performUpdate();
+  }
   
-  public static void zoomToAbsoluteRect(Rectangle rect, ZoomManager zoomManager) 
+  public static void zoomToAbsoluteRect(Rectangle rect, ZoomManager zoomManager)
   {
     Rectangle relativeZoomRectangle = rect.getCopy();
     Rectangle clientArea = zoomManager.getViewport().getClientArea();
@@ -275,7 +275,7 @@ public class EditorUtil
     double zoom = zoomManager.getZoom();
     double absoluteWidth = relativeZoomRectangle.width / zoom;
     double absoluteHeight = relativeZoomRectangle.height / zoom;
-    double absoluteX = relativeZoomRectangle.x / zoom;	
+    double absoluteX = relativeZoomRectangle.x / zoom;
     double absoluteY = relativeZoomRectangle.y / zoom;
         
     double absoluteClientWidth = clientArea.width / zoom;
@@ -286,20 +286,20 @@ public class EditorUtil
 	  double zoomX = absoluteClientWidth / absoluteWidth;
 	  double zoomY = absoluteClientHeight / absoluteHeight;
             
-    double newZoom = Math.min(zoomX, zoomY);    
-    double realZoom = newZoom * zoom;        
+    double newZoom = Math.min(zoomX, zoomY);
+    double realZoom = newZoom * zoom;
     double newX = (absoluteX + absoluteClientX) * realZoom;
     double newY = (absoluteY + absoluteClientY) * realZoom;
     
-    zoomManager.setZoom(realZoom);     
+    zoomManager.setZoom(realZoom);
     // check if the zoom is beyond the max or min zoom
     double z = zoomManager.getZoom();
     if (z != realZoom) {
     	newX = (absoluteX + absoluteClientX) * z;
-    	newY = (absoluteY + absoluteClientY) * z;    	    	
-    } 
-    zoomManager.getViewport().setViewLocation((int)newX, (int)newY);    
-    zoomManager.getViewport().getUpdateManager().performUpdate(); 
+    	newY = (absoluteY + absoluteClientY) * z;
+    }
+    zoomManager.getViewport().setViewLocation((int)newX, (int)newY);
+    zoomManager.getViewport().getUpdateManager().performUpdate();
   }
    
 }

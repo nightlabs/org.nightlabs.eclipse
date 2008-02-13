@@ -36,7 +36,6 @@ import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.J2DGraphics;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.editparts.ZoomListener;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.ShapeDrawComponent;
@@ -49,7 +48,7 @@ import org.nightlabs.editor2d.ui.util.J2DUtil;
 import org.nightlabs.editor2d.util.RenderUtil;
 
 
-public class DrawComponentFigure  
+public class DrawComponentFigure
 extends Figure
 implements RendererFigure
 {
@@ -61,21 +60,21 @@ implements RendererFigure
 	private J2DGraphics j2d;
 	private Graphics2D g2d;
 
-	public void paint(Graphics2D graphics) 
+	public void paint(Graphics2D graphics)
 	{
 		paintJ2D(graphics, drawComponent, renderer);
-	}  
-
-	public static void paintJ2D(Graphics2D graphics, DrawComponent drawComponent, Renderer renderer) 
-	{
-		RenderUtil.paintJ2DRenderer(renderer, drawComponent, graphics);  	
 	}
 
-	public static void paintDraw2D(Graphics g, DrawComponent dc, Renderer r) 
+	public static void paintJ2D(Graphics2D graphics, DrawComponent drawComponent, Renderer renderer)
+	{
+		RenderUtil.paintJ2DRenderer(renderer, drawComponent, graphics);
+	}
+
+	public static void paintDraw2D(Graphics g, DrawComponent dc, Renderer r)
 	{
 		RenderContextFinder<Graphics> rcf = new RenderContextFinder<Graphics>();
 		rcf.paintRenderContext(g, dc, r, Draw2DRenderContext.RENDER_CONTEXT_TYPE);
-//		if (r != null && dc != null && g != null) {				
+//		if (r != null && dc != null && g != null) {
 //		RenderContext rc = r.getRenderContext(Draw2DRenderContext.RENDER_CONTEXT_TYPE);
 //		if (rc != null) {
 //		((Draw2DRenderContext) rc).paint(dc, g);
@@ -87,42 +86,42 @@ implements RendererFigure
 //		((Draw2DRenderContext) rc).paint(dc, g);
 //		}
 //		}
-//		}					
+//		}
 	}
 
 	@Override
-	public void paint(Graphics graphics) 
-	{  	
-		if (graphics instanceof J2DGraphics) 
+	public void paint(Graphics graphics)
+	{
+		if (graphics instanceof J2DGraphics)
 		{
 			j2d = (J2DGraphics) graphics;
 			j2d.clipRect(null);
 			g2d = j2d.createGraphics2D();
-			g2d.setClip(null);      
-			paint(g2d);      
+			g2d.setClip(null);
+			paint(g2d);
 //			paintHitTestArea(g2d);
 			g2d.dispose();
-		} 
+		}
 		else {
 			paintDraw2D(graphics, drawComponent, renderer);
-		}    	
+		}
 	}
 
-	private Renderer renderer;   
+	private Renderer renderer;
 	public void setRenderer(Renderer renderer) {
 		this.renderer = renderer;
 	}
 
-	private DrawComponent drawComponent;  
+	private DrawComponent drawComponent;
 	public void setDrawComponent(DrawComponent drawComponent) {
 		this.drawComponent = drawComponent;
 //		clearHitTestArea();
-	}   
+	}
 
 	private boolean contains = true;
 	/**
 	 * determins if the {@link Figure#containsPoint(int, int)} should return the right
-	 * value of always false 
+	 * value of always false
 	 * This can be used to remove a Figure from HitTesting of the {@link GraphicalViewer}
 	 * 
 	 * @param contains determins if {@link Figure#containsPoint(int, int)} should be
@@ -136,7 +135,7 @@ implements RendererFigure
 	 * true if the {@link Figure#containsPoint(int, int)} is activated or false if hitTesting is off,
 	 * then {@link Figure#containsPoint(int, int)} always return false
 	 * 
-	 * @return true if the "normal" {@link Figure#containsPoint(int, int)} is activated or false if hitTesting is off  
+	 * @return true if the "normal" {@link Figure#containsPoint(int, int)} is activated or false if hitTesting is off
 	 */
 	public boolean isContains() {
 		return contains;
@@ -145,24 +144,24 @@ implements RendererFigure
 	private boolean accurateContains = true;
 	/**
 	 * determines if the {@link Figure#containsPoint(int, int)} should be calculated accurately
-	 * e.g. only the interior of a {@link Shape} including the {@link DrawComponentFigure#getHitTolerance()} 
+	 * e.g. only the interior of a {@link Shape} including the {@link DrawComponentFigure#getHitTolerance()}
 	 * would return true or if the {@link Figure#containsPoint(int, int)} should be calculated
 	 * on the basis of the {@link Figure#getBounds()}
-	 *  
-	 * @param containBounds determine if an accurate hitTesting should be performed or the 
+	 * 
+	 * @param containBounds determine if an accurate hitTesting should be performed or the
 	 * {@link Figure#getBounds()} should be used
 	 * 
 	 * @see DrawComponentFigure#isContains()
 	 * @see DrawComponentFigure#getHitTolerance()
 	 * @see Figure#containsPoint(int, int)
-	 *   
+	 * 
 	 */
 	public void setAccurateContains(boolean containBounds) {
 		this.accurateContains = containBounds;
 	}
 	/**
 	 * returns true if an accurate hitTesting is performed or false if the {@link Figure#getBounds()}
-	 * should are used for hitTesting  
+	 * should are used for hitTesting
 	 * 
 	 * @return true if an accurate hitTesting is performed or false if the {@link Figure#getBounds()}
 	 * should are used for hitTesting
@@ -177,9 +176,9 @@ implements RendererFigure
 	}
 
 	@Override
-	public boolean containsPoint(int x, int y) 
+	public boolean containsPoint(int x, int y)
 	{
-		if (contains) {  		
+		if (contains) {
 			if (drawComponent != null) {
 				if (drawComponent instanceof TextDrawComponent) {
 					return super.containsPoint(x, y);
@@ -201,17 +200,17 @@ implements RendererFigure
 						else
 							return super.containsPoint(x, y);
 					}
-				}   			
-			}     
-			return super.containsPoint(x, y);  		
-		} 
+				}
+			}
+			return super.containsPoint(x, y);
+		}
 		return false;
 	}
 
 	@Override
-	public boolean intersects(Rectangle rect) 
+	public boolean intersects(Rectangle rect)
 	{
-		if (contains) {  		
+		if (contains) {
 			if (drawComponent != null) {
 				if (drawComponent instanceof ShapeDrawComponent) {
 					ShapeDrawComponent sdc = (ShapeDrawComponent) drawComponent;
@@ -230,17 +229,17 @@ implements RendererFigure
 						else
 							return super.intersects(rect);
 					}
-				}   			
-			}     
-			return super.intersects(rect);	
-		} 
+				}
+			}
+			return super.intersects(rect);
+		}
 		return false;
 	}
 
-//	private Area outlineArea = null;  
-//	public boolean containsPoint(int x, int y) 
+//	private Area outlineArea = null;
+//	public boolean containsPoint(int x, int y)
 //	{
-//	if (contains) {  		
+//	if (contains) {
 //	if (accurateContains && drawComponent != null) {
 //	if (drawComponent instanceof ShapeDrawComponent) {
 //	ShapeDrawComponent sdc = (ShapeDrawComponent) drawComponent;
@@ -257,17 +256,17 @@ implements RendererFigure
 //	J2DUtil.transformGeneralShape(outerGS, getBounds(), outerBounds);
 //	J2DUtil.transformGeneralShape(innerGS, getBounds(), innerBounds);
 //	outlineArea = new Area(outerGS);
-//	Area innerArea = new Area(innerGS); 
-//	outlineArea.exclusiveOr(innerArea);             
+//	Area innerArea = new Area(innerGS);
+//	outlineArea.exclusiveOr(innerArea);
 //	}
 //	boolean contains = outlineArea.contains(x,y);
 //	outlineArea = null;
 //	return contains;
 //	}
-//	}      
 //	}
-//	return super.containsPoint(x, y);  		
-//	} 
+//	}
+//	return super.containsPoint(x, y);
+//	}
 //	return false;
 //	}
 
@@ -281,11 +280,11 @@ implements RendererFigure
 		g2d.draw(getAccurateHitTestArea());
 	}
 
-	protected Shape getAccurateHitTestArea() 
+	protected Shape getAccurateHitTestArea()
 	{
-		if (hitTestArea == null) 
+		if (hitTestArea == null)
 		{
-			if (drawComponent instanceof ShapeDrawComponent) 
+			if (drawComponent instanceof ShapeDrawComponent)
 			{
 				ShapeDrawComponent sdc = (ShapeDrawComponent) drawComponent;
 				Rectangle outerBounds = getBounds().getCopy();
@@ -297,11 +296,11 @@ implements RendererFigure
 				J2DUtil.transformGeneralShape(outerGS, getBounds(), outerBounds);
 				J2DUtil.transformGeneralShape(innerGS, getBounds(), innerBounds);
 				Area outlineArea = new Area(outerGS);
-				Area innerArea = new Area(innerGS); 
-				outlineArea.exclusiveOr(innerArea);  
+				Area innerArea = new Area(innerGS);
+				outlineArea.exclusiveOr(innerArea);
 				hitTestArea = outlineArea;
 			}
-			else 
+			else
 			{
 				Rectangle outerBounds = getBounds().getCopy();
 				outerBounds.expand((int)hitTolerance, (int)hitTolerance);
@@ -314,11 +313,11 @@ implements RendererFigure
 	public static final double DEFAULT_HIT_TOLERANCE = 5;
 	private double hitTolerance = DEFAULT_HIT_TOLERANCE;
 	/**
-	 * return the hitTolerance which is used when accurate hittesting 
+	 * return the hitTolerance which is used when accurate hittesting
 	 * {@link DrawComponentFigure#isAccurateContains()} is used when
 	 * {@link Figure#containsPoint(int, int)} is called
 	 * 
-	 * @return the hitTolerance for accurate hitTesting 
+	 * @return the hitTolerance for accurate hitTesting
 	 * @see Figure#containsPoint(int, int)
 	 * @see DrawComponentFigure#isAccurateContains()
 	 */
@@ -327,12 +326,12 @@ implements RendererFigure
 	}
 	/**
 	 * determines the amount of tolerance when accurate hitTesting {@link DrawComponentFigure#isAccurateContains()}
-	 * is performed. This value is given in User Space Coordinates. 
+	 * is performed. This value is given in User Space Coordinates.
 	 * e.g. when the user clicks only a little bit outside of the outline of shape, and this
 	 * distance is smaller than the hitTolerance {@link Figure#containsPoint(int, int)} will
-	 * still return true. Thia occurs only if {@link DrawComponentFigure#isContains()} and 
-	 * {@link DrawComponentFigure#isAccurateContains()} both return true 
-	 *   
+	 * still return true. Thia occurs only if {@link DrawComponentFigure#isContains()} and
+	 * {@link DrawComponentFigure#isAccurateContains()} both return true
+	 * 
 	 * @param hitTolerance the amount of the hitTolernace for accurate hittesting
 	 * @see Figure#containsPoint(int, int)
 	 * @see DrawComponentFigure#isAccurateContains()
@@ -341,28 +340,28 @@ implements RendererFigure
 		this.hitTolerance = hitTolerance;
 	}
 
-	private ZoomListener zoomListener = new ZoomListener() 
+	private ZoomListener zoomListener = new ZoomListener()
 	{
 		public void zoomChanged(double zoom) {
 			hitTolerance = DEFAULT_HIT_TOLERANCE / zoom;
 //			if (logger.isDebugEnabled())
 //			logger.debug("hitTolerance = "+hitTolerance);
-		}    
+		}
 	};
 	public ZoomListener getZoomListener() {
 		return zoomListener;
 	}
 
 	@Override
-	public Rectangle getBounds() 
+	public Rectangle getBounds()
 	{
 		if (drawComponent != null)
 			return J2DUtil.toDraw2D(drawComponent.getBounds());
 
 		return super.getBounds();
-	}  
+	}
 
-	public void dispose() 
+	public void dispose()
 	{
 //		outlineArea = null;
 		hitTestArea = null;

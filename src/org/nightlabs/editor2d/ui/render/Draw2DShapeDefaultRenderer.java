@@ -39,8 +39,8 @@ import org.nightlabs.editor2d.viewer.ui.util.AWTSWTUtil;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class Draw2DShapeDefaultRenderer 
-extends Draw2DBaseRenderer 
+public class Draw2DShapeDefaultRenderer
+extends Draw2DBaseRenderer
 {
 	/**
 	 * LOG4J logger used by this class
@@ -52,7 +52,7 @@ extends Draw2DBaseRenderer
 	}
 
 	@Override
-	public void paint(DrawComponent dc, Graphics g) 
+	public void paint(DrawComponent dc, Graphics g)
 	{
     ShapeDrawComponent sdc = (ShapeDrawComponent) dc;
     Path path = convertShape(sdc.getGeneralShape());
@@ -62,21 +62,21 @@ extends Draw2DBaseRenderer
     }
     g.setForegroundColor(ColorUtil.toSWTColor(sdc.getLineColor()));
 //    g.setLineWidth(sdc.getLineWidth());
-    g.setLineWidth((int)sdc.getLineWidth());    
+    g.setLineWidth((int)sdc.getLineWidth());
     g.setLineStyle(convertLineStyle(sdc.getLineStyle()));
-    g.drawPath(path);  
+    g.drawPath(path);
     
     logger.debug("shape painted!"); //$NON-NLS-1$
 	}
 	
-	protected Path convertShape(Shape s) 
+	protected Path convertShape(Shape s)
 	{
 		return AWTSWTUtil.convertShape(s, null, null);
 	}
 	 
-	protected int convertLineStyle(LineStyle lineStyle) 
+	protected int convertLineStyle(LineStyle lineStyle)
 	{
-		switch (lineStyle) 
+		switch (lineStyle)
 		{
 			case SOLID:
 				return 1;
@@ -91,5 +91,5 @@ extends Draw2DBaseRenderer
 			default:
 				return 1;
 		}
-	}		
+	}
 }

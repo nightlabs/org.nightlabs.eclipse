@@ -41,8 +41,8 @@ import org.osgi.framework.Bundle;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class DocumentPropertiesRegistry 
-extends AbstractEPProcessor 
+public class DocumentPropertiesRegistry
+extends AbstractEPProcessor
 {
 	public static final String EXTENSION_POINT_ID = "org.nightlabs.editor2d.ui.documentProperties"; //$NON-NLS-1$
 	
@@ -65,7 +65,7 @@ extends AbstractEPProcessor
 			}
 		}
 		return sharedInstance;
-	}	
+	}
 	
 	protected DocumentPropertiesRegistry() {
 
@@ -78,9 +78,9 @@ extends AbstractEPProcessor
 
 	@Override
 	public void processElement(IExtension extension, IConfigurationElement element)
-	throws Exception 
+	throws Exception
 	{
-		if (element.getName().equalsIgnoreCase(ELEMENT_DOCUMENT_PROPERTIES)) 
+		if (element.getName().equalsIgnoreCase(ELEMENT_DOCUMENT_PROPERTIES))
 		{
 			String editorClassName = element.getAttribute(ATTRIBUTE_EDITOR_CLASS);
 			Class editorClass = null;
@@ -91,7 +91,7 @@ extends AbstractEPProcessor
 						editorClass = bundle.loadClass(editorClassName);
 				} catch (Exception e) {
 					throw new RuntimeException(e);
-				}				
+				}
 			}
 			
 			String pageID = element.getAttribute(ATTRIBUTE_PREDEFINED_PAGE);

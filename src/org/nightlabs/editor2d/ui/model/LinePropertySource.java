@@ -35,10 +35,10 @@ import org.nightlabs.editor2d.LineDrawComponent;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
 /**
- * Author: Daniel Mazurek 
+ * Author: Daniel Mazurek
  */
-public class LinePropertySource 
-extends ShapeDrawComponentPropertySource 
+public class LinePropertySource
+extends ShapeDrawComponentPropertySource
 {
 	/**
 	 * @param element
@@ -52,7 +52,7 @@ extends ShapeDrawComponentPropertySource
 	}
 	
 	@Override
-	public Object getPropertyValue(Object id) 
+	public Object getPropertyValue(Object id)
 	{
 		if (IConnectable.PROP_CONNECT.equals(id)) {
 			return getLineDrawComponent().isConnect();

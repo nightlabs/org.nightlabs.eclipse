@@ -31,13 +31,13 @@ import org.eclipse.swt.graphics.Color;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class PaintDescriptor 
+public class PaintDescriptor
 {
   public static final Color DEFAULT_BGCOLOR = ColorConstants.darkGray;
   public static final Color DEFAULT_FGCOLOR = ColorConstants.black;
-  public static final int DEFAULT_LINE_WIDTH = 1;  
+  public static final int DEFAULT_LINE_WIDTH = 1;
   public static final int DEFAULT_LINE_STYLE = 1;
-  public static final boolean DEFAULT_XOR = true;  
+  public static final boolean DEFAULT_XOR = true;
   public static final boolean DEFAULT_FILL = true;
   public static final boolean DEFAULT_OUTLINE = true;
   

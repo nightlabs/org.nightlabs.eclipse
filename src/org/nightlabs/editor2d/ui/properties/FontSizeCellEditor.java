@@ -32,20 +32,20 @@ import org.eclipse.swt.widgets.Composite;
 import org.nightlabs.base.ui.celleditor.ComboBoxCellEditor;
 import org.nightlabs.util.FontUtil;
 
-public class FontSizeCellEditor 
-extends ComboBoxCellEditor 
+public class FontSizeCellEditor
+extends ComboBoxCellEditor
 {
   public FontSizeCellEditor(Composite parent) {
     super(parent, FontUtil.getFontSizes());
   }
  
   @Override
-	protected Object doGetValue() {      	
-    return new Integer(getItems()[getComboBox().getSelectionIndex()]); 
-  }    
+	protected Object doGetValue() {
+    return new Integer(getItems()[getComboBox().getSelectionIndex()]);
+  }
   
   @Override
-	protected void doSetValue(Object value) 
+	protected void doSetValue(Object value)
   {
     String string = ""; //$NON-NLS-1$
     
@@ -61,7 +61,7 @@ extends ComboBoxCellEditor
       if (s.equals(string)) {
       	getComboBox().select(i);
         break;
-      }          
+      }
     }
   }
   

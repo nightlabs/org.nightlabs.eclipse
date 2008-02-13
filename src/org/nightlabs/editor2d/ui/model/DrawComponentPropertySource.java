@@ -52,22 +52,22 @@ import org.nightlabs.editor2d.util.UnitUtil;
 import org.nightlabs.i18n.I18nText;
 import org.nightlabs.i18n.unit.IUnit;
 
-public class DrawComponentPropertySource 
+public class DrawComponentPropertySource
 implements IPropertySource
-{	
+{
 	private static final Logger logger = Logger.getLogger(DrawComponentPropertySource.class);
 	
 	public static final String CATEGORY_NAME = EditorPlugin.getResourceString(Messages.getString("org.nightlabs.editor2d.ui.model.DrawComponentPropertySource.category.name")); //$NON-NLS-1$
 	public static final String CATEGORY_GEOM = EditorPlugin.getResourceString(Messages.getString("org.nightlabs.editor2d.ui.model.DrawComponentPropertySource.category.geometry"));		 //$NON-NLS-1$
 	public static final String CATEGORY_ROTATION = EditorPlugin.getResourceString(Messages.getString("org.nightlabs.editor2d.ui.model.DrawComponentPropertySource.category.rotation")); //$NON-NLS-1$
 	
-	public DrawComponentPropertySource(DrawComponent element) 
+	public DrawComponentPropertySource(DrawComponent element)
 	{
-		this.drawComponent = element;				
+		this.drawComponent = element;
 		descriptors = createPropertyDescriptors();
 	}
 	
-	protected DrawComponent drawComponent;	
+	protected DrawComponent drawComponent;
 	public DrawComponent getDrawComponent() {
 		return drawComponent;
 	}
@@ -97,10 +97,10 @@ implements IPropertySource
 		return UnitUtil.getUnitValue(modelValue, getDotUnit(), unit);
 	}
 	
-	// TODO: format value so that only 3 digits after the comma are visible	
+	// TODO: format value so that only 3 digits after the comma are visible
 	public int getSetValue(double value, IUnit unit) {
 		return UnitUtil.getModelValue(value, getDotUnit(), unit);
-	}	
+	}
 	
 	/**
 	 * @see org.eclipse.ui.views.properties.IPropertySource#getEditableValue()
@@ -116,24 +116,24 @@ implements IPropertySource
 		return descriptors;
 	}
 		
-	protected List<IPropertyDescriptor> createPropertyDescriptors() 
+	protected List<IPropertyDescriptor> createPropertyDescriptors()
 	{
 		List<IPropertyDescriptor> descriptors = getDescriptors();
 		
 		// Name
-		descriptors.add(createNamePD());				
+		descriptors.add(createNamePD());
 		// X
-		descriptors.add(createXPD());		
-		// Y		
-		descriptors.add(createYPD());		
-		// Width		
-		descriptors.add(createWidthPD());		
-		// Height		
-		descriptors.add(createHeightPD());		
-		// Rotation		
-		descriptors.add(createRotationPD());		
+		descriptors.add(createXPD());
+		// Y
+		descriptors.add(createYPD());
+		// Width
+		descriptors.add(createWidthPD());
+		// Height
+		descriptors.add(createHeightPD());
+		// Rotation
+		descriptors.add(createRotationPD());
 		// RotationX
-		descriptors.add(createRotationXPD());		
+		descriptors.add(createRotationXPD());
 		// RotationY
 		descriptors.add(createRotationYPD());
 		// Visible
@@ -142,22 +142,22 @@ implements IPropertySource
 		descriptors.add(createTemplatePD());
 		
 		// PropertyDescriptors from extension point
-		List<IPropertyDescriptor> extensionPointProperties = getExtensionPointProperties(); 
+		List<IPropertyDescriptor> extensionPointProperties = getExtensionPointProperties();
 		if (!extensionPointProperties.isEmpty())
 			descriptors.addAll(extensionPointProperties);
 		
 		return descriptors;
 	}
 
-	protected List<IPropertyDescriptor> getExtensionPointProperties() 
-	{		
-		List<DrawComponentProperty> properties = 
+	protected List<IPropertyDescriptor> getExtensionPointProperties()
+	{
+		List<DrawComponentProperty> properties =
 			DrawComponentPropertyRegistry.sharedInstance().getDrawComponentProperty(
 					getDrawComponent().getRoot().getClass().getName(),
 					getDrawComponent().getClass().getName());
-		if (properties != null) 
+		if (properties != null)
 		{
-			List<IPropertyDescriptor> descriptors = new ArrayList<IPropertyDescriptor>(properties.size());			
+			List<IPropertyDescriptor> descriptors = new ArrayList<IPropertyDescriptor>(properties.size());
 			for (DrawComponentProperty property : properties) {
 				property.setDrawComponent(getDrawComponent());
 				descriptors.add(property.getPropertyDescriptor());
@@ -172,10 +172,10 @@ implements IPropertySource
 		return Collections.EMPTY_LIST;
 	}
 	
-	private Map<String, DrawComponentProperty> id2DrawComponentProperty = 
+	private Map<String, DrawComponentProperty> id2DrawComponentProperty =
 		new HashMap<String, DrawComponentProperty>();
 	
-	protected PropertyDescriptor createNamePD() 
+	protected PropertyDescriptor createNamePD()
 	{
 		PropertyDescriptor desc = new NamePropertyDescriptor(drawComponent,
 				DrawComponent.PROP_NAME,
@@ -184,7 +184,7 @@ implements IPropertySource
 		return desc;
 	}
 	
-	protected PropertyDescriptor createXPD() 
+	protected PropertyDescriptor createXPD()
 	{
 		PropertyDescriptor desc = new DoublePropertyDescriptor(DrawComponent.PROP_X,
 				Messages.getString("org.nightlabs.editor2d.ui.model.DrawComponentPropertySource.x")); //$NON-NLS-1$
@@ -192,7 +192,7 @@ implements IPropertySource
 		return desc;
 	}
 	
-	protected PropertyDescriptor createYPD() 
+	protected PropertyDescriptor createYPD()
 	{
 		PropertyDescriptor desc = new DoublePropertyDescriptor(DrawComponent.PROP_Y,
 				Messages.getString("org.nightlabs.editor2d.ui.model.DrawComponentPropertySource.y")); //$NON-NLS-1$
@@ -200,7 +200,7 @@ implements IPropertySource
 		return desc;
 	}
 
-	protected PropertyDescriptor createWidthPD() 
+	protected PropertyDescriptor createWidthPD()
 	{
 		PropertyDescriptor desc = new DoublePropertyDescriptor(DrawComponent.PROP_WIDTH,
 				Messages.getString("org.nightlabs.editor2d.ui.model.DrawComponentPropertySource.width")); //$NON-NLS-1$
@@ -208,7 +208,7 @@ implements IPropertySource
 		return desc;
 	}
 
-	protected PropertyDescriptor createHeightPD() 
+	protected PropertyDescriptor createHeightPD()
 	{
 		PropertyDescriptor desc = new DoublePropertyDescriptor(DrawComponent.PROP_HEIGHT,
 				Messages.getString("org.nightlabs.editor2d.ui.model.DrawComponentPropertySource.height")); //$NON-NLS-1$
@@ -216,45 +216,45 @@ implements IPropertySource
 		return desc;
 	}
 	
-	protected PropertyDescriptor createRotationPD() 
+	protected PropertyDescriptor createRotationPD()
 	{
 		PropertyDescriptor desc = new RotationPropertyDescriptor(DrawComponent.PROP_ROTATION,
 				Messages.getString("org.nightlabs.editor2d.ui.model.DrawComponentPropertySource.rotation"), drawComponent); //$NON-NLS-1$
-		desc.setCategory(CATEGORY_ROTATION);		
+		desc.setCategory(CATEGORY_ROTATION);
 		return desc;
 	}
 	
-	protected PropertyDescriptor createRotationXPD() 
+	protected PropertyDescriptor createRotationXPD()
 	{
 		PropertyDescriptor desc = new IntPropertyDescriptor(DrawComponent.PROP_ROTATION_X,
 				Messages.getString("org.nightlabs.editor2d.ui.model.DrawComponentPropertySource.rotationX"),  //$NON-NLS-1$
 				!drawComponent.isChangedRotationCenterAllowed());
-		desc.setCategory(CATEGORY_ROTATION);		
+		desc.setCategory(CATEGORY_ROTATION);
 		return desc;
 	}
 
-	protected PropertyDescriptor createRotationYPD() 
+	protected PropertyDescriptor createRotationYPD()
 	{
 		PropertyDescriptor desc = new IntPropertyDescriptor(DrawComponent.PROP_ROTATION_Y,
 				Messages.getString("org.nightlabs.editor2d.ui.model.DrawComponentPropertySource.rotationY"), //$NON-NLS-1$
 				!drawComponent.isChangedRotationCenterAllowed());
-		desc.setCategory(CATEGORY_ROTATION);		
+		desc.setCategory(CATEGORY_ROTATION);
 		return desc;
 	}
 	
-	public IPropertyDescriptor[] getPropertyDescriptors() 
+	public IPropertyDescriptor[] getPropertyDescriptors()
 	{
 		if (drawComponent == null)
 			return new IPropertyDescriptor[0];
 		
-		List<IPropertyDescriptor> descriptors = getDescriptors();		
+		List<IPropertyDescriptor> descriptors = getDescriptors();
 		return descriptors.toArray(new IPropertyDescriptor[descriptors.size()]);
 	}
 	
 	/**
 	 * @see org.eclipse.ui.views.properties.IPropertySource#getPropertyValue(java.lang.Object)
 	 */
-	public Object getPropertyValue(Object id) 
+	public Object getPropertyValue(Object id)
 	{
 		if (id.equals(DrawComponent.PROP_X)) {
 			return new Double(getValue(drawComponent.getX(), getUnit()));
@@ -271,22 +271,22 @@ implements IPropertySource
 		else if (id.equals(DrawComponent.PROP_ROTATION)) {
 			return new Double(drawComponent.getRotation());
 //			return new Double(drawComponent.getRotationAbsolute());
-		}		
+		}
 		else if (id.equals(DrawComponent.PROP_ROTATION_X)) {
 			return new Integer(drawComponent.getRotationX());
-		}		
+		}
 		else if (id.equals(DrawComponent.PROP_ROTATION_Y)) {
 			return new Integer(drawComponent.getRotationY());
-		}		
+		}
 		else if (id.equals(DrawComponent.PROP_NAME)) {
 			return drawComponent.getI18nText();
-		}		
+		}
 		else if (id.equals(IVisible.PROP_VISIBLE)) {
 			return new Boolean(drawComponent.isVisible());
 		}
 		else if (id.equals(DrawComponent.PROP_TEMPLATE)) {
 			return new Boolean(drawComponent.isTemplate());
-		}		
+		}
 		
 		// properties from extension point
 		DrawComponentProperty property = id2DrawComponentProperty.get(id);
@@ -298,7 +298,7 @@ implements IPropertySource
 		return null;
 	}
 	
-	/* 
+	/*
 	 * @see org.eclipse.ui.views.properties.IPropertySource#isPropertySet(java.lang.Object)
 	 */
 	public boolean isPropertySet(Object id) {
@@ -314,7 +314,7 @@ implements IPropertySource
 	/**
 	 * @see org.eclipse.ui.views.properties.IPropertySource#setPropertyValue(java.lang.Object, java.lang.Object)
 	 */
-	public void setPropertyValue(Object id, Object value) 
+	public void setPropertyValue(Object id, Object value)
 	{
 		if (id.equals(DrawComponent.PROP_X)) {
 			double x = ((Double)value).doubleValue();
@@ -338,13 +338,13 @@ implements IPropertySource
 		}
 		else if (id.equals(DrawComponent.PROP_ROTATION)) {
 			drawComponent.setRotation(((Double)value).doubleValue());
-//			drawComponent.setRotationAbsolute(((Double)value).doubleValue());			
+//			drawComponent.setRotationAbsolute(((Double)value).doubleValue());
 			return;
-		}		
+		}
 		else if (id.equals(DrawComponent.PROP_ROTATION_X)) {
 			drawComponent.setRotationX(((Integer)value).intValue());
 			return;
-		}		
+		}
 		else if (id.equals(DrawComponent.PROP_ROTATION_Y)) {
 			drawComponent.setRotationY(((Integer)value).intValue());
 			return;
@@ -370,16 +370,16 @@ implements IPropertySource
 		}
 	}
 			
-	protected PropertyDescriptor createVisiblePD() 
+	protected PropertyDescriptor createVisiblePD()
 	{
-		PropertyDescriptor pd = new CheckboxPropertyDescriptor(IVisible.PROP_VISIBLE, 
+		PropertyDescriptor pd = new CheckboxPropertyDescriptor(IVisible.PROP_VISIBLE,
 				Messages.getString("org.nightlabs.editor2d.ui.model.DrawComponentPropertySource.visible"), false); //$NON-NLS-1$
 		return pd;
 	}
 	
-	protected PropertyDescriptor createTemplatePD() 
+	protected PropertyDescriptor createTemplatePD()
 	{
-		PropertyDescriptor pd = new CheckboxPropertyDescriptor(DrawComponent.PROP_TEMPLATE, 
+		PropertyDescriptor pd = new CheckboxPropertyDescriptor(DrawComponent.PROP_TEMPLATE,
 				Messages.getString("org.nightlabs.editor2d.ui.model.DrawComponentPropertySource.template"), true); //$NON-NLS-1$
 		return pd;
 	}

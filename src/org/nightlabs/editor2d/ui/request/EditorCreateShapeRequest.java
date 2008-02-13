@@ -31,7 +31,7 @@ import org.eclipse.draw2d.Shape;
 import org.nightlabs.editor2d.j2d.GeneralShape;
 
 
-public class EditorCreateShapeRequest  
+public class EditorCreateShapeRequest
 extends EditorCreateRequest
 implements EditorShapeRequest
 {
@@ -44,9 +44,9 @@ implements EditorShapeRequest
 
   public EditorCreateShapeRequest(Object type) {
     super(type);
-  }  
+  }
   
-  protected int mode = BOUNDS_UNFIX_MODE;    
+  protected int mode = BOUNDS_UNFIX_MODE;
   public int getMode() {
     return mode;
   }
@@ -57,20 +57,20 @@ implements EditorShapeRequest
   protected GeneralShape gp;
   public GeneralShape getGeneralShape() {
     return gp;
-  }  
+  }
   public void setGeneralShape(GeneralShape gp) {
     this.gp = gp;
   }
   
-  protected Shape shape;  
+  protected Shape shape;
   public Shape getShape() {
     return shape;
   }
   public void setShape(Shape shape) {
     this.shape = shape;
-  }  
+  }
   
-  protected boolean useShape = false;    
+  protected boolean useShape = false;
   public boolean isUseShape() {
     return useShape;
   }

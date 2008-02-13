@@ -36,8 +36,8 @@ import org.nightlabs.editor2d.ui.model.GroupPropertySource;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class GroupEditPart 
-extends AbstractDrawComponentContainerEditPart 
+public class GroupEditPart
+extends AbstractDrawComponentContainerEditPart
 {
 	/**
 	 * LOG4J logger used by this class
@@ -65,39 +65,39 @@ extends AbstractDrawComponentContainerEditPart
   }
 
 //	@Override
-//	protected void propertyChanged(PropertyChangeEvent evt) 
+//	protected void propertyChanged(PropertyChangeEvent evt)
 //	{
 //		super.propertyChanged(evt);
 //		String propertyName = evt.getPropertyName();
-//		if (propertyName.equals(DrawComponentContainer.CHILD_ADDED)) 
+//		if (propertyName.equals(DrawComponentContainer.CHILD_ADDED))
 //		{
 //			logger.debug(propertyName);
 //			Collection<DrawComponent> children = (Collection<DrawComponent>) evt.getNewValue();
 //			setContains(false, children);
 //			return;
 //		}
-//		else if (propertyName.equals(DrawComponentContainer.CHILD_REMOVED)) 
+//		else if (propertyName.equals(DrawComponentContainer.CHILD_REMOVED))
 //		{
 //			logger.debug(propertyName);
 //			Collection<DrawComponent> newChildren = (Collection<DrawComponent>) evt.getNewValue();
 //			Collection<DrawComponent> oldChildren = (Collection<DrawComponent>) evt.getOldValue();
-//			if (newChildren != null && oldChildren != null) 
+//			if (newChildren != null && oldChildren != null)
 //			{
 //				oldChildren.removeAll(newChildren);
 //				setContains(true, oldChildren);
 //			}
 //			return;
-//		}		
-//	} 	
-//    
-//	protected void setContains(boolean contains, Collection<DrawComponent> drawComponents) 
+//		}
+//	}
+//
+//	protected void setContains(boolean contains, Collection<DrawComponent> drawComponents)
 //	{
-//		if (drawComponents != null) 
+//		if (drawComponents != null)
 //		{
-//			for (Iterator<DrawComponent> it = drawComponents.iterator(); it.hasNext(); ) 
+//			for (Iterator<DrawComponent> it = drawComponents.iterator(); it.hasNext(); )
 //			{
 //				Object o = getViewer().getEditPartRegistry().get(it.next());
-//				if (o != null && o instanceof GraphicalEditPart) 
+//				if (o != null && o instanceof GraphicalEditPart)
 //				{
 //					GraphicalEditPart gep = (GraphicalEditPart) o;
 //					IFigure figure = gep.getFigure();
@@ -108,9 +108,9 @@ extends AbstractDrawComponentContainerEditPart
 ////						dcFigure.setOpaque(contains);
 //						dcFigure.setVisible(contains);
 //						logger.debug("DrawComponentFigure found and set contains to "+contains);
-//					}					
+//					}
 //				}
-//			}			
+//			}
 //		}
 //		refresh();
 //	}
@@ -122,35 +122,35 @@ extends AbstractDrawComponentContainerEditPart
 //	}
 	
 	@Override
-	protected void propertyChanged(PropertyChangeEvent evt) 
+	protected void propertyChanged(PropertyChangeEvent evt)
 	{
 		super.propertyChanged(evt);
 		String propertyName = evt.getPropertyName();
-		if (propertyName.equals(DrawComponentContainer.CHILD_ADDED)) 
+		if (propertyName.equals(DrawComponentContainer.CHILD_ADDED))
 		{
 			logger.debug(propertyName);
 //			Collection<DrawComponent> children = (Collection<DrawComponent>) evt.getNewValue();
 			setContains(false);
 			return;
 		}
-		else if (propertyName.equals(DrawComponentContainer.CHILD_REMOVED)) 
+		else if (propertyName.equals(DrawComponentContainer.CHILD_REMOVED))
 		{
 			logger.debug(propertyName);
 			setContains(false);
 //			Collection<DrawComponent> newChildren = (Collection<DrawComponent>) evt.getNewValue();
 //			Collection<DrawComponent> oldChildren = (Collection<DrawComponent>) evt.getOldValue();
-//			if (newChildren != null && oldChildren != null) 
+//			if (newChildren != null && oldChildren != null)
 //			{
 //				oldChildren.removeAll(newChildren);
 //				setContains(true, oldChildren);
 //			}
 			return;
-		}		
+		}
 	}
 	
 	@Override
 	public void activate() {
 		super.activate();
 		setContains(false);
-	}	
+	}
 }

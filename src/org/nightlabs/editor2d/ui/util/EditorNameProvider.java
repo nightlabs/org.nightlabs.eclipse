@@ -45,7 +45,7 @@ implements NameProvider
 		super();
 	}
 
-	public String getTypeName(Class c) 
+	public String getTypeName(Class c)
 	{
 //		if (DrawComponent.class.isAssignableFrom(c)) {
 //			return EditorPlugin.getResourceString("model.drawComponent.name");
@@ -61,7 +61,7 @@ implements NameProvider
 		}
 		else if (EllipseDrawComponent.class.isAssignableFrom(c)) {
 			return Messages.getString("org.nightlabs.editor2d.ui.util.EditorNameProvider.ellipse"); //$NON-NLS-1$
-		}		
+		}
 		else if (LineDrawComponent.class.isAssignableFrom(c)) {
 			return Messages.getString("org.nightlabs.editor2d.ui.util.EditorNameProvider.line"); //$NON-NLS-1$
 		}
@@ -70,13 +70,13 @@ implements NameProvider
 		}
 		else if (PageDrawComponent.class.isAssignableFrom(c)) {
 			return Messages.getString("org.nightlabs.editor2d.ui.util.EditorNameProvider.page"); //$NON-NLS-1$
-		}		
+		}
 		else if (GroupDrawComponent.class.isAssignableFrom(c)) {
 			return Messages.getString("org.nightlabs.editor2d.ui.util.EditorNameProvider.group"); //$NON-NLS-1$
-		}				
+		}
 		else if (Layer.class.isAssignableFrom(c)) {
 			return Messages.getString("org.nightlabs.editor2d.ui.util.EditorNameProvider.layer"); //$NON-NLS-1$
-		}				
+		}
 		
 		return Messages.getString("org.nightlabs.editor2d.ui.util.EditorNameProvider.object"); //$NON-NLS-1$
 	}

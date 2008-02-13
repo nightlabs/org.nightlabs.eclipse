@@ -35,8 +35,8 @@ import org.nightlabs.editor2d.ui.views.QuickOptionsView;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class EditorPerspective 
-implements IPerspectiveFactory 
+public class EditorPerspective
+implements IPerspectiveFactory
 {
 	public static final String ID_PERSPECTIVE = EditorPerspective.class.getName();
 	
@@ -47,7 +47,7 @@ implements IPerspectiveFactory
 	/**
 	 * @see org.eclipse.ui.IPerspectiveFactory#createInitialLayout(org.eclipse.ui.IPageLayout)
 	 */
-	public void createInitialLayout(IPageLayout layout) 
+	public void createInitialLayout(IPageLayout layout)
 	{
     layout.setEditorAreaVisible(true);
     String editorArea = layout.getEditorArea();
@@ -56,13 +56,13 @@ implements IPerspectiveFactory
     rightTop = layout.createFolder("rightTop", IPageLayout.RIGHT, 0.75f, editorArea); //$NON-NLS-1$
     rightTop.addView(IPageLayout.ID_PROP_SHEET);
     rightMiddle = layout.createFolder("rightMiddle", IPageLayout.BOTTOM, 0.33f, "rightTop"); //$NON-NLS-1$ //$NON-NLS-2$
-    rightMiddle.addView(IPageLayout.ID_OUTLINE);    
+    rightMiddle.addView(IPageLayout.ID_OUTLINE);
     rightBottom = layout.createFolder("rightBottom", IPageLayout.BOTTOM, 0.5f, "rightMiddle"); //$NON-NLS-1$ //$NON-NLS-2$
     rightBottom.addView(LayerView.ID_VIEW);
     rightBottom.addView(QuickOptionsView.ID);
                
     RCPUtil.addAllPerspectiveShortcuts(layout);
-    layout.addPerspectiveShortcut(ID_PERSPECTIVE);  
+    layout.addPerspectiveShortcut(ID_PERSPECTIVE);
     layout.addShowViewShortcut(IPageLayout.ID_PROP_SHEET);
     layout.addShowViewShortcut(IPageLayout.ID_OUTLINE);
     layout.addShowViewShortcut(LayerView.ID_VIEW);

@@ -44,23 +44,23 @@ import org.nightlabs.editor2d.ui.request.LineCreateRequest;
 import org.nightlabs.editor2d.ui.util.J2DUtil;
 
 
-public class LineTool 
-extends EditorCreationTool 
+public class LineTool
+extends EditorCreationTool
 {
-	/* 
+	/*
 	 * the Real Location of a mousePoint including ScrollOffset
 	 */
 	private Point realLocation;
 
 	/*
 	 * the Location of a mousePoint excluding ScrollOffset
-	 */ 
+	 */
 	private Point relativeLocation;
-	private GeneralShape feedbackGeneralShape; 
+	private GeneralShape feedbackGeneralShape;
 	private GeneralShape creationGeneralShape;
 	private Rectangle creationBounds;
 	
-	public LineTool(IModelCreationFactory factory) {  
+	public LineTool(IModelCreationFactory factory) {
 		super(factory);
 	}
 
@@ -69,7 +69,7 @@ extends EditorCreationTool
 	 * @see org.eclipse.gef.tools.TargetingTool#createTargetRequest()
 	 */
 	@Override
-	protected Request createTargetRequest() 
+	protected Request createTargetRequest()
 	{
 		LineCreateRequest request = new LineCreateRequest();
 		request.setFactory(getFactory());
@@ -81,11 +81,11 @@ extends EditorCreationTool
 	}
 
 	@Override
-	protected boolean handleButtonDown(int button) 
+	protected boolean handleButtonDown(int button)
 	{
-		if (button == 1) 
+		if (button == 1)
 		{
-			if (isInState(STATE_DRAG | STATE_DRAG_IN_PROGRESS)) 
+			if (isInState(STATE_DRAG | STATE_DRAG_IN_PROGRESS))
 			{
 				realLocation = getRealLocation();
 				relativeLocation = getLocation();
@@ -96,13 +96,13 @@ extends EditorCreationTool
 				creationBounds.setBounds(J2DUtil.toDraw2D(creationGeneralShape.getBounds()));
 				getLineCreateRequest().setCreationBounds(creationBounds);
 			}
-			else 
-			{    	      		
+			else
+			{
 				lockTargetEditPart(getTargetEditPart());
 				// Snap only when size on drop is employed
 				helper = (SnapToHelper)getTargetEditPart().getAdapter(SnapToHelper.class);
 
-				Point p = getRealLocation();    
+				Point p = getRealLocation();
 				Point p2 = getLocation();
 
 				feedbackGeneralShape = new GeneralShape();
@@ -113,18 +113,18 @@ extends EditorCreationTool
 				creationGeneralShape.moveTo(p2.x, p2.y);
 				creationGeneralShape.lineTo(p2.x+1, p2.y+1);
 
-				creationBounds = new Rectangle(p2.x, p2.y, p2.x+1, p2.y+1);    		
+				creationBounds = new Rectangle(p2.x, p2.y, p2.x+1, p2.y+1);
 
 				getLineCreateRequest().setLocation(getLocation());
 				getLineCreateRequest().setMode(EditorCreateShapeRequest.BOUNDS_FIX_MODE);
 				getLineCreateRequest().setCreationBounds(creationBounds);
 
 				stateTransition(STATE_INITIAL, STATE_DRAG_IN_PROGRESS);
-				setCursor(getDefaultCursor());    		
-			}    	
-		}    	  
+				setCursor(getDefaultCursor());
+			}
+		}
 		return true;
-	}  
+	}
 
 	/**
 	 * Does nothing all actions are performed by handleButtonDown(int) or
@@ -134,7 +134,7 @@ extends EditorCreationTool
 	 * @see #handleButtonDown(int)
 	 */
 	@Override
-	protected boolean handleButtonUp(int button) 
+	protected boolean handleButtonUp(int button)
 	{
 		return false;
 	}
@@ -144,27 +144,27 @@ extends EditorCreationTool
 	 * @see org.eclipse.gef.tools.TargetingTool#updateTargetRequest()
 	 */
 	@Override
-	protected void updateTargetRequest() 
+	protected void updateTargetRequest()
 	{
 		LineCreateRequest req = getLineCreateRequest();
-		if (isInState(STATE_DRAG_IN_PROGRESS)) 
-		{  	    	  
+		if (isInState(STATE_DRAG_IN_PROGRESS))
+		{
 			// TODO: Optimize bounds calc, by getting rect which is a union of
 			// of all points in the PointList and getLocation
-			// and union Rectangle can be cached until next buttonDown  	    	  
+			// and union Rectangle can be cached until next buttonDown
 			Rectangle bounds = creationBounds.getCopy();
 			bounds.union(getLocation());
 			req.setSize(bounds.getSize());
 			req.setLocation(bounds.getLocation());
 			req.setCreationBounds(creationBounds);
 			req.getExtendedData().clear();
-			updateShape(req);	
+			updateShape(req);
 
-			if (!getCurrentInput().isAltKeyDown() && helper != null) 
+			if (!getCurrentInput().isAltKeyDown() && helper != null)
 			{
 				PrecisionRectangle baseRect = new PrecisionRectangle(bounds);
 				PrecisionRectangle result = baseRect.getPreciseCopy();
-				helper.snapRectangle(req, PositionConstants.NSEW, 
+				helper.snapRectangle(req, PositionConstants.NSEW,
 						baseRect, result);
 				req.setLocation(result.getLocation());
 				req.setSize(result.getSize());
@@ -173,18 +173,18 @@ extends EditorCreationTool
 			}
 		} else {
 			req.setSize(null);
-			req.setLocation(getLocation());  		
+			req.setLocation(getLocation());
 		}
-	} 
+	}
 
 	@Override
-	protected boolean handleKeyDown(KeyEvent e) 
+	protected boolean handleKeyDown(KeyEvent e)
 	{
 		if (e.character == SWT.ESC) {
-			if (stateTransition(STATE_DRAG | STATE_DRAG_IN_PROGRESS, STATE_TERMINAL)) 
-			{    	      	  
+			if (stateTransition(STATE_DRAG | STATE_DRAG_IN_PROGRESS, STATE_TERMINAL))
+			{
 				eraseTargetFeedback();
-				unlockTargetEditPart();    		    		
+				unlockTargetEditPart();
 				performCreation(1);
 			}
 			setState(STATE_TERMINAL);
@@ -194,21 +194,21 @@ extends EditorCreationTool
 		return false;
 	}
 
-	protected void updateShape(EditorCreateShapeRequest request) 
-	{ 
+	protected void updateShape(EditorCreateShapeRequest request)
+	{
 		Point p = getRealLocation();
 		Point p2 = getLocation();
 
 		feedbackGeneralShape.setLastPoint(p.x, p.y);
 		creationGeneralShape.setLastPoint(p2.x, p2.y);
 		if (request.getGeneralShape() == null)
-			request.setGeneralShape(feedbackGeneralShape);    
+			request.setGeneralShape(feedbackGeneralShape);
 	}
 
 	@Override
-	public void performCreation(int button) 
-	{		
-		if (getCurrentCommand() instanceof CreateShapeCommand) 
+	public void performCreation(int button)
+	{
+		if (getCurrentCommand() instanceof CreateShapeCommand)
 		{
 			CreateShapeCommand command = (CreateShapeCommand) getCurrentCommand();
 			GeneralShape gs = GeneralShapeUtil.removePathSegment(creationGeneralShape, creationGeneralShape.getSize()-1);
@@ -222,10 +222,10 @@ extends EditorCreationTool
 	 * @see org.eclipse.gef.Tool#deactivate()
 	 */
 	@Override
-	public void deactivate() 
+	public void deactivate()
 	{
 		super.deactivate();
 		helper = null;
-	}  
+	}
 
 }

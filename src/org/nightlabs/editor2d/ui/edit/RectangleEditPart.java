@@ -30,8 +30,8 @@ package org.nightlabs.editor2d.ui.edit;
 import org.nightlabs.editor2d.RectangleDrawComponent;
 
 
-public class RectangleEditPart 
-extends ShapeDrawComponentEditPart 
+public class RectangleEditPart
+extends ShapeDrawComponentEditPart
 {
   public RectangleEditPart(RectangleDrawComponent rect) {
     super(rect);
@@ -40,9 +40,9 @@ extends ShapeDrawComponentEditPart
 //  /* (non-Javadoc)
 //   * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 //   */
-//  protected IFigure createFigure() 
+//  protected IFigure createFigure()
 //  {
-//	  RectangleFigure rectangle = new RectangleFigure();		  
+//	  RectangleFigure rectangle = new RectangleFigure();
 //	  setShapeProperties((RectangleDrawComponent)getModel(), rectangle);
 //		return rectangle;
 //  }

@@ -69,21 +69,21 @@ import org.nightlabs.editor2d.ui.outline.filter.FilterManager;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
 
-public class EditorOutlinePage 
-extends ContentOutlinePage 
-implements IAdaptable 
+public class EditorOutlinePage
+extends ContentOutlinePage
+implements IAdaptable
 {
   static final int ID_OUTLINE  = 0;
   static final int ID_OVERVIEW = 1;
   static final int ID_FILTER 	 = 3;
   
   private AbstractEditor editor;
-  private FilterManager filterMan;  
+  private FilterManager filterMan;
   private IAction showFilterAction;
   
   private PageBook pageBook;
   private Control outline;
-  private IAction showOutlineAction; 
+  private IAction showOutlineAction;
   private IAction showOverviewAction;
   private IAction filterOutlineAction;
   private DisposeListener disposeListener;
@@ -114,11 +114,11 @@ implements IAdaptable
   {
     getViewer().setEditDomain(editor.getOutlineEditDomain());
     getViewer().setEditPartFactory(editor.getOutlineEditPartFactory());
-    ContextMenuProvider provider = editor.getContextMenuProvider();      
+    ContextMenuProvider provider = editor.getContextMenuProvider();
     getViewer().setContextMenu(provider);
-    // TODO: ContextMenu ID Problem      
+    // TODO: ContextMenu ID Problem
     getSite().registerContextMenu(
-      EditorContextMenuProvider.CONTEXT_MENU_ID, 
+      EditorContextMenuProvider.CONTEXT_MENU_ID,
       provider, getSite().getSelectionProvider());
     getViewer().setKeyHandler(editor.getCommonKeyHandler());
 //    getViewer().addDropTargetListener(
@@ -126,16 +126,16 @@ implements IAdaptable
 
     createActions();
         
-    showPage(ID_OUTLINE);        
+    showPage(ID_OUTLINE);
   }
     
-  protected void createActions() 
+  protected void createActions()
   {
     IToolBarManager tbm = getSite().getActionBars().getToolBarManager();
     
     // create Filter entries
     IMenuManager menuMan = getSite().getActionBars().getMenuManager();
-    createFilterEntries(menuMan);    
+    createFilterEntries(menuMan);
     
     // Show Outline
     showOutlineAction = new Action() {
@@ -157,52 +157,52 @@ implements IAdaptable
     };
     showOverviewAction.setImageDescriptor(SharedImages.getSharedImageDescriptor(
     		EditorPlugin.getDefault(), EditorOutlinePage.class, "Overview")); //$NON-NLS-1$
-    tbm.add(showOverviewAction);  	
+    tbm.add(showOverviewAction);
     
 //    // Add Page
 //    newPageAction = new NewPageAction(editor);
 //    tbm.add(newPageAction);
-//    
+//
 //    // Delete Page
 //    deletePageAction = new DeletePageAction(editor);
 //    tbm.add(deletePageAction);
   }
   
 //  private IAction newPageAction;
-//  private IAction deletePageAction;  
+//  private IAction deletePageAction;
   
-  private IAction createFilterAction(final Class c) 
+  private IAction createFilterAction(final Class c)
   {
 		IAction filterAction = new Action() {
       @Override
 			public void run() {
         filterMan.setFilter(c);
-      }  			
+      }
 		};
-		filterAction.setText(filterMan.getTypeName(c));		
+		filterAction.setText(filterMan.getTypeName(c));
 		return filterAction;
   }
   
-  private void createFilterEntries(IMenuManager menuMan) 
+  private void createFilterEntries(IMenuManager menuMan)
   {
 		IAction filterNoneAction = new Action() {
       @Override
 			public void run() {
         filterMan.setAllFiltersAvailable();
-      }  			
+      }
 		};
 		filterNoneAction.setText(Messages.getString("org.nightlabs.editor2d.ui.outline.EditorOutlinePage.label.filterNone")); //$NON-NLS-1$
 		menuMan.add(filterNoneAction);
 		
-  	for (Iterator it = filterMan.getAllFilters().iterator(); it.hasNext(); ) 
+  	for (Iterator it = filterMan.getAllFilters().iterator(); it.hasNext(); )
   	{
   		Class c = (Class) it.next();
 			IAction filterAction = createFilterAction(c);
 			menuMan.add(filterAction);
-  	}  	
+  	}
   }
   
-  private Canvas overview;  
+  private Canvas overview;
   private Thumbnail thumbnail;
 //  private PreviewComposite overview;
   @Override
@@ -210,21 +210,21 @@ implements IAdaptable
     pageBook = new PageBook(parent, SWT.NONE);
     outline = getViewer().createControl(pageBook);
     
-//    overview = new Canvas(pageBook, SWT.NONE);    
-//    overview = new J2DCanvas(pageBook, SWT.NONE, new J2DSamplePaintable("TestMessage"));    
-    overview = new J2DCanvas(pageBook, SWT.NONE, 
+//    overview = new Canvas(pageBook, SWT.NONE);
+//    overview = new J2DCanvas(pageBook, SWT.NONE, new J2DSamplePaintable("TestMessage"));
+    overview = new J2DCanvas(pageBook, SWT.NONE,
     		new DrawComponentPaintable(editor.getRootDrawComponent()));
     
 //    RootEditPart rep = editor.getOutlineGraphicalViewer().getRootEditPart();
 //    ScalableFreeformRootEditPart root = (ScalableFreeformRootEditPart) rep;
-//    Viewport viewport = ((Viewport)root.getFigure());  
+//    Viewport viewport = ((Viewport)root.getFigure());
 //    PreviewViewport previewViewport = new PreviewViewport(viewport);
 //    overview = new PreviewComposite(editor.getRootDrawComponent(), previewViewport, pageBook, SWT.NONE);
     
     pageBook.showPage(outline);
     configureOutlineViewer();
     hookOutlineViewer();
-    initializeOutlineViewer();    
+    initializeOutlineViewer();
   }
   
   @Override
@@ -261,9 +261,9 @@ implements IAdaptable
     
 //    if (getViewer() instanceof TreeViewer) {
 //    	TreeViewer tv = (TreeViewer) getViewer();
-//    	tv.getTreeViewer().addFilter(new ViewerFilter(){			
+//    	tv.getTreeViewer().addFilter(new ViewerFilter(){
 //				@Override
-//				public boolean select(Viewer viewer, Object parentElement, Object element) 
+//				public boolean select(Viewer viewer, Object parentElement, Object element)
 //				{
 //					if (element instanceof DrawComponentTreeEditPart) {
 //						DrawComponentTreeEditPart dctep = (DrawComponentTreeEditPart) element;
@@ -271,12 +271,12 @@ implements IAdaptable
 //							return false;
 //					}
 //					return true;
-//				}			
+//				}
 //			});
 //    }
   }
   
-  protected void initializeOverview() 
+  protected void initializeOverview()
   {
     LightweightSystem lws = new LightweightSystem(overview);
     RootEditPart rep = editor.getOutlineGraphicalViewer().getRootEditPart();
@@ -285,7 +285,7 @@ implements IAdaptable
       thumbnail = new ScrollableThumbnail((Viewport)root.getFigure());
       thumbnail.setBorder(new MarginBorder(3));
       thumbnail.setSource(root.getLayer(LayerConstants.PRINTABLE_LAYERS));
-//      thumbnail.setSource(root.getFigure());      
+//      thumbnail.setSource(root.getFigure());
       lws.setContents(thumbnail);
       disposeListener = new DisposeListener() {
         public void widgetDisposed(DisposeEvent e) {
@@ -299,7 +299,7 @@ implements IAdaptable
     }
   }
   
-//  protected void initializeOverview() 
+//  protected void initializeOverview()
 //  {
 //    LightweightSystem lws = new J2DLightweightSystem(overview);
 ////  	LightweightSystem lws = new J2DLightweightSystem();
@@ -307,7 +307,7 @@ implements IAdaptable
 //    if (rep instanceof J2DScalableFreeformRootEditPart) {
 //    	J2DScalableFreeformRootEditPart root = (J2DScalableFreeformRootEditPart)rep;
 ////      thumbnail = new J2DScrollableThumbnail((Viewport)root.getFigure());
-//      thumbnail = new ScrollableThumbnail((Viewport)root.getFigure());    	
+//      thumbnail = new ScrollableThumbnail((Viewport)root.getFigure());
 //      thumbnail.setBorder(new MarginBorder(3));
 //      thumbnail.setSource(root.getLayer(LayerConstants.PRINTABLE_LAYERS));
 //      lws.setContents(thumbnail);
@@ -334,14 +334,14 @@ implements IAdaptable
       pageBook.showPage(outline);
       if (thumbnail != null)
         thumbnail.setVisible(false);
-    } 
+    }
     else if (id == ID_OVERVIEW) {
       if (thumbnail == null)
         initializeOverview();
       showOutlineAction.setChecked(false);
       showOverviewAction.setChecked(true);
       pageBook.showPage(overview);
-      if (thumbnail != null)      
+      if (thumbnail != null)
       	thumbnail.setVisible(true);
     }
   }
@@ -352,38 +352,38 @@ implements IAdaptable
       editor.getEditor().removeDisposeListener(disposeListener);
   }
  
-  private PropertyChangeListener filterListener = new PropertyChangeListener() 
-  {	
+  private PropertyChangeListener filterListener = new PropertyChangeListener()
+  {
 		public void propertyChange(PropertyChangeEvent pce)
 		{
-			if (pce.getPropertyName().equals(FilterManager.FILTER_CHANGED)) 
+			if (pce.getPropertyName().equals(FilterManager.FILTER_CHANGED))
 			{
 				getViewer().setContents(editor.getRootDrawComponent());
-			}	
-			else if (pce.getPropertyName().equals(FilterManager.FILTER_ADDED)) 
-			{				
+			}
+			else if (pce.getPropertyName().equals(FilterManager.FILTER_ADDED))
+			{
 				Object o = pce.getNewValue();
 				if (o instanceof Class) {
-					IMenuManager menuMan = getSite().getActionBars().getMenuManager();					
+					IMenuManager menuMan = getSite().getActionBars().getMenuManager();
 					Class c = (Class) o;
 					menuMan.add(createFilterAction(c));
-					getViewer().setContents(editor.getRootDrawComponent());					
+					getViewer().setContents(editor.getRootDrawComponent());
 				}
 			}
-			else if (pce.getPropertyName().equals(FilterManager.FILTERS_ADDED)) 
-			{				
+			else if (pce.getPropertyName().equals(FilterManager.FILTERS_ADDED))
+			{
 				Object o = pce.getNewValue();
 				if (o instanceof Collection) {
-					IMenuManager menuMan = getSite().getActionBars().getMenuManager();					
+					IMenuManager menuMan = getSite().getActionBars().getMenuManager();
 					Collection classes = (Collection) o;
 					for (Iterator it = classes.iterator(); it.hasNext(); ) {
-						Class c = (Class) it.next(); 
-						menuMan.add(createFilterAction(c));						
+						Class c = (Class) it.next();
+						menuMan.add(createFilterAction(c));
 					}
-					getViewer().setContents(editor.getRootDrawComponent());					
+					getViewer().setContents(editor.getRootDrawComponent());
 				}
-			}			
-		}	
+			}
+		}
 	};
 	
 }

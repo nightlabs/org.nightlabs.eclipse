@@ -34,8 +34,8 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class ShapeExclusiveOrAction 
-extends AbstractBooleanOperationAction 
+public class ShapeExclusiveOrAction
+extends AbstractBooleanOperationAction
 {
 	public static final String ID = ShapeExclusiveOrAction.class.getName();
 	
@@ -49,13 +49,13 @@ extends AbstractBooleanOperationAction
 
 	@Override
 	protected AbstractBooleanOperationCommand getBooleanCommand(
-			ShapeDrawComponent primary, ShapeDrawComponent secondary) 
+			ShapeDrawComponent primary, ShapeDrawComponent secondary)
 	{
 		return new ShapeExclusiveOrCommand(primary, secondary);
 	}
 
 	@Override
-	protected void init() 
+	protected void init()
 	{
 		setId(ID);
 		setText(Messages.getString("org.nightlabs.editor2d.ui.actions.shape.ShapeExclusiveOrAction.text")); //$NON-NLS-1$

@@ -56,7 +56,7 @@ import org.nightlabs.i18n.unit.resolution.Resolution;
 import org.nightlabs.i18n.unit.resolution.ResolutionImpl;
 
 
-public class EditorZoomComboContributionItem 
+public class EditorZoomComboContributionItem
 extends XContributionItem
 {
 	/**
@@ -68,13 +68,13 @@ extends XContributionItem
   private String[] initStrings = null;
   private ToolItem toolitem = null;
   private ZoomManager zoomManager = null;
-  private IPartService service = null;	
+  private IPartService service = null;
         
   /**
    * Constructor for ComboToolItem.
    * @param partService used to add a PartListener
    */
-  public EditorZoomComboContributionItem(IPartService partService) 
+  public EditorZoomComboContributionItem(IPartService partService)
   {
   	this(partService, "8888%");//$NON-NLS-1$
   }
@@ -84,7 +84,7 @@ extends XContributionItem
    * @param partService used to add a PartListener
    * @param initString the initial string displayed in the combo
    */
-  public EditorZoomComboContributionItem(IPartService partService, String initString) 
+  public EditorZoomComboContributionItem(IPartService partService, String initString)
   {
   	this(partService, new String[] {initString});
   }
@@ -94,7 +94,7 @@ extends XContributionItem
    * @param partService used to add a PartListener
    * @param initStrings the initial string displayed in the combo
    */
-  public EditorZoomComboContributionItem(IPartService partService, String[] initStrings) 
+  public EditorZoomComboContributionItem(IPartService partService, String[] initStrings)
   {
   	super(GEFActionConstants.ZOOM_TOOLBAR_WIDGET);
 //    super(partService, initStrings);
@@ -104,14 +104,14 @@ extends XContributionItem
   	partService.addPartListener(partListener);
   }
   
-  protected void refresh(boolean repopulateCombo) 
+  protected void refresh(boolean repopulateCombo)
   {
   	if (combo == null || combo.isDisposed())
   		return;
 		if (zoomManager == null) {
 			combo.setEnabled(false);
 			combo.setText(""); //$NON-NLS-1$
-		} 
+		}
 		else {
 			if (repopulateCombo) {
 				combo.setItems(getZoomManager().getZoomLevelsAsText());
@@ -122,7 +122,7 @@ extends XContributionItem
 			if (index != -1)
 				combo.select(index);
 			else
-				combo.setText(zoom); 				
+				combo.setText(zoom);
 			combo.setEnabled(true);
 		}
   }
@@ -136,25 +136,25 @@ extends XContributionItem
    * Returns the zoomManager.
    * @return ZoomManager
    */
-  public ZoomManager getZoomManager() 
+  public ZoomManager getZoomManager()
   {
   	return zoomManager;
   }
   
   private ZoomListener zoomListener = new ZoomListener()
-  {	
-		public void zoomChanged(double zoom) 
+  {
+		public void zoomChanged(double zoom)
 		{
 	  	logger.debug("zoom = "+zoom);			 //$NON-NLS-1$
 			refresh(false);
-		}	
+		}
 	};
 		
-  private SelectionListener comboSelectionListener = new SelectionListener() 
+  private SelectionListener comboSelectionListener = new SelectionListener()
   {
-		public void widgetSelected(SelectionEvent e) 
+		public void widgetSelected(SelectionEvent e)
 		{
-	  	if (zoomManager != null) 
+	  	if (zoomManager != null)
 	  	{
 	  		if (combo.getSelectionIndex() >= 0) {
 	  			zoomManager.setZoomAsText(combo.getItem(combo.getSelectionIndex()));
@@ -170,7 +170,7 @@ extends XContributionItem
 		}
 	};
   
-	private FocusListener comboFocusListener = new FocusListener() 
+	private FocusListener comboFocusListener = new FocusListener()
 	{
 		public void focusGained(FocusEvent e) {
 			// do nothing
@@ -187,7 +187,7 @@ extends XContributionItem
    * @param parent the parent composite
    * @return the new control
    */
-  protected Control createControl(Composite parent) 
+  protected Control createControl(Composite parent)
   {
   	combo = new Combo(parent, SWT.DROP_DOWN);
   	combo.addSelectionListener(comboSelectionListener);
@@ -231,8 +231,8 @@ extends XContributionItem
 	public void fill(ToolBar parent, int index) {
   	toolitem = new ToolItem(parent, SWT.SEPARATOR, index);
   	Control control = createControl(parent);
-  	toolitem.setControl(control);	
-  }  
+  	toolitem.setControl(control);
+  }
   
   /**
    * The control item implementation of this <code>IContributionItem</code>
@@ -257,14 +257,14 @@ extends XContributionItem
   @Override
 	public final void fill(Menu parent, int index) {
   	Assert.isTrue(false, "Can't add a control to a menu");//$NON-NLS-1$
-  }  
+  }
   
-  /*************************** BEGIN resolution recalculation ******************************/    
+  /*************************** BEGIN resolution recalculation ******************************/
   private RootDrawComponent root = null;
       
-  private IPartListener partListener = new IPartListener() 
+  private IPartListener partListener = new IPartListener()
   {
-		public void partActivated(IWorkbenchPart part) 
+		public void partActivated(IWorkbenchPart part)
 		{
 			Object rootAdapter = part.getAdapter(RootDrawComponent.class);
 			if (rootAdapter != null && rootAdapter instanceof RootDrawComponent) {
@@ -272,7 +272,7 @@ extends XContributionItem
 			}
 		  Object zoomAdapter = part.getAdapter(ZoomManager.class);
 		  if (zoomAdapter != null && zoomAdapter instanceof ZoomManager) {
-  			setZoomManager((ZoomManager)zoomAdapter);  
+  			setZoomManager((ZoomManager)zoomAdapter);
 		  }
 		}
 		public void partBroughtToTop(IWorkbenchPart p) { }
@@ -282,7 +282,7 @@ extends XContributionItem
 	};
 
 	private double[] initalZoomValues = new double[] {0.001, 0.01, 0.05, 0.1, 0.25, 0.5, 1.0, 2.0, 3.0, 5.0, 10.0};
-	public double[] getZoomLevels(double factor) 
+	public double[] getZoomLevels(double factor)
 	{
 		if (factor == 1)
 			return initalZoomValues;
@@ -299,7 +299,7 @@ extends XContributionItem
    * Sets the ZoomManager
    * @param zm The ZoomManager
    */
-  public void setZoomManager(ZoomManager zm) 
+  public void setZoomManager(ZoomManager zm)
   {
   	if (zoomManager == zm)
   		return;
@@ -308,11 +308,11 @@ extends XContributionItem
 
   	zoomManager = zm;
 
-  	double factor = getResolutionFactor();  	
+  	double factor = getResolutionFactor();
 //  	logger.debug("factor = "+factor);
   	
 		zoomManager.setZoomLevels(getZoomLevels(factor));
-		zoomManager.setUIMultiplier(1/factor);		
+		zoomManager.setUIMultiplier(1/factor);
 //  	zoomManager.setZoom(factor);
 		if (zm.getZoom() == 1.0)
 			zoomManager.setZoom(factor);
@@ -323,18 +323,18 @@ extends XContributionItem
 
   	if (zoomManager != null)
   		zoomManager.addZoomListener(zoomListener);
-  }	
+  }
 	
 	private Resolution deviceResolution = null;
-	public Resolution getDeviceResolution() 
+	public Resolution getDeviceResolution()
 	{
 		if (deviceResolution == null) {
 //			int dpi = Toolkit.getDefaultToolkit().getScreenResolution();
 			int dpi = 72;
 			deviceResolution = new ResolutionImpl(new DPIResolutionUnit(), dpi, dpi);
-//			logger.debug("ScreenResolution (DPI) = "+dpi);			
+//			logger.debug("ScreenResolution (DPI) = "+dpi);
 		}
-		return deviceResolution;		
+		return deviceResolution;
 	}
 	
 	public double getDeviceResolutionX(IResolutionUnit unit) {
@@ -345,40 +345,40 @@ extends XContributionItem
 		return getDeviceResolution().getResolutionY(unit);
 	}
 	
-	protected double getDocumentResolutionX(IResolutionUnit unit) 
+	protected double getDocumentResolutionX(IResolutionUnit unit)
   {
-  	if (root != null) 
+  	if (root != null)
   		return root.getResolution().getResolutionX(unit);
   	return 1.0;
   }
 
-	protected double getDocumentResolutionY(IResolutionUnit unit) 
+	protected double getDocumentResolutionY(IResolutionUnit unit)
   {
-  	if (root != null) 
+  	if (root != null)
   		return root.getResolution().getResolutionY(unit);
   	return 1.0;
   }
   
-  public Resolution getDocumentResolution() 
+  public Resolution getDocumentResolution()
   {
   	if (root != null) {
-//  		logger.debug("DocumentResolution = "+root.getResolution().getResolutionX()+" "+root.getResolution().getResolutionUnit().getResolutionID());  	  		  		
+//  		logger.debug("DocumentResolution = "+root.getResolution().getResolutionX()+" "+root.getResolution().getResolutionUnit().getResolutionID());
   		return root.getResolution();
   	}
   	return new ResolutionImpl();
-  }	
+  }
     
   public double getResolutionFactor() {
   	return Math.max(getResolutionFactorX(), getResolutionFactorY());
   }
   
-  private IResolutionUnit defaultResolutionUnit = new DPIResolutionUnit();  
+  private IResolutionUnit defaultResolutionUnit = new DPIResolutionUnit();
   protected double getResolutionFactorX() {
-  	return getDeviceResolutionX(defaultResolutionUnit) / getDocumentResolutionX(defaultResolutionUnit);  	
+  	return getDeviceResolutionX(defaultResolutionUnit) / getDocumentResolutionX(defaultResolutionUnit);
   }
   
   protected double getResolutionFactorY() {
-  	return getDeviceResolutionY(defaultResolutionUnit) / getDocumentResolutionY(defaultResolutionUnit);  	
+  	return getDeviceResolutionY(defaultResolutionUnit) / getDocumentResolutionY(defaultResolutionUnit);
   }
   
 }

@@ -31,7 +31,7 @@ import org.eclipse.gef.commands.Command;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
-public class SetConstraintCommand 
+public class SetConstraintCommand
 extends Command
 {
 	private DrawComponent part;
@@ -39,21 +39,21 @@ extends Command
 	private java.awt.Rectangle newBounds;
 
 	@Override
-	public void execute() 
+	public void execute()
 	{
-	  oldBounds = new java.awt.Rectangle(part.getBounds());  
-	  part.setBounds(newBounds);	  
+	  oldBounds = new java.awt.Rectangle(part.getBounds());
+	  part.setBounds(newBounds);
 	}
 	
 	@Override
-	public String getLabel() 
+	public String getLabel()
 	{
-	  if ((oldBounds.getWidth() == newBounds.getWidth()) && 
+	  if ((oldBounds.getWidth() == newBounds.getWidth()) &&
 	      (oldBounds.getHeight() == newBounds.getHeight()))
 	    return Messages.getString("org.nightlabs.editor2d.ui.command.SetConstraintCommand.label.changeLocation"); //$NON-NLS-1$
 	  
 		return Messages.getString("org.nightlabs.editor2d.ui.command.SetConstraintCommand.label.resize"); //$NON-NLS-1$
-	}	
+	}
 	
 	@Override
 	public void redo() {

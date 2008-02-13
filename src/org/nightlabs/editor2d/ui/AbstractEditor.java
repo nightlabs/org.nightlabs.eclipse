@@ -191,7 +191,7 @@ import org.nightlabs.print.page.PredefinedPageRegistry;
 import org.nightlabs.print.page.PredefinedPageUtil;
 
 
-public abstract class AbstractEditor 
+public abstract class AbstractEditor
 extends J2DGraphicalEditorWithFlyoutPalette
 //extends GraphicalEditorWithFlyoutPalette
 {
@@ -203,14 +203,14 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	private boolean savePreviouslyNeeded = false;
 	private RulerComposite rulerComp;
 
-	private TreeViewer treeViewer;    
+	private TreeViewer treeViewer;
 	private EditorOutlinePage outlinePage;
 	private boolean editorSaving = false;
 
-	protected void closeEditor(boolean save) 
+	protected void closeEditor(boolean save)
 	{
-		getSite().getPage().closeEditor(AbstractEditor.this, save);      
-		System.gc();			
+		getSite().getPage().closeEditor(AbstractEditor.this, save);
+		System.gc();
 	}
 
 	public Object getModel() {
@@ -218,20 +218,20 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	}
 
 	private UnitManager unitManager = null;
-	public UnitManager getUnitManager() 
+	public UnitManager getUnitManager()
 	{
-		if (unitManager == null) 
+		if (unitManager == null)
 		{
 			// TODO: update dotunit if resolution changes
 			Collection<IUnit> units = UnitRegistryEP.sharedInstance().getUnitRegistry().getUnits(
 					UnitConstants.UNIT_CONTEXT_EDITOR2D, true);
-			unitManager = new UnitManager(new HashSet<IUnit>(units), 
+			unitManager = new UnitManager(new HashSet<IUnit>(units),
 					getRootDrawComponent().getModelUnit());
 		}
 		return unitManager;
 	}
 
-//	protected abstract RootDrawComponent createRootDrawComponent();    
+//	protected abstract RootDrawComponent createRootDrawComponent();
 	protected RootDrawComponent createRootDrawComponent() {
 		RootDrawComponent root = getModelFactory().createRootDrawComponent(false);
 		root.setNameProvider(getNameProvider());
@@ -239,49 +239,49 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		return root;
 	}
 	
-	private RootDrawComponent root = null;  
-	public RootDrawComponent getRootDrawComponent() 
+	private RootDrawComponent root = null;
+	public RootDrawComponent getRootDrawComponent()
 	{
 		if (root == null) {
 			root = createRootDrawComponent();
 //			root.setNameProvider(getNameProvider());
-		}      
+		}
 		return root;
 	}
 
-	protected abstract EditPartFactory createEditPartFactory(); 
+	protected abstract EditPartFactory createEditPartFactory();
 	private EditPartFactory editPartFactory = null;
-	public EditPartFactory getEditPartFactory() 
+	public EditPartFactory getEditPartFactory()
 	{
 		if (editPartFactory == null)
 			editPartFactory = createEditPartFactory();;
 
 		return editPartFactory;
-	}      
+	}
 
 	protected abstract EditPartFactory createOutlineEditPartFactory();
 	private EditPartFactory outlineEditPartFactory = null;
-	public EditPartFactory getOutlineEditPartFactory() 
+	public EditPartFactory getOutlineEditPartFactory()
 	{
 		if (outlineEditPartFactory == null)
 			outlineEditPartFactory = createOutlineEditPartFactory();
 
 		return outlineEditPartFactory;
-	}     
+	}
 
-	protected abstract ContextMenuProvider createContextMenuProvider();    
+	protected abstract ContextMenuProvider createContextMenuProvider();
 	private ContextMenuProvider contextMenuProvider = null;
-	public ContextMenuProvider getContextMenuProvider() 
+	public ContextMenuProvider getContextMenuProvider()
 	{
 		if (contextMenuProvider == null)
 			contextMenuProvider = createContextMenuProvider();
 
 		return contextMenuProvider;
-	}    
+	}
 
 	private PaletteRoot paletteRoot = null;
 	@Override
-	public PaletteRoot getPaletteRoot() 
+	public PaletteRoot getPaletteRoot()
 	{
 		if (paletteRoot == null) {
 			paletteRoot = getPaletteFactory().createPalette();
@@ -295,7 +295,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	private RenderModeManager renderMan = null;
 	public RenderModeManager getRenderModeManager() {
 		return renderMan;
-	}     
+	}
 
 	private FilterManager filterMan = null;
 	public FilterManager getFilterManager() {
@@ -312,10 +312,10 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		if (nameProvider == null)
 			nameProvider = createNameProvider();
 		return nameProvider;
-	}    
+	}
 
 	private IOFilterMan ioFilterMan;
-	public IOFilterMan getIOFilterMan() 
+	public IOFilterMan getIOFilterMan()
 	{
 		if (ioFilterMan == null)
 			ioFilterMan = IOFilterRegistry.sharedInstance().getIOFilterMan();
@@ -324,7 +324,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	}
 
 	private LanguageManager langMan;
-	public LanguageManager getLanguageManager() 
+	public LanguageManager getLanguageManager()
 	{
 		if (langMan == null)
 			langMan = new LanguageManager();
@@ -333,13 +333,13 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	}
 
 	/** Create a new Editor instance. This is called by the Workspace. */
-	public AbstractEditor() 
+	public AbstractEditor()
 	{
-		init(); 
+		init();
 //		initJ2DRegistry();
 	}
 	
-	protected void init() 
+	protected void init()
 	{
 		getPalettePreferences().setPaletteState(FlyoutPaletteComposite.STATE_PINNED_OPEN);
 		getPalettePreferences().setDockLocation(PositionConstants.WEST);
@@ -348,7 +348,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	}
 	
 	@Override
-	protected DefaultEditDomain getEditDomain() 
+	protected DefaultEditDomain getEditDomain()
 	{
 		 if (super.getEditDomain() == null) {
 			 setEditDomain(new DefaultEditDomain(this));
@@ -356,42 +356,42 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		 return super.getEditDomain();
 	}
 	
-//	protected void initJ2DRegistry() 
+//	protected void initJ2DRegistry()
 //	{
 //	Map hints = new HashMap();
 //	hints.put(J2DGraphics.KEY_FIXED_LINEWIDTH, true);
 //	hints.put(J2DGraphics.KEY_USE_JAVA2D, true);
-//	J2DRegistry.setHints(hints);    	    	
+//	J2DRegistry.setHints(hints);
 //	}
 
-	protected RootDrawComponent load(IOFilter ioFilter, InputStream input) 
-	{      
-		if (ioFilter != null) 
+	protected RootDrawComponent load(IOFilter ioFilter, InputStream input)
+	{
+		if (ioFilter != null)
 		{
-			try 
+			try
 			{
 				RootDrawComponent root = (RootDrawComponent) ioFilter.read(input);
 				root.setRenderModeManager(getRenderModeManager());
-				return root;        	
-			} 
+				return root;
+			}
 			catch (IOException e) {
 				throw new RuntimeException("There occured an Error while reading with IOFilter "+ioFilter+" from InpuStream "+input, e); //$NON-NLS-1$ //$NON-NLS-2$
-			}          
+			}
 		}
 		return null;
 	}
 	
-	protected void load(FileEditorInput fileInput, IProgressMonitor monitor) 
+	protected void load(FileEditorInput fileInput, IProgressMonitor monitor)
 	{
 		IOFilter ioFilter = getIOFilterMan().getIOFilter(fileInput.getFile());
-		if (ioFilter != null) 
+		if (ioFilter != null)
 		{
-			try 
-			{    		
-				if (ioFilter instanceof IOFilterWithProgress) 
-				{	    			
+			try
+			{
+				if (ioFilter instanceof IOFilterWithProgress)
+				{
 					IOFilterWithProgress progressFilter = (IOFilterWithProgress) ioFilter;
-					progressFilter.addPropertyChangeListener(progressListener);	    			
+					progressFilter.addPropertyChangeListener(progressListener);
 					monitor.beginTask(Messages.getString("org.nightlabs.editor2d.ui.AbstractEditor.job.text") + " " + fileInput.getName(), progressFilter.getTotalWork()); //$NON-NLS-1$ //$NON-NLS-2$
 					root = load(ioFilter, new FileInputStream(fileInput.getFile()));
 					progressFilter.removePropertyChangeListener(progressListener);
@@ -409,23 +409,23 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		}
 	}
 
-	protected void load(FileEditorInput fileInput) 
-	{    	
+	protected void load(FileEditorInput fileInput)
+	{
 		final FileEditorInput input = fileInput;
 		IOFilter ioFilter = getIOFilterMan().getIOFilter(fileInput.getFile());
 		prepareInformationProvider(fileInput.getFile(), ioFilter, false);
 		IRunnableWithProgress runnable = new IRunnableWithProgress()
-		{			
-			public void run(IProgressMonitor monitor) 
-			throws InvocationTargetException, InterruptedException 
+		{
+			public void run(IProgressMonitor monitor)
+			throws InvocationTargetException, InterruptedException
 			{
 				try {
-					load(input, monitor);      
-				} 
+					load(input, monitor);
+				}
 				catch (Exception e) {
 					throw new RuntimeException(e);
-				}					
-			}			
+				}
+			}
 		};
 
 		try {
@@ -434,11 +434,11 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		}
 		catch (Exception e) {
 			throw new RuntimeException(e);
-		}    	    	
+		}
 	}
 		
 	private ScalableFreeformRootEditPart rootEditPart;
-	public ScalableFreeformRootEditPart getRootEditPart() 
+	public ScalableFreeformRootEditPart getRootEditPart()
 	{
 		if (rootEditPart == null)
 			rootEditPart = new J2DScalableFreeformRootEditPart();
@@ -457,7 +457,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	}
 
 	@Override
-	protected void configureGraphicalViewer() 
+	protected void configureGraphicalViewer()
 	{
 		super.configureGraphicalViewer();
 		ScrollingGraphicalViewer viewer = (ScrollingGraphicalViewer)getGraphicalViewer();
@@ -496,14 +496,14 @@ extends J2DGraphicalEditorWithFlyoutPalette
 			}
 		};
 		getGraphicalControl().addListener(SWT.Activate, listener);
-		getGraphicalControl().addListener(SWT.Deactivate, listener);  
+		getGraphicalControl().addListener(SWT.Deactivate, listener);
 
 //		// TODO Workaround to fix grey bg in editor
 //		getGraphicalControl().setBackground(new Color(null, 255, 255, 255));
 
 		// ViewerManager
 		viewerManager = new ViewerManager(viewer, getEditorSite().getActionBars().getStatusLineManager());
-		configureViewerManager();  
+		configureViewerManager();
 
 		getGraphicalControl().addControlListener(resizeListener);
 //		getCommandStack().addCommandStackEventListener(commandStackListener);
@@ -518,17 +518,17 @@ extends J2DGraphicalEditorWithFlyoutPalette
 			Display.getDefault().asyncExec(new Runnable(){
 				public void run() {
 					updateViewer();
-					logger.debug("Control resized!"); //$NON-NLS-1$					
+					logger.debug("Control resized!"); //$NON-NLS-1$
 				}
 			});
-		}		
+		}
 	};
 			
 	/* (non-Javadoc)
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditor#commandStackChanged(java.util.EventObject)
-	 */    
+	 */
 	@Override
-	public void commandStackChanged(EventObject event) 
+	public void commandStackChanged(EventObject event)
 	{
 		if (isDirty()){
 			if (!savePreviouslyNeeded()) {
@@ -543,7 +543,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		super.commandStackChanged(event);
 		// should solve redraw problems when undoing things
 		updateViewer();
-	}  
+	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette#createPaletteViewerProvider()
@@ -556,7 +556,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 				super.configurePaletteViewer(viewer);
 //				// create a drag source listener for this palette viewer
 //				// together with an appropriate transfer drop target listener, this will enable
-//				// model element creation by dragging a CombinatedTemplateCreationEntries 
+//				// model element creation by dragging a CombinatedTemplateCreationEntries
 //				// from the palette into the editor
 //				// @see ShapesEditor#createTransferDropTargetListener()
 //				viewer.addDragSourceListener(new TemplateTransferDragSourceListener(viewer));
@@ -570,16 +570,16 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		if (type == IContentOutlinePage.class) {
 //			treeViewer = new TreeViewer();
 			treeViewer = new org.nightlabs.editor2d.ui.outline.TreeViewer();
-			outlinePage = new EditorOutlinePage(this, treeViewer);        
+			outlinePage = new EditorOutlinePage(this, treeViewer);
 			return outlinePage;
 		}
 		
 		if (type == ZoomManager.class) {
 			return getZoomManager();
-		}			
+		}
 		
 		if (type == org.eclipse.ui.views.properties.IPropertySheetPage.class) {
-			PropertySheetPage page = new EditorPropertyPage(getUnitManager());    		
+			PropertySheetPage page = new EditorPropertyPage(getUnitManager());
 			page.setRootEntry(new UndoablePropertySheetEntry(getCommandStack()));
 			return page;
 		}
@@ -599,22 +599,22 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	}
 
 	private ZoomManager zoomManager = null;
-	protected ZoomManager getZoomManager() 
+	protected ZoomManager getZoomManager()
 	{
-		if (zoomManager == null && getGraphicalViewer() != null) 
+		if (zoomManager == null && getGraphicalViewer() != null)
 		{
 			Object zoomAdapter = getGraphicalViewer().getProperty(ZoomManager.class.toString());
 		  if (zoomAdapter != null && zoomAdapter instanceof ZoomManager) {
-  			zoomManager = ((ZoomManager)zoomAdapter);   			
-		  }			
+  			zoomManager = ((ZoomManager)zoomAdapter);
+		  }
 		}
-		return zoomManager;		
+		return zoomManager;
 	}
 	
 	@Override
-	public void doSave(IProgressMonitor monitor) 
+	public void doSave(IProgressMonitor monitor)
 	{
-		try {      	
+		try {
 			FileEditorInput input = (FileEditorInput) getEditorInput();
 			if (!input.isSaved()) {
 				doSaveAs();
@@ -625,13 +625,13 @@ extends J2DGraphicalEditorWithFlyoutPalette
 			String inputName = input.getName();
 			logger.debug("inputName = "+inputName); //$NON-NLS-1$
 
-			if (file.exists() 
+			if (file.exists()
 					|| MessageDialog.openConfirm(
 							getSite().getShell(),
 							Messages.getString("org.nightlabs.editor2d.ui.AbstractEditor.errorDialog.title"), //$NON-NLS-1$
 							Messages.getString("org.nightlabs.editor2d.ui.AbstractEditor.errorDialog.message.part1") //$NON-NLS-1$
 							+ " " //$NON-NLS-1$
-							+ file.getName() 
+							+ file.getName()
 							+ " " //$NON-NLS-1$
 							+ Messages.getString("org.nightlabs.editor2d.ui.AbstractEditor.errorDialog.message.part2"))) //$NON-NLS-1$
 			{
@@ -642,21 +642,21 @@ extends J2DGraphicalEditorWithFlyoutPalette
 			}
 		}
 		catch (WriteException e){
-			throw new RuntimeException(e);      	
-		}   
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
-	public void doSaveAs() 
+	public void doSaveAs()
 	{
-		performSaveAs();      
+		performSaveAs();
 	}
 
 	/**
 	 * Returns the KeyHandler with common bindings for both the Outline and Graphical Views.
 	 * For example, delete is a common action.
 	 */
-	public KeyHandler getCommonKeyHandler() 
+	public KeyHandler getCommonKeyHandler()
 	{
 		if (sharedKeyHandler == null) {
 			sharedKeyHandler = new KeyHandler();
@@ -668,7 +668,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 			sharedKeyHandler.put(
 					KeyStroke.getPressed(SWT.F2, 0),
 					getActionRegistry().getAction(GEFActionConstants.DIRECT_EDIT));
-			// TODO: register more common keys        
+			// TODO: register more common keys
 		}
 		return sharedKeyHandler;
 	}
@@ -681,10 +681,10 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		return getPaletteFactory().createPalettePreferences();
 	}
 
-	protected abstract AbstractPaletteFactory createPaletteFactory();   
+	protected abstract AbstractPaletteFactory createPaletteFactory();
 
 	private AbstractPaletteFactory paletteFactory = null;
-	public AbstractPaletteFactory getPaletteFactory() 
+	public AbstractPaletteFactory getPaletteFactory()
 	{
 		if (paletteFactory == null) {
 			paletteFactory = createPaletteFactory();
@@ -692,18 +692,18 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		return paletteFactory;
 	}
 
-	protected void handleActivationChanged(Event event) 
+	protected void handleActivationChanged(Event event)
 	{
 		IAction copy = null;
 		if (event.type == SWT.Deactivate)
 			copy = getActionRegistry().getAction(ActionFactory.COPY.getId());
-		if (getEditorSite().getActionBars().getGlobalActionHandler(ActionFactory.COPY.getId()) 
+		if (getEditorSite().getActionBars().getGlobalActionHandler(ActionFactory.COPY.getId())
 				!= copy) {
 			getEditorSite().getActionBars().setGlobalActionHandler(
 					ActionFactory.COPY.getId(), copy);
 			getEditorSite().getActionBars().updateActionBars();
 		}
-	}  
+	}
 
 	private Color bgColor = new Color(null, 255, 255, 255);
 	public Color getBackgroundColor() {
@@ -719,7 +719,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette#initializeGraphicalViewer()
 	 */
 	@Override
-	protected void initializeGraphicalViewer() 
+	protected void initializeGraphicalViewer()
 	{
 		GraphicalViewer graphicalViewer = getGraphicalViewer();
 		graphicalViewer.setContents(getModel()); // set the contents of this editor
@@ -728,7 +728,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		
 		// DescriptorManager
 		descriptorManager = new DescriptorManager();
-		configureDescriptorManager();      
+		configureDescriptorManager();
 		if (getModelRootEditPart() != null) {
 			getModelRootEditPart().setDescriptorManager(getDescriptorManager());
 		} else {
@@ -737,7 +737,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		viewerManager.setDescriptorManager(getDescriptorManager());
 		
 		// FilterManager
-		configureFilterManager();  
+		configureFilterManager();
 		
 //		zoomAll();
 	}
@@ -746,44 +746,44 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		if (getZoomManager() != null) {
 			getZoomManager().setZoomAsText(ZoomManager.FIT_ALL);
 			logger.info("zoomAll"); //$NON-NLS-1$
-		} 
+		}
 		else {
-			Display.getDefault().timerExec(2000, new Runnable(){			
+			Display.getDefault().timerExec(2000, new Runnable(){
 				public void run() {
 					zoomAll();
-				}			
+				}
 			});
 			logger.info("ZoomAll does not worked, zoomManager == null"); //$NON-NLS-1$
 			logger.info("started Timer"); //$NON-NLS-1$
-		}		
+		}
 	}
 		
 	@Override
-	protected void initializeActionRegistry() 
+	protected void initializeActionRegistry()
 	{
 		super.initializeActionRegistry();
 
 		// TODO: find out why global keyBindings not work only on base of Extension-Points
-		// (org.eclipse.ui.bindings + commands) nor on EditorActionBarContributor.declareGlobalActionKeys()  
+		// (org.eclipse.ui.bindings + commands) nor on EditorActionBarContributor.declareGlobalActionKeys()
 		IKeyBindingService keyBindingService = getSite().getKeyBindingService();
 		for (Iterator<IAction> it = getActionRegistry().getActions(); it.hasNext(); ) {
 			keyBindingService.registerAction(it.next());
-		} 	
-	}     
+		}
+	}
 
-	protected void configureFilterManager() 
+	protected void configureFilterManager()
 	{
 		Map<Class, List<DrawComponent>> class2DrawComponents = getRootDrawComponent().getClass2DrawComponents();
 		for (Iterator<Class> it = class2DrawComponents.keySet().iterator(); it.hasNext(); ) {
 			Class c = it.next();
 			getFilterManager().addFilter(c);
 		}
-		getRootDrawComponent().addPropertyChangeListener(getFilterManager().getTypeListener());    		
-		getFilterManager().ignoreClass(LayerImpl.class);    	
+		getRootDrawComponent().addPropertyChangeListener(getFilterManager().getTypeListener());
+		getFilterManager().ignoreClass(LayerImpl.class);
 	}
 
 	/**
-	 * By Default this Method does nothing, but Inheritans can override this Method to define 
+	 * By Default this Method does nothing, but Inheritans can override this Method to define
 	 * excluded EditParts, ignored classes or an exclusive class
 	 * 
 	 * @see org.nightlabs.editor2d.ui.ViewerManager
@@ -794,34 +794,34 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	}
 
 	/**
-	 * By Default this Method does nothing, but Inheritans can override this Method to add 
+	 * By Default this Method does nothing, but Inheritans can override this Method to add
 	 * Descriptors for special classes to the DescriptorManager
 	 * 
-	 * @see DescriptorManager#addDescriptor(org.nightlabs.editor2d.ui.viewer.ui.descriptor.IDrawComponentDescriptor, Class) 
+	 * @see DescriptorManager#addDescriptor(org.nightlabs.editor2d.ui.viewer.ui.descriptor.IDrawComponentDescriptor, Class)
 	 */
-	protected void configureDescriptorManager() 
+	protected void configureDescriptorManager()
 	{
 
 	}
 
-	protected void configureRenderModeManager() 
+	protected void configureRenderModeManager()
 	{
-//		getRenderModeManager().setCurrentRenderContextType(J2DRenderContext.RENDER_CONTEXT_TYPE_JAVA2D);		
+//		getRenderModeManager().setCurrentRenderContextType(J2DRenderContext.RENDER_CONTEXT_TYPE_JAVA2D);
 //		getRenderModeManager().setCurrentRenderContextType(Draw2DRenderContext.RENDER_CONTEXT_TYPE);
 	}
 	
-	protected EditorActionBarContributor getEditorActionBarContributor() 
+	protected EditorActionBarContributor getEditorActionBarContributor()
 	{
-		if (getEditorSite().getActionBarContributor() != null && 
-				getEditorSite().getActionBarContributor() instanceof EditorActionBarContributor) 
+		if (getEditorSite().getActionBarContributor() != null &&
+				getEditorSite().getActionBarContributor() instanceof EditorActionBarContributor)
 		{
-			return (EditorActionBarContributor) getEditorSite().getActionBarContributor();			
+			return (EditorActionBarContributor) getEditorSite().getActionBarContributor();
 		}
 		return null;
 	}
 	
 	@Override
-	protected void createActions() 
+	protected void createActions()
 	{
 		super.createActions();
 		ActionRegistry registry = getActionRegistry();
@@ -867,25 +867,25 @@ extends J2DGraphicalEditorWithFlyoutPalette
 
 		// ZoomIn
 		action = new ZoomInAction(getRootEditPart().getZoomManager());
-		registry.registerAction(action);      
+		registry.registerAction(action);
 		getSite().getKeyBindingService().registerAction(action);
 
 		// ZoomOut
 		action = new ZoomOutAction(getRootEditPart().getZoomManager());
-		registry.registerAction(action);      
+		registry.registerAction(action);
 		getSite().getKeyBindingService().registerAction(action);
 
 		// Zoom All
 		action = new ZoomAllAction(getRootEditPart().getZoomManager());
-		registry.registerAction(action);      
+		registry.registerAction(action);
 
 		// Zoom Selection
-		action = new ZoomSelectionAction(this);      
+		action = new ZoomSelectionAction(this);
 		registry.registerAction(action);
 		getSelectionActions().add(action.getId());
 
 		// Zoom Page
-		action = new ZoomPageAction(this, getRootEditPart().getZoomManager());      
+		action = new ZoomPageAction(this, getRootEditPart().getZoomManager());
 		registry.registerAction(action);
 		getPropertyActions().add(action.getId());
 
@@ -902,7 +902,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		// Normal Selection Action
 		action = new NormalSelectionAction(this);
 		registry.registerAction(action);
-		getSelectionActions().add(action.getId());   
+		getSelectionActions().add(action.getId());
 
 		// Reset Rotation Center Action
 		action = new ResetRotationCenterAction(this);
@@ -916,29 +916,29 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		// Select all with same name
 		action = new SelectAllWithSameName(this);
 		registry.registerAction(action);
-		getSelectionActions().add(action.getId());    
+		getSelectionActions().add(action.getId());
 
 		// Clone (Duplicate) Action
 		action = new CloneAction(this);
 		registry.registerAction(action);
-		getSelectionActions().add(action.getId());   
+		getSelectionActions().add(action.getId());
 
 		// Order Actions
 		action = new ChangeOrderToLocalFront(this);
 		registry.registerAction(action);
-		getSelectionActions().add(action.getId());    
+		getSelectionActions().add(action.getId());
 
 		action = new ChangeOrderToLocalBack(this);
 		registry.registerAction(action);
-		getSelectionActions().add(action.getId());    
+		getSelectionActions().add(action.getId());
 
 		action = new ChangeOrderOneDown(this);
 		registry.registerAction(action);
-		getSelectionActions().add(action.getId());    
+		getSelectionActions().add(action.getId());
 
 		action = new ChangeOrderOneUp(this);
 		registry.registerAction(action);
-		getSelectionActions().add(action.getId());    
+		getSelectionActions().add(action.getId());
 
 		// Paste Action
 		PasteAction pasteAction = new PasteAction(this);
@@ -951,16 +951,16 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		registry.registerAction(cutAction);
 		getSelectionActions().add(cutAction.getId());
 		cutAction.addPropertyChangeListener(pasteAction.cutListener);
-		getSite().getKeyBindingService().registerAction(cutAction);      
+		getSite().getKeyBindingService().registerAction(cutAction);
 
 		// Copy Action
 		CopyAction copyAction = new CopyAction(this);
 		registry.registerAction(copyAction);
-		getSelectionActions().add(copyAction.getId());  
+		getSelectionActions().add(copyAction.getId());
 		copyAction.addPropertyChangeListener(pasteAction.copyListener);
-		getSite().getKeyBindingService().registerAction(copyAction);      
+		getSite().getKeyBindingService().registerAction(copyAction);
 
-		// Tooltip Preference 
+		// Tooltip Preference
 		action = new ShowFigureToolTipAction(this);
 		registry.registerAction(action);
 		getPropertyActions().add(action.getId());
@@ -1012,44 +1012,44 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		// Shape Union
 		action = new ShapeUnionAction(this);
 		registry.registerAction(action);
-		getSelectionActions().add(action.getId());            
+		getSelectionActions().add(action.getId());
 
 		// Shape Intersection
 		action = new ShapeIntersectAction(this);
 		registry.registerAction(action);
-		getSelectionActions().add(action.getId());            
+		getSelectionActions().add(action.getId());
 
 		// Shape Subtract
 		action = new ShapeSubtractAction(this);
 		registry.registerAction(action);
-		getSelectionActions().add(action.getId());            
+		getSelectionActions().add(action.getId());
 
 		// Shape Exclusive Or
 		action = new ShapeExclusiveOrAction(this);
 		registry.registerAction(action);
-		getSelectionActions().add(action.getId());     
+		getSelectionActions().add(action.getId());
 
 		// Delete
 		action = new DeleteAction(this);
 		registry.registerAction(action);
-		getSelectionActions().add(action.getId());      
+		getSelectionActions().add(action.getId());
 	}
 
 	/**
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditor#createGraphicalViewer(org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
-	protected void createGraphicalViewer(Composite parent) 
+	protected void createGraphicalViewer(Composite parent)
 	{
 		long start = System.currentTimeMillis();
-		rulerComp = new RulerComposite(parent, SWT.NONE);		
+		rulerComp = new RulerComposite(parent, SWT.NONE);
 		super.createGraphicalViewer(rulerComp);
 		rulerComp.setGraphicalViewer((ScrollingGraphicalViewer) getGraphicalViewer());
 		if (logger.isDebugEnabled()) {
 			long duration = System.currentTimeMillis() - start;
 			logger.debug("createGraphicalViewer took "+duration+" ms!"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-	}  
+	}
 
 	public FigureCanvas getEditor(){
 		return (FigureCanvas)getGraphicalViewer().getControl();
@@ -1065,7 +1065,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		return getCommandStack().isDirty();
 	}
 
-	protected void loadProperties() 
+	protected void loadProperties()
 	{
 		// Ruler properties
 		EditorRuler ruler = getRootDrawComponent().getLeftRuler();
@@ -1080,25 +1080,25 @@ extends J2DGraphicalEditorWithFlyoutPalette
 			provider = new EditorRulerProvider(ruler);
 		}
 		getGraphicalViewer().setProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER, provider);
-		getGraphicalViewer().setProperty(RulerProvider.PROPERTY_RULER_VISIBILITY, 
+		getGraphicalViewer().setProperty(RulerProvider.PROPERTY_RULER_VISIBILITY,
 				new Boolean(getRootDrawComponent().isRulersEnabled()));
 
 		// Snap to Geometry property
-		getGraphicalViewer().setProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED, 
+		getGraphicalViewer().setProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED,
 				new Boolean(getRootDrawComponent().isSnapToGeometry()));
 
 		// Grid properties
-		getGraphicalViewer().setProperty(SnapToGrid.PROPERTY_GRID_ENABLED, 
+		getGraphicalViewer().setProperty(SnapToGrid.PROPERTY_GRID_ENABLED,
 				new Boolean(getRootDrawComponent().isGridEnabled()));
 		// We keep grid visibility and enablement in sync
-		getGraphicalViewer().setProperty(SnapToGrid.PROPERTY_GRID_VISIBLE, 
+		getGraphicalViewer().setProperty(SnapToGrid.PROPERTY_GRID_VISIBLE,
 				new Boolean(getRootDrawComponent().isGridEnabled()));
 
 		// Zoom
 		ZoomManager manager = (ZoomManager)getGraphicalViewer()
 		.getProperty(ZoomManager.class.toString());
 		if (manager != null)
-			manager.setZoom(getRootDrawComponent().getZoom());      	            
+			manager.setZoom(getRootDrawComponent().getZoom());
 	}
 
 	/**
@@ -1113,7 +1113,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		return savePreviouslyNeeded;
 	}
 
-	protected void saveProperties() 
+	protected void saveProperties()
 	{
 		getRootDrawComponent().setRulersEnabled(((Boolean)getGraphicalViewer()
 				.getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY)).booleanValue());
@@ -1129,7 +1129,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 
 	protected void setSavePreviouslyNeeded(boolean value) {
 		savePreviouslyNeeded = value;
-	}  
+	}
 
 	@Override
 	public String getTitle() {
@@ -1140,7 +1140,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 			return super.getTitle();
 	}
 
-	protected boolean performSaveAs() 
+	protected boolean performSaveAs()
 	{
 		FileDialog dialog = new FileDialog(getSite().getWorkbenchWindow().getShell(), SWT.SAVE);
 		String inputFileName = getEditorInput().getName();
@@ -1153,11 +1153,11 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		String[] fileExtensions = getIOFilterMan().getWriteFileExtensions(true);
 		// TODO: find out how to get the associated fileExtensiosn for editors and only use
 		// those here, general write filter should be implemented as export wizards
-//		IEditorRegistry editorRegistry = PlatformUI.getWorkbench().getEditorRegistry(); 
+//		IEditorRegistry editorRegistry = PlatformUI.getWorkbench().getEditorRegistry();
 //		IEditorDescriptor[] editors = editorRegistry.getEditors(inputFileName);
 //		for (int i=0; i<editors.length; i++) {
 //			IEditorDescriptor descriptor = editors[i];
-//		}		
+//		}
 		if (fileExtensions != null) {
 			dialog.setFilterExtensions(fileExtensions);
 		}
@@ -1167,7 +1167,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		if (fullPath == null)
 			return false;
 
-		final File file = new File(fullPath);  
+		final File file = new File(fullPath);
 
 		if (!file.exists()) {
 			save(file);
@@ -1175,13 +1175,13 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		else {
 			if (RCPUtil.showConfirmOverwriteDialog(file.getName()))
 				save(file);
-			else 
+			else
 				return false;
 		}
 		try {
-			// TODO should only be done when saving was sucessful and not aborted 
+			// TODO should only be done when saving was sucessful and not aborted
 			getCommandStack().markSaveLocation();
-		} 
+		}
 		catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -1191,45 +1191,45 @@ extends J2DGraphicalEditorWithFlyoutPalette
 
 	private PropertyChangeListener progressListener = new PropertyChangeListener()
 	{
-		public void propertyChange(PropertyChangeEvent evt) 
+		public void propertyChange(PropertyChangeEvent evt)
 		{
 			Object newValue = evt.getNewValue();
 			String propertyName = evt.getPropertyName();
 			if (propertyName.equals(AbstractIOFilterWithProgress.PROGRESS_CHANGED)) {
 				int work = ((Integer)newValue).intValue();
-				getProgressMonitor().getProgressMonitor().internalWorked(work); 
+				getProgressMonitor().getProgressMonitor().internalWorked(work);
 			}
 			else if (propertyName.equals(AbstractIOFilterWithProgress.SUBTASK_FINISHED)) {
 				String subTaskName = (String) newValue;
-				getProgressMonitor().getProgressMonitor().subTask(subTaskName);  				
+				getProgressMonitor().getProgressMonitor().subTask(subTaskName);
 			}
-		}			
+		}
 	};
 
-	private ProgressMonitorDialog progressMonitor; 
-	protected ProgressMonitorDialog getProgressMonitor() 
+	private ProgressMonitorDialog progressMonitor;
+	protected ProgressMonitorDialog getProgressMonitor()
 	{
 		if (progressMonitor == null) {
-			progressMonitor = new ProgressMonitorDialog(getSite().getWorkbenchWindow().getShell());    		
+			progressMonitor = new ProgressMonitorDialog(getSite().getWorkbenchWindow().getShell());
 		}
 		return progressMonitor;
 	}
 
-	protected void prepareInformationProvider(File f, IOFilter ioFilter, boolean write) 
+	protected void prepareInformationProvider(File f, IOFilter ioFilter, boolean write)
 	{
-		if (ioFilter != null) 
+		if (ioFilter != null)
 		{
 			IOFilterInformationProvider ip = ioFilter.getInformationProvider();
-			if (ip != null) 
+			if (ip != null)
 			{
 				URL url;
 				try {
 					url = f.toURL();
-					ip.setURL(url);	
+					ip.setURL(url);
 					if (logger.isDebugEnabled())
 						logger.debug("url = "+url); //$NON-NLS-1$
 						
-					if (ip instanceof IOFilterUIInformationProvider) 
+					if (ip instanceof IOFilterUIInformationProvider)
 					{
 						IOFilterUIInformationProvider uiip = (IOFilterUIInformationProvider) ip;
 						IWizardHop hop = null;
@@ -1237,43 +1237,43 @@ extends J2DGraphicalEditorWithFlyoutPalette
 							hop = uiip.getWizardHopForWrite();
 						else
 							hop = uiip.getWizardHopForRead();
-						if (hop != null) 
+						if (hop != null)
 						{
 							InformationProviderWizard wizard = new InformationProviderWizard(url);
 							wizard.addDynamicWizardPage(hop.getEntryPage());
 							DynamicPathWizardDialog dialog = new DynamicPathWizardDialog(wizard);
-							int returnCode = dialog.open(); 
+							int returnCode = dialog.open();
 							if (returnCode == Window.OK) {
 								
 							}
 						}
-					}										
+					}
 				} catch (MalformedURLException e) {
 					logger.warn("fileInput.getFile() "+f+" could not be transformed into ULR", e); //$NON-NLS-1$ //$NON-NLS-2$
 					logger.warn("prepartion of IOFilterInformationProvider for IOFilter "+ioFilter.getName().getText(Locale.getDefault().getLanguage()) +" failed!"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
-		}		
+		}
 	}
 	
-	protected void save(File f) 
+	protected void save(File f)
 	{
-		final File file = f;   
-		IOFilter ioFilter = getIOFilterMan().getIOFilter(file); 
+		final File file = f;
+		IOFilter ioFilter = getIOFilterMan().getIOFilter(file);
 		prepareInformationProvider(file, ioFilter, true);
 		IRunnableWithProgress runnable = new IRunnableWithProgress()
-		{			
-			public void run(IProgressMonitor monitor) 
-			throws InvocationTargetException, InterruptedException 
+		{
+			public void run(IProgressMonitor monitor)
+			throws InvocationTargetException, InterruptedException
 			{
 				saveProperties();
 				try {
-					boolean saved = save(file, monitor);      
-				} 
+					boolean saved = save(file, monitor);
+				}
 				catch (Exception e) {
 					throw new RuntimeException(e);
-				}					
-			}			
+				}
+			}
 		};
 
 		try {
@@ -1282,8 +1282,8 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		}
 		catch (Exception e) {
 			throw new RuntimeException(e);
-		}    	
-	}    
+		}
+	}
 
 	/**
 	 * Saves the Model under the specified path.
@@ -1298,49 +1298,49 @@ extends J2DGraphicalEditorWithFlyoutPalette
 			progressMonitor = new NullProgressMonitor();
 
 		// use IOFilterMan
-		IOFilter ioFilter = getIOFilterMan().getIOFilter(file);      
-		if (ioFilter != null) 
+		IOFilter ioFilter = getIOFilterMan().getIOFilter(file);
+		if (ioFilter != null)
 		{
 			if (!reactOnSave(ioFilter)) {
 				return false;
 			}
 			
 			try {
-				if (ioFilter instanceof IOFilterWithProgress) {      		
+				if (ioFilter instanceof IOFilterWithProgress) {
 					IOFilterWithProgress progressFilter = (IOFilterWithProgress) ioFilter;
 					progressMonitor.beginTask(Messages.getString("org.nightlabs.editor2d.ui.AbstractEditor.job.name") + " " + file.getName(), progressFilter.getTotalWork()); //$NON-NLS-1$ //$NON-NLS-2$
-					progressFilter.addPropertyChangeListener(progressListener);      		
+					progressFilter.addPropertyChangeListener(progressListener);
 					saveFile(file, progressFilter, progressMonitor);
-					progressFilter.removePropertyChangeListener(progressListener); 
+					progressFilter.removePropertyChangeListener(progressListener);
 				}
 				else {
 					progressMonitor.beginTask(Messages.getString("org.nightlabs.editor2d.ui.AbstractEditor.job.name") + " " + file.getName(), 2); //$NON-NLS-1$ //$NON-NLS-2$
-					saveFile(file, ioFilter, progressMonitor);      		
-				}      		
+					saveFile(file, ioFilter, progressMonitor);
+				}
 			} finally {
 				progressMonitor.done();
 			}
 		}
 		return true;
-	}     
+	}
 
-	protected void saveFile(File file, IOFilter ioFilter, IProgressMonitor monitor) 
+	protected void saveFile(File file, IOFilter ioFilter, IProgressMonitor monitor)
 	throws WriteException
 	{
-		try {        	
+		try {
 			String fileName = file.getCanonicalPath();
 			logger.info("Save File "+fileName); //$NON-NLS-1$
-			FileOutputStream fos = new FileOutputStream(fileName);          
-			ioFilter.write(getRootDrawComponent(), fos);      		
+			FileOutputStream fos = new FileOutputStream(fileName);
+			ioFilter.write(getRootDrawComponent(), fos);
 		} catch (Exception e) {
 //			throw new WriteException(file, "an error occured while writing", e);
 			throw new RuntimeException(e);
-		}    	
+		}
 	}
 
 	@Override
 	protected void setInput(IEditorInput input)
-	{ 
+	{
 		long start = System.currentTimeMillis();
 		super.setInput(input);
 		renderMan = RendererRegistry.sharedInstance().getRenderModeManager();
@@ -1348,24 +1348,24 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		
 		if (input instanceof FileEditorInput) {
 			FileEditorInput fileInput = (FileEditorInput) input;
-			root = getRootDrawComponent();        
+			root = getRootDrawComponent();
 			if (!fileInput.isSaved()) {
 				initialzePage();
-			} else {    
+			} else {
 				try {
 					load(fileInput);
 				} catch (OutOfMemoryError e) {
 					System.gc();
-					MessageDialog.openError(RCPUtil.getActiveWorkbenchShell(), 
+					MessageDialog.openError(RCPUtil.getActiveWorkbenchShell(),
 							"Not enough memory", "The opened File needs more memory than is available");
 				}
-				zoomAll();				
-			}            	      	
-		} 
+				zoomAll();
+			}
+		}
 		else
 			initialzePage();
 
-		root.setRenderModeManager(getRenderModeManager());      
+		root.setRenderModeManager(getRenderModeManager());
 		getRootDrawComponent().setLanguageID(getLanguageManager().getCurrentLanguageID());
 		getUnitManager().setCurrentUnit(getRootDrawComponent().getModelUnit());
 		if (logger.isDebugEnabled()) {
@@ -1374,7 +1374,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		}
 	}
 	
-	protected void initialzePage() 
+	protected void initialzePage()
 	{
 		logger.debug("initialize Page!"); //$NON-NLS-1$
 		root = getRootDrawComponent();
@@ -1383,16 +1383,16 @@ extends J2DGraphicalEditorWithFlyoutPalette
 //		String pageID = Preferences.getPreferenceStore().getString(
 //				Preferences.PREF_PREDEFINED_PAGE_ID);
 //		IPredefinedPage defaultPage = getPredefinedPageRegistry().getPage(pageID);
-//		IUnit pageUnit = defaultPage.getUnit();    	
+//		IUnit pageUnit = defaultPage.getUnit();
 //		String resolutionUnitID = Preferences.getPreferenceStore().getString(
 //				Preferences.PREF_STANDARD_RESOLUTION_UNIT_ID);
 //		IResolutionUnit resUnit = getResolutionUnitRegistry().getResolutionUnit(resolutionUnitID);
-//		Resolution resolution = new ResolutionImpl(resUnit, 
+//		Resolution resolution = new ResolutionImpl(resUnit,
 //				Preferences.getPreferenceStore().getDouble(Preferences.PREF_DOCUMENT_RESOLUTION));
 		
 		IPredefinedPage defaultPage = null;
 		Resolution resolution = null;
-		Map<Class, DocumentProperties> editorClass2DocumentProperties = 
+		Map<Class, DocumentProperties> editorClass2DocumentProperties =
 			DocumentPropertiesRegistry.sharedInstance().getDocumentConfModule().getEditorClass2DocumentProperties();
 		DocumentProperties documentProperties = editorClass2DocumentProperties.get(this.getClass());
 		if (documentProperties != null) {
@@ -1404,18 +1404,18 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		DotUnit dotUnit = (DotUnit) getUnitRegistry().getUnit(DotUnit.UNIT_ID);
 		if (dotUnit == null) {
 			dotUnit = new DotUnit(resolution);
-			getUnitRegistry().addUnit(dotUnit, UnitConstants.UNIT_CONTEXT_EDITOR2D);			
+			getUnitRegistry().addUnit(dotUnit, UnitConstants.UNIT_CONTEXT_EDITOR2D);
 		}
-		else 
-			dotUnit.setResolution(resolution);    	
+		else
+			dotUnit.setResolution(resolution);
 
 		String unitID = Preferences.getPreferenceStore().getString(Preferences.PREF_STANDARD_UNIT_ID);
 		getUnitManager().setCurrentUnit(getUnitRegistry().getUnit(unitID));
 		
 		Rectangle pageBounds = PredefinedPageUtil.getPageBounds(dotUnit, defaultPage);
-		getRootDrawComponent().setResolution(resolution);  	  	
-		getRootDrawComponent().getCurrentPage().setPageBounds(pageBounds); 			
-	}	
+		getRootDrawComponent().setResolution(resolution);
+		getRootDrawComponent().getCurrentPage().setPageBounds(pageBounds);
+	}
 	
 	protected ResolutionUnitRegistry getResolutionUnitRegistry() {
 		return ResolutionUnitEP.sharedInstance().getResolutionUnitRegistry();
@@ -1434,24 +1434,24 @@ extends J2DGraphicalEditorWithFlyoutPalette
 			if (getGraphicalViewer() != null) {
 				getGraphicalViewer().setContents(getRootDrawComponent());
 				loadProperties();
-			}        
-		}    	
+			}
+		}
 	}
 
 	public EditPartViewer getEditPartViewer() {
 		return getGraphicalViewer();
 	}
 
-	public void updateViewer() 
+	public void updateViewer()
 	{
-		refreshBuffer();    	
+		refreshBuffer();
 		if (getGraphicalViewer() != null && getGraphicalViewer().getControl() != null) {
 			getGraphicalViewer().getControl().redraw();
 		}
 		logger.debug("updateViewer!"); //$NON-NLS-1$
 	}
 
-	protected void refreshBuffer() 
+	protected void refreshBuffer()
 	{
 		RootDrawComponentEditPart mldcEditPart = getModelRootEditPart();
 		if (mldcEditPart != null) {
@@ -1459,12 +1459,12 @@ extends J2DGraphicalEditorWithFlyoutPalette
 			if (buffer != null) {
 //				LOGGER.debug("Buffer refreshed!");
 				buffer.refresh();
-			}			    		
+			}
 		}
 	}
 
 	private RootDrawComponentEditPart mldcEditPart = null;
-	protected RootDrawComponentEditPart getModelRootEditPart() 
+	protected RootDrawComponentEditPart getModelRootEditPart()
 	{
 		if (getRootEditPart().getChildren().size() == 1) {
 			EditPart editPart = (EditPart) getRootEditPart().getChildren().get(0);
@@ -1473,11 +1473,11 @@ extends J2DGraphicalEditorWithFlyoutPalette
 					return mldcEditPart = (RootDrawComponentEditPart) editPart;
 				}
 			}
-		}    		
+		}
 		return mldcEditPart;
 	}
 
-//	**************** BEGIN public Methods for EditorOutlinePage ******************** 
+//	**************** BEGIN public Methods for EditorOutlinePage ********************
 	public GraphicalViewer getOutlineGraphicalViewer() {
 		return getGraphicalViewer();
 	}
@@ -1493,9 +1493,9 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	public ActionRegistry getOutlineActionRegistry() {
 		return getActionRegistry();
 	}
-//	**************** END public Methods for EditorOutlinePage **********************  
+//	**************** END public Methods for EditorOutlinePage **********************
 
-	public void disposeEditor() 
+	public void disposeEditor()
 	{
 //		super.dispose();
 		
@@ -1520,7 +1520,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		mldcEditPart = null;
 				
 		if (rulerComp != null)
-			rulerComp.dispose();		
+			rulerComp.dispose();
 		rulerComp = null;
 		
 		if (contextMenuProvider != null)
@@ -1530,12 +1530,12 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		treeViewer = null;
 		viewerManager = null;
 		editPartFactory = null;
-		paletteRoot = null;    
+		paletteRoot = null;
 
 		freeMemory();
 	}
 
-	protected void freeMemory() 
+	protected void freeMemory()
 	{
 		Runtime runTime = Runtime.getRuntime();
 		long maxMemory = runTime.maxMemory();
@@ -1569,10 +1569,10 @@ extends J2DGraphicalEditorWithFlyoutPalette
 			logger.debug("Free Memory AFTER GC  = "+(freeMemory / mb)+" MB");     //$NON-NLS-1$ //$NON-NLS-2$
 			logger.debug("");  				 //$NON-NLS-1$
 		}
-	}	
+	}
 
 	private Editor2DFactory factory = null;
-	public Editor2DFactory getModelFactory() 
+	public Editor2DFactory getModelFactory()
 	{
 		if (factory == null) {
 			factory = createModelFactory();
@@ -1580,7 +1580,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		return factory;
 	}
 
-	protected abstract Editor2DFactory createModelFactory();		
+	protected abstract Editor2DFactory createModelFactory();
 	
 	private DisposeListener disposeListener = new DisposeListener(){
 		public void widgetDisposed(DisposeEvent e) {
@@ -1590,15 +1590,15 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	
 	/**
 	 * By default empty, subclasses can override this method to configure the ioFilterMan
-	 * e.g. set the default fileExtensions for reading and writing files 
+	 * e.g. set the default fileExtensions for reading and writing files
 	 */
 	protected void configureIOFilterMan(IOFilterMan ioFilterMan) {
 	}
 	
 	/**
-	 * By default empty, subclasses can override this method to react  
+	 * By default empty, subclasses can override this method to react
 	 * before ssaving with a iofiter e.g. to display a message before
-	 *   
+	 * 
 	 * @param ioFilter the iofilter to use for saving
 	 * @return true if perform save or false if not
 	 */

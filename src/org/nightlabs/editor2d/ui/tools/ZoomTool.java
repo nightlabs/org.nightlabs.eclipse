@@ -44,98 +44,98 @@ import org.nightlabs.editor2d.ui.request.EditorRequestConstants;
 import org.nightlabs.editor2d.ui.util.EditorUtil;
 
 
-public class ZoomTool 
-extends AbstractTool 
-implements EditorRequestConstants 
+public class ZoomTool
+extends AbstractTool
+implements EditorRequestConstants
 {
   protected IFigure zoomRectangleFigure;
   
   protected ZoomManager zoomManager;
   
-  public ZoomTool() 
+  public ZoomTool()
   {
     setDefaultCursor(Cursors.CROSS);
   }
   
   @Override
-	protected String getCommandName() 
+	protected String getCommandName()
   {
     return REQ_ZOOM_RECT;
   }
 
-  private void eraseZoomFeedback() 
+  private void eraseZoomFeedback()
   {
   	if (zoomRectangleFigure != null) {
   		removeFeedback(zoomRectangleFigure);
   		zoomRectangleFigure = null;
   	}
-  }  
+  }
   
   /**
    * Erases feedback if necessary and puts the tool into the terminal state.
    */
   @Override
-	public void deactivate() 
+	public void deactivate()
   {
   	if (isInState(STATE_DRAG_IN_PROGRESS)) {
   		eraseZoomFeedback();
   	}
   	super.deactivate();
   	setState(STATE_TERMINAL);
-  }  
+  }
   
   /**
    * @see org.eclipse.gef.tools.AbstractTool#getDebugName()
    */
   @Override
-	protected String getDebugName() 
+	protected String getDebugName()
   {
   	return "Zoom Tool";//$NON-NLS-1$
-  }  
+  }
   
-  protected IFigure getZoomFeedbackFigure() 
-  {		
+  protected IFigure getZoomFeedbackFigure()
+  {
   	if (zoomRectangleFigure == null) {
   		zoomRectangleFigure = new ZoomRectangleFigure();
   		addFeedback(zoomRectangleFigure);
   	}
   	return zoomRectangleFigure;
-  }  
+  }
   
-  protected Rectangle getZoomSelectionRectangle() 
+  protected Rectangle getZoomSelectionRectangle()
   {
   	return new Rectangle(getStartLocation(), getLocation());
   }
   
-  protected ZoomManager getZoomManager() 
+  protected ZoomManager getZoomManager()
   {
-    if (getCurrentViewer().getContents().getRoot() instanceof ScalableRootEditPart) 
+    if (getCurrentViewer().getContents().getRoot() instanceof ScalableRootEditPart)
     {
       if (zoomManager == null) {
-        zoomManager = ((ScalableRootEditPart) getCurrentViewer().getContents().getRoot()).getZoomManager();        
+        zoomManager = ((ScalableRootEditPart) getCurrentViewer().getContents().getRoot()).getZoomManager();
       }
       return zoomManager;
     }
-    else if (getCurrentViewer().getContents().getRoot() instanceof ScalableFreeformRootEditPart) 
+    else if (getCurrentViewer().getContents().getRoot() instanceof ScalableFreeformRootEditPart)
     {
       if (zoomManager == null) {
-        zoomManager = ((ScalableFreeformRootEditPart) getCurrentViewer().getContents().getRoot()).getZoomManager();        
+        zoomManager = ((ScalableFreeformRootEditPart) getCurrentViewer().getContents().getRoot()).getZoomManager();
       }
-      return zoomManager;      
+      return zoomManager;
     }
     return null;
   }
     
-  protected boolean isGraphicalViewer() 
+  protected boolean isGraphicalViewer()
   {
   	return getCurrentViewer() instanceof GraphicalViewer;
-  }  
+  }
   
   /**
    * @see org.eclipse.gef.tools.AbstractTool#handleButtonDown(int)
    */
   @Override
-	protected boolean handleButtonDown(int button) 
+	protected boolean handleButtonDown(int button)
   {
   	if (!isGraphicalViewer())
   		return true;
@@ -143,7 +143,7 @@ implements EditorRequestConstants
   		setState(STATE_INVALID);
   		handleInvalidInput();
   	}
-  	if (stateTransition(STATE_INITIAL, STATE_DRAG_IN_PROGRESS)) 
+  	if (stateTransition(STATE_INITIAL, STATE_DRAG_IN_PROGRESS))
   	{
   	  // TODO: if shift is pressed draw symetric Rectangle
 //  		if (getCurrentInput().isControlKeyDown())
@@ -158,7 +158,7 @@ implements EditorRequestConstants
    * @see org.eclipse.gef.tools.AbstractTool#handleButtonUp(int)
    */
   @Override
-	protected boolean handleButtonUp(int button) 
+	protected boolean handleButtonUp(int button)
   {
   	if (stateTransition(STATE_DRAG_IN_PROGRESS, STATE_TERMINAL)) {
   		eraseZoomFeedback();
@@ -172,19 +172,19 @@ implements EditorRequestConstants
    * @see org.eclipse.gef.tools.AbstractTool#handleDragInProgress()
    */
   @Override
-	protected boolean handleDragInProgress() 
+	protected boolean handleDragInProgress()
   {
   	if (isInState(STATE_DRAG | STATE_DRAG_IN_PROGRESS)) {
   		showZoomFeedback();
   	}
   	return true;
-  }  
+  }
   
   /**
    * @see org.eclipse.gef.tools.AbstractTool#handleFocusLost()
    */
   @Override
-	protected boolean handleFocusLost() 
+	protected boolean handleFocusLost()
   {
   	if (isInState(STATE_DRAG | STATE_DRAG_IN_PROGRESS)) {
   		handleFinished();
@@ -198,7 +198,7 @@ implements EditorRequestConstants
    * @return <code>true</code>
    */
   @Override
-	protected boolean handleInvalidInput() 
+	protected boolean handleInvalidInput()
   {
   	eraseZoomFeedback();
   	return true;
@@ -208,7 +208,7 @@ implements EditorRequestConstants
    * @see org.eclipse.gef.Tool#setViewer(org.eclipse.gef.EditPartViewer)
    */
   @Override
-	public void setViewer(EditPartViewer viewer) 
+	public void setViewer(EditPartViewer viewer)
   {
   	if (viewer == getCurrentViewer())
   		return;
@@ -219,21 +219,21 @@ implements EditorRequestConstants
   		setDefaultCursor(Cursors.NO);
   }
     
-  protected void performZoom() 
+  protected void performZoom()
   {
 //  	EditorUtil.zoomToRelativeRect(getZoomSelectionRectangle().getCopy(), getZoomManager());
-  	EditorUtil.zoomToAbsoluteRect(getZoomSelectionRectangle().getCopy(), getZoomManager());  	
-  }  
+  	EditorUtil.zoomToAbsoluteRect(getZoomSelectionRectangle().getCopy(), getZoomManager());
+  }
   
-  protected void showZoomFeedback() 
+  protected void showZoomFeedback()
   {
   	Rectangle rect = getZoomSelectionRectangle().getCopy();
   	getZoomFeedbackFigure().translateToRelative(rect);
   	getZoomFeedbackFigure().setBounds(rect);
   }
     
-class ZoomRectangleFigure 
-extends Figure 
+class ZoomRectangleFigure
+extends Figure
 {
   private int offset = 0;
   private boolean schedulePaint = true;
@@ -243,8 +243,8 @@ extends Figure
    * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
    */
   @Override
-	protected void paintFigure(Graphics graphics) 
-  {	
+	protected void paintFigure(Graphics graphics)
+  {
   	Rectangle bounds = getBounds().getCopy();
   	graphics.translate(getLocation());
   	
@@ -281,7 +281,7 @@ extends Figure
   			public void run() {
   				offset++;
   				if (offset > 5)
-  					offset = 0;	
+  					offset = 0;
   				
   				schedulePaint = true;
   				repaint();

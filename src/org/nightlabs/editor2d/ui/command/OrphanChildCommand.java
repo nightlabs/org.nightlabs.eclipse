@@ -33,14 +33,14 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class OrphanChildCommand 
-extends Command 
+public class OrphanChildCommand
+extends Command
 {
 	private DrawComponent child = null;
-	private DrawComponentContainer parent = null;	
+	private DrawComponentContainer parent = null;
 	private int index = -1;
 	
-	public OrphanChildCommand(DrawComponent child) 
+	public OrphanChildCommand(DrawComponent child)
 	{
 		super();
 		setLabel(Messages.getString("org.nightlabs.editor2d.ui.command.OrphanChildCommand.label")); //$NON-NLS-1$
@@ -48,7 +48,7 @@ extends Command
 	}
 	
 	@Override
-	public void execute() 
+	public void execute()
 	{
 		parent = child.getParent();
 		index = parent.getDrawComponents().indexOf(child);
@@ -56,13 +56,13 @@ extends Command
 	}
 
 	@Override
-	public void redo() 
+	public void redo()
 	{
 		execute();
 	}
 
 	@Override
-	public void undo() 
+	public void undo()
 	{
 		parent.addDrawComponent(child, index);
 	}

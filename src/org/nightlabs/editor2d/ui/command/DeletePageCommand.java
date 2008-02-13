@@ -31,35 +31,35 @@ import org.nightlabs.editor2d.RootDrawComponent;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class DeletePageCommand 
-extends DeleteDrawComponentCommand 
+public class DeletePageCommand
+extends DeleteDrawComponentCommand
 {
 	public DeletePageCommand(RootDrawComponent root, PageDrawComponent page) {
 		super(root, page);
 	}
 	
 	@Override
-	public void execute() 
+	public void execute()
 	{
 		super.execute();
 		setCurrentPage();
-	}	
-	
-	@Override
-	public void redo() 
-	{
-		super.redo();
-		setCurrentPage();	  
 	}
 	
 	@Override
-	public void undo() 
+	public void redo()
+	{
+		super.redo();
+		setCurrentPage();
+	}
+	
+	@Override
+	public void undo()
 	{
 		super.undo();
-	  getRootDrawComponent().setCurrentPage((PageDrawComponent)child);	  
-	}	
+	  getRootDrawComponent().setCurrentPage((PageDrawComponent)child);
+	}
 	
-	protected void setCurrentPage() 
+	protected void setCurrentPage()
 	{
     if (index != 0)
     	getRootDrawComponent().setCurrentPage((PageDrawComponent) parent.getDrawComponents().get(index-1));
@@ -67,8 +67,8 @@ extends DeleteDrawComponentCommand
     	getRootDrawComponent().setCurrentPage((PageDrawComponent) parent.getDrawComponents().get(0));
     else if (index == 0) {
     	getRootDrawComponent().setCurrentPage((PageDrawComponent) parent.getDrawComponents().get(index+1));
-    }			  	  
-	}	
+    }
+	}
 	
 	private RootDrawComponent getRootDrawComponent() {
 		return (RootDrawComponent) parent;

@@ -32,7 +32,7 @@ import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.DrawComponentContainer;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
-public class DeleteDrawComponentCommand 
+public class DeleteDrawComponentCommand
 extends Command
 {
 	/** The DrawComponent to delete */
@@ -44,7 +44,7 @@ extends Command
 	/** the index of the DrawComponentContainer */
 	protected int index;
 	
-	/** True, if child was removed from its parent. */	
+	/** True, if child was removed from its parent. */
 	protected boolean wasRemoved;
   
 	/**
@@ -53,7 +53,7 @@ extends Command
 	 * @param child    the Shape to remove
 	 * @throws IllegalArgumentException if any parameter is null
 	 */
-	public DeleteDrawComponentCommand(DrawComponentContainer parent, DrawComponent child) 	
+	public DeleteDrawComponentCommand(DrawComponentContainer parent, DrawComponent child)
 	{
 		if (parent == null || child == null) {
 			throw new IllegalArgumentException("Neither param parent not param child may be null!"); //$NON-NLS-1$
@@ -61,7 +61,7 @@ extends Command
 		setLabel(Messages.getString("org.nightlabs.editor2d.ui.command,DeleteDrawComponentCommand.label")); //$NON-NLS-1$
 		this.parent = parent;
 		this.child = child;
-	}	
+	}
 	
 	@Override
 	public boolean canUndo() {
@@ -69,25 +69,25 @@ extends Command
 	}
 	
 	@Override
-	public void execute() 
+	public void execute()
 	{
 	  index = parent.getDrawComponents().indexOf(child);
 	  if (index == -1)
 	  	throw new IllegalStateException("DrawComponent "+child.getId()+" is not contained in DrawComponentContainer "+parent.getId()); //$NON-NLS-1$ //$NON-NLS-2$
-    parent.removeDrawComponent(child);	  
+    parent.removeDrawComponent(child);
     wasRemoved = true;
 	}
 	
 	@Override
-	public void redo() 
-	{	  
+	public void redo()
+	{
 //    parent.removeDrawComponent(index);
-		parent.removeDrawComponent(child);		
+		parent.removeDrawComponent(child);
 	}
 	
 	@Override
-	public void undo() 
-	{	  
-    parent.addDrawComponent(child, index);    
+	public void undo()
+	{
+    parent.addDrawComponent(child, index);
 	}
 }

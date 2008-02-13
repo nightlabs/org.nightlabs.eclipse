@@ -34,12 +34,12 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 
-public abstract class ZoomAction 
+public abstract class ZoomAction
 extends Action
 implements ZoomListener, Disposable
 {
 	/**
-	* The ZoomManager used to zoom in or out 
+	* The ZoomManager used to zoom in or out
 	*/
 	protected ZoomManager zoomManager;
 	
@@ -49,7 +49,7 @@ implements ZoomListener, Disposable
 	* @param image the action's image, or <code>null</code> if there is no image
 	* @param zoomManager the ZoomManager used to zoom in or out
 	*/
-	public ZoomAction(String text, ImageDescriptor image, ZoomManager zoomManager) 
+	public ZoomAction(String text, ImageDescriptor image, ZoomManager zoomManager)
 	{
 		super(text, image);
 		this.zoomManager = zoomManager;
@@ -61,6 +61,6 @@ implements ZoomListener, Disposable
 	*/
 	public void dispose() {
 	  zoomManager.removeZoomListener(this);
-	} 
+	}
 
 }

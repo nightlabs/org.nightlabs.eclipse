@@ -34,21 +34,21 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class ShapeExclusiveOrCommand 
-extends AbstractBooleanOperationCommand 
+public class ShapeExclusiveOrCommand
+extends AbstractBooleanOperationCommand
 {
 	/**
 	 * @param primary
 	 * @param secondary
 	 */
-	public ShapeExclusiveOrCommand(ShapeDrawComponent primary, ShapeDrawComponent secondary) 
+	public ShapeExclusiveOrCommand(ShapeDrawComponent primary, ShapeDrawComponent secondary)
 	{
 		super(primary, secondary);
 		setLabel(Messages.getString("org.nightlabs.editor2d.ui.command.shape.ShapeExclusiveOrCommand.label")); //$NON-NLS-1$
 	}
 
 	@Override
-	protected GeneralShape performOperation(Area area1, Area area2) 
+	protected GeneralShape performOperation(Area area1, Area area2)
 	{
 		area1.exclusiveOr(area2);
 		return new GeneralShape(area1);

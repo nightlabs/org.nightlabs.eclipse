@@ -39,12 +39,12 @@ import org.nightlabs.editor2d.ui.j2dswt.DrawComponentPaintable;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class PrintPaintable 
-extends DrawComponentPaintable 
+public class PrintPaintable
+extends DrawComponentPaintable
 {
-	public PrintPaintable(DrawComponent dc, PageFormat pf) 
+	public PrintPaintable(DrawComponent dc, PageFormat pf)
 	{
-		super(dc);	
+		super(dc);
 		setPageFormat(pf);
 	}
 
@@ -54,11 +54,11 @@ extends DrawComponentPaintable
 		pageRectangle = createRectangle(pageFormat);
 	}
 	
-	protected Rectangle2D pageRectangle;	
-	protected Rectangle2D createRectangle(PageFormat pf) 
+	protected Rectangle2D pageRectangle;
+	protected Rectangle2D createRectangle(PageFormat pf)
 	{
 		return new Rectangle2D.Double(pageFormat.getImageableX(), pageFormat.getImageableY(),
-				pageFormat.getImageableWidth(), pageFormat.getImageableHeight());		
+				pageFormat.getImageableWidth(), pageFormat.getImageableHeight());
 	}
 	
 	/**
@@ -68,26 +68,26 @@ extends DrawComponentPaintable
 	 * @see org.holongate.j2d.IPaintable#paint(org.eclipse.swt.widgets.Control, java.awt.Graphics2D)
 	 */
 	@Override
-	public void paint(Control control, Graphics2D g2d) 
-	{		
+	public void paint(Control control, Graphics2D g2d)
+	{
 		paintDrawComponent(getDrawComponent(), g2d);
 		g2d.setPaint(Color.BLACK);
-//		g2d.setStroke(RenderUtil.getStroke(5, 2));		
-		g2d.setStroke(ShapeDrawComponent.StrokeUtil.getStroke(5, LineStyle.DASHED_1, 
-				getDrawComponent().getRoot().getResolution()));		
+//		g2d.setStroke(RenderUtil.getStroke(5, 2));
+		g2d.setStroke(ShapeDrawComponent.StrokeUtil.getStroke(5, LineStyle.DASHED_1,
+				getDrawComponent().getRoot().getResolution()));
 		g2d.draw(pageRectangle);
 		
 //		double scaleX = g2d.getTransform().getScaleX();
 //		double scaleY = g2d.getTransform().getScaleY();
 //		Rectangle2D scaledRect = scaleRectangle(pageRectangle, scaleX, scaleY);
-//		g2d.draw(scaledRect);		
-	}	
+//		g2d.draw(scaledRect);
+	}
 	
-	protected Rectangle2D scaleRectangle(Rectangle2D rect, double scaleX, double scaleY) 
+	protected Rectangle2D scaleRectangle(Rectangle2D rect, double scaleX, double scaleY)
 	{
 		double newWidth = rect.getWidth() / scaleX;
 		double newHeight = rect.getHeight() / scaleY;
-		return new Rectangle2D.Double(rect.getX(), rect.getY(), 
+		return new Rectangle2D.Double(rect.getX(), rect.getY(),
 				newWidth, newHeight);
 	}
 }

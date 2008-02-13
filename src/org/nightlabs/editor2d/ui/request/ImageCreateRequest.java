@@ -31,8 +31,8 @@ import java.awt.image.ColorConvertOp;
 
 import org.eclipse.gef.requests.CreateRequest;
 
-public class ImageCreateRequest 
-extends CreateRequest 
+public class ImageCreateRequest
+extends CreateRequest
 {
 
   public ImageCreateRequest() {

@@ -36,7 +36,7 @@ implements ICellEditorValidator
 	private static NumberCellEditorValidator sharedInstance;
 
 	public static NumberCellEditorValidator getSharedInstance() {
-		if (sharedInstance == null) 
+		if (sharedInstance == null)
 			sharedInstance = new NumberCellEditorValidator();
 		return sharedInstance;
 	}

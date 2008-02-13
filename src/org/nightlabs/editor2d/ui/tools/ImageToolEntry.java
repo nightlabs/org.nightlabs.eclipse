@@ -31,19 +31,19 @@ import org.eclipse.gef.Tool;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.nightlabs.editor2d.ui.model.IModelCreationFactory;
 
-public class ImageToolEntry 
-//extends CombinedTemplateCreationEntry 
+public class ImageToolEntry
+//extends CombinedTemplateCreationEntry
 extends EditorTemplateCreationEntry
-{  
-  public ImageToolEntry(String label, String shortDesc, Object template, 
+{
+  public ImageToolEntry(String label, String shortDesc, Object template,
       IModelCreationFactory factory, ImageDescriptor iconSmall, ImageDescriptor iconLarge)
   {
     super(label, shortDesc, template, factory, iconSmall, iconLarge);
   }
   
   @Override
-	public Tool createTool() 
+	public Tool createTool()
   {
     return new ImageTool(getModelCreationFactory());
-  }   
+  }
 }

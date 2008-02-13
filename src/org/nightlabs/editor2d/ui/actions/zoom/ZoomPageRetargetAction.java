@@ -34,10 +34,10 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class ZoomPageRetargetAction 
-extends RetargetAction 
+public class ZoomPageRetargetAction
+extends RetargetAction
 {
-	public ZoomPageRetargetAction() 
+	public ZoomPageRetargetAction()
 	{
 		super(ZoomPageAction.ID, Messages.getString("org.nightlabs.editor2d.ui.actions.zoom.ZoomPageRetargetAction.text")); //$NON-NLS-1$
 		setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.actions.zoom.ZoomPageRetargetAction.tooltip")); //$NON-NLS-1$

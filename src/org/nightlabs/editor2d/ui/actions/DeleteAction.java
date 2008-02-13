@@ -44,8 +44,8 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class DeleteAction 
-extends AbstractEditorSelectionAction 
+public class DeleteAction
+extends AbstractEditorSelectionAction
 {
 	public static final String ID = ActionFactory.DELETE.getId();
 
@@ -65,7 +65,7 @@ extends AbstractEditorSelectionAction
 	}
 
 	@Override
-	protected boolean calculateEnabled() 
+	protected boolean calculateEnabled()
 	{
 		if (getSelectedObjects().isEmpty())
 			return false;
@@ -105,13 +105,13 @@ extends AbstractEditorSelectionAction
 	}
 
 	@Override
-	protected void init() 
+	protected void init()
 	{
 		setId(ID);
 		setText(Messages.getString("org.nightlabs.editor2d.ui.actions.DeleteAction.text")); //$NON-NLS-1$
 		setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.actions.DeleteAction.tooltip")); //$NON-NLS-1$
 		setActionDefinitionId("org.eclipse.ui.edit.delete");		 //$NON-NLS-1$
-		ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();		
+		ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
 		setImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
 		setDisabledImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE_DISABLED));
 	}

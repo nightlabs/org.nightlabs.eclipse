@@ -36,18 +36,18 @@ import org.nightlabs.editor2d.j2d.GeneralShape;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
 
-public class EditShapeCommand 
-extends Command 
+public class EditShapeCommand
+extends Command
 {
-  private GeneralShape oldGeneralShape;    
-  private GeneralShape generalShape;  
+  private GeneralShape oldGeneralShape;
+  private GeneralShape generalShape;
   
-  private int pathSegmentIndex;      
+  private int pathSegmentIndex;
 	public void setPathSegmentIndex(int pathSegmentIndex) {
 	  this.pathSegmentIndex = pathSegmentIndex;
 	}
 		
-	private Point location;	
+	private Point location;
   public void setLocation(Point location) {
     this.location = location;
   }
@@ -56,25 +56,25 @@ extends Command
   private ShapeDrawComponent shape;
 	public void setShapeDrawComponent(ShapeDrawComponent sdc) {
 	  shape = sdc;
-	}  
+	}
 	  
-  public EditShapeCommand() 
+  public EditShapeCommand()
   {
     super();
     setLabel(Messages.getString("org.nightlabs.editor2d.ui.command.shape.EditShapeCommand.label")); //$NON-NLS-1$
   }
     
   @Override
-	public void execute() 
-  {        
-    oldGeneralShape = (GeneralShape) shape.getGeneralShape().clone();    
+	public void execute()
+  {
+    oldGeneralShape = (GeneralShape) shape.getGeneralShape().clone();
     generalShape = new GeneralShape();
     float[] coords = new float[6];
     int index = 0;
     boolean indexSet = false;
-    for (PathIterator pi = oldGeneralShape.getPathIterator(null); !pi.isDone(); pi.next()) 
+    for (PathIterator pi = oldGeneralShape.getPathIterator(null); !pi.isDone(); pi.next())
     {
-      if (index == pathSegmentIndex) 
+      if (index == pathSegmentIndex)
       {
         if (pathSegmentIndex == PathIterator.SEG_MOVETO)
           generalShape.moveTo(location.x, location.y);
@@ -85,8 +85,8 @@ extends Command
         indexSet = true;
         continue;
       }
-      int segType = pi.currentSegment(coords);      
-      switch (segType) 
+      int segType = pi.currentSegment(coords);
+      switch (segType)
       {
 	      case (PathIterator.SEG_MOVETO):
 	        generalShape.moveTo(coords[0], coords[1]);
@@ -106,12 +106,12 @@ extends Command
 	      case (PathIterator.SEG_CUBICTO):
 	        generalShape.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
 	      	if (!indexSet)
-	      	  index++;	      
+	      	  index++;
 	        break;
 	      case (PathIterator.SEG_CLOSE):
 	        generalShape.closePath();
 	      	if (!indexSet)
-	      	  index++;      
+	      	  index++;
 	        break;
       }
     }
@@ -119,14 +119,14 @@ extends Command
   }
   
   @Override
-	public void undo() 
+	public void undo()
   {
-    shape.setGeneralShape(oldGeneralShape); 
+    shape.setGeneralShape(oldGeneralShape);
   }
   
   @Override
-	public void redo() 
-  {    
+	public void redo()
+  {
     shape.setGeneralShape(generalShape);
   }
 }

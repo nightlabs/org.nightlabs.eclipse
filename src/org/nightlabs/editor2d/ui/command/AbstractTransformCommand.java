@@ -39,17 +39,17 @@ import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
 
-public class AbstractTransformCommand 
-extends Command 
-{ 
-  protected Map<DrawComponent, AffineTransform> dc2AffineTransform;  
-  public AbstractTransformCommand() 
+public class AbstractTransformCommand
+extends Command
+{
+  protected Map<DrawComponent, AffineTransform> dc2AffineTransform;
+  public AbstractTransformCommand()
   {
     super();
     setLabel(Messages.getString("org.nightlabs.editor2d.ui.command.AbstractTransformCommand.label")); //$NON-NLS-1$
   }
 
-  protected List<EditPart> editParts;  
+  protected List<EditPart> editParts;
   public List<EditPart> getEditParts() {
     return editParts;
   }
@@ -57,7 +57,7 @@ extends Command
     this.editParts = editParts;
   }
   
-  protected AffineTransform affineTransform;    
+  protected AffineTransform affineTransform;
   public AffineTransform getAffineTransform() {
     return affineTransform;
   }
@@ -66,38 +66,38 @@ extends Command
   }
   
   @Override
-	public void execute() 
+	public void execute()
   {
     dc2AffineTransform = new HashMap<DrawComponent, AffineTransform>(getEditParts().size());
-    for (Iterator<EditPart> it = getEditParts().iterator(); it.hasNext(); ) 
+    for (Iterator<EditPart> it = getEditParts().iterator(); it.hasNext(); )
     {
       EditPart editPart = it.next();
       DrawComponent dc = (DrawComponent) editPart.getModel();
-      AffineTransform oldAffineTransform = dc.getAffineTransform(); 
+      AffineTransform oldAffineTransform = dc.getAffineTransform();
       dc2AffineTransform.put(dc, oldAffineTransform);
       AffineTransform at = new AffineTransform(oldAffineTransform);
       at.preConcatenate(getAffineTransform());
-      dc.setAffineTransform(at); 
-    }    
+      dc.setAffineTransform(at);
+    }
   }
   @Override
-	public void redo() 
+	public void redo()
   {
-    for (Iterator<DrawComponent> it = dc2AffineTransform.keySet().iterator(); it.hasNext(); ) 
+    for (Iterator<DrawComponent> it = dc2AffineTransform.keySet().iterator(); it.hasNext(); )
     {
-      DrawComponent dc = it.next(); 
-      dc.setAffineTransform(getAffineTransform()); 
-    }        
+      DrawComponent dc = it.next();
+      dc.setAffineTransform(getAffineTransform());
+    }
   }
   
   @Override
-	public void undo() 
+	public void undo()
   {
-    for (Iterator<DrawComponent> it = dc2AffineTransform.keySet().iterator(); it.hasNext(); ) 
+    for (Iterator<DrawComponent> it = dc2AffineTransform.keySet().iterator(); it.hasNext(); )
     {
-      DrawComponent dc = it.next(); 
+      DrawComponent dc = it.next();
       AffineTransform oldAffineTransform = dc2AffineTransform.get(dc);
-      dc.setAffineTransform(oldAffineTransform); 
-    }     
+      dc.setAffineTransform(oldAffineTransform);
+    }
   }
 }

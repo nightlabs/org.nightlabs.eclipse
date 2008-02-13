@@ -34,8 +34,8 @@ import org.nightlabs.base.ui.property.IntPropertyDescriptor;
 import org.nightlabs.editor2d.EllipseDrawComponent;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
-public class EllipsePropertySource 
-extends ShapeDrawComponentPropertySource 
+public class EllipsePropertySource
+extends ShapeDrawComponentPropertySource
 {
 	public EllipsePropertySource(EllipseDrawComponent ellipse) {
 		super(ellipse);
@@ -46,7 +46,7 @@ extends ShapeDrawComponentPropertySource
 	}
 	
 	@Override
-	protected List<IPropertyDescriptor> createPropertyDescriptors() 
+	protected List<IPropertyDescriptor> createPropertyDescriptors()
 	{
 		List<IPropertyDescriptor> descriptors = super.createPropertyDescriptors();
 		// Start Angle
@@ -57,13 +57,13 @@ extends ShapeDrawComponentPropertySource
 				Messages.getString("org.nightlabs.editor2d.ui.model.EllipsePropertySource.endAngle"))); //$NON-NLS-1$
 		
 		return descriptors;
-	}	
+	}
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.views.properties.IPropertySource#setPropertyValue(java.lang.Object, java.lang.Object)
 	 */
 	@Override
-	public void setPropertyValue(Object id, Object value) 
+	public void setPropertyValue(Object id, Object value)
 	{
 		super.setPropertyValue(id, value);
 		
@@ -73,18 +73,18 @@ extends ShapeDrawComponentPropertySource
 		else if (id.equals(EllipseDrawComponent.PROP_END_ANGLE)) {
 			getEllipseDrawComponent().setEndAngle(((Integer)value).intValue());
 		}
-	}		
+	}
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.views.properties.IPropertySource#getPropertyValue(java.lang.Object)
 	 */
 	@Override
-	public Object getPropertyValue(Object id) 
+	public Object getPropertyValue(Object id)
 	{
 		Object o = super.getPropertyValue(id);
-		if (o != null) 
+		if (o != null)
 			return o;
-		else 
+		else
 		{
 			if (id.equals(EllipseDrawComponent.PROP_START_ANGLE)) {
 				return new Integer(getEllipseDrawComponent().getStartAngle());
@@ -93,7 +93,7 @@ extends ShapeDrawComponentPropertySource
 				return new Integer(getEllipseDrawComponent().getEndAngle());
 			}
 			
-			return null;			
+			return null;
 		}
-	}		
+	}
 }

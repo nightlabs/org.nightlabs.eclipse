@@ -33,31 +33,31 @@ import org.nightlabs.editor2d.j2d.GeneralShape;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
 
-public class CreateShapeCommand  
+public class CreateShapeCommand
 extends CreateDrawComponentCommand
-{  	
-  protected GeneralShape generalShape;  
+{
+  protected GeneralShape generalShape;
   public void setGeneralShape(GeneralShape generalShape) {
     this.generalShape = generalShape;
   }
   	
-	public CreateShapeCommand() 
+	public CreateShapeCommand()
 	{
-		super();		
+		super();
 		setLabel(Messages.getString("org.nightlabs.editor2d.ui.command.CreateShapeCommand.label")); 	   //$NON-NLS-1$
 	}
 		
 	@Override
-	public void execute() 
-	{		
+	public void execute()
+	{
 	  if (generalShape != null)
-      getShapeDrawComponent().setGeneralShape(generalShape);	    	    
+      getShapeDrawComponent().setGeneralShape(generalShape);
 	      		
 		if (drawComponent instanceof LineDrawComponent)
       getShapeDrawComponent().setFill(false);
     
     super.execute();
-	}	
+	}
 			
   protected ShapeDrawComponent getShapeDrawComponent() {
    return (ShapeDrawComponent) getChild();

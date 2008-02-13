@@ -31,8 +31,8 @@ import org.eclipse.gef.commands.Command;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.EditorGuide;
 
-public class ChangeGuideCommand 
-extends Command 
+public class ChangeGuideCommand
+extends Command
 {
   private DrawComponent part;
   private EditorGuide oldGuide, newGuide;
@@ -59,7 +59,7 @@ extends Command
   @Override
 	public void execute() {
   	// Cache the old values
-  	oldGuide = horizontal ? part.getHorizontalGuide() : part.getVerticalGuide();		
+  	oldGuide = horizontal ? part.getHorizontalGuide() : part.getVerticalGuide();
   	if (oldGuide != null)
   		oldAlign = oldGuide.getAlignment(part);
   	

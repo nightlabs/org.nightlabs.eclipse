@@ -30,10 +30,10 @@ package org.nightlabs.editor2d.ui.properties;
 import org.nightlabs.base.ui.property.ComboBoxPropertyDescriptor;
 import org.nightlabs.util.FontUtil;
 
-public class FontNamePropertyDescriptor 
-extends ComboBoxPropertyDescriptor 
+public class FontNamePropertyDescriptor
+extends ComboBoxPropertyDescriptor
 {
-  public FontNamePropertyDescriptor(Object id, String displayName) 
+  public FontNamePropertyDescriptor(Object id, String displayName)
   {
     super(id, displayName, FontUtil.getSystemFonts());
   }

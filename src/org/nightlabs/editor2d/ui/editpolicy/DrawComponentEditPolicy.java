@@ -34,19 +34,19 @@ import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.DrawComponentContainer;
 import org.nightlabs.editor2d.ui.command.DeleteDrawComponentCommand;
 
-public class DrawComponentEditPolicy 
+public class DrawComponentEditPolicy
 extends ComponentEditPolicy
 {
 
 	@Override
-	protected Command createDeleteCommand(GroupRequest deleteRequest) 
+	protected Command createDeleteCommand(GroupRequest deleteRequest)
 	{
 		Object parent = getHost().getParent().getModel();
 		Object child = getHost().getModel();
 		if (parent instanceof DrawComponentContainer && child instanceof DrawComponent) {
-			return new DeleteDrawComponentCommand((DrawComponentContainer) parent, (DrawComponent) child);		
+			return new DeleteDrawComponentCommand((DrawComponentContainer) parent, (DrawComponent) child);
 		}
-		return super.createDeleteCommand(deleteRequest);	  
+		return super.createDeleteCommand(deleteRequest);
 	}
 	
 }

@@ -37,8 +37,8 @@ import org.nightlabs.editor2d.EditorGuide;
 import org.nightlabs.editor2d.EditorRuler;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
-public class DeleteGuideCommand 
-extends Command 
+public class DeleteGuideCommand
+extends Command
 {
   private EditorRuler parent;
   private EditorGuide guide;
@@ -56,7 +56,7 @@ extends Command
   }
 
   @Override
-	public void execute() 
+	public void execute()
   {
   	oldParts = new HashMap<DrawComponent, Integer>(guide.getMap());
   	Iterator<DrawComponent> iter = oldParts.keySet().iterator();
@@ -67,7 +67,7 @@ extends Command
   }
   
   @Override
-	public void undo() 
+	public void undo()
   {
   	parent.addGuide(guide);
   	Iterator<DrawComponent> iter = oldParts.keySet().iterator();

@@ -36,16 +36,16 @@ import org.nightlabs.editor2d.ui.model.PagePropertySource;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class PageTreeEditPart 
-extends DrawComponentContainerTreeEditPart 
-{ 
-//	public static Image PAGE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(), 
-//			PageTreeEditPart.class).createImage();	
-	public static Image PAGE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(), 
+public class PageTreeEditPart
+extends DrawComponentContainerTreeEditPart
+{
+//	public static Image PAGE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
+//			PageTreeEditPart.class).createImage();
+	public static Image PAGE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
 			PageTreeEditPart.class, "", ImageFormat.gif).createImage();	 //$NON-NLS-1$
 	
 	/**
-	 * @param model the PageDrawComponent to initialze this PageTreeEditPart with 
+	 * @param model the PageDrawComponent to initialze this PageTreeEditPart with
 	 */
 	public PageTreeEditPart(PageDrawComponent model) {
 		super(model);
@@ -64,7 +64,7 @@ extends DrawComponentContainerTreeEditPart
 		return (PageDrawComponent) getDrawComponent();
 	}
 	
-	@Override	
+	@Override
 	public IPropertySource getPropertySource()
   {
     if (propertySource == null) {

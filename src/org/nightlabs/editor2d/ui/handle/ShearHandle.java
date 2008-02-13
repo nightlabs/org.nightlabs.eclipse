@@ -40,12 +40,12 @@ import org.nightlabs.editor2d.ui.custom.EditorCursors;
 import org.nightlabs.editor2d.ui.tools.ShearTracker;
 
 
-public class ShearHandle 
-extends EditorAbstractHandle 
+public class ShearHandle
+extends EditorAbstractHandle
 {
   protected int cursorDirection = 0;
   
-  public ShearHandle(GraphicalEditPart owner, int direction) 
+  public ShearHandle(GraphicalEditPart owner, int direction)
   {
     setOwner(owner);
     setLocator(new RelativeHandleLocator(owner.getFigure(), direction));
@@ -53,7 +53,7 @@ extends EditorAbstractHandle
     setCursor(getDefaultCursor(direction));
   }
   
-  protected Cursor getDefaultCursor(int direction) 
+  protected Cursor getDefaultCursor(int direction)
   {
     switch(direction)
     {
@@ -62,43 +62,43 @@ extends EditorAbstractHandle
     	  return EditorCursors.SHEAR_HORIZONTAL;
     	case(PositionConstants.WEST):
     	case(PositionConstants.EAST):
-    	  return EditorCursors.SHEAR_VERTICAL;    		
+    	  return EditorCursors.SHEAR_VERTICAL;
     }
     return Cursors.NO;
-  } 
-//  public void paintFigure(Graphics g) 
+  }
+//  public void paintFigure(Graphics g)
 //  {
 //    Rectangle r = getBounds();
 //    r.shrink(1, 1);
-//    try {    
+//    try {
 //      paintHandle(g, cursorDirection);
 //    } finally {
 //      //We don't really own rect 'r', so fix it.
 //      r.expand(1, 1);
-//    }    
-//  } 
+//    }
+//  }
   
   @Override
-	public void paintFigure(Graphics g) 
+	public void paintFigure(Graphics g)
   {
-    // TODO: draw Rotate Handles       
+    // TODO: draw Rotate Handles
     Rectangle r = getBounds();
     r.shrink(1, 1);
     try {
       g.setBackgroundColor(ColorConstants.black);
       g.fillRectangle(r.x, r.y, r.width, r.height);
-      g.setForegroundColor(ColorConstants.white); 
+      g.setForegroundColor(ColorConstants.white);
       g.drawRectangle(r.x, r.y, r.width, r.height);
     } finally {
       //We don't really own rect 'r', so fix it.
       r.expand(1, 1);
-    }    
-  } 
+    }
+  }
   
-  protected void paintHandle(Graphics g, int direction) 
+  protected void paintHandle(Graphics g, int direction)
   {
     g.setForegroundColor(ColorConstants.black);
-    switch(direction) 
+    switch(direction)
     {
     	case(PositionConstants.EAST):
     	case(PositionConstants.WEST):

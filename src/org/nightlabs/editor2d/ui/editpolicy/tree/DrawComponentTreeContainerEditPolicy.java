@@ -48,8 +48,8 @@ import org.nightlabs.editor2d.ui.command.OrphanChildCommand;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
 
-public class DrawComponentTreeContainerEditPolicy 
-extends TreeContainerEditPolicy 
+public class DrawComponentTreeContainerEditPolicy
+extends TreeContainerEditPolicy
 {
 	private static final Logger logger = Logger.getLogger(DrawComponentTreeContainerEditPolicy.class);
 	
@@ -64,22 +64,22 @@ extends TreeContainerEditPolicy
 		List editparts = request.getEditParts();
 		int index = findIndexOfTreeItemAt(request.getLocation());
 				
-		for(int i = 0; i < editparts.size(); i++) 
+		for(int i = 0; i < editparts.size(); i++)
 		{
 		  EditPart child = (EditPart)editparts.get(i);
 		  boolean mayAdd = mayAdd(child, getHost());
 		  logger.debug("mayAdd = "+mayAdd); //$NON-NLS-1$
 			if(!mayAdd)
 			  command.add(UnexecutableCommand.INSTANCE);
-			else 
+			else
 			{
 				if (index == -1)
 					index = 0;
 				
 				logger.debug("index = "+index); //$NON-NLS-1$
 				command.add(new DrawComponentReorderCommand(
-						(DrawComponent)child.getModel(), 
-						(DrawComponentContainer)getHost().getModel(), 
+						(DrawComponent)child.getModel(),
+						(DrawComponentContainer)getHost().getModel(),
 						index));
 			}
 		}
@@ -117,46 +117,46 @@ extends TreeContainerEditPolicy
 			  tempIndex--;
 			}
 			logger.debug("index = "+tempIndex); //$NON-NLS-1$
-			if (tempIndex != -1) 
+			if (tempIndex != -1)
 			{
 				command.add(new DrawComponentReorderCommand(
-						(DrawComponent)child.getModel(), 
-						(DrawComponentContainer)getHost().getModel(), 
-						tempIndex));				
-			} 
+						(DrawComponent)child.getModel(),
+						(DrawComponentContainer)getHost().getModel(),
+						tempIndex));
+			}
 			else {
 			  command.add(UnexecutableCommand.INSTANCE);
-			  return command;				
-			}				
+			  return command;
+			}
 		}
 		command.setLabel(Messages.getString("org.nightlabs.editor2d.ui.editpolicy.treeDrawComponentTreeContainerEditPolicy.command.label.moveChildren")); //$NON-NLS-1$
 		return command;
 	}
 
-	protected boolean mayAdd(EditPart source, EditPart target) 
+	protected boolean mayAdd(EditPart source, EditPart target)
 	{
-		if (source.getModel() instanceof Layer) 
+		if (source.getModel() instanceof Layer)
 		{
 			if (target.getModel() instanceof PageDrawComponent)
-				return true;			
-			return false;				
+				return true;
+			return false;
 		}
-		else if (source.getModel() instanceof PageDrawComponent) 
+		else if (source.getModel() instanceof PageDrawComponent)
 		{
 			if (target.getModel() instanceof RootDrawComponent)
-				return true;						
-			return false;				
+				return true;
+			return false;
 		}
-		else if (target.getModel() instanceof RootDrawComponent) 
+		else if (target.getModel() instanceof RootDrawComponent)
 		{
 			if (source.getModel() instanceof PageDrawComponent)
-				return true;						
-			return false;				
-		}		
-		else if ( (!(source.getModel() instanceof DrawComponentContainer)) && 
-				target.getModel() instanceof DrawComponentContainer) 
+				return true;
+			return false;
+		}
+		else if ( (!(source.getModel() instanceof DrawComponentContainer)) &&
+				target.getModel() instanceof DrawComponentContainer)
 		{
-			DrawComponentContainer container = (DrawComponentContainer) target.getModel();			
+			DrawComponentContainer container = (DrawComponentContainer) target.getModel();
 			if (container instanceof PageDrawComponent)
 				return false;
 			
@@ -165,19 +165,19 @@ extends TreeContainerEditPolicy
 		return true;
 	}
 
-	protected Command getOrphanChildrenCommand(GroupRequest request) 
+	protected Command getOrphanChildrenCommand(GroupRequest request)
 	{
 		if (logger.isDebugEnabled())
 			logger.debug("getOrphanChildrenCommand()"); //$NON-NLS-1$
 		
 		List<EditPart> parts = request.getEditParts();
-		CompoundCommand result = 
+		CompoundCommand result =
 			new CompoundCommand(Messages.getString("org.nightlabs.editor2d.ui.editpolicy.treeDrawComponentTreeContainerEditPolicy.command.label.orphan.children")); //$NON-NLS-1$
 		for (int i = 0; i < parts.size(); i++) {
 			DrawComponent child = (DrawComponent)(parts.get(i)).getModel();
-			OrphanChildCommand orphan = new OrphanChildCommand(child);  		
+			OrphanChildCommand orphan = new OrphanChildCommand(child);
 			result.add(orphan);
-		}		
+		}
 		return result.unwrap();
 	}
 		

@@ -37,8 +37,8 @@ import org.nightlabs.editor2d.ui.EditorPlugin;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
-public class VisibleCompositeImage 
-extends CompositeImageDescriptor 
+public class VisibleCompositeImage
+extends CompositeImageDescriptor
 {
 	public VisibleCompositeImage(Image image) {
 		this.image = image;
@@ -47,10 +47,10 @@ extends CompositeImageDescriptor
 	private Image image;
 	
 	@Override
-	protected void drawCompositeImage(int width, int height) 
+	protected void drawCompositeImage(int width, int height)
 	{
 		drawImage(image.getImageData(), 0, 0);
-		Image invisibleImage = SharedImages.getSharedImage(EditorPlugin.getDefault(), 
+		Image invisibleImage = SharedImages.getSharedImage(EditorPlugin.getDefault(),
 				VisibleCompositeImage.class, "", ImageDimension._8x8, ImageFormat.gif); //$NON-NLS-1$
 		drawImage(invisibleImage.getImageData(), 0, 8);
 	}

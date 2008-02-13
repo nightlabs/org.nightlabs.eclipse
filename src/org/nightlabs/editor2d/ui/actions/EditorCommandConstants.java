@@ -28,7 +28,7 @@ package org.nightlabs.editor2d.ui.actions;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class EditorCommandConstants 
+public class EditorCommandConstants
 {
 	public static final String CATEGORY_EDITOR2D_ID = "org.nightlabs.editor2d.ui"; //$NON-NLS-1$
 	

@@ -33,37 +33,37 @@ import org.nightlabs.editor2d.RootDrawComponent;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
 
-public class DeleteLayerCommand  
+public class DeleteLayerCommand
 extends DeleteDrawComponentCommand
 {
-	public DeleteLayerCommand(PageDrawComponent page, Layer layer)	
+	public DeleteLayerCommand(PageDrawComponent page, Layer layer)
 	{
 		super(page, layer);
 		setLabel(Messages.getString("org.nightlabs.editor2d.ui.command.DeleteLayerCommand.label")); //$NON-NLS-1$
-	}	
+	}
 		
 	@Override
-	public void execute() 
+	public void execute()
 	{
 		super.execute();
 		setCurrentLayer();
-	}	
+	}
 	
 	@Override
-	public void redo() 
+	public void redo()
 	{
 		super.redo();
-	  setCurrentLayer();	  
+	  setCurrentLayer();
 	}
 	
 	@Override
-	public void undo() 
+	public void undo()
 	{
 		super.undo();
-	  getRootDrawComponent().setCurrentLayer(getLayer());	  
+	  getRootDrawComponent().setCurrentLayer(getLayer());
 	}
 	
-	protected void setCurrentLayer() 
+	protected void setCurrentLayer()
 	{
     if (index != 0)
     	getRootDrawComponent().setCurrentLayer((Layer) parent.getDrawComponents().get(index-1));
@@ -71,7 +71,7 @@ extends DeleteDrawComponentCommand
     	getRootDrawComponent().setCurrentLayer((Layer) parent.getDrawComponents().get(0));
     else if (index == 0) {
     	getRootDrawComponent().setCurrentLayer((Layer) parent.getDrawComponents().get(index+1));
-    }			  	  
+    }
 	}
 	
 	public RootDrawComponent getRootDrawComponent() {

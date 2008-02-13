@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.nightlabs.base.ui.property.ComboBoxPropertyDescriptor;
 import org.nightlabs.util.FontUtil;
 
-public class FontSizePropertyDescriptor  
+public class FontSizePropertyDescriptor
 extends ComboBoxPropertyDescriptor
 {
 
@@ -41,12 +41,12 @@ extends ComboBoxPropertyDescriptor
   }
 
   @Override
-	public CellEditor createPropertyEditor(Composite parent) 
+	public CellEditor createPropertyEditor(Composite parent)
   {
     CellEditor editor = new FontSizeCellEditor(parent);
     if (getValidator() != null)
       editor.setValidator(getValidator());
             
     return editor;
-  }   
+  }
 }

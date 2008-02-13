@@ -34,16 +34,16 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.requests.SelectionRequest;
 
 
-public class EditorRotateCenterRequest 
-extends SelectionRequest 
+public class EditorRotateCenterRequest
+extends SelectionRequest
 {
-	public EditorRotateCenterRequest() 
+	public EditorRotateCenterRequest()
 	{
 		super();
 		setType(EditorRequestConstants.REQ_EDIT_ROTATE_CENTER);
 	}
 	
-  protected Point rotationCenter;  
+  protected Point rotationCenter;
   public Point getRotationCenter() {
     return rotationCenter;
   }
@@ -57,9 +57,9 @@ extends SelectionRequest
   }
   public void setEditParts(List<EditPart> list) {
     parts = list;
-  }  
+  }
   
-  protected boolean multiple = false;  
+  protected boolean multiple = false;
   public boolean isMultiple() {
     return multiple;
   }

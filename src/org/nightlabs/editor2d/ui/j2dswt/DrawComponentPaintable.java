@@ -30,11 +30,11 @@ package org.nightlabs.editor2d.ui.j2dswt;
 import org.holongate.j2d.IPaintable;
 import org.nightlabs.editor2d.DrawComponent;
 
-public class DrawComponentPaintable 
+public class DrawComponentPaintable
 extends org.nightlabs.editor2d.viewer.ui.DrawComponentPaintable
 implements IPaintable
 {
-	public DrawComponentPaintable(DrawComponent dc) 
+	public DrawComponentPaintable(DrawComponent dc)
 	{
 		super(dc);
 	}

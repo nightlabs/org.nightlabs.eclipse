@@ -44,31 +44,31 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 import org.nightlabs.editor2d.ui.util.EditorUtil;
 
 
-public class ZoomSelectionAction  
+public class ZoomSelectionAction
 extends AbstractEditorSelectionAction
 {
-  public static final String ID = ZoomSelectionAction.class.getName();  
+  public static final String ID = ZoomSelectionAction.class.getName();
   private final Rectangle EMPTY_RECTANGLE = new Rectangle();
   
   public ZoomSelectionAction(AbstractEditor part) {
-    super(part); 
+    super(part);
   }
 
   @Override
-	protected void init() 
+	protected void init()
   {
   	setText(Messages.getString("org.nightlabs.editor2d.ui.actions.zoom.ZoomSelectionAction.text")); //$NON-NLS-1$
   	setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.actions.zoom.ZoomSelectionAction.tooltip")); //$NON-NLS-1$
-  	setId(ID);  	
+  	setId(ID);
   	setImageDescriptor(SharedImages.getSharedImageDescriptor(
   			EditorPlugin.getDefault(), ZoomSelectionAction.class));
   	setActionDefinitionId(EditorCommandConstants.ZOOM_SELECTION_ID);
-  } 
+  }
       
   @Override
-  protected boolean calculateEnabled() 
+  protected boolean calculateEnabled()
   {
-  	Collection selectedObjects = getDefaultSelection(false);  	
+  	Collection selectedObjects = getDefaultSelection(false);
     if (!selectedObjects.isEmpty()) {
     	for (Iterator it = selectedObjects.iterator(); it.hasNext(); ) {
     		Object o = it.next();
@@ -80,12 +80,12 @@ extends AbstractEditorSelectionAction
     				return true;
     		}
     	}
-    }        
+    }
     return false;
-  }  
+  }
   
   @Override
-	public void run() 
+	public void run()
   {
     Rectangle totalBounds = null;
     GraphicalEditPart editPart = null;

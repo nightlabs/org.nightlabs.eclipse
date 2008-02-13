@@ -52,17 +52,17 @@ import org.nightlabs.editor2d.ui.figures.OversizedBufferFreeformLayer;
 import org.nightlabs.editor2d.ui.model.RootDrawComponentPropertySource;
 import org.nightlabs.editor2d.viewer.ui.descriptor.DescriptorManager;
 
-public class RootDrawComponentEditPart 
+public class RootDrawComponentEditPart
 extends AbstractDrawComponentContainerEditPart
-{  
-	public RootDrawComponentEditPart(RootDrawComponent root) 
+{
+	public RootDrawComponentEditPart(RootDrawComponent root)
 	{
 	  super(root);
 	  setModel(root);
 	  initConfigModule();
 	}
 
-	protected DescriptorManager descriptorManager = new DescriptorManager();		
+	protected DescriptorManager descriptorManager = new DescriptorManager();
 	public DescriptorManager getDescriptorManager() {
 		return descriptorManager;
 	}
@@ -70,10 +70,10 @@ extends AbstractDrawComponentContainerEditPart
 		this.descriptorManager = descriptorManager;
 	}
 
-  protected void initConfigModule() 
+  protected void initConfigModule()
   {
   	try {
-    	prefConfMod = Config.sharedInstance().createConfigModule(PreferencesConfigModule.class);  		
+    	prefConfMod = Config.sharedInstance().createConfigModule(PreferencesConfigModule.class);
   	} catch (ConfigException ce) {
   		throw new RuntimeException(ce);
   	}
@@ -84,7 +84,7 @@ extends AbstractDrawComponentContainerEditPart
   	return prefConfMod;
   }
   
-//  public static UpdateManager updateManager = null;	
+//  public static UpdateManager updateManager = null;
 	@Override
 	protected IFigure createFigure()
 	{
@@ -93,7 +93,7 @@ extends AbstractDrawComponentContainerEditPart
 //	  EditPartViewer viewer = getRoot().getViewer();
 //	  if (viewer instanceof J2DScrollingGraphicalViewer) {
 //	    J2DScrollingGraphicalViewer j2DViewer = (J2DScrollingGraphicalViewer) viewer;
-//	    FigureCanvas figureCanvas = (FigureCanvas)j2DViewer.getControl();	    
+//	    FigureCanvas figureCanvas = (FigureCanvas)j2DViewer.getControl();
 //	    updateManager = figureCanvas.getLightweightSystem().getUpdateManager();
 //	    f.registerOnDeferredUpdateManager(updateManager);
 //	  }
@@ -101,14 +101,14 @@ extends AbstractDrawComponentContainerEditPart
 	  Figure f = new OversizedBufferFreeformLayer();
 	  ((BufferedFreeformLayer)f).init(this);
 	  
-//	  addScrollListener();	  
+//	  addScrollListener();
 //		Figure f = new FreeformLayer();
 		
-		f.setLayoutManager(new FreeformLayout());				
-		return f; 		
+		f.setLayoutManager(new FreeformLayout());
+		return f;
 	}
 	
-	public BufferedFreeformLayer getBufferedFreeformLayer() 
+	public BufferedFreeformLayer getBufferedFreeformLayer()
 	{
 		if (getFigure() instanceof BufferedFreeformLayer)
 			return (BufferedFreeformLayer) getFigure();
@@ -121,28 +121,28 @@ extends AbstractDrawComponentContainerEditPart
 	{
 		super.createEditPolicies();
 		// disallows the removal of this edit part from its parent
-		installEditPolicy(EditPolicy.COMPONENT_ROLE, new RootComponentEditPolicy());		
+		installEditPolicy(EditPolicy.COMPONENT_ROLE, new RootComponentEditPolicy());
 	}
 
 	public RootDrawComponent getRootDrawComponent() {
 		return (RootDrawComponent) getModel();
 	}
 		
-  /** 
+  /**
    * @return a List of all Layers
    */
   @Override
 	protected List getModelChildren()
-  {  
+  {
     return getRootDrawComponent().getDrawComponents();
-  }	
+  }
 	
   /**
    * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
    */
   @Override
-	public Object getAdapter(Class adapter) 
-  {    
+	public Object getAdapter(Class adapter)
+  {
   	if (adapter == SnapToHelper.class) {
   		List snapStrategies = new ArrayList();
   		Boolean val = (Boolean)getViewer().getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY);
@@ -166,7 +166,7 @@ extends AbstractDrawComponentContainerEditPart
   		return new CompoundSnapToHelper(ss);
   	}
   	return super.getAdapter(adapter);
-  }  
+  }
   
   @Override
 	public IPropertySource getPropertySource()
@@ -180,23 +180,23 @@ extends AbstractDrawComponentContainerEditPart
   }
   
 	@Override
-	protected void propertyChanged(PropertyChangeEvent evt) 
+	protected void propertyChanged(PropertyChangeEvent evt)
 	{
 		String propertyName = evt.getPropertyName();
 		if (propertyName.equals(RootDrawComponent.PROP_RESOLUTION)) {
 			refresh();
-			return;			
+			return;
 		}
 		super.propertyChanged(evt);
 	}
 	
 	@Override
-	public void deactivate() 
+	public void deactivate()
 	{
 		super.deactivate();
 		if (getBufferedFreeformLayer() != null)
-			getBufferedFreeformLayer().dispose();		
-	}   
+			getBufferedFreeformLayer().dispose();
+	}
     
 	
 }

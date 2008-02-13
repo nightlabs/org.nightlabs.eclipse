@@ -33,19 +33,19 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.requests.SelectionRequest;
 
-public class EditorRotateRequest 
+public class EditorRotateRequest
 extends SelectionRequest
 implements EditorRequestConstants,
            EditorLocationRequest,
            EditorGroupRequest
-{  
-  public EditorRotateRequest() 
+{
+  public EditorRotateRequest()
   {
     super();
     setType(EditorRequestConstants.REQ_ROTATE);
   }
   
-  private Point rotationCenter;  
+  private Point rotationCenter;
   public Point getRotationCenter() {
     return rotationCenter;
   }
@@ -67,9 +67,9 @@ implements EditorRequestConstants,
   }
   public void setEditParts(List<EditPart> list) {
     parts = list;
-  }  
+  }
   
-  private int direction;  
+  private int direction;
   public int getDirection() {
     return direction;
   }
@@ -77,7 +77,7 @@ implements EditorRequestConstants,
     this.direction = direction;
   }
   
-  private boolean multiple = false;  
+  private boolean multiple = false;
   public boolean isMultiple() {
     return multiple;
   }

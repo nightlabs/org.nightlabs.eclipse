@@ -33,7 +33,7 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class EditorPrintSetupAction 
+public class EditorPrintSetupAction
 extends AbstractEditorPrintAction
 {
 	public static final String ID = EditorPrintSetupAction.class.getName();
@@ -59,7 +59,7 @@ extends AbstractEditorPrintAction
 	}
 
 	@Override
-	protected void init() 
+	protected void init()
 	{
 		setId(ID);
 		setText(Messages.getString("org.nightlabs.editor2d.ui.print.EditorPrintSetupAction.text")); //$NON-NLS-1$
@@ -67,14 +67,14 @@ extends AbstractEditorPrintAction
 	}
 
 	@Override
-	public void run() 
+	public void run()
 	{
 		PrinterInterfaceManager.sharedInstance().editPrinterConfiguration(
 				PrintUtil.PRINTER_USE_CASE_EDITOR_2D, true);
 //		PrinterJob printJob = PrinterJob.getPrinterJob();
 ////		PageFormat defaultPageFormat = printJob.defaultPage();
 //		logger.debug("Page Setup before Modification");
-//		PrintUtil.logPageFormat(getPageFormat());		
+//		PrintUtil.logPageFormat(getPageFormat());
 //		PageFormat pageFormat = printJob.pageDialog(getPageFormat());
 //		logger.debug("Page Setup after Modification");
 //		PrintUtil.logPageFormat(pageFormat);

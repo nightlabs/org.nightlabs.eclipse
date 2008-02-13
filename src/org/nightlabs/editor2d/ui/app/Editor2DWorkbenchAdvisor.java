@@ -31,11 +31,11 @@ import org.nightlabs.editor2d.ui.EditorPerspective;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class Editor2DWorkbenchAdvisor 
-extends AbstractWorkbenchAdvisor 
+public class Editor2DWorkbenchAdvisor
+extends AbstractWorkbenchAdvisor
 {
 	public Editor2DWorkbenchAdvisor() {
-		super();		
+		super();
 	}
 
 	/**

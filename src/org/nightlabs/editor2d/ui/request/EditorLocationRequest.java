@@ -30,7 +30,7 @@ package org.nightlabs.editor2d.ui.request;
 import org.eclipse.draw2d.geometry.Point;
 
 
-public interface EditorLocationRequest 
+public interface EditorLocationRequest
 {
   public Point getLocation();
   public void setLocation(Point p);

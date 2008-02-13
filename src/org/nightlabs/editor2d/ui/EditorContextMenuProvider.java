@@ -66,7 +66,7 @@ import org.nightlabs.editor2d.ui.actions.shape.ShapeUnionAction;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
 
-public class EditorContextMenuProvider 
+public class EditorContextMenuProvider
 extends ContextMenuProvider
 {
   public static final String CONTEXT_MENU_ID = "org.nightlabs.editor2d.ui.outline.contextmenu"; //$NON-NLS-1$
@@ -75,11 +75,11 @@ extends ContextMenuProvider
   private ActionRegistry actionRegistry;
   	
   /**
-   * Instantiate a new menu context provider for the specified EditPartViewer 
+   * Instantiate a new menu context provider for the specified EditPartViewer
    * and ActionRegistry.
    * @param viewer	the editor's graphical viewer
    * @param registry	the editor's action registry
-   * @throws IllegalArgumentException if registry is <tt>null</tt>. 
+   * @throws IllegalArgumentException if registry is <tt>null</tt>.
    */
   public EditorContextMenuProvider(EditPartViewer viewer, ActionRegistry registry) {
   	super(viewer);
@@ -90,12 +90,12 @@ extends ContextMenuProvider
   }
 
   /**
-   * Called when the context menu is about to show. Actions, 
+   * Called when the context menu is about to show. Actions,
    * whose state is enabled, will appear in the context menu.
    * @see org.eclipse.gef.ContextMenuProvider#buildContextMenu(org.eclipse.jface.action.IMenuManager)
    */
   @Override
-	public void buildContextMenu(IMenuManager manager) 
+	public void buildContextMenu(IMenuManager manager)
   {
   	// Add standard action groups to the menu
   	GEFActionConstants.addStandardActionGroups(manager);
@@ -118,7 +118,7 @@ extends ContextMenuProvider
   	// Paste
   	action = getActionRegistry().getAction(PasteAction.ID);
   	if (action.isEnabled())
-  		manager.appendToGroup(GEFActionConstants.GROUP_EDIT, action);  	
+  		manager.appendToGroup(GEFActionConstants.GROUP_EDIT, action);
   	
   	// Cut
   	action = getActionRegistry().getAction(CutAction.ID);
@@ -142,13 +142,13 @@ extends ContextMenuProvider
   	
   	// View SubMenu
   	MenuManager viewsubmenu = new MenuManager(Messages.getString("org.nightlabs.editor2d.ui.EditorContextMenuProvider.menu.view"));  	  //$NON-NLS-1$
-  	buildViewSubMenu(viewsubmenu);  	
+  	buildViewSubMenu(viewsubmenu);
   	if (!viewsubmenu.isEmpty())
   		manager.appendToGroup(GEFActionConstants.GROUP_REST, viewsubmenu);
   	
   	// Edit SubMenu
   	MenuManager editsubmenu = new MenuManager(Messages.getString("org.nightlabs.editor2d.ui.EditorContextMenuProvider.menu.edit")); //$NON-NLS-1$
-  	buildEditSubMenu(editsubmenu);  	
+  	buildEditSubMenu(editsubmenu);
   	if (!editsubmenu.isEmpty())
   		manager.appendToGroup(GEFActionConstants.GROUP_REST, editsubmenu);
   	
@@ -162,19 +162,19 @@ extends ContextMenuProvider
   	MenuManager markSubMenu = new MenuManager(Messages.getString("org.nightlabs.editor2d.ui.EditorContextMenuProvider.menu.mark")); //$NON-NLS-1$
   	buildMarkSubMenu(markSubMenu);
   	if (!markSubMenu.isEmpty())
-  		manager.appendToGroup(GEFActionConstants.GROUP_REST, markSubMenu);  	
+  		manager.appendToGroup(GEFActionConstants.GROUP_REST, markSubMenu);
 
   	// Order SubMenu
   	MenuManager orderSubMenu = new MenuManager(Messages.getString("org.nightlabs.editor2d.ui.EditorContextMenuProvider.menu.order")); //$NON-NLS-1$
   	buildOrderSubMenu(orderSubMenu);
   	if (!orderSubMenu.isEmpty())
-  		manager.appendToGroup(GEFActionConstants.GROUP_REST, orderSubMenu);  	
+  		manager.appendToGroup(GEFActionConstants.GROUP_REST, orderSubMenu);
 
   	// Order SubMenu
   	MenuManager shapeSubMenu = new MenuManager(Messages.getString("org.nightlabs.editor2d.ui.EditorContextMenuProvider.menu.shape")); //$NON-NLS-1$
   	buildShapeSubMenu(shapeSubMenu);
   	if (!shapeSubMenu.isEmpty())
-  		manager.appendToGroup(GEFActionConstants.GROUP_REST, shapeSubMenu);  	
+  		manager.appendToGroup(GEFActionConstants.GROUP_REST, shapeSubMenu);
   	
 //  	action = getActionRegistry().getAction(ActionFactory.SAVE.getId());
 //  	manager.appendToGroup(GEFActionConstants.GROUP_SAVE, action);
@@ -190,64 +190,64 @@ extends ContextMenuProvider
 
   protected void setActionRegistry(ActionRegistry registry) {
   	actionRegistry = registry;
-  }  
+  }
     
-  protected void buildViewSubMenu(MenuManager menuMan) 
+  protected void buildViewSubMenu(MenuManager menuMan)
   {
   	IAction action = getActionRegistry().getAction(ShowDefaultRenderAction.ID);
   	if (action.isEnabled())
-  	  menuMan.add(action);    
+  	  menuMan.add(action);
   }
 
-  protected void buildOrderSubMenu(MenuManager menuMan) 
+  protected void buildOrderSubMenu(MenuManager menuMan)
   {
   	IAction action = getActionRegistry().getAction(ChangeOrderToLocalFront.ID);
 //  	if (action.isEnabled())
-  	  menuMan.add(action);    
+  	  menuMan.add(action);
 
   	action = getActionRegistry().getAction(ChangeOrderOneUp.ID);
 //  	if (action.isEnabled())
-  	  menuMan.add(action);      	
+  	  menuMan.add(action);
 
   	action = getActionRegistry().getAction(ChangeOrderOneDown.ID);
 //  	if (action.isEnabled())
-  	  menuMan.add(action);      	  	
+  	  menuMan.add(action);
   	
   	action = getActionRegistry().getAction(ChangeOrderToLocalBack.ID);
 //  	if (action.isEnabled())
-  	  menuMan.add(action);    
+  	  menuMan.add(action);
   	
   	menuMan.add(new Separator());
   	
   	MenuManager sendToLayerSubMenu = new MenuManager(Messages.getString("org.nightlabs.editor2d.ui.EditorContextMenuProvider.menu.sendToLayer")); //$NON-NLS-1$
   	buildSendToLayerSubMenu(sendToLayerSubMenu);
   	if (!sendToLayerSubMenu.isEmpty())
-  		menuMan.appendToGroup(GEFActionConstants.GROUP_REST, sendToLayerSubMenu);  	  	  	
-  }  
+  		menuMan.appendToGroup(GEFActionConstants.GROUP_REST, sendToLayerSubMenu);
+  }
   
-  protected void buildSendToLayerSubMenu(MenuManager menuMan) 
+  protected void buildSendToLayerSubMenu(MenuManager menuMan)
   {
-  	if (getViewer() instanceof AbstractEditor) 
+  	if (getViewer() instanceof AbstractEditor)
   	{
-  		AbstractEditor editor = (AbstractEditor) getViewer();  		
+  		AbstractEditor editor = (AbstractEditor) getViewer();
   		List layers = editor.getRootDrawComponent().getDrawComponents();
-  		for (Iterator it = layers.iterator(); it.hasNext(); ) 
+  		for (Iterator it = layers.iterator(); it.hasNext(); )
   		{
   			Layer l = (Layer) it.next();
   			IAction action = new SendToLayerAction(editor, l);
   	  	if (action.isEnabled())
-  	  	  menuMan.add(action);     	  			
-  		}  		
+  	  	  menuMan.add(action);
+  		}
   	}
 //  	EditPart content = getViewer().getContents();
-//  	if (content instanceof AbstractDrawComponentEditPart) 
+//  	if (content instanceof AbstractDrawComponentEditPart)
 //  	{
 //  		AbstractDrawComponentEditPart dcep = (AbstractDrawComponentEditPart) content;
 //  		List layers = dcep.getModelRoot().getRootDrawComponent().getDrawComponents();
 //  		for (Iterator it = layers.iterator(); it.hasNext(); ) {
 //  			IAction action = new SendToLayerAction();
 //  	  	if (action.isEnabled())
-//  	  	  menuMan.add(action);     	  			
+//  	  	  menuMan.add(action);
 //  		}
 //  	}
   }
@@ -272,18 +272,18 @@ extends ContextMenuProvider
   	action = getActionRegistry().getAction(ResetRotationCenterAction.ID);
 //  	if (action.isEnabled())
 //  	  manager.appendToGroup(GEFActionConstants.GROUP_EDIT, action);
-  	menuMan.add(action);  	  	
+  	menuMan.add(action);
   	
   	action = getActionRegistry().getAction(GroupAction.ID);
 //  	if (action.isEnabled())
-  		menuMan.add(action);  	  	
+  		menuMan.add(action);
   		
   	action = getActionRegistry().getAction(UnGroupAction.ID);
 //  	if (action.isEnabled())
-  		menuMan.add(action);  	  	  	
+  		menuMan.add(action);
   }
   
-  protected void buildAlignSubMenu(MenuManager menuMan) 
+  protected void buildAlignSubMenu(MenuManager menuMan)
   {
   	IAction action = getActionRegistry().getAction(GEFActionConstants.ALIGN_LEFT);
 //  	if (action.isEnabled())
@@ -309,22 +309,22 @@ extends ContextMenuProvider
 
   	action = getActionRegistry().getAction(GEFActionConstants.ALIGN_BOTTOM);
 //  	if (action.isEnabled())
-  	  menuMan.add(action);    
+  	  menuMan.add(action);
   }
   
   protected void buildMarkSubMenu(MenuManager menuMan)
   {
     IAction action;
     action = getActionRegistry().getAction(SelectAllWithSameName.ID);
-    menuMan.add(action);    
-  }  
+    menuMan.add(action);
+  }
   
   protected void buildShapeSubMenu(MenuManager menuMan)
   {
     IAction action;
     // Convert To Shape Action
     action = getActionRegistry().getAction(ConvertToShapeAction.ID);
-    menuMan.add(action);    
+    menuMan.add(action);
     
   	// Edit Shape Action
   	action = getActionRegistry().getAction(EditShapeAction.ID);
@@ -334,22 +334,22 @@ extends ContextMenuProvider
   	// Shape Union
   	action = getActionRegistry().getAction(ShapeUnionAction.ID);
 //  	if (action.isEnabled())
-  	  menuMan.add(action);    
+  	  menuMan.add(action);
 
     // Shape Intersection
     action = getActionRegistry().getAction(ShapeIntersectAction.ID);
 //    if (action.isEnabled())
-    menuMan.add(action);    
+    menuMan.add(action);
 
     // Shape Subtract
     action = getActionRegistry().getAction(ShapeSubtractAction.ID);
 //    if (action.isEnabled())
-    menuMan.add(action);    
+    menuMan.add(action);
 
     // Shape Subtract
     action = getActionRegistry().getAction(ShapeExclusiveOrAction.ID);
 //    if (action.isEnabled())
-    menuMan.add(action);        
-  }  
+    menuMan.add(action);
+  }
   
 }

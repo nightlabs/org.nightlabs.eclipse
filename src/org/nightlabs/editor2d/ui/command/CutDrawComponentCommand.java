@@ -38,10 +38,10 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class CutDrawComponentCommand 
-extends Command 
+public class CutDrawComponentCommand
+extends Command
 {
-	public CutDrawComponentCommand(Collection<DrawComponent> dcs) 
+	public CutDrawComponentCommand(Collection<DrawComponent> dcs)
 	{
 		super();
 		setLabel(Messages.getString("org.nightlabs.editor2d.ui.command.CutDrawComponentCommand.label")); //$NON-NLS-1$
@@ -56,11 +56,11 @@ extends Command
 	protected Map<DrawComponent, Integer> dc2Index = new HashMap<DrawComponent, Integer>();
 	
 	@Override
-	public void execute() 
+	public void execute()
 	{
 		Clipboard clipboard = Clipboard.getDefault();
 		clipboard.setContents(dcs);
-		for (Iterator<DrawComponent> it = dcs.iterator(); it.hasNext(); ) 
+		for (Iterator<DrawComponent> it = dcs.iterator(); it.hasNext(); )
 		{
 			DrawComponent dc = it.next();
 			int index = dc.getParent().getDrawComponents().indexOf(dc);
@@ -70,15 +70,15 @@ extends Command
 	}
 
 	@Override
-	public void redo() 
+	public void redo()
 	{
 		execute();
 	}
 
 	@Override
-	public void undo() 
+	public void undo()
 	{
-		for (Iterator<DrawComponent> it = dcs.iterator(); it.hasNext(); ) 
+		for (Iterator<DrawComponent> it = dcs.iterator(); it.hasNext(); )
 		{
 			DrawComponent dc = it.next();
 			Integer dcIndex = dc2Index.get(dc);

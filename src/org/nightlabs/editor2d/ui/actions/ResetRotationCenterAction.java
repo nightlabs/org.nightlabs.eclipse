@@ -37,7 +37,7 @@ import org.nightlabs.editor2d.ui.request.EditorRequestConstants;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
 
-public class ResetRotationCenterAction 
+public class ResetRotationCenterAction
 extends AbstractEditorSelectionAction
 implements EditorRequestConstants
 {
@@ -48,7 +48,7 @@ implements EditorRequestConstants
   }
 
   @Override
-	protected boolean calculateEnabled() 
+	protected boolean calculateEnabled()
   {
     for (Iterator it = getSelectedObjects().iterator(); it.hasNext(); ) {
       Object o = it.next();
@@ -56,43 +56,43 @@ implements EditorRequestConstants
         EditPart editPart = (EditPart) o;
         if (editPart instanceof AbstractDrawComponentEditPart) {
           DrawComponent dc = ((AbstractDrawComponentEditPart) editPart).getDrawComponent();
-          if (dc.getRotationX() != DrawComponent.ROTATION_X_DEFAULT || 
-              dc.getRotationX() != DrawComponent.ROTATION_Y_DEFAULT) 
+          if (dc.getRotationX() != DrawComponent.ROTATION_X_DEFAULT ||
+              dc.getRotationX() != DrawComponent.ROTATION_Y_DEFAULT)
           {
             return true;
           }
-        }        
-      }       
+        }
+      }
     }
     return false;
   }
 
   @Override
-	public void run() 
-  { 
-    for (Iterator it = getSelectedObjects().iterator(); it.hasNext(); ) 
+	public void run()
+  {
+    for (Iterator it = getSelectedObjects().iterator(); it.hasNext(); )
     {
       EditPart editPart = (EditPart) it.next();
       if (editPart instanceof AbstractDrawComponentEditPart) {
         DrawComponent dc = ((AbstractDrawComponentEditPart) editPart).getDrawComponent();
-        if (dc.getRotationX() != DrawComponent.ROTATION_X_DEFAULT || 
-            dc.getRotationX() != DrawComponent.ROTATION_Y_DEFAULT) 
+        if (dc.getRotationX() != DrawComponent.ROTATION_X_DEFAULT ||
+            dc.getRotationX() != DrawComponent.ROTATION_Y_DEFAULT)
         {
           dc.setRotationX(DrawComponent.ROTATION_X_DEFAULT);
           dc.setRotationY(DrawComponent.ROTATION_Y_DEFAULT);
           clearSelection();
-          selectEditPart(dc);          
+          selectEditPart(dc);
         }
       }
-    }        
+    }
   }
   
   @Override
-	protected void init() 
+	protected void init()
   {
   	setText(Messages.getString("org.nightlabs.editor2d.ui.actions.ResetRotationCenterAction.text")); //$NON-NLS-1$
   	setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.actions.ResetRotationCenterAction.tooltip")); //$NON-NLS-1$
   	setId(ID);
 //  	setImageDescriptor(ImageDescriptor.createFromFile(EditorPlugin.class,"icons/editShape16.gif"));
-  }   
+  }
 }

@@ -34,22 +34,22 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class ShapeIntersectCommand 
-extends AbstractBooleanOperationCommand 
+public class ShapeIntersectCommand
+extends AbstractBooleanOperationCommand
 {
 	/**
 	 * @param primary
 	 * @param secondary
 	 */
 	public ShapeIntersectCommand(ShapeDrawComponent primary,
-			ShapeDrawComponent secondary) 
+			ShapeDrawComponent secondary)
 	{
 		super(primary, secondary);
 		setLabel(Messages.getString("org.nightlabs.editor2d.ui.command.shape.ShapeIntersectCommand.label")); //$NON-NLS-1$
 	}
 
 	@Override
-	protected GeneralShape performOperation(Area area1, Area area2) 
+	protected GeneralShape performOperation(Area area1, Area area2)
 	{
 		area1.intersect(area2);
 		return new GeneralShape(area1);

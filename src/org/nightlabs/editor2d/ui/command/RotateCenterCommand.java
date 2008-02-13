@@ -40,13 +40,13 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 import org.nightlabs.editor2d.ui.util.EditorUtil;
 
 
-public class RotateCenterCommand 
-extends Command 
+public class RotateCenterCommand
+extends Command
 {
   protected Map<DrawComponent, Point> dc2RotationCenter;
   protected EditorRotateCenterRequest request;
   
-  protected Point rotationCenter;    
+  protected Point rotationCenter;
   public Point getRotationCenter() {
     return rotationCenter;
   }
@@ -54,7 +54,7 @@ extends Command
     this.rotationCenter = rotationCenter;
   }
   
-  protected boolean multiple = false;    
+  protected boolean multiple = false;
   public boolean isMultiple() {
     return multiple;
   }
@@ -62,7 +62,7 @@ extends Command
     this.multiple = multiple;
   }
   
-  public RotateCenterCommand(EditorRotateCenterRequest request) 
+  public RotateCenterCommand(EditorRotateCenterRequest request)
   {
     super();
     this.request = request;
@@ -71,10 +71,10 @@ extends Command
   }
 
   @Override
-	public void execute() 
+	public void execute()
   {
     dc2RotationCenter = new HashMap<DrawComponent, Point>(request.getEditParts().size());
-    for (Iterator<EditPart> it = request.getEditParts().iterator(); it.hasNext(); ) 
+    for (Iterator<EditPart> it = request.getEditParts().iterator(); it.hasNext(); )
     {
       EditPart editPart = it.next();
       DrawComponent dc = (DrawComponent) editPart.getModel();
@@ -84,34 +84,34 @@ extends Command
         dc.setTmpRotationX(rotationCenter.x);
         dc.setTmpRotationY(rotationCenter.y);
       } else {
-        dc.setRotationX(rotationCenter.x); 
-        dc.setRotationY(rotationCenter.y);        
-      }      
+        dc.setRotationX(rotationCenter.x);
+        dc.setRotationY(rotationCenter.y);
+      }
     }
     EditorUtil.selectEditParts(request.getEditParts());
-  } 
+  }
   
   @Override
-	public void redo() 
+	public void redo()
   {
-    for (Iterator<DrawComponent> it = dc2RotationCenter.keySet().iterator(); it.hasNext(); ) 
+    for (Iterator<DrawComponent> it = dc2RotationCenter.keySet().iterator(); it.hasNext(); )
     {
       DrawComponent dc = it.next();
       if (isMultiple()) {
         dc.setTmpRotationX(rotationCenter.x);
         dc.setTmpRotationY(rotationCenter.y);
       } else {
-        dc.setRotationX(rotationCenter.x); 
-        dc.setRotationY(rotationCenter.y);        
-      }      
+        dc.setRotationX(rotationCenter.x);
+        dc.setRotationY(rotationCenter.y);
+      }
     }
-    EditorUtil.selectEditParts(request.getEditParts());    
+    EditorUtil.selectEditParts(request.getEditParts());
   }
   
   @Override
-	public void undo() 
+	public void undo()
   {
-    for (Iterator<DrawComponent> it = dc2RotationCenter.keySet().iterator(); it.hasNext(); ) 
+    for (Iterator<DrawComponent> it = dc2RotationCenter.keySet().iterator(); it.hasNext(); )
     {
       DrawComponent dc = it.next();
       Point oldRotationCenter = dc2RotationCenter.get(dc);
@@ -121,8 +121,8 @@ extends Command
       } else {
         dc.setRotationX(oldRotationCenter.x);
         dc.setRotationY(oldRotationCenter.y);
-      }       
+      }
     }
-    EditorUtil.selectEditParts(request.getEditParts());    
-  }   
+    EditorUtil.selectEditParts(request.getEditParts());
+  }
 }

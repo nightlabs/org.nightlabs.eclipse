@@ -35,23 +35,23 @@ import org.nightlabs.i18n.unit.IUnit;
  * 
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class UnitAction 
-extends Action 
+public class UnitAction
+extends Action
 {
-	public UnitAction(UnitManager unitManager, IUnit unit) 
+	public UnitAction(UnitManager unitManager, IUnit unit)
 	{
 		super();
 		this.unitManager = unitManager;
 		this.unit = unit;
 		setId(unit.getUnitID());
-		setText(unit.getUnitSymbol());		
+		setText(unit.getUnitSymbol());
 	}
 
 	private UnitManager unitManager = null;
 	private IUnit unit = null;
 	
 	@Override
-	public void run() 
+	public void run()
 	{
 		unitManager.setCurrentUnit(unit);
 	}

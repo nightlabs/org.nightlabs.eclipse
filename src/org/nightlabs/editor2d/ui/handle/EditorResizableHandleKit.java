@@ -39,8 +39,8 @@ import org.eclipse.swt.graphics.Cursor;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class EditorResizableHandleKit 
-extends ResizableHandleKit 
+public class EditorResizableHandleKit
+extends ResizableHandleKit
 {
 
 	public EditorResizableHandleKit() {
@@ -56,7 +56,7 @@ extends ResizableHandleKit
 	 * direction
 	 */
 	public static void addHandle(GraphicalEditPart part, List handles, int direction) {
-		handles.add(createHandle(part, direction));	
+		handles.add(createHandle(part, direction));
 	}
 
 	/**
@@ -70,9 +70,9 @@ extends ResizableHandleKit
 	 * direction
 	 * @param cursor the Cursor to use when hovering over this handle
 	 */
-	public static void addHandle(GraphicalEditPart part, List handles, int direction, 
+	public static void addHandle(GraphicalEditPart part, List handles, int direction,
 								 DragTracker tracker, Cursor cursor) {
-		handles.add(createHandle(part, direction, tracker, cursor));	
+		handles.add(createHandle(part, direction, tracker, cursor));
 	}
 		
 	/**
@@ -132,7 +132,7 @@ extends ResizableHandleKit
 
 	/**
 	 * Returns a new {@link MoveHandle} with the given owner.
-	 * @param owner the GraphicalEditPart that is the owner of the new MoveHandle 
+	 * @param owner the GraphicalEditPart that is the owner of the new MoveHandle
 	 * @return the new MoveHandle
 	 */
 	public static Handle moveHandle(GraphicalEditPart owner) {
@@ -143,15 +143,15 @@ extends ResizableHandleKit
 	 * Returns a new {@link MoveHandle} with the given owner and DragTracker.
 	 * 
 	 * @param tracker the DragTracker to assign to this handle
-	 * @param owner the GraphicalEditPart that is the owner of the new MoveHandle 
+	 * @param owner the GraphicalEditPart that is the owner of the new MoveHandle
 	 * @return the new MoveHandle
 	 * @param cursor the Cursor to use when hovering over this handle
 	 */
-	public static Handle moveHandle(GraphicalEditPart owner, DragTracker tracker, 
+	public static Handle moveHandle(GraphicalEditPart owner, DragTracker tracker,
 									Cursor cursor) {
 		MoveHandle moveHandle = new EditorMoveHandle(owner);
 		moveHandle.setDragTracker(tracker);
 		moveHandle.setCursor(cursor);
-		return moveHandle;		
+		return moveHandle;
 	}
 }

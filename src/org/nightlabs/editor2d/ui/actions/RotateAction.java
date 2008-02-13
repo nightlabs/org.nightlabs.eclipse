@@ -34,8 +34,8 @@ import org.nightlabs.editor2d.ui.request.EditorRequestConstants;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
 
-public class RotateAction 
-extends SelectionAction 
+public class RotateAction
+extends SelectionAction
 implements EditorRequestConstants
 {
   public static final String ID = RotateAction.class.getName();
@@ -44,18 +44,18 @@ implements EditorRequestConstants
   }
 
   @Override
-	protected void init() 
+	protected void init()
   {
   	super.init();
   	setText(Messages.getString("org.nightlabs.editor2d.ui.actions.RotateAction.text")); //$NON-NLS-1$
   	setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.actions.RotateAction.tooltip")); //$NON-NLS-1$
   	setId(ID);
-  	setActionDefinitionId(EditorCommandConstants.ROTATE_ID);  
+  	setActionDefinitionId(EditorCommandConstants.ROTATE_ID);
 //  	setAccelerator(SWT.CTRL | 'R');
-  } 
+  }
   
   @Override
-	protected boolean calculateEnabled() 
+	protected boolean calculateEnabled()
   {
   	if (EditorStateManager.getCurrentState() != EditorStateManager.STATE_ROTATE) {
   	  return true;
@@ -64,10 +64,10 @@ implements EditorRequestConstants
   }
     
   @Override
-	public void run() 
+	public void run()
   {
   	if (!getSelectedObjects().isEmpty()) {
   	  EditorStateManager.setRotateMode(getSelectedObjects());
-  	}    
+  	}
   }
 }

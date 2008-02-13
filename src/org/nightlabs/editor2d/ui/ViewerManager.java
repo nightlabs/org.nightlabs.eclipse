@@ -60,7 +60,7 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 import org.nightlabs.editor2d.ui.util.EditorUtil;
 import org.nightlabs.editor2d.viewer.ui.descriptor.DescriptorManager;
 
-public class ViewerManager 
+public class ViewerManager
 {
 	/**
 	 * LOG4J logger used by this class
@@ -72,7 +72,7 @@ public class ViewerManager
   private Point mousePoint = new Point();
   private RootEditPart root = null;
   private IStatusLineManager statusLineMan = null;
-  public ViewerManager(ScrollingGraphicalViewer viewer, IStatusLineManager statusLineMan) 
+  public ViewerManager(ScrollingGraphicalViewer viewer, IStatusLineManager statusLineMan)
   {
     super();
     this.viewer = viewer;
@@ -81,7 +81,7 @@ public class ViewerManager
     root.addEditPartListener(rootListener);
     FigureCanvas canvas = (FigureCanvas) viewer.getControl();
     viewport = canvas.getViewport();
-    initExcludeListRef();    
+    initExcludeListRef();
     conditionRef = new ConditionRef(createDefaultCondition());
     viewport.addMouseMotionListener(mouseListener);
     mousePoint = new Point();
@@ -89,37 +89,37 @@ public class ViewerManager
   }
   
   private ExcludeListRef excludeListRef;
-  protected void initExcludeListRef() 
+  protected void initExcludeListRef()
   {
     List<EditPart> excludeList = new ArrayList<EditPart>();
     logger.debug("root = "+root); //$NON-NLS-1$
     excludeList.add(root);
-    excludeListRef = new ExcludeListRef(excludeList);    
-  } 
+    excludeListRef = new ExcludeListRef(excludeList);
+  }
   
   private EditPartListener rootListener = new EditPartListener.Stub()
-  {	
+  {
 		@Override
-		public void removingChild(EditPart child, int index) 
+		public void removingChild(EditPart child, int index)
 		{
 			excludeListRef.getExcludeList().remove(child);
 			for (Iterator it = child.getChildren().iterator(); it.hasNext(); ) {
 				excludeListRef.getExcludeList().remove(it.next());
-			}						
-		}	
+			}
+		}
 		@Override
-		public void childAdded(EditPart child, int index) 
+		public void childAdded(EditPart child, int index)
 		{
 			// exclude the ModelRoot (RootDrawComponent) and its Layers (Layer)
 			excludeListRef.getExcludeList().add(child);
 			for (Iterator it = child.getChildren().iterator(); it.hasNext(); ) {
 				excludeListRef.getExcludeList().add(it.next());
-			}			
-		}	
+			}
+		}
 	};
   
   private List<Class> ignoredClasses = new ArrayList<Class>();
-  public void addIgnoreTypeCollection(Collection<Class> editPartTypes) 
+  public void addIgnoreTypeCollection(Collection<Class> editPartTypes)
   {
   	if (editPartTypes == null)
   		throw new IllegalArgumentException("Param editPartTypes must not be null!"); //$NON-NLS-1$
@@ -131,18 +131,18 @@ public class ViewerManager
   		Class c = it.next();
   		addIgnoreType(c);
   	}
-  	conditionRef.setCondition(createIgnoreCondition(ignoredClasses));  	
+  	conditionRef.setCondition(createIgnoreCondition(ignoredClasses));
   }
     
-  public void addIgnoreType(Class c) 
+  public void addIgnoreType(Class c)
   {
 		if (AbstractDrawComponentEditPart.class.isAssignableFrom(c) && !ignoredClasses.contains(c)) {
 			ignoredClasses.add(c);
-		} 
-		conditionRef.setCondition(createIgnoreCondition(ignoredClasses));		
+		}
+		conditionRef.setCondition(createIgnoreCondition(ignoredClasses));
   }
   
-  public void addExcludeCollection(Collection<EditPart> editParts) 
+  public void addExcludeCollection(Collection<EditPart> editParts)
   {
   	if (editParts == null)
 			throw new IllegalArgumentException("Param editParts must not be null!"); //$NON-NLS-1$
@@ -150,10 +150,10 @@ public class ViewerManager
   	for (Iterator<EditPart> it = editParts.iterator(); it.hasNext(); ) {
 			EditPart ep = it.next();
 			excludeListRef.getExcludeList().add(ep);
-  	}  	
+  	}
   }
   
-  public void addExclude(AbstractDrawComponentEditPart ep) 
+  public void addExclude(AbstractDrawComponentEditPart ep)
   {
   	if (ep == null)
 			throw new IllegalArgumentException("Param ep must not be null!"); //$NON-NLS-1$
@@ -181,43 +181,43 @@ public class ViewerManager
   private Point relativePoint = null;
 //  private AbstractDrawComponentEditPart oldPart = null;
     
-  private MouseMotionListener mouseListener = new MouseMotionListener.Stub() 
+  private MouseMotionListener mouseListener = new MouseMotionListener.Stub()
   {
     @Override
-		public void mouseMoved(org.eclipse.draw2d.MouseEvent me) 
+		public void mouseMoved(org.eclipse.draw2d.MouseEvent me)
     {
     	relativePoint = new Point(me.x, me.y);
-    	mousePoint = EditorUtil.toAbsoluteWithScrollOffset(root, me.x, me.y);    	      
+    	mousePoint = EditorUtil.toAbsoluteWithScrollOffset(root, me.x, me.y);
       EditPart part = viewer.findObjectAtExcluding(relativePoint, excludeListRef.getExcludeList(), conditionRef.getCondition());
-      statusLineMan.setMessage(getMouseCoordinates());      
-      if (part != null) 
-      {       	
+      statusLineMan.setMessage(getMouseCoordinates());
+      if (part != null)
+      {
     		if (exclusiveClass == null) {
       		if (part instanceof AbstractDrawComponentEditPart) {
-      			doRollOver((AbstractDrawComponentEditPart)part);     			
-      		}      		
+      			doRollOver((AbstractDrawComponentEditPart)part);
+      		}
     		}
     		else {
     			if (exclusiveClass.equals(part.getClass())) {
     				AbstractDrawComponentEditPart dcPart = (AbstractDrawComponentEditPart) exclusiveClass.cast(part);
     				doRollOver(dcPart);
     			}
-    		}      			
+    		}
       }
     }
-  };  
+  };
   
   protected String getMouseCoordinates() {
   	return Messages.getString("org.nightlabs.editor2d.ui.ViewerManager.mouseX") + //$NON-NLS-1$
   	" = " +  //$NON-NLS-1$
-  	mousePoint.x + 
+  	mousePoint.x +
   	", " +  //$NON-NLS-1$
   	Messages.getString("org.nightlabs.editor2d.ui.ViewerManager.mouseY") +  //$NON-NLS-1$
   	" = " +  //$NON-NLS-1$
   	mousePoint.y;
   }
 
-  protected IFigure getFeedbackLayer() 
+  protected IFigure getFeedbackLayer()
   {
     if (root instanceof ScalableFreeformRootEditPart) {
     	ScalableFreeformRootEditPart rootEditPart = (ScalableFreeformRootEditPart) root;
@@ -227,10 +227,10 @@ public class ViewerManager
     return null;
   }
   
-  private DrawComponentFigure rollOverFigure = null;  
-  protected void addRollOver(AbstractDrawComponentEditPart dcPart) 
+  private DrawComponentFigure rollOverFigure = null;
+  protected void addRollOver(AbstractDrawComponentEditPart dcPart)
   {
-    if (getFeedbackLayer() != null && dcPart != null) 
+    if (getFeedbackLayer() != null && dcPart != null)
     {
     	long addStart = System.currentTimeMillis();
     	DrawComponent dc = dcPart.getDrawComponent();
@@ -238,47 +238,47 @@ public class ViewerManager
     	if (rollOverFigure == null)
     		rollOverFigure = new DrawComponentFigure();
 //    	Renderer r = dc.getRenderModeManager().getRenderer(RenderConstants.ROLLOVER_MODE, dc.getClass());
-    	Renderer r = dc.getRenderModeManager().getRenderer(RenderConstants.ROLLOVER_MODE, dc.getClass().getName());    	
+    	Renderer r = dc.getRenderModeManager().getRenderer(RenderConstants.ROLLOVER_MODE, dc.getClass().getName());
     	
-    	if (r != null) 
+    	if (r != null)
     	{
     		rollOverFigure.setRenderer(r);
-    		rollOverFigure.setDrawComponent(dc);    		
+    		rollOverFigure.setDrawComponent(dc);
 //    		rollOverFigure.setBounds(figureBounds);
     		// add already calls repaint
-      	getFeedbackLayer().add(rollOverFigure); 
+      	getFeedbackLayer().add(rollOverFigure);
     	}
     	long addEnd = System.currentTimeMillis() - addStart;
     	logger.debug("addRollOver took "+addEnd+" ms!"); //$NON-NLS-1$ //$NON-NLS-2$
-    }  	  	
+    }
   }
 
-  protected void removeRollOver() 
+  protected void removeRollOver()
   {
     if (getFeedbackLayer() != null && rollOverFigure != null) {
     	// remove already calls repaint
     	getFeedbackLayer().remove(rollOverFigure);
-    }  	
+    }
   }
     
   private PreferencesConfigModule prefConfMod = null;
-  protected void initConfigModule() 
+  protected void initConfigModule()
   {
   	try {
-    	prefConfMod = Config.sharedInstance().createConfigModule(PreferencesConfigModule.class);  		
+    	prefConfMod = Config.sharedInstance().createConfigModule(PreferencesConfigModule.class);
   	} catch (ConfigException ce) {
   		throw new RuntimeException(ce);
   	}
   }
   
-  protected void doRollOver(AbstractDrawComponentEditPart dcPart) 
+  protected void doRollOver(AbstractDrawComponentEditPart dcPart)
   {
     if (dcPart != null) {
-    	DrawComponent dc = dcPart.getDrawComponent();    	
+    	DrawComponent dc = dcPart.getDrawComponent();
   		descriptorManager.setDrawComponent(dc);
   		if (prefConfMod.isShowStatusLine())
   			statusLineMan.setMessage(getMouseCoordinates() + ", " + descriptorManager.getEntriesAsString(false));  			  		 //$NON-NLS-1$
-    }    
+    }
   }
     
   public static class ConditionRef
@@ -307,15 +307,15 @@ public class ViewerManager
 		}
 		public void setExcludeList(Collection excludeList) {
 			this.excludeList = excludeList;
-		}  	
+		}
   }
   
-  private ConditionRef conditionRef = null;  
-  protected EditPartViewer.Conditional createIgnoreCondition(final Collection<Class> classes) 
+  private ConditionRef conditionRef = null;
+  protected EditPartViewer.Conditional createIgnoreCondition(final Collection<Class> classes)
   {
-  	EditPartViewer.Conditional condition = new EditPartViewer.Conditional() 
+  	EditPartViewer.Conditional condition = new EditPartViewer.Conditional()
   	{
-  		public boolean evaluate(EditPart part) 
+  		public boolean evaluate(EditPart part)
   		{
   			if (!(part instanceof AbstractDrawComponentEditPart))
   				return false;
@@ -331,11 +331,11 @@ public class ViewerManager
 		return condition;
   }
   
-  protected EditPartViewer.Conditional createExclusiveCondition(final Class c) 
+  protected EditPartViewer.Conditional createExclusiveCondition(final Class c)
   {
-  	EditPartViewer.Conditional condition = new EditPartViewer.Conditional() 
+  	EditPartViewer.Conditional condition = new EditPartViewer.Conditional()
   	{
-  		public boolean evaluate(EditPart part) 
+  		public boolean evaluate(EditPart part)
   		{
   			if (part.getClass().equals(c))
   				return true;
@@ -346,11 +346,11 @@ public class ViewerManager
   	return condition;
   }
   
-  protected EditPartViewer.Conditional createDefaultCondition() 
+  protected EditPartViewer.Conditional createDefaultCondition()
   {
-  	EditPartViewer.Conditional condition = new EditPartViewer.Conditional() 
+  	EditPartViewer.Conditional condition = new EditPartViewer.Conditional()
   	{
-  		public boolean evaluate(EditPart part) 
+  		public boolean evaluate(EditPart part)
   		{
   			if (part instanceof RootDrawComponentEditPart ||
   					part instanceof LayerEditPart)
@@ -365,7 +365,7 @@ public class ViewerManager
   			return false;
   		}
   	};
-  	return condition;  	
+  	return condition;
   }
    
 }

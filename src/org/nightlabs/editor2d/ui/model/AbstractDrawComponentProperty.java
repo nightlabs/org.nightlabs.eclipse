@@ -30,8 +30,8 @@ import org.nightlabs.editor2d.DrawComponent;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public abstract class AbstractDrawComponentProperty 
-implements DrawComponentProperty 
+public abstract class AbstractDrawComponentProperty
+implements DrawComponentProperty
 {
 
 	public Class getDrawComponentClass() {

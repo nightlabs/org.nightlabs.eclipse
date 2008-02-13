@@ -36,12 +36,12 @@ import org.nightlabs.editor2d.ui.AbstractPaletteFactory;
 import org.nightlabs.editor2d.ui.EditorPlugin;
 import org.nightlabs.editor2d.ui.model.ImagePropertySource;
 
-public class ImageTreeEditPart 
-extends DrawComponentTreeEditPart 
+public class ImageTreeEditPart
+extends DrawComponentTreeEditPart
 {
-//	public static Image IMAGE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(), 
-//			AbstractPaletteFactory.class, "Image").createImage();	
-	public static Image IMAGE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(), 
+//	public static Image IMAGE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
+//			AbstractPaletteFactory.class, "Image").createImage();
+	public static Image IMAGE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
 			AbstractPaletteFactory.class, "Image", ImageFormat.gif).createImage();	 //$NON-NLS-1$
 	
   public ImageTreeEditPart(ImageDrawComponent drawComponent) {
@@ -63,7 +63,7 @@ extends DrawComponentTreeEditPart
   @Override
 	public IPropertySource getPropertySource()
   {
-    if (propertySource == null) 
+    if (propertySource == null)
     {
       propertySource =
         new ImagePropertySource(getImageDrawComponent());

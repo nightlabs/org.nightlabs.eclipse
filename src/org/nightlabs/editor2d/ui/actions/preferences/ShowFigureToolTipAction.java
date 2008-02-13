@@ -36,8 +36,8 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class ShowFigureToolTipAction 
-extends PreferencesAction 
+public class ShowFigureToolTipAction
+extends PreferencesAction
 {
 	public static final String ID = ShowFigureToolTipAction.class.getName();
 	
@@ -57,7 +57,7 @@ extends PreferencesAction
 	}
 
 	@Override
-	protected void init() 
+	protected void init()
 	{
 		setId(ID);
 		setText(Messages.getString("org.nightlabs.editor2d.ui.actions.preferences.ShowFigureToolTipAction.text")); //$NON-NLS-1$
@@ -66,20 +66,20 @@ extends PreferencesAction
 	}
 	
 	@Override
-	public boolean isChecked() 
+	public boolean isChecked()
 	{
 		return prefConfMod.isShowToolTips();
 	}
 
 	@Override
-	public void run() 
+	public void run()
 	{
 		prefConfMod.setShowToolTips(!isChecked());
 		EditPart modelRootEditPart = getEditPart(getRootDrawComponent());
 		updateToolTips(modelRootEditPart);
 	}
 
-	protected void updateToolTips(EditPart ep) 
+	protected void updateToolTips(EditPart ep)
 	{
 		if (ep instanceof AbstractDrawComponentEditPart) {
 			AbstractDrawComponentEditPart dcEP = (AbstractDrawComponentEditPart) ep;

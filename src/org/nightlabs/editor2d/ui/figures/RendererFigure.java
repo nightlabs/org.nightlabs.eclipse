@@ -34,7 +34,7 @@ import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.render.Renderer;
 
 
-public interface RendererFigure 
+public interface RendererFigure
 extends IFigure
 {
 	/**
@@ -56,5 +56,5 @@ extends IFigure
    * 
    * @param graphics the Graphics2D to paint on
    */
-  public void paint(Graphics2D graphics);  
+  public void paint(Graphics2D graphics);
 }

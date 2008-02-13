@@ -31,8 +31,8 @@ import org.nightlabs.editor2d.ui.model.IModelCreationFactory;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class EditorCreateRequest 
-extends CreateRequest 
+public class EditorCreateRequest
+extends CreateRequest
 implements EditorBoundsRequest
 {
 
@@ -42,7 +42,7 @@ implements EditorBoundsRequest
 
 	public EditorCreateRequest(Object type) {
 		super(type);
-	}	
+	}
 	
   public IModelCreationFactory getModelCreationFactory() {
   	return (IModelCreationFactory) getFactory();

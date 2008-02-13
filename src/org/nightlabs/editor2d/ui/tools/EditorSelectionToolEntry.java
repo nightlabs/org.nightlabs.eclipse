@@ -31,8 +31,8 @@ import org.eclipse.gef.Tool;
 import org.eclipse.gef.palette.PanningSelectionToolEntry;
 
 
-public class EditorSelectionToolEntry 
-extends PanningSelectionToolEntry 
+public class EditorSelectionToolEntry
+extends PanningSelectionToolEntry
 {
 
   /**

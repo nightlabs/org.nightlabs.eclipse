@@ -35,7 +35,7 @@ import org.nightlabs.editor2d.ui.util.EditorUtil;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class EditorConstrainedEditPolicy 
+public class EditorConstrainedEditPolicy
 extends GraphicalEditPolicy
 implements EditorRequestConstants
 {
@@ -45,7 +45,7 @@ implements EditorRequestConstants
 
   public Point getConstraintFor(Point point){
     return EditorUtil.toAbsolute((GraphicalEditPart)getHost(), point);
-  } 
+  }
 
   protected Point getScrollOffset() {
     return EditorUtil.getScrollOffset(getHost());
@@ -57,7 +57,7 @@ implements EditorRequestConstants
 
 //	@Override
 //	public EditPart getTargetEditPart(Request request) {
-//		return super.getTargetEditPart(request);		
-//	}  
+//		return super.getTargetEditPart(request);
+//	}
     
 }

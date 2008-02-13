@@ -41,8 +41,8 @@ import org.nightlabs.print.PrinterConfigurationCfMod;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class EditorPrintPreviewDialog 
-extends CenteredDialog 
+public class EditorPrintPreviewDialog
+extends CenteredDialog
 {
 	private PrinterUseCase printerUseCase;
 	private PrinterConfiguration printerConfiguration;
@@ -52,24 +52,24 @@ extends CenteredDialog
 	/**
 	 * @param parentShell
 	 */
-	public EditorPrintPreviewDialog(DrawComponent dc, Shell parentShell) 
+	public EditorPrintPreviewDialog(DrawComponent dc, Shell parentShell)
 	{
 		super(parentShell);
 		if (dc == null)
 			throw new IllegalArgumentException("Param dc must not be null!"); //$NON-NLS-1$
 		
 		setShellStyle(getShellStyle() | SWT.RESIZE);
-		this.dc = dc;		
+		this.dc = dc;
 		printerUseCase = PrinterConfigurationRegistry.sharedInstance().getPrinterUseCase(PRINTER_USECASE_EDITOR2D);
 		if (printerUseCase == null)
 			throw new RuntimeException("The PrinterUseCase to be edited is not registered: "+PRINTER_USECASE_EDITOR2D); //$NON-NLS-1$
-		printerConfiguration = PrinterConfigurationCfMod.getPrinterConfiguration(PRINTER_USECASE_EDITOR2D);		
+		printerConfiguration = PrinterConfigurationCfMod.getPrinterConfiguration(PRINTER_USECASE_EDITOR2D);
 	}
 
 	private DrawComponent dc = null;
 	private EditorPrinterConfiguratorComposite printConfiguratorComp = null;
 	@Override
-	protected Control createDialogArea(Composite parent) 
+	protected Control createDialogArea(Composite parent)
 	{
 		printConfiguratorComp = new EditorPrinterConfiguratorComposite(dc, parent, SWT.NONE);
 		printConfiguratorComp.init(printerConfiguration);

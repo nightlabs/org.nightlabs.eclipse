@@ -56,7 +56,7 @@ public interface ISmartUpdateFigure {
 	
 	/**
 	 * Rebuild the information
-	 * used for optimized painting. 
+	 * used for optimized painting.
 	 */
 	public void refresh();
 

@@ -39,7 +39,7 @@ import org.nightlabs.editor2d.PageDrawComponent;
 import org.nightlabs.editor2d.RectangleDrawComponent;
 import org.nightlabs.editor2d.TextDrawComponent;
 
-public class ModelCreationFactory 
+public class ModelCreationFactory
 //implements CreationFactory
 implements IModelCreationFactory
 {
@@ -55,11 +55,11 @@ implements IModelCreationFactory
 		return factory;
 	}
 	
-	/* 
+	/*
 	 * @see org.eclipse.gef.requests.CreationFactory#getNewObject()
 	 */
 	public Object getNewObject()
-	{	  	  	  
+	{
 		Object result = null;
 			
 		if( targetClass.equals(RectangleDrawComponent.class)) {
@@ -99,7 +99,7 @@ implements IModelCreationFactory
 		return result;
 	}
 
-	/* 
+	/*
 	 * @see org.eclipse.gef.requests.CreationFactory#getObjectType()
 	 */
 	public Object getObjectType()

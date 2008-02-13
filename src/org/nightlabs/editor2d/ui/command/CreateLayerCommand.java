@@ -34,14 +34,14 @@ import org.nightlabs.editor2d.RootDrawComponent;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
 
-public class CreateLayerCommand  
+public class CreateLayerCommand
 extends CreateDrawComponentCommand
-{		 
+{
 	public CreateLayerCommand(PageDrawComponent parent, Editor2DFactory factory)
 	{
 		if (parent == null) {
 			throw new IllegalArgumentException("Param parent (PageDrawComponent) must not be null!"); //$NON-NLS-1$
-		}	  
+		}
 		this.parent = parent;
 	  this.factory = factory;
 	  setLabel(Messages.getString("org.nightlabs.editor2d.ui.command.CreateLayerCommand.label"));	   //$NON-NLS-1$
@@ -53,22 +53,22 @@ extends CreateDrawComponentCommand
 	 * @see org.eclipse.gef.commands.Command#execute()
 	 */
 	@Override
-	public void execute() 
+	public void execute()
 	{
-	  drawComponent = factory.createLayer();	  
+	  drawComponent = factory.createLayer();
     getLayer().setParent(getRootDrawComponent().getCurrentPage());
 		drawOrderIndex = getRootDrawComponent().getCurrentPage().getDrawComponents().indexOf(
-        getRootDrawComponent().getCurrentLayer()) + 1;    
+        getRootDrawComponent().getCurrentLayer()) + 1;
     getRootDrawComponent().getCurrentPage().addDrawComponent(getLayer(), drawOrderIndex);
     getRootDrawComponent().setCurrentLayer(getLayer());
-	}	
+	}
 	
 	@Override
-	public void redo() 
+	public void redo()
 	{
     super.redo();
-		getRootDrawComponent().setCurrentLayer(getLayer());			  		
-	}	
+		getRootDrawComponent().setCurrentLayer(getLayer());
+	}
 			
 	protected RootDrawComponent getRootDrawComponent() {
 	  return parent.getRoot();

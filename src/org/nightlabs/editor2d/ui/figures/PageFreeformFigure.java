@@ -32,8 +32,8 @@ import org.nightlabs.editor2d.PageDrawComponent;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class PageFreeformFigure 
-//extends ContainerDrawComponentFigure 
+public class PageFreeformFigure
+//extends ContainerDrawComponentFigure
 extends ContainerFreeformLayer
 {
 
@@ -51,13 +51,13 @@ extends ContainerFreeformLayer
 	@Override
 	public void paint(Graphics2D graphics) {
 		DrawComponentFigure.paintJ2D(graphics, drawComponent, renderer);
-	}  
+	}
 	
 //	/**
 //	 * Overridden to paint bounds of page and children
 //	 */
-//	public void paint(Graphics graphics) 
+//	public void paint(Graphics graphics)
 //	{
 //		DrawComponentFigure.checkDraw2D(graphics, drawComponent, renderer);
-//	}	
+//	}
 }

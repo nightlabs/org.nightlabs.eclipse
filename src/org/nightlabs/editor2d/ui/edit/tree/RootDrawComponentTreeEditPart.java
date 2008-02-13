@@ -40,9 +40,9 @@ import org.nightlabs.editor2d.ui.model.RootDrawComponentPropertySource;
 import org.nightlabs.editor2d.ui.outline.filter.FilterManager;
 
 
-public class RootDrawComponentTreeEditPart 
-extends DrawComponentContainerTreeEditPart 
-{  
+public class RootDrawComponentTreeEditPart
+extends DrawComponentContainerTreeEditPart
+{
   /**
    * @param model
    */
@@ -68,36 +68,36 @@ extends DrawComponentContainerTreeEditPart
     return null;
   }
 
-//  protected void createEditPolicies() 
+//  protected void createEditPolicies()
 //  {
 //  	super.createEditPolicies();
 //  	installEditPolicy(EditPolicy.CONTAINER_ROLE, new DrawComponentContainerEditPolicy());
 //  	installEditPolicy(EditPolicy.TREE_CONTAINER_ROLE, new RootDrawComponentTreeEditPolicy());
 //  	installEditPolicy(EditPolicy.COMPONENT_ROLE, new RootComponentEditPolicy());
-//  }  
+//  }
   
   @Override
 	protected List getModelChildren()
-  { 
+  {
   	if (getFilterMan().isAllFilterSet()) {
-  		return getRootDrawComponent().getDrawComponents(); 
+  		return getRootDrawComponent().getDrawComponents();
   	}
   	else {
       List filterChildren = new ArrayList();
       filterChildren = getModelChildren(getRootDrawComponent());
       return filterChildren;
   	}
-  }	
+  }
     
-  protected List getModelChildren(DrawComponentContainer dcc) 
+  protected List getModelChildren(DrawComponentContainer dcc)
   {
-    List filterChildren = new ArrayList(); 
-  	for (Iterator itFilter = getFilterMan().getFilters().iterator(); itFilter.hasNext(); ) 
+    List filterChildren = new ArrayList();
+  	for (Iterator itFilter = getFilterMan().getFilters().iterator(); itFilter.hasNext(); )
   	{
   		Class filter = (Class) itFilter.next();
-      for (Iterator itChildren = dcc.getDrawComponents().iterator(); itChildren.hasNext(); ) 
+      for (Iterator itChildren = dcc.getDrawComponents().iterator(); itChildren.hasNext(); )
       {
-        DrawComponent dc = (DrawComponent) itChildren.next();        
+        DrawComponent dc = (DrawComponent) itChildren.next();
   			if (filter.isAssignableFrom(dc.getClass())) {
   				filterChildren.add(dc);
   			}
@@ -106,8 +106,8 @@ extends DrawComponentContainerTreeEditPart
   				filterChildren.addAll(getModelChildren(childDcc));
   			}
       }
-  	}      
-    return filterChildren;  		  	
+  	}
+    return filterChildren;
   }
   
   @Override
@@ -119,5 +119,5 @@ extends DrawComponentContainerTreeEditPart
         new RootDrawComponentPropertySource(getRootDrawComponent());
     }
     return propertySource;
-  }    
+  }
 }

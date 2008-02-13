@@ -46,8 +46,8 @@ import org.nightlabs.editor2d.util.UnitUtil;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class EditorPrintPreviewComposite 
-extends PrintPreviewComposite 
+public class EditorPrintPreviewComposite
+extends PrintPreviewComposite
 {
 	private static final Logger logger = Logger.getLogger(EditorPrintPreviewComposite.class);
 	
@@ -57,11 +57,11 @@ extends PrintPreviewComposite
 	 * @param style
 	 */
 	public EditorPrintPreviewComposite(DrawComponent dc, PageFormat pageFormat, Composite parent,
-			int style) 
+			int style)
 	{
 		super(pageFormat, parent, style);
 		init(dc);
-		super.init(pageFormat);		
+		super.init(pageFormat);
 	}
 
 	/**
@@ -72,24 +72,24 @@ extends PrintPreviewComposite
 	 * @param layoutDataMode
 	 */
 	public EditorPrintPreviewComposite(DrawComponent dc, PageFormat pageFormat, Composite parent,
-			int style, LayoutMode layoutMode, LayoutDataMode layoutDataMode) 
+			int style, LayoutMode layoutMode, LayoutDataMode layoutDataMode)
 	{
 		super(pageFormat, parent, style, layoutMode, layoutDataMode);
 		init(dc);
 		super.init(pageFormat);
 	}
 
-	private void init(DrawComponent dc) 
+	private void init(DrawComponent dc)
 	{
 		if (dc == null)
 			throw new IllegalArgumentException("Param dc must NOT be null!"); //$NON-NLS-1$
 		
 		this.dc = dc;
 		
-		Point2D resolutionScale = UnitUtil.getResolutionScale(72, dc); 
+		Point2D resolutionScale = UnitUtil.getResolutionScale(72, dc);
 		this.resolutionScale = Math.max(resolutionScale.getX(), resolutionScale.getY());
 		
-		paintable = new PrintPreviewPaintable(dc, getAWTBackgroundColor(), getPageRectangle(), getImageablePageRectangle());		
+		paintable = new PrintPreviewPaintable(dc, getAWTBackgroundColor(), getPageRectangle(), getImageablePageRectangle());
 	}
 
 	private Color awtbgColor = null;
@@ -100,10 +100,10 @@ extends PrintPreviewComposite
 	}
 	
 	private DrawComponent dc = null;
-	private PrintPreviewPaintable paintable = null;	
+	private PrintPreviewPaintable paintable = null;
 	
 	@Override
-	protected Canvas initCanvas(Composite parent) {		
+	protected Canvas initCanvas(Composite parent) {
 		return new J2DCanvas(parent, paintable);
 	}
 
@@ -117,25 +117,25 @@ extends PrintPreviewComposite
 	}
 		
 	private Rectangle dcBounds = null;
-	protected Rectangle getDrawComponentBounds() 
+	protected Rectangle getDrawComponentBounds()
 	{
-		if (dcBounds == null) 
+		if (dcBounds == null)
 		{
 			dc.clearBounds();
 			Point2D resolutionScale = UnitUtil.getResolutionScale(72, dc);
 			dcBounds = scaleRect(
-					dc.getBounds(), 
-					1 / resolutionScale.getX(), 
-					1 / resolutionScale.getY(), 
+					dc.getBounds(),
+					1 / resolutionScale.getX(),
+					1 / resolutionScale.getY(),
 					true);
 		}
 		return dcBounds;
 	}
 	
 	private Rectangle originalDCBounds = null;
-	protected Rectangle getOriginalDCBounds() 
+	protected Rectangle getOriginalDCBounds()
 	{
-		if (originalDCBounds == null) 
+		if (originalDCBounds == null)
 		{
 			dc.clearBounds();
 			originalDCBounds = dc.getBounds();
@@ -151,12 +151,12 @@ extends PrintPreviewComposite
 	private double getResolutionScale() {
 		return 1 / resolutionScale;
 	}
-	private double scale = 1.0;		
-	protected double calcScale() 
+	private double scale = 1.0;
+	protected double calcScale()
 	{
 		double margins2DCScale = getMargins2DCBoundsScale();
-		double canvas2PageScale = getCanvas2PageScale();			
-		double ratio = margins2DCScale * canvas2PageScale;						
+		double canvas2PageScale = getCanvas2PageScale();
+		double ratio = margins2DCScale * canvas2PageScale;
 		double scale = 1 / ratio;
 		
 		scale = scale * getResolutionScale();
@@ -173,75 +173,75 @@ extends PrintPreviewComposite
 			logger.debug("scale = "+scale);			 //$NON-NLS-1$
 			logger.debug("resolutionScale = "+getResolutionScale()); //$NON-NLS-1$
 			logger.debug("");			 //$NON-NLS-1$
-		}				
+		}
 		return scale;
 	}
 	
 //	protected Point2D getMargins2DCBoundsRatio() {
 //		return GeomUtil.calcScale(getImageablePageRectangle(), getDrawComponentBounds());
-////		return GeomUtil.calcScale(getImageablePageRectangle(), getOriginalDCBounds());		
+////		return GeomUtil.calcScale(getImageablePageRectangle(), getOriginalDCBounds());
 //	}
 
 //	protected Point2D getPage2DCBoundsRatio() {
 ////		return GeomUtil.calcScale(getPageRectangle(), getDrawComponentBounds());
-//		return GeomUtil.calcScale(getPageRectangle(), getOriginalDCBounds());		
+//		return GeomUtil.calcScale(getPageRectangle(), getOriginalDCBounds());
 //	}
  
 //	protected Point2D getCanvas2PageRatio() {
 //		return GeomUtil.calcScale(getCanvasBounds(), getPageRectangle());
-//	}		
+//	}
 	
 	protected double getMargins2PageScale() {
 		Point2D margins2pageRatio = GeomUtil.calcScale(getImageablePageRectangle(), getPageRectangle());
-		return Math.max(margins2pageRatio.getX(), margins2pageRatio.getY());		
+		return Math.max(margins2pageRatio.getX(), margins2pageRatio.getY());
 	}
 	
-	protected double getPage2DCBoundsScale() 
-	{		
-		Point2D page2DCBoundsRatio = GeomUtil.calcScale(getPageRectangle(), getDrawComponentBounds());		
-//		return Math.min(page2DCBoundsRatio.getX(), page2DCBoundsRatio.getY());				
-		return Math.max(page2DCBoundsRatio.getX(), page2DCBoundsRatio.getY());		
+	protected double getPage2DCBoundsScale()
+	{
+		Point2D page2DCBoundsRatio = GeomUtil.calcScale(getPageRectangle(), getDrawComponentBounds());
+//		return Math.min(page2DCBoundsRatio.getX(), page2DCBoundsRatio.getY());
+		return Math.max(page2DCBoundsRatio.getX(), page2DCBoundsRatio.getY());
 	}
 
-	protected double getMargins2DCBoundsScale() 
-	{		
-		Point2D margins2DCBoundsRatio = GeomUtil.calcScale(getImageablePageRectangle(), getDrawComponentBounds());		
-//		return Math.min(margins2DCBoundsRatio.getX(), margins2DCBoundsRatio.getY());				
-		return Math.max(margins2DCBoundsRatio.getX(), margins2DCBoundsRatio.getY());		
+	protected double getMargins2DCBoundsScale()
+	{
+		Point2D margins2DCBoundsRatio = GeomUtil.calcScale(getImageablePageRectangle(), getDrawComponentBounds());
+//		return Math.min(margins2DCBoundsRatio.getX(), margins2DCBoundsRatio.getY());
+		return Math.max(margins2DCBoundsRatio.getX(), margins2DCBoundsRatio.getY());
 	}
 
-	protected double getCanvas2PageScale() 
-	{		
-		Point2D canvas2PageRatio = GeomUtil.calcScale(getCanvasBounds(), getPageRectangle());		
-//		return Math.min(canvas2PageRatio.getX(), canvas2PageRatio.getY());				
-		return Math.max(canvas2PageRatio.getX(), canvas2PageRatio.getY());		
+	protected double getCanvas2PageScale()
+	{
+		Point2D canvas2PageRatio = GeomUtil.calcScale(getCanvasBounds(), getPageRectangle());
+//		return Math.min(canvas2PageRatio.getX(), canvas2PageRatio.getY());
+		return Math.max(canvas2PageRatio.getX(), canvas2PageRatio.getY());
 	}
 	
-	protected Rectangle getPaintedPageRectangle() 
-	{		
-//		double scale = getPage2DCBoundsScale() * resolutionScale;		
-		double scale = getMargins2DCBoundsScale() * resolutionScale;		
+	protected Rectangle getPaintedPageRectangle()
+	{
+//		double scale = getPage2DCBoundsScale() * resolutionScale;
+		double scale = getMargins2DCBoundsScale() * resolutionScale;
 		return scaleRect(getPageRectangle(), scale, scale, true);
 	}
 	
-	protected Rectangle getPaintedMarginBounds() 
+	protected Rectangle getPaintedMarginBounds()
 	{
 //		double scale = getMargins2DCBoundsScale() * resolutionScale;
-		double margins2PageScale = 1 / getMargins2PageScale(); 		
-		double scale = getMargins2DCBoundsScale() * resolutionScale * margins2PageScale;		
-		return scaleRect(getImageablePageRectangle(), scale, scale, false);		
+		double margins2PageScale = 1 / getMargins2PageScale();
+		double scale = getMargins2DCBoundsScale() * resolutionScale * margins2PageScale;
+		return scaleRect(getImageablePageRectangle(), scale, scale, false);
 	}
 	
 	@Override
-	protected void updateCanvas() 
-	{		
-		setCanvasSize();		
-		paintable = new PrintPreviewPaintable(dc, getAWTBackgroundColor(), 
+	protected void updateCanvas()
+	{
+		setCanvasSize();
+		paintable = new PrintPreviewPaintable(dc, getAWTBackgroundColor(),
 				getPaintedPageRectangle(), getPaintedMarginBounds());
 		getJ2DCanvas().setPaintable(paintable);
 		scale = calcScale();
 				
-		getJ2DCanvas().getPaintableManager().setScale(scale);							
+		getJ2DCanvas().getPaintableManager().setScale(scale);
 		getJ2DCanvas().repaint();
 		
 		if (logger.isDebugEnabled()) {
@@ -257,21 +257,21 @@ extends PrintPreviewComposite
 	}
 	
 //	@Override
-//	protected void updateCanvas() 
+//	protected void updateCanvas()
 //	{
 //		getJ2DCanvas().repaint();
 //	}
 		
 	@Override
-	protected PaintListener initPagePaintListener() 
+	protected PaintListener initPagePaintListener()
 	{
 		return new PaintListener()
-		{		
-			public void paintControl(PaintEvent e) 
+		{
+			public void paintControl(PaintEvent e)
 			{
 				
-			}		
+			}
 		};
-	}	
+	}
 		
 }

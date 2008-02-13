@@ -57,19 +57,19 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class QuickOptionsView 
-extends ViewPart 
+public class QuickOptionsView
+extends ViewPart
 {
-	public static final String ID = QuickOptionsView.class.getName(); 
+	public static final String ID = QuickOptionsView.class.getName();
 	
-	protected void init() 
+	protected void init()
 	{
 		setPartName(Messages.getString("org.nightlabs.editor2d.ui.views.QuickOptionsView.name")); //$NON-NLS-1$
 		initConfigModule();
 	}
 	
 	private QuickOptionsConfigModule confMod = null;
-	protected QuickOptionsConfigModule getConfigModule() 
+	protected QuickOptionsConfigModule getConfigModule()
 	{
 		if (confMod == null)
 			initConfigModule();
@@ -77,53 +77,53 @@ extends ViewPart
 		return confMod;
 	}
 	
-	protected void initConfigModule() 
+	protected void initConfigModule()
 	{
 		try {
 			confMod = Config.sharedInstance().createConfigModule(QuickOptionsConfigModule.class);
 		} catch (ConfigException e) {
 			throw new RuntimeException(e);
-		} 
-	}	
+		}
+	}
 	
 //	private XFormToolkit toolkit = null;
 	private NightlabsFormsToolkit toolkit = null;
-	private ScrolledForm form = null;	
+	private ScrolledForm form = null;
 	
 	@Override
-	public void createPartControl(Composite parent) 
+	public void createPartControl(Composite parent)
 	{
-		toolkit = new NightlabsFormsToolkit(parent.getDisplay());		
+		toolkit = new NightlabsFormsToolkit(parent.getDisplay());
 //		toolkit = new XFormToolkit(parent.getDisplay());
 //		toolkit.setCurrentMode(TOOLKIT_MODE.COMPOSITE);
 		
 		form = toolkit.createScrolledForm(parent);
 		TableWrapLayout layout = new TableWrapLayout();
-		form.getBody().setLayout(layout);		
+		form.getBody().setLayout(layout);
 		form.getBody().setLayoutData(new GridData(GridData.FILL_BOTH));
-//		form.setText(EditorPlugin.getResourceString("quickOptionsView.name"));		
+//		form.setText(EditorPlugin.getResourceString("quickOptionsView.name"));
 		
-		Section sectionDuplicate = toolkit.createSection(form.getBody(), 
+		Section sectionDuplicate = toolkit.createSection(form.getBody(),
 			  Section.DESCRIPTION|ExpandableComposite.TITLE_BAR|
 			  ExpandableComposite.TWISTIE|ExpandableComposite.EXPANDED);
 		TableWrapData td = new TableWrapData(TableWrapData.FILL_GRAB);
-		sectionDuplicate.setLayoutData(td);		
+		sectionDuplicate.setLayoutData(td);
 		
 		sectionDuplicate.addExpansionListener(new ExpansionAdapter() {
 			@Override
 			public void expansionStateChanged(ExpansionEvent e) {
 				form.reflow(true);
 		  }
-		});		
+		});
 		sectionDuplicate.setText(Messages.getString("org.nightlabs.editor2d.ui.views.QuickOptionsView.section.duplicate.text")); //$NON-NLS-1$
 		sectionDuplicate.setDescription(Messages.getString("org.nightlabs.editor2d.ui.views.QuickOptionsView.section.duplicate.description")); //$NON-NLS-1$
-		Composite sectionClientDuplicate = toolkit.createComposite(sectionDuplicate);	
-		sectionClientDuplicate.setLayout(new GridLayout(2, false));				
+		Composite sectionClientDuplicate = toolkit.createComposite(sectionDuplicate);
+		sectionClientDuplicate.setLayout(new GridLayout(2, false));
 		createEntry(sectionClientDuplicate, Messages.getString("org.nightlabs.editor2d.ui.views.QuickOptionsView.label.distanceX"), CLONE_X); //$NON-NLS-1$
 		createEntry(sectionClientDuplicate, Messages.getString("org.nightlabs.editor2d.ui.views.QuickOptionsView.label.distanceY"), CLONE_Y); //$NON-NLS-1$
 		sectionDuplicate.setClient(sectionClientDuplicate);
 		
-		Section sectionMove = toolkit.createSection(form.getBody(), 
+		Section sectionMove = toolkit.createSection(form.getBody(),
 			  Section.DESCRIPTION|ExpandableComposite.TITLE_BAR|
 			  ExpandableComposite.TWISTIE|ExpandableComposite.EXPANDED);
 		TableWrapData tdMove = new TableWrapData(TableWrapData.FILL_GRAB);
@@ -134,40 +134,40 @@ extends ViewPart
 			public void expansionStateChanged(ExpansionEvent e) {
 				form.reflow(true);
 		  }
-		});		
+		});
 		sectionMove.setText(Messages.getString("org.nightlabs.editor2d.ui.views.QuickOptionsView.section.move.text")); //$NON-NLS-1$
 		sectionMove.setDescription(Messages.getString("org.nightlabs.editor2d.ui.views.QuickOptionsView.section.move.description")); //$NON-NLS-1$
 		Composite sectionClientMove = toolkit.createComposite(sectionMove);
-		sectionClientMove.setLayout(new GridLayout(2, false));				
+		sectionClientMove.setLayout(new GridLayout(2, false));
 		createEntry(sectionClientMove, Messages.getString("org.nightlabs.editor2d.ui.views.QuickOptionsView.label.distanceX"), MOVE_X); //$NON-NLS-1$
 		createEntry(sectionClientMove, Messages.getString("org.nightlabs.editor2d.ui.views.QuickOptionsView.label.distanceY"), MOVE_Y); //$NON-NLS-1$
 		sectionMove.setClient(sectionClientMove);
 	}
 
-	private static final int CLONE_X = 1; 
+	private static final int CLONE_X = 1;
 	private static final int CLONE_Y = 2;
 	private static final int MOVE_X = 3;
-	private static final int MOVE_Y = 4;	
+	private static final int MOVE_Y = 4;
 	
-	protected void createEntry(Composite parent, String labelText, int identifier) 
+	protected void createEntry(Composite parent, String labelText, int identifier)
 	{
 		toolkit.paintBordersFor(parent);
 		
-		Label l = toolkit.createLabel(parent, labelText);		
+		Label l = toolkit.createLabel(parent, labelText);
 //		Spinner spinner = toolkit.createSpinner(parent, SWT.NONE);
 		Spinner spinner = new Spinner(parent, SWT.BORDER);
 		
-//		spinner.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));		
-		spinner.setSelection(getValue(identifier));				
+//		spinner.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		spinner.setSelection(getValue(identifier));
 		spinner.addSelectionListener(textListener);
 		spinner.addFocusListener(focusListener);
 		spinner.addDisposeListener(disposeListener);
 		
-		spinner2Identifier.put(spinner, new Integer(identifier));		
-	}	
+		spinner2Identifier.put(spinner, new Integer(identifier));
+	}
 	
 	@Override
-	public void setFocus() 
+	public void setFocus()
 	{
 		form.setFocus();
 	}
@@ -175,22 +175,22 @@ extends ViewPart
 	private Map<Spinner, Integer> spinner2Identifier = new HashMap<Spinner, Integer>();
 	
 	private SelectionListener textListener = new SelectionListener()
-	{	
+	{
 		public void widgetDefaultSelected(SelectionEvent e) {
 			widgetSelected(e);
-		}	
-		public void widgetSelected(SelectionEvent e) 
+		}
+		public void widgetSelected(SelectionEvent e)
 		{
 			Spinner t = (Spinner) e.getSource();
 			int identifier = (spinner2Identifier.get(t)).intValue();
-			int value = t.getSelection();	
+			int value = t.getSelection();
 			setValue(identifier, value);
-		}	
+		}
 	};
 		
-	protected void setValue(int identifier, int value) 
+	protected void setValue(int identifier, int value)
 	{
-		switch (identifier) 
+		switch (identifier)
 		{
 			case (CLONE_X):
 				getConfigModule().setCloneDistanceX(value);
@@ -203,13 +203,13 @@ extends ViewPart
 				break;
 			case (MOVE_Y):
 				getConfigModule().setMoveTranslationY(value);
-				break;								
+				break;
 		}
 	}
 	
-	protected int getValue(int identifier) 
+	protected int getValue(int identifier)
 	{
-		switch (identifier) 
+		switch (identifier)
 		{
 			case (CLONE_X):
 				return getConfigModule().getCloneDistanceX();
@@ -224,25 +224,25 @@ extends ViewPart
 	}
 	
 	private FocusListener focusListener = new FocusListener()
-	{	
-		public void focusLost(FocusEvent e) 
+	{
+		public void focusLost(FocusEvent e)
 		{
 //			Spinner t = (Spinner) e.getSource();
 //			int identifier = ((Integer) spinner2Identifier.get(t)).intValue();
-//			int value = t.getSelection();	
-//			setValue(identifier, value);			
-		}	
+//			int value = t.getSelection();
+//			setValue(identifier, value);
+		}
 		public void focusGained(FocusEvent e) {
-		}	
+		}
 	};
 	
 	private DisposeListener disposeListener = new DisposeListener()
-	{	
-		public void widgetDisposed(DisposeEvent e) 
+	{
+		public void widgetDisposed(DisposeEvent e)
 		{
 			Spinner t = (Spinner) e.getSource();
 			t.removeSelectionListener(textListener);
 			t.removeFocusListener(focusListener);
-		}	
+		}
 	};
 }

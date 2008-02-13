@@ -35,8 +35,8 @@ import org.nightlabs.i18n.unit.IUnit;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class UnitManager 
-{		
+public class UnitManager
+{
   public static final String PROP_CURRENT_UNIT_CHANGED = "currentUnit changed"; //$NON-NLS-1$
   public static final String PROP_UNIT_ADDED = "Unit added";   //$NON-NLS-1$
 
@@ -44,7 +44,7 @@ public class UnitManager
   private IUnit currentUnit = null;
   private PropertyChangeSupport pcs = null;
   
-	public UnitManager(Set<IUnit> units, IUnit currentUnit) 
+	public UnitManager(Set<IUnit> units, IUnit currentUnit)
 	{
 		if (units == null || units.isEmpty())
 			throw new IllegalArgumentException("Param units must not be null nor empty!"); //$NON-NLS-1$
@@ -55,25 +55,25 @@ public class UnitManager
 				
 	public Set<IUnit> getUnits() {
 		return units;
-	}	
+	}
 	public void setUnits(Set<IUnit> units) {
 		this.units = units;
 	}
 		
-  public IUnit getCurrentUnit() 
+  public IUnit getCurrentUnit()
   {
-  	if (currentUnit == null)   		
+  	if (currentUnit == null)
   		currentUnit = units.iterator().next();
   	
   	return currentUnit;
   }
   
-  public void setCurrentUnit(IUnit unit) 
+  public void setCurrentUnit(IUnit unit)
   {
   	if (unit == null)
   		throw new IllegalArgumentException("Param unit must not be null!"); //$NON-NLS-1$
   	
-  	if (!getUnits().contains(unit)) 
+  	if (!getUnits().contains(unit))
   	{
   		Set<IUnit> oldUnits = new HashSet<IUnit>(units);
   		units.add(unit);
@@ -99,11 +99,11 @@ public class UnitManager
   	return pcs;
   }
   
-  public void addPropertyChangeListener(PropertyChangeListener pcl) {    	
+  public void addPropertyChangeListener(PropertyChangeListener pcl) {
   	getPropertyChangeSupport().addPropertyChangeListener(pcl);
   }
   
-  public void removePropertyChangeListener(PropertyChangeListener pcl) {    	
+  public void removePropertyChangeListener(PropertyChangeListener pcl) {
   	getPropertyChangeSupport().removePropertyChangeListener(pcl);
   }
 }

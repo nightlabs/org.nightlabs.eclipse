@@ -33,16 +33,16 @@ import org.nightlabs.editor2d.DrawComponentContainer;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
 
-public class DrawComponentReorderCommand 
-extends Command 
+public class DrawComponentReorderCommand
+extends Command
 {
-  private int oldIndex; 
+  private int oldIndex;
   private int newIndex;
   private DrawComponent child;
   private DrawComponentContainer parent;
   private DrawComponentContainer oldParent;
 
-  public DrawComponentReorderCommand(DrawComponent child, DrawComponentContainer parent, int newIndex ) 
+  public DrawComponentReorderCommand(DrawComponent child, DrawComponentContainer parent, int newIndex )
   {
   	super(Messages.getString("org.nightlabs.editor2d.ui.command.DrawComponentReorderCommand.label")); //$NON-NLS-1$
   	this.child = child;
@@ -51,32 +51,32 @@ extends Command
   }
 
   @Override
-	public void execute() 
+	public void execute()
   {
   	// if the same parent just change index in list
   	if (parent.equals(child.getParent())) {
     	oldIndex = parent.getDrawComponents().indexOf(child);
     	parent.removeDrawComponent(child);
-    	parent.addDrawComponent(child, newIndex);  		
+    	parent.addDrawComponent(child, newIndex);
   	}
   	else {
 	  	oldParent = child.getParent();
-	  	oldIndex = oldParent.getDrawComponents().indexOf(child);	  	
+	  	oldIndex = oldParent.getDrawComponents().indexOf(child);
 	  	oldParent.removeDrawComponent(child);
-	  	parent.addDrawComponent(child, newIndex);  	  			  	
+	  	parent.addDrawComponent(child, newIndex);
   	}
   }
   
   @Override
-	public void undo() 
+	public void undo()
   {
   	if (oldParent == null) {
     	parent.removeDrawComponent(child);
-    	parent.addDrawComponent(child, oldIndex);  		  		
+    	parent.addDrawComponent(child, oldIndex);
   	}
   	else {
   		parent.removeDrawComponent(child);
-  		oldParent.addDrawComponent(child, oldIndex);  		
+  		oldParent.addDrawComponent(child, oldIndex);
   	}
   }
   

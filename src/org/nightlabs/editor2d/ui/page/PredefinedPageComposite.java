@@ -43,8 +43,8 @@ import org.nightlabs.print.page.PredefinedPageRegistry;
  * 
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class PredefinedPageComposite 
-extends XComposite 
+public class PredefinedPageComposite
+extends XComposite
 {
 //	protected PageRegistry getPageRegistry() {
 //		return PageRegistryEP.sharedInstance().getPageRegistry();
@@ -58,29 +58,29 @@ extends XComposite
 		super(parent, style);
 		this.pages = new ArrayList<IPredefinedPage>(getPageRegistry().getPages());
 		createComposite(this);
-	}	
+	}
 	
 	public PredefinedPageComposite(Composite parent, int style, Collection<IPredefinedPage> pages) {
 		super(parent, style);
 		this.pages = new ArrayList<IPredefinedPage>(pages);
-		createComposite(this);		
+		createComposite(this);
 	}
 
 	public PredefinedPageComposite(Composite parent, int style,
-			LayoutMode layoutMode, LayoutDataMode layoutDataMode, Collection<IPredefinedPage> pages) 
+			LayoutMode layoutMode, LayoutDataMode layoutDataMode, Collection<IPredefinedPage> pages)
 	{
 		super(parent, style, layoutMode, layoutDataMode);
 		this.pages = new ArrayList<IPredefinedPage>(pages);
-		createComposite(this);				
+		createComposite(this);
 	}
 
 	public PredefinedPageComposite(Composite parent, int style,
-			LayoutMode layoutMode, LayoutDataMode layoutDataMode) 
+			LayoutMode layoutMode, LayoutDataMode layoutDataMode)
 	{
 		super(parent, style, layoutMode, layoutDataMode);
 		this.pages = new ArrayList<IPredefinedPage>(getPageRegistry().getPages());
-		createComposite(this);				
-	}	
+		createComposite(this);
+	}
 	
 	private List<IPredefinedPage> pages = null;
 	private Combo combo = null;
@@ -88,13 +88,13 @@ extends XComposite
 		return combo;
 	}
 	
-	protected void createComposite(Composite parent) 
+	protected void createComposite(Composite parent)
 	{
 		combo = new Combo(parent, SWT.BORDER | SWT.READ_ONLY);
 		combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		for (IPredefinedPage page : pages) {
 			combo.add(page.getPageID());
-		}		
+		}
 	}
 	
 	public IPredefinedPage getSelectedPage() {

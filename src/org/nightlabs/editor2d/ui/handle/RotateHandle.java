@@ -41,13 +41,13 @@ import org.nightlabs.editor2d.ui.custom.EditorCursors;
 import org.nightlabs.editor2d.ui.edit.AbstractDrawComponentEditPart;
 import org.nightlabs.editor2d.ui.tools.RotateTracker;
 
-public class RotateHandle 
-extends AbstractHandle 
+public class RotateHandle
+extends AbstractHandle
 {
   protected int cursorDirection = 0;
   protected Image image;
   
-//  public RotateHandle(GraphicalEditPart owner, int direction) 
+//  public RotateHandle(GraphicalEditPart owner, int direction)
   public RotateHandle(AbstractDrawComponentEditPart owner, int direction)
   {
     setOwner(owner);
@@ -90,27 +90,27 @@ extends AbstractHandle
   }
   
   /**
-   * Draws the handle with fill color and outline color dependent 
+   * Draws the handle with fill color and outline color dependent
    * on the primary selection status of the owner editpart.
    *
    * @param g The graphics used to paint the figure.
    */
   @Override
-	public void paintFigure(Graphics g) 
+	public void paintFigure(Graphics g)
   {
-    // TODO: draw Rotate Handles       
+    // TODO: draw Rotate Handles
     Rectangle r = getBounds();
     r.shrink(1, 1);
     try {
       g.setBackgroundColor(getFillColor());
       g.fillRectangle(r.x, r.y, r.width, r.height);
-      g.setForegroundColor(getBorderColor()); 
+      g.setForegroundColor(getBorderColor());
       g.drawRectangle(r.x, r.y, r.width, r.height);
     } finally {
       //We don't really own rect 'r', so fix it.
       r.expand(1, 1);
-    }    
-  }  
+    }
+  }
   
   /**
    * The default size for square handles.
@@ -119,13 +119,13 @@ extends AbstractHandle
 
   {
     init();
-  }  
+  }
   
   /**
    * Initializes the handle.
    */
   protected void init() {
     setPreferredSize(new Dimension(DEFAULT_HANDLE_SIZE, DEFAULT_HANDLE_SIZE));
-  }  
+  }
 }
 

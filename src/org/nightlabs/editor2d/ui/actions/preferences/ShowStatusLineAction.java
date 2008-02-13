@@ -32,8 +32,8 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class ShowStatusLineAction 
-extends PreferencesAction 
+public class ShowStatusLineAction
+extends PreferencesAction
 {
 	public static final String ID = ShowStatusLineAction.class.getName();
 	
@@ -53,13 +53,13 @@ extends PreferencesAction
 	}
 
 	@Override
-	protected void init() 
+	protected void init()
 	{
 		setId(ID);
 		setText(Messages.getString("org.nightlabs.editor2d.ui.actions.preferences.ShowStatusLineAction.text")); //$NON-NLS-1$
 		setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.actions.preferences.ShowStatusLineAction.tooltip")); //$NON-NLS-1$
 		setActionDefinitionId(EditorCommandConstants.SHOW_STATUSLINE_ID);
-	}	
+	}
 	
 	@Override
 	public boolean isChecked() {
@@ -69,5 +69,5 @@ extends PreferencesAction
 	@Override
 	public void run() {
 		prefConfMod.setShowStatusLine(!isChecked());
-	}	
+	}
 }

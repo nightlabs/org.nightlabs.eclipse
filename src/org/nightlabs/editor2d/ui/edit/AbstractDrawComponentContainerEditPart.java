@@ -43,8 +43,8 @@ import org.nightlabs.editor2d.ui.editpolicy.EditorEditPolicy;
 import org.nightlabs.editor2d.ui.figures.ContainerDrawComponentFigure;
 
 
-public abstract class AbstractDrawComponentContainerEditPart 
-extends AbstractDrawComponentEditPart 
+public abstract class AbstractDrawComponentContainerEditPart
+extends AbstractDrawComponentEditPart
 {
 	/**
 	 * LOG4J logger used by this class
@@ -59,41 +59,41 @@ extends AbstractDrawComponentEditPart
   }
 
   @Override
-  protected IFigure createFigure() 
+  protected IFigure createFigure()
   {
     ContainerDrawComponentFigure figure = new ContainerDrawComponentFigure();
-    figure.setLayoutManager(new FreeformLayout());    
-    figure.setDrawComponent(getDrawComponent());    
+    figure.setLayoutManager(new FreeformLayout());
+    figure.setDrawComponent(getDrawComponent());
     addRenderer(figure);
 //    addZoomListener(figure);
-    return figure;  	
+    return figure;
   }
   
   public DrawComponentContainer getDrawComponentContainer() {
   	return (DrawComponentContainer) getModel();
   }
   
-  @Override  
-  protected void createEditPolicies() 
+  @Override
+  protected void createEditPolicies()
   {
   	// generic delete policy
     installEditPolicy(EditPolicy.COMPONENT_ROLE, new DrawComponentEditPolicy());
 //		installEditPolicy(EditPolicy.CONTAINER_ROLE, new DrawComponentContainerEditPolicy());
     
 		// handles constraint changes (e.g. moving and/or resizing) of model elements
-		// and creation of new model elements		
+		// and creation of new model elements
 		XYLayout layout = (XYLayout) getContentPane().getLayoutManager();
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, new DrawComponentContainerXYLayoutPolicy(layout));
-		// disable selection feedback for this edit part		
-		installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, null);	
-		// show snap feedback 		
-		installEditPolicy(EditorEditPolicy.SNAP_FEEDBACK_ROLE, new SnapFeedbackPolicy()); 
+		// disable selection feedback for this edit part
+		installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, null);
+		// show snap feedback
+		installEditPolicy(EditorEditPolicy.SNAP_FEEDBACK_ROLE, new SnapFeedbackPolicy());
 		
-//		installEditPolicy(EditorEditPolicy.ROTATE_ROLE, new EditorRotateEditPolicy());			
-  }  
+//		installEditPolicy(EditorEditPolicy.ROTATE_ROLE, new EditorRotateEditPolicy());
+  }
     
-  @Override  
-	protected void propertyChanged(PropertyChangeEvent evt) 
+  @Override
+	protected void propertyChanged(PropertyChangeEvent evt)
 	{
 		super.propertyChanged(evt);
 		String propertyName = evt.getPropertyName();
@@ -106,12 +106,12 @@ extends AbstractDrawComponentEditPart
 //			logger.debug(propertyName);
 			refresh();
 			return;
-		}		
+		}
 	}
 	
-  @Override  
+  @Override
   protected List getModelChildren()
   {
     return getDrawComponentContainer().getDrawComponents();
-  }   
+  }
 }

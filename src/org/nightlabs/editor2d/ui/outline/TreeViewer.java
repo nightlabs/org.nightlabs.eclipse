@@ -41,8 +41,8 @@ import org.nightlabs.editor2d.ui.edit.tree.DrawComponentTreeEditPart;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class TreeViewer 
-extends org.eclipse.gef.ui.parts.TreeViewer 
+public class TreeViewer
+extends org.eclipse.gef.ui.parts.TreeViewer
 {
 	private org.eclipse.jface.viewers.TreeViewer treeViewer;
 	public org.eclipse.jface.viewers.TreeViewer getTreeViewer() {
@@ -50,7 +50,7 @@ extends org.eclipse.gef.ui.parts.TreeViewer
 	}
 	
 	@Override
-	public Control createControl(Composite parent) 
+	public Control createControl(Composite parent)
 	{
 		Tree tree = new Tree(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		treeViewer = new org.eclipse.jface.viewers.TreeViewer(tree);
@@ -60,13 +60,13 @@ extends org.eclipse.gef.ui.parts.TreeViewer
 		
 		treeViewer.setInput(getRootEditPart());
 //		setControl(tree);
-		setControl(treeViewer.getControl());	  
+		setControl(treeViewer.getControl());
 //		return tree;
 	  return treeViewer.getControl();
 	}
 	
-	class ContentProvider 
-	implements ITreeContentProvider 
+	class ContentProvider
+	implements ITreeContentProvider
 	{
 		public Object[] getChildren(Object parentElement) {
 			if (parentElement instanceof EditPart) {
@@ -84,7 +84,7 @@ extends org.eclipse.gef.ui.parts.TreeViewer
 			return null;
 		}
 
-		public boolean hasChildren(Object element) 
+		public boolean hasChildren(Object element)
 		{
 			if (element instanceof EditPart) {
 				EditPart ep = (EditPart) element;
@@ -109,7 +109,7 @@ extends org.eclipse.gef.ui.parts.TreeViewer
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 			// TODO Auto-generated method stub
 			
-		}		
+		}
 	}
 	
 	class LabelProvider
@@ -120,7 +120,7 @@ extends org.eclipse.gef.ui.parts.TreeViewer
 			if (element instanceof DrawComponentTreeEditPart) {
 				DrawComponentTreeEditPart tep = (DrawComponentTreeEditPart) element;
 				return tep.getTreeImage();
-			}			
+			}
 			return super.getImage(element);
 		}
 
@@ -129,9 +129,9 @@ extends org.eclipse.gef.ui.parts.TreeViewer
 			if (element instanceof DrawComponentTreeEditPart) {
 				DrawComponentTreeEditPart tep = (DrawComponentTreeEditPart) element;
 				return tep.getTreeText();
-			}			
+			}
 			return super.getText(element);
-		}		
+		}
 	}
 	
 }

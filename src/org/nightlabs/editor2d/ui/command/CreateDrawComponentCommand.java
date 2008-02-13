@@ -34,7 +34,7 @@ import org.nightlabs.editor2d.DrawComponentContainer;
 import org.nightlabs.editor2d.ui.resource.Messages;
 import org.nightlabs.editor2d.ui.util.J2DUtil;
 
-public class CreateDrawComponentCommand 
+public class CreateDrawComponentCommand
 extends Command
 {
 	/** The DrawComponent to add */
@@ -50,7 +50,7 @@ extends Command
 	  super(Messages.getString("org.nightlabs.editor2d.ui.command.CreateDrawComponentCommand.label"));	   //$NON-NLS-1$
 	}
 
-	public CreateDrawComponentCommand(DrawComponent dc, DrawComponentContainer parent, int index) 
+	public CreateDrawComponentCommand(DrawComponent dc, DrawComponentContainer parent, int index)
 	{
 	  super();
 	  setLabel(Messages.getString("org.nightlabs.editor2d.ui.command.CreateDrawComponentCommand.label")); //$NON-NLS-1$
@@ -60,42 +60,42 @@ extends Command
 	}
 	
 	@Override
-	public void execute() 
+	public void execute()
 	{
-    drawComponent.setBounds(J2DUtil.toAWTRectangle(rect));	  
+    drawComponent.setBounds(J2DUtil.toAWTRectangle(rect));
     parent.addDrawComponent(drawComponent);
-		drawOrderIndex = parent.getDrawComponents().indexOf(drawComponent);		
-	}	
-		
-	@Override
-	public void redo() { 
-    parent.addDrawComponent(drawComponent, drawOrderIndex);    
+		drawOrderIndex = parent.getDrawComponents().indexOf(drawComponent);
 	}
 		
 	@Override
-	public void undo() { 
+	public void redo() {
+    parent.addDrawComponent(drawComponent, drawOrderIndex);
+	}
+		
+	@Override
+	public void undo() {
     parent.removeDrawComponent(drawComponent);
-	}	
+	}
 	
 	public void setParent(DrawComponentContainer newParent) {
 		parent = newParent;
-	}	
+	}
 	
 	public void setBounds(Rectangle r) {
 		rect = r;
-	}	
+	}
 	protected Rectangle getBounds() {
 		return rect;
 	}
 	
 	public void setChild(DrawComponent dc) {
 		drawComponent = dc;
-	}	
+	}
 	public DrawComponent getChild() {
 	  return drawComponent;
 	}
 	
 	public void setIndex(int index) {
 	  this.drawOrderIndex = index;
-	}  
+	}
 }

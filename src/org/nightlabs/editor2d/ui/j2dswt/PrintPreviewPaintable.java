@@ -35,15 +35,15 @@ import org.nightlabs.editor2d.DrawComponent;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class PrintPreviewPaintable 
-extends DrawComponentPaintable 
+public class PrintPreviewPaintable
+extends DrawComponentPaintable
 {
 
 	/**
 	 * @param dc
 	 */
-	public PrintPreviewPaintable(DrawComponent dc, Color bgColor, 
-			Rectangle pageBounds, Rectangle marginBounds) 
+	public PrintPreviewPaintable(DrawComponent dc, Color bgColor,
+			Rectangle pageBounds, Rectangle marginBounds)
 	{
 		super(dc);
 //		if (bgColor == null || pageBounds == null || marginBounds == null)
@@ -51,15 +51,15 @@ extends DrawComponentPaintable
 		
 		this.bgColor = bgColor;
 		this.pageBounds = pageBounds;
-		this.marginBounds = marginBounds;		
+		this.marginBounds = marginBounds;
 	}
 
 	private Color bgColor = null;
-	private Rectangle pageBounds; 
-	private Rectangle marginBounds;	
+	private Rectangle pageBounds;
+	private Rectangle marginBounds;
 
 	@Override
-	public void paint(Control control, Graphics2D g2d) 
+	public void paint(Control control, Graphics2D g2d)
 	{
 		g2d.setPaint(bgColor);
 		if (pageBounds != null)
@@ -68,10 +68,10 @@ extends DrawComponentPaintable
 //		g2d.translate(marginBounds.x, marginBounds.y);
 		g2d.setPaint(Color.BLACK);
 		if (marginBounds != null)
-			g2d.drawRect(0, 0, marginBounds.width, marginBounds.height);		
+			g2d.drawRect(0, 0, marginBounds.width, marginBounds.height);
 		super.paint(control, g2d);
 		
-//		g2d.translate(-marginBounds.x, -marginBounds.y);		
+//		g2d.translate(-marginBounds.x, -marginBounds.y);
 	}
 	
 }

@@ -33,8 +33,8 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class ChangeOrderOneDown 
-extends AbstractChangeOrderSelectionAction 
+public class ChangeOrderOneDown
+extends AbstractChangeOrderSelectionAction
 {
 	public static final String ID = ChangeOrderOneDown.class.getName();
 	
@@ -54,20 +54,20 @@ extends AbstractChangeOrderSelectionAction
 	}
 
 	@Override
-	public void init() 
+	public void init()
 	{
 		setText(Messages.getString("org.nightlabs.editor2d.ui.actions.order.ChangeOrderOneDown.text")); //$NON-NLS-1$
 		setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.actions.order.ChangeOrderOneDown.tooltip")); //$NON-NLS-1$
 		setId(ID);
 		setActionDefinitionId(EditorCommandConstants.ORDER_ONE_DOWN_ID);
-	}	
+	}
 	
 	/**
 	 * @return the new index
 	 * @see AbstractChangeOrderSelectionAction#getPrimarySelectedDrawComponent()
 	 */
 	@Override
-	public int getNewIndex() 
+	public int getNewIndex()
 	{
 		int index = primarySelected.getParent().getDrawComponents().indexOf(primarySelected);
 		int lowestIndex = 0;
@@ -82,8 +82,8 @@ extends AbstractChangeOrderSelectionAction
 	 * @see AbstractChangeOrderSelectionAction#getPrimarySelectedDrawComponent()
 	 */
 	@Override
-	public DrawComponentContainer getContainer() 
+	public DrawComponentContainer getContainer()
 	{
-		return primarySelected.getParent();		 		
+		return primarySelected.getParent();
 	}
 }

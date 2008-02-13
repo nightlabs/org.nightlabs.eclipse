@@ -31,18 +31,18 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.requests.SelectionRequest;
 
 
-public class EditorEditShapeRequest  
+public class EditorEditShapeRequest
 extends SelectionRequest
 implements EditorRequestConstants,
 					 EditorLocationRequest
 {
-  public EditorEditShapeRequest() 
+  public EditorEditShapeRequest()
   {
     super();
     setType(REQ_EDIT_SHAPE);
   }
   
-  protected int pathSegmentIndex;  
+  protected int pathSegmentIndex;
   public int getPathSegmentIndex() {
     return pathSegmentIndex;
   }
@@ -50,7 +50,7 @@ implements EditorRequestConstants,
     this.pathSegmentIndex = pathSegmentIndex;
   }
     
-  protected EditPart targetEditPart;  
+  protected EditPart targetEditPart;
   public EditPart getTargetEditPart() {
     return targetEditPart;
   }
@@ -67,7 +67,7 @@ implements EditorRequestConstants,
 //  public Point getLocation() {
 //  	return mouseLocation;
 //  }
-//  
+//
 //  /**
 //   * Sets the location where the New PathSegment will be placed.
 //   *

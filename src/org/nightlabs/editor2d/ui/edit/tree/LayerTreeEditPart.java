@@ -37,19 +37,19 @@ import org.nightlabs.editor2d.ui.model.LayerPropertySource;
 import org.nightlabs.editor2d.ui.views.LayerView;
 
 
-public class LayerTreeEditPart 
-extends DrawComponentContainerTreeEditPart 
+public class LayerTreeEditPart
+extends DrawComponentContainerTreeEditPart
 {
-//	public static Image LAYER_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(), 
-//			LayerView.class).createImage();	
-	public static Image LAYER_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(), 
+//	public static Image LAYER_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
+//			LayerView.class).createImage();
+	public static Image LAYER_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
 			LayerView.class, "", ImageFormat.gif).createImage();	 //$NON-NLS-1$
 	
-//	@Override  
+//	@Override
 //  protected Image getImage() {
 //    return LAYER_ICON;
-//  }  
-	@Override  
+//  }
+	@Override
   protected Image getOutlineImage() {
     return LAYER_ICON;
   }
@@ -71,16 +71,16 @@ extends DrawComponentContainerTreeEditPart
         new LayerPropertySource(getLayer());
     }
     return propertySource;
-  } 
+  }
   
   /**
    * Creates and installs pertinent EditPolicies.
    */
   @Override
-	protected void createEditPolicies() 
+	protected void createEditPolicies()
   {
     // TODO: Must override EditPolicy.TREE_CONTAINER_ROLE with a EditPolicy which does
-    // support dragging of layers   	
+    // support dragging of layers
   	super.createEditPolicies();
   }
 }

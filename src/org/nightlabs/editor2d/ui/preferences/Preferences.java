@@ -36,13 +36,13 @@ import org.nightlabs.print.page.A4Page;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class Preferences 
+public class Preferences
 {
 	public static final String PREF_DOCUMENT_RESOLUTION = "Document Resolution"; //$NON-NLS-1$
 	public static final int PREF_DOCUMENT_RESOLUTION_DEFAULT = Resolution.DEFAULT_RESOLUTION_DPI;
 	
 	public static final String PREF_STANDARD_UNIT_ID = "Standard Unit"; //$NON-NLS-1$
-	public static final String PREF_STANDARD_UNIT_ID_DEFAULT = PointUnit.UNIT_ID;	
+	public static final String PREF_STANDARD_UNIT_ID_DEFAULT = PointUnit.UNIT_ID;
 
 	public static final String PREF_STANDARD_RESOLUTION_UNIT_ID = "Standard Resolution Unit"; //$NON-NLS-1$
 	public static final String PREF_STANDARD_RESOLUTION_UNIT_ID_DEFAULT = DPIResolutionUnit.RESOLUTION_ID;
@@ -53,10 +53,10 @@ public class Preferences
 	public static final String PREF_PAGE_ORIENTATION_ID = "Page Orientation"; //$NON-NLS-1$
 	public static final int PREF_PAGE_ORIENTATION_ID_DEFAULT = PageDrawComponent.ORIENTATION_VERTICAL;
 	
-  protected static void initializeDefaults(IPreferenceStore ps) 
+  protected static void initializeDefaults(IPreferenceStore ps)
   {
   	ps.setDefault(
-  			Preferences.PREF_DOCUMENT_RESOLUTION, 
+  			Preferences.PREF_DOCUMENT_RESOLUTION,
   			Preferences.PREF_DOCUMENT_RESOLUTION_DEFAULT);
   	
   	ps.setDefault(
@@ -73,7 +73,7 @@ public class Preferences
   	
   	ps.setDefault(
   			Preferences.PREF_PAGE_ORIENTATION_ID,
-  			Preferences.PREF_PAGE_ORIENTATION_ID_DEFAULT);  	  	  	  	  	
+  			Preferences.PREF_PAGE_ORIENTATION_ID_DEFAULT);
   }
 
   protected static boolean defaultsSet = false;
@@ -85,6 +85,6 @@ public class Preferences
 			defaultsSet = true;
 		}
 		return ps;
-	}	
+	}
 	
 }

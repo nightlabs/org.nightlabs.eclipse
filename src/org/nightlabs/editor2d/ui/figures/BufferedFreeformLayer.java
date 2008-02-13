@@ -35,7 +35,7 @@ import org.eclipse.gef.EditPart;
  */
 public interface BufferedFreeformLayer {
 	/**
-	 * Should force the buffer to 
+	 * Should force the buffer to
 	 * be rebuild before painting the
 	 * next time.
 	 */

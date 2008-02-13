@@ -34,8 +34,8 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class ShapeIntersectAction 
-extends AbstractBooleanOperationAction 
+public class ShapeIntersectAction
+extends AbstractBooleanOperationAction
 {
 	public static final String ID = ShapeIntersectAction.class.getName();
 	
@@ -49,13 +49,13 @@ extends AbstractBooleanOperationAction
 
 	@Override
 	protected AbstractBooleanOperationCommand getBooleanCommand(
-			ShapeDrawComponent primary, ShapeDrawComponent secondary) 
+			ShapeDrawComponent primary, ShapeDrawComponent secondary)
 	{
 		return new ShapeIntersectCommand(primary, secondary);
 	}
 
 	@Override
-	protected void init() 
+	protected void init()
 	{
 		setId(ID);
 		setText(Messages.getString("org.nightlabs.editor2d.ui.actions.shape.ShapeIntersectAction.text")); //$NON-NLS-1$

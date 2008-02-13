@@ -40,15 +40,15 @@ import org.nightlabs.editor2d.ui.EditorPlugin;
 import org.nightlabs.editor2d.ui.model.EllipsePropertySource;
 
 
-public class EllipseTreeEditPart 
-extends DrawComponentTreeEditPart 
+public class EllipseTreeEditPart
+extends DrawComponentTreeEditPart
 {
 	/**
 	 * LOG4J logger used by this class
 	 */
 	private static final Logger logger = Logger.getLogger(EllipseTreeEditPart.class);
 	
-	public static Image ELLIPSE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(), 
+	public static Image ELLIPSE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
 			AbstractPaletteFactory.class, "Ellipse", ImageFormat.gif).createImage();	 //$NON-NLS-1$
   
   public EllipseTreeEditPart(EllipseDrawComponent model) {
@@ -72,22 +72,22 @@ extends DrawComponentTreeEditPart
         new EllipsePropertySource(getEllipseDrawComponent());
     }
     return propertySource;
-  }  
+  }
   
   public EllipseDrawComponent getEllipseDrawComponent() {
   	return (EllipseDrawComponent) getDrawComponent();
   }
   
 	@Override
-	protected void propertyChanged(PropertyChangeEvent evt) 
+	protected void propertyChanged(PropertyChangeEvent evt)
 	{
 		super.propertyChanged(evt);
 		String propertyName = evt.getPropertyName();
 		if (propertyName.equals(EllipseDrawComponent.PROP_END_ANGLE)) {
-			refreshVisuals();			
+			refreshVisuals();
 		}
 		else if (propertyName.equals(EllipseDrawComponent.PROP_START_ANGLE)) {
-			refreshVisuals();			
-		}		
-	}  
+			refreshVisuals();
+		}
+	}
 }

@@ -35,8 +35,8 @@ import org.nightlabs.editor2d.ui.edit.AbstractDrawComponentEditPart;
 import org.nightlabs.editor2d.ui.request.EditorRotateCenterRequest;
 
 
-public class RotateCenterTracker 
-extends AbstractDragTracker  
+public class RotateCenterTracker
+extends AbstractDragTracker
 {
 	/**
 	 * LOG4J logger used by this class
@@ -59,33 +59,33 @@ extends AbstractDragTracker
   @Override
 	protected Cursor getDefaultCursor() {
     return Cursors.CROSS;
-  } 
+  }
   
   @Override
-	protected Request createSourceRequest() 
+	protected Request createSourceRequest()
   {
     EditorRotateCenterRequest rotateRequest = new EditorRotateCenterRequest();
     rotateRequest.setType(REQ_EDIT_ROTATE_CENTER);
-    rotateRequest.setRotationCenter(getLocation());   
-    rotateRequest.setEditParts(getCurrentViewer().getSelectedEditParts());         
+    rotateRequest.setRotationCenter(getLocation());
+    rotateRequest.setEditParts(getCurrentViewer().getSelectedEditParts());
     return rotateRequest;
-  }  
+  }
   
   @Override
-	protected void updateSourceRequest() 
+	protected void updateSourceRequest()
   {
     getEditorRotateCenterRequest().setRotationCenter(getLocation());
     logger.debug("rotationCenter = "+getLocation()); //$NON-NLS-1$
   }
   
-  protected EditorRotateCenterRequest getEditorRotateCenterRequest() 
+  protected EditorRotateCenterRequest getEditorRotateCenterRequest()
   {
     return (EditorRotateCenterRequest) getSourceRequest();
   }
 
   // Override to avoid the single selection of the EditPart whiches handle has been selected
 	@Override
-	protected void performSelection() 
+	protected void performSelection()
 	{
-	}   
+	}
 }

@@ -35,19 +35,19 @@ import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Handle;
 import org.nightlabs.editor2d.ui.edit.AbstractDrawComponentEditPart;
 
-public class RotateHandleKit 
+public class RotateHandleKit
 {
 
   public RotateHandleKit() {
     super();
   }
 
-  public static void addHandles(List selectedEditParts, List handles) 
+  public static void addHandles(List selectedEditParts, List handles)
   {
-    for (Iterator it = selectedEditParts.iterator(); it.hasNext(); ) {      
+    for (Iterator it = selectedEditParts.iterator(); it.hasNext(); ) {
       GraphicalEditPart editPart = (GraphicalEditPart) it.next();
       if (editPart instanceof AbstractDrawComponentEditPart)
-        createRotateHandles((AbstractDrawComponentEditPart)editPart, handles);      
+        createRotateHandles((AbstractDrawComponentEditPart)editPart, handles);
     }
     
     handles.add(createRotateCenterHandle(selectedEditParts));
@@ -74,15 +74,15 @@ public class RotateHandleKit
 //    handles.add(createShearHandle(owner, PositionConstants.EAST));
   }
   
-  protected static Handle createRotateHandle(AbstractDrawComponentEditPart owner, int direction) 
+  protected static Handle createRotateHandle(AbstractDrawComponentEditPart owner, int direction)
   {
     RotateHandle handle = new RotateHandle(owner, direction);
     return handle;
-  }  
+  }
   
-  protected static Handle createShearHandle(AbstractDrawComponentEditPart owner, int direction) 
+  protected static Handle createShearHandle(AbstractDrawComponentEditPart owner, int direction)
   {
     ShearHandle handle = new ShearHandle(owner, direction);
     return handle;
-  }   
+  }
 }

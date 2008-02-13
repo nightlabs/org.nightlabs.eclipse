@@ -36,8 +36,8 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class GroupPropertySource 
-extends DrawComponentPropertySource 
+public class GroupPropertySource
+extends DrawComponentPropertySource
 {
 	/**
 	 * @param element
@@ -51,7 +51,7 @@ extends DrawComponentPropertySource
 	}
 	
 	@Override
-	protected List<IPropertyDescriptor> createPropertyDescriptors() 
+	protected List<IPropertyDescriptor> createPropertyDescriptors()
 	{
 		super.createPropertyDescriptors();
 		
@@ -60,17 +60,17 @@ extends DrawComponentPropertySource
 		descriptors.add(createGroupAmountPropertyDescriptor());
 		
 		return descriptors;
-	}	
+	}
 	
 	private static final String GROUP_AMOUNT_ID = "groupAmount"; //$NON-NLS-1$
-	protected PropertyDescriptor createGroupAmountPropertyDescriptor() 
+	protected PropertyDescriptor createGroupAmountPropertyDescriptor()
 	{
-		return new IntPropertyDescriptor(GROUP_AMOUNT_ID, 
+		return new IntPropertyDescriptor(GROUP_AMOUNT_ID,
 				Messages.getString("org.nightlabs.editor2d.ui.model.GroupPropertySource.label.groupedElements"), true); //$NON-NLS-1$
 	}
 
 	@Override
-	public Object getPropertyValue(Object id) 
+	public Object getPropertyValue(Object id)
 	{
 		if (id.equals(GROUP_AMOUNT_ID))
 			return getGroupDrawComponent().getDrawComponents().size();

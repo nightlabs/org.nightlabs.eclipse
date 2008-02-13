@@ -31,7 +31,7 @@ import org.eclipse.gef.EditPolicy;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.ui.editpolicy.DrawComponentEditPolicy;
 
-public abstract class DrawComponentEditPart 
+public abstract class DrawComponentEditPart
 extends AbstractDrawComponentEditPart
 {
 	public DrawComponentEditPart(DrawComponent drawComponent)
@@ -44,7 +44,7 @@ extends AbstractDrawComponentEditPart
 	{
 		// allow removal of the associated model element
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, new DrawComponentEditPolicy());
-//		installEditPolicy(EditorEditPolicy.ROTATE_ROLE, new EditorRotateEditPolicy());		
+//		installEditPolicy(EditorEditPolicy.ROTATE_ROLE, new EditorRotateEditPolicy());
 	}
 		
 }

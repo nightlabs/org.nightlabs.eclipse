@@ -55,8 +55,8 @@ import org.nightlabs.editor2d.ui.edit.AbstractDrawComponentEditPart;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class EditorViewerKeyHandler 
-extends GraphicalViewerKeyHandler 
+public class EditorViewerKeyHandler
+extends GraphicalViewerKeyHandler
 {
 	/**
 	 * LOG4J logger used by this class
@@ -66,21 +66,21 @@ extends GraphicalViewerKeyHandler
 	/**
 	 * @param viewer
 	 */
-	public EditorViewerKeyHandler(GraphicalViewer viewer) 
+	public EditorViewerKeyHandler(GraphicalViewer viewer)
 	{
 		super(viewer);
 		init();
 	}
 
-	protected void init() 
+	protected void init()
 	{
-		initConfigModule();		
+		initConfigModule();
 		getViewer().addSelectionChangedListener(selectionListener);
-		getViewer().getControl().addDisposeListener(disposeListener);		
+		getViewer().getControl().addDisposeListener(disposeListener);
 	}
 	
 	private QuickOptionsConfigModule confMod = null;
-	protected QuickOptionsConfigModule getConfigModule() 
+	protected QuickOptionsConfigModule getConfigModule()
 	{
 		if (confMod == null)
 			initConfigModule();
@@ -88,13 +88,13 @@ extends GraphicalViewerKeyHandler
 		return confMod;
 	}
 	
-	protected void initConfigModule() 
+	protected void initConfigModule()
 	{
 		try {
 			confMod = Config.sharedInstance().createConfigModule(QuickOptionsConfigModule.class);
 		} catch (ConfigException e) {
 			throw new RuntimeException(e);
-		} 		
+		}
 	}
 	
 	protected CommandStack getCommandStack() {
@@ -102,7 +102,7 @@ extends GraphicalViewerKeyHandler
 	}
 		
 	private List<Object> selectedObjects = null;
-	protected List<Object> getSelectedObjects() 
+	protected List<Object> getSelectedObjects()
 	{
 		if (selectedObjects == null)
 			selectedObjects = Collections.EMPTY_LIST;
@@ -111,13 +111,13 @@ extends GraphicalViewerKeyHandler
 	}
 	
 	private ISelectionChangedListener selectionListener = new ISelectionChangedListener()
-	{	
-		public void selectionChanged(SelectionChangedEvent event) 
+	{
+		public void selectionChanged(SelectionChangedEvent event)
 		{
-			ISelection selection = event.getSelection();			
-			if (!selection.isEmpty()) 
+			ISelection selection = event.getSelection();
+			if (!selection.isEmpty())
 			{
-				if (selection instanceof IStructuredSelection) 
+				if (selection instanceof IStructuredSelection)
 				{
 //					LOGGER.debug("Selection changed");
 					IStructuredSelection structuredSelection = (IStructuredSelection) selection;
@@ -125,43 +125,43 @@ extends GraphicalViewerKeyHandler
 					return;
 				}
 			}
-			selectedObjects = Collections.EMPTY_LIST;			
-		}	
+			selectedObjects = Collections.EMPTY_LIST;
+		}
 	};
 	
 	private DisposeListener disposeListener = new DisposeListener()
-	{	
-		public void widgetDisposed(DisposeEvent e) 
+	{
+		public void widgetDisposed(DisposeEvent e)
 		{
 			getViewer().removeSelectionChangedListener(selectionListener);
-		}	
+		}
 	};
 	
 	@Override
-	public boolean keyPressed(KeyEvent event) 
+	public boolean keyPressed(KeyEvent event)
 	{
 //		LOGGER.debug("Key pressed");
-		if (!getSelectedObjects().isEmpty()) 
+		if (!getSelectedObjects().isEmpty())
 		{
-			if (acceptLeft(event)) {				
+			if (acceptLeft(event)) {
 				translate(getSelectedObjects(), LEFT);
 				return true;
 			}
-			if (acceptRight(event)) {				
+			if (acceptRight(event)) {
 				translate(getSelectedObjects(), RIGHT);
-				return true;				
+				return true;
 			}
 			if (acceptUp(event)) {
 				translate(getSelectedObjects(), UP);
-				return true;				
+				return true;
 			}
-			if (acceptDown(event)) {				
+			if (acceptDown(event)) {
 				translate(getSelectedObjects(), DOWN);
-				return true;				
-			}						
-		}		
+				return true;
+			}
+		}
 		return super.keyPressed(event);
-	}	
+	}
 	
 	public static final int LEFT = PositionConstants.LEFT;
 	public static final int RIGHT = PositionConstants.RIGHT;
@@ -179,46 +179,46 @@ extends GraphicalViewerKeyHandler
 	/**
 	 * 
 	 * @param editParts a List of EditParts to translate
-	 * @param direction the translation direction 
+	 * @param direction the translation direction
 	 */
-	protected void translate(List editParts, int direction) 
+	protected void translate(List editParts, int direction)
 	{
 		CompoundCommand compoundCmd = new CompoundCommand();
-		for (Iterator it = editParts.iterator(); it.hasNext(); ) 
+		for (Iterator it = editParts.iterator(); it.hasNext(); )
 		{
 			EditPart ep = (EditPart) it.next();
-			if (ep instanceof AbstractDrawComponentEditPart) 
+			if (ep instanceof AbstractDrawComponentEditPart)
 			{
 				AbstractDrawComponentEditPart dcep = (AbstractDrawComponentEditPart) ep;
 				DrawComponent dc = dcep.getDrawComponent();
 				SetConstraintCommand cmd = new SetConstraintCommand();
 				cmd.setPart(dc);
-				Rectangle dcBounds = new Rectangle(dc.getBounds());				
-				switch (direction) 
-				{				
+				Rectangle dcBounds = new Rectangle(dc.getBounds());
+				switch (direction)
+				{
 					case(DOWN):
-						dcBounds.y += getTranslationY();	
+						dcBounds.y += getTranslationY();
 						break;
 					case(UP):
 						dcBounds.y -= getTranslationY();
 						break;
 					case(LEFT):
 						dcBounds.x -= getTranslationX();
-						break;					
+						break;
 					case(RIGHT):
-						dcBounds.x += getTranslationX();			
-						break;						
-				}	
+						dcBounds.x += getTranslationX();
+						break;
+				}
 				cmd.setBounds(dcBounds);
-				compoundCmd.add(cmd);				
-			}			
+				compoundCmd.add(cmd);
+			}
 		}
 		if (!compoundCmd.getCommands().isEmpty()) {
 			getCommandStack().execute(compoundCmd);
 		}
 		
 		logger.debug("Translate Command executed");		 //$NON-NLS-1$
-	}	
+	}
 	
 	/**
 	 * checks if the LEFT ARROW has been pressed
@@ -236,7 +236,7 @@ extends GraphicalViewerKeyHandler
 	protected boolean acceptRight(KeyEvent event) {
 //		return ((event.stateMask & SWT.ALT) != 0) && (event.keyCode == SWT.ARROW_RIGHT);
 		return (event.keyCode == SWT.ARROW_RIGHT);
-	}	
+	}
 
 	/**
 	 * checks if the DOWN ARROW has been pressed
@@ -245,7 +245,7 @@ extends GraphicalViewerKeyHandler
 	protected boolean acceptDown(KeyEvent event) {
 //		return ((event.stateMask & SWT.ALT) != 0) && (event.keyCode == SWT.ARROW_DOWN);
 		return (event.keyCode == SWT.ARROW_DOWN);
-	}	
+	}
 
 	/**
 	 * checks if the UP ARROW has been pressed
@@ -254,6 +254,6 @@ extends GraphicalViewerKeyHandler
 	protected boolean acceptUp(KeyEvent event) {
 //		return ((event.stateMask & SWT.ALT) != 0) && (event.keyCode == SWT.ARROW_UP);
 		return (event.keyCode == SWT.ARROW_UP);
-	}	
+	}
 	
 }

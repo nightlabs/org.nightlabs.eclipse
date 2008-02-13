@@ -30,8 +30,8 @@ package org.nightlabs.editor2d.ui.properties;
 import org.eclipse.swt.widgets.Composite;
 import org.nightlabs.base.ui.celleditor.ComboBoxCellEditor;
 
-public class ConstrainedRotationCellEditor 
-extends ComboBoxCellEditor 
+public class ConstrainedRotationCellEditor
+extends ComboBoxCellEditor
 {
   public ConstrainedRotationCellEditor(Composite parent, String[] items, int style) {
     super(parent, items, style);
@@ -40,13 +40,13 @@ extends ComboBoxCellEditor
   /**
    * The <code>ComboBoxCellEditor</code> implementation of
    * this <code>CellEditor</code> framework method returns
-   * the String of the Selection as double or the oldValue if 
+   * the String of the Selection as double or the oldValue if
    * the string is no double
    *
    * @return text of the combo as double
    */
   @Override
-	protected Object doGetValue() 
+	protected Object doGetValue()
   {
     if (getComboBox().getText().equals("")) //$NON-NLS-1$
       return oldValue;
@@ -57,5 +57,5 @@ extends ComboBoxCellEditor
       return oldValue;
     }
     return d;
-  }    
+  }
 }

@@ -33,34 +33,34 @@ import org.eclipse.swt.graphics.Image;
 import org.nightlabs.base.ui.resource.SharedImages;
 import org.nightlabs.editor2d.ui.EditorPlugin;
 
-public class EditorImages 
+public class EditorImages
 {
   public static final ImageDescriptor ROTATE_NW_16;
   public static final ImageDescriptor ROTATE_SW_16;
   public static final ImageDescriptor ROTATE_NE_16;
   public static final ImageDescriptor ROTATE_SE_16;
      
-  static 
+  static
   {
-    ROTATE_NW_16 = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(), 
+    ROTATE_NW_16 = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
     		EditorImages.class, "RotateNW"); //$NON-NLS-1$
-    ROTATE_NE_16 = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(), 
+    ROTATE_NE_16 = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
     		EditorImages.class, "RotateNE"); //$NON-NLS-1$
-    ROTATE_SE_16 = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(), 
+    ROTATE_SE_16 = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
     		EditorImages.class, "RotateSE"); //$NON-NLS-1$
-    ROTATE_SW_16 = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(), 
+    ROTATE_SW_16 = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
     		EditorImages.class, "RotateSW");  	 //$NON-NLS-1$
   }
   
   /**
-   * Returns the RotationImage or ShearImage corresponding to the given direction, defined in 
+   * Returns the RotationImage or ShearImage corresponding to the given direction, defined in
    * {@link PositionConstants}.
    * @param direction The relative direction of the desired Rotate/Shear Image
    * @return The appropriate directional Rotate/Shear Image
    */
-  public static Image getDirectionalRotationImage(int direction) 
+  public static Image getDirectionalRotationImage(int direction)
   {
-    switch (direction) 
+    switch (direction)
     {
       case PositionConstants.SOUTH_EAST:
         return ROTATE_SE_16.createImage();
@@ -74,5 +74,5 @@ public class EditorImages
         break;
     }
     return null;
-  }  
+  }
 }

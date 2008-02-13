@@ -36,7 +36,6 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import org.eclipse.gef.Request;
-import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.tools.CreationTool;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.FileDialog;
@@ -48,10 +47,10 @@ import org.nightlabs.editor2d.ui.model.IModelCreationFactory;
 import org.nightlabs.editor2d.ui.request.ImageCreateRequest;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
-public class ImageTool 
-extends CreationTool 
+public class ImageTool
+extends CreationTool
 {
-  public ImageTool(IModelCreationFactory aFactory) {	
+  public ImageTool(IModelCreationFactory aFactory) {
     this(aFactory, false);
   }
 
@@ -63,7 +62,7 @@ extends CreationTool
   private boolean colorConversion = false;
   
   // TODO should come from ImageIO
-  private static final String[] fileExtensions = 
+  private static final String[] fileExtensions =
   	new String[] {"*.jpg", "*.png", "*.gif", "*.bmp", "*.pcx"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
   
   private List<RenderModeMetaData> renderModeMetaDatas = new LinkedList<RenderModeMetaData>();
@@ -73,12 +72,12 @@ extends CreationTool
    * @see org.eclipse.gef.tools.TargetingTool#createTargetRequest()
    */
   @Override
-	protected Request createTargetRequest() 
+	protected Request createTargetRequest()
   {
     ImageCreateRequest request = new ImageCreateRequest();
     request.setFactory(getFactory());
     return request;
-  }   
+  }
   
   protected ImageCreateRequest getImageCreateRequest() {
     return (ImageCreateRequest) getTargetRequest();
@@ -95,7 +94,7 @@ extends CreationTool
   	return getCurrentViewer().getControl().getShell();
   }
   
-  protected FileDialog openFileDialog() 
+  protected FileDialog openFileDialog()
   {
     FileDialog dialog = new FileDialog(getShell());
     dialog.setFilterExtensions(getFileExtensions());
@@ -105,14 +104,14 @@ extends CreationTool
   }
    
   @Override
-	protected boolean handleButtonDown(int button) 
-  {    
-  	FileDialog dialog = openFileDialog();  	  	
+	protected boolean handleButtonDown(int button)
+  {
+  	FileDialog dialog = openFileDialog();
     if (!dialog.getFileName().equals(""))  //$NON-NLS-1$
     {
       String fullPathName = dialog.getFilterPath() + File.separator + dialog.getFileName();
       String fileName = dialog.getFileName();
-      getImageCreateRequest().setFileName(fullPathName);      
+      getImageCreateRequest().setFileName(fullPathName);
       if (colorConversion) {
       	BufferedImage originalImage;
 				try {
@@ -121,28 +120,28 @@ extends CreationTool
 		      	ConvertImageDialog convertDialog = new ConvertImageDialog(getShell(), originalImage);
 		      	if (convertDialog.open() == Window.OK) {
 		      		renderModeMetaDatas = convertDialog.getConvertImageComposite().getRenderModeMetaDatas();
-		      		doCreation(fullPathName, fileName);		      		
-		      	}											
+		      		doCreation(fullPathName, fileName);
+		      	}
 					} else {
 						throw new RuntimeException(Messages.getString("org.nightlabs.editor2d.ui.tools.ImageTool.error.text.part1")+fullPathName+Messages.getString("org.nightlabs.editor2d.ui.tools.ImageTool.error.text.part2")); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 				} catch (IOException e) {
 					throw new RuntimeException(Messages.getString("org.nightlabs.editor2d.ui.tools.ImageTool.error.text.part1")+fullPathName+Messages.getString("org.nightlabs.editor2d.ui.tools.ImageTool.error.text.part2"), e); //$NON-NLS-1$ //$NON-NLS-2$
-				}      
+				}
 			}
       else {
-        doCreation(fullPathName, fileName);      	
+        doCreation(fullPathName, fileName);
       }
       return true;
     }
     return false;
-  }   
+  }
     
-  protected void doCreation(String fullFileName, String fileName) 
+  protected void doCreation(String fullFileName, String fileName)
   {
     ((CreateImageCommand)getCurrentCommand()).setFileName(fullFileName);
     ((CreateImageCommand)getCurrentCommand()).setSimpleFileName(fileName);
-    ((CreateImageCommand)getCurrentCommand()).setRenderModeMetaData(renderModeMetaDatas);        
-    performCreation(1);  	
+    ((CreateImageCommand)getCurrentCommand()).setRenderModeMetaData(renderModeMetaDatas);
+    performCreation(1);
   }
 }

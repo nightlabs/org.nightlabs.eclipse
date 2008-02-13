@@ -37,8 +37,8 @@ import org.nightlabs.editor2d.ui.model.ShapeDrawComponentPropertySource;
 
 
 public class ShapeDrawComponentEditPart
-extends DrawComponentEditPart 
-{	
+extends DrawComponentEditPart
+{
 	public ShapeDrawComponentEditPart(ShapeDrawComponent shapeDrawComponent) {
 		super(shapeDrawComponent);
 	}
@@ -63,12 +63,12 @@ extends DrawComponentEditPart
 	}
 
 	@Override
-	protected void propertyChanged(PropertyChangeEvent evt) 
+	protected void propertyChanged(PropertyChangeEvent evt)
 	{
 		super.propertyChanged(evt);
 		String propertyName = evt.getPropertyName();
 		if (propertyName.equals(ShapeDrawComponent.PROP_FILL_COLOR)) {
-			refreshVisuals();			
+			refreshVisuals();
 			return;
 		}
 		else if (propertyName.equals(ShapeDrawComponent.PROP_LINE_COLOR)) {
@@ -94,7 +94,7 @@ extends DrawComponentEditPart
 		else if (propertyName.equals(ShapeDrawComponent.PROP_SHOW_STROKE)) {
 			refreshVisuals();
 			return;
-		}				
+		}
 	}
 
 }

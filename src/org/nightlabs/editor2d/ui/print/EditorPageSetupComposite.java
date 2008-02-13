@@ -36,8 +36,8 @@ import org.nightlabs.editor2d.DrawComponent;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class EditorPageSetupComposite 
-extends PageSetupComposite 
+public class EditorPageSetupComposite
+extends PageSetupComposite
 {
 	/**
 	 * @param pageFormat
@@ -45,7 +45,7 @@ extends PageSetupComposite
 	 * @param style
 	 */
 	public EditorPageSetupComposite(DrawComponent dc, PageFormat pageFormat, Composite parent,
-			int style) 
+			int style)
 	{
 		super(pageFormat, parent, style);
 		if (dc == null)
@@ -62,7 +62,7 @@ extends PageSetupComposite
 	 * @param layoutDataMode
 	 */
 	public EditorPageSetupComposite(DrawComponent dc, PageFormat pageFormat, Composite parent,
-			int style, LayoutMode layoutMode, LayoutDataMode layoutDataMode) 
+			int style, LayoutMode layoutMode, LayoutDataMode layoutDataMode)
 	{
 		super(pageFormat, parent, style, layoutMode, layoutDataMode);
 		if (dc == null)
@@ -81,5 +81,5 @@ extends PageSetupComposite
 
 	@Override
 	protected void init(PageFormat pageFormat) {
-	}	
+	}
 }

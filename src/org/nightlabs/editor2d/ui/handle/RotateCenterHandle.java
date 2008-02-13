@@ -37,11 +37,11 @@ import org.nightlabs.editor2d.ui.edit.AbstractDrawComponentEditPart;
 import org.nightlabs.editor2d.ui.tools.RotateCenterTracker;
 
 
-public class RotateCenterHandle 
+public class RotateCenterHandle
 extends EditorAbstractHandle
 {
   protected List editParts;
-  public RotateCenterHandle(List editParts) 
+  public RotateCenterHandle(List editParts)
   {
     super();
     if (editParts.size() == 1) {
@@ -60,22 +60,22 @@ extends EditorAbstractHandle
   }
   
   @Override
-	public void paintFigure(Graphics g) 
+	public void paintFigure(Graphics g)
   {
     Rectangle r = getBounds();
     r.shrink(1, 1);
-    try {    
+    try {
     	g.setBackgroundColor(getFillColor());
-      g.fillOval(r);      
+      g.fillOval(r);
       g.setForegroundColor(getLineColor());
       g.drawOval(r);
     } finally {
       //We don't really own rect 'r', so fix it.
       r.expand(1, 1);
-    }    
-  }   
+    }
+  }
   
-  protected boolean multiple = false;  
+  protected boolean multiple = false;
   public boolean isMultiple() {
     return multiple;
   }

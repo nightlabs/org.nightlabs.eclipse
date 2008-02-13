@@ -36,33 +36,33 @@ import org.nightlabs.editor2d.j2d.GeneralShape;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public abstract class AbstractBooleanOperationCommand 
-extends Command 
+public abstract class AbstractBooleanOperationCommand
+extends Command
 {
 
-	public AbstractBooleanOperationCommand(ShapeDrawComponent primary, ShapeDrawComponent secondary) 
+	public AbstractBooleanOperationCommand(ShapeDrawComponent primary, ShapeDrawComponent secondary)
 	{
 		super();
 		this.primary = primary;
 		this.secondary = secondary;
 	}
 
-	protected ShapeDrawComponent primary = null;	
+	protected ShapeDrawComponent primary = null;
 	protected ShapeDrawComponent secondary = null;
-	protected ShapeDrawComponent booleanOperation = null;	
+	protected ShapeDrawComponent booleanOperation = null;
 	
 	protected int drawOrderIndex1 = -1;
 	protected int drawOrderIndex2 = -1;
 	
 	protected DrawComponentContainer parent1 = null;
-	protected DrawComponentContainer parent2 = null;	
+	protected DrawComponentContainer parent2 = null;
 	
 	protected Area area1 = null;
 	protected Area area2 = null;
 	
-	protected void copyProperties(ShapeDrawComponent src, ShapeDrawComponent target) 
+	protected void copyProperties(ShapeDrawComponent src, ShapeDrawComponent target)
 	{
-		target.setParent(src.getParent());		
+		target.setParent(src.getParent());
 		target.setFill(src.isFill());
 		target.setFillColor(src.getFillColor());
 //		target.setLanguageId(src.getLanguageId());
@@ -74,7 +74,7 @@ extends Command
 	}
 		
 	@Override
-	public void execute() 
+	public void execute()
 	{
 		parent1 = primary.getParent();
 		drawOrderIndex1 = parent1.getDrawComponents().indexOf(primary);
@@ -96,18 +96,18 @@ extends Command
 	}
 
 	@Override
-	public void undo() 
+	public void undo()
 	{
 		parent1.removeDrawComponent(booleanOperation);
 		parent1.addDrawComponent(primary, drawOrderIndex1);
 		parent2.addDrawComponent(secondary, drawOrderIndex2);
-	}	
+	}
 	
 	@Override
-	public void redo() 
+	public void redo()
 	{
 		execute();
-	}	
+	}
 	
 	protected abstract GeneralShape performOperation(Area area1, Area area2);
 }

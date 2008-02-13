@@ -31,10 +31,10 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.GraphicalEditPart;
 
 
-public class CenterLocator 
-extends AbstractLocator 
-{  
-  public CenterLocator(GraphicalEditPart owner) 
+public class CenterLocator
+extends AbstractLocator
+{
+  public CenterLocator(GraphicalEditPart owner)
   {
     super(owner);
   }
@@ -42,6 +42,6 @@ extends AbstractLocator
   @Override
 	protected Point getLocation() {
     return figure.getBounds().getCenter();
-  } 
+  }
       
 }

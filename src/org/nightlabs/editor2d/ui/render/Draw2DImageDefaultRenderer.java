@@ -37,20 +37,20 @@ import org.nightlabs.editor2d.viewer.ui.util.AWTSWTUtil;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class Draw2DImageDefaultRenderer 
-extends Draw2DBaseRenderer 
+public class Draw2DImageDefaultRenderer
+extends Draw2DBaseRenderer
 {
 	public Draw2DImageDefaultRenderer() {
 		super();
 	}
 
 	@Override
-	public void paint(DrawComponent dc, Graphics g) 
+	public void paint(DrawComponent dc, Graphics g)
 	{
     ImageDrawComponent image = (ImageDrawComponent) dc;
     if (image.getImage() != null) {
     	Image img = convertImage(image.getImage());
-      g.drawImage(img, image.getX(), image.getY());    	
+      g.drawImage(img, image.getX(), image.getY());
     }
 	}
 	

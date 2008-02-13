@@ -37,10 +37,10 @@ import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.ui.AbstractEditor;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
-public class SelectAllWithSameName 
+public class SelectAllWithSameName
 extends AbstractEditorSelectionAction
 {
-	public static final String ID = SelectAllWithSameName.class.getName(); 
+	public static final String ID = SelectAllWithSameName.class.getName();
 	
 	public SelectAllWithSameName(AbstractEditor editor, int style) {
 		super(editor, style);
@@ -54,33 +54,33 @@ extends AbstractEditorSelectionAction
 	protected List<DrawComponent> drawComponentsWithSameName = null;
 	
 	@Override
-	protected boolean calculateEnabled() 
+	protected boolean calculateEnabled()
 	{
-		if (getSelectedObjects().size() == 1) 
+		if (getSelectedObjects().size() == 1)
 		{
 			editPart = (EditPart) getSelectedObjects().get(0);
 			DrawComponent dc = (DrawComponent) editPart.getModel();
-			String name = dc.getName(); 
+			String name = dc.getName();
 			Class c = dc.getClass();
 			List<DrawComponent> drawComponents = getRootDrawComponent().getDrawComponents(c);
 			drawComponentsWithSameName = getDrawComponentsWithSameName(drawComponents, name);
 			if (!drawComponentsWithSameName.isEmpty())
-				return true;				
+				return true;
 		}
 		return false;
 	}
 
-	public List<DrawComponent> getDrawComponentsWithSameName(Collection<DrawComponent> drawComponents, String name) 
+	public List<DrawComponent> getDrawComponentsWithSameName(Collection<DrawComponent> drawComponents, String name)
 	{
 		List<DrawComponent> drawComponentsWithSameName = new ArrayList<DrawComponent>();
-		for (Iterator<DrawComponent> it = drawComponents.iterator(); it.hasNext(); ) 
+		for (Iterator<DrawComponent> it = drawComponents.iterator(); it.hasNext(); )
 		{
 			DrawComponent dc = it.next();
 			String dcName = dc.getName();
 			if (dcName.equals(name))
 				drawComponentsWithSameName.add(dc);
 		}
-		return drawComponentsWithSameName;		
+		return drawComponentsWithSameName;
 	}
 
 	@Override
@@ -89,7 +89,7 @@ extends AbstractEditorSelectionAction
 	}
 
 	@Override
-	protected void init() 
+	protected void init()
 	{
 		setId(ID);
 		setText(Messages.getString("org.nightlabs.editor2d.ui.actions.SelectAllWithSameName.text")); //$NON-NLS-1$

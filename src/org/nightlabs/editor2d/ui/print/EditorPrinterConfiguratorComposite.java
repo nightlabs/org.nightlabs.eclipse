@@ -34,9 +34,9 @@ import org.nightlabs.editor2d.DrawComponent;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class EditorPrinterConfiguratorComposite 
-extends PrinterConfiguratorComposite 
-{	
+public class EditorPrinterConfiguratorComposite
+extends PrinterConfiguratorComposite
+{
 	/**
 	 * @param parent
 	 * @param style
@@ -54,7 +54,7 @@ extends PrinterConfiguratorComposite
 	 * @param layoutDataMode
 	 */
 	public EditorPrinterConfiguratorComposite(DrawComponent dc, Composite parent, int style,
-			LayoutMode layoutMode, LayoutDataMode layoutDataMode) 
+			LayoutMode layoutMode, LayoutDataMode layoutDataMode)
 	{
 		super(parent, style, layoutMode, layoutDataMode);
 		this.dc = dc;
@@ -63,9 +63,9 @@ extends PrinterConfiguratorComposite
 
 	private DrawComponent dc = null;
 	@Override
-	protected PageSetupComposite initPageSetupComposite(Composite parent) 
+	protected PageSetupComposite initPageSetupComposite(Composite parent)
 	{
-		return new EditorPageSetupComposite(dc, getPageFormat(), parent, SWT.NONE); 
+		return new EditorPageSetupComposite(dc, getPageFormat(), parent, SWT.NONE);
 	}
 	
 	@Override

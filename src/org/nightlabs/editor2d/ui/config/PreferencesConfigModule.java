@@ -30,8 +30,8 @@ import org.nightlabs.config.ConfigModule;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class PreferencesConfigModule 
-extends ConfigModule 
+public class PreferencesConfigModule
+extends ConfigModule
 {
 
 	/**

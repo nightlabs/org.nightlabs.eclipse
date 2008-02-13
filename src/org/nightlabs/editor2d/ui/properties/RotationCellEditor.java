@@ -31,8 +31,8 @@ import org.nightlabs.base.ui.celleditor.DoubleCellEditor;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class RotationCellEditor 
-extends DoubleCellEditor 
+public class RotationCellEditor
+extends DoubleCellEditor
 {
 
 	public RotationCellEditor() {

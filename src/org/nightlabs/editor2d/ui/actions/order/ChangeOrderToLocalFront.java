@@ -35,8 +35,8 @@ import org.nightlabs.editor2d.ui.resource.Messages;
  * of the currentLayer
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class ChangeOrderToLocalFront 
-extends AbstractChangeOrderSelectionAction 
+public class ChangeOrderToLocalFront
+extends AbstractChangeOrderSelectionAction
 {
 	public static final String ID = ChangeOrderToLocalFront.class.getName();
 	
@@ -56,7 +56,7 @@ extends AbstractChangeOrderSelectionAction
 	}
 
 	@Override
-	public void init() 
+	public void init()
 	{
 		setText(Messages.getString("org.nightlabs.editor2d.ui.actions.order.ChangeOrderToLocalFront.text")); //$NON-NLS-1$
 		setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.actions.order.ChangeOrderToLocalFront.tooltip")); //$NON-NLS-1$
@@ -64,26 +64,26 @@ extends AbstractChangeOrderSelectionAction
 		setActionDefinitionId(EditorCommandConstants.ORDER_TO_LOCAL_FRONT_ID);
 	}
 	
-	/** 
-	 *@return the lastIndex of the drawComponents-List from 
-	 * the parent of the primary selected drawComponent    
+	/**
+	 *@return the lastIndex of the drawComponents-List from
+	 * the parent of the primary selected drawComponent
 	 */
 	@Override
-	public int getNewIndex() 
+	public int getNewIndex()
 	{
 		int lastIndex = 0;
 		DrawComponentContainer parent = primarySelected.getParent();
 		if (parent.getDrawComponents().size() != 1)
 			 lastIndex = parent.getDrawComponents().size() -1;
-		return lastIndex;		
+		return lastIndex;
 	}
 
 	/**
 	 * @return the parent of the primary selected DrawComponent
 	 */
 	@Override
-	public DrawComponentContainer getContainer() 
+	public DrawComponentContainer getContainer()
 	{
-		return primarySelected.getParent();		 		
+		return primarySelected.getParent();
 	}
 }

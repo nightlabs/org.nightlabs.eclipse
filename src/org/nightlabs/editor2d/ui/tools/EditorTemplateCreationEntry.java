@@ -32,13 +32,13 @@ import org.nightlabs.editor2d.ui.model.IModelCreationFactory;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class EditorTemplateCreationEntry 
-extends CombinedTemplateCreationEntry 
+public class EditorTemplateCreationEntry
+extends CombinedTemplateCreationEntry
 {
 
 	public EditorTemplateCreationEntry(String label, String shortDesc,
 			Object template, IModelCreationFactory factory, ImageDescriptor iconSmall,
-			ImageDescriptor iconLarge) 
+			ImageDescriptor iconLarge)
 	{
 		super(label, shortDesc, template, factory, iconSmall, iconLarge);
 		this.factory = factory;

@@ -45,8 +45,8 @@ import org.nightlabs.editor2d.ui.editpolicy.tree.DrawComponentTreeEditPolicy;
 import org.nightlabs.editor2d.ui.model.DrawComponentPropertySource;
 
 
-public abstract class DrawComponentTreeEditPart 
-extends AbstractTreeEditPart 
+public abstract class DrawComponentTreeEditPart
+extends AbstractTreeEditPart
 {
   protected IPropertySource propertySource = null;
     
@@ -56,13 +56,13 @@ extends AbstractTreeEditPart
    */
   public DrawComponentTreeEditPart(DrawComponent drawComponent) {
     super(drawComponent);
-  } 
+  }
   
   @Override
 	public Object getAdapter(Class key)
   {
     /* override the default behavior defined in AbstractEditPart
-    *  which would expect the model to be a property sourced. 
+    *  which would expect the model to be a property sourced.
     *  instead the editpart can provide a property source
     */
     if (IPropertySource.class == key)
@@ -70,7 +70,7 @@ extends AbstractTreeEditPart
       return getPropertySource();
     }
     return super.getAdapter(key);
-  }  
+  }
   
 //  protected abstract Image getImage();
   protected abstract Image getOutlineImage();
@@ -82,11 +82,11 @@ extends AbstractTreeEditPart
 //  	refreshVisuals();
 //  }
   
-//  protected Image getImage() 
+//  protected Image getImage()
 //  {
 //  	if (image == null) {
 //			if (!getDrawComponent().isVisible()) {
-//				image = getVisibleCompositeImage().createImage(true);				
+//				image = getVisibleCompositeImage().createImage(true);
 //			} else {
 //				image = getOutlineImage();
 //			}
@@ -130,7 +130,7 @@ extends AbstractTreeEditPart
    */
   public DrawComponent getDrawComponent() {
     return (DrawComponent) getModel();
-  }  
+  }
     
   @Override
 	public void activate()
@@ -187,63 +187,63 @@ extends AbstractTreeEditPart
    * for this.
    */
   @Override
-	protected void createEditPolicies() 
+	protected void createEditPolicies()
   {
   	installEditPolicy(EditPolicy.COMPONENT_ROLE, new DrawComponentEditPolicy());
-//  	installEditPolicy(EditPolicy.COMPONENT_ROLE, new DrawComponentTreeComponentEditPolicy());  	
+//  	installEditPolicy(EditPolicy.COMPONENT_ROLE, new DrawComponentTreeComponentEditPolicy());
   	installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE, new DrawComponentTreeEditPolicy());
   }
   
-  protected PropertyChangeListener listener = new PropertyChangeListener(){	
+  protected PropertyChangeListener listener = new PropertyChangeListener(){
 		public void propertyChange(PropertyChangeEvent evt) {
 			propertyChanged(evt);
-		}	
+		}
 	};
   
-	protected void propertyChanged(PropertyChangeEvent evt) 
+	protected void propertyChanged(PropertyChangeEvent evt)
 	{
 //		notifyLabelDecorator();
 		
-		String propertyName = evt.getPropertyName();		
+		String propertyName = evt.getPropertyName();
 		if (propertyName.equals(DrawComponent.PROP_BOUNDS)) {
 			refreshVisuals();
 			return;
 		}
 		else if (propertyName.equals(DrawComponent.PROP_HEIGHT)) {
 			refreshVisuals();
-			return;			
+			return;
 		}
 		else if (propertyName.equals(DrawComponent.PROP_WIDTH)) {
 			refreshVisuals();
-			return;			
+			return;
 		}
 		else if (propertyName.equals(DrawComponent.PROP_X)) {
 			refreshVisuals();
-			return;			
+			return;
 		}
 		else if (propertyName.equals(DrawComponent.PROP_Y)) {
 			refreshVisuals();
-			return;			
+			return;
 		}
 		else if (propertyName.equals(DrawComponent.PROP_ROTATION)) {
 			refreshVisuals();
-			return;			
+			return;
 		}
 		else if (propertyName.equals(DrawComponent.PROP_ROTATION_X)) {
 			refreshVisuals();
-			return;			
+			return;
 		}
 		else if (propertyName.equals(DrawComponent.PROP_ROTATION_Y)) {
 			refreshVisuals();
-			return;			
-		}						
+			return;
+		}
 		else if (propertyName.equals(DrawComponent.PROP_RENDER_MODE)) {
 			refreshVisuals();
-			return;			
-		}		
+			return;
+		}
 		else if (propertyName.equals(DrawComponent.PROP_NAME)) {
 			refreshVisuals();
-			return;			
+			return;
 		}
 		else if (propertyName.equals(IVisible.PROP_VISIBLE)) {
 			notifyLabelDecorator();
@@ -251,7 +251,7 @@ extends AbstractTreeEditPart
 			return;
 		}
 		else if (propertyName.equals("VisibleScript")) {
-			// TODO: add extension point to register property name with appropriate decoration id 
+			// TODO: add extension point to register property name with appropriate decoration id
 			notifyLabelDecorator();
 			refreshVisuals();
 			return;
@@ -265,11 +265,11 @@ extends AbstractTreeEditPart
 			notifyLabelDecorator();
 			refreshVisuals();
 			return;
-		}				
-	}  
+		}
+	}
 			
-	protected void notifyLabelDecorator() 
-	{		
+	protected void notifyLabelDecorator()
+	{
 		// TODO: create static instance which can cache the decorator definitions which match, to avoid iterate each time
 		DecoratorManager decoratorManager = (DecoratorManager) PlatformUI.getWorkbench().getDecoratorManager();
 		for (int i=0; i<decoratorManager.getAllDecoratorDefinitions().length; i++) {
@@ -278,6 +278,6 @@ extends AbstractTreeEditPart
 				decoratorManager.labelProviderChanged(new LabelProviderChangedEvent(decoratorManager, this));
 			}
 		}
-	}	
+	}
 	
 }

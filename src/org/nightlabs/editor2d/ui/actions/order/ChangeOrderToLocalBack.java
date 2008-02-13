@@ -32,11 +32,11 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 
 /**
  * changes the order of the selected Objects to the back
- * of the currentLayer  
+ * of the currentLayer
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class ChangeOrderToLocalBack 
-extends AbstractChangeOrderSelectionAction 
+public class ChangeOrderToLocalBack
+extends AbstractChangeOrderSelectionAction
 {
 	public static final String ID = ChangeOrderToLocalBack.class.getName();
 	
@@ -56,22 +56,22 @@ extends AbstractChangeOrderSelectionAction
 	}
 
 	@Override
-	public void init() 
+	public void init()
 	{
 		setText(Messages.getString("org.nightlabs.editor2d.ui.actions.order.ChangeOrderToLocalBack.text")); //$NON-NLS-1$
 		setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.actions.order.ChangeOrderToLocalBack.tooltip")); //$NON-NLS-1$
 		setId(ID);
 		setActionDefinitionId(EditorCommandConstants.ORDER_TO_LOCAL_BACK_ID);
-	}	
+	}
 
-	/** 
+	/**
 	 *@return the firstIndex of the drawComponents-List where
-	 * the primary selected is contained in 
+	 * the primary selected is contained in
 	 * @see AbstractChangeOrderSelectionAction#getPrimarySelectedDrawComponent()
-	 *     
+	 * 
 	 */
 	@Override
-	public int getNewIndex() 
+	public int getNewIndex()
 	{
 		return 0;
 	}
@@ -81,8 +81,8 @@ extends AbstractChangeOrderSelectionAction
 	 * @see AbstractChangeOrderSelectionAction#getPrimarySelectedDrawComponent()
 	 */
 	@Override
-	public DrawComponentContainer getContainer() 
+	public DrawComponentContainer getContainer()
 	{
-		return primarySelected.getParent();		 		
+		return primarySelected.getParent();
 	}
 }

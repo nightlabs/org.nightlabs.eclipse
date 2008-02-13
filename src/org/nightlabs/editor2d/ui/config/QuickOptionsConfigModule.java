@@ -30,8 +30,8 @@ import org.nightlabs.config.ConfigModule;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class QuickOptionsConfigModule 
-extends ConfigModule 
+public class QuickOptionsConfigModule
+extends ConfigModule
 {
 
 	/**
@@ -82,7 +82,7 @@ extends ConfigModule
 	}
 	
 	@Override
-	public void init() 
+	public void init()
 	{
 		
 	}

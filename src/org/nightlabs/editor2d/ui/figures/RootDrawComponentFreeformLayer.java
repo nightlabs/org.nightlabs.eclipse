@@ -37,12 +37,12 @@ import org.nightlabs.editor2d.ui.edit.RootDrawComponentEditPart;
 import org.nightlabs.editor2d.ui.util.EditorUtil;
 
 
-public class RootDrawComponentFreeformLayer 
-extends FreeformLayer 
+public class RootDrawComponentFreeformLayer
+extends FreeformLayer
 implements UpdateListener
 {
   public RootDrawComponentFreeformLayer() {
-    super();    
+    super();
   }
     
   public void registerOnDeferredUpdateManager(UpdateManager updateManager) {
@@ -52,7 +52,7 @@ implements UpdateListener
     updateManager.addUpdateListener(this);
   }
     
-  private RootDrawComponentEditPart rootEditPart;    
+  private RootDrawComponentEditPart rootEditPart;
 	public void setMldcEditPart(RootDrawComponentEditPart rootEditPart) {
 	  this.rootEditPart = rootEditPart;
 	}
@@ -77,7 +77,7 @@ implements UpdateListener
 //      super.paint(graphics);
 //      return;
 //    }
-//    
+//
 ////    System.out.println("MLDC notifiedDamage != null");
 //    for (Iterator iter = getChildren().iterator(); iter.hasNext();) {
 //      IFigure child = (IFigure) iter.next();

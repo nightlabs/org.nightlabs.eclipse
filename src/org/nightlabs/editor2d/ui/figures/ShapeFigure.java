@@ -35,20 +35,20 @@ import org.nightlabs.editor2d.j2d.GeneralShape;
 import org.nightlabs.editor2d.ui.handle.HandleShape;
 
 
-public interface ShapeFigure 
+public interface ShapeFigure
 extends IFigure,
 				Translatable,
 				HandleShape
 {
   public GeneralShape getGeneralShape();
-  public void setGeneralShape(GeneralShape generalShape);  
+  public void setGeneralShape(GeneralShape generalShape);
 //  public double getRotation();
 //  public java.awt.Rectangle setRotation(double rot, boolean init);
-  public void transform(AffineTransform at); 
-  public void setXOR(boolean b);  
+  public void transform(AffineTransform at);
+  public void setXOR(boolean b);
   public void setFill(boolean b);
   public int getLineWidth();
   public void setLineWidth(int lineWidth);
   public int getLineStyle();
-  public void setLineStyle(int lineStyle);  
+  public void setLineStyle(int lineStyle);
 }

@@ -38,8 +38,8 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class CopyAction 
-extends AbstractEditorSelectionAction 
+public class CopyAction
+extends AbstractEditorSelectionAction
 {
 //	public static final String ID = CopyAction.class.getName();
 	public static final String ID = ActionFactory.COPY.getId();
@@ -60,13 +60,13 @@ extends AbstractEditorSelectionAction
 	}
 
   @Override
-	protected void init() 
+	protected void init()
   {
   	setText(Messages.getString("org.nightlabs.editor2d.ui.actions.copy.CopyAction.text")); //$NON-NLS-1$
   	setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.actions.copy.CopyAction.tooltip")); //$NON-NLS-1$
   	setId(ID);
   	setActionDefinitionId("org.eclipse.ui.edit.copy");  	 //$NON-NLS-1$
-  } 
+  }
 	
 	/**
 	*@return true, if objects are selected, except the RootEditPart or LayerEditParts
@@ -77,16 +77,16 @@ extends AbstractEditorSelectionAction
 	}
 		
 	/**
-	 * adds all selected DrawComponents to the {@link Clipboard} 
-	 *  
+	 * adds all selected DrawComponents to the {@link Clipboard}
+	 * 
 	 */
 	@Override
-	public void run() 
+	public void run()
 	{
-		Collection<DrawComponent> dcs = getSelection(DrawComponent.class, true);		
+		Collection<DrawComponent> dcs = getSelection(DrawComponent.class, true);
 		Clipboard clipboard = Clipboard.getDefault();
 		Object oldContent = clipboard.getContents();
 		clipboard.setContents(dcs);
 		firePropertyChange(EditorActionConstants.PROP_COPY_TO_CLIPBOARD, oldContent, dcs);
-	}	
+	}
 }

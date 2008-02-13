@@ -37,8 +37,8 @@ import org.holongate.j2d.IPaintable;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class RenderedImagePaintable 
-implements IPaintable 
+public class RenderedImagePaintable
+implements IPaintable
 {
 	/**
 	 * LOG4J logger used by this class
@@ -61,16 +61,16 @@ implements IPaintable
 	/**
 	 * @see org.holongate.j2d.IPaintable#paint(org.eclipse.swt.widgets.Control, java.awt.Graphics2D)
 	 */
-	public void paint(Control control, Graphics2D g2d) 
+	public void paint(Control control, Graphics2D g2d)
 	{
 		if (image == null) {
 			logger.debug("image = null!"); //$NON-NLS-1$
-			return;			
+			return;
 		}
 		
 		long start = System.currentTimeMillis();
 		g2d.drawRenderedImage(image, null);
-		long end = System.currentTimeMillis() - start;		
+		long end = System.currentTimeMillis() - start;
 		logger.debug("paint took "+end+" ms!"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 

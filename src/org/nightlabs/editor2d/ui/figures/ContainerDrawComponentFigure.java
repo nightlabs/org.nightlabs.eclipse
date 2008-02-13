@@ -40,8 +40,8 @@ import org.eclipse.draw2d.Graphics;
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
  *
  */
-public class ContainerDrawComponentFigure 
-extends DrawComponentFigure 
+public class ContainerDrawComponentFigure
+extends DrawComponentFigure
 {
 	
 	/**
@@ -55,7 +55,7 @@ extends DrawComponentFigure
 				((DrawComponentFigure)figure).paint(graphics);
 			}
 		}
-	}  
+	}
 	
 	/**
 	 * Overridden to paint only children

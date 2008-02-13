@@ -33,7 +33,7 @@ import org.nightlabs.editor2d.ui.edit.ShapeDrawComponentEditPart;
 import org.nightlabs.editor2d.ui.util.EditorUtil;
 
 
-public class EditorStateManager 
+public class EditorStateManager
 {
   public static final int STATE_NORMAL_SELECTION = 1;
   public static final int STATE_EDIT_SHAPE = 2;
@@ -41,9 +41,9 @@ public class EditorStateManager
   
   public EditorStateManager() {
     super();
-  }  
+  }
   
-  protected static int currentState = STATE_NORMAL_SELECTION;  
+  protected static int currentState = STATE_NORMAL_SELECTION;
   public static int getCurrentState() {
     return currentState;
   }
@@ -51,7 +51,7 @@ public class EditorStateManager
     EditorStateManager.currentState = currentState;
   }
    
-  public static void setEditShapeMode(ShapeDrawComponentEditPart sdc) 
+  public static void setEditShapeMode(ShapeDrawComponentEditPart sdc)
   {
     setCurrentState(STATE_EDIT_SHAPE);
 //    sdc.getViewer().deselectAll();
@@ -59,13 +59,13 @@ public class EditorStateManager
     EditorUtil.selectEditPart(sdc);
   }
 
-  public static void setNormalSelectionMode(List editParts) 
+  public static void setNormalSelectionMode(List editParts)
   {
     setCurrentState(STATE_NORMAL_SELECTION);
-    EditorUtil.selectEditParts(editParts);    
+    EditorUtil.selectEditParts(editParts);
   }
   
-  public static void setRotateMode(List editParts) 
+  public static void setRotateMode(List editParts)
   {
     setCurrentState(STATE_ROTATE);
     EditorUtil.selectEditParts(editParts);

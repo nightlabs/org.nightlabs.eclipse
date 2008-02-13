@@ -38,12 +38,12 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class EditorPreferencePage 
-extends PreferencePage 
+public class EditorPreferencePage
+extends PreferencePage
 implements IWorkbenchPreferencePage
 {
 	@Override
-	protected Control createContents(Composite parent) 
+	protected Control createContents(Composite parent)
 	{
 		Label l = new Label(parent, SWT.NONE);
 		l.setText(Messages.getString("org.nightlabs.editor2d.ui.preferences.EditorPreferencePage.label.title")); //$NON-NLS-1$
@@ -52,6 +52,6 @@ implements IWorkbenchPreferencePage
 	}
 
 	public void init(IWorkbench workbench) {
-		noDefaultAndApplyButton();	
-	}	
+		noDefaultAndApplyButton();
+	}
 }

@@ -37,13 +37,13 @@ import org.nightlabs.editor2d.ui.edit.ShapeDrawComponentEditPart;
 import org.nightlabs.editor2d.ui.tools.ShapeEditTracker;
 
 
-public class ShapeEditHandle  
+public class ShapeEditHandle
 extends SquareHandle
 {
   protected ShapeDrawComponentEditPart owner;
   protected int pathSegmentIndex;
   
-  public ShapeEditHandle(ShapeDrawComponentEditPart owner, int pathSegmentIndex) 
+  public ShapeEditHandle(ShapeDrawComponentEditPart owner, int pathSegmentIndex)
   {
     super(owner, new ShapeHandleLocator(owner, pathSegmentIndex));
     this.owner = owner;
@@ -57,7 +57,7 @@ extends SquareHandle
    */
   @Override
 	protected DragTracker createDragTracker() {
-    return new ShapeEditTracker(owner, pathSegmentIndex);    
+    return new ShapeEditTracker(owner, pathSegmentIndex);
   }
   
   public static final int DEFAULT_SIZE = 6;
@@ -74,10 +74,10 @@ extends SquareHandle
   	setSize(DEFAULT_SIZE, DEFAULT_SIZE);
   	
 //  	setLocation(getPathSegmentLocation());
-  }  
+  }
      
   @Override
-	public void setBounds(Rectangle rect) 
+	public void setBounds(Rectangle rect)
   {
     super.setBounds(new Rectangle(rect.x, rect.y, DEFAULT_SIZE, DEFAULT_SIZE));
   }
@@ -96,23 +96,23 @@ extends SquareHandle
    * Sets whether the handle is fixed and cannot be moved
    * @param fixed <code>true</code> if the handle should be unmovable
    */
-  public void setFixed(boolean fixed) 
+  public void setFixed(boolean fixed)
   {
   	this.fixed = fixed;
   	if (fixed)
   		setCursor(Cursors.NO);
   	else
   		setCursor(Cursors.CROSS);
-  }     
+  }
     
-//  protected Point getPathSegmentLocation() 
+//  protected Point getPathSegmentLocation()
 //  {
 //    ShapeFigure sf = (ShapeFigure) owner.getFigure();
 //    PathSegment ps = sf.getGeneralShape().getPathSegment(pathSegmentIndex);
 //    if (ps != null) {
 //      return J2DUtil.toDraw2D(ps.getPoint());
 //    }
-//    return new Point();    
+//    return new Point();
 //  }
  
 }

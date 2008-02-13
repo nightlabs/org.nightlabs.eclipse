@@ -85,11 +85,11 @@ import org.nightlabs.editor2d.viewer.ui.action.RenderModeContributionItem;
 import org.nightlabs.editor2d.viewer.ui.render.RendererRegistry;
 
 
-public class EditorActionBarContributor 
-extends ActionBarContributor 
+public class EditorActionBarContributor
+extends ActionBarContributor
 {
   @Override
-	protected void buildActions() 
+	protected void buildActions()
   {
   	// Undo / Redo
   	addRetargetAction(new UndoRetargetAction());
@@ -97,15 +97,15 @@ extends ActionBarContributor
   	
   	// Delete
 //  	addRetargetAction(new DeleteRetargetAction());
-  	addRetargetAction(new RetargetAction(DeleteAction.ID, 
+  	addRetargetAction(new RetargetAction(DeleteAction.ID,
   			Messages.getString("org.nightlabs.editor2d.ui.EditorActionBarContributor.delete")));  	 //$NON-NLS-1$
   	  	
   	// Cut / Copy / Paste
-  	addRetargetAction(new RetargetAction(CopyAction.ID, 
+  	addRetargetAction(new RetargetAction(CopyAction.ID,
   			Messages.getString("org.nightlabs.editor2d.ui.EditorActionBarContributor.copy"))); //$NON-NLS-1$
-  	addRetargetAction(new RetargetAction(PasteAction.ID, 
+  	addRetargetAction(new RetargetAction(PasteAction.ID,
   			Messages.getString("org.nightlabs.editor2d.ui.EditorActionBarContributor.paste"))); //$NON-NLS-1$
-  	addRetargetAction(new RetargetAction(CutAction.ID, 
+  	addRetargetAction(new RetargetAction(CutAction.ID,
   			Messages.getString("org.nightlabs.editor2d.ui.EditorActionBarContributor.cut"))); //$NON-NLS-1$
   	
   	// Group
@@ -136,24 +136,24 @@ extends ActionBarContributor
   	
   	// Ruler / Grid
   	addRetargetAction(new RetargetAction(
-  			GEFActionConstants.TOGGLE_RULER_VISIBILITY, 
+  			GEFActionConstants.TOGGLE_RULER_VISIBILITY,
   			Messages.getString("org.nightlabs.editor2d.ui.EditorActionBarContributor.menu.showRuler"), IAction.AS_CHECK_BOX));  	 //$NON-NLS-1$
   	addRetargetAction(new RetargetAction(
-  			GEFActionConstants.TOGGLE_SNAP_TO_GEOMETRY, 
+  			GEFActionConstants.TOGGLE_SNAP_TO_GEOMETRY,
   			Messages.getString("org.nightlabs.editor2d.ui.EditorActionBarContributor.menu.snapToGeometry"), IAction.AS_CHECK_BOX)); //$NON-NLS-1$
-//  	addRetargetAction(new RetargetAction(GEFActionConstants.TOGGLE_GRID_VISIBILITY, 
+//  	addRetargetAction(new RetargetAction(GEFActionConstants.TOGGLE_GRID_VISIBILITY,
 //  			Messages.getString("org.nightlabs.editor2d.ui.EditorActionBarContributor.menu.showGrid"), IAction.AS_CHECK_BOX)); //$NON-NLS-1$
 
   	// Zoom
   	addRetargetAction(new ZoomInRetargetAction());
-  	addRetargetAction(new ZoomOutRetargetAction());  	
+  	addRetargetAction(new ZoomOutRetargetAction());
   	addRetargetAction(new ZoomAllRetargetAction());
   	addRetargetAction(new ZoomSelectionRetargetSelection());
   	addRetargetAction(new ZoomPageRetargetAction());
   	  	
-  	addRetargetAction(new RetargetAction(ShowFigureToolTipAction.ID, 
+  	addRetargetAction(new RetargetAction(ShowFigureToolTipAction.ID,
   			Messages.getString("org.nightlabs.editor2d.ui.EditorActionBarContributor.showToolTips"),  //$NON-NLS-1$
-  			IAction.AS_CHECK_BOX));  	
+  			IAction.AS_CHECK_BOX));
   	addRetargetAction(new RetargetAction(ShowStatusLineAction.ID,
   			Messages.getString("org.nightlabs.editor2d.ui.EditorActionBarContributor.showStatusLineInfo"),  //$NON-NLS-1$
   			IAction.AS_CHECK_BOX));
@@ -161,11 +161,11 @@ extends ActionBarContributor
   	addRetargetAction(new RepaintRetargetAction());
   	
   	// Print
-  	addRetargetAction(new RetargetAction(EditorPrintAction.ID, 
+  	addRetargetAction(new RetargetAction(EditorPrintAction.ID,
   			Messages.getString("org.nightlabs.editor2d.ui.EditorActionBarContributor.print")));  	 //$NON-NLS-1$
-//  	addRetargetAction(new RetargetAction(EditorPrintPreviewAction.ID, 
-//  			"PrintPreview"));  	  	
-  	addRetargetAction(new RetargetAction(EditorPrintSetupAction.ID, 
+//  	addRetargetAction(new RetargetAction(EditorPrintPreviewAction.ID,
+//  			"PrintPreview"));
+  	addRetargetAction(new RetargetAction(EditorPrintSetupAction.ID,
   			Messages.getString("org.nightlabs.editor2d.ui.EditorActionBarContributor.pageSetup")));  	 //$NON-NLS-1$
   	
   	// Shape Actions
@@ -192,14 +192,14 @@ extends ActionBarContributor
    * @see org.eclipse.ui.part.EditorActionBarContributor#contributeToMenu(IMenuManager)
    */
   @Override
-	public void contributeToMenu(IMenuManager menubar) 
+	public void contributeToMenu(IMenuManager menubar)
   {
-  	super.contributeToMenu(menubar);  	
+  	super.contributeToMenu(menubar);
   	 
   	IContributionItem fm = RCPUtil.getMenuItem(ID_FILE_MENU, menubar);
-  	if (fm instanceof IMenuManager)  
+  	if (fm instanceof IMenuManager)
   		fileMenu = (IMenuManager) fm;
-  	if (fileMenu != null) 
+  	if (fileMenu != null)
   	{
   		IContributionItem printMenu = RCPUtil.getMenuItem(EditorPrintAction.ID, fileMenu);
   		if (printMenu == null)
@@ -207,7 +207,7 @@ extends ActionBarContributor
   		
 //  		fileMenu.insertAfter(EditorPrintPreviewAction.ID, getAction(EditorPrintSetupAction.ID));
 			fileMenu.insertAfter(EditorPrintAction.ID, getAction(EditorPrintSetupAction.ID));
-    	fileMenu.insertAfter(EditorPrintSetupAction.ID, new Separator());  				  		  		
+    	fileMenu.insertAfter(EditorPrintSetupAction.ID, new Separator());
   	}
 
   	// Edit
@@ -222,26 +222,26 @@ extends ActionBarContributor
   	editMenu.add(getAction(CopyAction.ID));
   	editMenu.add(getAction(PasteAction.ID));
   	editMenu.add(getAction(CutAction.ID));
-  	editMenu.add(new Separator());  	
+  	editMenu.add(new Separator());
   	
   	// Delete
 //  	editMenu.add(getAction(ActionFactory.DELETE.getId()));
-  	editMenu.add(getAction(DeleteAction.ID));  	
-  	editMenu.add(new Separator());  	
+  	editMenu.add(getAction(DeleteAction.ID));
+  	editMenu.add(new Separator());
   	
   	// Group
   	editMenu.add(getAction(GroupAction.ID));
   	editMenu.add(getAction(UnGroupAction.ID));
-  	editMenu.add(new Separator());  	
-  	
-  	// Edit - Align  	
-  	addAlignActions(editMenu);  	
-  	  	
-  	// Edit - Order  	
   	editMenu.add(new Separator());
-  	addOrderActions(editMenu);  	
   	
-  	menubar.insertAfter(IWorkbenchActionConstants.M_FILE, editMenu);  	
+  	// Edit - Align
+  	addAlignActions(editMenu);
+  	  	
+  	// Edit - Order
+  	editMenu.add(new Separator());
+  	addOrderActions(editMenu);
+  	
+  	menubar.insertAfter(IWorkbenchActionConstants.M_FILE, editMenu);
   	
   	// View
   	viewMenu = new MenuManager(Messages.getString("org.nightlabs.editor2d.ui.EditorActionBarContributor.menu.view"), ID_VIEW_MENU); //$NON-NLS-1$
@@ -265,7 +265,7 @@ extends ActionBarContributor
   	shapeMenu.add(new Separator());
   	addBooleanShapeActions(shapeMenu);
   	
-  	menubar.insertAfter(ID_VIEW_MENU, shapeMenu);  	
+  	menubar.insertAfter(ID_VIEW_MENU, shapeMenu);
   }
   
   private IMenuManager viewMenu = null;
@@ -288,29 +288,29 @@ extends ActionBarContributor
   	return shapeMenu;
   }
   
-  protected void addOrderActions(IContributionManager cm) 
+  protected void addOrderActions(IContributionManager cm)
   {
   	cm.add(getAction(ChangeOrderToLocalFront.ID));
-  	cm.add(getAction(ChangeOrderOneUp.ID));  	
-  	cm.add(getAction(ChangeOrderOneDown.ID));  	
-  	cm.add(getAction(ChangeOrderToLocalBack.ID));  	  	
+  	cm.add(getAction(ChangeOrderOneUp.ID));
+  	cm.add(getAction(ChangeOrderOneDown.ID));
+  	cm.add(getAction(ChangeOrderToLocalBack.ID));
   }
   
   protected void addAlignActions(IContributionManager cm)
   {
   	cm.add(getAction(GEFActionConstants.ALIGN_LEFT));
   	cm.add(getAction(GEFActionConstants.ALIGN_CENTER));
-  	cm.add(getAction(GEFActionConstants.ALIGN_RIGHT));  	
+  	cm.add(getAction(GEFActionConstants.ALIGN_RIGHT));
   	cm.add(new Separator());
   	cm.add(getAction(GEFActionConstants.ALIGN_TOP));
   	cm.add(getAction(GEFActionConstants.ALIGN_MIDDLE));
-  	cm.add(getAction(GEFActionConstants.ALIGN_BOTTOM));  	
-  	cm.add(new Separator());	
+  	cm.add(getAction(GEFActionConstants.ALIGN_BOTTOM));
+  	cm.add(new Separator());
   	cm.add(getAction(GEFActionConstants.MATCH_WIDTH));
-  	cm.add(getAction(GEFActionConstants.MATCH_HEIGHT));  	  	
+  	cm.add(getAction(GEFActionConstants.MATCH_HEIGHT));
   }
   
-  protected void addZoomActions(IContributionManager cm) 
+  protected void addZoomActions(IContributionManager cm)
   {
   	IAction zoomInAction = getAction(GEFActionConstants.ZOOM_IN);
   	zoomInAction.setImageDescriptor(SharedImages.getSharedImageDescriptor(
@@ -324,15 +324,15 @@ extends ActionBarContributor
 
   	cm.add(getAction(ZoomAllAction.ID));
   	cm.add(getAction(ZoomSelectionAction.ID));
-  	cm.add(getAction(ZoomPageAction.ID));  	
+  	cm.add(getAction(ZoomPageAction.ID));
   }
 
-  protected void addBooleanShapeActions(IContributionManager cm) 
+  protected void addBooleanShapeActions(IContributionManager cm)
   {
   	cm.add(getAction(ShapeUnionAction.ID));
-  	cm.add(getAction(ShapeIntersectAction.ID));  	
+  	cm.add(getAction(ShapeIntersectAction.ID));
   	cm.add(getAction(ShapeSubtractAction.ID));
-  	cm.add(getAction(ShapeExclusiveOrAction.ID));  	
+  	cm.add(getAction(ShapeExclusiveOrAction.ID));
   }
   
   private EditorZoomComboContributionItem zoomContributionItem = null;
@@ -345,50 +345,50 @@ extends ActionBarContributor
    * @see org.eclipse.ui.part.EditorActionBarContributor#contributeToToolBar(org.eclipse.jface.action.IToolBarManager)
    */
   @Override
-	public void contributeToToolBar(IToolBarManager tbm) 
+	public void contributeToToolBar(IToolBarManager tbm)
   {
   	super.contributeToToolBar(tbm);
   	// Undo / Redo
   	tbm.add(getAction(ActionFactory.UNDO.getId()));
-  	tbm.add(getAction(ActionFactory.REDO.getId()));  	  	  	
+  	tbm.add(getAction(ActionFactory.REDO.getId()));
   	tbm.add(new Separator());
   	
   	// Align
-  	addAlignActions(tbm);  	
+  	addAlignActions(tbm);
   	tbm.add(new Separator());
   	
   	// Zoom
-  	String[] zoomStrings = new String[] {	ZoomManager.FIT_ALL, 
-  											ZoomManager.FIT_HEIGHT, 
+  	String[] zoomStrings = new String[] {	ZoomManager.FIT_ALL,
+  											ZoomManager.FIT_HEIGHT,
   											ZoomManager.FIT_WIDTH	};
-  	zoomContributionItem = new EditorZoomComboContributionItem(getPage(), zoomStrings); 
+  	zoomContributionItem = new EditorZoomComboContributionItem(getPage(), zoomStrings);
   	tbm.add(zoomContributionItem);
-  	addZoomActions(tbm);  	
+  	addZoomActions(tbm);
   	tbm.add(new Separator());
   	
   	// RenderModes
   	RenderModeManager renderMan = RendererRegistry.sharedInstance().getRenderModeManager();
   	if (renderMan.getRenderModes().size() > 1)
-  		tbm.add(new RenderModeContributionItem(getPage()));  	  		  	
+  		tbm.add(new RenderModeContributionItem(getPage()));
   	tbm.add(new Separator());
   	
 //  	tbm.add(getAction(RepaintAction.ID));
 //  	tbm.add(getAction(ViewerAction.ID));
-  }  
+  }
     
   /**
    * @see org.eclipse.gef.ui.actions.ActionBarContributor#declareGlobalActionKeys()
    */
   @Override
-	protected void declareGlobalActionKeys() 
+	protected void declareGlobalActionKeys()
   {
   	addGlobalActionKey(ActionFactory.PRINT.getId());
   	addGlobalActionKey(ActionFactory.SELECT_ALL.getId());
-  	addGlobalActionKey(ActionFactory.PASTE.getId());    
-  	addGlobalActionKey(ActionFactory.COPY.getId());  	
+  	addGlobalActionKey(ActionFactory.PASTE.getId());
+  	addGlobalActionKey(ActionFactory.COPY.getId());
   	addGlobalActionKey(GEFActionConstants.ZOOM_IN);
   	addGlobalActionKey(GEFActionConstants.ZOOM_OUT);
-  	addGlobalActionKey(ActionFactory.SAVE.getId());  	
+  	addGlobalActionKey(ActionFactory.SAVE.getId());
   	addGlobalActionKey(ActionFactory.SAVE_AS.getId());
   	addGlobalActionKey(ActionFactory.UNDO.getId());
   	addGlobalActionKey(ActionFactory.REDO.getId());
@@ -401,11 +401,11 @@ extends ActionBarContributor
   	addGlobalActionKey(ChangeOrderOneUp.ID);
   	addGlobalActionKey(ChangeOrderOneDown.ID);
   	addGlobalActionKey(ChangeOrderToLocalBack.ID);
-  	addGlobalActionKey(ChangeOrderToLocalFront.ID);  	
+  	addGlobalActionKey(ChangeOrderToLocalFront.ID);
   }
 
 	@Override
-	public void dispose() 
+	public void dispose()
 	{
 		super.dispose();
 		
@@ -413,13 +413,13 @@ extends ActionBarContributor
 		IContributionItem fm = RCPUtil.getMenuItem(ID_FILE_MENU, getActionBars().getMenuManager());
 		if (fm instanceof IMenuManager) {
 			IMenuManager fileMenu = (IMenuManager) fm;
-			removeActionMenu(EditorPrintAction.ID, fileMenu);			
+			removeActionMenu(EditorPrintAction.ID, fileMenu);
 //			removeActionMenu(EditorPrintPreviewAction.ID, fileMenu);
 			removeActionMenu(EditorPrintSetupAction.ID, fileMenu);
-		}		
+		}
 	}
   
-	protected void removeActionMenu(String actionID, IMenuManager menuMan) 
+	protected void removeActionMenu(String actionID, IMenuManager menuMan)
 	{
 		IContributionItem ci = RCPUtil.getMenuItem(actionID, menuMan);
 		if (ci != null) {

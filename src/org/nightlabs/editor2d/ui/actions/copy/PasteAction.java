@@ -41,15 +41,15 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class PasteAction 
+public class PasteAction
 extends AbstractEditorAction
 {
 //	public static final String ID = PasteAction.class.getName();
-	public static final String ID = ActionFactory.PASTE.getId();	
+	public static final String ID = ActionFactory.PASTE.getId();
 	
-	protected boolean enabled = false;  	
+	protected boolean enabled = false;
 	private boolean copy = false;
-	private boolean cut = false;	
+	private boolean cut = false;
 	private Collection<DrawComponent> clipBoardContent = null;
 		
 	/**
@@ -68,7 +68,7 @@ extends AbstractEditorAction
 	}
 
   @Override
-	protected void init() 
+	protected void init()
   {
   	setText(Messages.getString("org.nightlabs.editor2d.ui.actions.copy.PasteAction.text")); //$NON-NLS-1$
   	setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.actions.copy.PasteAction.tooltip")); //$NON-NLS-1$
@@ -76,15 +76,15 @@ extends AbstractEditorAction
 //  	setActionDefinitionId(ID);
   	setActionDefinitionId("org.eclipse.ui.edit.paste");  	 //$NON-NLS-1$
 //  	setAccelerator(SWT.CTRL | 'P');
-  } 
+  }
 		
 	@Override
 	protected boolean calculateEnabled() {
 		return enabled;
-	}	
+	}
 	
 	@Override
-	public void run() 
+	public void run()
 	{
 		CompoundCommand cmd = new CompoundCommand();
 		if (clipBoardContent != null) {
@@ -97,11 +97,11 @@ extends AbstractEditorAction
 					cloneCmd.setCloneName(dc.getName());
 				cmd.add(cloneCmd);
 			}
-			execute(cmd);					
+			execute(cmd);
 		}
 	}
 			
-	public IPropertyChangeListener copyListener = new IPropertyChangeListener() {	
+	public IPropertyChangeListener copyListener = new IPropertyChangeListener() {
 		public void propertyChange(org.eclipse.jface.util.PropertyChangeEvent event) {
 			if (event.getProperty().equals(EditorActionConstants.PROP_COPY_TO_CLIPBOARD)) {
 				copy = true;
@@ -113,11 +113,11 @@ extends AbstractEditorAction
 						clipBoardContent = (Collection<DrawComponent>) content;
 					}
 				}
-			}			
-		}	
+			}
+		}
 	};
 				
-	public IPropertyChangeListener cutListener = new IPropertyChangeListener() {	
+	public IPropertyChangeListener cutListener = new IPropertyChangeListener() {
 		public void propertyChange(org.eclipse.jface.util.PropertyChangeEvent event) {
 			if (event.getProperty().equals(EditorActionConstants.PROP_COPY_TO_CLIPBOARD)) {
 				cut = true;
@@ -129,11 +129,11 @@ extends AbstractEditorAction
 						clipBoardContent = (Collection<DrawComponent>) content;
 					}
 				}
-			}			
-		}	
-	};	
+			}
+		}
+	};
 	
 	protected String getCopyString() {
 		return " ("+Messages.getString("org.nightlabs.editor2d.ui.actions.copy.PasteAction.copy.text")+")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-	}	
+	}
 }

@@ -29,15 +29,14 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.Locator;
-import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.handles.MoveHandle;
 
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class EditorMoveHandle 
-extends MoveHandle 
+public class EditorMoveHandle
+extends MoveHandle
 {
 
 	/**
@@ -60,13 +59,13 @@ extends MoveHandle
 	 * DragCursor.
 	 */
 	@Override
-	protected void initialize() 
-	{	
+	protected void initialize()
+	{
 //		super.initialize();
 //		setBorder(new LineBorder(ColorConstants.black, 1));
 		
 		setOpaque(false);
 		setBorder(new LineBorder(ColorConstants.black, 1));
-		setCursor(Cursors.SIZEALL);		
-	}	
+		setCursor(Cursors.SIZEALL);
+	}
 }

@@ -35,8 +35,8 @@ import org.nightlabs.editor2d.ui.dialog.ConvertImageDialog;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class ImageColorConversionPropertyCellEditor 
-extends DialogCellEditor 
+public class ImageColorConversionPropertyCellEditor
+extends DialogCellEditor
 {
 
 	/**
@@ -45,7 +45,7 @@ extends DialogCellEditor
 	 */
 	public ImageColorConversionPropertyCellEditor(ImageDrawComponent imageDC, Composite parent) {
 		super(parent);
-		this.imageDC = imageDC;		
+		this.imageDC = imageDC;
 	}
 
 	/**
@@ -65,7 +65,7 @@ extends DialogCellEditor
 	 * @see org.eclipse.jface.viewers.DialogCellEditor#openDialogBox(org.eclipse.swt.widgets.Control)
 	 */
 	@Override
-	protected Object openDialogBox(Control cellEditorWindow) 
+	protected Object openDialogBox(Control cellEditorWindow)
 	{
 		imageDialog = new ConvertImageDialog(cellEditorWindow.getShell(), imageDC.getOriginalImage());
 		int returnCode = imageDialog.open();

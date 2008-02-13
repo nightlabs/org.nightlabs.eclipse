@@ -34,17 +34,17 @@ import org.nightlabs.editor2d.ui.actions.EditorRetargetAction;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
 
-public class ZoomAllRetargetAction 
-extends EditorRetargetAction 
+public class ZoomAllRetargetAction
+extends EditorRetargetAction
 {
   /**
    * Constructor for ZoomInRetargetAction
    */
-  public ZoomAllRetargetAction() 
+  public ZoomAllRetargetAction()
   {
   	super(ZoomAllAction.ID, Messages.getString("org.nightlabs.editor2d.ui.actions.zoom.ZoomAllRetargetAction.text")); //$NON-NLS-1$
   	setToolTipText(Messages.getString("org.nightlabs.editor2d.ui.actions.zoom.ZoomAllRetargetAction.tooltip")); //$NON-NLS-1$
   	setImageDescriptor(SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(), ZoomAllAction.class));
-  	setActionDefinitionId(EditorCommandConstants.ZOOM_ALL_ID);  	
+  	setActionDefinitionId(EditorCommandConstants.ZOOM_ALL_ID);
   }
 }

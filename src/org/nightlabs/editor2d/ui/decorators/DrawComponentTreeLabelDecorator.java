@@ -35,10 +35,10 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class DrawComponentTreeLabelDecorator 
-implements ILabelDecorator 
+public class DrawComponentTreeLabelDecorator
+implements ILabelDecorator
 {
-	public Image decorateImage(Image image, Object element) 
+	public Image decorateImage(Image image, Object element)
 	{
 		if (element instanceof DrawComponentTreeEditPart) {
 			DrawComponentTreeEditPart dctep = (DrawComponentTreeEditPart) element;
@@ -50,7 +50,7 @@ implements ILabelDecorator
 		return null;
 	}
 
-	public String decorateText(String text, Object element) 
+	public String decorateText(String text, Object element)
 	{
 		if (element instanceof DrawComponentTreeEditPart) {
 			DrawComponentTreeEditPart dctep = (DrawComponentTreeEditPart) element;
@@ -67,7 +67,7 @@ implements ILabelDecorator
 				sb.append( "["+"Locked"+"]");
 			}
 			return sb.toString();
-		}		
+		}
 		return null;
 	}
 

@@ -39,28 +39,28 @@ import org.nightlabs.editor2d.ui.util.EditorNameProvider;
 import org.nightlabs.io.IOFilterMan;
 
 
-public class Editor  
+public class Editor
 extends AbstractEditor
 {
 	/**
 	 * @see org.nightlabs.editor2d.ui.AbstractEditor#createEditPartFactory()
-	 */	
+	 */
   @Override
 	public EditPartFactory createEditPartFactory() {
   	return new GraphicalEditPartFactory();
-  }  
+  }
     
 	/**
 	 * @see org.nightlabs.editor2d.ui.AbstractEditor#createOutlineEditPartFactory()
-	 */  
+	 */
   @Override
 	public EditPartFactory createOutlineEditPartFactory() {
   	return new TreePartFactory(getFilterManager());
-  }   
+  }
 
 	/**
 	 * @see org.nightlabs.editor2d.ui.AbstractEditor#createContextMenuProvider()
-	 */    
+	 */
   @Override
 	public ContextMenuProvider createContextMenuProvider() {
     return new EditorContextMenuProvider(getGraphicalViewer(), getActionRegistry());
@@ -68,7 +68,7 @@ extends AbstractEditor
 
 	/**
 	 * @see org.nightlabs.editor2d.ui.AbstractEditor#createNameProvider()
-	 */    
+	 */
   @Override
 	public NameProvider createNameProvider() {
 		return new EditorNameProvider();
@@ -76,7 +76,7 @@ extends AbstractEditor
 
 	/**
 	 * @see org.nightlabs.editor2d.ui.AbstractEditor#createModelFactory()
-	 */  		
+	 */
 	@Override
 	public Editor2DFactory createModelFactory() {
 		return new Editor2DFactoryImpl();
@@ -84,15 +84,15 @@ extends AbstractEditor
 	
 //	/**
 //	 * @see org.nightlabs.editor2d.ui.AbstractEditor#createRootDrawComponent()
-//	 */    
+//	 */
 //	public RootDrawComponent createRootDrawComponent() {
-//		RootDrawComponent root = getModelFactory().createRootDrawComponent();		
+//		RootDrawComponent root = getModelFactory().createRootDrawComponent();
 //    return root;
 //  }
 	
 	/**
 	 * @see org.nightlabs.editor2d.ui.AbstractEditor#createPaletteFactory()
-	 */  	
+	 */
 	@Override
 	public AbstractPaletteFactory createPaletteFactory() {
 		return new EditorPaletteFactory(getModelFactory());

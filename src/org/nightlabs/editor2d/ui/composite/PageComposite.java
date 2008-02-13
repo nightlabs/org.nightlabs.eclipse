@@ -63,14 +63,14 @@ import org.nightlabs.print.page.PredefinedPageRegistry;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class PageComposite 
-extends XComposite 
+public class PageComposite
+extends XComposite
 {
 	/**
 	 * @param parent
 	 * @param style
 	 */
-	public PageComposite(Composite parent, int style) 
+	public PageComposite(Composite parent, int style)
 	{
 		super(parent, style);
 		createComposite(this);
@@ -83,10 +83,10 @@ extends XComposite
 	 * @param layoutDataMode
 	 */
 	public PageComposite(Composite parent, int style, LayoutMode layoutMode,
-			LayoutDataMode layoutDataMode) 
+			LayoutDataMode layoutDataMode)
 	{
 		super(parent, style, layoutMode, layoutDataMode);
-		createComposite(this);		
+		createComposite(this);
 	}
 
 	private NightlabsFormsToolkit toolkit = null;
@@ -97,7 +97,7 @@ extends XComposite
 	private Text pageHeightText = null;
 	private Text resolutionText = null;
 		
-	protected void createComposite(Composite parent) 
+	protected void createComposite(Composite parent)
 	{
 		toolkit = new NightlabsFormsToolkit(Display.getCurrent());
 		
@@ -107,13 +107,13 @@ extends XComposite
 		comp.setLayoutData(new GridData(GridData.FILL_BOTH));
 		
 		// Predefined Page Sizes
-		Label pageSelectLabel = toolkit.createLabel(comp, 
+		Label pageSelectLabel = toolkit.createLabel(comp,
 				Messages.getString("org.nightlabs.editor2d.ui.composite.PageComposite.label.predefinedSizes")); //$NON-NLS-1$
 		pageSelectCombo = new Combo(comp, SWT.BORDER);
 		pageSelectCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
 		// Measurement Units
-		Label unitsLabel = toolkit.createLabel(comp, 
+		Label unitsLabel = toolkit.createLabel(comp,
 				Messages.getString("org.nightlabs.editor2d.ui.composite.PageComposite.label.units")); //$NON-NLS-1$
 		unitsCombo = new Combo(comp, SWT.BORDER);
 		unitsCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -121,19 +121,19 @@ extends XComposite
 		int textStyle = SWT.BORDER;
 		
 		// Width
-		Label pageWidthLabel = toolkit.createLabel(comp, 
+		Label pageWidthLabel = toolkit.createLabel(comp,
 				Messages.getString("org.nightlabs.editor2d.ui.composite.PageComposite.label.width")); //$NON-NLS-1$
 		pageWidthText = toolkit.createText(comp, "", textStyle); //$NON-NLS-1$
 		pageWidthText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
 		// Height
-		Label pageHeightLabel = toolkit.createLabel(comp, 
+		Label pageHeightLabel = toolkit.createLabel(comp,
 				Messages.getString("org.nightlabs.editor2d.ui.composite.PageComposite.label.height")); //$NON-NLS-1$
 		pageHeightText = toolkit.createText(comp, "", textStyle); //$NON-NLS-1$
 		pageHeightText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
 		// Resolution
-		Label resolutionLabel = toolkit.createLabel(comp, 
+		Label resolutionLabel = toolkit.createLabel(comp,
 				Messages.getString("org.nightlabs.editor2d.ui.composite.PageComposite.label.resolution")); //$NON-NLS-1$
 		Composite c = new XComposite(comp, SWT.NONE, LayoutMode.TIGHT_WRAPPER, LayoutDataMode.NONE);
 		c.setLayout(new GridLayout(2, false));
@@ -147,7 +147,7 @@ extends XComposite
 		init();
 	}
 		
-	protected void init() 
+	protected void init()
 	{
 		populatePageSelectCombo(PredefinedPageEP.sharedInstance().getPageRegistry());
 		populateUnitsCombo(UnitRegistryEP.sharedInstance().getUnitRegistry());
@@ -157,7 +157,7 @@ extends XComposite
 		addListener();
 	}
 	
-	protected void addListener() 
+	protected void addListener()
 	{
 		pageSelectCombo.addSelectionListener(pageSelectListener);
 		unitsCombo.addSelectionListener(unitsListener);
@@ -168,11 +168,11 @@ extends XComposite
 	}
 	
 	private SelectionListener pageSelectListener = new SelectionListener()
-	{	
+	{
 		public void widgetDefaultSelected(SelectionEvent e) {
 			widgetSelected(e);
-		}	
-		public void widgetSelected(SelectionEvent e) 
+		}
+		public void widgetSelected(SelectionEvent e)
 		{
 			IPredefinedPage page = pages.get(pageSelectCombo.getSelectionIndex());
 			
@@ -184,81 +184,81 @@ extends XComposite
 				setPageHeight(getPageHeight(), page.getUnit());
 				setPageWidth(getPageWidth(), page.getUnit());
 			}
-		}	
+		}
 	};
 	
 	private SelectionListener unitsListener = new SelectionListener()
-	{	
+	{
 		public void widgetDefaultSelected(SelectionEvent e) {
 			widgetSelected(e);
-		}	
-		public void widgetSelected(SelectionEvent e) 
+		}
+		public void widgetSelected(SelectionEvent e)
 		{
-			IUnit unit = units.get(unitsCombo.getSelectionIndex());			
+			IUnit unit = units.get(unitsCombo.getSelectionIndex());
 			setPageWidth(getPageWidth(), unit);
 			setPageHeight(getPageHeight(), unit);
 			PageComposite.this.unit = unit;
-		}	
+		}
 	};
 
 	private SelectionListener widthListener = new SelectionListener()
-	{	
+	{
 		public void widgetDefaultSelected(SelectionEvent e) {
 			widgetSelected(e);
-		}	
+		}
 		public void widgetSelected(SelectionEvent e) {
-//			pageWidth = Double.valueOf(pageWidthText.getText());			
-		}	
+//			pageWidth = Double.valueOf(pageWidthText.getText());
+		}
 	};
 
 	private SelectionListener heightListener = new SelectionListener()
-	{	
+	{
 		public void widgetDefaultSelected(SelectionEvent e) {
 			widgetSelected(e);
-		}	
+		}
 		public void widgetSelected(SelectionEvent e) {
 //			pageHeight = Double.valueOf(pageHeightText.getText());
-		}	
+		}
 	};
 
 	private SelectionListener resolutionListener = new SelectionListener()
-	{	
+	{
 		public void widgetDefaultSelected(SelectionEvent e) {
 			widgetSelected(e);
-		}	
+		}
 		public void widgetSelected(SelectionEvent e) {
 			resolution.setResolutionX(Integer.valueOf(resolutionText.getText()));
 			resolution.setResolutionY(Integer.valueOf(resolutionText.getText()));
-		}	
+		}
 	};
 	
 	private SelectionListener resolutionUnitListener = new SelectionListener()
-	{	
+	{
 		public void widgetDefaultSelected(SelectionEvent e) {
 			widgetSelected(e);
-		}	
+		}
 		public void widgetSelected(SelectionEvent e) {
 			IResolutionUnit unit = resolutionUnits.get(resolutionUnitsCombo.getSelectionIndex());
 			resolution.setResolutionUnit(unit);
 			resolutionText.setText(String.valueOf(resolution.getResolutionX()));
-		}	
-	};	
+		}
+	};
 
 	private SelectionListener resolutionUnitComboListener = new SelectionListener()
-	{	
+	{
 		public void widgetDefaultSelected(SelectionEvent e) {
 			widgetSelected(e);
-		}	
+		}
 		public void widgetSelected(SelectionEvent e) {
 			IResolutionUnit unit = resolutionUnits.get(resolutionUnitsCombo.getSelectionIndex());
 			resolution.setResolutionUnit(unit);
 			resolutionText.setText(String.valueOf(resolution.getResolutionX()));
-		}	
-	};	
+		}
+	};
 	
 	
 	private List<IPredefinedPage> pages = null;
-	private void populatePageSelectCombo(PredefinedPageRegistry registry) 
+	private void populatePageSelectCombo(PredefinedPageRegistry registry)
 	{
 		pages = new LinkedList<IPredefinedPage>(registry.getPages());
 		for (Iterator<IPredefinedPage> it = pages.iterator(); it.hasNext(); ) {
@@ -280,7 +280,7 @@ extends XComposite
 	}
 	
 	private List<IUnit> units = null;
-	private void populateUnitsCombo(UnitRegistry registry) 
+	private void populateUnitsCombo(UnitRegistry registry)
 	{
 		units = new LinkedList<IUnit>(registry.getUnits(UnitConstants.UNIT_CONTEXT_EDITOR2D, true));
 		for (Iterator<IUnit> it = units.iterator(); it.hasNext(); ) {
@@ -299,7 +299,7 @@ extends XComposite
 			resolutionUnitsCombo.add(unit.getName().getText(Locale.getDefault().getLanguage()));
 		}
 		if (registry.getResolutionIDs().contains(DPIResolutionUnit.RESOLUTION_ID)) {
-			resolutionUnitsCombo.select(resolutionUnits.indexOf(registry.getResolutionUnit(DPIResolutionUnit.RESOLUTION_ID)));			
+			resolutionUnitsCombo.select(resolutionUnits.indexOf(registry.getResolutionUnit(DPIResolutionUnit.RESOLUTION_ID)));
 		} else if (resolutionUnits.size() > 0) {
 			resolutionUnitsCombo.select(0);
 		}
@@ -311,7 +311,7 @@ extends XComposite
 	}
 	
 	private double pageWidth = 210;
-	public double getPageWidth() 
+	public double getPageWidth()
 	{
 		if (!pageWidthText.isDisposed()) {
 			try {
@@ -319,41 +319,41 @@ extends XComposite
 			} catch (NumberFormatException nfe) {
 			
 			}
-		}			 
+		}
 		return pageWidth;
 	}
-	private void setPageWidth(double value, IUnit unit) 
+	private void setPageWidth(double value, IUnit unit)
 	{
 		double pageWidth = getPageWidth();
-		if (this.unit.getFactor() == unit.getFactor())		
+		if (this.unit.getFactor() == unit.getFactor())
 			pageWidth = value;
 		else {
 			double oldFactor = this.unit.getFactor();
-			pageWidth = (pageWidth * unit.getFactor()) / oldFactor;			
+			pageWidth = (pageWidth * unit.getFactor()) / oldFactor;
 		}
 		pageWidthText.setText(String.valueOf(pageWidth));
 	}
 	
 	private double pageHeight = 297;
-	public double getPageHeight() 
+	public double getPageHeight()
 	{
-		if (!pageHeightText.isDisposed()) 
+		if (!pageHeightText.isDisposed())
 		{
 			try {
 				pageHeight = Double.valueOf(pageHeightText.getText());
 			} catch (NumberFormatException nfe) {
-			}			
+			}
 		}
 		return pageHeight;
 	}
-	private void setPageHeight(double value, IUnit unit) 
+	private void setPageHeight(double value, IUnit unit)
 	{
 		double pageHeight = getPageHeight();
-		if (this.unit.getFactor() == unit.getFactor())			
+		if (this.unit.getFactor() == unit.getFactor())
 			pageHeight = value;
-		else {			
+		else {
 			double oldFactor = this.unit.getFactor();
-			pageHeight = (pageHeight * unit.getFactor()) / oldFactor;						
+			pageHeight = (pageHeight * unit.getFactor()) / oldFactor;
 		}
 		pageHeightText.setText(String.valueOf(pageHeight));
 	}

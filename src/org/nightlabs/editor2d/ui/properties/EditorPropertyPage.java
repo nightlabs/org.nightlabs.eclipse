@@ -43,18 +43,18 @@ import org.nightlabs.editor2d.ui.edit.tree.DrawComponentTreeEditPart;
 import org.nightlabs.editor2d.ui.model.DrawComponentPropertySource;
 import org.nightlabs.i18n.unit.IUnit;
 
-public class EditorPropertyPage 
+public class EditorPropertyPage
 extends PropertySheetPage
-{	
+{
 	/**
 	 * LOG4J logger used by this class
 	 */
 	private static final Logger logger = Logger.getLogger(EditorPropertyPage.class);
 	
-	public EditorPropertyPage(UnitManager unitManager) 
+	public EditorPropertyPage(UnitManager unitManager)
 	{
-		super();		
-		this.unitManager = unitManager;		
+		super();
+		this.unitManager = unitManager;
 	}
 	
 	private UnitManager unitManager = null;
@@ -68,7 +68,7 @@ extends PropertySheetPage
 	private UnitContributionItem unitContributionItem = null;
   @Override
 	public void makeContributions(IMenuManager menuManager,
-      IToolBarManager toolBarManager, IStatusLineManager statusLineManager) 
+      IToolBarManager toolBarManager, IStatusLineManager statusLineManager)
   {
 //  	LanguageContributionItem langContribution = new LanguageContributionItem();
 //  	toolBarManager.add(langContribution);
@@ -76,17 +76,17 @@ extends PropertySheetPage
   	unitContributionItem = new UnitContributionItem(getUnitManager());
   	toolBarManager.add(unitContributionItem);
   	
-  	super.makeContributions(menuManager, toolBarManager, statusLineManager);  	  	
+  	super.makeContributions(menuManager, toolBarManager, statusLineManager);
   }
       		
 	@Override
-	public void selectionChanged(IWorkbenchPart part, ISelection selection) 
+	public void selectionChanged(IWorkbenchPart part, ISelection selection)
 	{
 		if (!listenerAdded) {
 	  	unitContributionItem.getCombo().addSelectionListener(unitListener);
 	  	listenerAdded = true;
-		}			
-		unitContributionItem.selectUnit(getUnitManager().getCurrentUnit());	  							
+		}
+		unitContributionItem.selectUnit(getUnitManager().getCurrentUnit());
 	  if (selection instanceof IStructuredSelection) {
 	  	Object[] sel = ((IStructuredSelection) selection).toArray();
 	  	this.selection = sel;
@@ -94,31 +94,31 @@ extends PropertySheetPage
 	  		setUnit(sel[i]);
 	  	}
 	  }
-		super.selectionChanged(part, selection);	  
-	}	
+		super.selectionChanged(part, selection);
+	}
 	
 	private Object[] selection = null;
 	private boolean listenerAdded = false;
 	protected SelectionListener unitListener = new SelectionListener()
-	{	
-		public void widgetSelected(SelectionEvent e) 
+	{
+		public void widgetSelected(SelectionEvent e)
 		{
 			logger.debug("unit changed!"); //$NON-NLS-1$
 			if (selection != null) {
 				for (int i = 0; i < selection.length; i++) {
-					setUnit(selection[i]);					
+					setUnit(selection[i]);
 				}
 			}
 			refresh();
-		}	
+		}
 		public void widgetDefaultSelected(SelectionEvent e) {
 			widgetSelected(e);
-		}	
+		}
 	};
 
-	protected void setUnit(Object o) 
+	protected void setUnit(Object o)
 	{
-		if (o != null) 
+		if (o != null)
 		{
 			IPropertySource ps = null;
 			if (o instanceof AbstractDrawComponentEditPart)
@@ -126,44 +126,44 @@ extends PropertySheetPage
 			else if (o instanceof DrawComponentTreeEditPart)
 				ps = ((DrawComponentTreeEditPart)o).getPropertySource();
 			
-			if (ps != null && ps instanceof DrawComponentPropertySource) 
-			{			
+			if (ps != null && ps instanceof DrawComponentPropertySource)
+			{
 				DrawComponentPropertySource dcps = (DrawComponentPropertySource) ps;
 				IUnit currentUnit = getUnitManager().getCurrentUnit();
 				dcps.setUnit(currentUnit);
-			}			
+			}
 		}
 	}
 							
-//  protected Collection makeLanguageActions() 
+//  protected Collection makeLanguageActions()
 //  {
 //  	Collection languageActions = new ArrayList(langMan.getLanguages().size());
 //  	for (Iterator it = langMan.getLanguages().iterator(); it.hasNext(); ) {
 //  		LanguageCf language = (LanguageCf) it.next();
 //  		LanguageAction action = new LanguageAction(langMan, language.getLanguageID());
-//  		languageActions.add(action);  		
+//  		languageActions.add(action);
 //  	}
 //  	return languageActions;
 //  }
   
 //	protected LanguageChangeListener langListener = new LanguageChangeListener()
-//	{	
-//		public void languageChanged(LanguageChangeEvent event) 
-//		{			
-//			if (!getControl().isDisposed()) {
-//				refresh();
-//			}
-//		}	
-//	};
-  
-//	private PropertyChangeListener languageListener = new PropertyChangeListener()
-//	{	
-//		public void propertyChange(PropertyChangeEvent evt) 
+//	{
+//		public void languageChanged(LanguageChangeEvent event)
 //		{
 //			if (!getControl().isDisposed()) {
 //				refresh();
-//			}			
-//		}	
+//			}
+//		}
+//	};
+  
+//	private PropertyChangeListener languageListener = new PropertyChangeListener()
+//	{
+//		public void propertyChange(PropertyChangeEvent evt)
+//		{
+//			if (!getControl().isDisposed()) {
+//				refresh();
+//			}
+//		}
 //	};
 		
 }

@@ -35,7 +35,7 @@ import org.nightlabs.editor2d.ui.resource.Messages;
  * @author Daniel.Mazurek <at> NightLabs <dot> de
  *
  */
-public class PrintUtil 
+public class PrintUtil
 {
 	/**
 	 * LOG4J logger used by this class
@@ -52,7 +52,7 @@ public class PrintUtil
 		super();
 	}
 
-	public static void logPageFormat(PageFormat pf) 
+	public static void logPageFormat(PageFormat pf)
 	{
 		if (logger.isDebugEnabled()) {
 			logger.debug("PageFormat Width = "+pf.getWidth()); //$NON-NLS-1$
@@ -66,9 +66,9 @@ public class PrintUtil
 		}
 	}
 	
-	protected static String getOrientationAsString(int orientation) 
+	protected static String getOrientationAsString(int orientation)
 	{
-		switch (orientation) 
+		switch (orientation)
 		{
 			case(PageFormat.LANDSCAPE):
 				return Messages.getString("org.nightlabs.editor2d.ui.print.PrintUtil.landscape"); //$NON-NLS-1$
@@ -78,73 +78,73 @@ public class PrintUtil
 				return Messages.getString("org.nightlabs.editor2d.ui.print.PrintUtil.reverseLandscape");						 //$NON-NLS-1$
 		}
 		return Messages.getString("org.nightlabs.editor2d.ui.print.PrintUtil.noValidOrientation"); //$NON-NLS-1$
-	}	
+	}
 	
-//	public static void prepareGraphics(Graphics2D g2d, DrawComponent dc, PageFormat pageFormat) 
+//	public static void prepareGraphics(Graphics2D g2d, DrawComponent dc, PageFormat pageFormat)
 //	{
 //		if (logger.isDebugEnabled())
 //			logger.debug("dc.getBounds() = "+dc.getBounds());
-//		
+//
 //		Rectangle dcBounds = GeomUtil.translateToOrigin(dc.getBounds());
-//		
+//
 //		if (logger.isDebugEnabled())
 //			logger.debug("originBounds = "+dcBounds);
-//		
+//
 ////		Point2D resolutionScale = UnitUtil.getResolutionScale(72, dc);
 ////		GeneralShape gs = new GeneralShape(dcBounds);
 ////		AffineTransform scaleAT = AffineTransform.getScaleInstance(resolutionScale.getX(), resolutionScale.getY());
 ////		gs.transform(scaleAT);
 ////		dcBounds = gs.getBounds();
-////		
+////
 ////		if (logger.isDebugEnabled()) {
 ////			logger.debug("resolutionScale = "+resolutionScale);
 ////			logger.debug("dcBounds = "+dcBounds);
 ////		}
-//		
-//		Rectangle pageRectangle = new Rectangle(0, 0, 
-//				(int)pageFormat.getImageableWidth(), (int)pageFormat.getImageableHeight());		
-//		
-//		Point2D scales = GeomUtil.calcScale(dcBounds, pageRectangle);		
-//		double scale = Math.min(scales.getX(), scales.getY()); 
+//
+//		Rectangle pageRectangle = new Rectangle(0, 0,
+//				(int)pageFormat.getImageableWidth(), (int)pageFormat.getImageableHeight());
+//
+//		Point2D scales = GeomUtil.calcScale(dcBounds, pageRectangle);
+//		double scale = Math.min(scales.getX(), scales.getY());
 //		double translateX = (((double)pageFormat.getImageableX()) - (dc.getX() * scale ));
-//		double translateY = (((double)pageFormat.getImageableY()) - (dc.getY() * scale )); 		
-//		g2d.translate(translateX, translateY);		
+//		double translateY = (((double)pageFormat.getImageableY()) - (dc.getY() * scale ));
+//		g2d.translate(translateX, translateY);
 //		g2d.scale(scale, scale);
-//		
+//
 //		if (logger.isDebugEnabled()) {
 //			logger.debug("pageRectangle = "+pageRectangle);
 //			logger.debug("scale = "+scale);
 //			logger.debug("translateX = "+translateX);
-//			logger.debug("translateY = "+translateY);			
+//			logger.debug("translateY = "+translateY);
 //		}
-//	}	
+//	}
 //
-//	public static void prepareGraphics(Graphics2D g2d, PageDrawComponent page, PageFormat pageFormat) 
+//	public static void prepareGraphics(Graphics2D g2d, PageDrawComponent page, PageFormat pageFormat)
 //	{
 //		if (logger.isDebugEnabled())
 //			logger.debug("page.getBounds() = "+page.getBounds());
-//		
+//
 //		Rectangle pageBounds = GeomUtil.translateToOrigin(page.getBounds());
-//		
+//
 //		if (logger.isDebugEnabled())
 //			logger.debug("originBounds = "+pageBounds);
-//				
-//		Rectangle pageRectangle = new Rectangle(0, 0, 
-//				(int)pageFormat.getImageableWidth(), (int)pageFormat.getImageableHeight());		
-//		
-//		Point2D scales = GeomUtil.calcScale(pageBounds, pageRectangle);		
-//		double scale = Math.min(scales.getX(), scales.getY()); 
+//
+//		Rectangle pageRectangle = new Rectangle(0, 0,
+//				(int)pageFormat.getImageableWidth(), (int)pageFormat.getImageableHeight());
+//
+//		Point2D scales = GeomUtil.calcScale(pageBounds, pageRectangle);
+//		double scale = Math.min(scales.getX(), scales.getY());
 //		double translateX = (((double)pageFormat.getImageableX()) - (page.getX() * scale ));
-//		double translateY = (((double)pageFormat.getImageableY()) - (page.getY() * scale )); 		
-//		g2d.translate(translateX, translateY);		
+//		double translateY = (((double)pageFormat.getImageableY()) - (page.getY() * scale ));
+//		g2d.translate(translateX, translateY);
 //		g2d.scale(scale, scale);
-//		
+//
 //		if (logger.isDebugEnabled()) {
 //			logger.debug("pageRectangle = "+pageRectangle);
 //			logger.debug("scale = "+scale);
 //			logger.debug("translateX = "+translateX);
-//			logger.debug("translateY = "+translateY);			
+//			logger.debug("translateY = "+translateY);
 //		}
-//	}	
+//	}
 	
 }

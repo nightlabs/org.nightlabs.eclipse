@@ -42,8 +42,8 @@ import org.nightlabs.editor2d.ui.command.DeleteGuideCommand;
 import org.nightlabs.editor2d.ui.command.MoveGuideCommand;
 
 
-public class EditorRulerProvider 
-extends RulerProvider 
+public class EditorRulerProvider
+extends RulerProvider
 {
   private EditorRuler ruler;
   private PropertyChangeListener rulerListener = new PropertyChangeListener() {

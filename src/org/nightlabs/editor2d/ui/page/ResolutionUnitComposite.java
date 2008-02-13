@@ -42,8 +42,8 @@ import org.nightlabs.i18n.unit.resolution.ResolutionUnitRegistry;
  * a Composite which contains a Combo for selecting {@link IResolutionUnit}s
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class ResolutionUnitComposite 
-extends XComposite 
+public class ResolutionUnitComposite
+extends XComposite
 {
 
 	public ResolutionUnitComposite(Composite parent, int style) {
@@ -55,23 +55,23 @@ extends XComposite
 	public ResolutionUnitComposite(Composite parent, int style, Collection<IResolutionUnit> units) {
 		super(parent, style);
 		this.units = new ArrayList<IResolutionUnit>(units);
-		createComposite(this);		
+		createComposite(this);
 	}
 	
 	public ResolutionUnitComposite(Composite parent, int style,
-			LayoutMode layoutMode, LayoutDataMode layoutDataMode, Collection<IResolutionUnit> units) 
+			LayoutMode layoutMode, LayoutDataMode layoutDataMode, Collection<IResolutionUnit> units)
 	{
 		super(parent, style, layoutMode, layoutDataMode);
 		this.units = new ArrayList<IResolutionUnit>(units);
-		createComposite(this);		
+		createComposite(this);
 	}
 
 	public ResolutionUnitComposite(Composite parent, int style,
-			LayoutMode layoutMode, LayoutDataMode layoutDataMode) 
+			LayoutMode layoutMode, LayoutDataMode layoutDataMode)
 	{
 		super(parent, style, layoutMode, layoutDataMode);
 		this.units = new ArrayList<IResolutionUnit>(getResolutionUnitRegistry().getResolutionUnits());
-		createComposite(this);		
+		createComposite(this);
 	}
 	
 	private List<IResolutionUnit> units = null;
@@ -80,7 +80,7 @@ extends XComposite
 		return combo;
 	}
 	
-	protected void createComposite(Composite parent) 
+	protected void createComposite(Composite parent)
 	{
 		combo = new Combo(parent, SWT.BORDER | SWT.READ_ONLY);
 		combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -93,19 +93,19 @@ extends XComposite
 		return units.get(combo.getSelectionIndex());
 	}
 	
-	public void selectResolutionUnit(IResolutionUnit unit) 
+	public void selectResolutionUnit(IResolutionUnit unit)
 	{
 		int index = units.indexOf(unit);
 		if (index != -1)
 			combo.select(index);
 	}
 	
-//	protected PageRegistry getPageRegistry() 
+//	protected PageRegistry getPageRegistry()
 //	{
 //		return PageRegistryEP.sharedInstance().getPageRegistry();
 //	}
 	
-	protected ResolutionUnitRegistry getResolutionUnitRegistry() 
+	protected ResolutionUnitRegistry getResolutionUnitRegistry()
 	{
 		return ResolutionUnitEP.sharedInstance().getResolutionUnitRegistry();
 	}

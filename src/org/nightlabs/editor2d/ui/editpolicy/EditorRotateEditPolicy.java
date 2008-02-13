@@ -58,8 +58,8 @@ extends EditorFeedbackPolicy
 	
 	// TODO: find out why this Method is never triggered
   @Override
-	public Command getCommand(Request request) 
-  {    
+	public Command getCommand(Request request)
+  {
     if (request instanceof EditorRotateRequest)
       return getRotateCommand((EditorRotateRequest)request);
 
@@ -70,20 +70,20 @@ extends EditorFeedbackPolicy
     	logger.debug("getCommand(Request = "+request+")"); //$NON-NLS-1$ //$NON-NLS-2$
     
   	return super.getCommand(request);
-  }  
+  }
 	
-  protected Command getRotateCenterCommand(EditorRotateCenterRequest request) 
+  protected Command getRotateCenterCommand(EditorRotateCenterRequest request)
   {
     RotateCenterCommand cmd = new RotateCenterCommand(request);
     Point rotationCenter = request.getRotationCenter().getCopy();
     rotationCenter = EditorUtil.toAbsolute(getHost(), rotationCenter.x, rotationCenter.y);
-    cmd.setRotationCenter(rotationCenter);  
+    cmd.setRotationCenter(rotationCenter);
     if (logger.isDebugEnabled())
     	logger.debug("cmd.rotationCenter = "+rotationCenter); //$NON-NLS-1$
     return cmd;
   }
   
-  protected Command getRotateCommand(EditorRotateRequest request) 
+  protected Command getRotateCommand(EditorRotateRequest request)
   {
     RotateCommand cmd = new RotateCommand(request);
     double rotation = request.getRotation();
@@ -91,33 +91,33 @@ extends EditorFeedbackPolicy
     if (logger.isDebugEnabled())
     	logger.debug("getRotateCommand().rotation = "+rotation); //$NON-NLS-1$
     return cmd;
-  }  
+  }
 	
   @Override
-	public void showSourceFeedback(Request request) 
+	public void showSourceFeedback(Request request)
   {
     if (request.getType().equals(REQ_ROTATE))
       showRotateFeedback((EditorRotateRequest)request);
     else if (request.getType().equals(REQ_EDIT_ROTATE_CENTER))
       showEditRotateCenterFeedback((EditorRotateCenterRequest)request);
-    else  
+    else
       super.showSourceFeedback(request);
-  }  
+  }
   
   protected final AffineTransform at = new AffineTransform();
   protected Point rotationCenter;
   protected GeneralShape unrotatedShape;
   protected GeneralShape rotatedShape;
   protected double rotationOffset = Double.MAX_VALUE;
-  protected void showRotateFeedback(EditorRotateRequest request) 
+  protected void showRotateFeedback(EditorRotateRequest request)
   {
     ShapeFigure rotationFeedback = getRotateFeedbackFigure();
       	
     if (unrotatedShape == null)
-      unrotatedShape = (GeneralShape) rotationFeedback.getGeneralShape().clone();     
+      unrotatedShape = (GeneralShape) rotationFeedback.getGeneralShape().clone();
       
-    if (rotationCenter == null && request.getRotationCenter() != null)      
-      rotationCenter = getConstraintFor(request.getRotationCenter());         
+    if (rotationCenter == null && request.getRotationCenter() != null)
+      rotationCenter = getConstraintFor(request.getRotationCenter());
     
     Point location = request.getLocation();
     location.translate(getScrollOffset());
@@ -136,7 +136,7 @@ extends EditorFeedbackPolicy
     rotatedShape.transform(at);
     rotationFeedback.setGeneralShape(rotatedShape);
     getFeedbackLayer().repaint();
-  }  
+  }
   
   protected Rectangle rotateCenterBounds;
   protected void showEditRotateCenterFeedback(EditorRotateCenterRequest request)
@@ -153,16 +153,16 @@ extends EditorFeedbackPolicy
     	logger.debug("feedBack.location = "+feedback.getBounds()); //$NON-NLS-1$
   }
   
-  protected IFigure createEditRotateCenterFeedback(EditorRotateCenterRequest request) 
+  protected IFigure createEditRotateCenterFeedback(EditorRotateCenterRequest request)
   {
-    RotateCenterHandle figure = new RotateCenterHandle(request.getEditParts()); 
+    RotateCenterHandle figure = new RotateCenterHandle(request.getEditParts());
     request.setMultiple(figure.isMultiple());
     figure.setBackgroundColor(FeedbackUtil.DEFAULT_PAINT_DESCRIPTOR.getBackgroundColor());
-    figure.setForegroundColor(FeedbackUtil.DEFAULT_PAINT_DESCRIPTOR.getForegroundColor());         
+    figure.setForegroundColor(FeedbackUtil.DEFAULT_PAINT_DESCRIPTOR.getForegroundColor());
     return figure;
   }
   
-  protected IFigure getEditRotateCenterFeedback(EditorRotateCenterRequest request) 
+  protected IFigure getEditRotateCenterFeedback(EditorRotateCenterRequest request)
   {
     if (feedback == null) {
       feedback = createEditRotateCenterFeedback(request);
@@ -172,26 +172,26 @@ extends EditorFeedbackPolicy
     return feedback;
   }
 
-  protected ShapeFigure getRotateFeedbackFigure() 
+  protected ShapeFigure getRotateFeedbackFigure()
   {
     if (feedback == null) {
-      feedback = createDragSourceFeedbackFigure();       
+      feedback = createDragSourceFeedbackFigure();
     	PrecisionRectangle rect = new PrecisionRectangle(getInitialFeedbackBounds().getCopy());
     	feedback.setBounds(getConstraintFor(rect));
-    }      
+    }
     return (ShapeFigure) feedback;
-  }  
+  }
   
   @Override
-	public void eraseSourceFeedback(Request request) 
+	public void eraseSourceFeedback(Request request)
   {
     if (request.getType().equals(REQ_ROTATE))
       eraseRotateFeedback((EditorRotateRequest)request);
     else if (request.getType().equals(REQ_EDIT_ROTATE_CENTER))
       eraseEditRotateCenterFeedback((EditorRotateCenterRequest)request);
-  }  
+  }
   
-  protected void eraseRotateFeedback(EditorRotateRequest request) 
+  protected void eraseRotateFeedback(EditorRotateRequest request)
   {
     if (feedback != null)
       removeFeedback(feedback);
@@ -203,16 +203,16 @@ extends EditorFeedbackPolicy
     rotationOffset = Double.MAX_VALUE;
   }
 
-  protected void eraseEditRotateCenterFeedback(EditorRotateCenterRequest request) 
+  protected void eraseEditRotateCenterFeedback(EditorRotateCenterRequest request)
   {
   	if (feedback != null) {
   		removeFeedback(feedback);
   	}
-  	feedback = null;    
+  	feedback = null;
   }
 
 	@Override
-	public boolean understandsRequest(Request request) 
+	public boolean understandsRequest(Request request)
 	{
     if (request instanceof EditorRotateRequest)
     	return true;
@@ -225,7 +225,7 @@ extends EditorFeedbackPolicy
     
 	@Override
 	public EditPart getTargetEditPart(Request request) {
-		return getHost();		
-	}  
+		return getHost();
+	}
 	
 }

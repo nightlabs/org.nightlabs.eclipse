@@ -36,12 +36,12 @@ import org.nightlabs.editor2d.ui.model.ShapeDrawComponentPropertySource;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class ShapeTreeEditPart 
-extends DrawComponentTreeEditPart 
+public class ShapeTreeEditPart
+extends DrawComponentTreeEditPart
 {
-//	public static Image SHAPE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(), 
-//			ShapeTreeEditPart.class).createImage();	
-	public static Image SHAPE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(), 
+//	public static Image SHAPE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
+//			ShapeTreeEditPart.class).createImage();
+	public static Image SHAPE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
 			ShapeTreeEditPart.class, "", ImageFormat.gif).createImage();	 //$NON-NLS-1$
 	
 	/**
@@ -71,5 +71,5 @@ extends DrawComponentTreeEditPart
       propertySource = new ShapeDrawComponentPropertySource(getShapeDrawComponent());
     }
     return propertySource;
-  }  	
+  }
 }

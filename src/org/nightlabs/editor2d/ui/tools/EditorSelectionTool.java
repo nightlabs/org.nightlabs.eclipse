@@ -38,10 +38,10 @@ import org.nightlabs.editor2d.ui.EditorStateManager;
 import org.nightlabs.editor2d.ui.request.EditorRequestConstants;
 
 
-public class EditorSelectionTool 
+public class EditorSelectionTool
 extends PanningSelectionTool
 implements EditorRequestConstants
-{	
+{
   protected static final int STATE_ROTATE = PanningSelectionTool.MAX_STATE << 1;
   protected static final int STATE_ROTATE_IN_PROGRESS = STATE_ROTATE << 1;
   protected static final int MAX_STATE = STATE_ROTATE;
@@ -51,9 +51,9 @@ implements EditorRequestConstants
   }
   
   @Override
-	protected boolean handleDoubleClick(int button) 
+	protected boolean handleDoubleClick(int button)
   {
-    if (EditorStateManager.getCurrentState() == EditorStateManager.STATE_NORMAL_SELECTION) 
+    if (EditorStateManager.getCurrentState() == EditorStateManager.STATE_NORMAL_SELECTION)
     {
       List selectedParts = getCurrentViewer().getSelectedEditParts();
       if (!selectedParts.isEmpty()) {
@@ -61,19 +61,19 @@ implements EditorRequestConstants
         EditorStateManager.setRotateMode(selectedParts);
       }
     }
-    else if (EditorStateManager.getCurrentState() == EditorStateManager.STATE_ROTATE) 
+    else if (EditorStateManager.getCurrentState() == EditorStateManager.STATE_ROTATE)
     {
-      List selectedParts = getCurrentViewer().getSelectedEditParts();      
+      List selectedParts = getCurrentViewer().getSelectedEditParts();
       if (!selectedParts.isEmpty()) {
         stateTransition(STATE_ROTATE, STATE_INITIAL);
         EditorStateManager.setNormalSelectionMode(selectedParts);
-      }        
+      }
     }
     return true;
   }
     
   @Override
-	protected String getCommandName() 
+	protected String getCommandName()
   {
     if (isInState(STATE_ROTATE) || isInState(STATE_ROTATE_IN_PROGRESS))
       return REQ_ROTATE;
@@ -82,18 +82,18 @@ implements EditorRequestConstants
   }
      
   @Override
-	public void activate() 
+	public void activate()
   {
-    EditorStateManager.setCurrentState(EditorStateManager.STATE_NORMAL_SELECTION);    
+    EditorStateManager.setCurrentState(EditorStateManager.STATE_NORMAL_SELECTION);
     super.activate();
   }
     
   @Override
-	protected boolean handleKeyDown(KeyEvent e) 
+	protected boolean handleKeyDown(KeyEvent e)
   {
-    if (e.character == SWT.ESC) 
+    if (e.character == SWT.ESC)
     {
-      EditorStateManager.setCurrentState(EditorStateManager.STATE_NORMAL_SELECTION);            
+      EditorStateManager.setCurrentState(EditorStateManager.STATE_NORMAL_SELECTION);
       getCurrentViewer().deselectAll();
     }
       
@@ -103,18 +103,18 @@ implements EditorRequestConstants
   // TODO: find out why mouseHover reacts so slow, and how
   // the hover (also with mouseMove workaround) can be speed up
 	@Override
-	public void mouseHover(MouseEvent me, EditPartViewer viewer) 
-	{ 
+	public void mouseHover(MouseEvent me, EditPartViewer viewer)
+	{
 		super.mouseHover(me, viewer);
 //		LOGGER.debug("mouseHover!");
 	}
 
 	@Override
-	public void mouseMove(MouseEvent me, EditPartViewer viewer) 
+	public void mouseMove(MouseEvent me, EditPartViewer viewer)
 	{
-		super.mouseMove(me, viewer);				
+		super.mouseMove(me, viewer);
 		handleHover();
-//		LOGGER.debug("mouseMove!");		
+//		LOGGER.debug("mouseMove!");
 	}
       
 }
