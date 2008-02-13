@@ -63,9 +63,9 @@ import org.eclipse.swt.widgets.Label;
 @Deprecated
 public class ComboComposite<T> extends AbstractListComposite<T> {
 
-	// Either initialise here, pass false to all superconstructors, create a constructor pyramid for 
-	// this class (smallest constructor calls next bigger one), and call createGUIControl in biggest 
-	// constructor, or do NOT initialise additional fields but only declare them here and initialise  
+	// Either initialise here, pass false to all superconstructors, create a constructor pyramid for
+	// this class (smallest constructor calls next bigger one), and call createGUIControl in biggest
+	// constructor, or do NOT initialise additional fields but only declare them here and initialise
 	// them in createGUIControl!
 	private Combo combo;
 
@@ -146,7 +146,7 @@ public class ComboComposite<T> extends AbstractListComposite<T> {
 						combo.getItem(combo.getSelectionIndex()) );
 				fireSelectionChangedEvent(selection);
 			}
-		});		
+		});
 	}
 
 	public Label getLabel() {

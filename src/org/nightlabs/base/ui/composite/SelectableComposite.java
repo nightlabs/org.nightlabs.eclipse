@@ -56,7 +56,7 @@ public class SelectableComposite extends XComposite {
 	private Color normalBGColor;
 	private Color selectedBGColor;
 	
-	private MouseListener mouseListener = new MouseAdapter() 
+	private MouseListener mouseListener = new MouseAdapter()
 	{
 		@Override
 		public void mouseDoubleClick(MouseEvent evt) {
@@ -85,7 +85,7 @@ public class SelectableComposite extends XComposite {
 					break;
 			}
 		}
-	};	
+	};
 		
 	/**
 	 * @param parent
@@ -124,7 +124,7 @@ public class SelectableComposite extends XComposite {
 	
 	/**
 	 * Sets the selection state of this composite
-	 * to the passed value and sets its 
+	 * to the passed value and sets its
 	 * Backgroundcolor accordingly.
 	 * 
 	 * @param selected
@@ -136,7 +136,7 @@ public class SelectableComposite extends XComposite {
 	
 	/**
 	 * Sets the selection state of this composite
-	 * to the passed value and sets its 
+	 * to the passed value and sets its
 	 * Backgroundcolor accordingly.
 	 * 
 	 * @param selected
@@ -157,11 +157,11 @@ public class SelectableComposite extends XComposite {
 	
 	/**
 	 * A package visible int to
-	 * store the list idx of this 
+	 * store the list idx of this
 	 * Composite within a CompositeList
 	 * eg. {@link HorizontalMultiColumnCompositeList}.
 	 */
-	int compositeListIdx = -1;	
+	int compositeListIdx = -1;
 	/**
 	 * Returns the compositeListIdx.
 	 * This is and should only be used in connection
@@ -186,7 +186,7 @@ public class SelectableComposite extends XComposite {
 		evt.setSelected(isSelected());
 		evt.setStateMask(stateMask);
 		for (Iterator iter = selectionListeners.iterator(); iter.hasNext();) {
-			SelectableCompositeListener listener = (SelectableCompositeListener) iter.next();			
+			SelectableCompositeListener listener = (SelectableCompositeListener) iter.next();
 			listener.selectionStateChanged(evt);
 		}
 	}
@@ -204,7 +204,7 @@ public class SelectableComposite extends XComposite {
 	public void removeSelectionListener(SelectionListener listener) {
 //		if (eventTable == null) return;
 //		eventTable.unhook (SWT.Selection, listener);
-//		eventTable.unhook (SWT.DefaultSelection,listener);	
+//		eventTable.unhook (SWT.DefaultSelection,listener);
 	}
 	
 	public void addSelectionListener(SelectionListener listener) {

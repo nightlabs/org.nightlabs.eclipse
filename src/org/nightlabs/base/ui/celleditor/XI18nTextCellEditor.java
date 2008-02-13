@@ -37,8 +37,8 @@ import org.nightlabs.i18n.I18nTextBuffer;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
-public class XI18nTextCellEditor 
-extends XCellEditor 
+public class XI18nTextCellEditor
+extends XCellEditor
 {
 
 	public XI18nTextCellEditor() {
@@ -98,7 +98,7 @@ extends XCellEditor
 	@Override
 	protected void doSetValue(Object value) {
 		if (value instanceof I18nText)
-			i18nTextEditor.setI18nText((I18nText)value);			
+			i18nTextEditor.setI18nText((I18nText)value);
 	}
 
 }

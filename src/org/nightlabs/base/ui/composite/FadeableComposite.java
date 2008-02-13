@@ -84,7 +84,7 @@ public class FadeableComposite extends XComposite implements Fadeable
 
 	private int fadeCounter = 0;
 
-	private class MyPaintListener implements PaintListener 
+	private class MyPaintListener implements PaintListener
 	{
 //		private Image img;
 //		public MyPaintListener(Image img)
@@ -134,7 +134,7 @@ public class FadeableComposite extends XComposite implements Fadeable
 	/**
 	 * @see XComposite#XComposite(Composite, int)
 	 */
-	public FadeableComposite(Composite parent, int style) 
+	public FadeableComposite(Composite parent, int style)
 	{
 		super(parent, style);
 	}
@@ -142,10 +142,10 @@ public class FadeableComposite extends XComposite implements Fadeable
 	/**
 	 * @see XComposite#XComposite(Composite, int)
 	 */
-	public FadeableComposite(Composite parent, int style, LayoutMode layoutMode) 
+	public FadeableComposite(Composite parent, int style, LayoutMode layoutMode)
 	{
 		super(parent, style, layoutMode);
-	}	
+	}
 	
 	public FadeableComposite(Composite parent, int style, LayoutDataMode layoutDataMode) {
 		super(parent, style, layoutDataMode);
@@ -234,7 +234,7 @@ public class FadeableComposite extends XComposite implements Fadeable
 			}
 		}
 
-		if (FADE_WITH_IMAGE) 
+		if (FADE_WITH_IMAGE)
 			c.removePaintListener(pl);
 	}
 }

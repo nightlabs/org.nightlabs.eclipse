@@ -39,8 +39,8 @@ import org.nightlabs.base.ui.editor.RestorableSectionPart;
  * @deprecated is never used
  */
 @Deprecated
-public abstract class AbstractEntitySection<T> 
-extends RestorableSectionPart 
+public abstract class AbstractEntitySection<T>
+extends RestorableSectionPart
 {
 	public AbstractEntitySection(IFormPage page, Composite parent, int style, String sectionText) {
 		super(parent, page.getEditor().getToolkit(), style);
@@ -49,10 +49,10 @@ extends RestorableSectionPart
 
 	public AbstractEntitySection(IFormPage page, Composite parent, String sectionText) {
 		super(parent, page.getEditor().getToolkit(), ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
-		init(page, sectionText);		
+		init(page, sectionText);
 	}
 	
-	protected void init(IFormPage page, String text) 
+	protected void init(IFormPage page, String text)
 	{
 		FormToolkit toolkit = page.getEditor().getToolkit();
 		Section section = getSection();
@@ -66,7 +66,7 @@ extends RestorableSectionPart
 		createComposite(container);
 	}
 	
-	public abstract void copyFromObjectToUI(T object);	
+	public abstract void copyFromObjectToUI(T object);
 	public abstract void copyFromUIToObject(T object);
 	
 	protected abstract void createComposite(Composite parent);

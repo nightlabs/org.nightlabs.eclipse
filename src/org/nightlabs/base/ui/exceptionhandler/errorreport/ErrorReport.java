@@ -52,7 +52,7 @@ implements Serializable
 	private static final long serialVersionUID = 2L;
 	
 //	Tobias: replaced by collection of ExceptionPair in order to provide error reports of multiple exceptions.
-//	
+//
 	private String userComment;
 	private Properties systemProperties;
 	private Date time;
@@ -60,11 +60,11 @@ implements Serializable
 	private List<CauseEffectThrowablePair> throwablePairList;
 	
 	/**
-	 * Initialize an empty error report. 
+	 * Initialize an empty error report.
 	 */
 	public ErrorReport(Throwable throwable, Throwable causeThrowable)
 	{
-		throwablePairList = new LinkedList<CauseEffectThrowablePair>();		
+		throwablePairList = new LinkedList<CauseEffectThrowablePair>();
 		addThrowablePair(throwable, causeThrowable);
 		time = new Date();
 		this.systemProperties = System.getProperties();
@@ -219,7 +219,7 @@ implements Serializable
 	 * 
 	 * java.lang.Exception: shfgiushf
 	 *   at xxx
-	 *   
+	 * 
 	 * 
 	 * System properties:
 	 * ...

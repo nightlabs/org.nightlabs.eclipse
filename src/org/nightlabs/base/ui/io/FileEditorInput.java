@@ -42,7 +42,7 @@ implements IEditorInput,
 {
 	protected File file;
 
-	public FileEditorInput(File f) 
+	public FileEditorInput(File f)
 	{
 		if (f == null)
 			throw new IllegalArgumentException("Param f must not be null!"); //$NON-NLS-1$
@@ -52,15 +52,15 @@ implements IEditorInput,
 	
 	public boolean exists()
 	{
-		return file.exists();			
+		return file.exists();
 	}
 
-	public File getFile() 
+	public File getFile()
 	{
 		return file;
 	}
 	
-  public String getName() 
+  public String getName()
   {
 		return file.getName();
   }
@@ -79,7 +79,7 @@ implements IEditorInput,
 
 	public String getToolTipText()
 	{
-//		return file.getAbsolutePath();		
+//		return file.getAbsolutePath();
 		try {
 			return file.getCanonicalPath();
 		} catch (IOException e) {
@@ -93,7 +93,7 @@ implements IEditorInput,
 		return null;
 	}
 	
-	public IPath getPath() 
+	public IPath getPath()
 	{
 		try {
 			String path = file.getCanonicalPath();
@@ -106,32 +106,32 @@ implements IEditorInput,
 	}
 	
 	@Override
-	public int hashCode() 
+	public int hashCode()
 	{
 		return file.hashCode();
 	}
 	
 	@Override
-	public boolean equals(Object o) 
+	public boolean equals(Object o)
 	{
 		if (o == this)
 			return true;
 		
 		if (o instanceof FileEditorInput) {
 			FileEditorInput input = (FileEditorInput) o;
-			return file.equals(input.getFile());		
+			return file.equals(input.getFile());
 		}
 		
 		return false;
-	}	
+	}
 		
 	protected boolean saved = true;
-	public boolean isSaved() 
+	public boolean isSaved()
 	{
 		if (!exists())
 			return false;
 		
-		return saved;		
+		return saved;
 	}
 	public void setSaved(boolean saved) {
 		this.saved = saved;

@@ -55,9 +55,9 @@ public class ErrorTable extends AbstractTableComposite
 		public Object[] getElements(Object inputElement)
 		{
 			if (inputElement instanceof Collection)
-				return ((Collection)inputElement).toArray();			
+				return ((Collection)inputElement).toArray();
 			return super.getElements(inputElement);
-		}		
+		}
 	}
 	
 	
@@ -78,7 +78,7 @@ public class ErrorTable extends AbstractTableComposite
 			}
 			
 			return ""; //$NON-NLS-1$
-		}		
+		}
 	}
 
 	public ErrorTable(Composite parent, int style)
@@ -107,7 +107,7 @@ public class ErrorTable extends AbstractTableComposite
 		tableViewer.setLabelProvider(new LabelProvider());
 	}
 	
-	public void setInput(Collection input) 
+	public void setInput(Collection input)
 	{
 		getTableViewer().setInput(input);
 		if (input.size() == 1)
@@ -130,7 +130,7 @@ public class ErrorTable extends AbstractTableComposite
 			{
 				getTable().setSelection(i);
 				return;
-			}			
+			}
 		}
 	}
 }

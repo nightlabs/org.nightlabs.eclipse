@@ -28,8 +28,8 @@ package org.nightlabs.base.ui.search;
 
 /**
  * An ISearchResultActionHandler can perform a certain action
- * with the search results provided by an {@link ISearchResultProvider} 
- *  
+ * with the search results provided by an {@link ISearchResultProvider}
+ * 
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */

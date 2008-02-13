@@ -74,10 +74,7 @@ import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.nightlabs.base.ui.composite.ChildStatusController;
-import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.layout.WeightedTableLayout;
 import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.util.IOUtil;
@@ -164,24 +161,24 @@ public class RCPUtil
 	 * @param parent the parent Composite
 	 * @param button a Button with style Param SWT.TOGGLE or SWT.RADIO which should be selected
 	 */
-	public static void setButtonSelected(Composite parent, Button button) 
+	public static void setButtonSelected(Composite parent, Button button)
 	{
 	  button.setSelection(true);
 	  Control[] children = parent.getChildren();
 	  for (int i = 0; i < children.length; i++) {
 	    if (!children[i].equals(button)) {
-	      if ( (((children[i].getStyle() & SWT.TOGGLE) != 0) || ((children[i].getStyle() & SWT.RADIO) != 0))  
-	          && (children[i] instanceof Button) ) 
+	      if ( (((children[i].getStyle() & SWT.TOGGLE) != 0) || ((children[i].getStyle() & SWT.RADIO) != 0))
+	          && (children[i] instanceof Button) )
 	      {
 	        ((Button)children[i]).setSelection(false);
 	      }
-	    } 
+	    }
 	  }
 	}
 	
 	/**
 	 * Returns wether the ViewPart with the given id is currently visble in
-	 * one of the pages of the active Workbench window. Will also return 
+	 * one of the pages of the active Workbench window. Will also return
 	 * true when the page-book containing this view is minimized.
 	 * 
 	 * @param viewID The id of the view to be queried
@@ -203,7 +200,7 @@ public class RCPUtil
 	 * Show/Hide all ViewActions of the given View.
 	 * 
 	 * @param view The View which ViewActions should be shown/hidden
-	 * @param visible true to show all Actions, fals to hide them 
+	 * @param visible true to show all Actions, fals to hide them
 	 */
 	public static void setViewActionsVisible(IViewPart view, boolean visible) {
 		IToolBarManager toolBarManager = view.getViewSite().getActionBars().getToolBarManager();
@@ -224,7 +221,7 @@ public class RCPUtil
 
 	/**
 	 * Returns wether the given IWorkbenchPart is currently visble in
-	 * one of the pages of the active Workbench window. Will also return 
+	 * one of the pages of the active Workbench window. Will also return
 	 * true when the page-book containing this view is minimized.
 	 * 
 	 * @param part The part to check
@@ -238,7 +235,7 @@ public class RCPUtil
 				if (pages[i].isPartVisible(part)){
 					visible = true;
 				}
-		}		
+		}
 		return visible;
 	}
 	
@@ -253,14 +250,14 @@ public class RCPUtil
 		for (int i = 0; i < pages.length; i++) {
 			IWorkbenchPart view = null;
 			try { view = pages[0].showView(viewID); } catch (PartInitException e) { throw new RuntimeException(e); }
-			if (view != null) 
+			if (view != null)
 				return view;
 		}
 		return null;
 	}
 	
 	/**
-	 * Shows the view with the given viewID and 
+	 * Shows the view with the given viewID and
 	 * gives it focus.
 	 * 
 	 * @param viewID The id of the view to be queried
@@ -327,17 +324,17 @@ public class RCPUtil
 	 */
 	public static String getActivePerspectiveID() {
 		IWorkbenchPage page = getActiveWorkbenchPage();
-		return page == null ? null : page.getPerspective().getId();		
+		return page == null ? null : page.getPerspective().getId();
 	}
 
 	/**
-	 * opens a ErrorDialog with the given message 
+	 * opens a ErrorDialog with the given message
 	 * 
 	 * @param message the message to display
 	 * @param buttonStyle the buttonStyle
 	 * @return the returnCode of the Dialog
 	 */
-	public static void showErrorDialog(String message) 
+	public static void showErrorDialog(String message)
 	{
 		MessageDialog.openError(getActiveWorkbenchShell(), Messages.getString("org.nightlabs.base.ui.util.RCPUtil.showErrorDialog.title"), message); //$NON-NLS-1$
 	}
@@ -349,10 +346,10 @@ public class RCPUtil
 	 * @param fileName the name of the file
 	 * @return the returnCode of the Dialog
 	 */
-	public static boolean showConfirmOverwriteDialog(String fileName) 
+	public static boolean showConfirmOverwriteDialog(String fileName)
 	{
 		return MessageDialog.openConfirm(
-				getActiveWorkbenchShell(), 
+				getActiveWorkbenchShell(),
 				Messages.getString("org.nightlabs.base.ui.util.RCPUtil.showConfirmOverwriteDialog.title"), //$NON-NLS-1$
 				String.format(Messages.getString("org.nightlabs.base.ui.util.RCPUtil.showConfirmOverwriteDialog.message"), new Object[] { fileName }) //$NON-NLS-1$
 			);
@@ -363,16 +360,16 @@ public class RCPUtil
 	 * 
 	 * @param comp the Composite to dispose with all of its children
 	 */
-	public static void disposeAllChildren(Composite comp) 
+	public static void disposeAllChildren(Composite comp)
 	{
-		if (comp != null) 
+		if (comp != null)
 		{
 			if (!comp.isDisposed()) {
 				Control[] children = comp.getChildren();
 				for (int i=0; i<children.length; i++) {
 					Control c = children[i];
 					c.dispose();
-				}				
+				}
 			}
 		}
 	}
@@ -381,12 +378,12 @@ public class RCPUtil
 	 * Opens an editor with the given input and editorID and returns it.
 	 * 
 	 * @param input The editors input
-	 * @param editorID The editors id 
+	 * @param editorID The editors id
 	 * @return The editor opened
 	 * @throws PartInitException
 	 */
-	public static IEditorPart openEditor(IEditorInput input, String editorID) 
-	throws PartInitException 
+	public static IEditorPart openEditor(IEditorInput input, String editorID)
+	throws PartInitException
 	{
 		return getActiveWorkbenchPage().openEditor(input, editorID);
 	}
@@ -395,22 +392,22 @@ public class RCPUtil
 	 * Opens an editor with the given input and editorID and returns it.
 	 * 
 	 * @param input The editors input
-	 * @param editorID The editors id 
+	 * @param editorID The editors id
 	 * @return The editor opened
 	 * @throws PartInitException
 	 */
-	public static IEditorPart openEditor(IEditorInput input, String editorID, boolean activate) 
-	throws PartInitException 
+	public static IEditorPart openEditor(IEditorInput input, String editorID, boolean activate)
+	throws PartInitException
 	{
 		return getActiveWorkbenchPage().openEditor(input, editorID, activate);
 	}
 	
 	/**
-	 * Finds the editor for the given input in the workbench's 
+	 * Finds the editor for the given input in the workbench's
 	 * active workbenchpage. Returns null if no editor for
 	 * the given input was found.
 	 *
-	 * @param input The input for which to search a currently open editor. 
+	 * @param input The input for which to search a currently open editor.
 	 */
 	public static IEditorPart findEditor(IEditorInput input) {
 		return getActiveWorkbenchPage().findEditor(input);
@@ -452,15 +449,15 @@ public class RCPUtil
 	 * 
 	 * @param bounds the bounds of a Control
 	 * @return the Point which determines the Location so that the given Bounds are
-	 * centered on the screen 
+	 * centered on the screen
 	 */
-	public static Point getCenterPosition(Rectangle bounds) 
+	public static Point getCenterPosition(Rectangle bounds)
 	{
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int x = 0;
 		int y = 0;
 		if (bounds.width < screenSize.getWidth())
-			x = (((int)screenSize.getWidth()) - bounds.width) / 2; 
+			x = (((int)screenSize.getWidth()) - bounds.width) / 2;
 		if (bounds.height < screenSize.getHeight())
 			y = (((int)screenSize.getHeight()) - bounds.height) / 2;
 		
@@ -482,20 +479,20 @@ public class RCPUtil
 	}
 	
 	/**
-	 *  
+	 * 
 	 * @param comp the Composite to set the Form Border for
 	 * @see FormToolkit#paintBordersFor(Composite)
 	 */
-	public static void setFormBorder(Composite comp) 
+	public static void setFormBorder(Composite comp)
 	{
 		comp.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
 	}
 	
 	/**
-	 * sets the location of a dialog so that it apperas in the center of the screen 
+	 * sets the location of a dialog so that it apperas in the center of the screen
 	 * @param d the Dialog to center
 	 */
-	public static void centerDialog(Dialog d) 
+	public static void centerDialog(Dialog d)
 	{
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Point shellSize = d.getShell().getSize();
@@ -505,27 +502,27 @@ public class RCPUtil
 	}
 	
   /**
-   * checks if a IMenuManager with the given ID is contained in 
-   * the given IMenuManager and returns it. 
+   * checks if a IMenuManager with the given ID is contained in
+   * the given IMenuManager and returns it.
    * 
    * @param id the ID of the ContributionItem
    * @param menuMan the MenuManager to search in
    * @return the ContributionItem with the given ID or null if not contained
    */
-  public static IContributionItem getMenuItem(String id, IMenuManager menuMan) 
+  public static IContributionItem getMenuItem(String id, IMenuManager menuMan)
   {
   	if (menuMan != null) {
     	IContributionItem[] menuItems = menuMan.getItems();
     	for (int i=0; i<menuItems.length; i++) {
     		IContributionItem menuItem = menuItems[i];
     		if (menuItem != null && menuItem.getId() != null) {
-      		if (menuItem.getId().equals(id)) 
-      			return menuItem;  			
+      		if (menuItem.getId().equals(id))
+      			return menuItem;
     		}
-    	}  		
+    	}
   	}
   	return null;
-  }	
+  }
   
   /**
    * Returns the either the active {@link IWorkbenchPage}
@@ -542,7 +539,7 @@ public class RCPUtil
 		if (pages.length > 0)
 			return pages[0];
 		else
-			return null;			             
+			return null;
   }
   
   /**
@@ -571,10 +568,10 @@ public class RCPUtil
    * @param logger the logger to log
    * @param logLevel the logLevel to use
    */
-	public static void logControlParents(Control control, Logger logger, Level logLevel) 
+	public static void logControlParents(Control control, Logger logger, Level logLevel)
 	{
 		Composite parent = control.getParent();
-		if (parent != null) 
+		if (parent != null)
 		{
 			logger.log(logLevel, "control = "+control); //$NON-NLS-1$
 			logger.log(logLevel, "control.getLayoutData() = "+control.getLayoutData());			 //$NON-NLS-1$
@@ -582,7 +579,7 @@ public class RCPUtil
 			logger.log(logLevel, "parent.getLayout() = "+parent.getLayout());			 //$NON-NLS-1$
 			logControlParents(parent, logger, logLevel);
 		}
-	}  
+	}
 	
 	
 	private static IProgressMonitor nullMonitor = new NullProgressMonitor();
@@ -597,7 +594,7 @@ public class RCPUtil
 	public static IProgressMonitor getSaveProgressMonitor(IProgressMonitor monitor) {
 		if (monitor != null)
 			return monitor;
-		return nullMonitor;		
+		return nullMonitor;
 	}
 	
 	public static boolean isDisplayThread() {
@@ -642,16 +639,16 @@ public class RCPUtil
 		int newStyle = oldFont.getFontData()[0].getStyle() | addStyle;
 		newStyle = newStyle & (~removeStyle);
 		final Font newFont = new Font(
-				oldFont.getDevice(), 
-				oldFont.getFontData()[0].getName(), 
-				oldFont.getFontData()[0].getHeight(), 
+				oldFont.getDevice(),
+				oldFont.getFontData()[0].getName(),
+				oldFont.getFontData()[0].getHeight(),
 				newStyle
 			);
 		control.setFont(newFont);
 		control.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				newFont.dispose();
-			}			
+			}
 		});
 	}
 	
@@ -659,32 +656,32 @@ public class RCPUtil
 	 * clears the workspace folder
 	 * @param ask determines if the user should be asked before
 	 */
-	public static void clearWorkspace(boolean ask) 
+	public static void clearWorkspace(boolean ask)
 	{
 		if (ask) {
-			boolean ok = MessageDialog.openConfirm(RCPUtil.getActiveWorkbenchShell(), 
+			boolean ok = MessageDialog.openConfirm(RCPUtil.getActiveWorkbenchShell(),
 					Messages.getString("org.nightlabs.base.ui.util.RCPUtil.clearWorkspace.title"), Messages.getString("org.nightlabs.base.ui.util.RCPUtil.clearWorkspace.message")); //$NON-NLS-1$ //$NON-NLS-2$
 			if (!ok)
 				return;
 		}
 		File workspace = Platform.getLocation().toFile();
-		IOUtil.deleteDirectoryRecursively(workspace);		
+		IOUtil.deleteDirectoryRecursively(workspace);
 	}
 	
 	/**
-	 * Adds a new {@link org.eclipse.ui.internal.layout.IWindowTrim} 
+	 * Adds a new {@link org.eclipse.ui.internal.layout.IWindowTrim}
 	 * to the {@link org.eclipse.ui.internal.layout.TrimLayout} of the given shell
-	 * and prepends it to the the trim with the given id (pependTo). 
+	 * and prepends it to the the trim with the given id (pependTo).
 	 * The new trim  will be filled with the contents of the given contributionItem.
 	 * 
 	 * @param shell The shell to add the trim to.
 	 * @param contributionItem The contributionItem to fill the trim with.
 	 * @param prependTo The id of the trim the new trim should be prepended to.
 	 */
-	@SuppressWarnings("restriction") 
+	@SuppressWarnings("restriction")
 	public static void addContributionItemTrim(
-			Shell shell, 
-			IContributionItem contributionItem, 
+			Shell shell,
+			IContributionItem contributionItem,
 			String prependTo
 	) {
 		if (shell != null && (shell.getLayout() instanceof org.eclipse.ui.internal.layout.TrimLayout)) {
@@ -695,7 +692,7 @@ public class RCPUtil
 			contributionItem.fill(comp);
 			org.eclipse.ui.internal.WindowTrimProxy trimProxy = new org.eclipse.ui.internal.WindowTrimProxy(
 					comp,
-					contributionItem.getId(), 
+					contributionItem.getId(),
 					contributionItem.getClass().getSimpleName(), SWT.BOTTOM | SWT.TOP
 			) {
 
@@ -733,7 +730,7 @@ public class RCPUtil
 	}
 
 	/**
-	 * Performs {@link RCPUtil#workaroundFormTableLayout(Table, boolean)} for every Table found 
+	 * Performs {@link RCPUtil#workaroundFormTableLayout(Table, boolean)} for every Table found
 	 * in the Composite graph of the given parent.
 	 * 
 	 * @param parent The parent to replace layouts for.
@@ -748,7 +745,7 @@ public class RCPUtil
 			for (Control child : children) {
 				workaroundFormPageTableLayouts(child, doLayout);
 			}
-		} 
+		}
 	}
 	
 	/**
@@ -761,9 +758,9 @@ public class RCPUtil
 	public static void workaroundFormTableLayout(final Table table, final boolean doLayout) {
 		// TODO: WORKAROUND: FIXME: XXX: This is a workaround for wrong size calculation within a form
 		if (
-				!(table.getLayout() instanceof TableLayout) && 
+				!(table.getLayout() instanceof TableLayout) &&
 				!(table.getLayout() instanceof WorkaroundTableLayout) &&
-				!(table.getLayout() instanceof WeightedTableLayout) 
+				!(table.getLayout() instanceof WeightedTableLayout)
 			)
 			return; // The table does not have a TableLayout set.
 		final WorkaroundTableLayout tableLayout = new WorkaroundTableLayout();
@@ -772,7 +769,7 @@ public class RCPUtil
 			lData = ((WorkaroundTableLayout)table.getLayout()).getOriginalData();
 		} else if (table.getLayout() instanceof WeightedTableLayout) {
 			lData = ((WeightedTableLayout) table.getLayout()).translateToColumnLayoutData();
-		} else if (table.getLayout() instanceof TableLayout) {		
+		} else if (table.getLayout() instanceof TableLayout) {
 			final TableLayout oldLayout = (TableLayout) table.getLayout();
 
 //			tableLayout.addColumnData(new ColumnWeightData(10));
@@ -789,11 +786,11 @@ public class RCPUtil
 			} catch (IllegalAccessException e) {
 				throw new RuntimeException(e);
 			}
-		} 
+		}
 		tableLayout.setOriginalData(new ArrayList<ColumnLayoutData>(lData));
 		table.setLayout(tableLayout);
 		final List<ColumnLayoutData> layoutData = lData;
-		final List<ColumnPixelData> pixelData = new ArrayList<ColumnPixelData>(layoutData.size());		
+		final List<ColumnPixelData> pixelData = new ArrayList<ColumnPixelData>(layoutData.size());
 		for (ColumnLayoutData columnLayoutData : layoutData) {
 			final ColumnPixelData pData = new ColumnPixelData(0);
 			pixelData.add(pData);
@@ -821,8 +818,8 @@ public class RCPUtil
 	}
 	
 	private static void setPixelData(
-		List<ColumnLayoutData> layoutData, 
-		List<ColumnPixelData> pixelDatas, 
+		List<ColumnLayoutData> layoutData,
+		List<ColumnPixelData> pixelDatas,
 		int clientWidth
 	) {
 		int clientRest = clientWidth - 25;
@@ -843,5 +840,5 @@ public class RCPUtil
 				pixelData.width = clientRest * ((ColumnWeightData) columnData).weight / weightSum;
 			}
 		}
-	}	
+	}
 }

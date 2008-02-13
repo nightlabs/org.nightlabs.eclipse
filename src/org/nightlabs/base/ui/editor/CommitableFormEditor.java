@@ -68,7 +68,7 @@ public abstract class CommitableFormEditor extends FormEditor
 	 * @param onSave <code>true</code> to indicate that
 	 * 		we are commiting because of an editor save.
 	 */
-	protected void commitFormPages(boolean onSave) 
+	protected void commitFormPages(boolean onSave)
 	{
 		IFormPage[] pages = getFormPages();
 		for (int i = 0; i < pages.length; i++) {
@@ -83,7 +83,7 @@ public abstract class CommitableFormEditor extends FormEditor
 	 * Get all form pages in this editor.
 	 * @return All form pages in this editor.
 	 */
-	protected IFormPage[] getFormPages() 
+	protected IFormPage[] getFormPages()
 	{
 		ArrayList<IFormPage> formPages = new ArrayList<IFormPage>(pages.size());
 		for (int i = 0; i < pages.size(); i++) {

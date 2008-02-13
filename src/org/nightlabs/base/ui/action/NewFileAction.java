@@ -34,14 +34,14 @@ import org.nightlabs.base.ui.editor.Editor2PerspectiveRegistry;
 import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.util.IOUtil;
 
-public class NewFileAction 
-extends Action 
+public class NewFileAction
+extends Action
 implements INewFileAction
 {
 	public final String ID = NewFileAction.class.getName() + " " + hashCode(); //$NON-NLS-1$
 	// TODO isn't the above ID wrong? Shouldn't the ID be a real static id? And static, too? If it's meant to be subclassed, it should do sth. like this.getClass().getName()
 
-	public NewFileAction() 
+	public NewFileAction()
 	{
 		super();
 		init();
@@ -49,7 +49,7 @@ implements INewFileAction
 
 	protected void init() {
 		setId(ID);
-	}		
+	}
 		
 	protected String fileExtension;
 	public String getFileExtension() {
@@ -67,7 +67,7 @@ implements INewFileAction
 	protected String defaultFileName = Messages.getString("org.nightlabs.base.ui.action.NewFileAction.defaultFileName"); //$NON-NLS-1$
 	protected String defaultPath = ""; //$NON-NLS-1$
 
-	protected String getDefaultPath() 
+	protected String getDefaultPath()
 	{
     if (defaultPath.equals("")) { //$NON-NLS-1$
 //    	String tmpDir = System.getProperty("java.io.tmpdir");
@@ -78,20 +78,20 @@ implements INewFileAction
 	}
 
 	@Override
-	public void run() 
-	{		
-		nextFileCount();		
+	public void run()
+	{
+		nextFileCount();
 		File file = createFile(fileExtension);
-		try {			
+		try {
 			Editor2PerspectiveRegistry.sharedInstance().openFile(file, false);
-		} catch (PartInitException e) {			
+		} catch (PartInitException e) {
 			throw new RuntimeException(e);
-		} 
+		}
 	}
 		 	
-	protected File createFile(String fileExtension) 
+	protected File createFile(String fileExtension)
 	{
 		String fileName = defaultFileName + fileCount + "." + fileExtension; //$NON-NLS-1$
-		return new File(getDefaultPath(), fileName);		
-	}	
+		return new File(getDefaultPath(), fileName);
+	}
 }

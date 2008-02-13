@@ -49,7 +49,7 @@ public class EntityEditorPageSettings
 	private String editorID;
 	
 	/**
-	 * The index hint for this entity editor page telling 
+	 * The index hint for this entity editor page telling
 	 * the system where to position this page in the multi
 	 * page editor.
 	 */
@@ -69,7 +69,7 @@ public class EntityEditorPageSettings
 			throw new EPProcessorException("The class attribute was not valid ", extension); //$NON-NLS-1$
 		}
 		
-//		this.pageClass = cfg.getAttribute("class");		
+//		this.pageClass = cfg.getAttribute("class");
 		this.editorID = cfg.getAttribute("editorID"); //$NON-NLS-1$
 		if (editorID == null || "".equals(editorID)) //$NON-NLS-1$
 			throw new EPProcessorException("The editorID is not defined.", extension); //$NON-NLS-1$
@@ -120,7 +120,7 @@ public class EntityEditorPageSettings
 	}
 
 	/**
-	 * Get The index hint for this entity editor page telling 
+	 * Get The index hint for this entity editor page telling
 	 * the system where to position this page in the multi
 	 * page editor.
 	 * @return the indexHint

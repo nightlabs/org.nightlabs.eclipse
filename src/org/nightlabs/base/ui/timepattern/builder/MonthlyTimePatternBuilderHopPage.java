@@ -105,8 +105,8 @@ public class MonthlyTimePatternBuilderHopPage extends WizardHopPage {
 		
 	};
 	
-	public void configurePattern(TimePattern timePattern) 
-	throws TimePatternFormatException 
+	public void configurePattern(TimePattern timePattern)
+	throws TimePatternFormatException
 	{
 		timePattern.setYear("*"); //$NON-NLS-1$
 		startTimeComposite.configurePattern(timePattern);
@@ -142,7 +142,7 @@ public class MonthlyTimePatternBuilderHopPage extends WizardHopPage {
 					selString = "1"; //$NON-NLS-1$
 					if (selValue != 1)
 						selString = selString + "-" + lastValue; //$NON-NLS-1$
-				} 
+				}
 				else {
 					selString = selString + "-" + lastValue; //$NON-NLS-1$
 					if (!it.hasNext())

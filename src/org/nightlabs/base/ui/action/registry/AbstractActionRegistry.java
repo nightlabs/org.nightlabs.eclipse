@@ -90,7 +90,7 @@ import org.nightlabs.base.ui.util.RCPUtil;
  * <p>
  * Of course, you can decide to omit some of the properties in the extension point and control them
  * programatically. For example. this is very often the case with the properties visible,
- * visibleInMenubar, visibleInToolbar and visibleInContextmenu. 
+ * visibleInMenubar, visibleInToolbar and visibleInContextmenu.
  * </p>
  * <p>
  * Instead of <i>action</i>, you might want to use another element name. This can easily be done via
@@ -100,7 +100,7 @@ import org.nightlabs.base.ui.util.RCPUtil;
  * @author Marco Schulze - marco at nightlabs dot de
  * @author Daniel Mazurek - daniel at nightlabs dot de
  */
-public abstract class AbstractActionRegistry 
+public abstract class AbstractActionRegistry
 extends AbstractEPProcessor
 {
 	/**
@@ -200,7 +200,7 @@ extends AbstractEPProcessor
 	 * Removes all contributions of this registry from the CoolBar of the
 	 * given coolBarManager. Ideally this is done by making the contributions
 	 * invisible, so Eclipse can remember their positions. However
-	 * this is currently not possible and thats why this method 
+	 * this is currently not possible and thats why this method
 	 * removes the affected contributions from the CoolBar.
 	 * This behaviour can is configured via {@link #useRemoveInsteadOfUnvisibleWorkaround}.
 	 * 
@@ -261,7 +261,7 @@ extends AbstractEPProcessor
 					IContributionItem item = coolBarContributionManager.find(toolBarContributionItem.getId());
 					if (item != null) {
 						if (useRemoveInsteadOfUnvisibleWorkaround) {
-							coolBarContributionManager.remove(tmpSubMenuID);					
+							coolBarContributionManager.remove(tmpSubMenuID);
 						}
 						else {
 							toolBarContributionItem.setVisible(false);
@@ -270,7 +270,7 @@ extends AbstractEPProcessor
 					}
 				}
 			}
-		} 
+		}
 		coolBarContributionManager.update(true);
 	}
 	
@@ -284,7 +284,7 @@ extends AbstractEPProcessor
 		if (!perspectiveListenerAdded)
 			earlyContributed = true;
 		
-		if (coolBarManager instanceof SubContributionManager) 
+		if (coolBarManager instanceof SubContributionManager)
 			((SubCoolBarManager)coolBarManager).setVisible(true);
 			
 		String baseID = this.getClass().getName();
@@ -371,8 +371,8 @@ extends AbstractEPProcessor
 
 		coolBarManager.update(true);
 
-		return res;			
-//		} 
+		return res;
+//		}
 //		else {
 //			return contribute(coolBarManager, KIND_COOLBAR);
 //		}
@@ -419,7 +419,7 @@ extends AbstractEPProcessor
 		IContributionManager mgr = manager;
 		for (int i = 0; i < parts.length; ++i) {
 			String id = parts[i];
-			if (mgr != null) 
+			if (mgr != null)
 			{
 				IContributionItem item = mgr.find(id);
 				if (i == parts.length - 1)
@@ -438,7 +438,7 @@ extends AbstractEPProcessor
 				if (item instanceof IContributionManager)
 					mgr = (IContributionManager) item;
 				else
-					return null;				
+					return null;
 			}
 		}
 
@@ -463,7 +463,7 @@ extends AbstractEPProcessor
 		}
 	}
 
-	public AbstractActionRegistry() 
+	public AbstractActionRegistry()
 	{
 		super();
 //		if (isAffectedOfPerspectiveExtension()) {
@@ -473,7 +473,7 @@ extends AbstractEPProcessor
 	
 //	/**
 //	 * This method contributes WITHOUT removing items before.
-//	 * 
+//	 *
 //	 * @param contributionManager
 //	 * @param kind
 //	 * @return Returns the number of visible contribution items (i.e. actions) that have been added.
@@ -502,13 +502,13 @@ extends AbstractEPProcessor
 //				lastMenuRawSize = menuRaw.size();
 //				menuSorted = new LinkedList();
 //			}
-//			
+//
 ////			contributionManager.removeAll();
-//			
+//
 //			while ((firstRun && !menuRaw.isEmpty()) || !firstRun) {
 //				for (Iterator itTopLevel = (firstRun ? menuRaw : menuSorted).iterator(); itTopLevel.hasNext(); ) {
 //					ItemDescriptor item = (ItemDescriptor) itTopLevel.next();
-//					if (item instanceof ActionDescriptor) 
+//					if (item instanceof ActionDescriptor)
 //					{
 //						ActionDescriptor ad = (ActionDescriptor) item;
 //						String path;
@@ -680,7 +680,7 @@ extends AbstractEPProcessor
 //				}
 //			}
 //			contributionManager.update(true);
-//			return visibleContributionItemCount;			
+//			return visibleContributionItemCount;
 //	}
 
 	/**
@@ -723,11 +723,11 @@ extends AbstractEPProcessor
 			while ((firstRun && !menuRaw.isEmpty()) || !firstRun) {
 				for (Iterator itTopLevel = (firstRun ? menuRaw : menuSorted).iterator(); itTopLevel.hasNext(); ) {
 					ItemDescriptor item = (ItemDescriptor) itTopLevel.next();
-					if (item instanceof ActionDescriptor) 
+					if (item instanceof ActionDescriptor)
 					{
 						ActionDescriptor ad = (ActionDescriptor) item;
 						
-						if (getActiveExtensionIDs().contains(ad.getID())) 
+						if (getActiveExtensionIDs().contains(ad.getID()))
 						{
 							String path;
 							if (KIND_MENUBAR.equals(kind))
@@ -906,7 +906,7 @@ extends AbstractEPProcessor
 				}
 			}
 			contributionManager.update(true);
-			return visibleContributionItemCount;			
+			return visibleContributionItemCount;
 	}
 	
 	/**
@@ -1010,9 +1010,9 @@ extends AbstractEPProcessor
 		}
 	}
 
-	public boolean checkPerspectiveListenerAdded() 
+	public boolean checkPerspectiveListenerAdded()
 	{
-		if (!perspectiveListenerAdded) {			
+		if (!perspectiveListenerAdded) {
 			if (RCPUtil.getActiveWorkbenchWindow() != null) {
 				RCPUtil.getActiveWorkbenchWindow().addPerspectiveListener(perspectiveListener);
 				perspectiveListenerAdded = true;
@@ -1029,7 +1029,7 @@ extends AbstractEPProcessor
 	
 //	protected boolean checkEarlyContribution() {
 //		if (!perspectiveListenerAdded)
-//			earlyContributed = true;			
+//			earlyContributed = true;
 //	}
 	
 	/**
@@ -1092,7 +1092,7 @@ extends AbstractEPProcessor
 			menuRaw.add(menuDescriptor);
 
 //			String separatorName = "";
-//			String groupMarkerName = "";			
+//			String groupMarkerName = "";
 			IConfigurationElement[] children = element.getChildren();
 			for (int i = 0; i < children.length; ++i) {
 				IConfigurationElement child = children[i];
@@ -1200,13 +1200,13 @@ extends AbstractEPProcessor
 		return descriptor;
 	}
 	
-//	private Map<IContributionManager, Collection<String>> contributionManager2ExtensionIDs = 
+//	private Map<IContributionManager, Collection<String>> contributionManager2ExtensionIDs =
 //		new HashMap<IContributionManager, Collection<String>>();
 	
 	protected boolean earlyContributed = false;
 	protected boolean perspectiveListenerAdded = false;
-	protected boolean isAffectedOfPerspectiveExtension() 
-	{			
+	protected boolean isAffectedOfPerspectiveExtension()
+	{
 		boolean isAffected = PerspectiveExtensionRegistry.sharedInstance().
 			getRegisteredExtensionPointIDs().contains(getExtensionPointID());
 //		if (isAffected)
@@ -1217,12 +1217,12 @@ extends AbstractEPProcessor
 		return isAffected;
 	}
 	
-	protected void updateActivePerspectiveExtensions() 
+	protected void updateActivePerspectiveExtensions()
 	{
-		Map<String, Collection<String>> perspectiveID2ExtensionIDs = 
+		Map<String, Collection<String>> perspectiveID2ExtensionIDs =
 			PerspectiveExtensionRegistry.sharedInstance().getPerspectiveID2ExtensionIDs(
 					getExtensionPointID());
-		activeExtensionIDs = perspectiveID2ExtensionIDs.get(activePerspectiveID);		
+		activeExtensionIDs = perspectiveID2ExtensionIDs.get(activePerspectiveID);
 	}
 	
 	private String activePerspectiveID = ""; //$NON-NLS-1$
@@ -1231,7 +1231,7 @@ extends AbstractEPProcessor
 	}
 	
 	private Collection<String> activeExtensionIDs = Collections.emptyList();
-	public Collection<String> getActiveExtensionIDs() 
+	public Collection<String> getActiveExtensionIDs()
 	{
 		if (!isAffectedOfPerspectiveExtension()) {
 			return actionDescriptorsByID.keySet();
@@ -1239,36 +1239,36 @@ extends AbstractEPProcessor
 		return activeExtensionIDs;
 	}
 	
-	protected void perspectiveChange(IPerspectiveDescriptor perspective) 
-	{		
-//		logger.debug("perspectiveChange for perspective "+perspective.getId());		
+	protected void perspectiveChange(IPerspectiveDescriptor perspective)
+	{
+//		logger.debug("perspectiveChange for perspective "+perspective.getId());
 		activePerspectiveID = perspective.getId();
-		if (isAffectedOfPerspectiveExtension()) 
+		if (isAffectedOfPerspectiveExtension())
 		{
 			Collection<String> oldActiveExtensionIDs = Collections.emptyList();
 			if (getActiveExtensionIDs() != null)
-				oldActiveExtensionIDs = new ArrayList<String>(getActiveExtensionIDs()); 
+				oldActiveExtensionIDs = new ArrayList<String>(getActiveExtensionIDs());
 			updateActivePerspectiveExtensions();
-			if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() instanceof WorkbenchWindow) 
+			if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() instanceof WorkbenchWindow)
 			{
 				WorkbenchWindow workbenchWindow = (WorkbenchWindow) PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 				ICoolBarManager coolBarManager = workbenchWindow.getCoolBarManager();
 				if (coolBarManager != null) {
 					removeContributionItems(coolBarManager, oldActiveExtensionIDs);
-					contributeToCoolBar(coolBarManager);					
+					contributeToCoolBar(coolBarManager);
 				}
 				IToolBarManager toolBarManager = workbenchWindow.getToolBarManager();
 				if (toolBarManager != null) {
-					removeContributionItems(toolBarManager, oldActiveExtensionIDs);					
-					contributeToToolBar(toolBarManager);					
+					removeContributionItems(toolBarManager, oldActiveExtensionIDs);
+					contributeToToolBar(toolBarManager);
 				}
 				IMenuManager menuManager = workbenchWindow.getMenuManager();
 				if (menuManager != null) {
 					removeContributionItems(menuManager, oldActiveExtensionIDs);
-					contributeToMenuBar(menuManager);					
-				}				
+					contributeToMenuBar(menuManager);
+				}
 			}
-		}		
+		}
 	}
 	
 	protected void removeContributionItems(IContributionManager manager, Collection<String> ids) {
@@ -1281,21 +1281,21 @@ extends AbstractEPProcessor
 	{
 		public void perspectiveActivated(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
 			perspectiveChange(perspective);
-		}			
+		}
 		public void perspectiveChanged(IWorkbenchPage page, IPerspectiveDescriptor perspective, String changeId) {
 			perspectiveChange(perspective);
-		}	
+		}
 		public void perspectiveChanged(IWorkbenchPage page, IPerspectiveDescriptor perspective, IWorkbenchPartReference partRef, String changeId) {
-		}	
-		public void perspectiveSavedAs(IWorkbenchPage page, IPerspectiveDescriptor oldPerspective, IPerspectiveDescriptor newPerspective) {			
-		}	
+		}
+		public void perspectiveSavedAs(IWorkbenchPage page, IPerspectiveDescriptor oldPerspective, IPerspectiveDescriptor newPerspective) {
+		}
 		public void perspectiveOpened(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
 			perspectiveChange(perspective);
-		}	
-		public void perspectiveDeactivated(IWorkbenchPage page, IPerspectiveDescriptor perspective) {			
-		}	
+		}
+		public void perspectiveDeactivated(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
+		}
 		public void perspectiveClosed(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
-		}	
+		}
 	};
 	
 }

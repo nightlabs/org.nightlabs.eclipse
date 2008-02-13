@@ -11,8 +11,8 @@ import org.nightlabs.base.ui.util.RCPUtil;
  * @author Daniel Mazurek - daniel [at] nightlabs [dot] de
  *
  */
-public class UpdateAction 
-extends Action 
+public class UpdateAction
+extends Action
 {
 	public static final String ID = UpdateAction.class.getName();
 	
@@ -25,7 +25,7 @@ extends Action
 
 	@Override
 	public void run() {
-		UpdateManagerUI.openInstaller(RCPUtil.getActiveWorkbenchShell()); 
+		UpdateManagerUI.openInstaller(RCPUtil.getActiveWorkbenchShell());
 	}
 
 }

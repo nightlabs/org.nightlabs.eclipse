@@ -53,5 +53,5 @@ public abstract class ExceptionHandlingWorkbenchAdvisor extends WorkbenchAdvisor
 //		}
 //		else
 //			super.eventLoopException(exception);
-  }    
+  }
 }

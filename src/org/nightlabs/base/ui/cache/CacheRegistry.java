@@ -15,7 +15,7 @@ import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
 /**
  * Use this registry to access intances of {@link ICache}.
  * 
- * The static method {@link #getCache()} provides access to 
+ * The static method {@link #getCache()} provides access to
  * the last {@link ICacheFactory} registered via the extension-point
  * {@value #EXTENSION_POINT_ID}.
  * 
@@ -38,7 +38,7 @@ public class CacheRegistry extends AbstractEPProcessor {
 				if (cache == null)
 					throw new IllegalStateException("Registered ICacheFactory "+cacheFactory.getClass().getName()+" returned null cache!"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
-			return cache; 
+			return cache;
 		}
 	}
 	
@@ -62,8 +62,8 @@ public class CacheRegistry extends AbstractEPProcessor {
 	 * @see org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor#processElement(org.eclipse.core.runtime.IExtension, org.eclipse.core.runtime.IConfigurationElement)
 	 */
 	@Override
-	public void processElement(IExtension extension, IConfigurationElement element) 
-	throws Exception 
+	public void processElement(IExtension extension, IConfigurationElement element)
+	throws Exception
 	{
 		if (element.getName().equalsIgnoreCase("cacheFactory")) { //$NON-NLS-1$
 			try {
@@ -97,7 +97,7 @@ public class CacheRegistry extends AbstractEPProcessor {
 	 * by the static accessors for an instance
 	 * of {@link ICache}.
 	 * 
-	 * @param staticFactoryID The id of the factory to be used from now. 
+	 * @param staticFactoryID The id of the factory to be used from now.
 	 */
 	public static void setStaticFactoryID(String staticFactoryID) {
 		lastRegisteredFactoryID = staticFactoryID;

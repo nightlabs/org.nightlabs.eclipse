@@ -36,12 +36,12 @@ import org.nightlabs.util.Util;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  * TODO @Daniel please decide whether {@link NumberSpinnerComposite} or this class should be used - IMHO one of them can be thrown away.
  */
-public class DoubleSpinnerComposite 
-extends XComposite 
+public class DoubleSpinnerComposite
+extends XComposite
 {
 
-	public DoubleSpinnerComposite(Composite parent, int style, int spinnerStyle, 
-			int numDigits, double minValue, double maxValue, double increment, LayoutMode layoutMode, LayoutDataMode layoutDataMode) 
+	public DoubleSpinnerComposite(Composite parent, int style, int spinnerStyle,
+			int numDigits, double minValue, double maxValue, double increment, LayoutMode layoutMode, LayoutDataMode layoutDataMode)
 	{
 		super(parent, style, layoutMode, layoutDataMode);
 		this.spinnerStyle = spinnerStyle;
@@ -52,8 +52,8 @@ extends XComposite
 		createComposite(this);
 	}
 
-	public DoubleSpinnerComposite(Composite parent, int style, int spinnerStyle, 
-			int numDigits, double minValue, double maxValue, double increment) 
+	public DoubleSpinnerComposite(Composite parent, int style, int spinnerStyle,
+			int numDigits, double minValue, double maxValue, double increment)
 	{
 		super(parent, style);
 		this.spinnerStyle = spinnerStyle;
@@ -65,7 +65,7 @@ extends XComposite
 	}
 		
 	protected double changeValue(double value) {
-		return Math.pow(10, numDigits) * value; 
+		return Math.pow(10, numDigits) * value;
 	}
 	
 	private double minVal = 0;
@@ -77,13 +77,13 @@ extends XComposite
 		spinner.setMinimum((int)changeValue(minVal));
 	}
 	
-	private double maxVal = Integer.MAX_VALUE;	
+	private double maxVal = Integer.MAX_VALUE;
 	public double getMaximum() {
 		return maxVal;
 	}
 	public void setMaximum(double maximum) {
 		this.maxVal = maximum;
-		spinner.setMaximum((int)changeValue(maxVal));		
+		spinner.setMaximum((int)changeValue(maxVal));
 	}
 	
 	private int numDigits = 2;
@@ -107,7 +107,7 @@ extends XComposite
 	private int spinnerStyle;
 	private Spinner spinner = null;
 	
-	protected void createComposite(Composite parent) 
+	protected void createComposite(Composite parent)
 	{
 		spinner = new Spinner(parent, spinnerStyle);
 		setNumDigits(numDigits);
@@ -118,12 +118,12 @@ extends XComposite
 	}
 
 	private double rest;
-	public void setValue(double value) 
+	public void setValue(double value)
 	{
 		double val = changeValue(value);
-		double shortedDouble = (int) Util.truncateDouble(val, numDigits);		
-		rest = (val - shortedDouble) / Math.pow(10, numDigits);		
-		spinner.setSelection((int)shortedDouble);		
+		double shortedDouble = (int) Util.truncateDouble(val, numDigits);
+		rest = (val - shortedDouble) / Math.pow(10, numDigits);
+		spinner.setSelection((int)shortedDouble);
 	}
 
 	public double getValue() {
@@ -131,7 +131,7 @@ extends XComposite
 	}
 
 	public double getShortedValue() {
-		return Util.getDouble(spinner.getSelection(), numDigits);				
+		return Util.getDouble(spinner.getSelection(), numDigits);
 	}
 	
 	public void addSelectionListener(SelectionListener listener) {

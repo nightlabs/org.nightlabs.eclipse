@@ -39,8 +39,8 @@ import org.nightlabs.io.IOFilter;
 import org.nightlabs.io.IOFilterInformationProvider;
 import org.nightlabs.io.IOFilterMan;
 
-public class IOFilterRegistry 
-extends AbstractEPProcessor 
+public class IOFilterRegistry
+extends AbstractEPProcessor
 {
 	public static final Logger logger = Logger.getLogger(IOFilterRegistry.class);
 	
@@ -52,18 +52,18 @@ extends AbstractEPProcessor
 	}
 
 	protected static IOFilterRegistry _sharedInstance;
-	public static IOFilterRegistry sharedInstance() 
-	{		
+	public static IOFilterRegistry sharedInstance()
+	{
 		if (_sharedInstance == null) {
 			_sharedInstance = new IOFilterRegistry();
 //			_sharedInstance.process();
-		}					
+		}
 		return _sharedInstance;
 	}
 	
 	protected IOFilterRegistry() {
 		super();
-	}	
+	}
 	
 	public static final String ELEMENT_IOFILTER = "ioFilter"; //$NON-NLS-1$
 	public static final String ELEMENT_FILE_EXTENSION = "fileExtension"; //$NON-NLS-1$
@@ -76,17 +76,17 @@ extends AbstractEPProcessor
 	
 	@Override
 	public void processElement(IExtension extension, IConfigurationElement element)
-	throws Exception 
+	throws Exception
 	{
 		if (ioFilterMan == null)
 			ioFilterMan = new IOFilterMan();
 		
-		if (element.getName().equalsIgnoreCase(ELEMENT_IOFILTER)) 
+		if (element.getName().equalsIgnoreCase(ELEMENT_IOFILTER))
 		{
 			String name = element.getAttribute(ATTRIBUTE_NAME);
-			String filterDesciption = element.getAttribute(ATTRIBUTE_DESCRIPTION);	
+			String filterDesciption = element.getAttribute(ATTRIBUTE_DESCRIPTION);
 				
-			IOFilterInformationProvider informationProvider = null;			
+			IOFilterInformationProvider informationProvider = null;
 			try {
 				if (element.getAttribute(ATTRIBUTE_INFORMATION_PROVIDER) != null) {
 					Object object = element.createExecutableExtension(ATTRIBUTE_INFORMATION_PROVIDER);
@@ -95,22 +95,22 @@ extends AbstractEPProcessor
 				}
 			} catch (CoreException e) {
 				logger.warn("InformationProvider Class for ioFilter "+name+" could not be instanciated!", e); //$NON-NLS-1$ //$NON-NLS-2$
-			}					
+			}
 			
 			IOFilter filter = null;
-			try 
+			try
 			{
 				Object object = element.createExecutableExtension(ATTRIBUTE_CLASS);
-				if (object instanceof IOFilter) 
+				if (object instanceof IOFilter)
 				{
 					filter = (IOFilter) object;
-					if (checkString(name)) 
+					if (checkString(name))
 					{
 						I18nText filterName = new I18nTextBuffer();
 						filterName.setText(Locale.getDefault().getLanguage(), name);
 						filter.setName(filterName);
 					}
-					if (checkString(filterDesciption)) 
+					if (checkString(filterDesciption))
 					{
 						I18nText filterDesc = new I18nTextBuffer();
 						filterDesc.setText(Locale.getDefault().getLanguage(), filterDesciption);
@@ -120,30 +120,30 @@ extends AbstractEPProcessor
 					IConfigurationElement[] children = element.getChildren(ELEMENT_FILE_EXTENSION);
 					if (children.length == 0) {
 						logger.warn("There is no fileExtension registered for ioFilter "+name+"!"); //$NON-NLS-1$ //$NON-NLS-2$
-						return;					
+						return;
 					}
 						
 					String[] fileExtensions = new String[children.length];
-					for (int i=0; i<children.length; i++) 
+					for (int i=0; i<children.length; i++)
 					{
-						IConfigurationElement child = children[i];					
+						IConfigurationElement child = children[i];
 						String description = child.getAttribute(ATTRIBUTE_DESCRIPTION);
-						String fileExtension = child.getAttribute(ATTRIBUTE_FILE_EXTENSION);					
-						if (checkString(fileExtension)) 
+						String fileExtension = child.getAttribute(ATTRIBUTE_FILE_EXTENSION);
+						if (checkString(fileExtension))
 						{
 							fileExtensions[i] = fileExtension;
 							if (checkString(description)) {
 								I18nText desc = new I18nTextBuffer();
 								desc.setText(Locale.getDefault().getLanguage(), description);
-								filter.setFileExtensionDescription(fileExtension, desc);							
+								filter.setFileExtensionDescription(fileExtension, desc);
 							}
 						}
 					}
 					filter.setFileExtensions(fileExtensions);
 					if (informationProvider != null)
 						filter.setInformationProvider(informationProvider);
-					ioFilterMan.addIOFilter(filter);									
-				}					 
+					ioFilterMan.addIOFilter(filter);
+				}
 			} catch (CoreException e) {
 				logger.warn("ioFilter Class for ioFilter "+name+" could not be instanciated!", e); //$NON-NLS-1$ //$NON-NLS-2$
 			}
@@ -151,11 +151,11 @@ extends AbstractEPProcessor
 	}
 	
 	protected IOFilterMan ioFilterMan = null;
-	public IOFilterMan getIOFilterMan() 
+	public IOFilterMan getIOFilterMan()
 	{
 		checkProcessing();
 		
-		if (ioFilterMan == null) 
+		if (ioFilterMan == null)
 			ioFilterMan = new IOFilterMan();
 		
 		return ioFilterMan;

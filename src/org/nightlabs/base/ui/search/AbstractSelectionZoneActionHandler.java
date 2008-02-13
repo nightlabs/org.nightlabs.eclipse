@@ -35,25 +35,25 @@ import org.nightlabs.notification.NotificationEvent;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
-public abstract class AbstractSelectionZoneActionHandler 
-extends AbstractSearchResultActionHandler 
+public abstract class AbstractSelectionZoneActionHandler
+extends AbstractSearchResultActionHandler
 {
 	public AbstractSelectionZoneActionHandler() {
 	}
 
-	public void run() 
+	public void run()
 	{
 		Collection selectedObjects = getSearchResultProvider().getSelectedObjects();
 		Collection<Class> subjectClassesToClear = new ArrayList<Class>();
 		subjectClassesToClear.add(getSearchResultProvider().getFactory().getResultTypeClass());
 		if (selectedObjects != null) {
 			SelectionManager.sharedInstance().notify(new NotificationEvent(
-					AbstractSelectionZoneActionHandler.this, 
-					getSelectionZone(), 
-					selectedObjects, 
+					AbstractSelectionZoneActionHandler.this,
+					getSelectionZone(),
+					selectedObjects,
 					subjectClassesToClear));
 		}
-	}	
+	}
 	
 	public abstract String getSelectionZone();
 }

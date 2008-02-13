@@ -57,8 +57,8 @@ import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
 import org.nightlabs.base.ui.io.FileEditorInput;
 import org.nightlabs.base.ui.util.RCPUtil;
 
-public class Editor2PerspectiveRegistry 
-extends AbstractEPProcessor 
+public class Editor2PerspectiveRegistry
+extends AbstractEPProcessor
 {
 	private static final Logger logger = Logger.getLogger(Editor2PerspectiveRegistry.class);
 	public static final String EXTENSION_POINT_ID = "org.nightlabs.base.ui.editor2perspective"; //$NON-NLS-1$
@@ -68,12 +68,12 @@ extends AbstractEPProcessor
 		return EXTENSION_POINT_ID;
 	}
 
-	private static Editor2PerspectiveRegistry sharedInstance;	
+	private static Editor2PerspectiveRegistry sharedInstance;
 	public static Editor2PerspectiveRegistry sharedInstance() {
 		if (sharedInstance == null)
 			sharedInstance = new Editor2PerspectiveRegistry();
 		return sharedInstance;
-	}	
+	}
 		
 	private Map<String, String> editorID2PerspectiveID = new HashMap<String, String>();
 	public String getPerspectiveID(String editorID) {
@@ -95,7 +95,7 @@ extends AbstractEPProcessor
 	
 	@Override
 	public void processElement(IExtension extension, IConfigurationElement element)
-	throws Exception 
+	throws Exception
 	{
 		if (element.getName().equalsIgnoreCase("registry"))  //$NON-NLS-1$
 		{
@@ -109,16 +109,16 @@ extends AbstractEPProcessor
 			
 //			Set<String> perspectiveIDs = editorID2PerspectiveIDs.get(editorID);
 //			if (perspectiveIDs == null)
-//				perspectiveIDs = new HashSet<String>();			
+//				perspectiveIDs = new HashSet<String>();
 //			perspectiveIDs.add(perspectiveID);
 //			editorID2PerspectiveIDs.put(editorID, perspectiveIDs);
 			editorID2PerspectiveID.put(editorID, perspectiveID);
 			
 			Set<String> editorIDs = perspectiveID2editorIDs.get(perspectiveID);
 			if (editorIDs == null)
-				editorIDs = new HashSet<String>();			
+				editorIDs = new HashSet<String>();
 			editorIDs.add(editorID);
-			perspectiveID2editorIDs.put(perspectiveID, editorIDs);			
+			perspectiveID2editorIDs.put(perspectiveID, editorIDs);
 		}
 	}
 	
@@ -126,17 +126,17 @@ extends AbstractEPProcessor
 	throws PartInitException, WorkbenchException
 	{
 	 	IPerspectiveRegistry perspectiveRegistry = PlatformUI.getWorkbench().getPerspectiveRegistry();
-//  	IEditorRegistry editorRegistry = PlatformUI.getWorkbench().getEditorRegistry();  	
+//  	IEditorRegistry editorRegistry = PlatformUI.getWorkbench().getEditorRegistry();
   	String perspectiveID = getPerspectiveID(editorID);
   	if (perspectiveID != null) {
   		IPerspectiveDescriptor perspectiveDescriptor = perspectiveRegistry.findPerspectiveWithId(perspectiveID);
   		if (perspectiveDescriptor != null) {
-	  		IWorkbench workbench = PlatformUI.getWorkbench();	  	  	
-				workbench.showPerspective(perspectiveID, 
+	  		IWorkbench workbench = PlatformUI.getWorkbench();
+				workbench.showPerspective(perspectiveID,
 				    workbench.getActiveWorkbenchWindow());
-				RCPUtil.openEditor(input, editorID);					
+				RCPUtil.openEditor(input, editorID);
   		}
-  	}		
+  	}
 	}
 	
   /**
@@ -154,7 +154,7 @@ extends AbstractEPProcessor
 			throw new IllegalArgumentException("Param file must not be null!"); //$NON-NLS-1$
 
   	IPerspectiveRegistry perspectiveRegistry = PlatformUI.getWorkbench().getPerspectiveRegistry();
-  	IEditorRegistry editorRegistry = PlatformUI.getWorkbench().getEditorRegistry();  	
+  	IEditorRegistry editorRegistry = PlatformUI.getWorkbench().getEditorRegistry();
 		IEditorDescriptor editorDescriptor = editorRegistry.getDefaultEditor(file.getName());
 		if (editorDescriptor != null) {
 			String editorID = editorDescriptor.getId();
@@ -163,24 +163,24 @@ extends AbstractEPProcessor
 	  		IPerspectiveDescriptor perspectiveDescriptor = perspectiveRegistry.findPerspectiveWithId(perspectiveID);
 	  		if (perspectiveDescriptor != null) {
 		  	  try {
-			  		IWorkbench workbench = PlatformUI.getWorkbench();	  	  	
-						workbench.showPerspective(perspectiveID, 
+			  		IWorkbench workbench = PlatformUI.getWorkbench();
+						workbench.showPerspective(perspectiveID,
 						    workbench.getActiveWorkbenchWindow());
 					} catch (WorkbenchException e) {
 						throw new PartInitException("Perspective width ID "+perspectiveID+" could not be opend", e); //$NON-NLS-1$ //$NON-NLS-2$
-					}	  			  			
+					}
 	  		}
 	  	}
 			FileEditorInput input = new FileEditorInput(file);
 			input.setSaved(saved);
-			RCPUtil.openEditor(input, editorID);			
+			RCPUtil.openEditor(input, editorID);
 			return true;
 		}
 		return false;
   }
 	
-  public boolean openFile(File file) 
-  throws PartInitException 
+  public boolean openFile(File file)
+  throws PartInitException
   {
   	return openFile(file, true);
   }
@@ -190,8 +190,8 @@ extends AbstractEPProcessor
 //  	RCPUtil.getActiveWorkbenchWindow().addPerspectiveListener(perspectiveListener);
   }
   	
-//***************************** Only workbenchPartReference.setVisible(true) Variant *****************************  
-//  private Set<IEditorReference> hiddenEditorReferences = new HashSet<IEditorReference>();  
+//***************************** Only workbenchPartReference.setVisible(true) Variant *****************************
+//  private Set<IEditorReference> hiddenEditorReferences = new HashSet<IEditorReference>();
 //  private IPerspectiveListener perspectiveListener = new PerspectiveAdapter() {
 //		@Override
 //		public void perspectiveActivated(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
@@ -203,26 +203,26 @@ extends AbstractEPProcessor
 //						WorkbenchPartReference workbenchPartReference = (WorkbenchPartReference) editorReference;
 //						workbenchPartReference.setVisible(true);
 //					}
-//				}				
+//				}
 //				logger.info("No editor perspective bindings declared for perspective "+perspective.getId()+", show all editors and "+hiddenEditorReferences.size()+" hidden editors");
-//				hiddenEditorReferences.clear();				
+//				hiddenEditorReferences.clear();
 //			}
-//			// there exists an editor perspective binding for the activated perspective 
+//			// there exists an editor perspective binding for the activated perspective
 //			else {
 //				logger.info("There is a editor perspective binding declared for perspective "+perspective.getId()+"!");
 //				// collect all hidden editors and all editors in the current WorkbenchPage
 //				Collection<IEditorReference> editorReferences = hiddenEditorReferences;
 //				for (int i=0; i<page.getEditorReferences().length; i++) {
 //					editorReferences.add(page.getEditorReferences()[i]);
-//				}				
+//				}
 //				for (IEditorReference editorReference : editorReferences) {
 //					if (editorReference instanceof WorkbenchPartReference) {
 //						WorkbenchPartReference workbenchPartReference = (WorkbenchPartReference) editorReference;
 //						boolean visible = editorIDs.contains(editorReference.getId());
-//						workbenchPartReference.setVisible(visible);						
+//						workbenchPartReference.setVisible(visible);
 //						if (!visible) {
 //							hiddenEditorReferences.add(editorReference);
-//						}				
+//						}
 //						logger.info("visible = "+visible+" for editor "+editorReference.getId());
 //					}
 //				}
@@ -231,19 +231,19 @@ extends AbstractEPProcessor
 //  };
     
 // ***************************** Close Variant *****************************
-//  private Set<IEditorReference> hiddenEditorReferences = new HashSet<IEditorReference>();  
+//  private Set<IEditorReference> hiddenEditorReferences = new HashSet<IEditorReference>();
 //  private IPerspectiveListener4 perspectiveListener = new PerspectiveAdapter() {
 //		@Override
 //		public void perspectiveActivated(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
 //			Set<String> editorIDs = perspectiveID2editorIDs.get(perspective.getId());
 //			// not editor perspective binding declared, show all hidden editors
 //			if (editorIDs == null) {
-//				logger.info("No editor perspective bindings declared for perspective "+perspective.getId()+", show all editors and "+hiddenEditorReferences.size()+" hidden editors");				
+//				logger.info("No editor perspective bindings declared for perspective "+perspective.getId()+", show all editors and "+hiddenEditorReferences.size()+" hidden editors");
 //				for (IEditorReference editorReference : hiddenEditorReferences) {
 //					if (editorReference instanceof WorkbenchPartReference) {
 //						WorkbenchPartReference workbenchPartReference = (WorkbenchPartReference) editorReference;
 //						workbenchPartReference.setVisible(true);
-//						workbenchPartReference.getPart(true);						
+//						workbenchPartReference.getPart(true);
 //						try {
 //							page.openEditor(editorReference.getEditorInput(), editorReference.getId());
 //							logger.info("openEditor for editor "+editorReference.getId());
@@ -251,23 +251,23 @@ extends AbstractEPProcessor
 //							throw new RuntimeException(e);
 //						}
 //					}
-//				}				
+//				}
 //				hiddenEditorReferences.clear();
 //				page.getWorkbenchWindow().getShell().layout(true, true);
 //			}
-//			// there exists an editor perspective binding for the activated perspective 
+//			// there exists an editor perspective binding for the activated perspective
 //			else {
 //				logger.info("There is a editor perspective binding declared for perspective "+perspective.getId()+"!");
 //				// collect all hidden editors and all editors in the current WorkbenchPage
 //				Collection<IEditorReference> editorReferences = hiddenEditorReferences;
 //				for (int i=0; i<page.getEditorReferences().length; i++) {
 //					editorReferences.add(page.getEditorReferences()[i]);
-//				}				
+//				}
 //				for (IEditorReference editorReference : editorReferences) {
 //					if (editorReference instanceof WorkbenchPartReference) {
 //						WorkbenchPartReference workbenchPartReference = (WorkbenchPartReference) editorReference;
 //						boolean visible = editorIDs.contains(editorReference.getId());
-//						workbenchPartReference.setVisible(visible);						
+//						workbenchPartReference.setVisible(visible);
 //						if (!visible) {
 //							hiddenEditorReferences.add(editorReference);
 //						}
@@ -283,7 +283,7 @@ extends AbstractEPProcessor
 //						logger.info("visible = "+visible+" for editor "+editorReference.getId());
 //					}
 //				}
-//				page.getWorkbenchWindow().getShell().layout(true, true);				
+//				page.getWorkbenchWindow().getShell().layout(true, true);
 //				IEditorReference[] editorReferencesToClose = hiddenEditorReferences.toArray(
 //						new IEditorReference[hiddenEditorReferences.size()]);
 //				page.closeEditors(editorReferencesToClose, false);
@@ -294,7 +294,7 @@ extends AbstractEPProcessor
   
   private Map<IEditorReference, Control> editorReference2Control = new HashMap<IEditorReference, Control>();
 //  private Map<IEditorReference, PartStack> editorReference2EditorStack = new HashMap<IEditorReference, PartStack>();
-  private Set<IEditorReference> hiddenEditorReferences = new HashSet<IEditorReference>();  
+  private Set<IEditorReference> hiddenEditorReferences = new HashSet<IEditorReference>();
   private IPerspectiveListener4 perspectiveListener = new PerspectiveAdapter() {
 		@Override
 		public void perspectiveActivated(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
@@ -305,7 +305,7 @@ extends AbstractEPProcessor
 				for (IEditorReference editorReference : hiddenEditorReferences) {
 					if (editorReference instanceof WorkbenchPartReference) {
 						WorkbenchPartReference workbenchPartReference = (WorkbenchPartReference) editorReference;
-//						workbenchPartReference.setVisible(true);		
+//						workbenchPartReference.setVisible(true);
 						
 //						PartStack partStack = editorReference2EditorStack.get(workbenchPartReference);
 //						if (partStack != null) {
@@ -316,23 +316,23 @@ extends AbstractEPProcessor
 						editorControl.setVisible(true);
 						editorControl.getParent().layout(true, true);
 					}
-				}	
+				}
 				hiddenEditorReferences.clear();
 //				page.getWorkbenchWindow().getShell().layout(true, true);
 			}
-			// there exists an editor perspective binding for the activated perspective 
+			// there exists an editor perspective binding for the activated perspective
 			else {
 				logger.info("There is a editor perspective binding declared for perspective "+perspective.getId()+"!"); //$NON-NLS-1$ //$NON-NLS-2$
 				// collect all hidden editors and all editors in the current WorkbenchPage
 				Collection<IEditorReference> editorReferences = hiddenEditorReferences;
 				for (int i=0; i<page.getEditorReferences().length; i++) {
 					editorReferences.add(page.getEditorReferences()[i]);
-				}				
+				}
 				for (IEditorReference editorReference : editorReferences) {
 					if (editorReference instanceof WorkbenchPartReference) {
 						WorkbenchPartReference workbenchPartReference = (WorkbenchPartReference) editorReference;
 						boolean visible = editorIDs.contains(editorReference.getId());
-//						workbenchPartReference.setVisible(visible);				
+//						workbenchPartReference.setVisible(visible);
 												
 						if (!visible) {
 							hiddenEditorReferences.add(editorReference);
@@ -352,11 +352,11 @@ extends AbstractEPProcessor
 						logger.info("visible = "+visible+" for editor "+editorReference.getId()); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 				}
-//				page.getWorkbenchWindow().getShell().layout(true, true);				
+//				page.getWorkbenchWindow().getShell().layout(true, true);
 			}
 		}
-  };  
-  public enum VisibilityMode 
+  };
+  public enum VisibilityMode
   {
   	EXCLUDE_EDITOR_FROM_PERSPECTIVE,
   	PERSPECTIVE_HIDE_UNBOUND_EDITORS,

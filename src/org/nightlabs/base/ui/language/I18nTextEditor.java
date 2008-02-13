@@ -100,7 +100,7 @@ public class I18nTextEditor extends XComposite implements II18nTextEditor
 	/**
 	 * Create a new {@link I18nTextEditor} listening to languagechanges
 	 * of the given {@link LanguageChooser} and no descriptive header.
-	 *  
+	 * 
 	 * @param parent The parent to use.
 	 * @param languageChooser The {@link LanguageChooser} to listen to.
 	 */
@@ -144,7 +144,7 @@ public class I18nTextEditor extends XComposite implements II18nTextEditor
 		this.languageChooser = new LanguageChooserCombo(parent); //, false);
 	}
 
-	protected void createContext(Composite parent, LanguageChooser languageChooser, String caption) 
+	protected void createContext(Composite parent, LanguageChooser languageChooser, String caption)
 	{
 		setEditMode(EditMode.DIRECT);
 
@@ -172,7 +172,7 @@ public class I18nTextEditor extends XComposite implements II18nTextEditor
 		}
 
 		if (captionLabel != null) {
-			GridData gd = new GridData();			
+			GridData gd = new GridData();
 			gd.horizontalSpan = getGridLayout().numColumns;
 			captionLabel.setLayoutData(gd);
 		}
@@ -205,7 +205,7 @@ public class I18nTextEditor extends XComposite implements II18nTextEditor
 
 //				e = Util.cloneSerializable(e);
 //				e.widget = I18nTextEditor.this;
-				// TODO The ModifyEvent which is forwarded to our listeners should be 
+				// TODO The ModifyEvent which is forwarded to our listeners should be
 				// a new one where event.widget does *not* point to the internal widget,
 				// but to this wrapping composite-widget.
 				// There should be a util-method in RCPUtil for this kind of event-forwards.
@@ -226,7 +226,7 @@ public class I18nTextEditor extends XComposite implements II18nTextEditor
 	}
 
 	protected Text createText(Composite parent) {
-		text = new Text(parent, getBorderStyle()); 
+		text = new Text(parent, getBorderStyle());
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		return text;
 	}
@@ -350,7 +350,7 @@ public class I18nTextEditor extends XComposite implements II18nTextEditor
 	 * directly, but instead to transfer all data only from the UI to the object, if
 	 * the user explicitely applies his changes (in order to transfer them to the server
 	 * as well). Therefore, you can use the {@link EditMode#BUFFERED}, which will
-	 * cause an internal {@link I18nTextBuffer} to be created. 
+	 * cause an internal {@link I18nTextBuffer} to be created.
 	 * </p>
 	 *
 	 * @param editMode The new {@link EditMode}.
@@ -386,12 +386,12 @@ public class I18nTextEditor extends XComposite implements II18nTextEditor
 	}
 
 	/**
-	 * The orgiginal text of the current language's text after load. 
+	 * The orgiginal text of the current language's text after load.
 	 */
 	private String orgText = ""; //$NON-NLS-1$
 
 	/**
-	 * Set to true when loading, so that modify-listeners will not react 
+	 * Set to true when loading, so that modify-listeners will not react
 	 * when a loaded (not modified) text is displayed.
 	 */
 	private boolean loadingText = false;
@@ -405,7 +405,7 @@ public class I18nTextEditor extends XComposite implements II18nTextEditor
 	}
 
 	/**
-	 * Loads the text out of the buffer and displays it 
+	 * Loads the text out of the buffer and displays it
 	 * in the text field. ModifyListeners registered will
 	 * not be triggered when this happens.
 	 */
@@ -431,7 +431,7 @@ public class I18nTextEditor extends XComposite implements II18nTextEditor
 	 * This method stores the currently edited text into the "backend" {@link I18nText}
 	 * object. This method is automatically called whenever the <tt>I18nTextEditor</tt>
 	 * is changed by the user. This means, the I18nText is kept synchronous with the
-	 * displayed and edited text. 
+	 * displayed and edited text.
 	 * <p>
 	 * This method has been changed from public to private.
 	 */
@@ -504,7 +504,7 @@ public class I18nTextEditor extends XComposite implements II18nTextEditor
 	 * @see org.nightlabs.base.ui.language.II18nTextEditor#addModificationFinishedListener(org.nightlabs.base.ui.language.ModificationFinishedListener)
 	 */
 	public void addModificationFinishedListener(ModificationFinishedListener listener) {
-		modificationFinishedListeners.add(listener);		
+		modificationFinishedListeners.add(listener);
 	}
 
 	/* (non-Javadoc)
@@ -514,12 +514,12 @@ public class I18nTextEditor extends XComposite implements II18nTextEditor
 		modificationFinishedListeners.remove(listener);
 	}
 	
-	private void fireModificationFinished() 
+	private void fireModificationFinished()
 	{
 		ModificationFinishedEvent event = new ModificationFinishedEvent(this);
 		for (int i=0; i<modificationFinishedListeners.size(); i++) {
 			ModificationFinishedListener listener = (ModificationFinishedListener) modificationFinishedListeners.getListeners()[i];
 			listener.modificationFinished(event);
 		}
-	}	
+	}
 }

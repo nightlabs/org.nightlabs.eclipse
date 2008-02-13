@@ -34,8 +34,8 @@ import org.eclipse.swt.widgets.Text;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
-public class I18nTextEditorMultiLine 
-extends I18nTextEditor 
+public class I18nTextEditorMultiLine
+extends I18nTextEditor
 {
 	/**
 	 * @param parent
@@ -75,7 +75,7 @@ extends I18nTextEditor
 	 * @param caption
 	 */
 	public I18nTextEditorMultiLine(Composite parent, LanguageChooser languageChooser, String caption,
-			int lineCount) 
+			int lineCount)
 	{
 		super(parent, languageChooser, caption, false);
 		this.lineCount = lineCount;
@@ -97,7 +97,7 @@ extends I18nTextEditor
 	}
 	
 	@Override
-	protected Text createText(Composite parent) 
+	protected Text createText(Composite parent)
 	{
 		Text text = new Text(parent, getBorderStyle() | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		singleLineHeight = text.getLineHeight();
@@ -105,7 +105,7 @@ extends I18nTextEditor
 		int actualLineCount = Math.max(lineCount, DEFAULT_LINECOUNT);
 		// TODO: why is this minHeight ignored, even if grabExcessiv... == true?? (marius)
 		gridData.minimumHeight = actualLineCount * singleLineHeight;
-		text.setLayoutData(gridData);		
+		text.setLayoutData(gridData);
 		return text;
 	}
 	

@@ -36,38 +36,38 @@ import org.nightlabs.io.AbstractIOFilterWithProgress;
 import org.nightlabs.io.IOFilter;
 import org.nightlabs.io.IOFilterWithProgress;
 
-public class IOFilterProgressDialog 
+public class IOFilterProgressDialog
 extends ProgressMonitorDialog
 {
 	protected IOFilter ioFilter;
-	public IOFilterProgressDialog(Shell parent, IOFilter ioFilter) 
+	public IOFilterProgressDialog(Shell parent, IOFilter ioFilter)
 	{
 		super(parent);
 		this.ioFilter = ioFilter;
 		if (ioFilter instanceof IOFilterWithProgress) {
-			IOFilterWithProgress progressFilter = (IOFilterWithProgress) ioFilter;		
+			IOFilterWithProgress progressFilter = (IOFilterWithProgress) ioFilter;
 			progressFilter.addPropertyChangeListener(subProgressListener);
-			getProgressMonitor().beginTask(ioFilter.getDescription().getText(Locale.getDefault().getLanguage()), progressFilter.getTotalWork());			
+			getProgressMonitor().beginTask(ioFilter.getDescription().getText(Locale.getDefault().getLanguage()), progressFilter.getTotalWork());
 		}
 		else {
-			getProgressMonitor().beginTask(ioFilter.getDescription().getText(Locale.getDefault().getLanguage()), 2);			
+			getProgressMonitor().beginTask(ioFilter.getDescription().getText(Locale.getDefault().getLanguage()), 2);
 		}
 	}
 	
 	protected PropertyChangeListener subProgressListener = new PropertyChangeListener()
-	{	
-		public void propertyChange(PropertyChangeEvent evt) 
+	{
+		public void propertyChange(PropertyChangeEvent evt)
 		{
 			Object newValue = evt.getNewValue();
 			if (newValue.equals(AbstractIOFilterWithProgress.PROGRESS_CHANGED)) {
 				int work = ((Integer)newValue).intValue();
-				getProgressMonitor().internalWorked(work); 
+				getProgressMonitor().internalWorked(work);
 			}
 			else if (newValue.equals(AbstractIOFilterWithProgress.SUBTASK_FINISHED)) {
 				String subTaskName = (String) newValue;
 				getProgressMonitor().subTask(subTaskName);
 			}
-		}	
+		}
 	};
 	
 }

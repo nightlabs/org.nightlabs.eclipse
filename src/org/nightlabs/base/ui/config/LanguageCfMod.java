@@ -35,7 +35,7 @@ import org.nightlabs.config.ConfigModule;
 import org.nightlabs.config.InitException;
 import org.nightlabs.language.LanguageCf;
 
-public class LanguageCfMod 
+public class LanguageCfMod
 extends ConfigModule
 {
 	private static final long serialVersionUID = 1L;
@@ -48,7 +48,7 @@ extends ConfigModule
 		return languages;
 	}
 	public void setLanguages(CfModList<LanguageCf> languages) {
-		this.languages = languages;		
+		this.languages = languages;
 	}
 
 	public Set<String> getLanguageIDs()
@@ -61,8 +61,8 @@ extends ConfigModule
 	}
 
 	@Override
-	public void init() 
-	throws InitException 
+	public void init()
+	throws InitException
 	{
 		super.init();
 		if (languages == null || languages.isEmpty())
@@ -75,14 +75,14 @@ extends ConfigModule
 		}
 	}
 
-	protected CfModList<LanguageCf> createDefaultLanguage() 
+	protected CfModList<LanguageCf> createDefaultLanguage()
 	{
 		CfModList<LanguageCf> l = new CfModList<LanguageCf>(this);
-		l.add(LanguageManager.createDefaultLanguage());		
+		l.add(LanguageManager.createDefaultLanguage());
 		return l;
 	}
 
-//	public static Collection createDefaultLanguages() 
+//	public static Collection createDefaultLanguages()
 //	{
 //		List languages = new ArrayList();
 //		languages.add(Locale.ENGLISH.getLanguage());

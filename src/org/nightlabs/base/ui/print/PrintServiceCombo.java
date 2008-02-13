@@ -27,10 +27,10 @@ public class PrintServiceCombo extends XComboComposite<PrintService> {
 	 * @param parent
 	 * @param style
 	 */
-	@SuppressWarnings("unchecked") 
+	@SuppressWarnings("unchecked")
 	public PrintServiceCombo(Composite parent, int comboStyle) {
 		super(parent, comboStyle, (String) null, new LabelProvider());
 		setInput( PrintUtil.lookupPrintServices() );
-	}	
+	}
 	
 }

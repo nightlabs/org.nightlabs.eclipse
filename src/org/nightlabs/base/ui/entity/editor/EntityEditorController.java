@@ -59,8 +59,8 @@ import org.nightlabs.base.ui.resource.Messages;
  * it's registered {@link IEntityEditorPageController}s.</p>
  * 
  * <p>Additionally {@link EntityEditorController} provides a pool of Jobs
- * that will be scheduled by the controller taking care that not more than 
- * a configurable number of jobs run simultaneously.</p> 
+ * that will be scheduled by the controller taking care that not more than
+ * a configurable number of jobs run simultaneously.</p>
  * 
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  */
@@ -113,7 +113,7 @@ public class EntityEditorController
 	public static final int MAX_RUNNING_JOB_COUNT = 3;
 	
 	/**
-	 * Map of one job per page controller that could be scheduled in background. 
+	 * Map of one job per page controller that could be scheduled in background.
 	 * The number of allowed simultaneously running jobs can be configured by {@link #MAX_RUNNING_JOB_COUNT}.
 	 * The jobs will be sorted by the index of the IFormPage associated to the page controller
 	 * given as key.
@@ -212,14 +212,14 @@ public class EntityEditorController
 				if (source instanceof EntityEditor) {
 					EntityEditor editor = (EntityEditor) source;
 //					if (editor.isDirty()) {
-					IFormPage page = editor.getActivePageInstance();						
+					IFormPage page = editor.getActivePageInstance();
 					IEntityEditorPageController pageController = pageID2pageController.get(page.getId());
 					if (pageController != null) {
 						logger.debug("pageControler.markDirty() for page "+page.getId()); //$NON-NLS-1$
 //						pageController.markDirty();
-					}		
+					}
 //					}
-				}				
+				}
 			}
 		}
 	};
@@ -244,7 +244,7 @@ public class EntityEditorController
 		return pageID2pageController.get(pageID);
 	}
 	/**
-	 * @param controllerID The id of the controller. 
+	 * @param controllerID The id of the controller.
 	 * @return
 	 */
 	public IEntityEditorPageController getPageControllerByControllerID(String controllerID) {
@@ -253,7 +253,7 @@ public class EntityEditorController
 
 //	/**
 //	 * Return the pages the given controller is linked to.
-//	 * 
+//	 *
 //	 * @param pageController The page controller to search a page for.
 //	 * @return The pages the given controller is linked to.
 //	 */
@@ -273,7 +273,7 @@ public class EntityEditorController
 
 //	/**
 //	 * Returns the current pageID2pageController for this editorControllers.
-//	 * 
+//	 *
 //	 * @return The current pageID2pageController for this editorControllers.
 //	 */
 //	protected Map<String, IEntityEditorPageController> getPageID2pageController() {
@@ -281,7 +281,7 @@ public class EntityEditorController
 //	}
 
 	/**
-	 * Adds a new job to the pool, that might be scheduled instantly or 
+	 * Adds a new job to the pool, that might be scheduled instantly or
 	 * some time later, depending on the numer of already running jobs.
 	 * 
 	 * This method synchronized the job pool so other modifications
@@ -292,7 +292,7 @@ public class EntityEditorController
 	 */
 	public void putLoadJob(IEntityEditorPageController pageController, Job loadJob) {
 		synchronized (loadJobPool) {
-			loadJobPool.put(pageController, loadJob);		
+			loadJobPool.put(pageController, loadJob);
 			loadJob.addJobChangeListener(loadJobChangeListener);
 			runPossibleJobs();
 		}
@@ -302,7 +302,7 @@ public class EntityEditorController
 	 * Remove and return the job linked to the given page controller from
 	 * the pool. Note that the job returned might be running (or finished) already.
 	 * If the job is currently running (checked by the isAlive() method of its thread)
-	 * the counter of running jobs will be decremented and 
+	 * the counter of running jobs will be decremented and
 	 * 
 	 * @param pageController
 	 * @return
@@ -312,7 +312,7 @@ public class EntityEditorController
 			Job loadJob = loadJobPool.get(pageController);
 			if (loadJob != null) {
 				loadJobPool.remove(pageController);
-				loadJob.removeJobChangeListener(loadJobChangeListener);				
+				loadJob.removeJobChangeListener(loadJobChangeListener);
 				if (loadJob.getThread() != null && loadJob.getThread().isAlive()) {
 					runningJobs--;
 					runPossibleJobs();
@@ -324,7 +324,7 @@ public class EntityEditorController
 
 	/**
 	 * Schedules as many jobs that were not already scheduled
-	 * and allowed according to the setting of maximal simultanous jobs.  
+	 * and allowed according to the setting of maximal simultanous jobs.
 	 */
 	private void runPossibleJobs() {
 		synchronized (loadJobPool) {
@@ -341,7 +341,7 @@ public class EntityEditorController
 	}
 	
 	/**
-	 * Job listener to track finished jobs. 
+	 * Job listener to track finished jobs.
 	 */
 	private IJobChangeListener loadJobChangeListener = new IJobChangeListener() {
 		public void aboutToRun(IJobChangeEvent event) {
@@ -376,9 +376,9 @@ public class EntityEditorController
 	
 	/**
 	 * Iterates through all IFormPages, and if a page is dirty the corresponding controller is added
-	 * to the dirtyPageControllers 
+	 * to the dirtyPageControllers
 	 */
-	public void populateDirtyPageControllers() 
+	public void populateDirtyPageControllers()
 	{
 		this.dirtyPageControllers.clear();
 //		for (Entry<IEntityEditorPageController, Collection<IFormPage>> entry : controllerPages.entrySet()) {
@@ -386,7 +386,7 @@ public class EntityEditorController
 		for (IEntityEditorPageController controller : getPageControllers()) {
 			if (controller.isDirty()) {
 				dirtyPageControllers.add(controller);
-			}			
+			}
 		}
 	}
 
@@ -432,7 +432,7 @@ public class EntityEditorController
 
 	/**
 	 * Called when the associated editor gets the focus.
-	 * It delegates the 
+	 * It delegates the
 	 *
 	 */
 	public void editorFocussed() {
@@ -491,7 +491,7 @@ public class EntityEditorController
 			throw new IllegalStateException("This method expects only one (or none) IEntityEditorPageController to be registered of the given type (" + clazz + ")");
 		if (res.size() == 1)
 			return (T) res.iterator().next();
-		else 
+		else
 			return null;
 	}
 }

@@ -33,7 +33,7 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.nightlabs.base.ui.celleditor.ComboBoxCellEditor;
 import org.nightlabs.base.ui.labelprovider.ComboBoxLabelProvider;
 
-public class ComboBoxPropertyDescriptor 
+public class ComboBoxPropertyDescriptor
 extends PropertyDescriptor
 {
   /**
@@ -41,7 +41,7 @@ extends PropertyDescriptor
    */
   protected String[] values;
   
-  public ComboBoxPropertyDescriptor(Object id, String displayName, String[] valuesArray) 
+  public ComboBoxPropertyDescriptor(Object id, String displayName, String[] valuesArray)
   {
     super(id, displayName);
     values = valuesArray;
@@ -49,7 +49,7 @@ extends PropertyDescriptor
   }
   
   /**
-   * The <code>ComboBoxPropertyDescriptor</code> implementation of this 
+   * The <code>ComboBoxPropertyDescriptor</code> implementation of this
    * <code>IPropertyDescriptor</code> method creates and returns a new
    * <code>ComboBoxCellEditor</code>.
    * <p>
@@ -57,12 +57,12 @@ extends PropertyDescriptor
    * </p>
    */
   @Override
-	public CellEditor createPropertyEditor(Composite parent) 
+	public CellEditor createPropertyEditor(Composite parent)
   {
     CellEditor editor = new ComboBoxCellEditor(parent, values, SWT.READ_ONLY);
     if (getValidator() != null)
       editor.setValidator(getValidator());
     return editor;
-  }  
+  }
 
 }

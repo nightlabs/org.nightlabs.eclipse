@@ -39,8 +39,8 @@ import org.nightlabs.i18n.unit.resolution.ResolutionUnitRegistry;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public class ResolutionUnitEP 
-extends AbstractEPProcessor 
+public class ResolutionUnitEP
+extends AbstractEPProcessor
 {
 	public static final String EXTENSION_POINT_ID = "org.nightlabs.base.ui.resolutionUnit"; //$NON-NLS-1$
 	
@@ -72,9 +72,9 @@ extends AbstractEPProcessor
 
 	@Override
 	public void processElement(IExtension extension, IConfigurationElement element)
-	throws Exception 
+	throws Exception
 	{
-		if (element.getName().equalsIgnoreCase(ELEMENT_UNIT)) 
+		if (element.getName().equalsIgnoreCase(ELEMENT_UNIT))
 		{
 			String id = element.getAttribute(ATTRIBUTE_ID);
 			if (!checkString(id))
@@ -95,13 +95,13 @@ extends AbstractEPProcessor
 			IResolutionUnit resUnit = new ResolutionUnit(id, name, unit);
 			getResolutionUnitRegistry().addResolutionUnit(resUnit);
 		}
-		if (element.getName().equalsIgnoreCase(ELEMENT_UNIT_CLASS)) 
+		if (element.getName().equalsIgnoreCase(ELEMENT_UNIT_CLASS))
 		{
 			try {
 				IResolutionUnit resUnit = (IResolutionUnit) element.createExecutableExtension(ATTRIBUTE_CLASS);
 				getResolutionUnitRegistry().addResolutionUnit(resUnit);
 			} catch (CoreException ce) {
-				throw new EPProcessorException(ce); 
+				throw new EPProcessorException(ce);
 			}
 		}
 	}
@@ -111,6 +111,6 @@ extends AbstractEPProcessor
 	}
 	
 	private UnitRegistry getUnitRegistry() {
-		return UnitRegistryEP.sharedInstance().getUnitRegistry();			
+		return UnitRegistryEP.sharedInstance().getUnitRegistry();
 	}
 }

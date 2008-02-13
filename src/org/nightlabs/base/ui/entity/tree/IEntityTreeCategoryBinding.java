@@ -28,7 +28,6 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IEditorInput;
-import org.nightlabs.base.ui.entity.EntityEditorRegistry;
 
 /**
  * {@link IEntityTreeCategoryBinding}s are used to bind {@link IEntityTreeCategory}s
@@ -42,7 +41,7 @@ import org.nightlabs.base.ui.entity.EntityEditorRegistry;
  * will cause the binding to delegate all its methods to the category it is bound
  * to. The bindings were introduced to give developers the freedom to
  * intercept this behaviour and do things specific for a certain binding
- * of a category without the need of changing the category itself. 
+ * of a category without the need of changing the category itself.
  * <p>
  * Consumers of an {@link IEntityTreeCategory} should use the bindings
  * rather than the categories themselves to access a category's content,

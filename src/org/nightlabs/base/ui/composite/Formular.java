@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 
 /**
- * An {@link XComposite} to easily add and hold formular like widget 
+ * An {@link XComposite} to easily add and hold formular like widget
  * combinations.
  * 
  * @author Marc Klinger - marc[at]nightlabs[dot]de

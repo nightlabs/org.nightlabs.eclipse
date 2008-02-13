@@ -35,7 +35,7 @@ import org.osgi.framework.BundleContext;
 /**
  * The main plugin class to be used in the desktop.
  */
-public class NLBasePlugin extends AbstractUIPlugin 
+public class NLBasePlugin extends AbstractUIPlugin
 {
 	public static final String PLUGIN_ID = "org.nightlabs.base.ui"; //$NON-NLS-1$
 	

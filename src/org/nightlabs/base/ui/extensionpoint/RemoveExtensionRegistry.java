@@ -48,8 +48,8 @@ import org.eclipse.core.runtime.Platform;
 /**
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  */
-public class RemoveExtensionRegistry 
-extends AbstractEPProcessor 
+public class RemoveExtensionRegistry
+extends AbstractEPProcessor
 {
 	private static final Logger logger = Logger.getLogger(RemoveExtensionRegistry.class);
 	
@@ -68,9 +68,9 @@ extends AbstractEPProcessor
 
 	@Override
 	public void processElement(IExtension extension, IConfigurationElement element)
-	throws Exception 
+	throws Exception
 	{
-		if (element.getName().equalsIgnoreCase(ELEMENT_REMOVE_EXTENSION)) 
+		if (element.getName().equalsIgnoreCase(ELEMENT_REMOVE_EXTENSION))
 		{
 			String extensionPointID = element.getAttribute(ATTRIBUTE_EXTENSION_POINT_ID);
 			if (!checkString(extensionPointID)) {
@@ -82,7 +82,7 @@ extends AbstractEPProcessor
 			if (!checkString(elementPath)) {
 				logger.error("attribute elementPath must not be null nor empty!"); //$NON-NLS-1$
 				return;
-			}				
+			}
 			
 			String attributeName = element.getAttribute(ATTRIBUTE_ATTRIBUTE_NAME);
 			if (!checkString(attributeName)) {
@@ -107,15 +107,15 @@ extends AbstractEPProcessor
 	}
 
 	private Map<String, List<RemoveExtension>> extensionPointID2RemoveExtensions = new HashMap<String, List<RemoveExtension>>();
-	public Map<String, List<RemoveExtension>> getExtensionPointID2RemoveExtensions() 
+	public Map<String, List<RemoveExtension>> getExtensionPointID2RemoveExtensions()
 	{
 		checkProcessing();
 		return extensionPointID2RemoveExtensions;
-	}	
+	}
 	
-	class RemoveExtension 
+	class RemoveExtension
 	{
-		public RemoveExtension(String extensionPointID, String elementPath, 
+		public RemoveExtension(String extensionPointID, String elementPath,
 				String attributeName, String attributePattern)
 		{
 			this.extensionPointID = extensionPointID;
@@ -152,21 +152,21 @@ extends AbstractEPProcessor
 		 */
 		public String getExtensionPointID() {
 			return extensionPointID;
-		}						
+		}
 	}
 	
-	public void removeRegisteredExtensions() 
+	public void removeRegisteredExtensions()
 	{
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		
-		if (registry != null) 
+		if (registry != null)
 		{
 			for (Map.Entry<String, List<RemoveExtension>> entry : getExtensionPointID2RemoveExtensions().entrySet()) {
 				String extensionPointID = entry.getKey();
 				IExtensionPoint extensionPoint = registry.getExtensionPoint(extensionPointID);
 				IExtension[] extensions = extensionPoint.getExtensions();
 				// For each extension ...
-				for (int i = 0; i < extensions.length; i++) {           
+				for (int i = 0; i < extensions.length; i++) {
 					IExtension extension = extensions[i];
 					IConfigurationElement[] elements = extension.getConfigurationElements();
 					// For each member of the extension ...
@@ -176,7 +176,7 @@ extends AbstractEPProcessor
 						for (RemoveExtension removeExtension : removeExtensions) {
 							String elementPath = removeExtension.getElementPath();
 							Set<IConfigurationElement> matchingElements = new HashSet<IConfigurationElement>();
-							checkElementPath(elementPath, element, matchingElements, 
+							checkElementPath(elementPath, element, matchingElements,
 									removeExtension.getAttributeName(), removeExtension.getAttributePattern());
 							if (!matchingElements.isEmpty()) {
 								for (IConfigurationElement element2 : matchingElements) {
@@ -184,12 +184,12 @@ extends AbstractEPProcessor
 									try {
 										if (!removedExtensions.contains(ext)) {
 											registry.removeExtension(ext, getMasterToken((ExtensionRegistry)registry));
-											removedExtensions.add(ext);											
+											removedExtensions.add(ext);
 										}
 									} catch (Throwable t) {
 										logger.error("There occured an error while trying to remove the IExtension "+ext.getLabel()+" from the ExtensionRegistry"); //$NON-NLS-1$ //$NON-NLS-2$
 										t.printStackTrace();
-									}										
+									}
 //									if (element2 instanceof RegistryObject) {
 //										try {
 //											removeRegistryObject((RegistryObject)element2);
@@ -200,17 +200,17 @@ extends AbstractEPProcessor
 //									}
 								}
 							}
-						}						
+						}
 					}
-				}				
+				}
 			}
 		}
-	}	
+	}
 	
 	private Set<IExtension> removedExtensions = new HashSet<IExtension>();
 	
-	public static void removeRegistryObject(RegistryObject registryObject) 
-	throws SecurityException, NoSuchFieldException, 
+	public static void removeRegistryObject(RegistryObject registryObject)
+	throws SecurityException, NoSuchFieldException,
 		IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException
 	{
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
@@ -234,17 +234,17 @@ extends AbstractEPProcessor
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
 	 */
-	public static Object getMasterToken(ExtensionRegistry registry) 
-	throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException 
+	public static Object getMasterToken(ExtensionRegistry registry)
+	throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException
 	{
 		Field masterTokenField = registry.getClass().getDeclaredField("masterToken"); //$NON-NLS-1$
 		masterTokenField.setAccessible(true);
 		Object masterToken = masterTokenField.get(registry);
 		return masterToken;
-	}	
+	}
 	
-	private void checkElementPath(String elementPath, IConfigurationElement element, 
-			Set<IConfigurationElement> elements, String attributeName, String attributePattern) 
+	private void checkElementPath(String elementPath, IConfigurationElement element,
+			Set<IConfigurationElement> elements, String attributeName, String attributePattern)
 	{
 		Pattern pattern = Pattern.compile("/"); //$NON-NLS-1$
 		String[] splits = pattern.split(elementPath);
@@ -269,11 +269,11 @@ extends AbstractEPProcessor
 			for (IConfigurationElement child : children) {
 				checkElementPath(newElementPath, child, elements, attributeName, attributePattern);
 			}
-		}		
+		}
 	}
 	
 	private static RemoveExtensionRegistry sharedInstance = null;
-	public static RemoveExtensionRegistry sharedInstance() 
+	public static RemoveExtensionRegistry sharedInstance()
 	{
 		if (sharedInstance == null)
 			sharedInstance = new RemoveExtensionRegistry();

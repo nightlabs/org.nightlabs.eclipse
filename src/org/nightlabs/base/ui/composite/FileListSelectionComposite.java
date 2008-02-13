@@ -52,7 +52,7 @@ import org.nightlabs.util.CollectionUtil;
  * @author Chairat Kongarayawetchakun <chairat[AT]nightlabs[DOT]de>
  *
  */
-public class FileListSelectionComposite 
+public class FileListSelectionComposite
 extends XComposite {
 	private Map<String, InputStream> fileInputStreamMap = new HashMap<String, InputStream>();
 	private org.eclipse.swt.widgets.List fileListWidget;
@@ -66,7 +66,7 @@ extends XComposite {
 		super(parent, compositeStyle, layoutMode);
 		this.type = type;
 		createContents();
-	}	
+	}
 
 	private void createContents() {
 		XComposite fileListComposite = new XComposite(this, SWT.NONE, LayoutMode.TIGHT_WRAPPER);

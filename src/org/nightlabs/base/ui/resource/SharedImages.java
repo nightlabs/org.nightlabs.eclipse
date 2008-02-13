@@ -38,11 +38,11 @@ public class SharedImages
 {
 
 //	// TO DO: Flag Icons should come from Server DONE: They do come from there now. Marco.
-//	public static ImageDescriptor getImageDescriptor(String languageID) 
+//	public static ImageDescriptor getImageDescriptor(String languageID)
 //	{
 //		if (languageID == null)
 //			return null;
-//		
+//
 //		return (ImageDescriptor) languageID2ImageDesc.get(languageID);
 //	}
 
@@ -62,7 +62,7 @@ public class SharedImages
 			{
 				return "12x12"; //$NON-NLS-1$
 			}
-		},				
+		},
 		_16x16 {
 			@Override
 			public String toString()
@@ -137,14 +137,14 @@ public class SharedImages
 	}
 
 	/**
-	 * Get the String key for the image with given parameters 
+	 * Get the String key for the image with given parameters
 	 */
 	private String getImageKey(Plugin plugin, Class clazz, String suffix, String dimension, ImageFormat format) {
 		return plugin.getBundle().getSymbolicName() + "/" + getImageSubPath(plugin, clazz, suffix) + "." + dimension + "." + format; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	/**
-	 * Get the ImageDescriptor with the given parameters out of the caching Map.  
+	 * Get the ImageDescriptor with the given parameters out of the caching Map.
 	 */
 	private ImageDescriptor getImageDescriptor(Plugin plugin, Class clazz, String _suffix, String dimension, ImageFormat format) {
 		String suffix = (_suffix != null) ? _suffix : ""; //$NON-NLS-1$
@@ -159,12 +159,12 @@ public class SharedImages
 			Image image = imageDescriptor.createImage() ;
 			imageDescriptors.put(imageKey, imageDescriptor);
 			images.put(imageKey, image);
-		}			
+		}
 		return imageDescriptor;
 	}
 	
 	/**
-	 * Get the Image with the given parameters out of the caching Map.  
+	 * Get the Image with the given parameters out of the caching Map.
 	 */
 	public Image getImage(Plugin plugin, Class clazz, String _suffix, String dimension, ImageFormat format) {
 		String suffix = (_suffix != null) ? _suffix : ""; //$NON-NLS-1$
@@ -174,7 +174,7 @@ public class SharedImages
 			ImageDescriptor imageDescriptor = getImageDescriptor(plugin, clazz, suffix, dimension, format);
 			image = imageDescriptor.createImage();
 			images.put(imageKey, image);
-		}			
+		}
 		return image;
 	}
 	
@@ -189,7 +189,7 @@ public class SharedImages
 	 * @param format The extension of the image to be loaded (e.g. "png" or "gif")
 	 */
 	public static Image getSharedImage(Plugin plugin, Class clazz, String suffix, ImageDimension dimension, ImageFormat format) {
-		return sharedInstance().getImage(plugin, clazz, suffix, dimension.toString(), format); 
+		return sharedInstance().getImage(plugin, clazz, suffix, dimension.toString(), format);
 	}
 
 	/**
@@ -203,8 +203,8 @@ public class SharedImages
 	 * @param format The extension of the image to be loaded (e.g. "png" or "gif")
 	 */
 	public static Image getSharedImage(Plugin plugin, Class clazz, String suffix, String dimension, ImageFormat format) {
-		return sharedInstance().getImage(plugin, clazz, suffix, dimension, format); 
-	}	
+		return sharedInstance().getImage(plugin, clazz, suffix, dimension, format);
+	}
 	
 	/**
 	 * Get the ImageDescriptor for the given clazz and suffix under the given plugin. The image will be
@@ -217,7 +217,7 @@ public class SharedImages
 	 * @param format The extension of the image to be loaded (e.g. "png" or "gif")
 	 */
 	public static ImageDescriptor getSharedImageDescriptor(Plugin plugin, Class clazz, String suffix, ImageDimension dimension, ImageFormat format) {
-		return sharedInstance().getImageDescriptor(plugin, clazz, suffix, dimension.toString(), format); 
+		return sharedInstance().getImageDescriptor(plugin, clazz, suffix, dimension.toString(), format);
 	}
 
 	/**
@@ -229,7 +229,7 @@ public class SharedImages
 	 * @see #getSharedImageDescriptor(Plugin, Class, String, org.nightlabs.base.ui.resource.SharedImages.ImageDimension, org.nightlabs.base.ui.resource.SharedImages.ImageFormat)
 	 */
 	public static ImageDescriptor getSharedImageDescriptor(Plugin plugin, Class clazz) {
-		return sharedInstance().getImageDescriptor(plugin, clazz, null, IMAGE_DIMENSION_DEFAULT.toString(), IMAGE_FORMAT_DEFAULT); 
+		return sharedInstance().getImageDescriptor(plugin, clazz, null, IMAGE_DIMENSION_DEFAULT.toString(), IMAGE_FORMAT_DEFAULT);
 	}
 
 	/**
@@ -242,7 +242,7 @@ public class SharedImages
 	 * @see #getSharedImageDescriptor(Plugin, Class, String, org.nightlabs.base.ui.resource.SharedImages.ImageDimension, org.nightlabs.base.ui.resource.SharedImages.ImageFormat)
 	 */
 	public static ImageDescriptor getSharedImageDescriptor(Plugin plugin, Class clazz, String suffix) {
-		return sharedInstance().getImageDescriptor(plugin, clazz, suffix, IMAGE_DIMENSION_DEFAULT.toString(), IMAGE_FORMAT_DEFAULT); 
+		return sharedInstance().getImageDescriptor(plugin, clazz, suffix, IMAGE_DIMENSION_DEFAULT.toString(), IMAGE_FORMAT_DEFAULT);
 	}
 
 	/**
@@ -256,7 +256,7 @@ public class SharedImages
 	 * @see #getSharedImageDescriptor(Plugin, Class, String, org.nightlabs.base.ui.resource.SharedImages.ImageDimension, org.nightlabs.base.ui.resource.SharedImages.ImageFormat)
 	 */
 	public static ImageDescriptor getSharedImageDescriptor(Plugin plugin, Class clazz, String suffix, ImageFormat imageFormat) {
-		return sharedInstance().getImageDescriptor(plugin, clazz, suffix, IMAGE_DIMENSION_DEFAULT.toString(), imageFormat); 
+		return sharedInstance().getImageDescriptor(plugin, clazz, suffix, IMAGE_DIMENSION_DEFAULT.toString(), imageFormat);
 	}
 	
 	/**
@@ -268,21 +268,21 @@ public class SharedImages
 	 * @param suffix The suffix for the image desired
 	 * @param dimension The format of the image given as string in format ("{width}x{height}")
 	 * @see #getSharedImageDescriptor(Plugin, Class, String, org.nightlabs.base.ui.resource.SharedImages.ImageDimension, org.nightlabs.base.ui.resource.SharedImages.ImageFormat)
-	 */	
+	 */
 	public static ImageDescriptor getSharedImageDescriptor(Plugin plugin, Class clazz, String suffix, ImageDimension dimension) {
-		return sharedInstance().getImageDescriptor(plugin, clazz, suffix, dimension.toString(), IMAGE_FORMAT_DEFAULT); 
+		return sharedInstance().getImageDescriptor(plugin, clazz, suffix, dimension.toString(), IMAGE_FORMAT_DEFAULT);
 	}
 	
 	
 	/**
 	 * Get the ImageDescriptor for a WizardPage of the given clazz and
-	 * {@link #IMAGE_DIMENSION_WIZARD_PAGE} and {@link #IMAGE_FORMAT_DEFAULT}. 
+	 * {@link #IMAGE_DIMENSION_WIZARD_PAGE} and {@link #IMAGE_FORMAT_DEFAULT}.
 	 * 
 	 * @param plugin The plugin the image is package in.
 	 * @param clazz The class using the image
 	 */
 	public static ImageDescriptor getWizardPageImageDescriptor(Plugin plugin, Class clazz) {
-		return sharedInstance().getImageDescriptor(plugin, clazz, null, IMAGE_DIMENSION_WIZARD_PAGE.toString(), IMAGE_FORMAT_DEFAULT); 
+		return sharedInstance().getImageDescriptor(plugin, clazz, null, IMAGE_DIMENSION_WIZARD_PAGE.toString(), IMAGE_FORMAT_DEFAULT);
 	}
 
 	/**
@@ -297,7 +297,7 @@ public class SharedImages
 	 * @param suffix The suffix for the image
 	 */
 	public static Image getSharedImage(Plugin plugin, Class clazz, String suffix) {
-		return sharedInstance().getImage(plugin, clazz, suffix, IMAGE_DIMENSION_DEFAULT.toString(), IMAGE_FORMAT_DEFAULT); 
+		return sharedInstance().getImage(plugin, clazz, suffix, IMAGE_DIMENSION_DEFAULT.toString(), IMAGE_FORMAT_DEFAULT);
 	}
 
 	/**
@@ -311,7 +311,7 @@ public class SharedImages
 	 * @param clazz The class using the image
 	 */
 	public static Image getSharedImage(Plugin plugin, Class clazz) {
-		return sharedInstance().getImage(plugin, clazz, null, IMAGE_DIMENSION_DEFAULT.toString(), IMAGE_FORMAT_DEFAULT); 
+		return sharedInstance().getImage(plugin, clazz, null, IMAGE_DIMENSION_DEFAULT.toString(), IMAGE_FORMAT_DEFAULT);
 	}
 
 	/**
@@ -325,16 +325,16 @@ public class SharedImages
 	 * @param format The extension of the image to be loaded (e.g. "png" or "gif")
 	 */
 	public static ImageDescriptor getSharedImageDescriptor(Plugin plugin, Class clazz, String suffix, String imageDimension, ImageFormat imageFormat) {
-		return sharedInstance().getImageDescriptor(plugin, clazz, suffix, imageDimension, imageFormat); 
-	}	
+		return sharedInstance().getImageDescriptor(plugin, clazz, suffix, imageDimension, imageFormat);
+	}
 	
-//	protected static final ImageDescriptor FLAG_USA_16x16 = 
+//	protected static final ImageDescriptor FLAG_USA_16x16 =
 //		getSharedImageDescriptor(NLBasePlugin.getDefault(), NLBasePlugin.class, "USA"); //$NON-NLS-1$
 //
 //	protected static final ImageDescriptor FLAG_GERMANY_16x16 =
 //		getSharedImageDescriptor(NLBasePlugin.getDefault(), NLBasePlugin.class, "Germany");		 //$NON-NLS-1$
 //
-//	protected static final ImageDescriptor FLAG_FRANCE_16x16 = 		
+//	protected static final ImageDescriptor FLAG_FRANCE_16x16 =
 //		getSharedImageDescriptor(NLBasePlugin.getDefault(), NLBasePlugin.class, "France"); //$NON-NLS-1$
 
 //	protected static Map<String, ImageDescriptor> languageID2ImageDesc;
@@ -343,57 +343,57 @@ public class SharedImages
 //		languageID2ImageDesc = new HashMap<String, ImageDescriptor>();
 //		languageID2ImageDesc.put(Locale.ENGLISH.getLanguage(), FLAG_USA_16x16);
 //		languageID2ImageDesc.put(Locale.GERMAN.getLanguage(), FLAG_GERMANY_16x16);
-//		languageID2ImageDesc.put(Locale.FRENCH.getLanguage(), FLAG_FRANCE_16x16);		
+//		languageID2ImageDesc.put(Locale.FRENCH.getLanguage(), FLAG_FRANCE_16x16);
 //	}
 
-	public static final ImageDescriptor EDIT_16x16 = 		
+	public static final ImageDescriptor EDIT_16x16 =
 		getSharedImageDescriptor(NLBasePlugin.getDefault(), NLBasePlugin.class, "Edit"); //$NON-NLS-1$
 
-	public static final ImageDescriptor EDIT_24x24 = 		
+	public static final ImageDescriptor EDIT_24x24 =
 		getSharedImageDescriptor(NLBasePlugin.getDefault(), NLBasePlugin.class, "Edit", //$NON-NLS-1$
 				ImageDimension._24x24);
 
-	public static final ImageDescriptor ADD_16x16 = 		
+	public static final ImageDescriptor ADD_16x16 =
 		getSharedImageDescriptor(NLBasePlugin.getDefault(), NLBasePlugin.class, "Create"); //$NON-NLS-1$
 	
-	public static final ImageDescriptor DELETE_16x16 = 		
+	public static final ImageDescriptor DELETE_16x16 =
 		getSharedImageDescriptor(NLBasePlugin.getDefault(), NLBasePlugin.class, "Delete");	 //$NON-NLS-1$
 	
-	public static final ImageDescriptor DELETE_24x24 = 		
+	public static final ImageDescriptor DELETE_24x24 =
 		getSharedImageDescriptor(NLBasePlugin.getDefault(), NLBasePlugin.class, "Delete", //$NON-NLS-1$
 				ImageDimension._24x24);
 		
-	public static final ImageDescriptor DISCARD_16x16 = 		
+	public static final ImageDescriptor DISCARD_16x16 =
 		getSharedImageDescriptor(NLBasePlugin.getDefault(), NLBasePlugin.class, "Discard");	 //$NON-NLS-1$
 
-	public static final ImageDescriptor DISCARD_24x24 = 		
+	public static final ImageDescriptor DISCARD_24x24 =
 		getSharedImageDescriptor(NLBasePlugin.getDefault(), NLBasePlugin.class, "Discard", //$NON-NLS-1$
-				ImageDimension._24x24);	
+				ImageDimension._24x24);
 		
-	public static final ImageDescriptor PRINT_16x16 = 		
+	public static final ImageDescriptor PRINT_16x16 =
 		getSharedImageDescriptor(NLBasePlugin.getDefault(), NLBasePlugin.class, "Print");	 //$NON-NLS-1$
 
-	public static final ImageDescriptor PRINT_24x24 = 		
+	public static final ImageDescriptor PRINT_24x24 =
 		getSharedImageDescriptor(NLBasePlugin.getDefault(), NLBasePlugin.class, "Print", //$NON-NLS-1$
-				ImageDimension._24x24);	
+				ImageDimension._24x24);
 	
-	public static final ImageDescriptor SAVE_16x16 = 		
+	public static final ImageDescriptor SAVE_16x16 =
 		getSharedImageDescriptor(NLBasePlugin.getDefault(), NLBasePlugin.class, "Save");	 //$NON-NLS-1$
 	
-	public static final ImageDescriptor SAVE_24x24 = 		
+	public static final ImageDescriptor SAVE_24x24 =
 		getSharedImageDescriptor(NLBasePlugin.getDefault(), NLBasePlugin.class, "Save", //$NON-NLS-1$
-				ImageDimension._24x24);		
+				ImageDimension._24x24);
 	
-	public static final ImageDescriptor SEARCH_16x16 = 		
+	public static final ImageDescriptor SEARCH_16x16 =
 		getSharedImageDescriptor(NLBasePlugin.getDefault(), NLBasePlugin.class, "Search");	 //$NON-NLS-1$
 
-	public static final ImageDescriptor SEARCH_24x24 = 		
+	public static final ImageDescriptor SEARCH_24x24 =
 		getSharedImageDescriptor(NLBasePlugin.getDefault(), NLBasePlugin.class, "Search", //$NON-NLS-1$
-				ImageDimension._24x24);	
+				ImageDimension._24x24);
 	
-	public static final ImageDescriptor UP_16x16 = 
+	public static final ImageDescriptor UP_16x16 =
 		getSharedImageDescriptor(NLBasePlugin.getDefault(), NLBasePlugin.class, "Up"); //$NON-NLS-1$
 	
-	public static final ImageDescriptor DOWN_16x16 = 
+	public static final ImageDescriptor DOWN_16x16 =
 		getSharedImageDescriptor(NLBasePlugin.getDefault(), NLBasePlugin.class, "Down"); //$NON-NLS-1$
 }

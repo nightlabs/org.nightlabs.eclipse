@@ -31,23 +31,23 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * ControllableParts are used together with {@link org.nightlabs.base.ui.part.PartController}s.
  * When implementing a ControllablePart register it (best in its constructor)
- * to a PartController. 
+ * to a PartController.
  * Delegate the {@link org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)}
  * method to this Controller by calling its method {@link org.nightlabs.base.ui.part.PartController#createPartControl(ControllablePart, Composite)}.
  * Create the real contents of the part in the {@link #createPartContents(Composite)}
  * method that will be called by the PartController if this view can be displayed.
  * ControllableParts themselves control whether they might be displayed by {@link #canDisplayPart()}
- *   
+ * 
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
  *
  */
-public interface ControllablePart  
+public interface ControllablePart
 //extends IWorkbenchPart
 {
 
 	/**
 	 * Create the real contents of a {@link org.eclipse.ui.part.WorkbenchPart}
-	 * here. Delegate the WorkbenchParts 
+	 * here. Delegate the WorkbenchParts
 	 * {@link org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)}
 	 * method to the {@link PartController#createPartControl(ControllablePart, Composite)}
 	 * method of the PartController you have registered this WorkbenchPart to.
@@ -58,12 +58,12 @@ public interface ControllablePart
 	
 	/**
 	 * Should check whether this WorkbenchPart can be displayed. If false is returned
-	 * the associated PartController will hide or even dispose the 
+	 * the associated PartController will hide or even dispose the
 	 * contents of this WorkbenchPart and display a default Composite.
 	 * 
 	 * @return Whether this Part can be displayed.
 	 */
 	boolean canDisplayPart();
 		
-//	void createPartControl(Composite parent);		
+//	void createPartControl(Composite parent);
 }

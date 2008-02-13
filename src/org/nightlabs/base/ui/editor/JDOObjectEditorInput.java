@@ -65,13 +65,13 @@ public class JDOObjectEditorInput<ID extends ObjectID> implements IEditorInput
 	 */
 	public JDOObjectEditorInput(ID jdoObjectID, boolean createUniqueInput)
 	{
-		assert jdoObjectID != null;		
+		assert jdoObjectID != null;
 		this.jdoObjectID = jdoObjectID;
 		if (createUniqueInput)
 			secondaryId = System.currentTimeMillis();
 		else
 			secondaryId = 0L;
-	}	
+	}
 	
 	/**
 	 * Get the JDO Object ID
@@ -151,14 +151,14 @@ public class JDOObjectEditorInput<ID extends ObjectID> implements IEditorInput
 	/**
 	 * Check for equality using the JDO Object ID
 	 * equals method.
-	 * @param other The object to check. 
+	 * @param other The object to check.
 	 */
 	@Override
 	public boolean equals(Object other)
 	{
-		return 
-				other != null && 
-				other instanceof JDOObjectEditorInput && 
+		return
+				other != null &&
+				other instanceof JDOObjectEditorInput &&
 				((JDOObjectEditorInput)other).jdoObjectID.equals(this.jdoObjectID) &&
 				((JDOObjectEditorInput)other).secondaryId == this.secondaryId;
 	}

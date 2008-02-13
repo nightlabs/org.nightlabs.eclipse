@@ -28,9 +28,9 @@ package org.nightlabs.base.ui.celleditor;
 
 import org.eclipse.swt.widgets.Composite;
 
-public class DoubleCellEditor  
+public class DoubleCellEditor
 extends XTextCellEditor
-{  
+{
   public DoubleCellEditor() {
     super();
   }
@@ -45,17 +45,17 @@ extends XTextCellEditor
 
   public DoubleCellEditor(Composite parent, int style, boolean readOnly) {
     super(parent, style, readOnly);
-  }  
+  }
   
 	/**
 	 *
-	* returns the string of the text as double or the oldValue if 
+	* returns the string of the text as double or the oldValue if
 	* the string is no double
 	*
 	* @return the text as double
 	*/
 	@Override
-	protected Object doGetValue() 
+	protected Object doGetValue()
 	{
 		if (text.getText().trim().equals("")) //$NON-NLS-1$
 			return oldValue;
@@ -81,7 +81,7 @@ extends XTextCellEditor
 	}
 	
 // protected Text text;
-//	
+//
 //  protected Control createControl(Composite parent) {
 //    text = new Text(parent, getStyle());
 //    return text;
@@ -90,23 +90,23 @@ extends XTextCellEditor
 //  protected Object doGetValue() {
 //    String stringVal = text.getText();
 //    Double d = new Double(stringVal);
-//    return d; 
+//    return d;
 //  }
 //
 //  protected void doSetFocus() {
 //    if (text != null) {
 //      text.selectAll();
 //      text.setFocus();
-//    }     
+//    }
 //  }
 //
-//  protected void doSetValue(Object value) 
+//  protected void doSetValue(Object value)
 //  {
 //  	checkReadOnly();
 //    Assert.isTrue(text != null && (value instanceof Double));
 //    Double val = (Double) value;
 //    String stringVal = Double.toString(val.doubleValue());
-//    text.setText(stringVal); 
+//    text.setText(stringVal);
 //    fireApplyEditorValue();
 //  }
 

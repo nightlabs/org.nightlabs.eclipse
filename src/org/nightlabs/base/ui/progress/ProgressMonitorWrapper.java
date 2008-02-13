@@ -10,7 +10,7 @@ import org.nightlabs.progress.ProgressMonitor;
  * This is a wrapper for {@link IProgressMonitor}s to be used inside our {@link ProgressMonitor} based
  * framework. The counter wrapper is {@link RCPProgressMonitor}.
  * <br> <br>
- * Note: Try to not wrap a monitor too many times! Try an <b>instanceof</b> and use the getter to 
+ * Note: Try to not wrap a monitor too many times! Try an <b>instanceof</b> and use the getter to
  * 	extract the wrapped monitor.
  * 
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->

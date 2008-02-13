@@ -41,8 +41,8 @@ import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
-public class SearchResultProviderRegistry 
-extends AbstractEPProcessor 
+public class SearchResultProviderRegistry
+extends AbstractEPProcessor
 {
 	private static final Logger logger = Logger.getLogger(SearchResultProviderRegistry.class);
 	
@@ -79,7 +79,7 @@ extends AbstractEPProcessor
 
 	@Override
 	public void processElement(IExtension extension, IConfigurationElement element)
-	throws Exception 
+	throws Exception
 	{
 		if (element.getName().equals(ELEMENT_SEARCH_RESULT_PROVIDER_FACTORY)) {
 			if (checkString(element.getAttribute(ATTRIBUTE_CLASS))) {
@@ -88,7 +88,7 @@ extends AbstractEPProcessor
 					factories.add(factory);
 				} catch (Exception e) {
 					logger.error("There occured an error during initalizing the class "+element.getAttribute(ATTRIBUTE_CLASS), e); //$NON-NLS-1$
-				}				
+				}
 			}
 		}
 		if (element.getName().equals(ELEMENT_SEARCH_RESULT_HANDLER)) {
@@ -98,7 +98,7 @@ extends AbstractEPProcessor
 			if (checkString(className) && checkString(factoryID)) {
 				try {
 					ISearchResultActionHandler actionHandler = (ISearchResultActionHandler) element.createExecutableExtension(ATTRIBUTE_CLASS);
-					Map<String, ISearchResultActionHandler> perspectiveID2ActionHandler = factoryID2PerspectiveID2ActionHandler.get(factoryID); 
+					Map<String, ISearchResultActionHandler> perspectiveID2ActionHandler = factoryID2PerspectiveID2ActionHandler.get(factoryID);
 					if (perspectiveID2ActionHandler == null) {
 						perspectiveID2ActionHandler = new HashMap<String, ISearchResultActionHandler>();
 						factoryID2PerspectiveID2ActionHandler.put(factoryID, perspectiveID2ActionHandler);
@@ -116,9 +116,9 @@ extends AbstractEPProcessor
 					perspectiveID2ActionHandler.put(perspectiveID, actionHandler);
 				} catch (Exception e) {
 					logger.error("There occured an error during initalizing the class "+element.getAttribute(ATTRIBUTE_CLASS), e); //$NON-NLS-1$
-				}				
+				}
 			}
-		}		
+		}
 	}
 	
 	private Comparator<ISearchResultProviderFactory> factoryComparator = new Comparator<ISearchResultProviderFactory>(){
@@ -127,19 +127,19 @@ extends AbstractEPProcessor
 		}
 	};
 	
-	private SortedSet<ISearchResultProviderFactory> factories = new TreeSet<ISearchResultProviderFactory>(factoryComparator);	
+	private SortedSet<ISearchResultProviderFactory> factories = new TreeSet<ISearchResultProviderFactory>(factoryComparator);
 	public Set<ISearchResultProviderFactory> getFactories() {
 		check();
 		return factories;
 	}
 	
 //	private Map<String, Set<ISearchResultActionHandler>> factoryID2ActionHandlers = new HashMap<String, Set<ISearchResultActionHandler>>();
-	private Map<String, Map<String, ISearchResultActionHandler>> factoryID2PerspectiveID2ActionHandler = new HashMap<String, Map<String, ISearchResultActionHandler>>();	
+	private Map<String, Map<String, ISearchResultActionHandler>> factoryID2PerspectiveID2ActionHandler = new HashMap<String, Map<String, ISearchResultActionHandler>>();
 	private Map<String, SearchResultProviderRegistryUseCase> useCase2RegistryUse = new HashMap<String, SearchResultProviderRegistryUseCase>();
 	public SearchResultProviderRegistryUseCase getUseCase(String useCase) {
 		check();
 		return useCase2RegistryUse.get(useCase);
-	}	
+	}
 	public void addUseCase(String useCaseString, SearchResultProviderRegistryUseCase useCase) {
 		useCase2RegistryUse.put(useCaseString, useCase);
 	}
@@ -154,7 +154,7 @@ extends AbstractEPProcessor
 				if (perspectiveID2ActionHandler != null) {
 					for (Map.Entry<String, ISearchResultActionHandler> entry : perspectiveID2ActionHandler.entrySet()) {
 						factory.addActionHandler(entry.getValue(), entry.getKey());
-					}					
+					}
 				}
 			}
 			checked = true;

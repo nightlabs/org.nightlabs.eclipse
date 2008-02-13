@@ -32,7 +32,7 @@ import java.util.List;
 
 import org.nightlabs.language.LanguageCf;
 
-public abstract class AbstractSimpleLanguageChooser 
+public abstract class AbstractSimpleLanguageChooser
 implements LanguageChooser
 {
 	protected List<LanguageChangeListener> languageChangeListeners = new LinkedList<LanguageChangeListener>();
@@ -55,7 +55,7 @@ implements LanguageChooser
 		languageChangeListeners.remove(l);
 	}
 
-	public void fireLanguageChangeEvent() 
+	public void fireLanguageChangeEvent()
 	{
 		if (languageChangeListeners.size() < 1)
 			return;
@@ -65,7 +65,7 @@ implements LanguageChooser
 			((LanguageChangeListener)it.next()).languageChanged(languageChangeEvent);
 		}
 
-		oldLanguage = getLanguage();		
+		oldLanguage = getLanguage();
 	}
 
 }

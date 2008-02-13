@@ -43,8 +43,8 @@ import org.nightlabs.config.Config;
  * @author Daniel.Mazurek <at> NightLabs <dot> de
  *
  */
-public class CenteredDialog 
-extends Dialog 
+public class CenteredDialog
+extends Dialog
 {
 	private static final Logger logger = Logger.getLogger(CenteredDialog.class);
 
@@ -52,14 +52,14 @@ extends Dialog
 	 * @param parentShell
 	 */
 	public CenteredDialog(Shell parentShell) {
-		super(parentShell);	
+		super(parentShell);
 	}
 
 	/**
 	 * @param parentShell
 	 */
 	public CenteredDialog(IShellProvider parentShell) {
-		super(parentShell);	
+		super(parentShell);
 	}
 
 	protected DialogCfMod getDialogCfMod()
@@ -104,7 +104,7 @@ extends Dialog
 	}
 
 	@Override
-	public void create() 
+	public void create()
 	{
 		super.create();
 
@@ -148,7 +148,7 @@ extends Dialog
 
 	/**
 	 * Use this method to create a centered dialog of a specific size.
-	 * Note that the size given here will only apply to dialogs whose 
+	 * Note that the size given here will only apply to dialogs whose
 	 * size and location was not previously stored, so this method should
 	 * be used to initialise a dialog that is created for the first time.
 	 * <p>
@@ -181,7 +181,7 @@ extends Dialog
 	/**
 	 * Since this method relies on the shell being already instantiated, you <b>must</b> only call it
 	 * after {@link #create()} has been called!
-	 *   
+	 * 
 	 * @param width the width if none has been set before.
 	 * @param height the height if none has been set before.
 	 */
@@ -189,11 +189,11 @@ extends Dialog
 		setToCenteredLocationPreferredSize(getShell(), width, height);
 	}
 	
-	public boolean checkWidget(Widget w) 
+	public boolean checkWidget(Widget w)
 	{
 		if (w != null && !w.isDisposed())
 			return true;
 		else
 			return false;
-	}	
+	}
 }

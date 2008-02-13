@@ -68,7 +68,7 @@ public class GroupedContentSwitcherTable extends AbstractTableComposite {
 	
 //	private ISelectionChangedListener selectionListener = new ISelectionChangedListener() {
 //		public void selectionChanged(SelectionChangedEvent event) {
-//			int idx = getTable().getSelectionIndex();			
+//			int idx = getTable().getSelectionIndex();
 //			if (idx >= 0)
 //				selectItem(getTable().getItem(idx));
 //		}
@@ -98,7 +98,7 @@ public class GroupedContentSwitcherTable extends AbstractTableComposite {
 				return ((GroupedContentProvider)element).getGroupTitle();
 			throw new IllegalArgumentException("LabelProvider for GroupedContentSwitcherTable is restricted to GroupedContentProvider elements."); //$NON-NLS-1$
 		}
-	}	
+	}
 	
 	public GroupedContentSwitcherTable(Composite parent, int style) {
 		super(parent, style, true, getBorderStyle(parent) | SWT.FULL_SELECTION | SWT.V_SCROLL);
@@ -115,14 +115,14 @@ public class GroupedContentSwitcherTable extends AbstractTableComposite {
 
 	@Override
 	protected void createTableColumns(TableViewer tableViewer, Table table) {
-//		column = new TableColumn(table, SWT.LEFT); 
+//		column = new TableColumn(table, SWT.LEFT);
 //		if (groupTitle != null)
 //			column.setText(groupTitle);
-//		table.setLayout(new WeightedTableLayout(new int[] {1}));		
+//		table.setLayout(new WeightedTableLayout(new int[] {1}));
 	}
 
 	@Override
-	protected void setTableProvider(TableViewer tableViewer) {		
+	protected void setTableProvider(TableViewer tableViewer) {
 		tableViewer.setContentProvider(new ContentProvider());
 		tableViewer.setLabelProvider(new LabelProvider());
 	}
@@ -137,12 +137,12 @@ public class GroupedContentSwitcherTable extends AbstractTableComposite {
 	/**
 	 * @param groupTitle The groupTitle to set.
 	 */
-	public void setGroupTitle(String groupTitle) {			
+	public void setGroupTitle(String groupTitle) {
 		this.groupTitle = groupTitle;
 //		if (groupTitle != null){
 //			column.setText(groupTitle);
 //			layout();
-//		}			
+//		}
 	}
 	
 	protected void selectItem(TableItem item) {

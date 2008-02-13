@@ -32,15 +32,15 @@ import org.nightlabs.i18n.unit.IUnit;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
-public class UnitLabelProvider 
-extends LabelProvider 
+public class UnitLabelProvider
+extends LabelProvider
 {
 
 	public UnitLabelProvider() {
 	}
 
 	@Override
-	public String getText(Object element) 
+	public String getText(Object element)
 	{
 		if (element instanceof IUnit) {
 			return ((IUnit)element).getUnitSymbol();

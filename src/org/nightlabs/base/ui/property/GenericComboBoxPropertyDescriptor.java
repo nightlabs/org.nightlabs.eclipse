@@ -36,8 +36,8 @@ import org.nightlabs.base.ui.celleditor.GenericComboBoxCellEditor;
  * @author Daniel.Mazurek <at> Nightlabs <dot> de
  *
  */
-public class GenericComboBoxPropertyDescriptor<T> 
-extends XPropertyDescriptor 
+public class GenericComboBoxPropertyDescriptor<T>
+extends XPropertyDescriptor
 {
 	private ILabelProvider labelProvider = null;
 	private List<T> types = null;
@@ -46,8 +46,8 @@ extends XPropertyDescriptor
 	 * @param id
 	 * @param displayName
 	 */
-	public GenericComboBoxPropertyDescriptor(Object id, String displayName, 
-			List<T> types, ILabelProvider labelProvider) 
+	public GenericComboBoxPropertyDescriptor(Object id, String displayName,
+			List<T> types, ILabelProvider labelProvider)
 	{
 		super(id, displayName);
 		if (types == null)
@@ -66,7 +66,7 @@ extends XPropertyDescriptor
 	 * @param readOnly
 	 */
 	public GenericComboBoxPropertyDescriptor(Object id, String displayName,
-			boolean readOnly, List<T> types, ILabelProvider labelProvider) 
+			boolean readOnly, List<T> types, ILabelProvider labelProvider)
 	{
 		super(id, displayName, readOnly);
 		if (types == null)
@@ -74,8 +74,8 @@ extends XPropertyDescriptor
 		if (labelProvider == null)
 			throw new IllegalArgumentException("param labelProvider must not be null!"); //$NON-NLS-1$
 		
-		this.labelProvider = labelProvider;		
-		this.types = types;		
+		this.labelProvider = labelProvider;
+		this.types = types;
 		init();
 	}
 	

@@ -34,20 +34,20 @@ import org.nightlabs.base.ui.language.I18nTextEditor;
 import org.nightlabs.base.ui.language.LanguageChooserImageCombo;
 import org.nightlabs.i18n.I18nText;
 
-public class LanguageCellEditor 
+public class LanguageCellEditor
 extends CellEditor
-{	
+{
 	protected I18nText text;
-	public LanguageCellEditor(I18nText text, Composite parent) 
+	public LanguageCellEditor(I18nText text, Composite parent)
 	{
-		super(parent, SWT.DEFAULT);	
-		this.text = text;		
+		super(parent, SWT.DEFAULT);
+		this.text = text;
 	}
 
 	protected LanguageChooserImageCombo comboBox;
 	public LanguageChooserImageCombo getLanguageChooser() {
 		return comboBox;
-	}	
+	}
 	
 	protected I18nTextEditor textEditor;
 		
@@ -55,9 +55,9 @@ extends CellEditor
    * Creates a XCombo and adds some listener to it
    */
   @Override
-	protected Control createControl(Composite parent) 
-  {	
-  	Composite panel = new Composite(parent, SWT.DEFAULT);  	
+	protected Control createControl(Composite parent)
+  {
+  	Composite panel = new Composite(parent, SWT.DEFAULT);
 	  comboBox = new LanguageChooserImageCombo(panel);
 	  textEditor = new I18nTextEditor(panel, getLanguageChooser());
 	  
@@ -70,7 +70,7 @@ extends CellEditor
   @Override
 	protected void doSetFocus() {
     if (textEditor != null) {
-    	textEditor.setFocus();    	
+    	textEditor.setFocus();
     }
   }
 

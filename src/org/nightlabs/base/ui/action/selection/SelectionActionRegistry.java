@@ -32,7 +32,7 @@ import org.eclipse.core.runtime.IExtension;
 import org.nightlabs.base.ui.action.registry.AbstractActionRegistry;
 import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
 
-public class SelectionActionRegistry 
+public class SelectionActionRegistry
 extends AbstractActionRegistry
 {
 	private static SelectionActionRegistry _sharedInstance;
@@ -55,7 +55,7 @@ extends AbstractActionRegistry
 		}
 
 		return _sharedInstance;
-	}	
+	}
 	
 	public static final String EXTENSION_POINT_ID = "org.nightlabs.base.ui.selectionActionRegistry";	 //$NON-NLS-1$
 	private static final String ATTRIBUTE_NAME_ACTION_CLASS = "class";	 //$NON-NLS-1$
@@ -65,8 +65,8 @@ extends AbstractActionRegistry
 	}
 
 	@Override
-	protected Object createActionOrContributionItem(IExtension extension, IConfigurationElement element) 
-	throws EPProcessorException 
+	protected Object createActionOrContributionItem(IExtension extension, IConfigurationElement element)
+	throws EPProcessorException
 	{
 		String className = element.getAttribute(ATTRIBUTE_NAME_ACTION_CLASS);
 		if (className == null || "".equals(className)) //$NON-NLS-1$
@@ -88,7 +88,7 @@ extends AbstractActionRegistry
 //	{
 //		SelectionAction action = (SelectionAction) _action;
 //		action.init(SELECTION_ZONE, Object.class, "SelectionAction");
-//	}	
+//	}
 	
 	@Override
 	public String getExtensionPointID() {
@@ -99,5 +99,5 @@ extends AbstractActionRegistry
 	protected String getActionElementName()
 	{
 		return "selectionAction"; //$NON-NLS-1$
-	}	
+	}
 }

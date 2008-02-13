@@ -37,7 +37,7 @@ import org.nightlabs.base.ui.resource.SharedImages;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
-public abstract class InheritanceAction 
+public abstract class InheritanceAction
 extends Action implements IUpdateActionOrContributionItem
 {
 	public static final String ID = InheritanceAction.class.getName();

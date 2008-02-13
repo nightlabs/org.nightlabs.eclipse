@@ -9,7 +9,7 @@ package org.nightlabs.base.ui.entity.editor;
 public interface IEntityEditorPageControllerModifyListener {
 	
 	/**
-	 * Notifies the listener that an object that the associated 
+	 * Notifies the listener that an object that the associated
 	 * controller manages has changed.
 	 * 
 	 * @param modifyEvent The old value of the object.

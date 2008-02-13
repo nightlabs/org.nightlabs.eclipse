@@ -117,8 +117,8 @@ implements IDynamicPathWizardPage
 	}
 	
 	/**
-	 * This method is called by {@link #updateStatus(String)}. 
-	 * Override to set the message displayed initially and on 
+	 * This method is called by {@link #updateStatus(String)}.
+	 * Override to set the message displayed initially and on
 	 * page completition.
 	 * Default implementation will return <code>null</code>.
 	 *
@@ -141,7 +141,7 @@ implements IDynamicPathWizardPage
 	/**
 	 * Lets you control the status with an error-message.
 	 * When null is passed the displayed message is set to
-	 * {@link #getDefaultPageMessage()} and pageComplete 
+	 * {@link #getDefaultPageMessage()} and pageComplete
 	 * will be set to true.
 	 * Otherwise pageComplete will be false and the
 	 * passed errMsg will be displayed.

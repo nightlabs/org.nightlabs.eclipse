@@ -51,9 +51,9 @@ import org.nightlabs.print.PrinterConfigurationCfMod;
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  *
  */
-public class PrinterConfigurationPreferencePage 
+public class PrinterConfigurationPreferencePage
 extends PreferencePage
-implements IWorkbenchPreferencePage 
+implements IWorkbenchPreferencePage
 {
 
 	private XComposite wrapper;
@@ -66,7 +66,7 @@ implements IWorkbenchPreferencePage
 	 * @see org.eclipse.jface.preference.PreferencePage#createContents(org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
-	protected Control createContents(Composite parent) {		
+	protected Control createContents(Composite parent) {
 		wrapper = new XComposite(parent, SWT.NONE);
 		useCaseCombo = new PrinterUseCaseCombo(wrapper, SWT.READ_ONLY);
 		useCaseCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

@@ -53,7 +53,7 @@ implements ISelectionSupport
 	/**
 	 * 
 	 * @return the Base Class which determines which objects are allowed
-	 * in the selection 
+	 * in the selection
 	 */
 	public abstract Class<? extends Object> getSelectionClass();
 	
@@ -62,7 +62,7 @@ implements ISelectionSupport
 	 * @see org.nightlabs.base.ui.selection.ISelectionSupport#addSelectedObject(java.lang.Object)
 	 */
 	@Override
-	public void addSelectedObject(Object o) 
+	public void addSelectedObject(Object o)
 	{
 		if (getSelectionClass().isAssignableFrom(o.getClass())) {
 			super.addSelectedObject(o);
@@ -73,7 +73,7 @@ implements ISelectionSupport
 	 * @see org.nightlabs.base.ui.selection.ISelectionSupport#addSelectedObjects(java.util.Collection)
 	 */
 	@Override
-	public void addSelectedObjects(Collection objects) 
+	public void addSelectedObjects(Collection objects)
 	{
 		beginSelectionChange();
 		try {
@@ -81,11 +81,11 @@ implements ISelectionSupport
 				Object o = it.next();
 				if (getSelectionClass().isAssignableFrom(o.getClass()))
 					super.addSelectedObject(o);
-			}			
+			}
 		} finally {
 			endSelectionChange();
 		}
-//		if (!objects.isEmpty()) 
+//		if (!objects.isEmpty())
 //		{
 //			List l = new ArrayList(objects.size());
 //			for (Iterator it = objects.iterator(); it.hasNext(); ) {
@@ -105,7 +105,7 @@ implements ISelectionSupport
 	 * 
 	 * @see org.nightlabs.base.ui.selection.ISelectionSupport#setSelection(java.util.List)
 	 */
-	public void setSelection(List selectedObjects) 
+	public void setSelection(List selectedObjects)
 	{
 		super.setSelection(SelectionUtil.checkList(selectedObjects, getSelectionClass()));
 	}

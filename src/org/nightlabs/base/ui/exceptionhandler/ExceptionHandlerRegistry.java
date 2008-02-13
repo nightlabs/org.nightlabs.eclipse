@@ -38,14 +38,14 @@ import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
 import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
 
 /**
- * Maintains a Map of {@link IExceptionHandler} and is able 
+ * Maintains a Map of {@link IExceptionHandler} and is able
  * to search the right handler for an exception.
  * <p>
- * This class staticly holds a default registry as singleton static member and 
+ * This class staticly holds a default registry as singleton static member and
  * provides some static convenience methods statically which
  * work with the default shared instance.
  * </p>
- * @author Alexander Bieber <alex[AT]nightlabs[DOT]de> 
+ * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
  */
 public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 	/**
@@ -89,7 +89,7 @@ public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 	}
 	
 	public void addExceptionHandler(String targetType, IExceptionHandler handler)
-	{		
+	{
 		synchronized(synchronizedObject)
 		{
 //			if (exceptionHandlers.containsKey(targetType))
@@ -102,7 +102,7 @@ public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 	
 	/**
 	 * @param targetType
-	 * @return The registered IExceptionHandler for the given targetType. Null if none registered. 
+	 * @return The registered IExceptionHandler for the given targetType. Null if none registered.
 	 */
 	protected IExceptionHandler getExceptionHandler(String targetType){
 		synchronized(synchronizedObject){
@@ -128,7 +128,7 @@ public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 	
 	/**
 	 * @param targetType
-	 * @return The registered IExceptionHandler for the given targetType. Null if none registered. 
+	 * @return The registered IExceptionHandler for the given targetType. Null if none registered.
 	 */
 	protected IExceptionHandler getExceptionHandler(Class targetType){
 		return getExceptionHandler(targetType.getName());
@@ -182,9 +182,9 @@ public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 	}
 	
 	/**
-	 * Finds registered ExceptionHandlers. Moves up the class hierarchy for the 
-	 * passed exception itself and all its nested cause exceptions to find 
-	 * a handler for the specific class.  
+	 * Finds registered ExceptionHandlers. Moves up the class hierarchy for the
+	 * passed exception itself and all its nested cause exceptions to find
+	 * a handler for the specific class.
 	 * Returns null if no handler could be found.
 	 * @param exception
 	 */
@@ -197,7 +197,7 @@ public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 			return rootCauseResult;
 		
 		Class classRun = exception.getClass();
-		Throwable exceptionRun = exception;		
+		Throwable exceptionRun = exception;
 		while (exceptionRun != null) {
 			
 		  classRun = exceptionRun.getClass();
@@ -248,7 +248,7 @@ public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 
 	/**
 	 * This method can be executed on every thread. It executes an
-	 * ExceptionHandler on the GUI thread and waits for it to return. 
+	 * ExceptionHandler on the GUI thread and waits for it to return.
 	 *
 	 * @param exception
 	 */
@@ -259,7 +259,7 @@ public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 
 	/**
 	 * This method can be executed on every thread. It executes an
-	 * ExceptionHandler on the GUI thread and waits for it to return. 
+	 * ExceptionHandler on the GUI thread and waits for it to return.
 	 *
 	 * @param exception
 	 */
@@ -279,7 +279,7 @@ public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 	}
 	
 	/**
-	 * Searches the {@link IExceptionHandler} for the given exception and invokes 
+	 * Searches the {@link IExceptionHandler} for the given exception and invokes
 	 * its {@link IExceptionHandler#handleException(Thread, Throwable, Throwable)} method.
 	 * <p>
 	 * Note, that if the {@link #mode} of the registry is {@link Mode#bypass} this
@@ -287,7 +287,7 @@ public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 	 * </p>
 	 * @param thread The thread the exception occured on.
 	 * @param exception The exception to handle.
-	 * @param async Whether to handle asynchronously (value = <code>true</code>) or synchronously (value <code>true</code>) 
+	 * @param async Whether to handle asynchronously (value = <code>true</code>) or synchronously (value <code>true</code>)
 	 * @return Whether a appropriate handler could be found and invoked.
 	 */
 	private boolean handleException(final Thread thread, final Throwable exception, boolean async)
@@ -330,11 +330,11 @@ public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 	/**
 	 * Processes exceptionHandler extension-point elements.
 	 * For each element one instance of exceptionHandler.class is registered
-	 * in the {@link ExceptionHandlerRegistry}. 
+	 * in the {@link ExceptionHandlerRegistry}.
 	 * @param element
 	 */
 	@Override
-	public void processElement(IExtension extension, IConfigurationElement element) 
+	public void processElement(IExtension extension, IConfigurationElement element)
 	throws Exception
 	{
 		try{

@@ -23,7 +23,7 @@ import org.nightlabs.timepattern.TimePatternFormatException;
 
 /**
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
- * @author Marco Schulze - Marco at NightLabs dot de 
+ * @author Marco Schulze - Marco at NightLabs dot de
  */
 public class DailyTimePatternBuilderHopPage extends WizardHopPage {
 
@@ -154,8 +154,8 @@ public class DailyTimePatternBuilderHopPage extends WizardHopPage {
 		eachXDayWrapper.setEnabled(typeEachXDay.getSelection());
 	}
 
-	public void configureTimePatternSet(TimePattern pattern) 
-	throws TimePatternFormatException 
+	public void configureTimePatternSet(TimePattern pattern)
+	throws TimePatternFormatException
 	{
 //		TimePattern pattern = timePatternSet.createTimePattern();
 		pattern.setYear("*"); //$NON-NLS-1$

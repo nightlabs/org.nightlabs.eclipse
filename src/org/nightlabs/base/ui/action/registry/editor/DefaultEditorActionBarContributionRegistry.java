@@ -13,8 +13,8 @@ import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  *
  */
-public class DefaultEditorActionBarContributionRegistry 
-extends AbstractActionRegistry 
+public class DefaultEditorActionBarContributionRegistry
+extends AbstractActionRegistry
 {
 
 	public DefaultEditorActionBarContributionRegistry() {
@@ -27,8 +27,8 @@ extends AbstractActionRegistry
 	protected Object createActionOrContributionItem(
 			IExtension extension,
 			IConfigurationElement element
-		) 
-	throws EPProcessorException 
+		)
+	throws EPProcessorException
 	{
 		try {
 			return element.createExecutableExtension("class"); //$NON-NLS-1$

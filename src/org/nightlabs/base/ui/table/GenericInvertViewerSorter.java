@@ -36,9 +36,9 @@ import org.eclipse.swt.SWT;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
-public class GenericInvertViewerSorter 
+public class GenericInvertViewerSorter
 extends InvertableSorter<Object>
-{	
+{
 	public GenericInvertViewerSorter(int columnIndex) {
 		super();
 		this.columnIndex = columnIndex;
@@ -48,7 +48,7 @@ extends InvertableSorter<Object>
 
 	@Override
 	public int compare(Viewer viewer, Object e1, Object e2) {
-//		return superCompare(viewer, e1, e2);		
+//		return superCompare(viewer, e1, e2);
 		return compare(viewer, e1, e2,columnIndex);
 	}
 
@@ -67,7 +67,7 @@ extends InvertableSorter<Object>
 		return inverse;
 	}
 
-	private InvertableSorter inverse = new InvertableSorter<Object>(){	
+	private InvertableSorter inverse = new InvertableSorter<Object>(){
 		@Override
 		public int getSortDirection() {
 			return SWT.DOWN;
@@ -87,11 +87,11 @@ extends InvertableSorter<Object>
 		@Override
 		protected int _compare(Viewer viewer, Object e1, Object e2) {
 			return 0;
-		}	
+		}
 	};
 
-	@SuppressWarnings("unchecked") 
-	public int compare(Viewer viewer, Object e1, Object e2, int columnIndex) 
+	@SuppressWarnings("unchecked")
+	public int compare(Viewer viewer, Object e1, Object e2, int columnIndex)
 	{
 		int cat1 = category(e1);
 		int cat2 = category(e2);
@@ -113,12 +113,12 @@ extends InvertableSorter<Object>
 				ITableLabelProvider lprov = (ITableLabelProvider) prov;
 				name1 = lprov.getColumnText(e1, columnIndex);
 				name2 = lprov.getColumnText(e2, columnIndex);
-			}         
+			}
 			else if (prov instanceof ILabelProvider) {
 				ILabelProvider lprov = (ILabelProvider) prov;
 				name1 = lprov.getText(e1);
 				name2 = lprov.getText(e2);
-			} 
+			}
 			else {
 				name1 = e1.toString();
 				name2 = e2.toString();
@@ -132,7 +132,7 @@ extends InvertableSorter<Object>
 		}
 
 		// use the comparator to compare the strings
-		return getComparator().compare(name1, name2);		
+		return getComparator().compare(name1, name2);
 	}
 
 }

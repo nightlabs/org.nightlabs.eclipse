@@ -34,8 +34,8 @@ import org.eclipse.swt.widgets.Composite;
  * @author Daniel.Mazurek <at> NightLabs <dot> de
  *
  */
-public class XTextCellEditor 
-extends TextCellEditor 
+public class XTextCellEditor
+extends TextCellEditor
 implements IReadOnlyCellEditor
 {
 	public XTextCellEditor() {
@@ -62,7 +62,7 @@ implements IReadOnlyCellEditor
 	 * @param style
 	 * @param readOnly
 	 */
-	public XTextCellEditor(Composite parent, int style, boolean readOnly) 
+	public XTextCellEditor(Composite parent, int style, boolean readOnly)
 	{
 		super(parent, getCellEditorStyle(style, readOnly));
 		this.readOnly = readOnly;
@@ -82,7 +82,7 @@ implements IReadOnlyCellEditor
 	 * @param value a text string (type <code>String</code>)
 	 */
 	@Override
-	protected void doSetValue(Object value) 
+	protected void doSetValue(Object value)
 	{
 		super.doSetValue(value);
 	}
@@ -92,7 +92,7 @@ implements IReadOnlyCellEditor
 		return readOnly;
 	}
 	
-	public void setReadOnly(boolean readOnly) 
+	public void setReadOnly(boolean readOnly)
 	{
 		if (this.readOnly != readOnly) {
 			this.readOnly = readOnly;
@@ -102,5 +102,5 @@ implements IReadOnlyCellEditor
 //			getControl().dispose();
 //			createControl(parent);
 		}
-	}  
+	}
 }

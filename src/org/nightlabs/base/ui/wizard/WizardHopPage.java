@@ -91,7 +91,7 @@ implements IWizardHopPage
 	/**
 	 * If this WizardHopPage has a wizardHop set, the hop will be asked for the next
 	 * page, otherwise the wizard of this page (if set) will be asked.
-	 *   
+	 * 
 	 * @see org.eclipse.jface.wizard.WizardPage#getNextPage()
 	 */
 	@Override
@@ -105,7 +105,7 @@ implements IWizardHopPage
 			else
 				throw new IllegalStateException(
 						"wizardHop AND wizard are not assigned! If this is the entry-page of a WizardHop, no WizardHop has been created in the constructor! Call 'new WizardHop(this);' in the constructor of " + //$NON-NLS-1$
-						this.getClass().getName()+". If this should be used as normal WizardPage, add it to the wizard."); //$NON-NLS-1$		
+						this.getClass().getName()+". If this should be used as normal WizardPage, add it to the wizard."); //$NON-NLS-1$
 		}
 	}
 

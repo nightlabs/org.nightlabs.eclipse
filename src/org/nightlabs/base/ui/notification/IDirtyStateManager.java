@@ -4,7 +4,7 @@
 package org.nightlabs.base.ui.notification;
 
 /**
- * Interface that can be used to notify implementors of 
+ * Interface that can be used to notify implementors of
  * changes in the lifecycle of some object.
  * 
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
@@ -13,14 +13,14 @@ package org.nightlabs.base.ui.notification;
 public interface IDirtyStateManager {
 	
 	/**
-	 * Call this to notify that the implementor should 
-	 * be brought to dirty state. 
+	 * Call this to notify that the implementor should
+	 * be brought to dirty state.
 	 */
 	public void markDirty();
 	
 	/**
-	 * Call this to notify that the implementor should 
-	 * be brought to clean state. 
+	 * Call this to notify that the implementor should
+	 * be brought to clean state.
 	 */
 	public void markUndirty();
 	

@@ -9,7 +9,7 @@ package org.nightlabs.base.ui.language;
  * @author Daniel Mazurek - daniel <at> nightlabs <dot> de
  *
  */
-public interface ModificationFinishedListener 
+public interface ModificationFinishedListener
 {
 	/**
 	 * is called when the modification of {@link II18nTextEditor} is finished

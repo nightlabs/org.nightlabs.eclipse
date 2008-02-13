@@ -30,7 +30,7 @@ import java.util.Locale;
 
 import org.eclipse.jface.action.Action;
 
-public class LanguageAction 
+public class LanguageAction
 extends Action
 {
 	protected static final String ID = LanguageAction.class.getName();
@@ -44,7 +44,7 @@ extends Action
 		init();
 	}
 
-	protected void init() 
+	protected void init()
 	{
 		setId(ID+'#'+languageID);
 		setText(LanguageManager.getNativeLanguageName(languageID));
@@ -53,7 +53,7 @@ extends Action
 	}
 
 	@Override
-	public void run() 
+	public void run()
 	{
 		Locale.setDefault(new Locale(languageID));
 //		langMan.setCurrentLanguageID(languageID);

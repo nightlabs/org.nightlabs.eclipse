@@ -32,13 +32,13 @@ import org.eclipse.core.runtime.NullProgressMonitor;
  * At the moment this class is doing nothing else than NullProgressMonitor,
  * but once implemented this Implementation should wait a certain time (e.g. 1 sec)
  * and then open a Dialog wihich displays the progress
- *   
+ * 
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
-public class XProgressMonitor 
-extends NullProgressMonitor 
-implements IProgressMonitor 
+public class XProgressMonitor
+extends NullProgressMonitor
+implements IProgressMonitor
 {
 	
 }

@@ -36,13 +36,13 @@ public abstract class InvertableSorter<T>
 extends ViewerSorter
 {
 	@Override
-	@SuppressWarnings("unchecked") 
+	@SuppressWarnings("unchecked")
 	public int compare(Viewer viewer, Object e1, Object e2)
 	{
 		return _compare(viewer, (T)e1, (T)e2);
 	}
 
-	protected int superCompare(Viewer viewer, Object e1, Object e2) 
+	protected int superCompare(Viewer viewer, Object e1, Object e2)
 	{
 		return super.compare(viewer, e1, e2);
 	}

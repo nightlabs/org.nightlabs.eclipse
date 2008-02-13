@@ -103,7 +103,7 @@ implements ISelectionSupport
 //	}
 //
 //	/**
-//	 * 
+//	 *
 //	 * @see org.nightlabs.base.ui.selection.ISelectionSupport#clearSelection()
 //	 */
 //	public void clearSelection() {
@@ -111,62 +111,62 @@ implements ISelectionSupport
 //	}
 //
 //	/**
-//	 * 
+//	 *
 //	 * @see org.nightlabs.base.ui.selection.ISelectionSupport#setSelection(java.util.List)
 //	 */
-//	public void setSelection(List selectedObjects) 
+//	public void setSelection(List selectedObjects)
 //	{
 //		StructuredSelection selection = new StructuredSelection(selectedObjects);
 //		setSelection(selection);
-//	}	
-//	
+//	}
+//
 //	/**
-//	 * 
+//	 *
 //	 * @see org.nightlabs.base.ui.selection.ISelectionSupport#addSelectedObject(java.lang.Object)
 //	 */
-//	public void addSelectedObject(Object o) 
+//	public void addSelectedObject(Object o)
 //	{
 //		getSelectedObjectsList().add(o);
-//		selection = new StructuredSelection(getSelectedObjectsList());		
+//		selection = new StructuredSelection(getSelectedObjectsList());
 //		fireSelectionChanged();
 //	}
 //
 //	/**
-//	 * 
+//	 *
 //	 * @see org.nightlabs.base.ui.selection.ISelectionSupport#addSelectedObjects(java.util.Collection)
 //	 */
-//	public void addSelectedObjects(Collection objects) 
+//	public void addSelectedObjects(Collection objects)
 //	{
-//		if (!objects.isEmpty()) 
+//		if (!objects.isEmpty())
 //		{
-//			List l = getSelectedObjectsList(); 
+//			List l = getSelectedObjectsList();
 //			for (Iterator it = objects.iterator(); it.hasNext(); ) {
 //				l.add(it.next());
 //			}
 //			selection = new StructuredSelection(l);
-//			fireSelectionChanged();			
+//			fireSelectionChanged();
 //		}
-//	}	
-//	
+//	}
+//
 //	/**
-//	 * 
+//	 *
 //	 * @see org.nightlabs.base.ui.selection.ISelectionSupport#removeSelectedObject(java.lang.Object)
 //	 */
-//	public void removeSelectedObject(Object o) 
+//	public void removeSelectedObject(Object o)
 //	{
 //		List l = getSelectedObjectsList();
 //		l.remove(o);
 //		selection = new StructuredSelection(l);
 //		fireSelectionChanged();
-//	}	
-//	
+//	}
+//
 //	/**
-//	 * 
+//	 *
 //	 * @see org.nightlabs.base.ui.selection.ISelectionSupport#removeSelectedObjects(java.util.Collection)
 //	 */
-//	public void removeSelectedObjects(Collection objects) 
+//	public void removeSelectedObjects(Collection objects)
 //	{
-//		if (!objects.isEmpty()) 
+//		if (!objects.isEmpty())
 //		{
 //			List l = getSelectedObjectsList();
 //			for (Iterator it = objects.iterator(); it.hasNext(); ) {
@@ -176,11 +176,11 @@ implements ISelectionSupport
 //			fireSelectionChanged();
 //		}
 //	}
-//	
+//
 //	/**
 //	 * @see ISelectionSupport#contains(Object)
 //	 */
-//	public boolean contains(Object o) 
+//	public boolean contains(Object o)
 //	{
 //		return getSelectedObjectsList().contains(o);
 //	}

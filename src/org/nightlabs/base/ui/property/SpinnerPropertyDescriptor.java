@@ -34,8 +34,8 @@ import org.nightlabs.base.ui.celleditor.XSpinnerCellEditor;
  * @author Daniel.Mazurek <at> Nightlabs <dot> de
  *
  */
-public class SpinnerPropertyDescriptor 
-extends XPropertyDescriptor 
+public class SpinnerPropertyDescriptor
+extends XPropertyDescriptor
 {
 
 	/**
@@ -60,8 +60,8 @@ extends XPropertyDescriptor
 	 * @param displayName
 	 * @param readOnly
 	 */
-	public SpinnerPropertyDescriptor(Object id, String displayName, boolean readOnly, 
-			int minimum, int maximum) 
+	public SpinnerPropertyDescriptor(Object id, String displayName, boolean readOnly,
+			int minimum, int maximum)
 	{
 		super(id, displayName, readOnly);
 		this.minimum = minimum;

@@ -45,12 +45,12 @@ import org.nightlabs.config.Config;
 
 /**
  * Defines a Dialog with a "twistie" for toggling the expansion-state of a Composite.
- * This class is ment to be subclassed. You have to 
+ * This class is ment to be subclassed. You have to
  * define a constructor and override {@link #createStaticArea(Composite)} as well as
  * {@link #createExpandableArea(Composite)} to have your own Composites inside the Dialog.
  * <br/>
  * <br/>
- * Here is a example: 
+ * Here is a example:
  * <pre>
  * public class MyExpandableDialog extends ExpandableAreaDialog{
  * 		public MyExpandableDialog(Shell parent)
@@ -60,14 +60,14 @@ import org.nightlabs.config.Config;
  *			setExpandText("Expand Me");
  *		}
  *
- *		protected Composite createStaticArea(Composite parent) 
+ *		protected Composite createStaticArea(Composite parent)
  *		{
- *			return new Composite(parent,SWT.NONE);		
+ *			return new Composite(parent,SWT.NONE);
  *		}
  *
- *		protected Composite createExpandableArea(Composite parent) 
+ *		protected Composite createExpandableArea(Composite parent)
  *		{
- *			return new Composite(parent,SWT.NONE);		
+ *			return new Composite(parent,SWT.NONE);
  *		}
  * }
  * </pre>
@@ -109,7 +109,7 @@ public class ExpandableAreaDialog extends Dialog {
 		setShellStyle(getShellStyle()|style);
 		this.dialogTitle = title;
 		this.expandText = expandText;
-	}	
+	}
 	
 	private String dialogTitle = ""; //$NON-NLS-1$
 	private String expandText = ""; //$NON-NLS-1$
@@ -152,7 +152,7 @@ public class ExpandableAreaDialog extends Dialog {
 	 */
 	@Override
 	protected Control createDialogArea(Composite parent) {
-		dialogAreaComp = new ExpandableAreaComp();		
+		dialogAreaComp = new ExpandableAreaComp();
 		return dialogAreaComp.createComposite(parent,this,expandText);
 	}
 	
@@ -287,7 +287,7 @@ public class ExpandableAreaDialog extends Dialog {
 	}
 	
 	/**
-	 * This class is internally used. 
+	 * This class is internally used.
 	 * @author Alexander Bieber
 	 */
 	private class ExpandableAreaComp {
@@ -300,26 +300,26 @@ public class ExpandableAreaDialog extends Dialog {
 		
 		/**
 		 * Calls {@link ExpandableAreaDialog#createStaticArea(Composite)}, creates an
-		 * {@link ExpandableComposite} and adds the result of 
+		 * {@link ExpandableComposite} and adds the result of
 		 * {@link ExpandableAreaDialog#createExpandableArea(Composite)} to it.
-		 * An anonymous {@link ExpansionAdapter} is added that handles 
+		 * An anonymous {@link ExpansionAdapter} is added that handles
 		 * relayouting of the parent Dialog.
 		 * @param parent
 		 * @param dialog
 		 * @param expandText
 		 */
 		public Composite createComposite(
-				Composite parent, 
-				ExpandableAreaDialog dialog, 
+				Composite parent,
+				ExpandableAreaDialog dialog,
 				String expandText
 			)
-		{		
+		{
 			if (dialog == null)
 				throw new IllegalArgumentException(this.getClass().getName()+"#createComposite: Parameter dialog can not be null."); //$NON-NLS-1$
 			this.dialog = dialog;
 			// create the Composite
 			expComp = new Composite(parent,SWT.NONE);
-			// LayoutData takes care of layouting within the dialog ... 
+			// LayoutData takes care of layouting within the dialog ...
 			GridData myData = new GridData(GridData.FILL_BOTH);
 			expComp.setLayoutData(myData);
 			
@@ -361,15 +361,15 @@ public class ExpandableAreaDialog extends Dialog {
 			// Workaround, otherwise half of first row in expandableArea
 			// visible even when collapsed
 			Composite dummyComp = new Composite(ec,SWT.NONE);
-			gd = new GridData(GridData.FILL_BOTH);				
+			gd = new GridData(GridData.FILL_BOTH);
 			dummyComp.setLayoutData(gd);
 			GridLayout gl = new GridLayout();
-			dummyComp.setLayout(gl);	
+			dummyComp.setLayout(gl);
 
 			expandableArea = createExpandableArea(dummyComp);
 			if (expandableArea != null) {
 				// set the LayoutData
-				gd = new GridData(GridData.FILL_BOTH);				
+				gd = new GridData(GridData.FILL_BOTH);
 				expandableArea.setLayoutData(gd);
 				// tell the parent to manage this as expandable client
 				ec.setClient(dummyComp);

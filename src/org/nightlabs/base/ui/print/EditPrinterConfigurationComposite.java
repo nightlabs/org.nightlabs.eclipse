@@ -70,7 +70,7 @@ public class EditPrinterConfigurationComposite extends XComposite {
 	 */
 	public EditPrinterConfigurationComposite(Composite parent, int style, XComposite.LayoutMode layoutMode, String printerUseCaseID, PrinterConfiguration _printerConfiguration) {
 		super(parent, style, layoutMode);
-		this.printerUseCaseID = printerUseCaseID;		
+		this.printerUseCaseID = printerUseCaseID;
 		printerUseCase = PrinterConfigurationRegistry.sharedInstance().getPrinterUseCase(printerUseCaseID);
 		if (printerUseCase == null)
 			throw new RuntimeException("The PrinterUseCase to be edited is not registered: '"+printerUseCaseID+"'!"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -87,7 +87,7 @@ public class EditPrinterConfigurationComposite extends XComposite {
 			factoryEnties = new ArrayList<ConfiguratorFactoryEntry>();
 			factoryEnties.add(factoryEntry);
 		}
-		else 
+		else
 			factoryEnties = PrinterConfigurationRegistry.sharedInstance().getPrinterConfiguratorEntries();
 		
 		if (factoryEnties.size() <= 0)
@@ -98,7 +98,7 @@ public class EditPrinterConfigurationComposite extends XComposite {
 			configuratorCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			// TODO: Set default configurator for usecase
 			configuratorCombo.addSelectionListener(new SelectionListener() {
-				public void widgetDefaultSelected(SelectionEvent arg0) {				
+				public void widgetDefaultSelected(SelectionEvent arg0) {
 				}
 				public void widgetSelected(SelectionEvent arg0) {
 					selectedConfiguratorFactoryEntry = configuratorCombo.getSelectedElement();
@@ -141,7 +141,7 @@ public class EditPrinterConfigurationComposite extends XComposite {
 	/**
 	 * Returns the {@link PrinterConfiguration} read from the current
 	 * {@link PrinterConfigurator} in this dialog if possible and null
-	 * if nothing else can be returned. 
+	 * if nothing else can be returned.
 	 * 
 	 * @return The current {@link PrinterConfiguration} or null.
 	 */

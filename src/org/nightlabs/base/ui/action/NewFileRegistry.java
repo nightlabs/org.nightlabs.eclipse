@@ -39,7 +39,7 @@ import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
 import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
 
-public class NewFileRegistry 
+public class NewFileRegistry
 extends AbstractEPProcessor
 {
 	public static final String EXTENSION_POINT_ID = "org.nightlabs.base.ui.newfileaction";	 //$NON-NLS-1$
@@ -59,7 +59,7 @@ extends AbstractEPProcessor
 	/**
 	 * 
 	 * @return a {@link Map} containing categoryIDs {@link String} as key and
-	 * a {@link List} of {@link INewFileAction} as value 
+	 * a {@link List} of {@link INewFileAction} as value
 	 */
 	public Map getCategory2Actions() {
 		checkProcessing();
@@ -84,7 +84,7 @@ extends AbstractEPProcessor
 
 	@Override
 	public void processElement(IExtension extension, IConfigurationElement element)
-	throws Exception 
+	throws Exception
 	{
 		if (element.getName().equalsIgnoreCase("action"))  //$NON-NLS-1$
 		{
@@ -115,7 +115,7 @@ extends AbstractEPProcessor
 					action.setFileExtension(fileExtension);
 					action.setText(title);
 					if (checkString(tooltip))
-						action.setToolTipText(tooltip);					
+						action.setToolTipText(tooltip);
 					if (checkString(iconName))
 						action.setImageDescriptor(getImageDescriptor(iconName));
 					
@@ -127,26 +127,26 @@ extends AbstractEPProcessor
 					else {
 						List<INewFileAction> actions = new LinkedList<INewFileAction>();
 						actions.add(action);
-						category2Actions.put(categoryID, actions);						
-					}					
-				}					
+						category2Actions.put(categoryID, actions);
+					}
+				}
 			} catch (CoreException e) {
 				throw new EPProcessorException(e);
-			}			
+			}
 		}
 	}
 
-	protected ImageDescriptor getImageDescriptor(String iconName) 
+	protected ImageDescriptor getImageDescriptor(String iconName)
 	{
-		if (iconName != null) {			
+		if (iconName != null) {
 			return ImageDescriptor.createFromURL(NLBasePlugin.getDefault().getBundle().getEntry(iconName));
 		}
 		return null;
 	}
 		
-	protected class CategoryRegistry 
-	extends AbstractEPProcessor 
-	{ 
+	protected class CategoryRegistry
+	extends AbstractEPProcessor
+	{
 		protected Map<String, String> categoryID2name = new HashMap<String, String>();
 		
 		@Override
@@ -154,15 +154,15 @@ extends AbstractEPProcessor
 			return EXTENSION_POINT_ID;
 		}
 		
-		public String getCategoryName(String categoryID) 
+		public String getCategoryName(String categoryID)
 		{
 			checkProcessing();
 			return categoryID2name.get(categoryID);
 		}
 
 		@Override
-		public void processElement(IExtension extension, IConfigurationElement element) 
-		throws Exception 
+		public void processElement(IExtension extension, IConfigurationElement element)
+		throws Exception
 		{
 			if (element.getName().equalsIgnoreCase("category"))  //$NON-NLS-1$
 			{

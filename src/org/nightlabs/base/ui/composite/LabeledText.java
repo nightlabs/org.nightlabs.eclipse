@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * A Label above a Text wrapped in a Composite. 
+ * A Label above a Text wrapped in a Composite.
  * 
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
  * @author Marco Schulze - marco at nightlabs dot de
@@ -58,7 +58,7 @@ public class LabeledText extends XComposite {
 			boolean setLayoutData
 	) {
 		super(parent, wrapperStyle,
-				LayoutMode.TIGHT_WRAPPER, 
+				LayoutMode.TIGHT_WRAPPER,
 				setLayoutData ? LayoutDataMode.GRID_DATA : LayoutDataMode.NONE);
 		getGridLayout().verticalSpacing = 5;
 		this.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -132,7 +132,7 @@ public class LabeledText extends XComposite {
 	}
 	
 	/**
-	 * Returns the caption control. 
+	 * Returns the caption control.
 	 * Note that this will be <code>null</code> if the LabeledText was
 	 * created with a caption of <code>null</code>.
 	 */
@@ -141,7 +141,7 @@ public class LabeledText extends XComposite {
 	}
 	
 	/**
-	 * Set the caption. 
+	 * Set the caption.
 	 * Will have no affect, if the caption was not created, is already disposed
 	 * or if the given caption is null.
 	 * 
@@ -153,7 +153,7 @@ public class LabeledText extends XComposite {
 	}
 
 	/**
-	 * Returns the text of this LabeledText's 
+	 * Returns the text of this LabeledText's
 	 * {@link #getTextControl()}.
 	 * 
 	 * @return The text currently shown in the text control.
@@ -167,7 +167,7 @@ public class LabeledText extends XComposite {
 	 * 
 	 * @param text The text to set.
 	 */
-	public void setText(String text) {		
+	public void setText(String text) {
 		getTextControl().setText(text);
 	}
 

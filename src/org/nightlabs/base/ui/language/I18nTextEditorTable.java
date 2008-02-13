@@ -118,7 +118,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 		tableViewer.setCellModifier(new I18nTextEditorTableCellModifier());
 
 		// Set the cell modifier for the viewer
-		tableViewer.setContentProvider(new I18nTextEditorTableContentProvider()); // Marco: removed the parameters - a ContentProvider never gets its content immutable this way - it gets it via the callback-method inputChanged(...) 
+		tableViewer.setContentProvider(new I18nTextEditorTableContentProvider()); // Marco: removed the parameters - a ContentProvider never gets its content immutable this way - it gets it via the callback-method inputChanged(...)
 		tableViewer.setLabelProvider(new I18nTextLabelProvider());
 	}
 
@@ -221,7 +221,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 	 * directly, but instead to transfer all data only from the UI to the object, if
 	 * the user explicitely applies his changes (in order to transfer them to the server
 	 * as well). Therefore, you can use the {@link EditMode#BUFFERED}, which will
-	 * cause an internal {@link I18nTextBuffer} to be created. 
+	 * cause an internal {@link I18nTextBuffer} to be created.
 	 * </p>
 	 *
 	 * @param editMode The new {@link EditMode}.
@@ -296,7 +296,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 	 * This method stores the currently edited text into the "backend" {@link I18nText}
 	 * object. This method is automatically called whenever the <tt>I18nTextEditor</tt>
 	 * is changed by the user. This means, the I18nText is kept synchronous with the
-	 * displayed and edited text. 
+	 * displayed and edited text.
 	 * <p>
 	 * This method has been changed from public to private.
 	 */
@@ -336,13 +336,13 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 			return COLUMN_VALUE_NAME.equals(property);
 		}
 
-		@SuppressWarnings("unchecked") 
+		@SuppressWarnings("unchecked")
 		public Object getValue(Object element, String property)
 		{
 			return ((Map.Entry<String, String>)element).getValue();
 		}
 
-		@SuppressWarnings("unchecked") 
+		@SuppressWarnings("unchecked")
 		public void modify(Object element, String property, Object value)
 		{
 			if (COLUMN_VALUE_NAME.equals(property)) {
@@ -377,16 +377,16 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 	}
 
 	/////////////////////////////////////////////////
-	private class I18nTextLabelProvider 
+	private class I18nTextLabelProvider
 	extends LabelProvider
 	implements ITableLabelProvider {
 
-		@SuppressWarnings("unchecked") 
+		@SuppressWarnings("unchecked")
 		public String getColumnText(Object element, int columnIndex) {
 			Map.Entry<String, String> item = (Map.Entry<String, String>)element;
 			switch (columnIndex) {
 				case COLUMN_FLAG_INDEX:
-					return null; 
+					return null;
 				case COLUMN_LANGUAGE_INDEX:
 					return LanguageManager.sharedInstance().getLanguage(item.getKey(), true).getName().getText();
 				case COLUMN_VALUE_INDEX:
@@ -399,7 +399,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 		/**
 		 * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object, int)
 		 */
-		@SuppressWarnings("unchecked") 
+		@SuppressWarnings("unchecked")
 		public Image getColumnImage(Object element, int columnIndex) {
 			Map.Entry<String, String> item = (Map.Entry<String, String>)element;
 			switch (columnIndex) {
@@ -408,7 +408,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 				case COLUMN_LANGUAGE_INDEX:
 				case COLUMN_VALUE_INDEX:
 				default :
-					return null; 	
+					return null;
 			}
 		}
 	}
@@ -426,7 +426,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 		}
 
 		// Return the i18nText as an array of Objects
-		@SuppressWarnings("unchecked") 
+		@SuppressWarnings("unchecked")
 		@Override
 		public Object[] getElements(Object parent) {
 			if (i18nText == null)
@@ -436,7 +436,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 			Map<String, String> es = new HashMap<String, String>(languageCfs.size());
 			for (Map.Entry<String, String> me : i18nText.getTexts()) {
 				String languageID = me.getKey();
-				if(LanguageManager.sharedInstance().getLanguage(languageID, false) != null){ 
+				if(LanguageManager.sharedInstance().getLanguage(languageID, false) != null){
 					String text = me.getValue();
 					es.put(languageID, text);
 				}//if
@@ -461,7 +461,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 	 * @see org.nightlabs.base.ui.language.II18nTextEditor#addModificationFinishedListener(org.nightlabs.base.ui.language.ModificationFinishedListener)
 	 */
 	public void addModificationFinishedListener(ModificationFinishedListener listener) {
-		modificationFinishedListeners.add(listener);		
+		modificationFinishedListeners.add(listener);
 	}
 
 	/* (non-Javadoc)
@@ -471,12 +471,12 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 		modificationFinishedListeners.remove(listener);
 	}
 	
-	private void fireModificationFinished() 
+	private void fireModificationFinished()
 	{
 		ModificationFinishedEvent event = new ModificationFinishedEvent(this);
 		for (int i=0; i<modificationFinishedListeners.size(); i++) {
 			ModificationFinishedListener listener = (ModificationFinishedListener) modificationFinishedListeners.getListeners()[i];
 			listener.modificationFinished(event);
 		}
-	}	
+	}
 }

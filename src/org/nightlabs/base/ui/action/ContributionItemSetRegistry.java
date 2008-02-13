@@ -38,8 +38,8 @@ import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
-public class ContributionItemSetRegistry 
-extends AbstractActionRegistry 
+public class ContributionItemSetRegistry
+extends AbstractActionRegistry
 {
 	private static final Logger logger = Logger.getLogger(ContributionItemSetRegistry.class);
 	
@@ -75,10 +75,10 @@ extends AbstractActionRegistry
 	}
 
 	@Override
-	protected Object createActionOrContributionItem(IExtension extension, IConfigurationElement element) 
-	throws EPProcessorException 
+	protected Object createActionOrContributionItem(IExtension extension, IConfigurationElement element)
+	throws EPProcessorException
 	{
-		if (element.getName().equals(ELEMENT_CONTRIBUTION_ITEM)) 
+		if (element.getName().equals(ELEMENT_CONTRIBUTION_ITEM))
 		{
 			String id = element.getAttribute(ATTRIBUTE_ID);
 			if (checkString(id))
@@ -88,7 +88,7 @@ extends AbstractActionRegistry
 			if (checkString(name))
 				logger.error("name is empty!"); //$NON-NLS-1$
 			
-			String className = element.getAttribute(ATTRIBUTE_CLASS);			
+			String className = element.getAttribute(ATTRIBUTE_CLASS);
 			if (checkString(className)) {
 				try {
 					IXContributionItem contributionItem = (IXContributionItem) element.createExecutableExtension(ATTRIBUTE_CLASS);
@@ -118,7 +118,7 @@ extends AbstractActionRegistry
 	}
 
 	@Override
-	public int contributeToCoolBar(ICoolBarManager coolBarManager) 
+	public int contributeToCoolBar(ICoolBarManager coolBarManager)
 	{
 		if (!perspectiveListenerAdded)
 			earlyContributed = true;
@@ -130,8 +130,8 @@ extends AbstractActionRegistry
 				IXContributionItem contributionItem = actionDescriptor.getContributionItem();
 				coolBarManager.add(contributionItem);
 			}
-			return getActionDescriptors().size();			
-		} 
+			return getActionDescriptors().size();
+		}
 		else {
 			// TODO: why is the contributionItem after restore not visible although it is added
 			if (getActiveExtensionIDs() != null) {
@@ -141,10 +141,10 @@ extends AbstractActionRegistry
 					coolBarManager.add(contributionItem);
 //					coolBarManager.update(true);
 				}
-				return getActiveExtensionIDs().size();							
+				return getActiveExtensionIDs().size();
 			}
 			return 0;
-		}		
+		}
 	}
 		
 }

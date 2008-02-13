@@ -35,16 +35,16 @@ import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
-public class DefaultEntityEditorActionBarContributor 
-extends AbstractActionRegistry 
+public class DefaultEntityEditorActionBarContributor
+extends AbstractActionRegistry
 {
 	public DefaultEntityEditorActionBarContributor() {
 	}
 
 	@Override
 	protected Object createActionOrContributionItem(
-			IExtension extension, IConfigurationElement element) 
-	throws EPProcessorException 
+			IExtension extension, IConfigurationElement element)
+	throws EPProcessorException
 	{
 		try {
 			return element.createExecutableExtension("class"); //$NON-NLS-1$
@@ -61,5 +61,5 @@ extends AbstractActionRegistry
 	@Override
 	protected String getActionElementName() {
 		return EntityEditorActionBarContributorRegistry.ELEMENT_EDITOR_ACTION_BAR_CONTRIBUTION;
-	}	
+	}
 }

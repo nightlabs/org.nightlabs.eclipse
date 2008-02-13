@@ -43,8 +43,8 @@ import org.nightlabs.i18n.I18nTextBuffer;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
-public abstract class AbstractSearchResultProviderFactory 
-implements ISearchResultProviderFactory 
+public abstract class AbstractSearchResultProviderFactory
+implements ISearchResultProviderFactory
 {
 	public AbstractSearchResultProviderFactory() {
 		super();
@@ -70,9 +70,9 @@ implements ISearchResultProviderFactory
 		return name;
 	}
 
-	public ISearchResultActionHandler getActionHandler() 
+	public ISearchResultActionHandler getActionHandler()
 	{
-		String perspectiveID = RCPUtil.getActivePerspectiveID();			
+		String perspectiveID = RCPUtil.getActivePerspectiveID();
 		ISearchResultActionHandler actionHandler = perspectiveID2ActionHandler.get(perspectiveID);
 		if (actionHandler == null) {
 			actionHandler = perspectiveID2ActionHandler.get(WILDCARD_PERSPECTIVE_ID);
@@ -94,8 +94,8 @@ implements ISearchResultProviderFactory
 	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement, java.lang.String, java.lang.Object)
 	 */
 	public void setInitializationData(IConfigurationElement config,
-			String propertyName, Object data) 
-	throws CoreException 
+			String propertyName, Object data)
+	throws CoreException
 	{
 		if (config.getName().equals(SearchResultProviderRegistry.ELEMENT_SEARCH_RESULT_PROVIDER_FACTORY)) {
 			String decoratorString = config.getAttribute(SearchResultProviderRegistry.ATTRIBUTE_DECORATOR);
@@ -110,13 +110,13 @@ implements ISearchResultProviderFactory
 				ImageDescriptor imageDescriptor = AbstractUIPlugin.imageDescriptorFromPlugin(
 						config.getNamespaceIdentifier(), iconString);
 				if (imageDescriptor != null)
-					image = imageDescriptor.createImage();										
+					image = imageDescriptor.createImage();
 			}
 			if (AbstractEPProcessor.checkString(decoratorString)) {
 				ImageDescriptor imageDescriptor = AbstractUIPlugin.imageDescriptorFromPlugin(
 						config.getNamespaceIdentifier(), decoratorString);
 				if (imageDescriptor != null)
-					decoratorImage = imageDescriptor.createImage();										
+					decoratorImage = imageDescriptor.createImage();
 			}
 			if (AbstractEPProcessor.checkString(priority)) {
 				try {
@@ -128,11 +128,11 @@ implements ISearchResultProviderFactory
 			if (AbstractEPProcessor.checkString(idString)) {
 				id = idString;
 			}
-		}		
+		}
 	}
 
 	private Image composedDecoratorImage = null;
-	public Image getComposedDecoratorImage() 
+	public Image getComposedDecoratorImage()
 	{
 		if (composedDecoratorImage == null && decoratorImage != null) {
 			composedDecoratorImage = new SearchCompositeImage(decoratorImage).createImage();

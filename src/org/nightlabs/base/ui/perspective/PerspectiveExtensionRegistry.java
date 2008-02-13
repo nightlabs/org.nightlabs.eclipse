@@ -40,8 +40,8 @@ import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
 /**
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  */
-public class PerspectiveExtensionRegistry 
-extends AbstractEPProcessor 
+public class PerspectiveExtensionRegistry
+extends AbstractEPProcessor
 {
 	private static final Logger logger = Logger.getLogger(PerspectiveExtensionRegistry.class);
 
@@ -73,32 +73,32 @@ extends AbstractEPProcessor
 
 	@Override
 	public void processElement(IExtension extension, IConfigurationElement element)
-	throws Exception 
+	throws Exception
 	{
-		if (element.getName().equals(ELEMENT_PERSPECTIVE_EXTENSION)) 
+		if (element.getName().equals(ELEMENT_PERSPECTIVE_EXTENSION))
 		{
 			String targetID = element.getAttribute(ATTRIBUTE_TARGET_ID);
-			if (checkString(targetID)) 
+			if (checkString(targetID))
 			{
 				IConfigurationElement[] children = element.getChildren(ELEMENT_CONTRIBUTION_ITEM_SET_ID);
 				for (int i=0; i<children.length; i++) {
 					IConfigurationElement childElement = children[i];
 					String id = childElement.getAttribute(ATTRIBUTE_ID);
-					if (checkString(id)) 
+					if (checkString(id))
 					{
 						String extensionPointID = ContributionItemSetRegistry.EXTENSION_POINT_ID;
-						Map<String, Collection<String>> extensionPointID2ExtensionIDs = 
+						Map<String, Collection<String>> extensionPointID2ExtensionIDs =
 							perspectiveID2ExtensionPointID2ExtensionID.get(targetID);
 						if (extensionPointID2ExtensionIDs == null)
-							extensionPointID2ExtensionIDs = new HashMap<String, Collection<String>>();						
-						Collection<String> extensionIDs = extensionPointID2ExtensionIDs.get(extensionPointID);						
+							extensionPointID2ExtensionIDs = new HashMap<String, Collection<String>>();
+						Collection<String> extensionIDs = extensionPointID2ExtensionIDs.get(extensionPointID);
 						if (extensionIDs == null)
 							extensionIDs = new HashSet<String>();
 						extensionIDs.add(id);
 						extensionPointID2ExtensionIDs.put(extensionPointID, extensionIDs);
 						perspectiveID2ExtensionPointID2ExtensionID.put(targetID, extensionPointID2ExtensionIDs);
 
-						Map<String, Collection<String>> perspectiveID2ExtensionIDs = 
+						Map<String, Collection<String>> perspectiveID2ExtensionIDs =
 							extensionPointID2PerspectiveID2extensionIDs.get(extensionPointID);
 						if (perspectiveID2ExtensionIDs == null)
 							perspectiveID2ExtensionIDs = new HashMap<String, Collection<String>>();
@@ -109,16 +109,16 @@ extends AbstractEPProcessor
 						perspectiveID2ExtensionIDs.put(targetID, extensionIDs2);
 						extensionPointID2PerspectiveID2extensionIDs.put(extensionPointID, perspectiveID2ExtensionIDs);
 					}
-				}				
+				}
 			} else {
 				logger.error("targetID is empty!"); //$NON-NLS-1$
-			}			
+			}
 		}
 	}
 
 	private Map<String, Map<String, Collection<String>>> perspectiveID2ExtensionPointID2ExtensionID =
 		new HashMap<String, Map<String,Collection<String>>>();
-	public Map<String, Collection<String>> getExtensionPointID2ExtensionIDs(String perspectiveID) 
+	public Map<String, Collection<String>> getExtensionPointID2ExtensionIDs(String perspectiveID)
 	{
 		checkProcessing(false);
 
@@ -130,14 +130,14 @@ extends AbstractEPProcessor
 	}
 
 	private Collection<String> registeredExtensionPointIDs = null;
-	public Collection<String> getRegisteredExtensionPointIDs() 
+	public Collection<String> getRegisteredExtensionPointIDs()
 	{
 		checkProcessing(false);
 
-		if (registeredExtensionPointIDs == null) 
+		if (registeredExtensionPointIDs == null)
 		{
 			registeredExtensionPointIDs = new HashSet<String>();
-			Collection<Map<String, Collection<String>>> extensionPointID2ExtensionID = 
+			Collection<Map<String, Collection<String>>> extensionPointID2ExtensionID =
 				perspectiveID2ExtensionPointID2ExtensionID.values();
 			for (Map<String, Collection<String>> map : extensionPointID2ExtensionID) {
 				registeredExtensionPointIDs.addAll(map.keySet());
@@ -146,9 +146,9 @@ extends AbstractEPProcessor
 		return registeredExtensionPointIDs;
 	}
 
-	private Map<String, Map<String, Collection<String>>> extensionPointID2PerspectiveID2extensionIDs = 
-		new HashMap<String, Map<String,Collection<String>>>();	
-	public Map<String, Collection<String>> getPerspectiveID2ExtensionIDs(String extensionPointID) 
+	private Map<String, Map<String, Collection<String>>> extensionPointID2PerspectiveID2extensionIDs =
+		new HashMap<String, Map<String,Collection<String>>>();
+	public Map<String, Collection<String>> getPerspectiveID2ExtensionIDs(String extensionPointID)
 	{
 		checkProcessing(false);
 

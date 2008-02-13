@@ -42,7 +42,7 @@ import org.eclipse.jface.wizard.Wizard;
  *   <li>{@link org.eclipse.jface.wizard.Wizard#performFinish()}, where you perform your
  *   wizards action as you are used with normal
  *   Wizards.</li>
- * </ul> 
+ * </ul>
  * From now on you have two possibilities.
  * <p>
  *   You can use the add/removeDynamicWizardPage methods to add the
@@ -53,11 +53,11 @@ import org.eclipse.jface.wizard.Wizard;
  *   FIXME!!! WRONG JAVADOC INFORMATION
  *   The second possibility is to set a DynamicWizardPopulator
  *   ({@link #setPopulator(DynamicWizardPopulator)}). After removing
- *   the old dynamic pages the populator will be asked to add its pages by 
+ *   the old dynamic pages the populator will be asked to add its pages by
  *   {@link org.nightlabs.base.ui.wizard.DynamicWizardPopulator#addDynamicWizardPages(DynamicPathWizard)}.
  *   This is done every time Next is pressed and the wizards first page
- *   is showing (and your WizardDialog is a subclass of DynamicPathWizardDialog). 
- *   This lets you easily decide on user input wich path to go 
+ *   is showing (and your WizardDialog is a subclass of DynamicPathWizardDialog).
+ *   This lets you easily decide on user input wich path to go
  *   by simply switching populators and the user can go back and
  *   even take an other way.
  * </p>
@@ -75,7 +75,7 @@ import org.eclipse.jface.wizard.Wizard;
  *   <li>{@link org.eclipse.jface.wizard.Wizard#performFinish()}, where you perform your
  *   wizards action as you are used with normal
  *   Wizards.</li>
- * </ul> 
+ * </ul>
  * <p>
  *   You can use the add/removeDynamicWizardPage methods to add the
  *   pages as you need them. If you don't override the getNextPage-behavior
@@ -84,8 +84,8 @@ import org.eclipse.jface.wizard.Wizard;
  * 
  * FIXME: must be rewritten as from Eclipse 3.2, Wizard works different then in 3.1
  * Wizard.createPageControls() does not work properly when in addPages() only addDynamicPage() is called
- * instead of addPage()   
- *  
+ * instead of addPage()
+ * 
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
  * @author Marco Schulze
  */
@@ -173,7 +173,7 @@ public abstract class DynamicPathWizard extends Wizard implements IDynamicPathWi
 	 * @deprecated
 	 */
 	@Deprecated
-	public IDynamicPathWizardPage createWizardEntryPage() 
+	public IDynamicPathWizardPage createWizardEntryPage()
 	{
 		return null;
 	}
@@ -224,7 +224,7 @@ public abstract class DynamicPathWizard extends Wizard implements IDynamicPathWi
 
 
 	/**
-	 * @return The first dynamic wizard page or null if no dynamic pages exist 
+	 * @return The first dynamic wizard page or null if no dynamic pages exist
 	 */
 	protected IDynamicPathWizardPage getFirstDynamicPage() {
 		if (dynamicWizardPages.size() > 0)
@@ -234,7 +234,7 @@ public abstract class DynamicPathWizard extends Wizard implements IDynamicPathWi
 
 
 	/**
-	 * @return The first static wizard page or null if no static pages exist 
+	 * @return The first static wizard page or null if no static pages exist
 	 */
 	protected IWizardPage getFirstStaticPage() {
 		if(getPageCount() > 0)
@@ -410,7 +410,7 @@ public abstract class DynamicPathWizard extends Wizard implements IDynamicPathWi
 //		else {
 //		return true; // only wizardEntryPage matters
 //		}
-	}	
+	}
 
 	public DynamicPathWizardDialog getDynamicWizardDialog() {
 		return dynamicWizardDialog;

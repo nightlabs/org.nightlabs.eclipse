@@ -24,8 +24,8 @@ import org.nightlabs.version.VersionRangeEndPoint.EndPointLocation;
  * @author Marius Heinzmann -- Marius[at]NightLabs[dot]de
  *
  */
-public class VersionRangeCellEditor 
-	extends XCellEditor 
+public class VersionRangeCellEditor
+	extends XCellEditor
 {
 //	public VersionCellEditor() {
 //		setValidator(new VersionValidator());
@@ -138,7 +138,7 @@ public class VersionRangeCellEditor
 	@Override
 	protected Object doGetValue() {
 		try {
-			return new VersionRangeEndPoint(new Version(text.getText()), checkBox.getSelection(), 
+			return new VersionRangeEndPoint(new Version(text.getText()), checkBox.getSelection(),
 					location);
 		} catch (MalformedVersionException e) {
 			throw new RuntimeException("The stored String representation of a Version is invalid! "+ //$NON-NLS-1$

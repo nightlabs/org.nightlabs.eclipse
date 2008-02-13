@@ -50,7 +50,7 @@ public class PrinterConfigurationRegistry extends AbstractEPProcessor {
 	public static class ConfiguratorFactoryEntry {
 		private String id;
 		private String name;
-		private PrinterConfiguratorFactory printerConfiguratorFactory;		
+		private PrinterConfiguratorFactory printerConfiguratorFactory;
 		/**
 		 * @return the id
 		 */
@@ -114,8 +114,8 @@ public class PrinterConfigurationRegistry extends AbstractEPProcessor {
 	 * @see org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor#processElement(org.eclipse.core.runtime.IExtension, org.eclipse.core.runtime.IConfigurationElement)
 	 */
 	@Override
-	public void processElement(IExtension extension, IConfigurationElement element) 
-	throws Exception 
+	public void processElement(IExtension extension, IConfigurationElement element)
+	throws Exception
 	{
 		if (element.getName().equalsIgnoreCase("printerConfiguratorFactory")) //$NON-NLS-1$
 			processConfigurator(extension, element);
@@ -123,8 +123,8 @@ public class PrinterConfigurationRegistry extends AbstractEPProcessor {
 			processUseCase(extension, element);
 	}
 	
-	private void processUseCase(IExtension extension, IConfigurationElement element) 
-	throws EPProcessorException 
+	private void processUseCase(IExtension extension, IConfigurationElement element)
+	throws EPProcessorException
 	{
 		String id = element.getAttribute("id"); //$NON-NLS-1$
 		if (!checkString(id))
@@ -143,10 +143,10 @@ public class PrinterConfigurationRegistry extends AbstractEPProcessor {
 		printerUseCases.put(id, useCase);
 		if (useOnlyDef != null && !"".equals(useOnlyDef)) //$NON-NLS-1$
 			useCase.setUseOnlyDefaultConfigurator(Boolean.parseBoolean(useOnlyDef));
-	} 
+	}
 
-	private void processConfigurator(IExtension extension, IConfigurationElement element) 
-	throws EPProcessorException 
+	private void processConfigurator(IExtension extension, IConfigurationElement element)
+	throws EPProcessorException
 	{
 		String id = element.getAttribute("id"); //$NON-NLS-1$
 		if (!checkString(id))

@@ -26,8 +26,8 @@
 
 package org.nightlabs.base.ui.labelprovider;
 
-public class ComboBoxLabelProvider 
-extends org.eclipse.ui.views.properties.ComboBoxLabelProvider 
+public class ComboBoxLabelProvider
+extends org.eclipse.ui.views.properties.ComboBoxLabelProvider
 {
 
   public ComboBoxLabelProvider(String[] values) {
@@ -35,11 +35,11 @@ extends org.eclipse.ui.views.properties.ComboBoxLabelProvider
   }
 
   @Override
-	public String getText(Object element) 
+	public String getText(Object element)
   {
       if (element == null)
           return ""; //$NON-NLS-1$
       
-      return element.toString(); 
-  }   
+      return element.toString();
+  }
 }

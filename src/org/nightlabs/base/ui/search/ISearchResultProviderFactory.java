@@ -32,7 +32,7 @@ import org.nightlabs.i18n.I18nText;
 
 /**
  * Factory which creates instances of {@link ISearchResultProvider}
- * and holds the describing data like name, image etc 
+ * and holds the describing data like name, image etc
  * 
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  */
@@ -56,12 +56,12 @@ extends IExecutableExtension
 	I18nText getName();
 	
 	/**
-	 * @return the class of the results of the search 
+	 * @return the class of the results of the search
 	 */
 	Class getResultTypeClass();
 	
 	/**
-	 * returns the {@link ISearchResultActionHandler} which should be used 
+	 * returns the {@link ISearchResultActionHandler} which should be used
 	 * 
 	 * @return {@link ISearchResultActionHandler}
 	 */

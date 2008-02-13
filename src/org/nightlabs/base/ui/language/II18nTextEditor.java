@@ -3,13 +3,12 @@ package org.nightlabs.base.ui.language;
 import org.eclipse.swt.events.ModifyListener;
 import org.nightlabs.base.ui.language.I18nTextEditor.EditMode;
 import org.nightlabs.i18n.I18nText;
-import org.nightlabs.i18n.I18nTextBuffer;
 
 public interface II18nTextEditor
 {
 	/**
 	 * Add a {@link ModifyListener} to this editor. The listener
-	 * will get triggered only when the text was actually modified by the user, 
+	 * will get triggered only when the text was actually modified by the user,
 	 * not when the edit changes its text.
 	 * 
 	 * @param l The {@link ModifyListener} to add.
@@ -25,7 +24,7 @@ public interface II18nTextEditor
 	/**
 	 * In contrast to {@link #getI18nText()}, this method always returns the same instance
 	 * as passed by {@link #setI18nText(I18nText)} before. In the {@link EditMode#DIRECT},
-	 * this method is exactly identical to {@link #getI18nText()} 
+	 * this method is exactly identical to {@link #getI18nText()}
 	 *
 	 * @return the original object as passed to {@link #setI18nText(I18nText)}
 	 */
@@ -35,7 +34,7 @@ public interface II18nTextEditor
 	 * This method first applies all modifications to the work-<code>I18nText</code> instance
 	 * (which is either the original or a buffer, depending on the {@link EditMode}) and
 	 * then returns it.
-	 *  
+	 * 
 	 * @return the {@link I18nText} buffer used by the editor, if {@link EditMode#BUFFERED}
 	 *		is used, or the original object, if {@link EditMode#DIRECT} is used.
 	 *
@@ -77,7 +76,7 @@ public interface II18nTextEditor
 	void refresh();
 
 	/**
-	 * Sets whether the text can be edited. 
+	 * Sets whether the text can be edited.
 	 * @param editable the editable.
 	 * @see org.eclipse.swt.widgets.Text#setEditable(boolean)
 	 */

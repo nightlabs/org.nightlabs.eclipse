@@ -41,19 +41,19 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
 public class ImageUtil
-{	
+{
 	public ImageUtil() {
 		super();
 	}
 
 	/**
 	 * converts a SWT Image to a SWT BufferedImage
-	 * taken from http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.swt.snippets/src/org/eclipse/swt/snippets/Snippet156.java 
+	 * taken from http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.swt.snippets/src/org/eclipse/swt/snippets/Snippet156.java
 	 * 
 	 * @param data The ImageData of the SWT Image (@link org.eclipse.swt.graphics.Image.getImageData())
 	 * @return a (@link java.awt.image.BufferedImage) which is identical to the original SWT Image
 	 */
-	public static BufferedImage convertToAWT(ImageData data) 
+	public static BufferedImage convertToAWT(ImageData data)
 	{
 		ColorModel colorModel = null;
 		PaletteData palette = data.palette;
@@ -88,7 +88,7 @@ public class ImageUtil
 				colorModel = new IndexColorModel(data.depth, rgbs.length, red, green, blue, data.transparentPixel);
 			} else {
 				colorModel = new IndexColorModel(data.depth, rgbs.length, red, green, blue);
-			}		
+			}
 			BufferedImage bufferedImage = new BufferedImage(colorModel, colorModel.createCompatibleWritableRaster(data.width, data.height), false, null);
 			WritableRaster raster = bufferedImage.getRaster();
 			int[] pixelArray = new int[1];
@@ -101,16 +101,16 @@ public class ImageUtil
 			}
 			return bufferedImage;
 		}
-	}	
+	}
 	
 	/**
-	 * converts an AWT BufferedImage to an SWT ImageData 
+	 * converts an AWT BufferedImage to an SWT ImageData
 	 * taken from http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.swt.snippets/src/org/eclipse/swt/snippets/Snippet156.java
 	 * 
 	 * @param bufferedImage the (@link java.awt.image.BufferedImage) to convert
 	 * @return a (@link org.eclipse.swt.graphics) which can be used to construct a SWT Image
 	 */
-	public static ImageData convertToSWT(BufferedImage bufferedImage) 
+	public static ImageData convertToSWT(BufferedImage bufferedImage)
 	{
 		if (bufferedImage.getColorModel() instanceof DirectColorModel) {
 			DirectColorModel colorModel = (DirectColorModel)bufferedImage.getColorModel();
@@ -124,8 +124,8 @@ public class ImageUtil
 					int pixel = palette.getPixel(new RGB(pixelArray[0], pixelArray[1], pixelArray[2]));
 					data.setPixel(x, y, pixel);
 				}
-			}		
-			return data;		
+			}
+			return data;
 		} else if (bufferedImage.getColorModel() instanceof IndexColorModel) {
 			IndexColorModel colorModel = (IndexColorModel)bufferedImage.getColorModel();
 			int size = colorModel.getMapSize();
@@ -171,10 +171,10 @@ public class ImageUtil
       gc.dispose();
     }
     return image;
-  }  
+  }
   
 
-  public static Image createLineStyleImage(int lineStyle, int width, int height) 
+  public static Image createLineStyleImage(int lineStyle, int width, int height)
   {
     Image image = new Image(Display.getDefault(), width, height);
     GC gc = new GC(image);
@@ -186,11 +186,11 @@ public class ImageUtil
     } finally {
       gc.dispose();
     }
-    return image;    
-  }   
+    return image;
+  }
   
   public static Image createLineStyleImage(int lineStyle) {
     return createLineStyleImage(lineStyle, 16, 64);
-  }  
+  }
      	
 }

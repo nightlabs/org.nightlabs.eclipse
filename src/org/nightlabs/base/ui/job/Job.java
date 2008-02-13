@@ -60,10 +60,10 @@ public abstract class Job extends org.eclipse.core.runtime.jobs.Job {
 	
 	/**
 	 * Implement this method to do the Jobs work.
-	 * Note that this method might throw and exception if 
+	 * Note that this method might throw and exception if
 	 * something fails during the job. The calling method
-	 * will catch all exceptions and handle it with 
-	 * the {@link ExceptionHandlerRegistry} instead of the Job 
+	 * will catch all exceptions and handle it with
+	 * the {@link ExceptionHandlerRegistry} instead of the Job
 	 * API error handler.
 	 * 
 	 * @param monitor The monitor to report progress.
@@ -74,9 +74,9 @@ public abstract class Job extends org.eclipse.core.runtime.jobs.Job {
 	
 	/**
 	 * Returns a {@link ProgressMonitorWrapper} wrapping around the {@link IProgressMonitor} of this Job.
-	 * <p> 
+	 * <p>
 	 * Note that this is set when the Job runs and will not
-	 * be accessible before {@link #run(IProgressMonitor)} was invoked and 
+	 * be accessible before {@link #run(IProgressMonitor)} was invoked and
 	 * an {@link IllegalStateException} will be thrown then.
 	 * </p>
 	 * 
@@ -93,9 +93,9 @@ public abstract class Job extends org.eclipse.core.runtime.jobs.Job {
 	
 	/**
 	 * Returns a {@link ProgressMonitorWrapper} wrapping around a {@link SubProgressMonitor} to the {@link IProgressMonitor} of this Job.
-	 * <p> 
+	 * <p>
 	 * Note that this is set when the Job runs and will not
-	 * be accessible before {@link #run(IProgressMonitor)} was invoked and 
+	 * be accessible before {@link #run(IProgressMonitor)} was invoked and
 	 * an {@link IllegalStateException} will be thrown then.
 	 * </p>
 	 * 
@@ -114,9 +114,9 @@ public abstract class Job extends org.eclipse.core.runtime.jobs.Job {
 	
 	/**
 	 * Retuns the {@link IProgressMonitor} this Job runs with.
-	 * <p> 
+	 * <p>
 	 * Note that this is set when the Job runs and will not
-	 * be accessible before {@link #run(IProgressMonitor)} was invoked and 
+	 * be accessible before {@link #run(IProgressMonitor)} was invoked and
 	 * an {@link IllegalStateException} will be thrown then.
 	 * </p>
 	 * @return The {@link IProgressMonitor} this Job runs with.

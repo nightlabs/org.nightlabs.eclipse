@@ -12,9 +12,9 @@ import org.nightlabs.timepattern.TimePatternSet;
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  *
  */
-public class MonthlyTimePatternBuilderHop 
-extends WizardHop 
-implements ITimePatternSetBuilderWizardHop 
+public class MonthlyTimePatternBuilderHop
+extends WizardHop
+implements ITimePatternSetBuilderWizardHop
 {
 
 	/**

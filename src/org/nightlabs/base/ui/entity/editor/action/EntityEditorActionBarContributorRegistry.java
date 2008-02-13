@@ -37,8 +37,8 @@ import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
 /**
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  */
-public class EntityEditorActionBarContributorRegistry 
-extends AbstractEPProcessor 
+public class EntityEditorActionBarContributorRegistry
+extends AbstractEPProcessor
 {
 	public static final String EXTENSION_POINT_ID = "org.nightlabs.base.ui.entityEditorActionBarContribution"; //$NON-NLS-1$
 	public static final String ELEMENT_EDITOR_CONTRIBUTION = "entityEditorActionBarContribution"; //$NON-NLS-1$
@@ -56,7 +56,7 @@ extends AbstractEPProcessor
 		return EXTENSION_POINT_ID;
 	}
 
-	private Map<String, Map<String, AbstractActionRegistry>> editorID2PageID2ActionRegistry = 
+	private Map<String, Map<String, AbstractActionRegistry>> editorID2PageID2ActionRegistry =
 		new HashMap<String, Map<String, AbstractActionRegistry>>();
 	
 	public Map<String, AbstractActionRegistry> getPageID2ActionRegistry(String editorID) {
@@ -66,7 +66,7 @@ extends AbstractEPProcessor
 	
 	public AbstractActionRegistry getActionRegistry(String editorID, String pageID) {
 		checkProcessing();
-		Map<String, AbstractActionRegistry> pageID2ActionRegistry = 
+		Map<String, AbstractActionRegistry> pageID2ActionRegistry =
 			editorID2PageID2ActionRegistry.get(editorID);
 		if (pageID2ActionRegistry != null) {
 			return pageID2ActionRegistry.get(pageID);
@@ -77,7 +77,7 @@ extends AbstractEPProcessor
 	
 	@Override
 	public void processElement(IExtension extension, IConfigurationElement element)
-	throws Exception 
+	throws Exception
 	{
 		if (element.getName().equalsIgnoreCase(ELEMENT_EDITOR_CONTRIBUTION)) {
 			String targetEditorID = element.getAttribute(ATTRIBUTE_TARGET_EDITOR_ID);
@@ -102,14 +102,14 @@ extends AbstractEPProcessor
 							registry = new DefaultEntityEditorActionBarContributor();
 							pageID2ActionRegistry.put(pageID, registry);
 						}
-						registry.processElement(extension, childElement2);						
+						registry.processElement(extension, childElement2);
 					}
 				}
 			}
 		}
 	}
 	
-	private static EntityEditorActionBarContributorRegistry sharedInstance;	
+	private static EntityEditorActionBarContributorRegistry sharedInstance;
 	public static EntityEditorActionBarContributorRegistry sharedInstance() {
 		if (sharedInstance == null)
 			sharedInstance = new EntityEditorActionBarContributorRegistry();

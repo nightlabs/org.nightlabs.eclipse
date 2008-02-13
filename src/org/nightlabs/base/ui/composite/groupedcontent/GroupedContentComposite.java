@@ -53,7 +53,7 @@ public class GroupedContentComposite extends XComposite {
 	private StackLayout contentStackLayout;
 	
 	private List<GroupedContentProvider> groupedContentProvider = new ArrayList<GroupedContentProvider>();
-	private Map<GroupedContentProvider, Composite> providerComposites = new HashMap<GroupedContentProvider, Composite>(); 
+	private Map<GroupedContentProvider, Composite> providerComposites = new HashMap<GroupedContentProvider, Composite>();
 	
 	
 	private ISelectionChangedListener switcherListener = new ISelectionChangedListener() {
@@ -75,7 +75,7 @@ public class GroupedContentComposite extends XComposite {
 	 * @param setLayoutData
 	 */
 	public GroupedContentComposite(Composite parent, int style, boolean setLayoutData) {
-		super(parent, style, LayoutMode.ORDINARY_WRAPPER, 
+		super(parent, style, LayoutMode.ORDINARY_WRAPPER,
 				setLayoutData ? LayoutDataMode.GRID_DATA : LayoutDataMode.NONE);
 		getGridLayout().numColumns = 2;
 
@@ -99,7 +99,7 @@ public class GroupedContentComposite extends XComposite {
 		this.groupedContentProvider.add(groupedContentProvider);
 		switcherTable.setInput(this.groupedContentProvider);
 		preSelect();
-//		layout(true, true);		
+//		layout(true, true);
 	}
 	
 	public void addGroupedContentProvider(GroupedContentProvider groupedContentProvider, int index) {
@@ -119,7 +119,7 @@ public class GroupedContentComposite extends XComposite {
 		contentWrapper.layout(true, true); // TODO true, true necessary?
 	}
 	
-	public void setGroupTitle(String title) { 
+	public void setGroupTitle(String title) {
 		switcherTable.setGroupTitle(title);
 	}
 	

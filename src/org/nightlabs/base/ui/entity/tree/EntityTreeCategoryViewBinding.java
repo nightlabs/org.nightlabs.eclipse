@@ -12,7 +12,7 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
- * Default implementation of {@link IEntityTreeCategoryViewBinding} that 
+ * Default implementation of {@link IEntityTreeCategoryViewBinding} that
  * delegates most methods to the category it is bound to and allows
  * to overwrite name and icon for the binding by declaration in the extension.
  * 

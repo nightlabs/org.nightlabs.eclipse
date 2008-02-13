@@ -27,8 +27,6 @@
 package org.nightlabs.base.ui.action.registry;
 
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IContributionItem;
-import org.eclipse.jface.action.IContributionManager;
 import org.nightlabs.base.ui.action.IXContributionItem;
 
 public class ActionDescriptor extends ItemDescriptor
@@ -106,11 +104,11 @@ public class ActionDescriptor extends ItemDescriptor
 	{
 		return contextmenuPath;
 	}
-	public String getID() 
+	public String getID()
 	{
 		return id;
 	}
-//	public String getGroupMarkerName() 
+//	public String getGroupMarkerName()
 //	{
 //		return groupMarkerName;
 //	}
@@ -162,11 +160,11 @@ public class ActionDescriptor extends ItemDescriptor
 	{
 		this.visibleInContextmenu = visibleInContextmenu;
 	}
-	public void setID(String id) 
+	public void setID(String id)
 	{
 		this.id = id;
 	}
-//	public void setGroupMarkerName(String groupMarkerName) 
+//	public void setGroupMarkerName(String groupMarkerName)
 //	{
 //		this.groupMarkerName = groupMarkerName;
 //	}

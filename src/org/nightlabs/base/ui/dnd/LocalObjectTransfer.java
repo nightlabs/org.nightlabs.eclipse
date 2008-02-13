@@ -31,21 +31,21 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.dnd.TransferData;
 
 /**
- * This Implementation of org.eclipse.swt.dnd.Transfer, 
+ * This Implementation of org.eclipse.swt.dnd.Transfer,
  * is only for locale Transfer of Objects between Java-Applications,
  * as it uses internal {@link LocalTransferManager} which only keeps a refernce of Java-Objects,
- * which are not serialized. 
+ * which are not serialized.
  * 
  * @author Daniel.Mazurek [AT] NightLabs [DOT] com
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
  *
  */
-public class LocalObjectTransfer 
+public class LocalObjectTransfer
 extends ByteArrayTransfer
 {
 	
 	public static final String TYPE_NAME = "local-object-transfer"; //$NON-NLS-1$
-	public static int TYPE_ID = registerType(TYPE_NAME);	
+	public static int TYPE_ID = registerType(TYPE_NAME);
 
 	public LocalObjectTransfer() {
 		super();
@@ -62,14 +62,14 @@ extends ByteArrayTransfer
 	}
 
 	@Override
-	protected void javaToNative(Object object, TransferData transferData) 
+	protected void javaToNative(Object object, TransferData transferData)
 	{
 		String objectKey = LocalTransferManager.sharedInstance().addObject(object);
 		super.javaToNative(objectKey.getBytes(), transferData); // TODO shouldn't we better use objectKey.getBytes(Utils.CHARSET_NAME_UTF_8) ?!!!!
 	}
 
 	@Override
-	protected Object nativeToJava(TransferData transferData) 
+	protected Object nativeToJava(TransferData transferData)
 	{
 		byte[] superResult = (byte[])super.nativeToJava(transferData);
 		String transferKey = new String(superResult); // TODO shouldn't we better use new String(superResult, Utils.CHARSET_NAME_UTF_8) ?!!!!

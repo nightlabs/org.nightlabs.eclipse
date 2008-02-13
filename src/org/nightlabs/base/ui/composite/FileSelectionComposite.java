@@ -50,8 +50,8 @@ import org.nightlabs.base.ui.util.RCPUtil;
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
  *
  */
-public abstract class FileSelectionComposite 
-	extends XComposite 
+public abstract class FileSelectionComposite
+	extends XComposite
 {
 	public static final int OPEN_FILE = 1;
 	public static final int OPEN_DIR = 1 << 1;
@@ -60,10 +60,10 @@ public abstract class FileSelectionComposite
 	 * @param parent
 	 * @param compositeStyle
 	 */
-	public FileSelectionComposite(Composite parent, int compositeStyle, int dialogStyle, 
-			String fileDialogCaption, String dirDialogCaption) 
+	public FileSelectionComposite(Composite parent, int compositeStyle, int dialogStyle,
+			String fileDialogCaption, String dirDialogCaption)
 	{
-		this(parent, compositeStyle, LayoutMode.TIGHT_WRAPPER, LayoutDataMode.GRID_DATA, dialogStyle, 
+		this(parent, compositeStyle, LayoutMode.TIGHT_WRAPPER, LayoutDataMode.GRID_DATA, dialogStyle,
 				fileDialogCaption, dirDialogCaption);
 	}
 	
@@ -71,12 +71,12 @@ public abstract class FileSelectionComposite
 	 * @param parent
 	 * @param compositeStyle
 	 */
-	public FileSelectionComposite(Composite parent, int compositeStyle, LayoutMode layoutMode, 
-			LayoutDataMode layoutDataMode, int dialogStyle, String fileDialogCaption, String dirDialogCaption) 
+	public FileSelectionComposite(Composite parent, int compositeStyle, LayoutMode layoutMode,
+			LayoutDataMode layoutDataMode, int dialogStyle, String fileDialogCaption, String dirDialogCaption)
 	{
 		super(parent, compositeStyle, layoutMode, layoutDataMode);
 		createContents(dialogStyle, fileDialogCaption, dirDialogCaption);
-	}	
+	}
 	
 	private Text fileTextForFiles;
 	private Button browseButtonForFiles;
@@ -86,14 +86,14 @@ public abstract class FileSelectionComposite
 	
 	private boolean updating = false;
 	
-	private void createContents(int dialogStyle, String fileSelectionCaption, 
-			String dirSelectionCaption) 
+	private void createContents(int dialogStyle, String fileSelectionCaption,
+			String dirSelectionCaption)
 	{
 		if ((OPEN_DIR & dialogStyle) != 0) {
 			if (dirSelectionCaption != null)
-				new Label(this, SWT.NONE).setText(dirSelectionCaption); 
+				new Label(this, SWT.NONE).setText(dirSelectionCaption);
 			
-			XComposite fileComp = new XComposite(this, SWT.NONE, XComposite.LayoutMode.TIGHT_WRAPPER);		
+			XComposite fileComp = new XComposite(this, SWT.NONE, XComposite.LayoutMode.TIGHT_WRAPPER);
 			fileComp.getGridLayout().numColumns = 3;
 			fileTextForFolders = new Text(fileComp, fileComp.getBorderStyle());
 			fileTextForFolders.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -131,9 +131,9 @@ public abstract class FileSelectionComposite
 		
 		if ((OPEN_FILE & dialogStyle) != 0) {
 			if (fileSelectionCaption != null)
-				new Label(this, SWT.NONE).setText(fileSelectionCaption); 
+				new Label(this, SWT.NONE).setText(fileSelectionCaption);
 
-			XComposite fileCompFile = new XComposite(this, SWT.NONE, XComposite.LayoutMode.TIGHT_WRAPPER);		
+			XComposite fileCompFile = new XComposite(this, SWT.NONE, XComposite.LayoutMode.TIGHT_WRAPPER);
 			fileCompFile.getGridLayout().numColumns = 3;
 			fileTextForFiles = new Text(fileCompFile, fileCompFile.getBorderStyle());
 			fileTextForFiles.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -204,17 +204,17 @@ public abstract class FileSelectionComposite
 	/**
 	 * Override this method to setup up specific Filters for files or a filter path.
 	 * Default implementation adds '*.*' filter for files.
-	 * <p>Note: 
+	 * <p>Note:
 	 * <ul>
 	 *  <li>The <code>i</code>th filterName is the description of the <code>i</code>th filter.</li>
 	 * 	<li>The <code>filterExtensions</code> and their corresponding names are ignored in case of an
 	 * 			DirectoryDialog.</li>
-	 * </ul> 
+	 * </ul>
 	 * </p>
 	 * 
 	 * @param filterNames the names of the filters given in <code>filterExtensions</code>.
 	 * @param filterExtensions the extensions of files that shall be shown.
-	 * @return the path from which to start showing files/folders. 
+	 * @return the path from which to start showing files/folders.
 	 */
 	protected String doSetUpFileDialog(List<String> filterNames, List<String> filterExtensions) {
 		filterNames.add(Messages.getString("org.nightlabs.base.ui.composite.FileSelectComposite.filterName_allFiles")); //$NON-NLS-1$

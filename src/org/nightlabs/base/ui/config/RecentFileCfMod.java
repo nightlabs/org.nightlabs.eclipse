@@ -32,20 +32,20 @@ import java.util.List;
 import org.nightlabs.config.ConfigModule;
 import org.nightlabs.config.InitException;
 
-public class RecentFileCfMod 
+public class RecentFileCfMod
 extends ConfigModule
 {
 	private static final long serialVersionUID = 1L;
 	
 	protected List<String> recentFileNames = null;
-	public List<String> getRecentFileNames() {		
+	public List<String> getRecentFileNames() {
 		return recentFileNames;
 	}
 	public void setRecentFileNames(List<String> recentFileNames) {
 		this.recentFileNames = recentFileNames;
 	}
 	
-	protected int maxHistoryLength = 5;		
+	protected int maxHistoryLength = 5;
 	public int getMaxHistoryLength() {
 		return maxHistoryLength;
 	}
@@ -54,11 +54,11 @@ extends ConfigModule
 	}
 	
 	@Override
-	public void init() 
-	throws InitException 
+	public void init()
+	throws InitException
 	{
 		if (recentFileNames == null)
-			recentFileNames = new ArrayList<String>();				
+			recentFileNames = new ArrayList<String>();
 	}
 		
 }

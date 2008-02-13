@@ -45,13 +45,13 @@ import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.util.RCPUtil;
 
 /**
- * A PartController handles the visibility of a set of WorkbenchParts. It accepts 
+ * A PartController handles the visibility of a set of WorkbenchParts. It accepts
  * {@link org.nightlabs.base.ui.part.ControllablePart}s whose real content
- * can be hidden by the Controller. When hidden the real contents can 
- * either be sent to background or disposed 
+ * can be hidden by the Controller. When hidden the real contents can
+ * either be sent to background or disposed
  * (see {@link #updateParts()}, {@link #disposePartContents()}).
  * <p>
- * The visibility of a part id determined by their 
+ * The visibility of a part id determined by their
  * {@link org.nightlabs.base.ui.part.ControllablePart#canDisplayPart()} method.
  * <p>
  * Implementors have to provide a Composite that will be displayed when
@@ -59,16 +59,16 @@ import org.nightlabs.base.ui.util.RCPUtil;
  * <p>
  * Parts are managed when they register themselves by {@link #registerPart(ControllablePart)}.
  * The registration of a Part should be done in its constructor. See {@link org.nightlabs.base.ui.part.ControllablePart}
- * for more information on how to use them with a PartController. 
+ * for more information on how to use them with a PartController.
  * <p>
- * A PartController is responsible for somehow creating or listening to events 
- * that might cause the visibility of its registered parts to change and 
+ * A PartController is responsible for somehow creating or listening to events
+ * that might cause the visibility of its registered parts to change and
  * use the PartController API like {@link #updateParts()} to update the registered views.
  * <p>
  * Note that PartController is also linked to the {@link PartVisibilityTracker}. Whenever the registered
  * View's real content was created it will call {@link PartVisibilityListener#partVisible(org.eclipse.ui.IWorkbenchPartReference)}
  * on all registrations that implement {@link PartVisibilityListener}. {@link PartVisibilityListener#partHidden(org.eclipse.ui.IWorkbenchPartReference)}
- * is called accordingly when the "ConditionUnsatisfiedComposite" is created. Both times the 
+ * is called accordingly when the "ConditionUnsatisfiedComposite" is created. Both times the
  * partReference parameter for the listeners callback method might be null.
  * 
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
@@ -102,7 +102,7 @@ public abstract class PartController {
 		/**
 		 * Creates the internal Controls hosting the real part
 		 * content.
-		 *  
+		 * 
 		 * @param parent
 		 */
 		public void createPartControl(Composite parent) {
@@ -112,7 +112,7 @@ public abstract class PartController {
 			conditionWrapper = new XComposite(wrapper, SWT.NONE, XComposite.LayoutMode.TIGHT_WRAPPER);
 			createNewConditionUnsatisfiedComposite(conditionWrapper);
 			createFadeableWrapper();
-			internalPartsCreated = true;			
+			internalPartsCreated = true;
 		}
 		
 		public XComposite getWrapper() {
@@ -122,7 +122,7 @@ public abstract class PartController {
 		protected void createFadeableWrapper() {
 			fadeableWrapper = new FadeableComposite(wrapper, SWT.NONE);
 //			fadeableWrapper.setLayout(new GridLayout());
-			fadeableWrapper.setLayout(fadableLayout);			
+			fadeableWrapper.setLayout(fadableLayout);
 		}
 		
 		/**
@@ -134,12 +134,12 @@ public abstract class PartController {
 					if (!internalPartsCreated || fadeableWrapper.isDisposed())
 						return;
 					doCreateContents();
-					if (part.canDisplayPart()) { 
+					if (part.canDisplayPart()) {
 						stackLayout.topControl = fadeableWrapper;
 						setViewActionsVisible(true);
 						callPartVisibilityListener(part, PartVisibilityListenerMethod.partVisible);
 					}
-					else { 
+					else {
 						stackLayout.topControl = conditionWrapper;
 						setViewActionsVisible(false);
 						callPartVisibilityListener(part, PartVisibilityListenerMethod.partHidden);
@@ -165,7 +165,7 @@ public abstract class PartController {
 		
 		/**
 		 * Disposes and recreates the fadeable
-		 * wrapper for the real part content. 
+		 * wrapper for the real part content.
 		 */
 		protected void disposePartContents() {
 			if (!internalPartsCreated)
@@ -179,10 +179,10 @@ public abstract class PartController {
 		 * Show/Hide all Viewactions of a View if the {@link ControllablePart} is a {@link IViewPart}
 		 * @param visible
 		 */
-		protected void setViewActionsVisible(boolean visible) 
+		protected void setViewActionsVisible(boolean visible)
 		{
 			if (part instanceof IViewPart) {
-				RCPUtil.setViewActionsVisible((IViewPart)part, visible);				
+				RCPUtil.setViewActionsVisible((IViewPart)part, visible);
 			}
 		}
 		
@@ -260,7 +260,7 @@ public abstract class PartController {
 	/**
 	 * Register a part to this controller.
 	 * When done so make sure that the createPartControl(Composite)
-	 * method of the passed WorkbenchPart is delegated to 
+	 * method of the passed WorkbenchPart is delegated to
 	 * this Controllers {@link #createPartControl(ControllablePart, Composite)} method.
 	 * 
 	 * @param part The part to be controlled by this Controller.
@@ -273,7 +273,7 @@ public abstract class PartController {
 	/**
 	 * Register a part to this controller and determines which layout is used
 	 * When done so make sure that the createPartControl(Composite)
-	 * method of the passed WorkbenchPart is delegated to 
+	 * method of the passed WorkbenchPart is delegated to
 	 * this Controllers {@link #createPartControl(ControllablePart, Composite)} method.
 	 * 
 	 * @param part The part to be controlled by this Controller.
@@ -293,7 +293,7 @@ public abstract class PartController {
 	}
 	
 	/**
-	 * Should be called by controlled WorkbenchPart in their 
+	 * Should be called by controlled WorkbenchPart in their
 	 * createPartControl(Composite) method.
 	 * 
 	 * @param part The controlled part.
@@ -326,7 +326,7 @@ public abstract class PartController {
 			int partStatus = PartVisibilityTracker.sharedInstance().getPartVisibilityStatus((IWorkbenchPart)listenerPart);
 			if (partStatus != PartVisibilityTracker.PART_STATUS_HIDDEN)
 				if (listenerPart instanceof PartVisibilityListener) {
-					IWorkbenchPartReference partRef = RCPUtil.searchPartReference((IWorkbenchPart)listenerPart);						
+					IWorkbenchPartReference partRef = RCPUtil.searchPartReference((IWorkbenchPart)listenerPart);
 					if (listenerMethod == PartVisibilityListenerMethod.partVisible)
 						((PartVisibilityListener)listenerPart).partVisible(partRef);
 					if (listenerMethod == PartVisibilityListenerMethod.partHidden)

@@ -53,8 +53,8 @@ import org.nightlabs.base.ui.custom.XCombo;
  * @author Daniel.Mazurek at Nightlabs dot de
  * @author Marius Heinzmann <marius[AT]NightLabs[DOT]de>
  */
-public class XComboComposite<T> 
-	extends AbstractListComposite<T> 
+public class XComboComposite<T>
+	extends AbstractListComposite<T>
 {
 	
 	/**
@@ -91,7 +91,7 @@ public class XComboComposite<T>
 	}
 
 	/**
-	 * @see AbstractListComposite#AbstractListComposite(Composite, int, String, boolean, ILabelProvider, LayoutMode, LayoutDataMode)  
+	 * @see AbstractListComposite#AbstractListComposite(Composite, int, String, boolean, ILabelProvider, LayoutMode, LayoutDataMode)
 	 */
 	public XComboComposite(Composite parent, int comboStyle, String caption, ILabelProvider labelProvider,
 			LayoutMode layoutMode, LayoutDataMode layoutDataMode)	{
@@ -101,7 +101,7 @@ public class XComboComposite<T>
 	/**
 	 * @see AbstractListComposite#AbstractListComposite(Composite, int, String, boolean, ILabelProvider, LayoutMode, LayoutDataMode, int)
 	 */
-	public XComboComposite(Composite parent, int comboStyle, String caption, 
+	public XComboComposite(Composite parent, int comboStyle, String caption,
 			ILabelProvider labelProvider, LayoutMode layoutMode, LayoutDataMode layoutDataMode, int compositeStyle)
 	{
 		super(parent, comboStyle, caption, true, labelProvider, layoutMode, layoutDataMode, compositeStyle);
@@ -153,17 +153,17 @@ public class XComboComposite<T>
 	}
 
 	
-	// Either initialise here, pass false to all superconstructors, create a constructor pyramid for 
-	// this class (smallest constructor calls next bigger one), and call createGUIControl in biggest 
-	// constructor, or do NOT initialise additional fields but only declare them here and initialise  
+	// Either initialise here, pass false to all superconstructors, create a constructor pyramid for
+	// this class (smallest constructor calls next bigger one), and call createGUIControl in biggest
+	// constructor, or do NOT initialise additional fields but only declare them here and initialise
 	// them in createGUIControl!
 	/**
-	 * The backend Combo used by this implementation. 
+	 * The backend Combo used by this implementation.
 	 */
 	private XCombo imageCombo;
 
 	@Override
-	protected void createGuiControl(Composite parent, int widgetStyle, String caption) 
+	protected void createGuiControl(Composite parent, int widgetStyle, String caption)
 	{
 		getGridData().grabExcessVerticalSpace = false;
 		if ( caption != null && ! "".equals(caption) ) { //$NON-NLS-1$

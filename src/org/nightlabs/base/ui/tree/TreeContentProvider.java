@@ -31,7 +31,7 @@ import org.eclipse.jface.viewers.Viewer;
 
 /**
  * Simple abstract ContentProvider for Trees.
- *  
+ * 
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  */
@@ -47,7 +47,7 @@ public abstract class TreeContentProvider implements ITreeContentProvider {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * This implementation does nothing. 
+	 * This implementation does nothing.
 	 * Subclassers may extend.
 	 */
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {

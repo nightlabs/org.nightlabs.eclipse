@@ -51,7 +51,7 @@ public abstract class AbstractLanguageChooser
 	public AbstractLanguageChooser(Composite parent, int style,
 			boolean setLayoutData)
 	{
-		super(parent, style, LayoutMode.TIGHT_WRAPPER, 
+		super(parent, style, LayoutMode.TIGHT_WRAPPER,
 				setLayoutData ? LayoutDataMode.GRID_DATA : LayoutDataMode.NONE);
 	}
 	

@@ -26,8 +26,6 @@
 
 package org.nightlabs.base.ui.composite;
 
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -58,12 +56,12 @@ public class TightWrapperComposite extends XComposite
 	 *
 	 * @param parent The Composite into which this newly created one will be embedded as child.
 	 * @param style A combination of the SWT style flags.
-	 * @param setLayoutData If <code>true</code>, a {@link GridData} will be created and assigned. 
+	 * @param setLayoutData If <code>true</code>, a {@link GridData} will be created and assigned.
 	 */
 	public TightWrapperComposite(Composite parent, int style, boolean setLayoutData) {
 		super(
 				parent, style,
-				LayoutMode.TIGHT_WRAPPER, 
+				LayoutMode.TIGHT_WRAPPER,
 				setLayoutData ? LayoutDataMode.GRID_DATA : LayoutDataMode.NONE);	}
 
 }

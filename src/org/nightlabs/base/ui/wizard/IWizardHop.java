@@ -87,7 +87,7 @@ public interface IWizardHop
 	 * @param exitPage The exitPage to which shall be forked.
 	 *
 	 * @see #getExitPage()
-	 * @deprecated Don't use the exit page any more, you can add the entry page 
+	 * @deprecated Don't use the exit page any more, you can add the entry page
 	 * 		of an other WizardHop directly to the hop pages of this wizard ({@link #addHopPage(IWizardHopPage)}).
 	 */
 	@Deprecated
@@ -99,7 +99,7 @@ public interface IWizardHop
 	 *		following child hop.
 	 *
 	 * @see #setExitPage(IWizardHopPage)
-	 * @deprecated Don't use the exit page any more, you can add the entry page 
+	 * @deprecated Don't use the exit page any more, you can add the entry page
 	 * 		of an other WizardHop directly to the hop pages of this wizard ({@link #addHopPage(IWizardHopPage)}).
 	 */
 	@Deprecated
@@ -160,23 +160,23 @@ public interface IWizardHop
 	
 	/**
 	 * Registeres the entry page of this hop in the dynamic pages of the given
-	 * wizard and sets the wizard to all WizardHopPages of this WizardHop 
+	 * wizard and sets the wizard to all WizardHopPages of this WizardHop
 	 * and all its child WizardHops.
 	 * 
 	 * @param wizard The wizard this WizardHop should be linked to
-	 * @deprecated WizardHops should now be added to a wizard simply by adding 
-	 * 		its entry page to the wizard 
+	 * @deprecated WizardHops should now be added to a wizard simply by adding
+	 * 		its entry page to the wizard
 	 */
 	@Deprecated
 	void hookWizard(IDynamicPathWizard wizard);
 
 	/**
-	 * Unregisteres the entry page of this WizardHop from the dynamic pages 
+	 * Unregisteres the entry page of this WizardHop from the dynamic pages
 	 * of the given wizard and sets the wizard of all WizardHopPages of this
 	 * hop and its child hops to null.
 	 * 
 	 * @param wizard The wizard this WizardHop should be unregistered from
-	 * @deprecated WizardHops should now be added to a wizard simply by adding 
+	 * @deprecated WizardHops should now be added to a wizard simply by adding
 	 * 		its entry page to the wizard
 	 */
 	@Deprecated

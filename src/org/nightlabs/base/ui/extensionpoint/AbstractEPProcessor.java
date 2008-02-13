@@ -55,7 +55,7 @@ import org.eclipse.core.runtime.Platform;
  * 
  * @author Alexander Bieber
  */
-public abstract class AbstractEPProcessor 
+public abstract class AbstractEPProcessor
 implements IEPProcessor
 {
 	/**
@@ -99,18 +99,18 @@ implements IEPProcessor
 				listener.preProcess();
 
 			IExtensionRegistry registry = Platform.getExtensionRegistry();
-			if (registry != null) 
+			if (registry != null)
 			{
 				IExtensionPoint extensionPoint = registry.getExtensionPoint(getExtensionPointID());
 				if (extensionPoint == null) {
 					throw new IllegalStateException("Unable to resolve extension-point: " + getExtensionPointID()); //$NON-NLS-1$
-				}	        
+				}
 
 				IExtension[] extensions = extensionPoint.getExtensions();
 				// For each extension ...
-				for (int i = 0; i < extensions.length; i++) {           
+				for (int i = 0; i < extensions.length; i++) {
 					IExtension extension = extensions[i];
-					IConfigurationElement[] elements = 
+					IConfigurationElement[] elements =
 						extension.getConfigurationElements();
 					// For each member of the extension ...
 					for (int j = 0; j < elements.length; j++) {
@@ -120,14 +120,14 @@ implements IEPProcessor
 						} catch (Exception e) {
 							// Only log the error and continue
 							logger.error("Error processing extension element. The element is located in an extension in bundle: " + extension.getNamespaceIdentifier(), e); //$NON-NLS-1$
-						}               
+						}
 					}
 				}
 
 				for(IEPProcessListener listener : processListeners)
 					listener.postProcess();
 
-				processed = true;	    		
+				processed = true;
 			}
 		} finally {
 			processing = false;
@@ -135,10 +135,10 @@ implements IEPProcessor
 	}
 
 	/**
-	 * Assures that this processor 
+	 * Assures that this processor
 	 * has processed its extensions
 	 */
-	public void checkProcessing() 
+	public void checkProcessing()
 	{
 		checkProcessing(true);
 	}
@@ -149,7 +149,7 @@ implements IEPProcessor
 	 * @param throwExceptionIfErrorOccurs determines if a RuntimeException should be thrown
 	 * if a EPProcessorException occurs or only an error should be logged
 	 */
-	public void checkProcessing(boolean throwExceptionIfErrorOccurs) 
+	public void checkProcessing(boolean throwExceptionIfErrorOccurs)
 	{
 		if (!isProcessed()) {
 			try {
@@ -159,23 +159,23 @@ implements IEPProcessor
 					throw new RuntimeException(e);
 				else
 					logger.error("There occured an error during processing extension-point "+getExtensionPointID()+"!", e);					 //$NON-NLS-1$ //$NON-NLS-2$
-			}  	  		
+			}
 		}
 	}
 
 	/**
 	 * 
 	 * @param s the String to check
-	 * @return true if the String is neither null nor an empty String otherwise 
+	 * @return true if the String is neither null nor an empty String otherwise
 	 * returns false
 	 */
-	public static boolean checkString(String s) 
+	public static boolean checkString(String s)
 	{
 		if (s == null || s.trim().equals("") ) //$NON-NLS-1$
 			return false;
 
 		return true;
-	}  
+	}
 
 	public void addProcessListener(IEPProcessListener listener)
 	{

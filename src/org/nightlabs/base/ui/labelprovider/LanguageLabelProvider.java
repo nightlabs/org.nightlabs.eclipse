@@ -31,7 +31,7 @@ import org.eclipse.swt.graphics.Image;
 import org.nightlabs.base.ui.language.LanguageManager;
 import org.nightlabs.i18n.I18nText;
 
-public class LanguageLabelProvider 
+public class LanguageLabelProvider
 extends LabelProvider
 {
 	protected I18nText text;
@@ -41,7 +41,7 @@ extends LabelProvider
 	}
 	
   @Override
-	public String getText(Object element) 
+	public String getText(Object element)
   {
     if (element == null)
         return ""; //$NON-NLS-1$
@@ -56,15 +56,15 @@ extends LabelProvider
   }
 
   @Override
-	public Image getImage(Object element) 
+	public Image getImage(Object element)
   {
     if (element == null)
-      return null; 
+      return null;
 
-    return LanguageManager.sharedInstance().getFlag16x16Image(LanguageManager.sharedInstance().getCurrentLanguageID());    
+    return LanguageManager.sharedInstance().getFlag16x16Image(LanguageManager.sharedInstance().getCurrentLanguageID());
  	}
   
-//  protected String getLanguageID(String languageText) 
+//  protected String getLanguageID(String languageText)
 //  {
 //  	for (Iterator it = text.getTexts().iterator(); it.hasNext(); ) {
 //  		Map.Entry entry = (Map.Entry) it.next();

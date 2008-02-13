@@ -36,7 +36,7 @@ implements IEPProcessListener
 				String targetType = element.getAttribute("targetType"); //$NON-NLS-1$
 				String message = element.getAttribute("message"); //$NON-NLS-1$
 				message = ( message != null && !message.equals("") ? message : null ); //$NON-NLS-1$
-				IExceptionHandler handler = new SimpleExceptionHandler(message);				
+				IExceptionHandler handler = new SimpleExceptionHandler(message);
 				ExceptionHandlerRegistry.sharedInstance().addExceptionHandler(targetType, handler);
 			}
 			else

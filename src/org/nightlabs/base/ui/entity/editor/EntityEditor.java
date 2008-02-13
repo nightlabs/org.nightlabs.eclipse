@@ -59,9 +59,9 @@ import org.nightlabs.progress.ProgressMonitor;
  * This means that combined with {@link IEntityEditorPageFactory}s that return
  * controllers this class can be used as is and registered as editor (of course with an unique id).
  * All work will be delegated to the pages (visible representation) and the
- * page controller (model loading and saving) that were created by the pageFactory. 
+ * page controller (model loading and saving) that were created by the pageFactory.
  * 
- * However {@link EntityEditor} can be subclassed to configure its appearance (title, tooltip). 
+ * However {@link EntityEditor} can be subclassed to configure its appearance (title, tooltip).
  * 
  * @version $Revision: 4430 $ - $Date: 2006-08-20 17:18:07 +0000 (Sun, 20 Aug 2006) $
  * 
@@ -73,7 +73,7 @@ public class EntityEditor extends CommitableFormEditor
 {
 	/**
 	 * This editor's controller, that will delegate
-	 * loading and saving of the entity to the 
+	 * loading and saving of the entity to the
 	 * page controllers of the registered pages.
 	 * 
 	 */
@@ -81,7 +81,7 @@ public class EntityEditor extends CommitableFormEditor
 	
 	/**
 	 * A handler that can show a dialog when
-	 * the editor is stale. 
+	 * the editor is stale.
 	 */
 	private EntityEditorStaleHandler staleHandler;
 	
@@ -120,7 +120,7 @@ public class EntityEditor extends CommitableFormEditor
 	 */
 	@Override
 	public void doSaveAs() {
-		// Save as not supported by entity editor 
+		// Save as not supported by entity editor
 	}
 
 	/* (non-Javadoc)
@@ -150,7 +150,7 @@ public class EntityEditor extends CommitableFormEditor
 					editorDirtyStateChanged();
 				}
 			});
-		}		
+		}
 	};
 
 	/**
@@ -159,7 +159,7 @@ public class EntityEditor extends CommitableFormEditor
 	 * In spite of the super implementation that checks the {@link IFormPage}s for their dirty state,
 	 * this implementation asks the {@link EntityEditorController} associated with this Editor
 	 * whether one of its {@link IEntityEditorPageControllerController}s is dirty.
-	 * (See {@link EntityEditorController#hasDirtyPageControllers()}) 
+	 * (See {@link EntityEditorController#hasDirtyPageControllers()})
 	 * </p>
 	 * @see org.eclipse.ui.forms.editor.FormEditor#isDirty()
 	 */
@@ -176,7 +176,7 @@ public class EntityEditor extends CommitableFormEditor
 	 * {@inheritDoc}
 	 * 
 	 * This implementation will start a job to save the
-	 * editor. It will first let all pages commit and then 
+	 * editor. It will first let all pages commit and then
 	 * call its controllers doSave() method. This will
 	 * cause all page controllers to save their model.
 	 * If the active page appears to be {@link Fadeable} it will
@@ -191,7 +191,7 @@ public class EntityEditor extends CommitableFormEditor
 //		try {
 //			saveRunnable.run(monitor);
 //		} catch (Throwable t) {
-//			
+//
 //		}
 		
 		// FIXME: check why saving is not done when workbench is shutdown
@@ -242,7 +242,7 @@ public class EntityEditor extends CommitableFormEditor
 	}
 
 	/**
-	 * Get the stale handler for this editor. 
+	 * Get the stale handler for this editor.
 	 * You can register {@link IEntityEditorPageStaleHandler}s with this
 	 * handler that will be executed after being presented
 	 * to the user.
@@ -257,7 +257,7 @@ public class EntityEditor extends CommitableFormEditor
 	 * <p>
 	 * Additionally to its super implementation this implementation
 	 * invokes {@link EntityEditorController#dispose()} on the controller
-	 * associated with this editor. 
+	 * associated with this editor.
 	 * </p>
 	 * @see org.eclipse.ui.forms.editor.FormEditor#dispose()
 	 */
@@ -273,7 +273,7 @@ public class EntityEditor extends CommitableFormEditor
 	 * @return all IFormPages attached to this editor.
 	 */
 	public List<IFormPage> getPages() {
-		List<IFormPage> pages = new LinkedList<IFormPage>(); 
+		List<IFormPage> pages = new LinkedList<IFormPage>();
 		for (IEntityEditorPageController pageController : controller.getPageControllers()) {
 			for (IFormPage pageControllerPage : pageController.getPages()) {
 				if (this == pageControllerPage.getEditor())
@@ -287,7 +287,7 @@ public class EntityEditor extends CommitableFormEditor
 //	FIXME: Mit Alex über eine Möglichkeit der editorweiten Registrierung von NotificationListenern.
 //		Wie wird das bisher gemacht? Sollen wir hier im Editor eine Möglichkeit schaffen sowas zu machen?
 //		Wie kann die aussehen?
-//	Alex: Notification jetzt über den ActiveEntityEditorPageController in Zusammenarbeit mit dem 
+//	Alex: Notification jetzt über den ActiveEntityEditorPageController in Zusammenarbeit mit dem
 //	StaleHandler gelöst, ich denke das ist ok. Oder waren die NotificationListener noch für etwas
 //	anderes sein als die Reaktion auf remote Veränderungen des Objekts?
 	

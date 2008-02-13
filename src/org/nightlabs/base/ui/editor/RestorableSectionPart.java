@@ -40,7 +40,7 @@ import org.nightlabs.base.ui.notification.IDirtyStateManager;
  * @version $Revision$ - $Date$
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  */
-public class RestorableSectionPart 
+public class RestorableSectionPart
 extends SectionPart
 implements IDirtyStateManager, IFormPartDirtyStateProxy
 {
@@ -64,7 +64,7 @@ implements IDirtyStateManager, IFormPartDirtyStateProxy
 	 * @param managedForm The managed form where this
 	 * 		section part should be added or <code>null</code>
 	 * 		if the section part should not be added to
-	 * 		a managed form. 
+	 * 		a managed form.
 	 */
 	public RestorableSectionPart(Section section, IManagedForm managedForm)
 	{
@@ -83,7 +83,7 @@ implements IDirtyStateManager, IFormPartDirtyStateProxy
 	@Override
 	public void markDirty() {
 		// fires dirtyStateChangedEvent of the editor
-		notifyDirtyStateListeners(true);		
+		notifyDirtyStateListeners(true);
 		super.markDirty();
 //		// if the editor was dirty before the first call it is now undirty -> need to fire it again
 //		if (getManagedForm().isDirty())
@@ -100,8 +100,8 @@ implements IDirtyStateManager, IFormPartDirtyStateProxy
 		notifyDirtyStateListeners(false);
 		// set dirty = false
 		super.commit(false);
-//		
-//		// needs to check if global state was dirty, otherwise this would change the state to dirty, 
+//
+//		// needs to check if global state was dirty, otherwise this would change the state to dirty,
 //		// which contradicts the method name and declaration! (marius)
 //		if (getManagedForm().isDirty())
 //			getManagedForm().dirtyStateChanged();
@@ -109,24 +109,24 @@ implements IDirtyStateManager, IFormPartDirtyStateProxy
 	
 //	/**
 //	 * By default this method is overriden and does nothing.
-//	 * 
+//	 *
 //	 * This is done to avoid undirty state, when section is used in FormEditor
 //	 * and page changes, where commit on the page and all included formParts is performed
-//	 * 
+//	 *
 //	 * Inheritans can use method {@link #markUndirty()} to remove dirty state
 //	 */
 //	@Override
-//	public void commit(boolean onSave) 
+//	public void commit(boolean onSave)
 //	{
-//		if (onSave)			
+//		if (onSave)
 //			super.commit(onSave);
 //	}
 
-	protected void adaptSection(FormToolkit toolkit) 
+	protected void adaptSection(FormToolkit toolkit)
 	{
 		Section section = getSection();
 		FormColors colors = toolkit.getColors();
-		int sectionStyle = section.getStyle();		
+		int sectionStyle = section.getStyle();
 //		Composite parent = section.getParent();
 //		if (section.toggle != null) {
 //			section.toggle.setHoverDecorationColor(colors

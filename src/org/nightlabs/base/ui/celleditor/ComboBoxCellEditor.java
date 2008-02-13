@@ -31,8 +31,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 
-public class ComboBoxCellEditor 
-extends AbstractComboBoxCellEditor 
+public class ComboBoxCellEditor
+extends AbstractComboBoxCellEditor
 {
 	/**
 	 * The list of items to present in the combo box.
@@ -45,26 +45,26 @@ extends AbstractComboBoxCellEditor
 	private Image[] images;
 
 	/**
-	 * the SWT style parameter for all contained Composites 
+	 * the SWT style parameter for all contained Composites
 	 */
 	private static final int style = SWT.NONE;
 
-	public ComboBoxCellEditor(Composite parent, String[] items) 
+	public ComboBoxCellEditor(Composite parent, String[] items)
 	{
 		this(parent, items, null, style);
 	}
 
-	public ComboBoxCellEditor(Composite parent, String[] items, int style) 
+	public ComboBoxCellEditor(Composite parent, String[] items, int style)
 	{
 		this(parent, items, null, style);
 	}
 
-	public ComboBoxCellEditor(Composite parent, String[] items, Image[] images) 
+	public ComboBoxCellEditor(Composite parent, String[] items, Image[] images)
 	{
 		this(parent, items, images, style);
 	}
 
-	public ComboBoxCellEditor(Composite parent, String[] items, Image[] images, int style) 
+	public ComboBoxCellEditor(Composite parent, String[] items, Image[] images, int style)
 	{
 		super(parent, style);
 		if (items == null)
@@ -99,15 +99,15 @@ extends AbstractComboBoxCellEditor
 	 * Updates the list of choices for the combo box for the current control.
 	 */
 	@Override
-	protected void populateComboBoxItems() 
+	protected void populateComboBoxItems()
 	{
 		if (getComboBox() != null && items != null) {
 			getComboBox().removeAll();
 			for (int i = 0; i < items.length; i++) {
 				if (images != null && images.length >= i) {
-					getComboBox().add(images[i], items[i], i);      	      		
+					getComboBox().add(images[i], items[i], i);
 				} else {
-					getComboBox().add(null, items[i], i);      	      		      		
+					getComboBox().add(null, items[i], i);
 				}
 			}
 			setValueValid(true);

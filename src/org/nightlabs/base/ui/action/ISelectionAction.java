@@ -31,12 +31,12 @@ import org.eclipse.jface.viewers.ISelection;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
-public interface ISelectionAction 
-extends IUpdateActionOrContributionItem 
-{	
+public interface ISelectionAction
+extends IUpdateActionOrContributionItem
+{
 	/**
 	 * returns the current selection
-	 * @return the current selection 
+	 * @return the current selection
 	 */
 	public ISelection getSelection();
 	

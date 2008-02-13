@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.nightlabs.base.ui.composite.AbstractListComposite;
 import org.nightlabs.base.ui.composite.XComboComposite;
 
-public class CComboContributionItem<T> 
+public class CComboContributionItem<T>
 extends XContributionItem
 {
 	private String name;
@@ -30,12 +30,12 @@ extends XContributionItem
 		super(id);
 		this.name = name;
 		this.types = types;
-		this.labelProvider = labelProvider;		
+		this.labelProvider = labelProvider;
 	}
 	
 	private List<T> types;
-	private ILabelProvider labelProvider;		
-	private XComboComposite<T> comboComposite; 
+	private ILabelProvider labelProvider;
+	private XComboComposite<T> comboComposite;
 	protected XComboComposite<T> getControl() {
 		return comboComposite;
 	}
@@ -47,15 +47,15 @@ extends XContributionItem
    * @param parent the parent composite
    * @return the new control
    */
-  protected Control createControl(Composite parent) 
+  protected Control createControl(Composite parent)
   {
-  	comboComposite = new XComboComposite<T>(parent, AbstractListComposite.getDefaultWidgetStyle(parent), 
+  	comboComposite = new XComboComposite<T>(parent, AbstractListComposite.getDefaultWidgetStyle(parent),
   			(String)null, labelProvider);
   	comboComposite.setInput(types);
   	return comboComposite;
-  }	
+  }
   
-	private ToolItem toolitem = null;	  
+	private ToolItem toolitem = null;
 	 /**
   * The control item implementation of this <code>IContributionItem</code>
   * method calls the <code>createControl</code> framework method to
@@ -66,12 +66,12 @@ extends XContributionItem
   * @param index Index
   */
 	@Override
-  public void fill(ToolBar parent, int index) 
+  public void fill(ToolBar parent, int index)
   {
 		toolitem = new ToolItem(parent, SWT.SEPARATOR, index);
 		Control control = createControl(parent);
-		toolitem.setControl(control);	
-  }  
+		toolitem.setControl(control);
+  }
   
  /**
   * The control item implementation of this <code>IContributionItem</code>
@@ -86,7 +86,7 @@ extends XContributionItem
 
   private CoolItem coolItem;
 	@Override
-	public void fill(CoolBar parent, int index) 
+	public void fill(CoolBar parent, int index)
 	{
 		coolItem = new CoolItem(parent, SWT.SEPARATOR, index);
 		Control control = createControl(parent);
@@ -95,21 +95,21 @@ extends XContributionItem
 	
 	private MenuItem menuItem;
 	@Override
-	public void fill(Menu menu, int index) 
+	public void fill(Menu menu, int index)
 	{
 		menuItem = new MenuItem(menu, SWT.CASCADE, index);
 		menuItem.setText(name);
-		for (int i=0; i<types.size(); i++) 
+		for (int i=0; i<types.size(); i++)
 		{
 			Object element = types.get(i);
 			// TODO create MenuItems for each entry
 //			MenuItem item = new MenuItem();
 		}
-	}		
+	}
   
-	protected void setSize() 
+	protected void setSize()
 	{
-		if (toolitem != null) 
+		if (toolitem != null)
 			toolitem.setWidth(computeWidth(getControl()));
 		
 		if (coolItem != null)
@@ -117,5 +117,5 @@ extends XContributionItem
 		
 		if (comboComposite != null)
 			getControl().setSize(computeWidth(getControl()), computeHeight(getControl()));
-	}  
+	}
 }

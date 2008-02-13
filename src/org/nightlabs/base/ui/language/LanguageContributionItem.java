@@ -31,19 +31,19 @@ import org.eclipse.swt.widgets.Control;
 import org.nightlabs.base.ui.action.AbstractContributionItem;
 import org.nightlabs.base.ui.resource.Messages;
 
-public class LanguageContributionItem 
+public class LanguageContributionItem
 extends AbstractContributionItem
 {
-	public static final String ID = LanguageContributionItem.class.getName();	
+	public static final String ID = LanguageContributionItem.class.getName();
 	private LanguageChooserImageCombo langChooser = null;
 
-	public LanguageContributionItem() 
+	public LanguageContributionItem()
 	{
 		super(ID, Messages.getString("org.nightlabs.base.ui.language.LanguageContributionItem.name")); //$NON-NLS-1$
 	}
 
 	@Override
-	protected Control createControl(Composite parent) 
+	protected Control createControl(Composite parent)
 	{
 		langChooser = new LanguageChooserImageCombo(parent, true, true);
 		return langChooser;

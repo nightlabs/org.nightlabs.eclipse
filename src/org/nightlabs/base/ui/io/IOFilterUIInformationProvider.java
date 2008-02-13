@@ -32,15 +32,15 @@ import org.nightlabs.io.IOFilterInformationProvider;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
-public interface IOFilterUIInformationProvider 
-extends IOFilterInformationProvider 
+public interface IOFilterUIInformationProvider
+extends IOFilterInformationProvider
 {
 	/**
 	 * returns the {@link IWizardHop} to display the GUI for obtaining the
-	 * information for reading 
+	 * information for reading
 	 * 
 	 * @return the {@link IWizardHop} to display the GUI for obtaining the
-	 * information for reading or null if nothing should be displayed  
+	 * information for reading or null if nothing should be displayed
 	 */
 	 IWizardHop getWizardHopForRead();
 	 

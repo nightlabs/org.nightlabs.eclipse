@@ -71,7 +71,7 @@ public class PrinterConfiguratorComposite extends XComposite {
 	private Label pageFormatDescription;
 	private Button editPageFormat;
 	
-	private PageFormat pageFormat;	
+	private PageFormat pageFormat;
 	private PrinterJob printerJob;
 	private PrintRequestAttributeSet printRequestAttributeSet;
 	
@@ -131,7 +131,7 @@ public class PrinterConfiguratorComposite extends XComposite {
 		initGUI(parent);
 	}
 
-	protected void initGUI(Composite parent) 
+	protected void initGUI(Composite parent)
 	{
 		alwaysAsk = new Button(this, SWT.CHECK);
 		alwaysAsk.setText(Messages.getString("org.nightlabs.base.ui.print.PrinterConfiguratorComposite.alwaysAsk.text")); //$NON-NLS-1$
@@ -162,14 +162,14 @@ public class PrinterConfiguratorComposite extends XComposite {
 		pageFormatGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		pageFormatDescription = new Label(pageFormatGroup, SWT.WRAP);
 		pageFormatDescription.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		editPageFormat = new Button(pageFormatGroup, SWT.PUSH);		
+		editPageFormat = new Button(pageFormatGroup, SWT.PUSH);
 		editPageFormat.setText("..."); //$NON-NLS-1$
 		editPageFormat.addSelectionListener(pageFormatListener);
 				
 		addDisposeListener(disposeListener);
 	}
 	
-	private SelectionListener useSysDefaultListener = new SelectionListener() 
+	private SelectionListener useSysDefaultListener = new SelectionListener()
 	{
 		public void widgetDefaultSelected(SelectionEvent arg0) {
 		}
@@ -194,7 +194,7 @@ public class PrinterConfiguratorComposite extends XComposite {
 //			if (printerJob.printDialog(printRequestAttributeSet)) {
 			if (printerJob.printDialog()) {
 				printServiceCombo.selectElement(printerJob.getPrintService());
-				// TODO: This does not work at all. Somehow the job get the attributes assigned, but 
+				// TODO: This does not work at all. Somehow the job get the attributes assigned, but
 				// I can't access them
 				printRequestAttributeSet = convertPrintRequestAttributeSet(
 						printerJob.getPrintService().createPrintJob().getAttributes()
@@ -209,7 +209,7 @@ public class PrinterConfiguratorComposite extends XComposite {
 		public void widgetDefaultSelected(SelectionEvent arg0) {
 		}
 		public void widgetSelected(SelectionEvent arg0) {
-			PrinterJob printerJob = getPrinterJob();			
+			PrinterJob printerJob = getPrinterJob();
 			PageFormat newPageFormat;
 			if (PrinterConfiguratorComposite.this.pageFormat != null)
 				newPageFormat = printerJob.pageDialog(PrinterConfiguratorComposite.this.pageFormat);
@@ -224,15 +224,15 @@ public class PrinterConfiguratorComposite extends XComposite {
 	};
 	
 	private DisposeListener disposeListener = new DisposeListener()
-	{	
+	{
 		public void widgetDisposed(DisposeEvent e) {
 			editPageFormat.removeSelectionListener(pageFormatListener);
 			selectPrinterButton.removeSelectionListener(selectPrinterListener);
 			useSysDefaultPrinter.removeSelectionListener(useSysDefaultListener);
-		}	
-	};	
+		}
+	};
 		
-	public void init(PrinterConfiguration printerConfiguration) 
+	public void init(PrinterConfiguration printerConfiguration)
 	{
 		if (printerConfiguration != null)
 			alwaysAsk.setSelection(printerConfiguration.isAlwaysAsk());
@@ -253,7 +253,7 @@ public class PrinterConfiguratorComposite extends XComposite {
 
 		if (printerConfiguration != null) {
 			this.pageFormat = printerConfiguration.getPageFormat();
-			pageFormatDescription.setText(getPageFormatDescription(printerConfiguration.getPageFormat()));			
+			pageFormatDescription.setText(getPageFormatDescription(printerConfiguration.getPageFormat()));
 		}
 		if (printerConfiguration == null || printerConfiguration.getPageFormat() == null)
 			pageFormatDescription.setText(Messages.getString("org.nightlabs.base.ui.print.PrinterConfiguratorComposite.pageFormatDescription_noPageFormatAssigned")); //$NON-NLS-1$
@@ -269,7 +269,7 @@ public class PrinterConfiguratorComposite extends XComposite {
 		updateEnabled();
 	}
 	
-	private PageSetupComposite pageSetupComposite = null; 
+	private PageSetupComposite pageSetupComposite = null;
 	protected PageSetupComposite initPageSetupComposite(Composite parent) {
 		return new PageSetupComposite(pageFormat, parent, SWT.NONE);
 	}

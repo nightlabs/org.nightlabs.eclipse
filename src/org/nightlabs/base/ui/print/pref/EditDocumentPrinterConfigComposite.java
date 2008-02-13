@@ -61,7 +61,7 @@ public class EditDocumentPrinterConfigComposite extends XComposite {
 	private Button typeExtEngine;
 	
 	private Composite editWrapper;
-	private StackLayout stackLayout;	
+	private StackLayout stackLayout;
 	private XComposite sysCallEditComposite;
 	private XComposite firstLine;
 	private LabeledText expectedReturnValue;
@@ -192,7 +192,7 @@ public class EditDocumentPrinterConfigComposite extends XComposite {
 					expectedReturnValue.setText("1"); //$NON-NLS-1$
 					commandPattern.setText("C:\\Programme\\Adobe\\Acrobat 7.0\\Reader\\AcroRd32.exe"); //$NON-NLS-1$
 					parameterPattern.setText("/h/p ${FILE}"); //$NON-NLS-1$
-				} 
+				}
 				else
 					throw new IllegalStateException("Some bogus was selected"); //$NON-NLS-1$
 			}

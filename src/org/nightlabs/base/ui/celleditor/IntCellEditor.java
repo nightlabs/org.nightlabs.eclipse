@@ -31,8 +31,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
 
-public class IntCellEditor 
-//extends CellEditor 
+public class IntCellEditor
+//extends CellEditor
 extends XCellEditor
 {
   protected Text text;
@@ -68,26 +68,26 @@ extends XCellEditor
   }
 
   @Override
-	protected Object doGetValue() 
+	protected Object doGetValue()
   {
     String stringVal = text.getText();
     if (stringVal != null && !stringVal.trim().equals("")) {
-      return new Integer(stringVal);      
+      return new Integer(stringVal);
     }
-    return null;     
+    return null;
   }
 
   @Override
-	protected void doSetFocus() 
+	protected void doSetFocus()
   {
   	if (text != null) {
   		text.selectAll();
   		text.setFocus();
-  	}    
+  	}
   }
 
   @Override
-	protected void doSetValue(Object value) 
+	protected void doSetValue(Object value)
   {
 		if (isReadOnly())
 			return;
@@ -96,7 +96,7 @@ extends XCellEditor
 		if (value != null) {
 	  	Integer val = (Integer) value;
 	  	String stringVal = Integer.toString(val.intValue());
-	  	text.setText(stringVal);    			
+	  	text.setText(stringVal);
 		}
   }
 

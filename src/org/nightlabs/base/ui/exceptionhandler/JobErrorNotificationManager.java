@@ -34,8 +34,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.internal.progress.ErrorInfo;
 
-public class JobErrorNotificationManager 
-// implements IJobErrorNotificationManager 
+public class JobErrorNotificationManager
+// implements IJobErrorNotificationManager
 {
 
 	public JobErrorNotificationManager() {

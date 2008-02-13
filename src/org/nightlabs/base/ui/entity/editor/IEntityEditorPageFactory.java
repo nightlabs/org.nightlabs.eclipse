@@ -27,7 +27,6 @@
 package org.nightlabs.base.ui.entity.editor;
 
 import org.eclipse.ui.forms.editor.FormEditor;
-import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.editor.IFormPage;
 
 /**
@@ -45,7 +44,7 @@ public interface IEntityEditorPageFactory {
 	
 	/**
 	 * Create an new IFormPage that will display the part
-	 * of the entity linked to this entity editor page. 
+	 * of the entity linked to this entity editor page.
 	 * For your convenience you might subclass {@link FormPage},
 	 * or any other default implementation. Also take a look
 	 * at {@link EntityEditorPageWithProgress} that provides
@@ -74,8 +73,8 @@ public interface IEntityEditorPageFactory {
 	 * Use {@link EntityEditor#getController()} to get the <code>EntityEditorController</code> from the given
 	 * editor.
 	 * </p>
-	 * <p>Also for the page-controller there exists a base class with 
-	 * extra functionality concerning background loading of data, see {@link EntityEditorPageController}</p>  
+	 * <p>Also for the page-controller there exists a base class with
+	 * extra functionality concerning background loading of data, see {@link EntityEditorPageController}</p>
 	 * 
 	 * @param editor The editor for which a controller should be created
 	 * @return A new page controller appropriate to pages created by this factory.

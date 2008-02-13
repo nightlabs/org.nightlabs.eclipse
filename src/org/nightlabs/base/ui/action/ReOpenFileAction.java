@@ -35,7 +35,7 @@ import org.nightlabs.base.ui.editor.Editor2PerspectiveRegistry;
 import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.util.RCPUtil;
 
-public class ReOpenFileAction 
+public class ReOpenFileAction
 extends Action
 {
 	public static final String ID = ReOpenFileAction.class.getName();
@@ -43,7 +43,7 @@ extends Action
 
 	protected String fileName;
 
-	public ReOpenFileAction(String fileName) 
+	public ReOpenFileAction(String fileName)
 	{
 		if (fileName == null)
 			throw new IllegalArgumentException("Param fileName must not be null!"); //$NON-NLS-1$
@@ -52,7 +52,7 @@ extends Action
 		init();
 	}
 
-	protected void init() 
+	protected void init()
 	{
 		setId(ID + "-" + fileName + fileName.hashCode()); //$NON-NLS-1$
 		setText(fileName);
@@ -64,15 +64,15 @@ extends Action
 	}
 
 	@Override
-	public void run() 
+	public void run()
 	{
 		try
 		{
 			File file = new File(fileName);
-			if (file.exists())						 
+			if (file.exists())
 				Editor2PerspectiveRegistry.sharedInstance().openFile(file);
 		}
-		catch (PartInitException e) 
+		catch (PartInitException e)
 		{
 			logger.error("Opening file failed: " + fileName, e);	 //$NON-NLS-1$
 			RCPUtil.showErrorDialog(

@@ -45,7 +45,7 @@ public class PrinterPreferencePage
 extends PreferencePage
 implements IWorkbenchPreferencePage {
 
-	private XComposite wrapper; 
+	private XComposite wrapper;
 	
 	/*
 	 * (non-Javadoc)

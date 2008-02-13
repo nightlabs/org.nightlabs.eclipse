@@ -13,8 +13,8 @@ import org.nightlabs.version.Version;
  * @author Marius Heinzmann -- Marius[at]NightLabs[dot]de
  *
  */
-public class VersionCellEditor 
-	extends XCellEditor 
+public class VersionCellEditor
+	extends XCellEditor
 {
 //	public VersionCellEditor() {
 //		setValidator(new VersionValidator());
@@ -95,7 +95,7 @@ public class VersionCellEditor
   	if (text != null) {
   		text.selectAll();
   		text.setFocus();
-  	}    
+  	}
 	}
 
 	/* (non-Javadoc)

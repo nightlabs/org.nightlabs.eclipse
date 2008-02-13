@@ -81,7 +81,7 @@ public interface IDynamicPathWizard extends IWizard
 	/**
 	 * This method adds a page to the end of the dynamic path.
 	 *
-	 * @param page The page to be added. 
+	 * @param page The page to be added.
 	 */
 	void addDynamicWizardPage(IWizardPage page);
 

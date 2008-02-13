@@ -59,7 +59,7 @@ public class ErrorReportWizardCommentPage extends DynamicPathWizardPage
 	 */
 	@Override
 	public Control createPageContents(Composite parent)
-	{	
+	{
 		XComposite page = new XComposite(parent, SWT.NONE, LayoutMode.TIGHT_WRAPPER);
 //    GridLayout layout = new GridLayout();
 //    //layout.

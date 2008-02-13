@@ -36,7 +36,6 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.exceptionhandler.ExceptionHandlerRegistry;
 import org.nightlabs.base.ui.util.RCPUtil;
-import org.nightlabs.config.Config;
 import org.nightlabs.config.ConfigException;
 
 /**
@@ -46,50 +45,50 @@ import org.nightlabs.config.ConfigException;
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  * @author Daniel Mazurek - Daniel.Mazurek [AT] NightLabs [DOT] de
  */
-public abstract class AbstractWorkbenchAdvisor 
-extends WorkbenchAdvisor 
+public abstract class AbstractWorkbenchAdvisor
+extends WorkbenchAdvisor
 {
 	/**
 	 * LOG4J logger used by this class
 	 */
 	private static final Logger logger = Logger.getLogger(AbstractWorkbenchAdvisor.class);
 
-	public AbstractWorkbenchAdvisor() 
+	public AbstractWorkbenchAdvisor()
 	{
 		super();
 		try {
 			application = initApplication();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
-		}		
+		}
 	}
 
 	/**
 	 * Checks the {@link ExceptionHandlerRegistry} for registered handlers by invoking
-	 * {@link ExceptionHandlerRegistry#searchHandler(Throwable)}. For the found item the 
-	 * {@link org.eclipse.jface.window.Window.IExceptionHandler#handleException(java.lang.Throwable)} 
-	 * method is invoked on a unique instance of the eventHandler class (plugin.xml). 
+	 * {@link ExceptionHandlerRegistry#searchHandler(Throwable)}. For the found item the
+	 * {@link org.eclipse.jface.window.Window.IExceptionHandler#handleException(java.lang.Throwable)}
+	 * method is invoked on a unique instance of the eventHandler class (plugin.xml).
 	 */
 	@Override
 	public void eventLoopException(Throwable exception) {
 		if (!ExceptionHandlerRegistry.syncHandleException(exception))
 			super.eventLoopException(exception);
-	}  	
+	}
 
 	/**
-	 * Initializes the workbench 
+	 * Initializes the workbench
 	 */
 	@Override
 	public void initialize(IWorkbenchConfigurer configurer) {
 		super.initialize(configurer);
 		configurer.setSaveAndRestore(true);
-	}	
+	}
 
 	/**
 	 * saves the Config before the Application is shutDown
 	 */
 	@Override
-	public boolean preShutdown() 
+	public boolean preShutdown()
 	{
 		boolean superResult = super.preShutdown();
 		try {
@@ -111,10 +110,10 @@ extends WorkbenchAdvisor
 	 * return the {@link AbstractApplication} associated with this
 	 * AbstractWorkbenchAdvisor
 	 * 
-	 * @return the AbstractApplication associated with this 
+	 * @return the AbstractApplication associated with this
 	 * AbstractWorkbenchAdvisor
 	 */
-	public AbstractApplication getApplication() 
+	public AbstractApplication getApplication()
 	{
 		if (application == null)
 			application = initApplication();
@@ -125,7 +124,7 @@ extends WorkbenchAdvisor
 	/**
 	 * Initializes the application.
 	 * <p>
-	 * The default implementation returns 
+	 * The default implementation returns
 	 * {@link AbstractApplication#sharedInstance()}
 	 * which should be the application that is
 	 * currently running.
@@ -159,13 +158,13 @@ extends WorkbenchAdvisor
 		for (IWorkbenchListener workbenchListener : listener) {
 			workbenchListener.postShutdown();
 		}
-	}		
+	}
 	
 	/**
 	 * checks if the -clearWorkspace programm argument is set and if
 	 * so clears the workspace directory of the application
 	 */
-	protected void checkClearWorkspace() 
+	protected void checkClearWorkspace()
 	{
 		String[] args = NLBasePlugin.getDefault().getApplication().getArguments();
 		boolean doClearWorkspace = false;
@@ -182,7 +181,7 @@ extends WorkbenchAdvisor
 	}
 
 	@Override
-	public boolean openWindows() 
+	public boolean openWindows()
 	{
 		boolean openWindows = super.openWindows();
 		Set<IWorkbenchListener> listener = WorkbenchListenerRegistry.sharedInstance().getListener();
@@ -193,13 +192,13 @@ extends WorkbenchAdvisor
 	}
 
 	@Override
-	public void postStartup() 
+	public void postStartup()
 	{
 		super.postStartup();
 		Set<IWorkbenchListener> listener = WorkbenchListenerRegistry.sharedInstance().getListener();
 		for (IWorkbenchListener workbenchListener : listener) {
 			workbenchListener.postStartup();
-		}		
+		}
 	}
 
 	@Override
@@ -208,7 +207,7 @@ extends WorkbenchAdvisor
 		Set<IWorkbenchListener> listener = WorkbenchListenerRegistry.sharedInstance().getListener();
 		for (IWorkbenchListener workbenchListener : listener) {
 			workbenchListener.preStartup();
-		}		
-	}	
+		}
+	}
 		
 }

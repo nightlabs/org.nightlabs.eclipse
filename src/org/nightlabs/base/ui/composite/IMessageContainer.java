@@ -7,7 +7,7 @@ package org.nightlabs.base.ui.composite;
 /**
  * Interface for Containers (e.g. Dialogs or Composites) which
  * are capable of displaying messages
- *  
+ * 
  * @author Daniel Mazurek - daniel <at> nightlabs <dot> de
  * 
  */
@@ -27,6 +27,6 @@ public interface IMessageContainer
 	 *            the message, or <code>null</code> to clear the message
 	 * @param newType
 	 *            the message type
-	 */	
+	 */
 	void setMessage(String newMessage, int newType);
 }

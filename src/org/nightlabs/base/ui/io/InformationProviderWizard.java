@@ -34,11 +34,11 @@ import org.nightlabs.base.ui.wizard.DynamicPathWizard;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
-public class InformationProviderWizard 
-extends DynamicPathWizard 
+public class InformationProviderWizard
+extends DynamicPathWizard
 {
 	private URL url;
-	public InformationProviderWizard(URL url) 
+	public InformationProviderWizard(URL url)
 	{
 		super();
 		this.url = url;

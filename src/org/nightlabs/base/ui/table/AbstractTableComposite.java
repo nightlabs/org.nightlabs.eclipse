@@ -54,7 +54,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.nightlabs.base.ui.composite.XComposite;
 
 /**
- * A base class for Composites with a Table that takes care of creating a 
+ * A base class for Composites with a Table that takes care of creating a
  * TableViewer and placing its control within a layout.
  * <p>
  * Additionally this class provides access to typed selections in the table.
@@ -78,17 +78,17 @@ import org.nightlabs.base.ui.composite.XComposite;
 public abstract class AbstractTableComposite<ElementType> extends XComposite implements ISelectionProvider {
 
 	/**
-	 * Default set of styles to use when constructing a single-selection viewer with border. 
+	 * Default set of styles to use when constructing a single-selection viewer with border.
 	 */
 	public static int DEFAULT_STYLE_SINGLE_BORDER = SWT.BORDER | SWT.FULL_SELECTION | SWT.SINGLE;
 
 	/**
-	 * Default set of styles to use when constructing a single-selection viewer without border. 
+	 * Default set of styles to use when constructing a single-selection viewer without border.
 	 */
 	public static int DEFAULT_STYLE_SINGLE = SWT.FULL_SELECTION | SWT.SINGLE;
 
 	/**
-	 * Default set of styles to use when constructing a multi-selection viewer. 
+	 * Default set of styles to use when constructing a multi-selection viewer.
 	 * This is used as default value when constructing an {@link AbstractTableComposite} without viewerStyle
 	 */
 	public static int DEFAULT_STYLE_MULTI_BORDER = SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI;
@@ -171,7 +171,7 @@ public abstract class AbstractTableComposite<ElementType> extends XComposite imp
 
 	/**
 	 * Return the table viewer's selection in a Collection
-	 * of the element types of this table.  
+	 * of the element types of this table.
 	 * @return the table viewer's selection
 	 */
 	@SuppressWarnings("unchecked")
@@ -248,7 +248,7 @@ public abstract class AbstractTableComposite<ElementType> extends XComposite imp
 		if (tmpLabelProvider != null) {
 			getTableViewer().setInput(null);
 			getTableViewer().setLabelProvider(tmpLabelProvider);
-			getTableViewer().setContentProvider(tmpContentProvider);			
+			getTableViewer().setContentProvider(tmpContentProvider);
 		}
 		
 		if (tableViewer != null)
@@ -278,7 +278,7 @@ public abstract class AbstractTableComposite<ElementType> extends XComposite imp
 
 	/**
 	 * Sets the selection to the given list of elements.
-	 *  
+	 * 
 	 * @param elements The elements to select.
 	 */
 	public void setSelectedElements(Collection<ElementType> elements) {
@@ -378,7 +378,7 @@ public abstract class AbstractTableComposite<ElementType> extends XComposite imp
 	 * Set the viewers selection.
 	 * 
 	 * @param selection The selection to set.
-	 * @param reveal If true the selection will be made visible 
+	 * @param reveal If true the selection will be made visible
 	 * @see TableViewer#setSelection(ISelection, boolean)
 	 */
 	public void setSelection(List<ElementType> elements, boolean reveal) {

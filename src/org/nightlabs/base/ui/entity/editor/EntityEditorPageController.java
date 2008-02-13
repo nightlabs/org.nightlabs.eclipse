@@ -26,7 +26,6 @@
 
 package org.nightlabs.base.ui.entity.editor;
 
-import java.beans.PropertyChangeSupport;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.HashSet;
@@ -55,12 +54,12 @@ import org.nightlabs.base.ui.util.RCPUtil;
  * page is shown and needs to access the controller's data it might be
  * already (partially) loaded.</p>
  * 
- * <p>The loading job can be started at any time via {@link #startLoadJob()} 
+ * <p>The loading job can be started at any time via {@link #startLoadJob()}
  * or you can use the constructor {@link #EntityEditorPageController(boolean)}</p>
  * 
- * <p>If a thread needs to access this controllers data it should 
- * use the {@link #load(IProgressMonitor)} method instead of invoking 
- * {@link IEntityEditorPageController#doLoad(IProgressMonitor)} directly.</p> 
+ * <p>If a thread needs to access this controllers data it should
+ * use the {@link #load(IProgressMonitor)} method instead of invoking
+ * {@link IEntityEditorPageController#doLoad(IProgressMonitor)} directly.</p>
  * 
  * <p>{@link EntityEditorPageController} extends {@link PropertyChangeSupport} and will
  * pass the {@link EntityEditor} this controller was created with as source to
@@ -70,11 +69,11 @@ import org.nightlabs.base.ui.util.RCPUtil;
  *
  */
 public abstract class EntityEditorPageController
-implements IEntityEditorPageController 
+implements IEntityEditorPageController
 {
 	private static final Logger logger = Logger.getLogger(EntityEditorPageController.class);
 	
-	/**	
+	/**
 	 * The entityEditor controller this page controller is registered to.
 	 * Used to put the loadJob in the entityEditor controllers job pool.
 	 */
@@ -84,7 +83,7 @@ implements IEntityEditorPageController
 
 	/**
 	 * The actual background loading job.
-	 * This calls {@link IEntityEditorPageController#doLoad(IProgressMonitor)} 
+	 * This calls {@link IEntityEditorPageController#doLoad(IProgressMonitor)}
 	 * and notifies the wrapping page controller
 	 * of its end by the controller's {@link EntityEditorPageController#mutex}.
 	 */
@@ -193,7 +192,7 @@ implements IEntityEditorPageController
 	
 	/**
 	 * Create a new page controller that
-	 * will not do background loading. 
+	 * will not do background loading.
 	 */
 	public EntityEditorPageController(EntityEditor editor) {
 		this(editor, false);
@@ -238,7 +237,7 @@ implements IEntityEditorPageController
 	}
 	
 	/**
-	 * Returns the entityEditor controller this page controller is linked to. 
+	 * Returns the entityEditor controller this page controller is linked to.
 	 * @return Tthe entityEditor controller this page controller is linked to.
 	 */
 	public EntityEditorController getEntityEditorController() {
@@ -289,7 +288,7 @@ implements IEntityEditorPageController
 				public void sleeping(IJobChangeEvent arg0) {
 				}
 			});
-			// when not called from constructor 
+			// when not called from constructor
 			if (editorController != null)
 				editorController.putLoadJob(this, loadJob);
 		}
@@ -303,7 +302,7 @@ implements IEntityEditorPageController
 		public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 			if (!loaded)
 				loadJob.getCompoundProgressMonitor().addProgressMonitor(monitor);
-				synchronized (mutex) {					
+				synchronized (mutex) {
 					while (!loaded)
 						mutex.wait(200);
 				}
@@ -322,15 +321,15 @@ implements IEntityEditorPageController
 	
 	/**
 	 * <p>Ensures that this controller's {@link IEntityEditorPageController#doLoad(IProgressMonitor)}
-	 * method has fully run and thus the controller is ready for use.</p> 
+	 * method has fully run and thus the controller is ready for use.</p>
 	 * 
 	 * <p>
-	 * This method will first check, if the data already began to load in the 
+	 * This method will first check, if the data already began to load in the
 	 * background. If so, it will 'join' the loading job and wait until its finished.</p>
 	 * 
 	 * <p>If the background job was not created or started yet, the data will
 	 * be loaded on the current thread.
-	 * <p>Note that invoking this form the gui thread will cause a blocking 
+	 * <p>Note that invoking this form the gui thread will cause a blocking
 	 * progress dialog to appear.</p>
 	 */
 	public synchronized void load(IProgressMonitor monitor)
@@ -374,9 +373,9 @@ implements IEntityEditorPageController
 	}
 	
 	/**
-	 * Determines if the controller is dirty, 
+	 * Determines if the controller is dirty,
 	 * once the page or one of the pages were dirty the controller
-	 * stays dirty even if the page has been cleaned. 
+	 * stays dirty even if the page has been cleaned.
 	 * (e.g. by a calling of commit of an included section)
 	 */
 	public boolean isDirty() {
@@ -391,7 +390,7 @@ implements IEntityEditorPageController
 	}
 
 	/**
-	 * removes the dirty state, after calling this method 
+	 * removes the dirty state, after calling this method
 	 * {@link #isDirty()} returns false
 	 * 
 	 */
@@ -424,9 +423,9 @@ implements IEntityEditorPageController
 
 //	/**
 //	 * @deprecated {@link #addModifyListener(IEntityEditorPageControllerModifyListener)} should be used instead.
-//	 * 		This should not be used any more, as PropertyChangeSupport check if 
+//	 * 		This should not be used any more, as PropertyChangeSupport check if
 //	 * 		oldValue.equals(newValue) for the notified objects and will not propagete
-//	 * 		if this is true. For most JDO, that check their id in equals, this is 
+//	 * 		if this is true. For most JDO, that check their id in equals, this is
 //	 * 		not applicable.
 //	 */
 //	public synchronized void addPropertyChangeListener(PropertyChangeListener arg0) {
@@ -478,17 +477,17 @@ implements IEntityEditorPageController
 	/**
 	 * The <code>resetDirtyState</code> is set to <code>true</code> when a new Object has been loaded
 	 * (fetched form the Cache /server) and <code>false</code> if local changes have been made to the
-	 * model from another page or another section, which needs the GUI to reflect these changes and 
+	 * model from another page or another section, which needs the GUI to reflect these changes and
 	 * still keep the old dirty state.
-	 *  
+	 * 
 	 * @param oldObject The old object value.
 	 * @param newObject The new object value.
-	 * @param resetDirtyState whether or not the UI elements (page, sections) should reset their dirty 
-	 * 	state when displaying the changes. 
+	 * @param resetDirtyState whether or not the UI elements (page, sections) should reset their dirty
+	 * 	state when displaying the changes.
 	 */
 	protected void fireModifyEvent(Object oldObject, Object newObject, boolean resetDirtyState)
 	{
-		EntityEditorPageControllerModifyEvent lastModifyEvent = 
+		EntityEditorPageControllerModifyEvent lastModifyEvent =
 			new EntityEditorPageControllerModifyEvent(this, oldObject, newObject, resetDirtyState);
 		this.lastModifyEvent = lastModifyEvent;
 

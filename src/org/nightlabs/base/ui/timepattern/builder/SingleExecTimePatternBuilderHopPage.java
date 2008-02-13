@@ -45,7 +45,7 @@ public class SingleExecTimePatternBuilderHopPage extends WizardHopPage {
 		startTimeComposite = new PatternExecutionTimeComposite(wrapper, SWT.NONE);
 		startTimeComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		(new Label(wrapper, SWT.SEPARATOR | SWT.HORIZONTAL)).setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		XComposite dayWrapper = new XComposite(wrapper, SWT.NONE); 
+		XComposite dayWrapper = new XComposite(wrapper, SWT.NONE);
 		executionDateEdit = new DateTimeEdit(
 				dayWrapper,
 				DateFormatter.FLAGS_DATE_LONG_WEEKDAY,
@@ -53,8 +53,8 @@ public class SingleExecTimePatternBuilderHopPage extends WizardHopPage {
 		return wrapper;
 	}
 
-	public void configureTimePattern(TimePattern timePattern) 
-	throws TimePatternFormatException 
+	public void configureTimePattern(TimePattern timePattern)
+	throws TimePatternFormatException
 	{
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(executionDateEdit.getDate());

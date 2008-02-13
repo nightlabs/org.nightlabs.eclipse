@@ -32,7 +32,7 @@ import org.nightlabs.base.ui.notification.SelectionManager;
 import org.nightlabs.notification.NotificationEvent;
 import org.nightlabs.notification.NotificationListener;
 
-public abstract class SelectionAction 
+public abstract class SelectionAction
 extends Action
 //implements IUpdateAction
 {
@@ -49,30 +49,30 @@ extends Action
 		}
 	};
 
-	public abstract boolean calculateEnabled(NotificationEvent evt);	
+	public abstract boolean calculateEnabled(NotificationEvent evt);
 		
 //	/**
 //	 * updates the UpdateAction when the selection changed
 //	 *
 //	 */
-//	public void update() 
+//	public void update()
 //	{
-//		setEnabled(calculateEnabled());		
+//		setEnabled(calculateEnabled());
 //	}
 	
 //	/**
 //	 * Gets the current selection.
-//	 * 
+//	 *
 //	 * @return The current selection.
 //	 */
 //	protected ISelection getSelection() {
 //		return selection;
-//	}	
+//	}
 	
 //	/**
 //	 * Returns a <code>List</code> containing the currently
 //	 * selected objects.
-//	 * 
+//	 *
 //	 * @return A List containing the currently selected objects.
 //	 */
 //	protected List getSelectedObjects() {

@@ -43,7 +43,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.nightlabs.base.ui.custom.XCombo;
 
-public abstract class AbstractComboBoxCellEditor 
+public abstract class AbstractComboBoxCellEditor
 extends CellEditor
 {
 	public AbstractComboBoxCellEditor(Composite parent, int style) {
@@ -51,7 +51,7 @@ extends CellEditor
 	}
 	
   /**
-   * the XCombo which will display 
+   * the XCombo which will display
    */
 	private XCombo comboBox;
 	public XCombo getComboBox() {
@@ -61,19 +61,19 @@ extends CellEditor
   /**
    * The zero-based index of the selected item.
    */
-  private int selection;	
+  private int selection;
 	
   /**
    * Creates a ColorComboBox and adds some listener to it
    */
   @Override
-	protected Control createControl(Composite parent) 
-  {	
+	protected Control createControl(Composite parent)
+  {
 	  comboBox = new XCombo(parent, getStyle());
 	  comboBox.setFont(parent.getFont());
 	
 	  comboBox.addKeyListener(new KeyAdapter() {
-	      // hook key pressed - see PR 14201  
+	      // hook key pressed - see PR 14201
 	      @Override
 				public void keyPressed(KeyEvent e) {
 	          keyReleaseOccured(e);
@@ -116,7 +116,7 @@ extends CellEditor
   @Override
 	protected void doSetFocus() {
     if (comboBox != null) {
-      comboBox.setFocus();    	
+      comboBox.setFocus();
     }
   }
   
@@ -124,17 +124,17 @@ extends CellEditor
    * @see org.eclipse.jface.viewers.CellEditor#focusLost()
    */
   @Override
-	protected void focusLost() 
+	protected void focusLost()
   {
     if (isActivated()) {
       applyEditorValueAndDeactivate();
     }
-  }  
+  }
   
   /**
    * Applies the currently selected value and deactiavates the cell editor
    */
-  protected void applyEditorValueAndDeactivate() 
+  protected void applyEditorValueAndDeactivate()
   {
     //  must set the selection before getting value
     selection = comboBox.getSelectionIndex();
@@ -149,18 +149,18 @@ extends CellEditor
     }
     fireApplyEditorValue();
     deactivate();
-  }	
+  }
   
   /**
    * The <code>AssignableCellEditor</code> implementation of
-   * this <code>CellEditor</code> framework method sets the 
+   * this <code>CellEditor</code> framework method sets the
    * minimum width of the cell.  The minimum width is 10 characters
    * if <code>comboBox</code> is not <code>null</code> or <code>disposed</code>
    * eles it is 60 pixels to make sure the arrow button and some text is visible.
    * The list of CCombo will be wide enough to show its longest item.
    */
   @Override
-	public LayoutData getLayoutData() 
+	public LayoutData getLayoutData()
   {
     LayoutData layoutData = super.getLayoutData();
     if ((comboBox == null) || comboBox.isDisposed())
@@ -173,14 +173,14 @@ extends CellEditor
       gc.dispose();
     }
     return layoutData;
-  }	  
+  }
   
   protected Object oldValue;
   @Override
-	protected void doSetValue(Object value) 
+	protected void doSetValue(Object value)
   {
     oldValue = value;
-    if (value instanceof String) 
+    if (value instanceof String)
     {
       String string = (String) value;
       for (int i=0; i<getItems().length; i++) {
@@ -188,7 +188,7 @@ extends CellEditor
         if (s.equals(string)) {
           getComboBox().select(i);
           break;
-        }          
+        }
       }
     }
   }
@@ -203,14 +203,14 @@ extends CellEditor
   /**
    * @return the value which is expected (usally you return not a String but
    * another kind of value which is normally mapped in a subClass)
-   */  
+   */
 	protected abstract Object getReturnValue();
 	
 	@Override
-	protected Object doGetValue() 
+	protected Object doGetValue()
 	{
 		if (getComboBox().getSelectionIndex() != -1)
-			return getReturnValue();			
+			return getReturnValue();
 		else
 			return oldValue;
 	}

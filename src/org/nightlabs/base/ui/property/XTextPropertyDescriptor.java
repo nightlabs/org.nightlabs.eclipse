@@ -35,8 +35,8 @@ import org.nightlabs.base.ui.celleditor.XTextCellEditor;
  * @author Daniel.Mazurek <at> NightLabs <dot> de
  *
  */
-public class XTextPropertyDescriptor 
-//extends TextPropertyDescriptor 
+public class XTextPropertyDescriptor
+//extends TextPropertyDescriptor
 extends XPropertyDescriptor
 {
 
@@ -58,19 +58,19 @@ extends XPropertyDescriptor
 	}
 	
   /**
-   * The <code>TextPropertyDescriptor</code> implementation of this 
+   * The <code>TextPropertyDescriptor</code> implementation of this
    * <code>IPropertyDescriptor</code> method creates and returns a new
    * <code>XTextCellEditor</code>.
    * <p>
-   * The editor is configured with the current validator if there is one. 
+   * The editor is configured with the current validator if there is one.
    * </p>
    */
   @Override
-	public CellEditor createPropertyEditor(Composite parent) 
+	public CellEditor createPropertyEditor(Composite parent)
   {
     CellEditor editor = new XTextCellEditor(parent, SWT.NONE, readOnly);
     if (getValidator() != null)
         editor.setValidator(getValidator());
     return editor;
-  }	
+  }
 }

@@ -39,12 +39,12 @@ public abstract class ErrorDialogFactory
 		IErrorDialog dialog = null;
 		if(errorDialogs != null)
 			dialog = errorDialogs.get(dialogClass);
-		if(dialog == null) {			
+		if(dialog == null) {
 			try {
 				dialog = dialogClass.newInstance();
 			} catch(Exception e) {
 				logger.fatal("Error occured when trying to instantiate " + dialogClass.getName() + " with default constructor.", e); //$NON-NLS-1$ //$NON-NLS-2$
-			}						
+			}
 		}
 		return dialog;
 	}
@@ -57,8 +57,8 @@ public abstract class ErrorDialogFactory
 	 * @param dialogTitle The error dialog title
 	 * @param message The error message
 	 * @param thrownException The exception that was thrown
-	 * @param triggerException The exception that triggered the error handler 
-	 * @return <code>true</code> if the error could successfully be shown - 
+	 * @param triggerException The exception that triggered the error handler
+	 * @return <code>true</code> if the error could successfully be shown -
 	 * 		<code>false</code> otherwise.
 	 */
 	public static boolean showError(Class<? extends IErrorDialog> dialogClass, String dialogTitle, String message, Throwable thrownException, Throwable triggerException)
@@ -77,9 +77,9 @@ public abstract class ErrorDialogFactory
 //	 * registered for re-use, this instance will be used.
 //	 * @param dialogClass The error dialog class
 //	 * @param errorReport The error report to use
-//	 * @return <code>true</code> if the error could successfully be shown - 
+//	 * @return <code>true</code> if the error could successfully be shown -
 //	 * 		<code>false</code> otherwise.
-//	 * 
+//	 *
 //	 * @deprecated Use {@link #showError(Class, String, String, Throwable, Throwable)} instead.
 //	 */
 //	public static boolean showError(Class<? extends IErrorDialog> dialogClass, ErrorReport errorReport)
@@ -102,7 +102,7 @@ public abstract class ErrorDialogFactory
 	/**
 	 * {@link IErrorDialog} implementations that are registerd for re-use
 	 * by having called {@link #addDialog(IErrorDialog)} can unregister
-	 * themselfs by calling theis method 
+	 * themselfs by calling theis method
 	 * @param errorDialog The error dialog to remove from registry
 	 */
 	public static void removeDialog(IErrorDialog errorDialog)

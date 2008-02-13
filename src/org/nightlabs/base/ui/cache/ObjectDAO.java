@@ -15,8 +15,8 @@ import org.nightlabs.util.CollectionUtil;
  * This derivation of an ObjectDAO uses the {@link CacheRegistry}
  * instead and is intended to be used for non JDO objects.
  * <p>
- * Inherit this class with a key class and an object class 
- * as generic parameters to provide an accessor object for 
+ * Inherit this class with a key class and an object class
+ * as generic parameters to provide an accessor object for
  * this kind of object.
  * 
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
@@ -37,7 +37,7 @@ public abstract class ObjectDAO<KeyType, ObjectType> {
 	}
 
 	/**
-	 * Retrieve an object when not found in the cache. 
+	 * Retrieve an object when not found in the cache.
 	 * This method will be called by {@link #getObjects(String, List, IProgressMonitor)
 	 * for all objects that are not already in the cache.
 	 * <p>
@@ -64,7 +64,7 @@ public abstract class ObjectDAO<KeyType, ObjectType> {
 	}
 	
 	/**
-	 * Retrieve objects not found in the cache. 
+	 * Retrieve objects not found in the cache.
 	 * This method will be called by
 	 * {@link #getObjects(String, List, IProgressMonitor)
 	 * for all objects that are not already in the cache.
@@ -80,7 +80,7 @@ public abstract class ObjectDAO<KeyType, ObjectType> {
 
 	/**
 	 * Get an object from the cache.
-	 * Object not found in the cache will be retrieved by calling 
+	 * Object not found in the cache will be retrieved by calling
 	 * {@link #retrieveObject(Object, IProgressMonitor).
 	 * 
 	 * 
@@ -91,7 +91,7 @@ public abstract class ObjectDAO<KeyType, ObjectType> {
 	 * @return All requested and existing objects.
 	 * @throws Exception in case of an error
 	 */
-	@SuppressWarnings("unchecked") 
+	@SuppressWarnings("unchecked")
 	public synchronized ObjectType getObject(String scope, KeyType key, IProgressMonitor monitor)
 	{
 		try {
@@ -108,7 +108,7 @@ public abstract class ObjectDAO<KeyType, ObjectType> {
 	
 	/**
 	 * Get objects from the cache.
-	 * Objects not found in the cache will be retrieved by calling 
+	 * Objects not found in the cache will be retrieved by calling
 	 * {@link #retrieveObjects(List, IProgressMonitor).
 	 * 
 	 * @param scope The cache scope to use
@@ -118,7 +118,7 @@ public abstract class ObjectDAO<KeyType, ObjectType> {
 	 * @return All requested and existing objects.
 	 * @throws Exception in case of an error
 	 */
-	@SuppressWarnings("unchecked") 
+	@SuppressWarnings("unchecked")
 	public synchronized List<ObjectType> getObjects(String scope, List<KeyType> keys, IProgressMonitor monitor)
 	{
 		try	{
@@ -165,7 +165,7 @@ public abstract class ObjectDAO<KeyType, ObjectType> {
 
 	/**
 	 * Get objects from the cache.
-	 * Objects not found in the cache will be retrieved by calling 
+	 * Objects not found in the cache will be retrieved by calling
 	 * {@link #retrieveObjects(List, IProgressMonitor).
 	 * <p>
 	 * This is a convenience method that calls
@@ -182,10 +182,10 @@ public abstract class ObjectDAO<KeyType, ObjectType> {
 
 	/**
 	 * Get objects from the cache.
-	 * Objects not found in the cache will be retrieved by calling 
+	 * Objects not found in the cache will be retrieved by calling
 	 * {@link #retrieveObjects(List, IProgressMonitor).
 	 * <p>
-	 * This is a convenience method that calls 
+	 * This is a convenience method that calls
 	 * {@link #getObjects(String, List, IProgressMonitor)
 	 * 
 	 * @param scope The cache scope to use
@@ -199,16 +199,16 @@ public abstract class ObjectDAO<KeyType, ObjectType> {
 	{
 		return getObjects(
 				scope,
-				CollectionUtil.array2ArrayList(keys), 
+				CollectionUtil.array2ArrayList(keys),
 				monitor
 			);
-	}	
+	}
 	
 	/**
 	 * Get the cache instance used by this ObjecDAO.
 	 * @return The cache instance used by this ObjecDAO.
 	 */
-	protected ICache getCache() 
+	protected ICache getCache()
 	{
 		return cache;
 	}

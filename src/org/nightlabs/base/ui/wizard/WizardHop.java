@@ -42,9 +42,9 @@ import org.eclipse.jface.wizard.IWizardPage;
  * class implementing {@link org.eclipse.jface.wizard.IWizard} correctly), but it's
  * recommended to use {@link org.nightlabs.base.ui.wizard.IDynamicPathWizard} (or its
  * default implementation {@link org.nightlabs.base.ui.wizard.DynamicPathWizard}).
- * Only if the WizardHop is created detached from a Wizard a 
- * IDynamicPathWizard has to be used in combination with 
- * hookWizard/unhookWizard methods. 
+ * Only if the WizardHop is created detached from a Wizard a
+ * IDynamicPathWizard has to be used in combination with
+ * hookWizard/unhookWizard methods.
  * </p>
  * It is possible to combine hops with normal pages. The entry page of each top-level
  * hop must be registered in the <tt>Wizard</tt> either as static page or a dynamic
@@ -69,8 +69,8 @@ public class WizardHop implements IWizardHop
 	/**
 	 * If you use this constructor, you must call {@link #setEntryPage(IWizardHopPage)}
 	 * before it is usable. It's recommended to create an instance of this class
-	 * in the constructor of the entry page of this <tt>WizardHop</tt> with 
-	 * the constructor {@link #WizardHop(IWizardHopPage)}. 
+	 * in the constructor of the entry page of this <tt>WizardHop</tt> with
+	 * the constructor {@link #WizardHop(IWizardHopPage)}.
 	 */
 	protected WizardHop()
 	{
@@ -245,13 +245,13 @@ public class WizardHop implements IWizardHop
 //		if (currentPage != entryPage) {
 //			int currIdx = hopPages.indexOf(currentPage);
 //			int previousIdx = -1;
-//	
+//
 //			if (currIdx == 0)
 //				return entryPage;
-//	
+//
 //			if (currIdx > 0)
 //				previousIdx = currIdx - 1;
-//	
+//
 //			if (previousIdx >= 0)
 //				return (IWizardPage) hopPages.get(previousIdx);
 //		}
@@ -337,7 +337,7 @@ public class WizardHop implements IWizardHop
 	}
 	/**
 	 * @see IWizardHop#unhookWizard(IDynamicPathWizard)
-	 * @deprecated Hook a WizardHop into a wizard 
+	 * @deprecated Hook a WizardHop into a wizard
 	 */
 	@Deprecated
 	public void unhookWizard(IDynamicPathWizard wizard) {

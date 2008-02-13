@@ -30,7 +30,7 @@ package org.nightlabs.base.ui.celleditor;
  * @author Daniel.Mazurek <at> NightLabs <dot> de
  *
  */
-public interface IReadOnlyCellEditor 
+public interface IReadOnlyCellEditor
 {
 	void setReadOnly(boolean readOnly);
 	boolean isReadOnly();

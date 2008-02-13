@@ -47,7 +47,7 @@ public class CompositeSelectionEvent {
 	}
 	public void setSource(SelectableComposite source) {
 		this.source = source;
-	}	
+	}
 	public int getStateMask() {
 		return stateMask;
 	}

@@ -51,7 +51,7 @@ public class FileEditorInputFactory implements IElementFactory {
 			String fileName = memento.getString(FILENAME_KEY);
 			return (IAdaptable)constructor.newInstance(new Object[] {new File(fileName)});
 			
-		} catch (Throwable t) {			
+		} catch (Throwable t) {
 			t.printStackTrace();
 			
 			// fallback to FileEditorInput

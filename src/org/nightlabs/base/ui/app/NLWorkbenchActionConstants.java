@@ -5,8 +5,8 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
-public interface NLWorkbenchActionConstants 
-extends IWorkbenchActionConstants 
+public interface NLWorkbenchActionConstants
+extends IWorkbenchActionConstants
 {
 	public static final String M_RECENT_FILES = MENU_PREFIX + "recentFiles"; //$NON-NLS-1$
 	

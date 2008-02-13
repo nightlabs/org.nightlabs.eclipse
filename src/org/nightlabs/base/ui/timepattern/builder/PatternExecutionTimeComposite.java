@@ -37,8 +37,8 @@ public class PatternExecutionTimeComposite extends XComposite {
 			);
 	}
 
-	public void configurePattern(TimePattern timePattern) 
-	throws TimePatternFormatException 
+	public void configurePattern(TimePattern timePattern)
+	throws TimePatternFormatException
 	{
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(startTimeEdit.getDate());

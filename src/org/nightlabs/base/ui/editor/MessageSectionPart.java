@@ -39,7 +39,7 @@ import org.nightlabs.base.ui.message.IMessageDisplayer;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
-public class MessageSectionPart 
+public class MessageSectionPart
 extends RestorableSectionPart
 implements IMessageDisplayer
 {
@@ -55,8 +55,8 @@ implements IMessageDisplayer
 		section.setLayout(new GridLayout());
 		section.setLayoutData(new GridData(GridData.FILL_BOTH));
 		container = EntityEditorUtil.createCompositeClient(toolkit, section, 1);
-		((GridLayout)container.getLayout()).numColumns = 1;		
-		container.setLayoutData(new GridData(GridData.FILL_BOTH));		
+		((GridLayout)container.getLayout()).numColumns = 1;
+		container.setLayoutData(new GridData(GridData.FILL_BOTH));
 	}
 
 	private Composite container;

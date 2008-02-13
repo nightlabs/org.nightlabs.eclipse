@@ -38,7 +38,7 @@ import org.eclipse.ui.IWorkbenchPart;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
-public abstract class WorkbenchPartSelectionAction 
+public abstract class WorkbenchPartSelectionAction
 extends WorkbenchPartAction
 implements ISelectionAction
 {
@@ -81,7 +81,7 @@ implements ISelectionAction
 	/* (non-Javadoc)
 	 * @see org.nightlabs.base.ui.action.ISelectionAction#getSelectedObjects()
 	 */
-	public List getSelectedObjects() 
+	public List getSelectedObjects()
 	{
 		if (!(getSelection() instanceof IStructuredSelection))
 			return Collections.EMPTY_LIST;
@@ -91,7 +91,7 @@ implements ISelectionAction
 	/* (non-Javadoc)
 	 * @see org.nightlabs.base.ui.action.ISelectionAction#getSelection()
 	 */
-	public ISelection getSelection() 
+	public ISelection getSelection()
 	{
 		if (selection == null)
 			selection = new StructuredSelection(Collections.EMPTY_LIST);
@@ -100,5 +100,5 @@ implements ISelectionAction
 
 	public void setSelection(ISelection selection) {
 		this.selection = selection;
-	}	
+	}
 }

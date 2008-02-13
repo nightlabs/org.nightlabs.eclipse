@@ -33,8 +33,6 @@ import org.eclipse.jface.viewers.ColumnLayoutData;
 import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.TableLayout;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Table;
@@ -49,7 +47,7 @@ import org.eclipse.swt.widgets.Tree;
  * @author marco schulze - marco at nightlabs dot de
  */
 public class WeightedTableLayout
-extends TableLayout 
+extends TableLayout
 {
 	private int[] weights;
 	private int[] fixedWidths;
@@ -57,7 +55,7 @@ extends TableLayout
 	/**
 	 * This constructor calls {@link #WeightedTableLayout(int[], int[]) } with <code>fixedWidths == null</code>
 	 */
-	public WeightedTableLayout(int[] weights) 
+	public WeightedTableLayout(int[] weights)
 	{
 		this(weights, null);
 	}
@@ -69,9 +67,9 @@ extends TableLayout
 	 * @param fixedWidths Each column that is represented with a fixedWidth >= 0 is excluded from variable-width-calculation
 	 *		and always has the same width (useful for image-only columns).
 	 */
-	public WeightedTableLayout(int[] weights, int[] fixedWidths) 
+	public WeightedTableLayout(int[] weights, int[] fixedWidths)
 	{
-		if (weights != null) 
+		if (weights != null)
 			this.weights = weights;
 		else
 			this.weights = new int[0];
@@ -125,9 +123,9 @@ extends TableLayout
 	}
 
 	
-//	private boolean firstTime = true;	
+//	private boolean firstTime = true;
 	@Override
-	public void layout(Composite c, boolean flush) 
+	public void layout(Composite c, boolean flush)
 	{
 //		if (!firstTime) {
 //			return;
@@ -143,7 +141,7 @@ extends TableLayout
 
 		int width = c.getBounds().width;
 		ScrollBar sb = c.getVerticalBar();
-		if(sb.isEnabled() && sb.isVisible()) 
+		if(sb.isEnabled() && sb.isVisible())
 			width -= sb.getSize().x;
 //			width += sb.getSize().x;
 		

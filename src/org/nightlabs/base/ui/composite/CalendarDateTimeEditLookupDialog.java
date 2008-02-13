@@ -30,18 +30,18 @@ import org.vafada.swtcalendar.SWTCalendarListener;
  */
 public class CalendarDateTimeEditLookupDialog
 extends Dialog
-{	
+{
 	private SWTCalendar cal;
 	private DateTimeEdit dateTimeEdit;
 	private Calendar calendar;
 	
-	@SuppressWarnings("unused") 
+	@SuppressWarnings("unused")
 	private Spinner hour = null;
-	@SuppressWarnings("unused") 
+	@SuppressWarnings("unused")
 	private Spinner minute = null;
-	@SuppressWarnings("unused") 
+	@SuppressWarnings("unused")
 	private Spinner second = null;
-	@SuppressWarnings("unused") 
+	@SuppressWarnings("unused")
 	private Spinner milliSec = null;
 	
 	public CalendarDateTimeEditLookupDialog(Shell parentShell, DateTimeEdit dateTimeEdit)
@@ -130,10 +130,10 @@ extends Dialog
 		return page;
 	}
 		
-	private SWTCalendarListener swtCalendarListener = new SWTCalendarListener(){	
+	private SWTCalendarListener swtCalendarListener = new SWTCalendarListener(){
 		public void dateChanged(SWTCalendarEvent evt) {
 			calendar = evt.getCalendar();
-		}	
+		}
 	};
 	
 	protected Spinner createSpinner(Composite parent, int field)
@@ -146,7 +146,7 @@ extends Dialog
 		calendarField2Spinner.put(field, spinner);
 		spinner.addSelectionListener(fieldChangedListener);
 		return spinner;
-	}	
+	}
 	
 	protected int getCalendarValue(int field)
 	{
@@ -157,7 +157,7 @@ extends Dialog
 			++val;
 
 		return val;
-	}	
+	}
 	
 	private SelectionListener fieldChangedListener = new SelectionAdapter() {
 		@Override
@@ -192,7 +192,7 @@ extends Dialog
 	protected int getCalendarFieldBySpinner(Spinner spinner)
 	{
 		return ((Integer)spinner.getData()).intValue();
-	}	
+	}
 	
 	public Date getDate() {
 		return calendar.getTime();

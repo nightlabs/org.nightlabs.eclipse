@@ -54,15 +54,15 @@ import org.nightlabs.base.ui.tree.TreeContentProvider;
 import org.nightlabs.base.ui.util.RCPUtil;
 
 /**
- * Displays a tree of {@link IEntityTreeCategory}s regsitered to 
+ * Displays a tree of {@link IEntityTreeCategory}s regsitered to
  * a given viewID and and opens the registered
  * editor for them upon user request.
  * 
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  *
  */
-public class EntityTree 
-extends AbstractTreeComposite 
+public class EntityTree
+extends AbstractTreeComposite
 implements IOpenListener, DisposeListener, IEntityTreeCategoryContentConsumer
 {
 	/**
@@ -82,7 +82,7 @@ implements IOpenListener, DisposeListener, IEntityTreeCategoryContentConsumer
 	private IEntityTreeCategoryBinding[] categoryBindings;
 	
 	/**
-	 * This map is used to find out wich tree object belongs 
+	 * This map is used to find out wich tree object belongs
 	 * to wich category for asking the category for labels
 	 * and icons.
 	 */
@@ -140,7 +140,7 @@ implements IOpenListener, DisposeListener, IEntityTreeCategoryContentConsumer
 	 * will use data obtained by calling methods defined in
 	 * {@link IEntityTreeCategory}.
 	 */
-	protected class EntityTreeContentProvider extends TreeContentProvider 
+	protected class EntityTreeContentProvider extends TreeContentProvider
 	{
 		private Map<IEntityTreeCategoryBinding, ITreeContentProvider> contentProviders = new HashMap<IEntityTreeCategoryBinding, ITreeContentProvider>();
 
@@ -182,7 +182,7 @@ implements IOpenListener, DisposeListener, IEntityTreeCategoryContentConsumer
 			if (parentElement instanceof IEntityTreeCategoryBinding)
 				parentBinding = (IEntityTreeCategoryBinding)parentElement;
 			// or it is somewhere up the tree
-			else 
+			else
 				parentBinding = getChildBinding(parentElement);
 			Object[] children = null;
 			ITreeContentProvider contentProvider = getContentProvider(parentBinding);
@@ -191,7 +191,7 @@ implements IOpenListener, DisposeListener, IEntityTreeCategoryContentConsumer
 				if (parentElement instanceof IEntityTreeCategoryBinding)
 					children = contentProvider.getElements(parentElement);
 				// if we're deeper check the getChildren method
-				else 
+				else
 					children = contentProvider.getChildren(parentElement);
 			
 			if (children != null)
@@ -208,7 +208,7 @@ implements IOpenListener, DisposeListener, IEntityTreeCategoryContentConsumer
 		public boolean hasChildren(Object element)
 		{
 			// if direct categoryBinding, baby, say yeah
-			if (element instanceof IEntityTreeCategoryBinding)				
+			if (element instanceof IEntityTreeCategoryBinding)
 				return true;
 			// else delegate
 			else {
@@ -220,7 +220,7 @@ implements IOpenListener, DisposeListener, IEntityTreeCategoryContentConsumer
 		
 		@Override
 		public Object getParent(Object element) {
-			// here as well delegate when not at top level 
+			// here as well delegate when not at top level
 			if (element instanceof IEntityTreeCategoryBinding)
 				return null;
 			ITreeContentProvider contentProvider = getContentProvider(getChildBinding(element));
@@ -244,18 +244,18 @@ implements IOpenListener, DisposeListener, IEntityTreeCategoryContentConsumer
 	 * will use data obtained by calling methods defined in
 	 * {@link IEntityTreeCategory}.
 	 */
-	protected class EntityTreeLabelProvider extends LabelProvider implements ITableLabelProvider 
+	protected class EntityTreeLabelProvider extends LabelProvider implements ITableLabelProvider
 	{
 		private Map<IEntityTreeCategoryBinding, ITableLabelProvider> labelProviders = new HashMap<IEntityTreeCategoryBinding, ITableLabelProvider>();
 		
 		private ITableLabelProvider getLabelProvider(IEntityTreeCategoryBinding binding) {
 			if (binding == null)
-				return null;			
+				return null;
 			if (labelProviders.containsKey(binding))
 				return labelProviders.get(binding);
 			ITableLabelProvider labelProvider = binding.createLabelProvider();
 			labelProviders.put(binding, labelProvider);
-			return labelProvider;			
+			return labelProvider;
 		}
 		
 		/* (non-Javadoc)
@@ -305,7 +305,7 @@ implements IOpenListener, DisposeListener, IEntityTreeCategoryContentConsumer
 			else {
 				ITableLabelProvider labelProvider = getLabelProvider(getChildBinding(element));
 				if(labelProvider != null)
-					return labelProvider.getColumnText(element, columnIdx);				
+					return labelProvider.getColumnText(element, columnIdx);
 				return super.getText(element);
 			}
 		}

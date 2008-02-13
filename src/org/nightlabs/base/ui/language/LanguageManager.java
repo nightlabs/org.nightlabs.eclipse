@@ -50,11 +50,11 @@ import org.nightlabs.language.LanguageCf;
 
 public class LanguageManager
 implements ILanguageManager
-{		
+{
 	public static final String LANGUAGE_CHANGED = "language changed"; //$NON-NLS-1$
 	
 	private static LanguageManager sharedInstance = null;
-	public static LanguageManager sharedInstance()  
+	public static LanguageManager sharedInstance()
 	{
 		if (sharedInstance == null)
 			sharedInstance = new LanguageManager();
@@ -82,10 +82,10 @@ implements ILanguageManager
 	}
 	
 	/**
-	 * @param locale The Locale to get the languageID from 
+	 * @param locale The Locale to get the languageID from
 	 * @return the languageID for the given java.util.Locale
 	 */
-	public static String getLanguageID(Locale locale) 
+	public static String getLanguageID(Locale locale)
 	{
 		if (locale == null)
 			throw new IllegalArgumentException("Param locale must not be null!"); //$NON-NLS-1$
@@ -101,7 +101,7 @@ implements ILanguageManager
 		return new Locale(languageID);
 	}
 
-	public LanguageManager() 
+	public LanguageManager()
 	{
 		super();
 		try {
@@ -120,7 +120,7 @@ implements ILanguageManager
 		}
 	}
 
-	protected LanguageCfMod langCfMod;	
+	protected LanguageCfMod langCfMod;
 		
 	/**
 	 * 
@@ -165,7 +165,7 @@ implements ILanguageManager
 		addLanguage(langCf);
 	}
 
-	protected Map<String, LanguageCf> languageID2LanguageCf = new HashMap<String, LanguageCf>();	
+	protected Map<String, LanguageCf> languageID2LanguageCf = new HashMap<String, LanguageCf>();
 
 	private Collection<LanguageCf> unmodifiableLanguages = null;
 	/**
@@ -241,7 +241,7 @@ implements ILanguageManager
 
 	/**
 	 * @param languageID
-	 * @return the Native Name of the Language 
+	 * @return the Native Name of the Language
 	 */
 	public static String getNativeLanguageName(String languageID) {
 		Locale l = getLocale(languageID);
@@ -272,7 +272,7 @@ implements ILanguageManager
 	 * are already loaded.
 	 */
 	@Deprecated
-	public void setCurrentLanguage(LanguageCf newCurrentLanguage) 
+	public void setCurrentLanguage(LanguageCf newCurrentLanguage)
 	{
 		LanguageCf oldLanguage = currentLanguage;
 		this.currentLanguage = newCurrentLanguage;
@@ -284,17 +284,17 @@ implements ILanguageManager
 	 * are already loaded.
 	 */
 	@Deprecated
-	public void setCurrentLanguageID(String newLanguageID) 
+	public void setCurrentLanguageID(String newLanguageID)
 	{
 		if (languageID2LanguageCf.containsKey(newLanguageID)) {
 			LanguageCf langCf = languageID2LanguageCf.get(newLanguageID);
 			setCurrentLanguage(langCf);
-		} 
+		}
 		else {
 			LanguageCf langCf = createLanguage(newLanguageID);
 			setCurrentLanguage(langCf);
 		}
-	}	
+	}
 	
 	protected PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	
@@ -314,23 +314,23 @@ implements ILanguageManager
 	}
 		
 //	/**
-//	 * 
+//	 *
 //	 * @param languageID the ID of the Language (e.g. en, de, us) (@see java.util.Locale.getLanguage())
 //	 * @return the flag of the country for the given Language
 //	 */
-//	public static Image getImage(String languageID) 
+//	public static Image getImage(String languageID)
 //	{
-//		ImageDescriptor desc = SharedImages.getImageDescriptor(languageID); 
+//		ImageDescriptor desc = SharedImages.getImageDescriptor(languageID);
 //		if (desc != null)
 //			return desc.createImage();
-//		
+//
 //		return null;
 //	}
 
 	/**
 	 * Calling this method will cause the config module to be marked as changed.
 	 *
-	 * @param languageCf The <tt>LanguageCf</tt> which has been changed. 
+	 * @param languageCf The <tt>LanguageCf</tt> which has been changed.
 	 */
 	public void makeDirty(LanguageCf languageCf)
 	{

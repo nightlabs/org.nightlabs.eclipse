@@ -27,7 +27,7 @@
 
 package org.nightlabs.base.ui.exceptionhandler;
 
-/** 
+/**
  * Helper class for displaying errors in <code>ErrorTable</code>s
  * 
  * @author Tobias Langner <!-- tobias[dot]langner[at]nightlabs[dot]de -->

@@ -31,15 +31,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.nightlabs.base.ui.resource.Messages;
 
-public class FloatFieldEditor 
-extends StringFieldEditor 
+public class FloatFieldEditor
+extends StringFieldEditor
 {
   private float minValidValue = 0;
   private float maxValidValue = Float.MAX_VALUE;
   private static final int DEFAULT_TEXT_LIMIT = 10;
   
   /**
-   * Creates a new float field editor 
+   * Creates a new float field editor
    */
   protected FloatFieldEditor() {
   }
@@ -160,5 +160,5 @@ extends StringFieldEditor
    */
   public double getFloatValue() throws NumberFormatException {
       return new Float(getStringValue()).floatValue();
-  }  
+  }
 }

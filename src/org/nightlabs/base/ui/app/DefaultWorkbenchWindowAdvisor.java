@@ -47,15 +47,15 @@ import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de, <p>
  *
  */
-public class DefaultWorkbenchWindowAdvisor 
-extends WorkbenchWindowAdvisor 
+public class DefaultWorkbenchWindowAdvisor
+extends WorkbenchWindowAdvisor
 {
 	private static final Logger logger = Logger.getLogger(DefaultWorkbenchWindowAdvisor.class);
 	
 	/**
 	 * @param configurer
 	 */
-	public DefaultWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) // , String applicationTitle) 
+	public DefaultWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) // , String applicationTitle)
 	{
 		super(configurer);
 //		this.applicationName = applicationTitle;
@@ -72,13 +72,13 @@ extends WorkbenchWindowAdvisor
 		menuBarItems.add(ActionBarItem.Perspectives);
 		menuBarItems.add(ActionBarItem.Views);
 		menuBarItems.add(ActionBarItem.Preferences);
-		menuBarItems.add(ActionBarItem.Close);		
+		menuBarItems.add(ActionBarItem.Close);
 		menuBarItems.add(ActionBarItem.CloseAll);
-		return new DefaultActionBuilder(configurer, menuBarItems, null);				
+		return new DefaultActionBuilder(configurer, menuBarItems, null);
 	}
 
 	@Override
-	public void preWindowOpen() 
+	public void preWindowOpen()
 	{
 		super.preWindowOpen();
 		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
@@ -89,7 +89,7 @@ extends WorkbenchWindowAdvisor
 		configurer.setShowCoolBar(true);
 		configurer.setShowPerspectiveBar(true);
 		configurer.setShowProgressIndicator(true);
-	}			
+	}
 
 	protected Point getScreenSize() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -112,6 +112,6 @@ extends WorkbenchWindowAdvisor
 			ContributionItemSetRegistry.sharedInstance().checkPerspectiveListenerAdded();
 		} catch (EPProcessorException e) {
 			logger.error("There occured an error getting the ContributionItemSetRegistry", e); //$NON-NLS-1$
-		}		
-	}	
+		}
+	}
 }

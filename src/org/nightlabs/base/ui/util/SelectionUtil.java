@@ -47,15 +47,15 @@ public class SelectionUtil
 	 * @return a StructuredSelection which contains only Objects from the given
 	 * selection of the given Class
 	 */
-	@SuppressWarnings("unchecked") 
-	public static StructuredSelection checkSelection(ISelection selection, Class clazz) 
+	@SuppressWarnings("unchecked")
+	public static StructuredSelection checkSelection(ISelection selection, Class clazz)
 	{
-		if (!selection.isEmpty() && selection instanceof StructuredSelection) 
+		if (!selection.isEmpty() && selection instanceof StructuredSelection)
 		{
 			List<Object> list = new ArrayList<Object>();
 			boolean containsOther = false;
 			StructuredSelection s = (StructuredSelection) selection;
-			for (Iterator it = s.iterator(); it.hasNext(); ) 
+			for (Iterator it = s.iterator(); it.hasNext(); )
 			{
 				Object o = it.next();
 				if (clazz.isAssignableFrom(o.getClass())) {
@@ -79,12 +79,12 @@ public class SelectionUtil
 	 * @return a List which contains only Objects which are assignable from
 	 * the given Class and were contained in the given list
 	 */
-	@SuppressWarnings("unchecked") 
-	public static List checkList(List l, Class clazz) 
+	@SuppressWarnings("unchecked")
+	public static List checkList(List l, Class clazz)
 	{
 		List<Object> list = new ArrayList<Object>();
-		boolean containsOther = false;		
-		for (Iterator it = list.iterator(); it.hasNext(); ) 
+		boolean containsOther = false;
+		for (Iterator it = list.iterator(); it.hasNext(); )
 		{
 			Object o = it.next();
 			if (clazz.isAssignableFrom(o.getClass())) {
@@ -96,7 +96,7 @@ public class SelectionUtil
 		if (!containsOther)
 			return l;
 		else
-			return list;				
+			return list;
 	}
 	
 }

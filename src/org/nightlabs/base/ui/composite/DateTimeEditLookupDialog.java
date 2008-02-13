@@ -28,19 +28,19 @@ public class DateTimeEditLookupDialog
 	private DateTimeEdit dateTimeEdit;
 	private Calendar calendar;
 
-	@SuppressWarnings("unused") 
+	@SuppressWarnings("unused")
 	private Spinner year = null;
 	private Spinner month = null;
-	@SuppressWarnings("unused") 
+	@SuppressWarnings("unused")
 	private Spinner day = null;
 
-	@SuppressWarnings("unused") 
+	@SuppressWarnings("unused")
 	private Spinner hour = null;
-	@SuppressWarnings("unused") 
+	@SuppressWarnings("unused")
 	private Spinner minute = null;
-	@SuppressWarnings("unused") 
+	@SuppressWarnings("unused")
 	private Spinner second = null;
-	@SuppressWarnings("unused") 
+	@SuppressWarnings("unused")
 	private Spinner milliSec = null;
 
 	private Map<Integer, Spinner> calendarField2Spinner = new HashMap<Integer, Spinner>();
@@ -138,7 +138,7 @@ public class DateTimeEditLookupDialog
 		super.initializeBounds();
 		getShell().pack();
 		Point mouse = Display.getDefault().getCursorLocation();
-		Rectangle r = getShell().getBounds(); 
+		Rectangle r = getShell().getBounds();
 		r.x = mouse.x;
 		r.y = mouse.y;
 		getShell().setBounds(r);

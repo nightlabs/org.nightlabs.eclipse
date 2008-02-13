@@ -3,7 +3,6 @@
  */
 package org.nightlabs.base.ui.action;
 
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -12,14 +11,14 @@ import org.eclipse.ui.actions.SelectionProviderAction;
 
 /**
  * This class represents an {@link Action} that listens to an {@link ISelectionProvider} and on each
- * {@link #selectionChanged(ISelection)} sets the enabled state according to 
+ * {@link #selectionChanged(ISelection)} sets the enabled state according to
  * {@link IUpdateActionOrContributionItem#calculateEnabled()}.
  * 
  * @author Marius Heinzmann [marius<at>NightLabs<dot>de]
  */
-public abstract class SelectionListenerAction 
-	extends SelectionProviderAction 
-	implements IUpdateActionOrContributionItem 
+public abstract class SelectionListenerAction
+	extends SelectionProviderAction
+	implements IUpdateActionOrContributionItem
 {
 	
 	protected ISelection selection;
@@ -38,11 +37,11 @@ public abstract class SelectionListenerAction
 	}
 
 	/**
-	 * Stores the selection from a selection event and sets the enabled state according to the 
+	 * Stores the selection from a selection event and sets the enabled state according to the
 	 * {@link IUpdateActionOrContributionItem#calculateEnabled()}. <br>
 	 * 
 	 * If you want to react to an {@link ISelection} or an {@link IStructuredSelection} you can override
-	 * this method and {@link #selectionChanged(IStructuredSelection)}, respectively. 
+	 * this method and {@link #selectionChanged(IStructuredSelection)}, respectively.
 	 * But remember to call this method first!
 	 */
 	@Override

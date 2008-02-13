@@ -36,8 +36,6 @@ import org.eclipse.jface.util.SafeRunnable;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.application.WorkbenchAdvisor;
-import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 import org.nightlabs.annotation.Implement;
 import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.exceptionhandler.ExceptionHandlerRegistry;
@@ -51,13 +49,13 @@ import org.nightlabs.util.IOUtil;
  * This is the basis for RCP applications based on the nightlabs base plugin.
  * <p>
  * In order to use this framework you have to do several things.<br>
- * First you'll have to extend this class and register your implementation 
+ * First you'll have to extend this class and register your implementation
  * to the <code>org.eclipse.core.runtime.applications</code> extension-point.
  * Doing so will tell Eclipse to run your application.
  * <p>
  * When implementing your application you will see, that you have to write two
- * methods. One is to provide a name for your application {@link #initApplicationName()}, 
- * and the other to return an implementation of {@link AbstractWorkbenchAdvisor} in 
+ * methods. One is to provide a name for your application {@link #initApplicationName()},
+ * and the other to return an implementation of {@link AbstractWorkbenchAdvisor} in
  * {@link #initWorkbenchAdvisor(Display)}
  * </p>
  * <p>
@@ -68,7 +66,7 @@ import org.nightlabs.util.IOUtil;
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  * @author Daniel Mazurek - Daniel.Mazurek[AT]NightLabs[DOT]de
  */
-public abstract class AbstractApplication 
+public abstract class AbstractApplication
 implements IApplication
 {
 	/**
@@ -85,7 +83,7 @@ implements IApplication
 //	 * This is used to choose the application folder when the application starts.
 //	 * After start the system property with this name will point to the applications root folder.
 //	 * <p>
-//	 * To initialize the application folder the system property can be set before the application 
+//	 * To initialize the application folder the system property can be set before the application
 //	 * starts. It might contain references to system environment variables in the following way:
 //	 * $ENV_NAME$, where ENV_NAME is the name of the environment variable.
 //	 */
@@ -104,10 +102,10 @@ implements IApplication
 	}
 
 	/**
-	 * Constructs a new Application and 
+	 * Constructs a new Application and
 	 * sets the static members {@link #sharedInstance} and {@link #applicationName}.
 	 */
-	public AbstractApplication() 
+	public AbstractApplication()
 	{
 		super();
 //		applicationName = initApplicationName();
@@ -116,7 +114,7 @@ implements IApplication
 
 //	private static String applicationName = "AbstractApplication"; //$NON-NLS-1$
 //	/**
-//	 * 
+//	 *
 //	 * @return the application name set by {@link #initApplicationName()}
 //	 */
 //	public static String getApplicationName() {
@@ -129,7 +127,7 @@ implements IApplication
 	
 	private int platformReturnCode = -1;
 
-	/** 
+	/**
 	 * returns the root directory, which is the .{applicationName} in the users home directory.
 	 * @return the root directory, which is the applicationName with an leading dot in the users home directory.
 	 */
@@ -153,7 +151,7 @@ implements IApplication
 			f.mkdirs();
 			rootDir = f.getAbsolutePath();
 
-//			File rootFile = null; 
+//			File rootFile = null;
 //			// check system property org.nightlabs.appfolder
 //			String initialFolderName = System.getProperty(APPLICATION_FOLDER_SYSTEM_PROPERTY_NAME);
 //			if (initialFolderName == null) {
@@ -230,15 +228,15 @@ implements IApplication
 
 	/**
 	 * Configures log4j with the file located in {@link #getConfigDir()}+"/log4j.properties"
-	 * @throws IOException If copying the config-file fails. 
+	 * @throws IOException If copying the config-file fails.
 	 */
-	protected void initializeLogging() 
+	protected void initializeLogging()
 	throws IOException
 	{
 		File logConfFile = new File(getConfigDir(), LOG4J_CONFIG_FILE);
 		if (!logConfFile.exists()){
 			// if not there copy
-			IOUtil.copyResource(AbstractApplication.class, LOG4J_CONFIG_FILE, logConfFile);		        
+			IOUtil.copyResource(AbstractApplication.class, LOG4J_CONFIG_FILE, logConfFile);
 		}
 		getLogDir(); // ensure the directory exists and the system-property is set
 
@@ -259,17 +257,17 @@ implements IApplication
 		org.apache.log4j.xml.DOMConfigurator.configure(logConfFile.toURL());
 		logger.info("Logging for \"" + System.getProperty("eclipse.product") + "\" started."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 //		logger.info(getApplicationName()+" started."); //$NON-NLS-1$
-	}	
+	}
 
 //	/**
 //	 * sets the System Property for the ApplicationName so that the
 //	 * log4j.properties can access this systemProperty
 //	 *
 //	 */
-//	protected static void setAppNameSystemProperty() 
+//	protected static void setAppNameSystemProperty()
 //	{
 //		try {
-//			System.setProperty(APPLICATION_SYSTEM_PROPERTY_NAME, getApplicationName());    	
+//			System.setProperty(APPLICATION_SYSTEM_PROPERTY_NAME, getApplicationName());
 //		} catch (SecurityException se) {
 //			System.out.println("System Property "+APPLICATION_SYSTEM_PROPERTY_NAME+" could not be set, to "+getApplicationName()+" because:"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 //			System.out.println("You dont have the permission to set a System Property"); //$NON-NLS-1$
@@ -282,10 +280,10 @@ implements IApplication
 //	/**
 //	 * Sets the system property for the applications root dir - the application folder.
 //	 */
-//	protected static void setAppFolderSystemProperty(String appFolder) 
+//	protected static void setAppFolderSystemProperty(String appFolder)
 //	{
 //		try {
-//			System.setProperty(APPLICATION_FOLDER_SYSTEM_PROPERTY_NAME, appFolder);    	
+//			System.setProperty(APPLICATION_FOLDER_SYSTEM_PROPERTY_NAME, appFolder);
 //		} catch (SecurityException se) {
 //			System.out.println("System Property "+APPLICATION_FOLDER_SYSTEM_PROPERTY_NAME+" could not be set, to "+appFolder+" because:"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 //			System.out.println("You dont have the permission to set a System Property"); //$NON-NLS-1$
@@ -323,18 +321,18 @@ implements IApplication
 	 * 
 	 * @see IApplication#start(IApplicationContext)
 	 */
-	@Implement	
+	@Implement
 	public Object start(IApplicationContext context) throws Exception {
 		try {
 			initExceptionHandling();
 			NLBasePlugin.getDefault().setApplication(this);
-			this.arguments = (String[]) context.getArguments().get(IApplicationContext.APPLICATION_ARGS); 
+			this.arguments = (String[]) context.getArguments().get(IApplicationContext.APPLICATION_ARGS);
 			
 			initializeLogging();
 			initConfig();
 			
 			try {
-				RemoveExtensionRegistry.sharedInstance().removeRegisteredExtensions();				
+				RemoveExtensionRegistry.sharedInstance().removeRegisteredExtensions();
 			} catch (Throwable t) {
 				logger.error("There occured an error while tyring to remove all registered extensions"); //$NON-NLS-1$
 			}
@@ -443,23 +441,23 @@ implements IApplication
 	 * 
 	 * @see AbstractWorkbenchAdvisor
 	 */
-	public abstract AbstractWorkbenchAdvisor initWorkbenchAdvisor(Display display);	
+	public abstract AbstractWorkbenchAdvisor initWorkbenchAdvisor(Display display);
 	
 	/**
 	 * Initializes the Config in the ConfigDir of the Application
-	 * @throws ConfigException If creating the Configs shared instance fails. 
+	 * @throws ConfigException If creating the Configs shared instance fails.
 	 */
-	protected void initConfig() 
+	protected void initConfig()
 	throws ConfigException
 	{
 		// initialize the Config
 		Config.createSharedInstance(new File(AbstractApplication.getConfigDir(), "config.xml"), true);		 //$NON-NLS-1$
-	}	
+	}
 
 //	/**
 //	 * Should return the application name for this application.
 //	 * This will be used to choose the application folder.
-//	 *  
+//	 *
 //	 * @return the name of the Application
 //	 */
 //	protected abstract String initApplicationName();

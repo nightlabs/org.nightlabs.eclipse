@@ -27,7 +27,6 @@
 package org.nightlabs.base.ui.custom;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.SWTException;
 import org.eclipse.swt.accessibility.ACC;
 import org.eclipse.swt.accessibility.AccessibleAdapter;
 import org.eclipse.swt.accessibility.AccessibleControlAdapter;
@@ -38,7 +37,6 @@ import org.eclipse.swt.accessibility.AccessibleTextEvent;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -59,22 +57,21 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TypedListener;
-import org.eclipse.swt.widgets.Widget;
 import org.nightlabs.base.ui.composite.XComposite;
 
 /**
  * A Custom Implementation of a ComboBox which is able not only to show Strings but also
- * {@link org.eclipse.swt.graphics.Image}s.  
+ * {@link org.eclipse.swt.graphics.Image}s.
  * 
  * This Composite and its implementation (greate parts are adopted) is created more less
  * like a {@link org.eclipse.swt.custom.CCombo} but
- * internally, it uses a {@link org.eclipse.swt.widgets.Table} instead of a 
+ * internally, it uses a {@link org.eclipse.swt.widgets.Table} instead of a
  * {@link org.eclipse.swt.widgets.List} for displaying the entries.
  * 
  * @author Daniel.Mazurek [AT] NightLabs [DOT] com
  * @author Marco Schulze - Marco at NightLabs dot de
  */
-public class XCombo 
+public class XCombo
 extends XComposite
 {
 	private Label imageLabel;
@@ -85,7 +82,7 @@ extends XComposite
 	private boolean hasFocus;
 	private Listener listener, filter;
 	private Color foreground, background;
-	private Font font;	
+	private Font font;
 	private Table table;
 
 	private static boolean isGtk()
@@ -100,7 +97,7 @@ extends XComposite
  * <p>
  * The style value is either one of the style constants defined in
  * class <code>SWT</code> which is applicable to instances of this
- * class, or must be built by <em>bitwise OR</em>'ing together 
+ * class, or must be built by <em>bitwise OR</em>'ing together
  * (that is, using the <code>int</code> "|" operator) two or more
  * of those <code>SWT</code> style constants. The class description
  * lists the style constants that are applicable to the class.
@@ -135,7 +132,7 @@ public XCombo (Composite parent, int style) {
 	text = new Text (this, textStyle);
 	// Workaround to avoid grey background if style == SWT.READ_ONLY; // TODO why this?! The native combos are grey, if this style is set.
 //	if (!isGtk()) { // added by Marco, because it doesn't look good in GTK.
-		if (isReadOnly())	
+		if (isReadOnly())
 			text.setBackground(getDefaultBackgroundColor());
 //	}
 
@@ -215,7 +212,7 @@ private Color getDefaultBackgroundColor() {
 }
 
 // Custom Method to which avoid the selecting of the text if the style == SWT.READ_ONLY
-private void textSelectAll()  
+private void textSelectAll()
 {
 	if (! isReadOnly())
 		text.selectAll ();
@@ -365,7 +362,7 @@ void arrowEvent (Event event) {
  * text field is editable, this has the effect of placing the
  * i-beam at the start of the text.
  * <p>
- * Note: To clear the selected items in the receiver's list, 
+ * Note: To clear the selected items in the receiver's list,
  * use <code>deselectAll()</code>.
  * </p>
  *
@@ -393,9 +390,9 @@ void comboEvent (Event event) {
 			shell.removeListener (SWT.Deactivate, listener);
 			Display display = getDisplay ();
 			display.removeFilter (SWT.FocusIn, filter);
-			popup = null;  
-			text = null;  
-			table = null;  
+			popup = null;
+			text = null;
+			table = null;
 			arrow = null;
 			break;
 		case SWT.Move:
@@ -422,13 +419,13 @@ void comboEvent (Event event) {
 //	Point arrowSize = arrow.computeSize (SWT.DEFAULT, SWT.DEFAULT, changed);
 //	Point listSize = list.computeSize (wHint, SWT.DEFAULT, changed);
 //	int borderWidth = getBorderWidth ();
-//	
+//
 //	height = Math.max (hHint, Math.max (textSize.y, arrowSize.y) + 2*borderWidth);
 //	width = Math.max (wHint, Math.max (textWidth + 2*spacer + arrowSize.x + 2*borderWidth, listSize.x));
 //	return new Point (width, height);
 //}
 @Override
-public Point computeSize (int wHint, int hHint, boolean changed) 
+public Point computeSize (int wHint, int hHint, boolean changed)
 {
 	checkWidget ();
 	int width = 0, height = 0;
@@ -447,7 +444,7 @@ public Point computeSize (int wHint, int hHint, boolean changed)
 		Image img = item.getImage();
 		maxImageSize.x = Math.max(maxImageSize.x, img == null ? 0 : img.getBounds().width);
 		maxImageSize.y = Math.max(maxImageSize.y, img == null ? 0 : img.getBounds().height);
-	}	
+	}
 	gc.dispose();
 	Point textSize = text.computeSize (SWT.DEFAULT, SWT.DEFAULT, changed);
 	Point arrowSize = arrow.computeSize (SWT.DEFAULT, SWT.DEFAULT, changed);
@@ -473,7 +470,7 @@ public Point computeSize (int wHint, int hHint, boolean changed)
 	return new Point (width, height);
 }
 
-void createPopup(TableItem[] items, int selectionIndex) {		
+void createPopup(TableItem[] items, int selectionIndex) {
 		// create shell and list
 		popup = new Shell (getShell (), SWT.NO_TRIM | SWT.ON_TOP);
 //		shellJustDeactivated = false;
@@ -496,7 +493,7 @@ void createPopup(TableItem[] items, int selectionIndex) {
 		if (selectionIndex != -1) table.setSelection (selectionIndex);
 }
 /**
- * Deselects the item at the given zero-relative index in the receiver's 
+ * Deselects the item at the given zero-relative index in the receiver's
  * table.  If the item at the index was already deselected, it remains
  * deselected. Indices that are out of range are ignored.
  *
@@ -555,7 +552,7 @@ void dropDown (boolean drop) {
 	itemCount = (itemCount == 0) ? visibleItemCount : Math.min(visibleItemCount, itemCount);
 	int itemHeight = table.getItemHeight () * itemCount;
 	Point listSize = table.computeSize (SWT.DEFAULT, itemHeight, false);
-	// Since the Scrollbar widths are always added (thanks to Windoof compatibility) we need to prune 
+	// Since the Scrollbar widths are always added (thanks to Windoof compatibility) we need to prune
 	// of the unnecessary space by ignoring the listSize.y and simply use the calculated height
 //	int scrollbarWidth = 0;
 //	ScrollBar bar;
@@ -583,9 +580,9 @@ void dropDown (boolean drop) {
 	table.setFocus ();
 }
 
-/* 
- * Return the Label immediately preceding the receiver in the z-order, 
- * or null if none. 
+/*
+ * Return the Label immediately preceding the receiver in the z-order,
+ * or null if none.
  */
 Label getAssociatedLabel () {
 	Control[] siblings = getParent ().getChildren ();
@@ -676,11 +673,11 @@ public int getItemHeight () {
 
 /**
  * Returns an array of <code>TableItem</code>s which are the items
- * in the receiver's table. 
+ * in the receiver's table.
  * <p>
  * Note: This is not the actual structure used by the receiver
  * to maintain its list of items, so modifying the array will
- * not affect the receiver. 
+ * not affect the receiver.
  * </p>
  *
  * @return the items in the receiver's table
@@ -746,7 +743,7 @@ public int getSelectionIndex () {
 public int getStyle () {
 	int style = super.getStyle ();
 	style &= ~SWT.READ_ONLY;
-	if (!text.getEditable()) style |= SWT.READ_ONLY; 
+	if (!text.getEditable()) style |= SWT.READ_ONLY;
 	return style;
 }
 
@@ -823,7 +820,7 @@ void handleFocus (int type) {
 		case SWT.FocusIn: {
 			if (hasFocus) return;
 //			if (getEditable ()) text.selectAll ();
-			if (getEditable ()) textSelectAll();			
+			if (getEditable ()) textSelectAll();
 			hasFocus = true;
 //			Shell shell = getShell ();
 //			shell.removeListener (SWT.Deactivate, listener);
@@ -853,7 +850,7 @@ void handleFocus (int type) {
 
 /**
  * Searches the receiver's table starting at the first item
- * (index 0) until an item is found that is equal to the 
+ * (index 0) until an item is found that is equal to the
  * argument, and returns the index of that item. If no item
  * is found, returns -1.
  *
@@ -875,7 +872,7 @@ public int indexOf (TableItem item) {
 }
 
 /**
- * Searches the receiver's table starting at the given, 
+ * Searches the receiver's table starting at the given,
  * zero-relative index until an item is found that is equal
  * to the argument, and returns the index of that item. If
  * no item is found or the starting index is out of range,
@@ -1019,7 +1016,7 @@ public boolean isFocusControl () {
 	checkWidget();
 	if (text.isFocusControl () || arrow.isFocusControl () || table.isFocusControl () || popup.isFocusControl ()) {
 		return true;
-	} 
+	}
 	return super.isFocusControl ();
 }
 
@@ -1072,7 +1069,7 @@ void listEvent (Event event) {
 			imageLabel.setImage(tableItem.getImage());
 			text.setText (tableItem.getText());
 //			text.selectAll ();
-			textSelectAll();			
+			textSelectAll();
 			table.setSelection (index);
 			Event e = new Event ();
 			e.time = event.time;
@@ -1106,7 +1103,7 @@ void listEvent (Event event) {
 			event.detail = e.detail;
 			break;
 		}
-		case SWT.KeyUp: {		
+		case SWT.KeyUp: {
 			Event e = new Event ();
 			e.time = event.time;
 			e.character = event.character;
@@ -1116,7 +1113,7 @@ void listEvent (Event event) {
 			break;
 		}
 		case SWT.KeyDown: {
-			if (event.character == SWT.ESC) { 
+			if (event.character == SWT.ESC) {
 				// Escape key cancels popup list
 				dropDown (false);
 			}
@@ -1212,7 +1209,7 @@ public void remove (int index) {
 
 /**
  * Removes the items from the receiver's table which are
- * between the given zero-relative start and end 
+ * between the given zero-relative start and end
  * indices (inclusive).
  *
  * @param start the start of the range
@@ -1233,7 +1230,7 @@ public void remove (int start, int end) {
 
 /**
  * Searches the receiver's table starting at the first item
- * until an item is found that text is equal to the argument, 
+ * until an item is found that text is equal to the argument,
  * and removes that item from the list.
  *
  * @param string the item to remove
@@ -1253,28 +1250,28 @@ public void remove (String string) {
 	table.remove (getTableItemIndex(string));
 }
 
-protected TableItem getTableItem(String text) 
+protected TableItem getTableItem(String text)
 {
 	int itemCount = table.getItemCount();
-	for (int i=0; i<itemCount-1; i++) 
+	for (int i=0; i<itemCount-1; i++)
 	{
 		TableItem item = table.getItem(i);
 		if (item.getText().equals(text))
 			return item;
 	}
-	return null;	
+	return null;
 }
 
-protected int getTableItemIndex(String text) 
+protected int getTableItemIndex(String text)
 {
 	int itemCount = table.getItemCount();
-	for (int i=0; i<itemCount-1; i++) 
+	for (int i=0; i<itemCount-1; i++)
 	{
 		TableItem item = table.getItem(i);
 		if (item.getText().equals(text))
 			return i;
 	}
-	return -1;	
+	return -1;
 }
 
 /**
@@ -1313,7 +1310,7 @@ public void removeAll () {
 public void removeModifyListener (ModifyListener listener) {
 	checkWidget();
 	if (listener == null) SWT.error (SWT.ERROR_NULL_ARGUMENT);
-	removeListener(SWT.Modify, listener);	
+	removeListener(SWT.Modify, listener);
 }
 
 /**
@@ -1337,11 +1334,11 @@ public void removeSelectionListener (SelectionListener listener) {
 	checkWidget();
 	if (listener == null) SWT.error (SWT.ERROR_NULL_ARGUMENT);
 	removeListener(SWT.Selection, listener);
-	removeListener(SWT.DefaultSelection,listener);	
+	removeListener(SWT.DefaultSelection,listener);
 }
 
 /**
- * Selects the item at the given zero-relative index in the receiver's 
+ * Selects the item at the given zero-relative index in the receiver's
  * table.  If the item at the index was already selected, it remains
  * selected. Indices that are out of range are ignored.
  *
@@ -1491,7 +1488,7 @@ public void setItem (int index, Image image, String text) {
  * Sets the selection in the receiver's text field to the
  * range specified by the argument whose x coordinate is the
  * start of the selection and whose y coordinate is the end
- * of the selection. 
+ * of the selection.
  *
  * @param selection a point representing the new selection start and end
  *
@@ -1516,7 +1513,7 @@ public void setSelection (Point selection) {
  * Note: The text field in a <code>Combo</code> is typically
  * only capable of displaying a single line of text. Thus,
  * setting the text to a string containing line breaks or
- * other special characters will probably cause it to 
+ * other special characters will probably cause it to
  * display incorrectly.
  * </p>
  *
@@ -1536,8 +1533,8 @@ public void setText (String string) {
 //	int index = table.indexOf (getTableItem(string));
 	TableItem tableItem = getTableItem(string);
 	int index = -1;
-	if (tableItem != null)		
-		index = table.indexOf (getTableItem(string));	
+	if (tableItem != null)
+		index = table.indexOf (getTableItem(string));
 	if (index == -1) {
 		table.deselectAll ();
 		text.setText (string);
@@ -1545,7 +1542,7 @@ public void setText (String string) {
 	}
 	text.setText (string);
 //	text.selectAll ();
-	textSelectAll();	
+	textSelectAll();
 	table.setSelection (index);
 	table.showSelection ();
 	internalLayout(false);
@@ -1575,7 +1572,7 @@ public void setToolTipText (String string) {
 	checkWidget();
 	super.setToolTipText(string);
 	arrow.setToolTipText (string);
-	text.setToolTipText (string);		
+	text.setToolTipText (string);
 }
 
 @Override
@@ -1640,7 +1637,7 @@ void textEvent (Event event) {
 				if ((event.stateMask & SWT.ALT) != 0) {
 					boolean dropped = isDropped ();
 //					text.selectAll ();
-					textSelectAll();					
+					textSelectAll();
 					if (!dropped) setFocus ();
 					dropDown (!dropped);
 					break;
@@ -1663,7 +1660,7 @@ void textEvent (Event event) {
 				if (isDisposed ()) break;
 			}
 			
-			// Further work : Need to add support for incremental search in 
+			// Further work : Need to add support for incremental search in
 			// pop up list as characters typed in text widget
 						
 			Event e = new Event ();
@@ -1695,7 +1692,7 @@ void textEvent (Event event) {
 			if (text.getEditable ()) return;
 			boolean dropped = isDropped ();
 //			text.selectAll ();
-			textSelectAll();			
+			textSelectAll();
 			if (!dropped) setFocus ();
 			dropDown (!dropped);
 			break;
@@ -1704,10 +1701,10 @@ void textEvent (Event event) {
 			if (event.button != 1) return;
 			if (text.getEditable ()) return;
 //			text.selectAll ();
-			textSelectAll();			
+			textSelectAll();
 			break;
 		}
-		case SWT.Traverse: {		
+		case SWT.Traverse: {
 			switch (event.detail) {
 				case SWT.TRAVERSE_RETURN:
 				case SWT.TRAVERSE_ARROW_PREVIOUS:

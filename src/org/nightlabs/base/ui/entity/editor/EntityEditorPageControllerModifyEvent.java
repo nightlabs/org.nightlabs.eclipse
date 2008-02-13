@@ -32,8 +32,8 @@ public class EntityEditorPageControllerModifyEvent extends EventObject {
 	 * @param oldObject The old object.
 	 * @param newObject The new object.
 	 */
-	public EntityEditorPageControllerModifyEvent(Object source, Object oldObject, Object newObject, 
-			boolean resetDirtyState) 
+	public EntityEditorPageControllerModifyEvent(Object source, Object oldObject, Object newObject,
+			boolean resetDirtyState)
 	{
 		super(source);
 		this.oldObject = oldObject;
@@ -56,7 +56,7 @@ public class EntityEditorPageControllerModifyEvent extends EventObject {
 	}
 	
 	/**
-	 * @return whether or not the listeners should reset their dirty state while reflecting 
+	 * @return whether or not the listeners should reset their dirty state while reflecting
 	 * 	the model change.
 	 */
 	public boolean isResetDirtyState() {

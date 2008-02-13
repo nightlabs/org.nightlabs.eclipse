@@ -33,18 +33,15 @@ import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
-import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.composite.XComposite.LayoutMode;
 
 /**
  * WizardHop for the reusage of MultiPageFormEditor {@link FormPage}s.
- * You can use this WizardHop like an {@link FormEditor} and add 
+ * You can use this WizardHop like an {@link FormEditor} and add
  * {@link FormPage}s to it. Where the FormEditor creates tabs for the
  * different {@link FormPage}s this hop will add a new {@link WizardHopPage}s
  * with a {@link ScrolledForm} as parent component.
@@ -57,7 +54,7 @@ import org.nightlabs.base.ui.composite.XComposite.LayoutMode;
  * via {@link #getEditor()}.
  * <p>
  * The implementation of your {@link FormPage}s can be shared for FormEditors
- * and Wizards, they simply have to implement 
+ * and Wizards, they simply have to implement
  * {@link FormPage#createFormContent(IManagedForm)}
  * 
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
@@ -69,7 +66,7 @@ public class FormPageWizardHop extends WizardHop {
 	 */
 	private static class Editor extends FormEditor {
 
-		private FormToolkit _toolkit; 
+		private FormToolkit _toolkit;
 		
 		@Override
 		public FormToolkit getToolkit() {
@@ -141,7 +138,7 @@ public class FormPageWizardHop extends WizardHop {
 	}
 	
 	/**
-	 * Creates a new {@link FormPageWizardHop}. 
+	 * Creates a new {@link FormPageWizardHop}.
 	 * Note that the hop is not ready before at least one call
 	 * to {@link #addFormPage(FormPage)} was done.
 	 */
@@ -152,7 +149,7 @@ public class FormPageWizardHop extends WizardHop {
 	/**
 	 * You can create a {@link FormPageWizardHop} with an other
 	 * entry page.
-	 * <p> 
+	 * <p>
 	 * Note that you also might add other pages to the hop by
 	 * {@link #addHopPage(IWizardHopPage)}.
 	 * 
@@ -163,13 +160,13 @@ public class FormPageWizardHop extends WizardHop {
 	}
 
 	/**
-	 * Adds a new {@link WizardHopPage} that will have 
+	 * Adds a new {@link WizardHopPage} that will have
 	 * the contents created by the given {@link FormPage}.
 	 * <p>
-	 * The first {@link FormPage} added here will be the 
+	 * The first {@link FormPage} added here will be the
 	 * entry page of the wizard hop and can be referenced
 	 * by {@link WizardHop#getEntryPage()}.
-	 *  
+	 * 
 	 * @param formPage The {@link FormPage} to add a {@link WizardHopPage} for.
 	 */
 	public void addFormPage(FormPage formPage) {

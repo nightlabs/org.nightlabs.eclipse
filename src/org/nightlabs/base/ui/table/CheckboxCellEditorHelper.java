@@ -22,7 +22,7 @@ public class CheckboxCellEditorHelper {
 	 * 
 	 * @param cellModifier The ICellModifier for the CellEditor to provide the value
 	 * @param element The current element
-	 * @param property The property the cellModifier should return the value from 
+	 * @param property The property the cellModifier should return the value from
 	 */
 	public static Image getCellEditorImage(ICellModifier cellModifier, Object element, String property) {
 		Boolean value = (Boolean)cellModifier.getValue(element, property);
@@ -37,7 +37,7 @@ public class CheckboxCellEditorHelper {
 	 * @return an checked checkbox image if value if true and an unchecked checkbox image if false
 	 * 
 	 */
-	public static Image getCellEditorImage(boolean value, boolean disabled) 
+	public static Image getCellEditorImage(boolean value, boolean disabled)
 	{
 		Image image = null;
 		if (value)

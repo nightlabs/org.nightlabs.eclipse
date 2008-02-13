@@ -85,7 +85,7 @@ public abstract class ComboContributionItem extends XContributionItem {
 	/**
 	 * Creates the actual Control of this contribution item
 	 */
-	protected Control createControl(Composite parent) 
+	protected Control createControl(Composite parent)
 	{
 //		wrapper = new XComposite(parent, SWT.NONE, XComposite.LAYOUT_MODE_TIGHT_WRAPPER, XComposite.LAYOUT_DATA_MODE_NONE);
 //		wrapper.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -123,7 +123,7 @@ public abstract class ComboContributionItem extends XContributionItem {
 		ToolItem toolitem = new ToolItem(parent, SWT.SEPARATOR, index);
 		Control control = createControl(parent);
 		toolitem.setWidth(100);
-		toolitem.setControl(control);	
+		toolitem.setControl(control);
 	}
 	
 	/**
@@ -140,10 +140,10 @@ public abstract class ComboContributionItem extends XContributionItem {
 	public Object getSelectedItem() {
 		if (combo == null)
 			return null;
-		else 
+		else
 			if (combo.getSelectionIndex() >= 0 && combo.getSelectionIndex() < entries.size())
 				return entries.get(combo.getSelectionIndex());
-			else 
+			else
 				return null;
 	}
 	
@@ -151,7 +151,7 @@ public abstract class ComboContributionItem extends XContributionItem {
 	 * Set the selection of the Combo
 	 */
 	public void setSelectedItem(Object entry) {
-		for (int i = 0; i < entries.size(); i++) {			
+		for (int i = 0; i < entries.size(); i++) {
 			if (entries.get(i).equals(entry)) {
 				updating = true;
 				try {
@@ -172,7 +172,7 @@ public abstract class ComboContributionItem extends XContributionItem {
 	/**
 	 * Call this to add a SelectionListener to the Combo. This is neccessary
 	 * because the Combo Control is created lazy. This method either delegates
-	 * to the Combo if it is already created or collects all listeners until 
+	 * to the Combo if it is already created or collects all listeners until
 	 * it will be created and adds them then. To remove the listener call
 	 * {@link #removeSelectionListener(SelectionListener)}.
 	 */

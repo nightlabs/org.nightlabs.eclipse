@@ -8,7 +8,7 @@ import org.nightlabs.i18n.I18nText;
 @Deprecated
 public interface I18nTextTableListener {
 		/**
-		 * Update the view to reflect the fact that a I18nText was added 
+		 * Update the view to reflect the fact that a I18nText was added
 		 * to the I18nText list
 		 * 
 		 * @param I18nText
@@ -16,7 +16,7 @@ public interface I18nTextTableListener {
 		public void addI18nText(I18nText I18nText);
 
 		/**
-		 * Update the view to reflect the fact that a I18nText was removed 
+		 * Update the view to reflect the fact that a I18nText was removed
 		 * from the I18nText list
 		 * 
 		 * @param I18nText
@@ -25,7 +25,7 @@ public interface I18nTextTableListener {
 
 		/**
 		 * Update the view to reflect the fact that one of the I18nText
-		 * was modified 
+		 * was modified
 		 * 
 		 * @param I18nText
 		 */

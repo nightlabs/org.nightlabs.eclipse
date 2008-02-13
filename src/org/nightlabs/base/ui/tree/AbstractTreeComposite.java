@@ -61,17 +61,17 @@ implements ISelectionProvider
 	private TreeViewer treeViewer;
 	
 	/**
-	 * Default set of styles to use when constructing a single-selection viewer. 
+	 * Default set of styles to use when constructing a single-selection viewer.
 	 */
 	public static int DEFAULT_STYLE_SINGLE = SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION;
 	/**
-	 * Default set of styles to use when constructing a multi-selection viewer. 
+	 * Default set of styles to use when constructing a multi-selection viewer.
 	 */
 	public static int DEFAULT_STYLE_MULTI = SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL  | SWT.FULL_SELECTION;
 	
 	/**
-	 * Convenience parameter with 
-	 * {@link #DEFAULT_STYLE_SINGLE_BORDER}, a GridData, 
+	 * Convenience parameter with
+	 * {@link #DEFAULT_STYLE_SINGLE_BORDER}, a GridData,
 	 * directly inited and visible headers for the tree.
 	 * @see #AbstractTreeComposite(Composite, int, boolean, boolean, boolean)
 	 * 
@@ -103,7 +103,7 @@ implements ISelectionProvider
 	 * @param init Whether to call init directly.
 	 * @param headerVisible Whether the header of the TreeViewer should be visible.
 	 */
-	public AbstractTreeComposite(Composite parent, int style, boolean setLayoutData, boolean init, boolean headerVisible) 
+	public AbstractTreeComposite(Composite parent, int style, boolean setLayoutData, boolean init, boolean headerVisible)
 	{
 		this(parent, style, setLayoutData, init, headerVisible, true);
 	}
@@ -119,8 +119,8 @@ implements ISelectionProvider
 	 * @param headerVisible Whether the header of the TreeViewer should be visible.
 	 * @param sortColumns determines if the header is automatically sorted
 	 */
-	public AbstractTreeComposite(Composite parent, int style, boolean setLayoutData, 
-			boolean init, boolean headerVisible, boolean sortColumns) 
+	public AbstractTreeComposite(Composite parent, int style, boolean setLayoutData,
+			boolean init, boolean headerVisible, boolean sortColumns)
 	{
 		super(parent, SWT.NONE, XComposite.LayoutMode.TIGHT_WRAPPER, setLayoutData ? XComposite.LayoutDataMode.GRID_DATA : XComposite.LayoutDataMode.NONE);
 		treeViewer = createTreeViewer(style);
@@ -129,7 +129,7 @@ implements ISelectionProvider
 		this.sortColumns = sortColumns;
 		if (init)
 			init();
-	}	
+	}
 	
 //	/**
 //	 * Init calls {@link #setTreeProvider(TreeViewer)} and {@link #createTreeColumns(Tree)}
@@ -144,40 +144,40 @@ implements ISelectionProvider
 	 * Init calls {@link #setTreeProvider(TreeViewer)} and {@link #createTreeColumns(Tree)}
 	 * with the appropriate parameters.
 	 */
-	public void init() 
+	public void init()
 	{
 		setTreeProvider(treeViewer);
 		createTreeColumns(treeViewer.getTree());
 		
-//		if (sortColumns) 
+//		if (sortColumns)
 //		{
 //			for (int i=0; i<treeViewer.getTree().getColumns().length; i++) {
 //				TreeColumn treeColumn = treeViewer.getTree().getColumn(i);
 //				treeViewer.getTree().setSortColumn(treeColumn);
 //				treeColumn.addListener(SWT.Selection, sortListener);
 //			}
-//			treeViewer.getTree().setSortDirection(SWT.UP);			
+//			treeViewer.getTree().setSortDirection(SWT.UP);
 //		}
 		
-		if (sortColumns) 
+		if (sortColumns)
 		{
 			for (int i=0; i<treeViewer.getTree().getColumns().length; i++) {
 				TreeColumn treeColumn = treeViewer.getTree().getColumn(i);
 				new TreeSortSelectionListener(treeViewer, treeColumn, new GenericInvertViewerSorter(i), SWT.UP);
-			}			
-		}		
+			}
+		}
 		
 	}
 	
 	protected TreeViewer createTreeViewer(int style) {
-		return new TreeViewer(this, style);		
+		return new TreeViewer(this, style);
 	}
 	
 	private boolean sortColumns = true;
-//	private Listener sortListener = new Listener() 
+//	private Listener sortListener = new Listener()
 //	{
-//		private int sortDirection = SWT.UP;		
-//    public void handleEvent(Event e) 
+//		private int sortDirection = SWT.UP;
+//    public void handleEvent(Event e)
 //    {
 //    	if (e.widget instanceof TreeColumn) {
 //        TreeItem[] items = treeViewer.getTree().getItems();
@@ -202,9 +202,9 @@ implements ISelectionProvider
 //        	sortDirection = SWT.DOWN;
 //        if (sortDirection == SWT.DOWN)
 //        	sortDirection = SWT.UP;
-//        
+//
 //        treeViewer.getTree().setSortDirection(sortDirection);
-//        treeViewer.getTree().setSortColumn(column);    		
+//        treeViewer.getTree().setSortColumn(column);
 //    	}
 //    }
 //	};
@@ -239,11 +239,11 @@ implements ISelectionProvider
 //                break;
 //            }
 //        }
-//      }			
+//      }
 //			// update data displayed in table
-//			treeViewer.getTree().setSortDirection(dir);			
+//			treeViewer.getTree().setSortDirection(dir);
 //		}
-//	};	
+//	};
 	
 //	private Listener sortListener = new Listener() {
 //		public void handleEvent(Event e) {
@@ -261,7 +261,7 @@ implements ISelectionProvider
 //			treeViewer.getTree().setSortColumn(currentColumn);
 ////			treeViewer.setSorter(new ViewerSorter());
 //		}
-//	};	
+//	};
 	
 	public abstract void setTreeProvider(TreeViewer treeViewer);
 	
@@ -307,7 +307,7 @@ implements ISelectionProvider
 	
 	/**
 	 * Selects the given elements in the list if they exist.
-	 * @param elements the elements to be selected. 
+	 * @param elements the elements to be selected.
 	 */
 	public void setSelection(List elements, boolean reveal)
 	{
@@ -336,7 +336,7 @@ implements ISelectionProvider
 	}
 	
 	public void setInput(Object input) {
-		treeViewer.setInput(input);		
+		treeViewer.setInput(input);
 	}
 
 	public void addSelectionChangedListener(ISelectionChangedListener listener)
@@ -369,20 +369,20 @@ implements ISelectionProvider
 	 * @see #getSelectedElements()
 	 * @see #getFirstSelectedElement()
 	 * 
-	 * @param obj The viewers selection object. 
+	 * @param obj The viewers selection object.
 	 * @return The selection object that should be passed as selection.
 	 */
 	protected ElementType getSelectionObject(Object obj)
 	{
-		// TODO maybe we should make this method abstract, since the tree holds almost always nodes and not the managed objects directly. Marco. 
+		// TODO maybe we should make this method abstract, since the tree holds almost always nodes and not the managed objects directly. Marco.
 		return (ElementType) obj;
 	}
 	
 	/**
 	 * Returns the first selected element.
-	 * Note that the element returned here might not be 
+	 * Note that the element returned here might not be
 	 * of the (node)type of elements managed by this viewer.
-	 * The result might have been replaced by an element extracted from the selected tree node. 
+	 * The result might have been replaced by an element extracted from the selected tree node.
 	 * 
 	 * @return The (first) selected element or null.
 	 */
@@ -399,10 +399,10 @@ implements ISelectionProvider
 	
 	/**
 	 * Returns all selected elements in a Set.
-	 * Note that the elements returned here might not be 
+	 * Note that the elements returned here might not be
 	 * of the (node)type of elements managed by this viewer.
 	 * The results might have been replaced by an element extracted from the selected tree nodes.
-	 *  
+	 * 
 	 * @return All selected elements in a Set.
 	 */
 	public Set<ElementType> getSelectedElements() {

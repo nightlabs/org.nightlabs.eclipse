@@ -32,8 +32,8 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
  * @author Daniel.Mazurek <at> NightLabs <dot> de
  *
  */
-public class XPropertyDescriptor 
-extends PropertyDescriptor 
+public class XPropertyDescriptor
+extends PropertyDescriptor
 {
 
 	/**
@@ -68,7 +68,7 @@ extends PropertyDescriptor
 //			@Override
 //			public String getText(Object element) {
 //				if (isReadOnly()) {
-//					
+//
 //				}
 //				return super.getText(element);
 //			}

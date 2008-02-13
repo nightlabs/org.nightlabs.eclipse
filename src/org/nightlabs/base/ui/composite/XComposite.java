@@ -46,7 +46,7 @@ public class XComposite extends Composite
 		/**
 		 * No layout
 		 */
-		NONE, 
+		NONE,
 		/**
 		 * Wrapping with normal indents and spacing
 		 */
@@ -58,7 +58,7 @@ public class XComposite extends Composite
 		/**
 		 * Wrapping with zero intents at top and bottom, normal spacing
 		 */
-		TOP_BOTTOM_WRAPPER, 
+		TOP_BOTTOM_WRAPPER,
 		/**
 		 * Wrapping with zero intents at left and right, normal spacing
 		 */
@@ -76,7 +76,7 @@ public class XComposite extends Composite
 		/**
 		 * No layout data
 		 */
-		NONE, 
+		NONE,
 		/**
 		 * GridData filling both
 		 */
@@ -108,7 +108,7 @@ public class XComposite extends Composite
 	 * @param layout The layout to configure
 	 */
 	public static void configureLayout(LayoutMode layoutMode, GridLayout layout) {
-		switch (layoutMode) 
+		switch (layoutMode)
 		{
 			case NONE:
 			case ORDINARY_WRAPPER:
@@ -134,7 +134,7 @@ public class XComposite extends Composite
 				layout.marginWidth = 0;
 				layout.marginLeft = 0;
 				layout.marginRight = 0;
-				return;		
+				return;
 			case TOTAL_WRAPPER:
 				layout.horizontalSpacing = 0;
 				layout.verticalSpacing = 0;
@@ -144,10 +144,10 @@ public class XComposite extends Composite
 				layout.marginRight = 0;
 				layout.marginTop = 0;
 				layout.marginBottom = 0;
-				return;				
+				return;
 			default:
 				throw new IllegalArgumentException("layoutMode = " + layoutMode + " is unknown!"); //$NON-NLS-1$ //$NON-NLS-2$
-		}		
+		}
 	}
 	
 	/**
@@ -169,11 +169,11 @@ public class XComposite extends Composite
 			layout = new GridLayout(cols, false);
 		configureLayout(layoutMode, layout);
 		return layout;
-	}	
+	}
 	
-	public static void setLayoutDataMode(LayoutDataMode layoutDataMode, Control c) 
+	public static void setLayoutDataMode(LayoutDataMode layoutDataMode, Control c)
 	{
-		switch (layoutDataMode) 
+		switch (layoutDataMode)
 		{
 			case NONE:
 				// nothing
@@ -185,10 +185,10 @@ public class XComposite extends Composite
 			case GRID_DATA_HORIZONTAL:
 				GridData gridData2 = new GridData(GridData.FILL_HORIZONTAL);
 				c.setLayoutData(gridData2);
-				break;				
+				break;
 			default:
 				throw new IllegalArgumentException("layoutDataMode = " + layoutDataMode + " is unknown!"); //$NON-NLS-1$ //$NON-NLS-2$
-		}	 
+		}
 	}
 	
 	/**
@@ -241,7 +241,7 @@ public class XComposite extends Composite
 	 * @param layoutDataMode the LayoutDataMode to set
 	 *
 	 * @see LayoutMode
-	 * @see LayoutDataMode 
+	 * @see LayoutDataMode
 	 */
 	public XComposite(Composite parent, int style, LayoutDataMode layoutDataMode)
 	{
@@ -257,7 +257,7 @@ public class XComposite extends Composite
 	 * @param layoutDataMode the LayoutDataMode to set
 	 * 
 	 * @see LayoutMode
-	 * @see LayoutDataMode  
+	 * @see LayoutDataMode
 	 */
 	public XComposite(Composite parent, int style, LayoutMode layoutMode, LayoutDataMode layoutDataMode)
 	{
@@ -332,7 +332,7 @@ public class XComposite extends Composite
 		return getToolkit(false);
 	}
 	
-	public IToolkit getToolkit(boolean createIfNotSet) 
+	public IToolkit getToolkit(boolean createIfNotSet)
 	{
 		if (toolkit != null)
 			return toolkit;
@@ -352,7 +352,7 @@ public class XComposite extends Composite
 	
 	@Override
 	public void layout(boolean ignoreCachedInformation, boolean recurseDown) {
-		if (toolkit != null) { 
+		if (toolkit != null) {
 			adaptToToolkit();
 		}
 		super.layout(ignoreCachedInformation, recurseDown);
@@ -372,7 +372,7 @@ public class XComposite extends Composite
 			if (checkChildrenForBorders)
 			 paintBorder = toolkit.checkForBorders(child);
 
-			// stop at XComposite children, since they 
+			// stop at XComposite children, since they
 			// will adapt everything beneath themselves through the call to child.layout(bool, bool)
 			// #layout(boolean, boolean) isn't called for every XComposite, in fact in nearly none... damn
 			// TODO: But since it is called few times the adaption is done too often and too many border painters
@@ -382,7 +382,7 @@ public class XComposite extends Composite
 //			}
 			
 			if (child instanceof Composite) {
-//			 if a painter has been added and child is an own widget -> adapt elements beneath child but 
+//			 if a painter has been added and child is an own widget -> adapt elements beneath child but
 //				don't draw additional borders beneath child
 				adaptComposite((Composite)child, toolkit, !paintBorder);
 			}
@@ -396,13 +396,13 @@ public class XComposite extends Composite
 	 * Forms => SWT.NONE, since the toolkit draws one if needed
 	 * Other => SWT.Border <b>
 	 * 
-	 * <p>This method should be called if you want to create a border in any context but don't want to 
+	 * <p>This method should be called if you want to create a border in any context but don't want to
 	 * have a double border in the Form context.</p>
 	 * 
 	 * <p>The check of being in a form or not is done by checking the assigned Toolkit and if
 	 * necessary all the way up to the root of the composite tree.</p>
 	 * 
-	 * @return the boarder flag according to the context this composite is used in; Forms => SWT.NONE, 
+	 * @return the boarder flag according to the context this composite is used in; Forms => SWT.NONE,
 	 * since the toolkit draws one if needed; Other => SWT.Border
 	 */
 	public int getBorderStyle() {
@@ -411,17 +411,17 @@ public class XComposite extends Composite
 	
 	/**
 	 * @see #getBorderStyle()
-	 * @param comp the composite starting from which we traverse the composite tree upwards. 
-	 * @return  the boarder flag according to the context this composite is used in; Forms => SWT.NONE, 
+	 * @param comp the composite starting from which we traverse the composite tree upwards.
+	 * @return  the boarder flag according to the context this composite is used in; Forms => SWT.NONE,
 	 * since the toolkit draws one if needed; Other => SWT.Border
 	 */
 	public static int getBorderStyle(Composite comp) {
-		// walk up the composite tree and check the toolkit 
+		// walk up the composite tree and check the toolkit
 		IToolkit toolkit = retrieveToolkit(comp);
 		if (toolkit != null)
 			return toolkit.getBorderStyle();
 			
-		// if no Xcomposite in the tree above this one has a toolkit set 
+		// if no Xcomposite in the tree above this one has a toolkit set
 		// => assume we're in no FormPage context
 		return SWT.BORDER;
 	}

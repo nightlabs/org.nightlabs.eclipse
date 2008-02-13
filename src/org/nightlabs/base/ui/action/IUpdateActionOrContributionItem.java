@@ -3,9 +3,6 @@
  */
 package org.nightlabs.base.ui.action;
 
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IContributionItem;
-
 
 /**
  * This interface can be implemented additionally to {@link IAction} or

@@ -26,7 +26,7 @@ import org.nightlabs.base.ui.custom.XCombo;
  * @author Marius Heinzmann [marius<at>NightLabs<dot>de]
  */
 public abstract class AbstractToolkit extends FormToolkit
-	implements IToolkit 
+	implements IToolkit
 {
 
 	protected class TextBorderPainter implements PaintListener {
@@ -125,16 +125,16 @@ public abstract class AbstractToolkit extends FormToolkit
 		if (textBorder || element instanceof Text || element instanceof CCombo) { // element instanceof Spinner ||
 			parent.addPaintListener( new TextBorderPainter(element) );
 //		 if textBorder is set -> return false -> continue drawing borders for children
-			listenerAdded = ! textBorder; 
+			listenerAdded = ! textBorder;
 		}
-		else if (tableBorder || element instanceof Table || element instanceof Tree 
-							|| element instanceof Spinner || element instanceof List) 
-		{ 
+		else if (tableBorder || element instanceof Table || element instanceof Tree
+							|| element instanceof Spinner || element instanceof List)
+		{
 			parent.addPaintListener( new TableBorderPainter(element) );
 //		 if tableBorder is set -> return false -> continue drawing borders for children
 			listenerAdded = ! tableBorder;
 		}
-		else if (element instanceof XCombo) { // element instanceof CComboComposite || 
+		else if (element instanceof XCombo) { // element instanceof CComboComposite ||
 			parent.addPaintListener( new TableBorderPainter(element) );
 			listenerAdded = true;
 		}
@@ -149,10 +149,10 @@ public abstract class AbstractToolkit extends FormToolkit
 	}
 
 	/**
-	 * Everytime {@link #checkForBorders(Control)} adds a PaintListener to a Control, this method 
-	 * is called so that subclasses can ensure all prerequisites are met for their changes in the 
+	 * Everytime {@link #checkForBorders(Control)} adds a PaintListener to a Control, this method
+	 * is called so that subclasses can ensure all prerequisites are met for their changes in the
 	 * layout / style.
-	 *  
+	 * 
 	 * @param child the Control which is getting a border.
 	 */
 	protected abstract void checkPrerequisites(Control child);
@@ -160,7 +160,7 @@ public abstract class AbstractToolkit extends FormToolkit
 	/**
 	 * Here you can check for additional own Widgets and if for this widgets flat borders should be set
 	 * then add a {@link PaintListener} to its parent, which does that. <br>
-	 * There are already 2 preconfigured ones available {@link TextBorderPainter} and 
+	 * There are already 2 preconfigured ones available {@link TextBorderPainter} and
 	 * {@link TableBorderPainter}.
 	 * 
 	 * @param control the control, which to check whether borders shall be drawn for it.

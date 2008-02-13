@@ -50,14 +50,14 @@ import org.nightlabs.base.ui.util.RCPUtil;
 import org.nightlabs.config.Config;
 import org.nightlabs.config.ConfigException;
 
-public class OpenFileAction 
+public class OpenFileAction
 extends Action
 {
 	public static final String ID = OpenFileAction.class.getName();
 	public static final String FILTER_ALL = "*"; //$NON-NLS-1$
 	public static final String HISTORY_FILE_ADDED = "history file added"; //$NON-NLS-1$
 	
-	private RecentFileCfMod historyConfig;		
+	private RecentFileCfMod historyConfig;
 	private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	private File lastDirectory = null;
 	private boolean useFilterAll = true;
@@ -74,7 +74,7 @@ extends Action
 		init();
 	}
 	
-	protected void init() 
+	protected void init()
 	{
 		setId(ID);
 		setText(Messages.getString("org.nightlabs.base.ui.action.OpenFileAction.text")); //$NON-NLS-1$
@@ -85,7 +85,7 @@ extends Action
 		} catch (ConfigException e) {
 			throw new RuntimeException(e);
 		}
-	}	
+	}
 	
 	protected List<String> getRecentFileNames() {
 		if (historyConfig != null)
@@ -95,7 +95,7 @@ extends Action
 	}
 	 
 	@Override
-	public void run() 
+	public void run()
 	{
 		FileDialog dialog = new FileDialog(Display.getDefault().getActiveShell(), SWT.OPEN);
 		IEditorRegistry editorRegistry = PlatformUI.getWorkbench().getEditorRegistry();
@@ -103,7 +103,7 @@ extends Action
 		dialog.setFilterExtensions(fileExtensions);
 		if (lastDirectory != null)
 			dialog.setFilterPath(lastDirectory.getAbsolutePath());
-		String fullFileName = dialog.open();		
+		String fullFileName = dialog.open();
 		// Cancel pressed
 		if (fullFileName == null)
 			return;
@@ -121,7 +121,7 @@ extends Action
 		try {
 			boolean foundEditor = Editor2PerspectiveRegistry.sharedInstance().openFile(file);
 			if (foundEditor)
-				addFileToHistory(fullFileName);				
+				addFileToHistory(fullFileName);
 		} catch (PartInitException e) {
 			Logger.getLogger(OpenFileAction.class).error("Cannot open file: " + fullFileName, e); //$NON-NLS-1$
 			RCPUtil.showErrorDialog(
@@ -130,34 +130,34 @@ extends Action
 		}
 	}
 	
-	protected void addFileToHistory(String fileName) 
+	protected void addFileToHistory(String fileName)
 	{
-		if (getRecentFileNames() != null) 
+		if (getRecentFileNames() != null)
 		{
 			// add file only if it is not already contained
-			if (!getRecentFileNames().contains(fileName)) {				
+			if (!getRecentFileNames().contains(fileName)) {
 				getRecentFileNames().add(fileName);
 				pcs.firePropertyChange(HISTORY_FILE_ADDED, null, fileName);
 			}
-			historyConfig.setChanged(true);			
+			historyConfig.setChanged(true);
 		}
 	}
 		
-	protected String[] getFileExtensions(IEditorRegistry editorRegistry) 
+	protected String[] getFileExtensions(IEditorRegistry editorRegistry)
 	{
 		IFileEditorMapping[] mappings = editorRegistry.getFileEditorMappings();
-		List<String> extensions = new ArrayList<String>(mappings.length);		
+		List<String> extensions = new ArrayList<String>(mappings.length);
 		for (int mapCount=0; mapCount<mappings.length; mapCount++) {
 			IFileEditorMapping map = mappings[mapCount];
-			String extension = map.getExtension();			
+			String extension = map.getExtension();
 			IEditorDescriptor[] editorDescritors = map.getEditors();
 			for (int descCount=0; descCount<editorDescritors.length; descCount++) {
 				IEditorDescriptor descriptor = editorDescritors[descCount];
-				String id = descriptor.getId();					
+				String id = descriptor.getId();
 				if (EditorFileFilterRegistry.sharedInstance().doesMatchEditorID(id)) {
 					if (isValid(extension)) {
 						extensions.add(extension);
-					}											
+					}
 				}
 			}
 		}
@@ -167,12 +167,12 @@ extends Action
 		String[] fileExtensions = new String[extensions.size()];
 		for (int j=0; j<extensions.size(); j++) {
 			String fileExtension = extensions.get(j);
-			fileExtensions[j] = concatExtension(fileExtension); 
+			fileExtensions[j] = concatExtension(fileExtension);
 		}
 		return fileExtensions;
 	}
 	
-	protected boolean isValid(String s) 
+	protected boolean isValid(String s)
 	{
 		if (s == null)
 			return false;

@@ -42,9 +42,9 @@ import org.nightlabs.base.ui.util.RCPUtil;
 /**
  * PartVisibilityTracker is used to determine the visibility sate of {@link org.eclipse.ui.IWorkbenchPart}s.
  * It can be asked whether a Part is visble (see. {@link #isPartVisible(IWorkbenchPart)}).
- * Addtionally {@link org.nightlabs.base.ui.part.PartVisibilityListener} can be 
+ * Addtionally {@link org.nightlabs.base.ui.part.PartVisibilityListener} can be
  * registered that will be notified when the visibility status of a part changes
- * (see {@link #addVisibilityListener(IWorkbenchPart, PartVisibilityListener)}).  
+ * (see {@link #addVisibilityListener(IWorkbenchPart, PartVisibilityListener)}).
  * 
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
  *
@@ -63,7 +63,7 @@ public class PartVisibilityTracker {
 	/**
 	 * An instance of this listener will to the active WorkbenchPage and tracks
 	 * status changes of the parts within that page.
-	 * @see PartVisibilityTracker#initialize() 
+	 * @see PartVisibilityTracker#initialize()
 	 */
 	protected static class Listener implements IPartListener2 {
 	
@@ -74,13 +74,13 @@ public class PartVisibilityTracker {
 		}
 
 		/**
-		 * Set the status for the part referenced by the given partRef 
+		 * Set the status for the part referenced by the given partRef
 		 */
 		private void setPartStatus(IWorkbenchPartReference partRef, int newStatus) {
 			PartStatus status = tracker.getPartStatus(partRef);
 			if (status != null)
 				status.setStatus(newStatus);
-		}		
+		}
 		
 		private PartStatus getPartStatus(IWorkbenchPartReference partRef) {
 			return tracker.getPartStatus(partRef);
@@ -332,7 +332,7 @@ public class PartVisibilityTracker {
 	 */
 	private PartStatus getPartStatus(IWorkbenchPartReference partRef, IWorkbenchPart part) {
 		PartStatus status = partStati.get(part);
-		if (status == null) {			
+		if (status == null) {
 			status = new PartStatus(part, partRef);
 			partStati.put(part, status);
 		}
@@ -351,14 +351,14 @@ public class PartVisibilityTracker {
 
 	/**
 	 * Add a visibility Listener to this tracker.
-	 * The passed listener will be notified of visibility changes of the given 
-	 * part. You can add a listeners at any time but only to a non null 
+	 * The passed listener will be notified of visibility changes of the given
+	 * part. You can add a listeners at any time but only to a non null
 	 * {@link IWorkbenchPart}. If at listener registration the WorkbenchWindow
-	 * was not already created this listener will be asyncronously triggered with 
-	 * {@link PartVisibilityListener#partVisible(IWorkbenchPartReference)}.  
-	 * Note that all listeners to a part will be removed when this part is 
+	 * was not already created this listener will be asyncronously triggered with
+	 * {@link PartVisibilityListener#partVisible(IWorkbenchPartReference)}.
+	 * Note that all listeners to a part will be removed when this part is
 	 * closed.
-	 *  
+	 * 
 	 * @param part The IWorkbenchPart which visibility changes should be notified for.
 	 * @param listener The listener to be notified.
 	 */
@@ -408,7 +408,7 @@ public class PartVisibilityTracker {
 	/**
 	 * Get the visibility status of the given part. Will return one out of
 	 * {@link #PART_STATUS_VISIBLE} or {@link #PART_STATUS_HIDDEN}.
-	 *  
+	 * 
 	 * @param part The part the visibilty should be returned
 	 */
 	public int getPartVisibilityStatus(IWorkbenchPart part) {
@@ -457,7 +457,7 @@ public class PartVisibilityTracker {
 	
 	/**
 	 * Shared instance of PartVisibilityTracker. Should be initialized once.
-	 * @see #initialize() 
+	 * @see #initialize()
 	 */
 	public static PartVisibilityTracker sharedInstance() {
 		if (sharedInstance == null)
@@ -468,7 +468,7 @@ public class PartVisibilityTracker {
 	/**
 	 * Check whether the given part is visible.
 	 * Be sure that at some point of time {@link #initialize()} was called before
-	 * you call this method.  
+	 * you call this method.
 	 * Calls {@link #getPartVisibilityStatus(IWorkbenchPart)} for the sharedInstance.
 	 */
 	public static boolean isPartVisible(IWorkbenchPart part) {

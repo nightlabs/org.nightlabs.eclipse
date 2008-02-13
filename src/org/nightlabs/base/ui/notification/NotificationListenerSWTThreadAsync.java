@@ -26,7 +26,6 @@
 
 package org.nightlabs.base.ui.notification;
 
-import org.nightlabs.notification.NotificationEvent;
 import org.nightlabs.notification.NotificationListener;
 
 /**

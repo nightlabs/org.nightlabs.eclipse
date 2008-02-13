@@ -32,26 +32,26 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.nightlabs.base.ui.celleditor.AWTColorCellEditor;
 import org.nightlabs.base.ui.labelprovider.AWTColorLabelProvider;
 
-public class AWTColorPropertyDescriptor 
-extends PropertyDescriptor 
+public class AWTColorPropertyDescriptor
+extends PropertyDescriptor
 {
   /**
    * @param id
    * @param displayName
    */
-  public AWTColorPropertyDescriptor(Object id, String displayName) 
+  public AWTColorPropertyDescriptor(Object id, String displayName)
   {
-    super(id, displayName);    
-    setLabelProvider(new AWTColorLabelProvider());    
+    super(id, displayName);
+    setLabelProvider(new AWTColorLabelProvider());
   }
 
   @Override
-	public CellEditor createPropertyEditor(Composite parent) 
+	public CellEditor createPropertyEditor(Composite parent)
   {
   	CellEditor editor = new AWTColorCellEditor(parent);
   	if (getValidator() != null)
   		editor.setValidator(getValidator());
             
   	return editor;
-  }  
+  }
 }

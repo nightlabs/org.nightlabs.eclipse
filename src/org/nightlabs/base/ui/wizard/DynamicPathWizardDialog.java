@@ -48,7 +48,7 @@ import org.nightlabs.config.Config;
 /**
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
  */
-public class DynamicPathWizardDialog extends WizardDialog 
+public class DynamicPathWizardDialog extends WizardDialog
 {
 	private DynamicPathWizard dynamicWizard;
 
@@ -162,7 +162,7 @@ public class DynamicPathWizardDialog extends WizardDialog
 			IWizardPage currPage = getCurrentPage();
 			if (currPage instanceof IDynamicPathWizardPage)
 				((IDynamicPathWizardPage)currPage).onShow();
-		}		
+		}
 	}
 
 	/**
@@ -186,7 +186,7 @@ public class DynamicPathWizardDialog extends WizardDialog
 	}
 	
 	@Override
-	public void create() 
+	public void create()
 	{
 		super.create();
 

@@ -56,9 +56,9 @@ public abstract class FadeableCompositeJob extends Job
   	try
   	{
   		Display.getDefault().syncExec(
-  				new Runnable() 
+  				new Runnable()
   				{
-  					public void run() 
+  					public void run()
   					{
   						if (!composite.isDisposed())
   							composite.setFaded(true);
@@ -74,9 +74,9 @@ public abstract class FadeableCompositeJob extends Job
   	finally
   	{
   		Display.getDefault().syncExec(
-  				new Runnable() 
+  				new Runnable()
   				{
-  					public void run() 
+  					public void run()
   					{
   						if (!composite.isDisposed())
   							composite.setFaded(false);

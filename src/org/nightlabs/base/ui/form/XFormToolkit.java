@@ -56,7 +56,7 @@ import org.nightlabs.base.ui.composite.XComposite.LayoutDataMode;
 import org.nightlabs.base.ui.composite.XComposite.LayoutMode;
 
 /**
- * This is a subclass of the {@link FormToolkit} which allows also to 
+ * This is a subclass of the {@link FormToolkit} which allows also to
  * use "ordinary" Composites as well.
  * When you create all GUI-Elements with the help of this class
  * you can easily switch the complete GUI-Style from Forms to normal
@@ -66,9 +66,9 @@ import org.nightlabs.base.ui.composite.XComposite.LayoutMode;
  * @deprecated not needed anymore. Simply use {@link XComposite}
  */
 @Deprecated
-public class XFormToolkit 
-extends FormToolkit 
-{	
+public class XFormToolkit
+extends FormToolkit
+{
 	public static enum TOOLKIT_MODE {
 		COMPOSITE, FORM;
 	}
@@ -95,7 +95,7 @@ extends FormToolkit
 		super(colors);
 	}
 
-	protected Composite createInternalComposite(Composite parent, int style) 
+	protected Composite createInternalComposite(Composite parent, int style)
 	{
 //		return new XComposite(parent, style);
 		return new Composite(parent, style);
@@ -104,9 +104,9 @@ extends FormToolkit
 	protected int defaultStyle = SWT.NONE;
 	
 	@Override
-	public Button createButton(Composite parent, String text, int style) 
+	public Button createButton(Composite parent, String text, int style)
 	{
-		switch (currentMode) 
+		switch (currentMode)
 		{
 			case FORM:
 				return super.createButton(parent, text, style);
@@ -116,15 +116,15 @@ extends FormToolkit
 				return b;
 			default:
 				return super.createButton(parent, text, style);
-		}			
+		}
 	}
 	
-	public Composite createXComposite(Composite parent, int style, 
-			LayoutMode layoutMode, LayoutDataMode layoutDataMode) 
+	public Composite createXComposite(Composite parent, int style,
+			LayoutMode layoutMode, LayoutDataMode layoutDataMode)
 	{
-		switch (currentMode) 
+		switch (currentMode)
 		{
-			case FORM: 
+			case FORM:
 				Composite c = super.createComposite(parent, style);
 				c.setLayout(XComposite.getLayout(layoutMode));
 				XComposite.setLayoutDataMode(layoutDataMode, c);
@@ -136,19 +136,19 @@ extends FormToolkit
 				c.setLayout(XComposite.getLayout(layoutMode));
 				XComposite.setLayoutDataMode(layoutDataMode, c);
 				return c;
-		}					
+		}
 	}
 	
-	public Composite createXComposite(Composite parent, int style) 
+	public Composite createXComposite(Composite parent, int style)
 	{
 		return createXComposite(parent, style, LayoutMode.ORDINARY_WRAPPER, LayoutDataMode.GRID_DATA);
-	}	
+	}
 	
-	public Group createGroup(Composite parent, int style, String text) 
+	public Group createGroup(Composite parent, int style, String text)
 	{
 		Group g = new Group(parent, style);
-		g.setText(text);				
-		switch (currentMode) 
+		g.setText(text);
+		switch (currentMode)
 		{
 			case FORM:
 				g.setBackground(getBackground());
@@ -159,13 +159,13 @@ extends FormToolkit
 			default:
 				g.setBackground(getBackground());
 				paintBorderFor(g);
-				return g;			
-		}				 
+				return g;
+		}
 	}
 	
-	public Spinner createSpinner(Composite parent, int style) 
+	public Spinner createSpinner(Composite parent, int style)
 	{
-		switch (currentMode) 
+		switch (currentMode)
 		{
 			case FORM:
 				Spinner s = new Spinner(parent, style);
@@ -176,14 +176,14 @@ extends FormToolkit
 			default:
 				s = new Spinner(parent, style);
 				paintBorderFor(s);
-				return s;			
-		}		
+				return s;
+		}
 	}
 	
 	@Override
-	public Composite createComposite(Composite parent, int style) 
+	public Composite createComposite(Composite parent, int style)
 	{
-		switch (currentMode) 
+		switch (currentMode)
 		{
 			case FORM:
 				return super.createComposite(parent, style);
@@ -192,13 +192,13 @@ extends FormToolkit
 				return c;
 			default:
 				return super.createComposite(parent, style);
-		}			
+		}
 	}
 	
 	@Override
-	public Composite createComposite(Composite parent) 
+	public Composite createComposite(Composite parent)
 	{
-		switch (currentMode) 
+		switch (currentMode)
 		{
 			case FORM:
 				return super.createComposite(parent);
@@ -206,59 +206,59 @@ extends FormToolkit
 				return createInternalComposite(parent, defaultStyle);
 			default:
 				return super.createComposite(parent);
-		}			
+		}
 	}
 
 	@Override
-	public ExpandableComposite createExpandableComposite(Composite parent, int style) 
+	public ExpandableComposite createExpandableComposite(Composite parent, int style)
 	{
-		switch (currentMode) 
+		switch (currentMode)
 		{
 			case FORM:
 				return super.createExpandableComposite(parent, style);
 			case COMPOSITE:
-				return new ExpandableComposite(parent, style);				
+				return new ExpandableComposite(parent, style);
 			default:
 				return super.createExpandableComposite(parent, style);
-		}			
+		}
 	}
 
 	@Override
-	public Label createLabel(Composite parent, String text, int style) 
+	public Label createLabel(Composite parent, String text, int style)
 	{
-		switch (currentMode) 
+		switch (currentMode)
 		{
 			case FORM:
 				return super.createLabel(parent, text, style);
 			case COMPOSITE:
 				Label l = new Label(parent, style);
 				l.setText(text);
-				return l;				
+				return l;
 			default:
 				return super.createLabel(parent, text, style);
-		}			
+		}
 	}
 
 	@Override
-	public Label createLabel(Composite parent, String text) 
+	public Label createLabel(Composite parent, String text)
 	{
-		switch (currentMode) 
+		switch (currentMode)
 		{
 			case FORM:
 				return super.createLabel(parent, text);
 			case COMPOSITE:
 				Label l = new Label(parent, defaultStyle);
 				l.setText(text);
-				return l;								
+				return l;
 			default:
 				return super.createLabel(parent, text);
-		}			
+		}
 	}
 
 	@Override
-	public Table createTable(Composite parent, int style) 
+	public Table createTable(Composite parent, int style)
 	{
-		switch (currentMode) 
+		switch (currentMode)
 		{
 			case FORM:
 				return super.createTable(parent, style);
@@ -266,13 +266,13 @@ extends FormToolkit
 				return new Table(parent, style);
 			default:
 				return super.createTable(parent, style);
-		}			
+		}
 	}
 
 	@Override
-	public Text createText(Composite parent, String text, int style) 
+	public Text createText(Composite parent, String text, int style)
 	{
-		switch (currentMode) 
+		switch (currentMode)
 		{
 			case FORM:
 				return super.createText(parent, text, style);
@@ -282,13 +282,13 @@ extends FormToolkit
 				return t;
 			default:
 				return super.createText(parent, text, style);
-		}			
+		}
 	}
 
 	@Override
-	public Text createText(Composite parent, String text) 
+	public Text createText(Composite parent, String text)
 	{
-		switch (currentMode) 
+		switch (currentMode)
 		{
 			case FORM:
 				return super.createText(parent, text);
@@ -298,13 +298,13 @@ extends FormToolkit
 				return t;
 			default:
 				return super.createText(parent, text);
-		}	
+		}
 	}
 
 	@Override
-	public Tree createTree(Composite parent, int style) 
+	public Tree createTree(Composite parent, int style)
 	{
-		switch (currentMode) 
+		switch (currentMode)
 		{
 			case FORM:
 				return super.createTree(parent, style);
@@ -312,32 +312,32 @@ extends FormToolkit
 				return new Tree(parent, style);
 			default:
 				return super.createTree(parent, style);
-		}	
+		}
 	}
 
 	@Override
-	public ScrolledForm createScrolledForm(Composite parent) 
+	public ScrolledForm createScrolledForm(Composite parent)
 	{
-		switch (currentMode) 
+		switch (currentMode)
 		{
 			case FORM:
 				return super.createScrolledForm(parent);
 			case COMPOSITE:
 				return super.createScrolledForm(parent);
 				// TODO: make XScrolledForm work
-//				XScrolledForm form = new XScrolledForm(parent); 
+//				XScrolledForm form = new XScrolledForm(parent);
 //				form.setExpandHorizontal(true);
 //				form.setExpandVertical(true);
 //				return form;
 			default:
 				return super.createScrolledForm(parent);
-		}			
+		}
 	}
 
 	@Override
-	public Label createSeparator(Composite parent, int style) 
+	public Label createSeparator(Composite parent, int style)
 	{
-		switch (currentMode) 
+		switch (currentMode)
 		{
 			case FORM:
 				return super.createSeparator(parent, style);
@@ -345,13 +345,13 @@ extends FormToolkit
 				return new Label(parent, SWT.SEPARATOR | style);
 			default:
 				return super.createSeparator(parent, style);
-		}	
+		}
 	}
 
 	@Override
-	public Section createSection(Composite parent, int sectionStyle) 
+	public Section createSection(Composite parent, int sectionStyle)
 	{
-		switch (currentMode) 
+		switch (currentMode)
 		{
 			case FORM:
 				return super.createSection(parent, sectionStyle);
@@ -359,13 +359,13 @@ extends FormToolkit
 				return new XSection(parent, sectionStyle);
 			default:
 				return super.createSection(parent, sectionStyle);
-		}	
-	}	
+		}
+	}
 	
 	@Override
-	public Form createForm(Composite parent) 
-	{		
-		switch (currentMode) 
+	public Form createForm(Composite parent)
+	{
+		switch (currentMode)
 		{
 			case FORM:
 				return super.createForm(parent);
@@ -373,8 +373,8 @@ extends FormToolkit
 				return new XForm(parent, defaultStyle);
 			default:
 				return super.createForm(parent);
-		}	
-	}	
+		}
+	}
 	
 	@Override
 	public void adapt(Composite composite) {
@@ -425,9 +425,9 @@ extends FormToolkit
 	}
 
 	@Override
-	public void paintBordersFor(Composite parent) 
+	public void paintBordersFor(Composite parent)
 	{
-		switch (currentMode) 
+		switch (currentMode)
 		{
 			case FORM:
 				super.paintBordersFor(parent);
@@ -435,17 +435,17 @@ extends FormToolkit
 				// Does nothing
 			default:
 				super.paintBordersFor(parent);
-		}	
+		}
 	}
 
-	public static void paintBorderFor(Widget w) 
+	public static void paintBorderFor(Widget w)
 	{
-		w.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);		
+		w.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
 	}
 	
-	public Color getBackground() 
+	public Color getBackground()
 	{
-		switch (currentMode) 
+		switch (currentMode)
 		{
 			case FORM:
 				return getColors().getBackground();
@@ -454,22 +454,22 @@ extends FormToolkit
 				 return null;
 			default:
 				return getColors().getBackground();
-		}			
+		}
 	}
 	
-	public Combo createCombo(Composite parent, int style) 
+	public Combo createCombo(Composite parent, int style)
 	{
-		switch (currentMode) 
+		switch (currentMode)
 		{
 			case FORM:
 				Combo c = null;
-				if ((style & SWT.BORDER) != 0) {					
+				if ((style & SWT.BORDER) != 0) {
 					c = new Combo(parent, style ^ SWT.BORDER);
-					paintBorderFor(c);					
+					paintBorderFor(c);
 					paintBorderFor(parent);
 				} else {
-					c = new Combo(parent, style);					
-				} 					
+					c = new Combo(parent, style);
+				}
 				return c;
 			case COMPOSITE:
 				 return new Combo(parent, style);
@@ -477,6 +477,6 @@ extends FormToolkit
 				c = new Combo(parent, style);
 				paintBorderFor(c);
 				return c;
-		}					
+		}
 	}
 }

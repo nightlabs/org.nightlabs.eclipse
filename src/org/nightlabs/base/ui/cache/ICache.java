@@ -17,7 +17,7 @@ public interface ICache {
 	 * Put the given object into the cache and associate it to the given key.
 	 * Like in Maps the object is looked up later via the {@link Object#hashCode()}
 	 * and {@link Object#equals(Object)} methods.
-	 *  
+	 * 
 	 * @param scope The scope under wich to put the given object into the cache.
 	 * @param key The key to use for the given object.
 	 * @param object The object to put into the cache
@@ -41,7 +41,7 @@ public interface ICache {
 	 * @param key The key to search the object for.
 	 * @return The object out of the cache that is associated to the given key, or <code>null</code>.
 	 */
-	public Object get(String scope, Object key);	
+	public Object get(String scope, Object key);
 	/**
 	 * Get the object associated to the given key out of the cache
 	 * and use the <code>null</code> scope.
@@ -56,7 +56,7 @@ public interface ICache {
 	 * Remove all objects from the cache that are
 	 * associated to the given key.
 	 * 
-	 * @param key The key for wich all objects should be removed. 
+	 * @param key The key for wich all objects should be removed.
 	 */
 	public void remove(Object key);
 

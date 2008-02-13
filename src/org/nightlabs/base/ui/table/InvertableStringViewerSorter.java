@@ -31,7 +31,7 @@ import org.eclipse.jface.viewers.Viewer;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
-public class InvertableStringViewerSorter 
+public class InvertableStringViewerSorter
 extends AbstractInvertableTableSorter<String> {
 
 	public InvertableStringViewerSorter() {

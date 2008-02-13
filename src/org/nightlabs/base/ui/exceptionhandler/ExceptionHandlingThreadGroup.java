@@ -29,9 +29,9 @@ package org.nightlabs.base.ui.exceptionhandler;
 
 
 /**
- * ExceptionHandlingThreadGroup adds exception handling to 
+ * ExceptionHandlingThreadGroup adds exception handling to
  * a thread group. It is used internally to extend the mechanism of
- * exception handling in the NightLabs RCP framework. 
+ * exception handling in the NightLabs RCP framework.
  * @author Alexander Bieber
  */
 public class ExceptionHandlingThreadGroup extends ThreadGroup {
@@ -71,7 +71,7 @@ public class ExceptionHandlingThreadGroup extends ThreadGroup {
 //						}
 //					}
 //				});
-//				
+//
 //			} catch (Throwable ex) {
 //				handlingException = ex;
 //				handlingException.initCause(e);

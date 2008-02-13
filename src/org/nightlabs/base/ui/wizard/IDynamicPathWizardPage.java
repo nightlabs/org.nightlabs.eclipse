@@ -85,7 +85,7 @@ public interface IDynamicPathWizardPage extends IWizardPage
 	
 	/**
 	 * returns true if the method onShow() has been already called, otherwise false
-	 * @return true if the method onShow() has been already called, otherwise false 
+	 * @return true if the method onShow() has been already called, otherwise false
 	 */
 	boolean isShown();
 }

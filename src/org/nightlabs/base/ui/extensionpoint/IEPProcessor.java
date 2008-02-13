@@ -47,7 +47,7 @@ public interface IEPProcessor
 	/**
 	 * Processes a single element that is a direct child of the extension to the
 	 * extension-point this processor operates on.
-	 *  
+	 * 
 	 * @param extension The extension the element belongs to.
 	 * @param element The element that should be processed. It is always a direct child node of the extension.
 	 * @throws Exception If something fails while processing the element.
@@ -60,7 +60,7 @@ public interface IEPProcessor
 	 * <p>
 	 * Note that this method will catch the exceptions thrown by {@link #processElement(IExtension, IConfigurationElement)},
 	 * continue the procedure with the next extension and only will log an error.
-	 * </p> 
+	 * </p>
 	 */
 	void process();
 }

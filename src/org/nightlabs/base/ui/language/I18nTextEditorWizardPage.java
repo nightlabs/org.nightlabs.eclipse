@@ -97,7 +97,7 @@ public class I18nTextEditorWizardPage extends WizardHopPage {
 	}
 	
 	/**
-	 * This is called after the I18TextEditor is created to allow 
+	 * This is called after the I18TextEditor is created to allow
 	 * subclasses to add additional Controls to the page.
 	 * 
 	 * @param wrapper

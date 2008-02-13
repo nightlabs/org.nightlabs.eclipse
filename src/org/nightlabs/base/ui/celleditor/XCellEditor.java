@@ -33,8 +33,8 @@ import org.eclipse.swt.widgets.Composite;
  * @author Daniel.Mazurek <at> NightLabs <dot> de
  *
  */
-public abstract class XCellEditor 
-extends CellEditor 
+public abstract class XCellEditor
+extends CellEditor
 implements IReadOnlyCellEditor
 {
 

@@ -11,9 +11,9 @@ import org.eclipse.ui.IWorkbenchPart;
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  *
  */
-public abstract class WorkbenchPartAction 
-extends Action 
-implements IWorkbenchPartAction 
+public abstract class WorkbenchPartAction
+extends Action
+implements IWorkbenchPartAction
 {
 	private IWorkbenchPart activePart = null;
 	

@@ -54,7 +54,7 @@ public class CompoundProgressMonitor implements IProgressMonitor {
 	private static final Logger logger = Logger.getLogger(CompoundProgressMonitor.class);
 	
 	private Collection<IProgressMonitor> monitors = Collections.synchronizedList(new LinkedList<IProgressMonitor>());
-	private List<MonitorInvocation> invocations = Collections.synchronizedList(new LinkedList<MonitorInvocation>()); 
+	private List<MonitorInvocation> invocations = Collections.synchronizedList(new LinkedList<MonitorInvocation>());
 
 	/**
 	 * Invokations are stored as methodName and params
@@ -197,7 +197,7 @@ public class CompoundProgressMonitor implements IProgressMonitor {
 	 * 
 	 * Prior to adding all former invokations performed on this monitor will be
 	 * invoked for the new one as well, so it will (in most cases) be in the same
-	 * state as all others managed by this one. 
+	 * state as all others managed by this one.
 	 * 
 	 * @param monitor The monitor to integrate.
 	 */

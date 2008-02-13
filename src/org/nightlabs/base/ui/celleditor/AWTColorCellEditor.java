@@ -43,7 +43,7 @@ import org.nightlabs.base.ui.util.ColorUtil;
 import org.nightlabs.base.ui.util.ImageUtil;
 
 
-public class AWTColorCellEditor 
+public class AWTColorCellEditor
 extends DialogCellEditor
 {
   /*
@@ -53,7 +53,7 @@ extends DialogCellEditor
 	
 	/**
 	 * Gap between between image and text in pixels.
-	 */	 	
+	 */
 	private static final int GAP = 6;
 
 	/**
@@ -82,9 +82,9 @@ extends DialogCellEditor
 	private class ColorCellLayout extends Layout {
 		@Override
 		public Point computeSize(
-			Composite editor, 
-			int wHint, 
-			int hHint, 
+			Composite editor,
+			int wHint,
+			int hHint,
 			boolean force) {
 			if (wHint != SWT.DEFAULT && hHint != SWT.DEFAULT)
 				return new Point(wHint, hHint);
@@ -93,15 +93,15 @@ extends DialogCellEditor
 				Point colorSize = colorLabel.computeSize(SWT.DEFAULT, SWT.DEFAULT, force);
 				Point rgbSize = rgbLabel.computeSize(SWT.DEFAULT, SWT.DEFAULT, force);
 				return new Point(
-					colorSize.x + GAP + rgbSize.x, 
-					Math.max(colorSize.y, rgbSize.y));				
+					colorSize.x + GAP + rgbSize.x,
+					Math.max(colorSize.y, rgbSize.y));
 			}
 			else {
 				return rgbLabel.computeSize(SWT.DEFAULT, SWT.DEFAULT, force);
 			}
 		}
 		@Override
-		public void layout(Composite editor, boolean force) 
+		public void layout(Composite editor, boolean force)
 		{
 			if (showColor) {
 				Rectangle bounds = editor.getClientArea();
@@ -112,29 +112,29 @@ extends DialogCellEditor
 					ty = 0;
 				colorLabel.setBounds(-1, 0, colorSize.x, colorSize.y);
 				rgbLabel.setBounds(
-					colorSize.x + GAP - 1, 
-					ty, 
-					bounds.width - colorSize.x - GAP, 
-					bounds.height); 				
+					colorSize.x + GAP - 1,
+					ty,
+					bounds.width - colorSize.x - GAP,
+					bounds.height);
 			}
 			else {
 				Rectangle bounds = editor.getClientArea();
 				Point rgbSize = rgbLabel.computeSize(SWT.DEFAULT, SWT.DEFAULT, force);
 				int ty = (bounds.height - rgbSize.y) / 2;
 				if (ty < 0)
-					ty = 0;				
+					ty = 0;
 				rgbLabel.setBounds(
-						GAP - 1, 
-						ty, 
-						bounds.width - GAP, 
-						bounds.height); 								
+						GAP - 1,
+						ty,
+						bounds.width - GAP,
+						bounds.height);
 			}
 		}
 	}
 	
 	/**
 	 * Creates a new color cell editor parented under the given control.
-	 * The cell editor value is black (<code>RGB(0,0,0)</code>) initially, and has no 
+	 * The cell editor value is black (<code>RGB(0,0,0)</code>) initially, and has no
 	 * validator.
 	 *
 	 * @param parent the parent control
@@ -145,7 +145,7 @@ extends DialogCellEditor
 
 	/**
 	 * Creates a new color cell editor parented under the given control.
-	 * The cell editor value is black (<code>RGB(0,0,0)</code>) initially, and has no 
+	 * The cell editor value is black (<code>RGB(0,0,0)</code>) initially, and has no
 	 * validator.
 	 *
 	 * @param parent the parent control
@@ -153,12 +153,12 @@ extends DialogCellEditor
 	 * 
 	 */
 	public AWTColorCellEditor(Composite parent, int style) {
-		super(parent, style);	  
+		super(parent, style);
 	}
 
 	/**
 	 * Creates a new color cell editor parented under the given control.
-	 * The cell editor value is black (<code>RGB(0,0,0)</code>) initially, and has no 
+	 * The cell editor value is black (<code>RGB(0,0,0)</code>) initially, and has no
 	 * validator.
 	 *
 	 * @param parent the parent control
@@ -167,17 +167,17 @@ extends DialogCellEditor
 	 * 
 	 */
 	public AWTColorCellEditor(Composite parent, int style, boolean showColor) {
-		super(parent, style);	  
+		super(parent, style);
 		this.showColor = showColor;
 	}
 	
 	private boolean showColor = false;
 	
-	/* 
+	/*
 	 * Method declared on DialogCellEditor.
 	 */
 	@Override
-	protected Control createContents(Composite cell) 
+	protected Control createContents(Composite cell)
 	{
 		Color bg = cell.getBackground();
 		composite = new Composite(cell, getStyle());
@@ -185,7 +185,7 @@ extends DialogCellEditor
 		composite.setLayout(new ColorCellLayout());
 		if (showColor) {
 			colorLabel = new Label(composite, SWT.LEFT);
-			colorLabel.setBackground(bg);			
+			colorLabel.setBackground(bg);
 		}
 		rgbLabel = new Label(composite, SWT.LEFT);
 		rgbLabel.setBackground(bg);
@@ -193,11 +193,11 @@ extends DialogCellEditor
 		return composite;
 	}
 
-	/* 
+	/*
 	 * Method declared on CellEditor.
 	 */
 	@Override
-	public void dispose() 
+	public void dispose()
 	{
 		if (image != null) {
 			image.dispose();
@@ -210,7 +210,7 @@ extends DialogCellEditor
 	 * Method declared on DialogCellEditor.
 	 */
 	@Override
-	protected Object openDialogBox(Control cellEditorWindow) 
+	protected Object openDialogBox(Control cellEditorWindow)
 	{
 		ColorDialog dialog = new ColorDialog(cellEditorWindow.getShell());
 		Object value = getValue();
@@ -221,9 +221,9 @@ extends DialogCellEditor
 		  if (value instanceof java.awt.Color) {
 		    value = ColorUtil.toRGB((java.awt.Color)value);
 		  }
-		  dialog.setRGB((RGB) value);	  
-		}		
-		value = dialog.open(); 
+		  dialog.setRGB((RGB) value);
+		}
+		value = dialog.open();
 		RGB rgb = dialog.getRGB();
 		java.awt.Color awtColor = new java.awt.Color(rgb.red, rgb.green, rgb.blue);
 		return awtColor;
@@ -233,7 +233,7 @@ extends DialogCellEditor
 	 * Method declared on DialogCellEditor.
 	 */
 	@Override
-	protected void updateContents(Object value) 
+	protected void updateContents(Object value)
 	{
 	  if (value != null) {
 		  Logger.getLogger(AWTColorCellEditor.class).debug("value instanceof "+value.getClass()); //$NON-NLS-1$
@@ -247,10 +247,10 @@ extends DialogCellEditor
 	    value = new java.awt.Color(0,0,0);
 	  }
 	  	  
-	  RGB rgb = ColorUtil.toRGB((java.awt.Color)value);	
+	  RGB rgb = ColorUtil.toRGB((java.awt.Color)value);
 	  if (showColor) {
 			image = ImageUtil.createColorImage((java.awt.Color)value);
-			colorLabel.setImage(image);	  	
+			colorLabel.setImage(image);
 	  }
 	
 		rgbLabel.setText("(" + rgb.red + "," + rgb.green + "," + rgb.blue + ")");//$NON-NLS-4$//$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$

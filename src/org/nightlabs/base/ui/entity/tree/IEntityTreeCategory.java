@@ -24,13 +24,10 @@
 package org.nightlabs.base.ui.entity.tree;
 
 import org.eclipse.core.runtime.IExecutableExtension;
-import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.part.DrillDownAdapter;
 
 /**
  * Implementations of this interface can appear in
@@ -70,20 +67,20 @@ public interface IEntityTreeCategory extends IExecutableExtension
 	 * Return a <em>new</em> {@link ITreeContentProvider} to use with this category.
 	 * <p>
 	 * The top level entries of an entity tree will always be the categories themselves.
-	 * The {@link ITreeContentProvider} returned here is used to determine 
-	 * the elements of a category and their children. 
+	 * The {@link ITreeContentProvider} returned here is used to determine
+	 * the elements of a category and their children.
 	 * </p>
 	 * <p>
-	 * The returned provider's {@link IStructuredContentProvider#getElements(Object)} 
-	 * method can be called with the parent {@link IEntityTreeCategory} 
+	 * The returned provider's {@link IStructuredContentProvider#getElements(Object)}
+	 * method can be called with the parent {@link IEntityTreeCategory}
 	 * as inputElement. This is when to obtain the categories top-level children.
 	 * </p>
 	 * <p>
-	 * Note that {@link IStructuredContentProvider#getElements(Object)} 
-	 * can also be called with an inputElement equal to an object returned 
+	 * Note that {@link IStructuredContentProvider#getElements(Object)}
+	 * can also be called with an inputElement equal to an object returned
 	 * in the getElements() or getChildren() methods. This is  when a {@link DrillDownAdapter}
-	 * is used. The implementation of getElements will have to check this 
-	 * in order to support such adapters. Best practise will be to return 
+	 * is used. The implementation of getElements will have to check this
+	 * in order to support such adapters. Best practise will be to return
 	 * a list of node-elements when the input is a category and
 	 * delegate to the node-objects in other cases.
 	 * </p>
@@ -128,7 +125,7 @@ public interface IEntityTreeCategory extends IExecutableExtension
 	 *	the category does not need to track, which content provider already asked for data
 	 *	in order to filter the {@link ContentChangedEvent} distribution.
 	 *	</li>
-	 * </ul> 
+	 * </ul>
 	 * </p>
 	 *
 	 * @param contentConsumer The content consumer for whom the new content provider is created. This
@@ -149,7 +146,7 @@ public interface IEntityTreeCategory extends IExecutableExtension
 	 * 
 	 * The icons and labels of an entity tree will be determined by the category itself
 	 * (see {@link #getImage()}) and {@link #getName()}. The {@link ITableLabelProvider}
-	 * returned here is used to determine labels and icons for the elements of a 
+	 * returned here is used to determine labels and icons for the elements of a
 	 * category and their children.
 	 * 
 	 * @return A <em>new</em> {@link ITableLabelProvider} to use with this category.

@@ -68,7 +68,7 @@ extends AbstractEPProcessor
 
 	@Override
 	public void processElement(IExtension extension, IConfigurationElement element)
-	throws Exception 
+	throws Exception
 	{
 		if (element.getName().equalsIgnoreCase(ELEMENT_WORKBENCH_LISTENER)) {
 			String className = element.getAttribute(ATTRIBUTE_CLASS);

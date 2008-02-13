@@ -52,11 +52,11 @@ import org.nightlabs.base.ui.util.RCPUtil;
  * by calling one of the <code>showError</code> methods in {@link ErrorDialogFactory}.
  * This error dialog implementation is capable of handling multiple errors in
  * one dialog. It registers itsself in {@link ErrorDialogFactory} to do so.
- *  
+ * 
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  * @author Tobias Langner <!-- tobias[dot]langner[at]nightlabs[dot]de -->
  */
-public class DefaultErrorDialog extends MessageDialog implements IErrorDialog 
+public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 {
 	private static final int CUSTOM_ELEMENTS_WIDTH_HINT = 300;
 
@@ -71,7 +71,7 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 	 */
 	private String title;
 
-	/** 
+	/**
 	 * Collection of all errors currently displayed/displayable.
 	 */
 	private List<ErrorItem> errorList = new ArrayList<ErrorItem>();
@@ -82,7 +82,7 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 	public DefaultErrorDialog()
 	{
 		super(
-				RCPUtil.getActiveWorkbenchShell(), 
+				RCPUtil.getActiveWorkbenchShell(),
 				JFaceResources.getString("Problem_Occurred"), //$NON-NLS-1$
 				null,
 				JFaceResources.getString("Problem_Occurred"), //$NON-NLS-1$
@@ -189,7 +189,7 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 		errorTableVisible = newVisible;
 	}
 
-	private void showStackTrace(boolean visible) 
+	private void showStackTrace(boolean visible)
 	{
 		Point windowSize = getShell().getSize();
 		Point oldSize = getShell().computeSize(SWT.DEFAULT, SWT.DEFAULT);
@@ -235,12 +235,12 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 					public void selectionChanged(SelectionChangedEvent event)
 					{
 						setErrorItem(errorTable.getSelectedItem());
-					}					
+					}
 				});
 		return errorTable;
 	}
 
-	protected Control createStackTraceText(Composite parent) 
+	protected Control createStackTraceText(Composite parent)
 	{
 		stackTraceText = new Text(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI);
 		applyDialogFont(stackTraceText);

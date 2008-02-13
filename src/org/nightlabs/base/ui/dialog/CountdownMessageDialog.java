@@ -11,7 +11,7 @@ import org.nightlabs.base.ui.resource.Messages;
 
 /**
  * A dialog for showing messages to the user that disappears
- * automatically after a given time in seconds with the default 
+ * automatically after a given time in seconds with the default
  * return value if no user interaction happens until that time.
  * 
  * @author Marc Klinger - marc[at]nightlabs[dot]de
@@ -58,7 +58,7 @@ public class CountdownMessageDialog extends MessageDialog
    *            the index in the button label array of the default button
    * @param disappearTimeInSeconds
    * 						the time until this dialog disappears automatically whith
-   * 						returning the default buttons return value 
+   * 						returning the default buttons return value
    */
 	public CountdownMessageDialog(Shell parentShell, String dialogTitle, Image dialogTitleImage, String dialogMessage, int dialogImageType, String[] dialogButtonLabels, int defaultIndex, int disappearTimeInSeconds)
 	{
@@ -68,7 +68,7 @@ public class CountdownMessageDialog extends MessageDialog
 	
 	protected static final int DEFAULT_DISAPPEAR_TIME = 10;
 	
-	private int timeLeft; 
+	private int timeLeft;
 	private Button defaultButton;
 	private String originalButtonText;
 	private boolean isOpen;

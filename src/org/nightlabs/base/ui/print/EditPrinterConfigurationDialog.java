@@ -63,13 +63,13 @@ public class EditPrinterConfigurationDialog extends CenteredDialog {
 		super(parentShell);
 		this.printerUseCaseID = printerUseCaseID;
 		this.preSelectionDoStore = preSelectionDoStore;
-		setShellStyle(getShellStyle() | SWT.RESIZE);				
+		setShellStyle(getShellStyle() | SWT.RESIZE);
 	}
 	
 	@Override
-	protected void configureShell(Shell newShell) 
+	protected void configureShell(Shell newShell)
 	{
-		super.configureShell(newShell);		
+		super.configureShell(newShell);
 		newShell.setText(Messages.getString("org.nightlabs.base.ui.print.EditPrinterConfigurationDialog.title")); //$NON-NLS-1$
 		newShell.setSize(400, 525);
 	}

@@ -17,8 +17,8 @@ import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  *
  */
-public class EditorActionBarContributorRegistry 
-extends AbstractEPProcessor 
+public class EditorActionBarContributorRegistry
+extends AbstractEPProcessor
 {
 	public static final String EXTENSION_POINT_ID = "org.nightlabs.base.ui.editorActionBarContribution"; //$NON-NLS-1$
 	public static final String ELEMENT_REGISTRY = "editorActionBarContributionRegistry"; //$NON-NLS-1$
@@ -41,7 +41,7 @@ extends AbstractEPProcessor
 	}
 
 	@Override
-	public void processElement(IExtension extension, IConfigurationElement element) 
+	public void processElement(IExtension extension, IConfigurationElement element)
 	throws Exception {
 		if (element.getName().equalsIgnoreCase(ELEMENT_REGISTRY)) {
 			String targetEditorID = element.getAttribute(ATTRIBUTE_TARGET_EDITOR_ID);
@@ -49,7 +49,7 @@ extends AbstractEPProcessor
 				throw new EPProcessorException("The attribute targetEditorID must be set!", extension); //$NON-NLS-1$
 			String className = element.getAttribute("class"); //$NON-NLS-1$
 			if (!checkString(className))
-				className = null;			
+				className = null;
 			AbstractActionRegistry registry = null;
 			
 			registry = editorID2ActionRegistry.get(targetEditorID);
@@ -73,7 +73,7 @@ extends AbstractEPProcessor
 		}
 	}
 	
-	private static EditorActionBarContributorRegistry sharedInstance;	
+	private static EditorActionBarContributorRegistry sharedInstance;
 	public static EditorActionBarContributorRegistry sharedInstance() {
 		if (sharedInstance == null)
 			sharedInstance = new EditorActionBarContributorRegistry();

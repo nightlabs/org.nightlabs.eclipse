@@ -34,8 +34,8 @@ import org.nightlabs.base.ui.labelprovider.I18nTextLabelProvider;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
-public class XI18nTextPropertyDescriptor 
-extends XPropertyDescriptor 
+public class XI18nTextPropertyDescriptor
+extends XPropertyDescriptor
 {
 
 	/**
@@ -59,7 +59,7 @@ extends XPropertyDescriptor
 	}
 
 	@Override
-	public CellEditor createPropertyEditor(Composite parent) {		
+	public CellEditor createPropertyEditor(Composite parent) {
 		return new XI18nTextCellEditor(parent);
 	}
 

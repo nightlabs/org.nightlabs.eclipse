@@ -30,7 +30,7 @@ package org.nightlabs.base.ui.app;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
-public interface IWorkbenchListener 
+public interface IWorkbenchListener
 {
 	void openWindows();
 	void postShutdown();

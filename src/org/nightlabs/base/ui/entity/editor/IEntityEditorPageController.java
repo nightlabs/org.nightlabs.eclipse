@@ -26,13 +26,11 @@
 
 package org.nightlabs.base.ui.entity.editor;
 
-import java.beans.PropertyChangeSupport;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.ui.forms.editor.IFormPage;
 import org.nightlabs.base.ui.notification.IDirtyStateManager;
-import org.nightlabs.util.bean.IPropertyChangeSupport;
 
 /**
  * <p>A controller that can be associated to a page that is displayed
@@ -43,7 +41,7 @@ import org.nightlabs.util.bean.IPropertyChangeSupport;
  * {@link EntityEditorController} and delegate all work concerning
  * loading and saving of data to the page controllers (implementations of this interface).</p>
  * 
- * <p>Also some base classes of the entity-editor-framework with extra background-loading 
+ * <p>Also some base classes of the entity-editor-framework with extra background-loading
  * functionality use {@link IEntityEditorPageController}s to have a standardised access to
  * the data a page needs</p>
  * 
@@ -51,14 +49,14 @@ import org.nightlabs.util.bean.IPropertyChangeSupport;
  * property changes. Pages should use this listeners to reflect the changes in their UI.
  * Implementors should try to subclass {@link PropertyChangeSupport} wherever possible.</p>
  * 
- * This interface should not be implemented but instead extend {@link EntityEditorController} 
+ * This interface should not be implemented but instead extend {@link EntityEditorController}
  * 
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  *
  */
 public interface IEntityEditorPageController
 extends IDirtyStateManager
-// extends IPropertyChangeSupport, IDirtyStateManager 
+// extends IPropertyChangeSupport, IDirtyStateManager
 {
 //	/**
 //	 * Set the page this controller is associated with.
@@ -88,13 +86,13 @@ extends IDirtyStateManager
 	/**
 	 * Adds a page to this controller which is associated with it.
 	 * This will be called immediately after the controller is created.
-	 * @param page the page this controller is associated with. 
+	 * @param page the page this controller is associated with.
 	 * @see #getPages()
 	 */
 	void addPage(IFormPage page);
 	
 	/**
-	 * Returns a Set of all pages for which the controller is responsible 
+	 * Returns a Set of all pages for which the controller is responsible
 	 */
 	Set<IFormPage> getPages();
 
@@ -111,7 +109,7 @@ extends IDirtyStateManager
 	 * Load the data special to the implementation of a page controller
 	 * and write status to the given monitor. This is very likely to be called
 	 * on a non-gui thread. This Method is invoked asynchronously by the abstract EntityEditorPageController,
-	 * so its better to extend the abstract Controller than to write job management yourself. 
+	 * so its better to extend the abstract Controller than to write job management yourself.
 	 * @param monitor The monitor to write status to.
 	 */
 	void doLoad(IProgressMonitor monitor);
@@ -121,7 +119,7 @@ extends IDirtyStateManager
 	/**
 	 * Save the data special to the implementation of a page controller
 	 * and write status to the given monitor. This is very likely to be called
-	 * on a non-gui thread. The Method will be called by EntityEditor after packaging into an 
+	 * on a non-gui thread. The Method will be called by EntityEditor after packaging into an
 	 * asynchronous callback job.
 	 * @param monitor The monitor to write status to.
 	 */
@@ -140,7 +138,7 @@ extends IDirtyStateManager
 	
 	/**
 	 * Adds a new {@link IEntityEditorPageControllerModifyListener} to this controller.
-	 *  
+	 * 
 	 * @param listener The listener to be added.
 	 */
 	void addModifyListener(IEntityEditorPageControllerModifyListener listener);
@@ -150,5 +148,5 @@ extends IDirtyStateManager
 	 * 
 	 * @param listener The listener to remove.
 	 */
-	void removeModifyListener(IEntityEditorPageControllerModifyListener listener); 	
+	void removeModifyListener(IEntityEditorPageControllerModifyListener listener);
 }

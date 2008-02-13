@@ -50,12 +50,12 @@ import org.eclipse.swt.widgets.List;
  * 
  * @param <T> The type of the elements that should be displayed inside this list.
  */
-public class ListComposite<T> 
-	extends AbstractListComposite<T> 
+public class ListComposite<T>
+	extends AbstractListComposite<T>
 {
-	// Either initialise here, pass false to all superconstructors, create a constructor pyramid for 
-	// this class (smallest constructor calls next bigger one), and call createGUIControl in biggest 
-	// constructor, or do NOT initialise additional fields but only declare them here and initialise  
+	// Either initialise here, pass false to all superconstructors, create a constructor pyramid for
+	// this class (smallest constructor calls next bigger one), and call createGUIControl in biggest
+	// constructor, or do NOT initialise additional fields but only declare them here and initialise
 	// them in createGUIControl!
 	private List list;
 
@@ -66,7 +66,7 @@ public class ListComposite<T>
 		super(parent, style, true);
 	}
 
-	/* 
+	/*
 	 * see {@link AbstractListComposite#AbstractListComposite(Composite, int, String)}
 	 */
 	public ListComposite(Composite parent, int listStyle, String caption) {
@@ -99,7 +99,7 @@ public class ListComposite<T>
 	/*
 	 * see {@link AbstractListComposite#AbstractListComposite(Composite, int, String, ILabelProvider, LayoutMode, LayoutDataMode, int)}
 	 */
-	public ListComposite(Composite parent, int listStyle, String caption, ILabelProvider labelProvider, 
+	public ListComposite(Composite parent, int listStyle, String caption, ILabelProvider labelProvider,
 			LayoutMode layoutMode, LayoutDataMode layoutDataMode, int compositeStyle) {
 		super(parent, listStyle, caption, true, labelProvider, layoutMode, layoutDataMode, compositeStyle);
 	}

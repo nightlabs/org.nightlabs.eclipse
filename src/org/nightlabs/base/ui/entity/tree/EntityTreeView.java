@@ -51,15 +51,15 @@ import org.nightlabs.base.ui.tree.AbstractTreeComposite;
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  * @author Alexander Bieber - <!-- alex [AT] nightlabs [DOT] de -->
  */
-public class EntityTreeView 
-extends ViewPart 
+public class EntityTreeView
+extends ViewPart
 implements ControllablePart, ISelectionProvider
 {
 
 	private EntityTree entityTree;
 	
 	/**
-	 * Default constructor registers this view to 
+	 * Default constructor registers this view to
 	 * the controller returned by {@link #getPartController()}
 	 */
 	public EntityTreeView()
@@ -73,7 +73,7 @@ implements ControllablePart, ISelectionProvider
 	/**
 	 * The default implementation of createPartControl first checks the
 	 * {@link PartController} of this View by {@link #getPartController()}.
-	 * If it is not null, work will be delegated to the controller, 
+	 * If it is not null, work will be delegated to the controller,
 	 * otherwise the contents will be created directly by {@link #createPartContents(Composite)}.
 	 * 
 	 * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
@@ -93,11 +93,11 @@ implements ControllablePart, ISelectionProvider
 
 	/**
 	 * This method is cunsulted in the constructor
-	 * and creatPartControl, to delegate the work 
+	 * and creatPartControl, to delegate the work
 	 * a {@link PartController} if neccessary.
 	 * The default implementation returns null, so
 	 * the View will not be controlled. If you want
-	 * it to be controlled override and return 
+	 * it to be controlled override and return
 	 * the appropriate controller.
 	 */
 	protected PartController getPartController() {

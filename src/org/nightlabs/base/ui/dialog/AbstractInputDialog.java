@@ -34,7 +34,7 @@ import org.nightlabs.base.ui.config.DialogCfMod;
 import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.config.Config;
 
-public abstract class AbstractInputDialog 
+public abstract class AbstractInputDialog
 extends InputDialog
 {
 	public AbstractInputDialog(Shell shell, String title, String message, String initalValue, IInputValidator validator) {
@@ -43,15 +43,15 @@ extends InputDialog
 
 	public AbstractInputDialog(Shell shell, String title, String message, String initValue) {
 		this(shell, title, message, initValue, inputValidator);
-	}	
+	}
 
 	public AbstractInputDialog(Shell shell, String title, String message) {
 		this(shell, title, message, "", inputValidator); //$NON-NLS-1$
-	}	
+	}
 		
-	protected static IInputValidator inputValidator = new IInputValidator() 
+	protected static IInputValidator inputValidator = new IInputValidator()
 	{
-    public String isValid(String input) 
+    public String isValid(String input)
     {
       if(input.trim().equals("")) //$NON-NLS-1$
         return Messages.getString("org.nightlabs.base.ui.dialog.AbstractInputDialog.inputValidator.emptyString"); //$NON-NLS-1$

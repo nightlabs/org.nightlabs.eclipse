@@ -29,8 +29,8 @@ package org.nightlabs.base.ui.search;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
-public abstract class AbstractSearchResultActionHandler 
-implements ISearchResultActionHandler 
+public abstract class AbstractSearchResultActionHandler
+implements ISearchResultActionHandler
 {
 	public AbstractSearchResultActionHandler() {
 	}

@@ -137,7 +137,7 @@ public class EditDocumentPrinterTypeRegsComposite extends XComposite {
 				String fileExt = openFileExtDlg();
 				if (fileExt != null && !"".equals(fileExt)) { //$NON-NLS-1$
 					addTypeReg(fileExt);
-					// TODO: Removed, as the SelectionListener does not get notified. Why not? 
+					// TODO: Removed, as the SelectionListener does not get notified. Why not?
 //					fileExtList.setSelection(new String[]{fileExt});
 				}
 			}
@@ -233,7 +233,7 @@ public class EditDocumentPrinterTypeRegsComposite extends XComposite {
 			fileExtText = new LabeledText(wrapper, Messages.getString("org.nightlabs.base.ui.print.pref.EditDocumentPrinterTypeRegsComposite.fileExtText.caption")); //$NON-NLS-1$
 			fileExtText.getTextControl().addModifyListener(new ModifyListener(){
 				public void modifyText(ModifyEvent evt) {
-					fileExt = fileExtText.getTextControl().getText();					
+					fileExt = fileExtText.getTextControl().getText();
 				}
 			});
 			return wrapper;

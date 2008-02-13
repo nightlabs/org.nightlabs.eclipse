@@ -30,7 +30,6 @@ import java.util.Collection;
 
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 
 public interface ISelectionSupport
@@ -64,7 +63,7 @@ extends ISelectionProvider
 	/**
 	 * @param o the Object to add to the selection
 	 */
-	void addSelectedObject(Object o);	
+	void addSelectedObject(Object o);
 	
 	/**
 	 * @param objects a Collection of Objects to add to the selection

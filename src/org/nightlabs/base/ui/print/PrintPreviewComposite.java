@@ -57,8 +57,8 @@ import org.nightlabs.i18n.unit.UnitUtil;
 /**
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  */
-public class PrintPreviewComposite 
-extends XComposite 
+public class PrintPreviewComposite
+extends XComposite
 {
 //	private static final Logger logger = Logger.getLogger(PrintPreviewComposite.class);
 	
@@ -78,13 +78,13 @@ extends XComposite
 	 * @param layoutDataMode
 	 */
 	public PrintPreviewComposite(PageFormat pageFormat, Composite parent, int style,
-			LayoutMode layoutMode, LayoutDataMode layoutDataMode) 
+			LayoutMode layoutMode, LayoutDataMode layoutDataMode)
 	{
 		super(parent, style, layoutMode, layoutDataMode);
 		init(pageFormat);
 	}
 
-	protected void init(PageFormat pf) 
+	protected void init(PageFormat pf)
 	{
 		if (pf == null)
 			throw new IllegalArgumentException("Param pageFormat must NOT be null!"); //$NON-NLS-1$
@@ -95,54 +95,54 @@ extends XComposite
 		addDisposeListener(disposeListener);
 	}
 	
-	protected void initPage(PageFormat pf) 
+	protected void initPage(PageFormat pf)
 	{
 		pageRectangle = new Rectangle(0, 0, (int)pf.getWidth(), (int)pf.getHeight());
 		imageablePageRectangle = new Rectangle(
-				(int)pf.getImageableX(), (int)pf.getImageableY(), 
+				(int)pf.getImageableX(), (int)pf.getImageableY(),
 				(int)pf.getImageableWidth(), (int)pf.getImageableHeight());
 
 //		marginTop = Math.rint(pf.getImageableY());
 //		marginBottom = Math.rint((pf.getHeight() - (pf.getImageableY() + pf.getImageableHeight())));
 //		marginLeft = Math.rint(pf.getImageableX());
-//		marginRight = Math.rint((pf.getWidth() - (pf.getImageableX() + pf.getImageableWidth())));												
-	}	
+//		marginRight = Math.rint((pf.getWidth() - (pf.getImageableX() + pf.getImageableWidth())));
+	}
 	
 //	private double marginTop = 0;
 //	public void setMarginTop(double marginTop) {
 //		this.marginTop = marginTop;
-//		setMarginValue(SWT.TOP, marginTop);		
+//		setMarginValue(SWT.TOP, marginTop);
 //	}
 //	public double getMarginTop() {
 //		return marginTop;
 //	}
-//	
+//
 //	private double marginBottom = 0;
 //	public double getMarginBottom() {
 //		return marginBottom;
 //	}
 //	public void setMarginBottom(double marginBottom) {
 //		this.marginBottom = marginBottom;
-//		setMarginValue(SWT.BOTTOM, marginBottom);		
-//	}	
-//	
+//		setMarginValue(SWT.BOTTOM, marginBottom);
+//	}
+//
 //	private double marginLeft = 0;
 //	public double getMarginLeft() {
 //		return marginLeft;
 //	}
 //	public void setMarginLeft(double marginLeft) {
 //		this.marginLeft = marginLeft;
-//		setMarginValue(SWT.LEFT, marginLeft);		
+//		setMarginValue(SWT.LEFT, marginLeft);
 //	}
-//	
-//	private double marginRight = 0; 
+//
+//	private double marginRight = 0;
 //	public double getMarginRight() {
 //		return marginRight;
 //	}
 //	public void setMarginRight(double marginRight) {
 //		this.marginRight = marginRight;
-//		setMarginValue(SWT.RIGHT, marginRight);		
-//	}	
+//		setMarginValue(SWT.RIGHT, marginRight);
+//	}
 	
 	private PageFormat pageFormat = null;
 	public PageFormat getPageFormat() {
@@ -154,11 +154,11 @@ extends XComposite
 		updateCanvas();
 	}
 	
-//	protected void setMarginValue(int position, double value) 
+//	protected void setMarginValue(int position, double value)
 //	{
-//		Paper paper = pageFormat.getPaper();		
-//		switch (position) 
-//		{		
+//		Paper paper = pageFormat.getPaper();
+//		switch (position)
+//		{
 //			case(SWT.TOP):
 //				marginTop = value;
 //				break;
@@ -170,32 +170,32 @@ extends XComposite
 //				break;
 //			case(SWT.BOTTOM):
 //				marginBottom = value;
-//				break;				
+//				break;
 //		}
 //		if (pageFormat.getOrientation() == PageFormat.PORTRAIT) {
-//			paper.setImageableArea(marginLeft, marginTop, (paper.getWidth() - (marginLeft + marginRight)), 
-//					(paper.getHeight() - (marginTop + marginBottom)) );					
-//		} 
+//			paper.setImageableArea(marginLeft, marginTop, (paper.getWidth() - (marginLeft + marginRight)),
+//					(paper.getHeight() - (marginTop + marginBottom)) );
+//		}
 //		else if (pageFormat.getOrientation() == PageFormat.LANDSCAPE) {
-//			paper.setImageableArea(marginTop, marginRight, (paper.getWidth() - (marginBottom + marginTop)), 
-//					(paper.getHeight() - (marginLeft + marginRight)) );						
+//			paper.setImageableArea(marginTop, marginRight, (paper.getWidth() - (marginBottom + marginTop)),
+//					(paper.getHeight() - (marginLeft + marginRight)) );
 //		}
 //		pageFormat.setPaper(paper);
-//		initPage(pageFormat);	
+//		initPage(pageFormat);
 //		updateCanvas();
-//	}		
+//	}
 		
 	protected Canvas canvas = null;
-	protected Canvas initCanvas(Composite parent) 
+	protected Canvas initCanvas(Composite parent)
 	{
 //		return new Canvas(parent, SWT.BORDER);
 		return new Canvas(parent, SWT.NONE);
 	}
 	
-	protected void createComposite(Composite parent) 
+	protected void createComposite(Composite parent)
 	{
 		canvas = initCanvas(parent);
-		canvas.setLayoutData(new GridData(GridData.FILL_BOTH));		
+		canvas.setLayoutData(new GridData(GridData.FILL_BOTH));
 		canvas.addControlListener(canvasResizeListener);
 		pagePaintListener = initPagePaintListener();
 		canvas.addPaintListener(pagePaintListener);
@@ -223,68 +223,68 @@ extends XComposite
 		return colorWhite;
 	}
 	
-	private PaintListener pagePaintListener = null;	 
-	protected PaintListener initPagePaintListener() 
+	private PaintListener pagePaintListener = null;
+	protected PaintListener initPagePaintListener()
 	{
 		return new PaintListener()
-		{	
-			public void paintControl(PaintEvent e) 
+		{
+			public void paintControl(PaintEvent e)
 			{
-				GC gc = e.gc; 
-				Transform transform = new Transform(gc.getDevice());			
-				Rectangle canvasBounds = org.nightlabs.base.ui.util.GeomUtil.toAWTRectangle(canvas.getClientArea());			
-				Point2D scales = GeomUtil.calcScale(pageRectangle, canvasBounds);			
-				double gcScale = Math.min(scales.getX(), scales.getY());											
+				GC gc = e.gc;
+				Transform transform = new Transform(gc.getDevice());
+				Rectangle canvasBounds = org.nightlabs.base.ui.util.GeomUtil.toAWTRectangle(canvas.getClientArea());
+				Point2D scales = GeomUtil.calcScale(pageRectangle, canvasBounds);
+				double gcScale = Math.min(scales.getX(), scales.getY());
 				transform.scale((float)gcScale, (float)gcScale);
 								
 //				double canvasWidth = canvasBounds.getWidth() / gcScale;
 //				double canvasHeight = canvasBounds.getHeight() / gcScale;
-//				double translateX = Math.abs((pageRectangle.getWidth() - canvasWidth) / 2);  
+//				double translateX = Math.abs((pageRectangle.getWidth() - canvasWidth) / 2);
 //				double translateY = Math.abs((pageRectangle.getHeight() - canvasHeight) / 2);
 //				transform.translate((float)translateX, (float)translateY);
 				
-				gc.setTransform(transform);			
+				gc.setTransform(transform);
 				
 				gc.setBackground(getBackgroundColor());
-				gc.fillRectangle(pageRectangle.x, pageRectangle.y, 
-						pageRectangle.width, pageRectangle.height);			
+				gc.fillRectangle(pageRectangle.x, pageRectangle.y,
+						pageRectangle.width, pageRectangle.height);
 				
 				gc.setLineWidth(3);
-				gc.setLineStyle(SWT.LINE_SOLID);			
-				gc.drawRectangle(imageablePageRectangle.x, imageablePageRectangle.y, 
-						imageablePageRectangle.width, imageablePageRectangle.height);						
-			}	
-		}; 
+				gc.setLineStyle(SWT.LINE_SOLID);
+				gc.drawRectangle(imageablePageRectangle.x, imageablePageRectangle.y,
+						imageablePageRectangle.width, imageablePageRectangle.height);
+			}
+		};
 	}
 	
-	private ControlListener canvasResizeListener = new ControlAdapter() 
-	{	
+	private ControlListener canvasResizeListener = new ControlAdapter()
+	{
 		@Override
-		public void controlResized(ControlEvent e) 
+		public void controlResized(ControlEvent e)
 		{
 			updateCanvas();
-		}	
+		}
 	};
 	
 	private DisposeListener disposeListener = new DisposeListener()
-	{	
+	{
 		public void widgetDisposed(DisposeEvent e) {
 			canvas.removePaintListener(pagePaintListener);
-			canvas.removeControlListener(canvasResizeListener);			
-		}	
+			canvas.removeControlListener(canvasResizeListener);
+		}
 	};
 		
 	protected double canvasScaleFactor = 6;
-	protected void setCanvasSize() 
+	protected void setCanvasSize()
 	{
 		GridData canvasData = new GridData(SWT.CENTER, SWT.CENTER, false, false);
 		int newWidth = (int) Math.rint(pageRectangle.width / canvasScaleFactor);
-		int newHeight = (int) Math.rint(pageRectangle.height / canvasScaleFactor);		
+		int newHeight = (int) Math.rint(pageRectangle.height / canvasScaleFactor);
 		canvasData.widthHint = newWidth;
-		canvasData.heightHint = newHeight; 
+		canvasData.heightHint = newHeight;
 		canvasData.minimumWidth = newWidth;
-		canvasData.minimumHeight = newHeight;		
-		canvas.setLayoutData(canvasData);	
+		canvasData.minimumHeight = newHeight;
+		canvas.setLayoutData(canvasData);
 		canvas.setSize(newWidth, newHeight);
 		
 //		if (logger.isDebugEnabled()) {
@@ -294,7 +294,7 @@ extends XComposite
 //		}
 	}
 
-	protected void updateCanvas() 
+	protected void updateCanvas()
 	{
 		setCanvasSize();
 		setLabelText();
@@ -302,7 +302,7 @@ extends XComposite
 		layout(true);
 	}
 
-	private void setLabelText() 
+	private void setLabelText()
 	{
 		Double width  = new Double(getPageWidth(getCurrentUnit()));
 		Double height = new Double(getPageHeight(getCurrentUnit()));
@@ -313,17 +313,17 @@ extends XComposite
 				new Object[] { width, height, unitSymbol })
 		);
 //				String.format("", new Object[] { Util.truncateDouble(getPageWidth(getCurrentUnit()), numberOfAfterCommaDigits) })
-//				NLBasePlugin.getResourceString("composite.printPreview.width.label") + " = " + 
+//				NLBasePlugin.getResourceString("composite.printPreview.width.label") + " = " +
 //				Util.truncateDouble(getPageWidth(getCurrentUnit()), numberOfAfterCommaDigits) + " " +
 //				getCurrentUnit().getUnitSymbol() + ", " +
 //				NLBasePlugin.getResourceString("composite.printPreview.height.label") + " = " +
-//				Util.truncateDouble(getPageHeight(getCurrentUnit()), numberOfAfterCommaDigits) + " " + 
+//				Util.truncateDouble(getPageHeight(getCurrentUnit()), numberOfAfterCommaDigits) + " " +
 //				getCurrentUnit().getUnitSymbol()
 //				);
 	}
 	
-	private IUnit defaultUnit = null; 
-	public IUnit getDefaultUnit() 
+	private IUnit defaultUnit = null;
+	public IUnit getDefaultUnit()
 	{
 		if (defaultUnit == null) {
 //			double inchFactor = 1 / 25.4;
@@ -337,7 +337,7 @@ extends XComposite
 		return defaultUnit;
 	}
 	
-	private IUnit currentUnit = new MMUnit();		
+	private IUnit currentUnit = new MMUnit();
 	public IUnit getCurrentUnit() {
 		return currentUnit;
 	}

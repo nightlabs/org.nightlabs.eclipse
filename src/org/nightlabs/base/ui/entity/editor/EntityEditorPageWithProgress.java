@@ -42,7 +42,6 @@ import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
-import org.eclipse.ui.forms.widgets.Section;
 import org.nightlabs.base.ui.composite.Fadeable;
 import org.nightlabs.base.ui.composite.FadeableComposite;
 import org.nightlabs.base.ui.composite.XComposite;
@@ -58,33 +57,33 @@ import org.nightlabs.base.ui.util.RCPUtil;
  * <p>An editor page to be used when you need to load data (with the editors controller)
  * in the background and want to provide progress feedback to the user</p>
  * 
- * <p>The page hooks a Composite with a stack layout into its parent Form. 
+ * <p>The page hooks a Composite with a stack layout into its parent Form.
  * One entry in the stack will be an implementation of {@link IProgressMonitor}
- * the other the page's actual content. You can switch the vision 
- * by {@link #switchToContent()} and {@link #switchToProgress()}.</p> 
+ * the other the page's actual content. You can switch the vision
+ * by {@link #switchToContent()} and {@link #switchToProgress()}.</p>
  * 
  * 
- * <p>On the creation of its contents ({@link #createFormContent(IManagedForm)}) 
+ * <p>On the creation of its contents ({@link #createFormContent(IManagedForm)})
  * this FormPage will start a job that tries to access the
  * {@link IEntityEditorPageController} associated to this page. It will therefore
- * assume that the page is embedded in an {@link EntityEditor} and a page 
+ * assume that the page is embedded in an {@link EntityEditor} and a page
  * controller was created by the {@link IEntityEditorPageFactory} of this
  * page. <br/>
  * Within the job the page will load the controllers data. if a controller was found.
  * Then it will call the {@link #asyncCallback()} method still on the jobs thread,
- * to let implementations react on to the loading. Implementations could fill the gui with 
- * the obtained data, for example. The callback is on the jobs thread, however, 
- * in order to enable subclasses to extend the background job with own tasks. 
- * Implementors should also not forget to switch to the content view when 
+ * to let implementations react on to the loading. Implementations could fill the gui with
+ * the obtained data, for example. The callback is on the jobs thread, however,
+ * in order to enable subclasses to extend the background job with own tasks.
+ * Implementors should also not forget to switch to the content view when
  * the loading is finished.</p>
  * 
- * <p>Also on creation of its contents this FormPage will call several 
- * methods that are intended to override or obliged to implement. 
- * These methods let subclasses create the page's actual content and 
+ * <p>Also on creation of its contents this FormPage will call several
+ * methods that are intended to override or obliged to implement.
+ * These methods let subclasses create the page's actual content and
  * configure the wrapping elements of this page. <br/>
  * Note, that its recommended when using this class to use parts ({@link Section}s)
  * that do not access the controller when they are created, but in contrast
- * have the ability to be "filled" with data from the {@link #asyncCallback()}.   
+ * have the ability to be "filled" with data from the {@link #asyncCallback()}.
  * </p>
  * 
  *
@@ -103,7 +102,7 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 	protected Form pageWrapper;
 	/**
 	 * Wrapper for the progress monitor
-	 */	
+	 */
 	protected XComposite progressWrapper;
 	/**
 	 * the progress monitor (used implementation {@link SaveProgressMonitorPart}).
@@ -145,7 +144,7 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 	 * If the controller is an instance of {@link EntityEditorPageController}
 	 * the job will use its special method to join the background-loading-job that
 	 * might already run.
-	 * After loading the job will call {@link #asyncCallback()} to notify 
+	 * After loading the job will call {@link #asyncCallback()} to notify
 	 * the page of its end.
 	 * <p>
 	 * Note that this Job also registered listeners to the controller that will
@@ -200,7 +199,7 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 	}
 	
 	/**
-	 * This method is called <b>on the loading job's thread</b> after 
+	 * This method is called <b>on the loading job's thread</b> after
 	 * the loading was done. It is intended to be used in order
 	 * to fill the page with the data now loaded.
 	 * Remember that gui operations have to be done on the {@link Display} thread.
@@ -223,7 +222,7 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 	 * 
 	 * Note that page controllers should not be accessed from their associated
 	 * pages in their constructor, as the controller registration
-	 * will be initialized immediately after the page was created.  
+	 * will be initialized immediately after the page was created.
 	 * 
 	 * @return The page controller for this page.
 	 */
@@ -234,16 +233,16 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * This implementation will create a stack layout an put a progress monitor 
+	 * This implementation will create a stack layout an put a progress monitor
 	 * and the real content wrapped into a new Form on the stack.
 	 * Besides {@link #addSections(Composite)}, where subclasses add their real content,
 	 * several callback methods exist to configure the rest of the page.
-	 *  
+	 * 
 	 * @see #addSections(Composite)
 	 * @see #createProgressMonitorPart(Composite)
 	 * @see #configureBody(Composite)
 	 * @see #configureProgressWrapper(XComposite)
-	 * @see #configurePageWrapper(Composite)	 * 
+	 * @see #configurePageWrapper(Composite)	 *
 	 * @see org.eclipse.ui.forms.editor.FormPage#createFormContent(org.eclipse.ui.forms.IManagedForm)
 	 */
 	@Override
@@ -254,7 +253,7 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 		form.setExpandHorizontal(true);
 		form.setExpandVertical(true);
 		IToolkit toolkit = (IToolkit) getEditor().getToolkit(); // CommitableFormEditor uses NightlabsFormToolkit
-		String formText = getPageFormTitle();		
+		String formText = getPageFormTitle();
 		form.setText(formText == null ? "" : formText);  //$NON-NLS-1$
 		form.setLayoutData(new GridData(GridData.FILL_BOTH));
 		fillBody(managedForm, toolkit);
@@ -262,7 +261,7 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 
 	/**
 	 * This method is called when the page's body is created.
-	 * Add the page's sections here. Remember not to 
+	 * Add the page's sections here. Remember not to
 	 * access the controllers data here, but provide the possibility
 	 * to assign the data to the part created at a later time.
 	 * 
@@ -300,9 +299,9 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 	/**
 	 * Create the gui representation of an {@link IProgressMonitor}
 	 * to the given parent. This method is intended to be overridden,
-	 * the default implementation will use an {@link SaveProgressMonitorPart}. 
+	 * the default implementation will use an {@link SaveProgressMonitorPart}.
 	 * 
-	 * @param progressWrapper The parent of the progress monitor. 
+	 * @param progressWrapper The parent of the progress monitor.
 	 * @return A new gui representation of an {@link IProgressMonitor}.
 	 */
 	protected IProgressMonitor createProgressMonitorPart(Composite progressWrapper) {
@@ -319,7 +318,7 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 	 * with moderate indenting.
 	 * 
 	 * @param parent The Composite wrapping the page's
-	 * real content. 
+	 * real content.
 	 */
 	protected void configurePageWrapper(Composite parent) {
 		GridLayout layout = new GridLayout();
@@ -386,12 +385,12 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 
 	/**
 	 * Creates stack layout, progress-stack-item and the page's content
-	 * with the help of the configure and create callbacks. 
+	 * with the help of the configure and create callbacks.
 	 * 
 	 * @param managedForm The managed form
 	 * @param toolkit The tookit to use
 	 */
-	private void fillBody(IManagedForm managedForm, IToolkit toolkit) 
+	private void fillBody(IManagedForm managedForm, IToolkit toolkit)
 	{
 		Composite body = managedForm.getForm().getBody();
 		configureForm(managedForm.getForm());
@@ -405,14 +404,14 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 		wrapper.setLayout(stackLayout);
 		
 		progressWrapper = new XComposite(wrapper, SWT.NONE);
-		configureProgressWrapper(progressWrapper);		
+		configureProgressWrapper(progressWrapper);
 		progressMonitorPart = createProgressMonitorPart(progressWrapper);
 		progressWrapper.adaptToToolkit();
 		
 		pageWrapper = toolkit.createForm(wrapper);
 		configurePageWrapper(pageWrapper.getBody());
 		
-		asyncLoadJob.schedule();		
+		asyncLoadJob.schedule();
 		
 		addSections(pageWrapper.getBody());
 		registerToDirtyStateProxies();
@@ -424,7 +423,7 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 			public void run() {
 				RCPUtil.workaroundFormPageTableLayouts(pageWrapper.getBody(), true);
 			}
-		});		
+		});
 	}
 
 	/**

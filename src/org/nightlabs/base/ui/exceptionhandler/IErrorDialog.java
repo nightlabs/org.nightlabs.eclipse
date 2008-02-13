@@ -1,7 +1,5 @@
 package org.nightlabs.base.ui.exceptionhandler;
 
-import org.eclipse.jface.window.Window;
-
 /**
  * An interface for error dialogs instanciated by
  * the {@link ErrorDialogFactory}. Implementations
@@ -16,7 +14,7 @@ public interface IErrorDialog
 	 * @param dialogTitle The dialog title
 	 * @param message The error message
 	 * @param thrownException The thrown exception
-	 * @param triggerException The exception that triggered the 
+	 * @param triggerException The exception that triggered the
 	 * 		corresponding error handler
 	 */
 	public void showError(String dialogTitle, String message, Throwable thrownException, Throwable triggerException);

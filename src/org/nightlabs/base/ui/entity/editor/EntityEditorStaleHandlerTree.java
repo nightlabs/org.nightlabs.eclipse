@@ -30,7 +30,7 @@ import org.nightlabs.base.ui.tree.TreeContentProvider;
  * <p>
  * The tree has two columns one to display the handler and the page
  * the other is managed by the {@link IEntityEditorPageStaleHandler} and
- * usually used to modify the action performed by the handler. 
+ * usually used to modify the action performed by the handler.
  * </p>
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  *
@@ -70,7 +70,7 @@ public class EntityEditorStaleHandlerTree extends AbstractTreeComposite {
 	
 	/**
 	 * LabelProvider used. It will delegate the most to the LabelProvider
-	 * of the {@link IEntityEditorPageStaleHandler}. 
+	 * of the {@link IEntityEditorPageStaleHandler}.
 	 */
 	class LabelProvider extends TableLabelProvider {
 		@Override

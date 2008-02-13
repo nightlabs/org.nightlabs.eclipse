@@ -91,7 +91,7 @@ public abstract class EntityTreeCategory implements IEntityTreeCategory
 	 * Map for storing the consumers of the category along with the binding they use.
 	 * The binding is used to notify the consumer of changes with the right binding.
 	 */
-	private Map<IEntityTreeCategoryContentConsumer, IEntityTreeCategoryBinding> contentConsumers = new HashMap<IEntityTreeCategoryContentConsumer, IEntityTreeCategoryBinding>(); 
+	private Map<IEntityTreeCategoryContentConsumer, IEntityTreeCategoryBinding> contentConsumers = new HashMap<IEntityTreeCategoryContentConsumer, IEntityTreeCategoryBinding>();
 
 	public ITreeContentProvider createContentProvider(final IEntityTreeCategoryContentConsumer contentConsumer, IEntityTreeCategoryBinding categoryBinding)
 	{
@@ -122,10 +122,10 @@ public abstract class EntityTreeCategory implements IEntityTreeCategory
 	}
 
 	/**
-	 * Fire a category change event. This will notify all consumers 
+	 * Fire a category change event. This will notify all consumers
 	 * of changes of the category binding the use.
 	 */
-	protected void fireEntityTreeCategoryChange() 
+	protected void fireEntityTreeCategoryChange()
 	{
 		for (Entry<IEntityTreeCategoryContentConsumer, IEntityTreeCategoryBinding> consumerEntry : new HashSet<Entry<IEntityTreeCategoryContentConsumer, IEntityTreeCategoryBinding>>(contentConsumers.entrySet())) {
 			consumerEntry.getKey().contentChanged(new ContentChangedEvent(consumerEntry.getValue()));

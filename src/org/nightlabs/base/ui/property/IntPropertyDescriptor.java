@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.nightlabs.base.ui.celleditor.IntCellEditor;
 
 
-public class IntPropertyDescriptor 
+public class IntPropertyDescriptor
 extends XPropertyDescriptor
 {
 
@@ -55,7 +55,7 @@ extends XPropertyDescriptor
   }
   
   @Override
-	public CellEditor createPropertyEditor(Composite parent) 
+	public CellEditor createPropertyEditor(Composite parent)
   {
   	CellEditor editor = new IntCellEditor(parent, SWT.NONE, readOnly);
   	if (getValidator() != null)

@@ -37,13 +37,13 @@ import org.nightlabs.base.ui.composite.XComboComposite;
  *
  */
 public class GenericComboBoxCellEditor<T>
-extends XCellEditor 
+extends XCellEditor
 {
 	private List<T> types = null;
-	private ILabelProvider labelProvider = null;	
+	private ILabelProvider labelProvider = null;
 	private XComboComposite<T> comboComposite = null;
 
-	public GenericComboBoxCellEditor(Composite parent, List<T> types, ILabelProvider labelProvider) 
+	public GenericComboBoxCellEditor(Composite parent, List<T> types, ILabelProvider labelProvider)
 	{
 		if (types == null)
 			throw new IllegalArgumentException("param types must not be null!"); //$NON-NLS-1$
@@ -56,8 +56,8 @@ extends XCellEditor
 		create(parent);
 	}
 	
-	public GenericComboBoxCellEditor(Composite parent, int style, boolean readOnly, 
-			List<T> types, ILabelProvider labelProvider, int comboStyle) 
+	public GenericComboBoxCellEditor(Composite parent, int style, boolean readOnly,
+			List<T> types, ILabelProvider labelProvider, int comboStyle)
 	{
 		if (types == null)
 			throw new IllegalArgumentException("param types must not be null!"); //$NON-NLS-1$
@@ -92,7 +92,7 @@ extends XCellEditor
 		comboComposite.setFocus();
 	}
 
-	@SuppressWarnings("unchecked") 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void doSetValue(Object value) {
 		comboComposite.selectElement((T) value);

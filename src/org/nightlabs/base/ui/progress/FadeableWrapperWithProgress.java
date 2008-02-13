@@ -31,7 +31,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.nightlabs.base.ui.composite.Fadeable;
 import org.nightlabs.base.ui.composite.FadeableComposite;
 import org.nightlabs.base.ui.composite.XComposite;
 
@@ -42,10 +41,10 @@ import org.nightlabs.base.ui.composite.XComposite;
  * You can use this as parent for your WorkbenchParts or even in custom Composites.
  * 
  * When using the {@link FadeableWrapperWithProgress} remember not to pass the actual
- * instance to child Controls, but {@link #getContent()}. 
+ * instance to child Controls, but {@link #getContent()}.
  * 
- * If you subclass {@link FadeableWrapperWithProgress} ther exist several 
- * callback-methods to configure the look of the wrapper. 
+ * If you subclass {@link FadeableWrapperWithProgress} ther exist several
+ * callback-methods to configure the look of the wrapper.
  * 
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  *
@@ -68,12 +67,12 @@ public class FadeableWrapperWithProgress extends FadeableComposite {
 	}
 	
 	/**
-	 * The stack layout to switch views between progress and content 
+	 * The stack layout to switch views between progress and content
 	 */
 	private StackLayout stackLayout;
 	/**
 	 * Wrapper for the progress monitor
-	 */	
+	 */
 	protected XComposite progressWrapper;
 	/**
 	 * The progress monitor (used implementation {@link SaveProgressMonitorPart}).
@@ -123,12 +122,12 @@ public class FadeableWrapperWithProgress extends FadeableComposite {
 		setLayout(stackLayout);
 		
 		progressWrapper = new XComposite(this, SWT.NONE, XComposite.LayoutMode.ORDINARY_WRAPPER);
-		configureProgressWrapper(progressWrapper);		
+		configureProgressWrapper(progressWrapper);
 		progressMonitorPart = createProgressMonitorPart(progressWrapper);
 		
 		contentWrapper = createContentWrapper(this);
 		
-		updateStackLayout(initViewMode == null ? ViewMode.PROGESS : initViewMode);		
+		updateStackLayout(initViewMode == null ? ViewMode.PROGESS : initViewMode);
 	}
 
 	/**
@@ -166,7 +165,7 @@ public class FadeableWrapperWithProgress extends FadeableComposite {
 	/**
 	 * Returns the Composite wrapping the real contents of this fadeable wrapper.
 	 * Use this when creating as parameter for child composites.
-	 *  
+	 * 
 	 * @return the Composite wrapping the real contents of this fadeable wrapper.
 	 */
 	public XComposite getContent() {
@@ -218,7 +217,7 @@ public class FadeableWrapperWithProgress extends FadeableComposite {
 	
 	/**
 	 * Switch to view the page's content.
-	 * Note that this will be called asynchronously on the {@link Display} thread, so 
+	 * Note that this will be called asynchronously on the {@link Display} thread, so
 	 * it will have to wait if the {@link Display} thread is busy.
 	 */
 	public void switchView(final ViewMode viewMode) {

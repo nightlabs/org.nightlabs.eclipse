@@ -18,7 +18,6 @@ import org.eclipse.ui.forms.FormColors;
 import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.ColumnLayout;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
-import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
@@ -29,12 +28,12 @@ import org.nightlabs.base.ui.toolkit.AbstractToolkit;
  * menu! see {@link FormToolkit#adapt(Composite)} <br> <br>
  * This is now changed so that the menu of a child is only set if there was none before.
  * 
- * <p> This should only be a temporary solution. We will have to look at the Manifest Editor, 
+ * <p> This should only be a temporary solution. We will have to look at the Manifest Editor,
  * for example, to see how to omit this workaround!</p>
  * 
  * @author Marius Heinzmann [marius<at>NightLabs<dot>de]
  */
-public class NightlabsFormsToolkit extends AbstractToolkit 
+public class NightlabsFormsToolkit extends AbstractToolkit
 {
 	private static final Logger logger = Logger.getLogger(NightlabsFormsToolkit.class);
 	

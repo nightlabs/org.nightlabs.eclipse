@@ -33,7 +33,7 @@ import org.nightlabs.base.ui.util.RCPUtil;
  * to. If a handler receives such stale handlers it will either
  * display them in a dialog at once (when the editor has the focus) or
  * the display of the dialog will be scheduled for the next
- * time the editor gets the focus. 
+ * time the editor gets the focus.
  * <p>
  * The dialog will display each {@link IEntityEditorPageStaleHandler}
  * in a tree as top-level node. The {@link IEntityEditorPageStaleHandler}s
@@ -82,7 +82,7 @@ public class EntityEditorStaleHandler {
 		}
 		
 		@Override
-		protected void configureShell(Shell newShell) {		
+		protected void configureShell(Shell newShell) {
 			super.configureShell(newShell);
 			newShell.setText("Entity changed");
 			setToCenteredLocationPreferredSize(newShell, 400, 300);
@@ -113,8 +113,8 @@ public class EntityEditorStaleHandler {
 	/**
 	 * Create a new {@link EntityEditorStaleHandler} for the given editor.
 	 * <p>
-	 * It will register listeners to track the focus of the editor and 
-	 * whether the shell is active at all. 
+	 * It will register listeners to track the focus of the editor and
+	 * whether the shell is active at all.
 	 * </p>
 	 * @param entityEditor The editor the new handler is associated to.
 	 */
@@ -180,12 +180,12 @@ public class EntityEditorStaleHandler {
 				public void partOpened(final IWorkbenchPart part) {
 				}
 			});
-			// also add a shell listener so that when the 
-			// notification happens when the shell does not 
-			// have the focus, the handler is invoked 
+			// also add a shell listener so that when the
+			// notification happens when the shell does not
+			// have the focus, the handler is invoked
 			// when it gets the focus again
-			RCPUtil.getActiveWorkbenchShell().addShellListener(shellListener);			
-		}		
+			RCPUtil.getActiveWorkbenchShell().addShellListener(shellListener);
+		}
 	}
 	
 	/**
@@ -198,7 +198,7 @@ public class EntityEditorStaleHandler {
 	
 	/**
 	 * This method is called when the associated Editor
-	 * is activated and will run the {@link #handleEntityChangeRunnable} if set. 
+	 * is activated and will run the {@link #handleEntityChangeRunnable} if set.
 	 */
 	protected void handleEditorActivated() {
 		boolean openDialog = false;
@@ -219,7 +219,7 @@ public class EntityEditorStaleHandler {
 					if (staleHandlerDialog != null)
 					staleHandlerDialog.refreshTree();
 				}
-			});			
+			});
 		}
 	}
 
@@ -261,7 +261,7 @@ public class EntityEditorStaleHandler {
 				}
 			}
 			staleHandlers.add(staleHandler);
-			// check if the editor has focus and the 
+			// check if the editor has focus and the
 			// handlers have to be presented to the user right away.
 			Display.getDefault().syncExec(new Runnable() {
 				public void run() {
@@ -282,6 +282,6 @@ public class EntityEditorStaleHandler {
 					handleEditorActivated();
 				}
 			});
-		}			
+		}
 	}
 }

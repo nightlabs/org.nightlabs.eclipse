@@ -41,8 +41,8 @@ import org.nightlabs.print.page.PredefinedPageRegistry;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
-public class PredefinedPageEP 
-extends AbstractEPProcessor 
+public class PredefinedPageEP
+extends AbstractEPProcessor
 {
 	public static final String EXTENSION_POINT_ID = "org.nightlabs.base.ui.predefinedPage"; //$NON-NLS-1$
 	
@@ -66,9 +66,9 @@ extends AbstractEPProcessor
 
 	@Override
 	public void processElement(IExtension extension, IConfigurationElement element)
-	throws Exception 
+	throws Exception
 	{
-		if (element.getName().equalsIgnoreCase(ELEMENT_PAGE)) 
+		if (element.getName().equalsIgnoreCase(ELEMENT_PAGE))
 		{
 			String name = element.getAttribute(ATTRIBUTE_NAME);
 			if (!checkString(name))
@@ -80,14 +80,14 @@ extends AbstractEPProcessor
 				
 			double width;
 			try {
-				width = Double.parseDouble(element.getAttribute(ATTRIBUTE_WIDTH));				
+				width = Double.parseDouble(element.getAttribute(ATTRIBUTE_WIDTH));
 			} catch (NumberFormatException e) {
 				throw new IllegalArgumentException("width must be a double!"); //$NON-NLS-1$
 			}
 
 			double height;
 			try {
-				height = Double.parseDouble(element.getAttribute(ATTRIBUTE_HEIGHT));				
+				height = Double.parseDouble(element.getAttribute(ATTRIBUTE_HEIGHT));
 			} catch (NumberFormatException e) {
 				throw new IllegalArgumentException("height must be a double!"); //$NON-NLS-1$
 			}
@@ -101,31 +101,31 @@ extends AbstractEPProcessor
 				throw new IllegalArgumentException("There exists no unit with the unitID "+unitID); //$NON-NLS-1$
 			
 			IPredefinedPage page = new PredefinedPage(pageID, name, width, height, unit);
-			getPageRegistry().addPredefinedPage(page);							 
+			getPageRegistry().addPredefinedPage(page);
 		}
-		if (element.getName().equalsIgnoreCase(ELEMENT_PAGE_CLASS)) 
+		if (element.getName().equalsIgnoreCase(ELEMENT_PAGE_CLASS))
 		{
 			try {
 				IPredefinedPage page = (IPredefinedPage) element.createExecutableExtension(ATTRIBUTE_PAGE);
-				getPageRegistry().addPredefinedPage(page);				
+				getPageRegistry().addPredefinedPage(page);
 			} catch (CoreException ce) {
-				throw new EPProcessorException(ce); 
+				throw new EPProcessorException(ce);
 			}
 		}
 	}
 
 	private PredefinedPageRegistry pageRegistry = null;
-	public PredefinedPageRegistry getPageRegistry() 
+	public PredefinedPageRegistry getPageRegistry()
 	{
 		if (pageRegistry == null) {
-			pageRegistry = PredefinedPageRegistry .sharedInstance();			
+			pageRegistry = PredefinedPageRegistry .sharedInstance();
 		}
 		return pageRegistry;
-	}	
+	}
 	
-	private UnitRegistry getUnitRegistry() 
+	private UnitRegistry getUnitRegistry()
 	{
-		return UnitRegistryEP.sharedInstance().getUnitRegistry();			
+		return UnitRegistryEP.sharedInstance().getUnitRegistry();
 	}
 	
 	private static PredefinedPageEP registry = null;

@@ -1,6 +1,5 @@
 package org.nightlabs.base.ui.toolkit;
 
-import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Form;
@@ -58,9 +57,9 @@ public interface IToolkit {
 	/**
 	 * Checks the given Control and if necessary adds a {@link PaintListener} to the parent, so that the parent
 	 * will paint the border for the element.
-	 *  
-	 * @param element the element to check if a border painter is needed. 
-	 * @return <code>true</code> if a {@link PaintListener} has been added to the parent of the given 
+	 * 
+	 * @param element the element to check if a border painter is needed.
+	 * @return <code>true</code> if a {@link PaintListener} has been added to the parent of the given
 	 * 					control, <code>false</code> otherwise.
 	 */
 	public boolean checkForBorders(Control element);
@@ -68,7 +67,7 @@ public interface IToolkit {
 	/**
 	 * Returns the bitmask for the border style. The Toolkit can therefore exchange the standard borders,
 	 * if the elements use this method to determine the border style.
-	 *  
+	 * 
 	 * @return the bitmask for the border style.
 	 */
 	public int getBorderStyle();
@@ -106,7 +105,7 @@ public interface IToolkit {
 	 *            the section style
 	 * @return the section widget
 	 */
-	public Section createSection(Composite parent, int sectionStyle); 
+	public Section createSection(Composite parent, int sectionStyle);
 
 	/**
 	 * Creates a rich text as a part of the form.
@@ -119,7 +118,7 @@ public interface IToolkit {
 	 *            the form.
 	 * @return the rich text widget
 	 */
-	public FormText createFormText(Composite parent, boolean trackFocus); 
+	public FormText createFormText(Composite parent, boolean trackFocus);
 
 	/**
 	 * Creates a hyperlink as a part of the form. The hyperlink will be added to
@@ -133,34 +132,34 @@ public interface IToolkit {
 	 *            the hyperlink style
 	 * @return the hyperlink widget
 	 */
-	public Hyperlink createHyperlink(Composite parent, String text, int style); 
+	public Hyperlink createHyperlink(Composite parent, String text, int style);
 
 //	/**
 //	* Creates an image hyperlink as a part of the form. The hyperlink will be
 //	* added to the hyperlink group that belongs to this toolkit.
-//	* 
+//	*
 //	* @param parent
 //	*            the hyperlink parent
 //	* @param style
 //	*            the hyperlink style
 //	* @return the image hyperlink widget
 //	*/
-//	public ImageHyperlink createImageHyperlink(Composite parent, int style); 
+//	public ImageHyperlink createImageHyperlink(Composite parent, int style);
 //
 //	/**
 //	 * Creates an expandable composite as a part of the form.
-//	 * 
+//	 *
 //	 * @param parent
 //	 *            the expandable composite parent
 //	 * @param expansionStyle
 //	 *            the expandable composite style
 //	 * @return the expandable composite widget
 //	 */
-//	public ExpandableComposite createExpandableComposite(Composite parent, int expansionStyle); 
+//	public ExpandableComposite createExpandableComposite(Composite parent, int expansionStyle);
 //
 //	/**
 //	 * Creates a separator label as a part of the form.
-//	 * 
+//	 *
 //	 * @param parent
 //	 *            the separator parent
 //	 * @param style
@@ -171,7 +170,7 @@ public interface IToolkit {
 //
 //	/**
 //	 * Creates a table as a part of the form.
-//	 * 
+//	 *
 //	 * @param parent
 //	 *            the table parent
 //	 * @param style
@@ -182,7 +181,7 @@ public interface IToolkit {
 //
 //	/**
 //	 * Creates a text as a part of the form.
-//	 * 
+//	 *
 //	 * @param parent
 //	 *            the text parent
 //	 * @param value
@@ -193,7 +192,7 @@ public interface IToolkit {
 //
 //	/**
 //	 * Creates a text as a part of the form.
-//	 * 
+//	 *
 //	 * @param parent
 //	 *            the text parent
 //	 * @param value
@@ -206,7 +205,7 @@ public interface IToolkit {
 //
 //	/**
 //	 * Creates a tree widget as a part of the form.
-//	 * 
+//	 *
 //	 * @param parent
 //	 *            the tree parent
 //	 * @param style
@@ -217,7 +216,7 @@ public interface IToolkit {
 //
 //	/**
 //	 * Creates a scrolled page book widget as a part of the form.
-//	 * 
+//	 *
 //	 * @param parent
 //	 *            the page book parent
 //	 * @param style

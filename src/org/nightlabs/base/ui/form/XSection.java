@@ -29,22 +29,21 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.Section;
-import org.nightlabs.base.ui.composite.XComposite;
 
 /**
  * @author Daniel.Mazurek <at> Nightlabs <dot> de
  * @deprecated don't use this -> @see {@link XComposite}
  */
 @Deprecated
-public class XSection 
-extends Section 
+public class XSection
+extends Section
 {
 
 	/**
 	 * @param parent
 	 * @param style
 	 */
-	public XSection(Composite parent, int style) 
+	public XSection(Composite parent, int style)
 	{
 		super(parent, style);
 	}
@@ -52,17 +51,17 @@ extends Section
 	@Override
 	public Color getTitleBarBackground() {
 		return getBackground();
-	}	
+	}
 
 	@Override
 	public Color getTitleBarBorderColor() {
-		return getBackground();		
-	}	
+		return getBackground();
+	}
 	
 	@Override
 	public Color getTitleBarGradientBackground() {
-		return getBackground();	
-	}	
+		return getBackground();
+	}
 	
 	@Override
 	protected void internalSetExpanded(boolean expanded) {
@@ -71,7 +70,7 @@ extends Section
 	
 	@Override
 	protected void onPaint(PaintEvent e) {
-	}	
+	}
 	
 	
 }

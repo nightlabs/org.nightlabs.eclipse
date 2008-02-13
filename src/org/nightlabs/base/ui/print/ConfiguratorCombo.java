@@ -52,7 +52,7 @@ public class ConfiguratorCombo extends XComboComposite<ConfiguratorFactoryEntry>
 	 * @param parent
 	 * @param style
 	 */
-	@SuppressWarnings("unchecked") 
+	@SuppressWarnings("unchecked")
 	public ConfiguratorCombo(Composite parent, int style) {
 		super(parent,	style, (String) null, new LabelProvider());
 		setInput(	PrinterConfigurationRegistry.sharedInstance().getPrinterConfiguratorEntries() );

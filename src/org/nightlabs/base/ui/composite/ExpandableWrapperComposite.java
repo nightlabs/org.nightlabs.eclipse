@@ -36,7 +36,7 @@ import org.nightlabs.base.ui.NLBasePlugin;
 
 /**
  * An ExpandableComposite with an ExpansionListener that
- * re-layouts the parent composite on expansion state 
+ * re-layouts the parent composite on expansion state
  * changes. ExpandableWrapperComposite stores its expansion
  * state to the Eclipse PreferenceStore.
  * 

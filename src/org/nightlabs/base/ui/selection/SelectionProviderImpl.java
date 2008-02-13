@@ -44,21 +44,21 @@ extends SelectionProvider
 //	}
 //
 //	private ListenerList selectionListeners = new ListenerList();
-//	
+//
 ////	/**
-////	 * 
+////	 *
 ////	 * @return a Collection which contains all added selectionChangedListeners
 ////	 */
-////	protected Collection getSelectionListeners() 
+////	protected Collection getSelectionListeners()
 ////	{
 ////		return selectionListeners;
 ////	}
-////	
+////
 //	/**
 //	 * fires a SelectionChangedEvent to all added SelectionChangedListeners
 //	 *
 //	 */
-//	protected void fireSelectionChanged() 
+//	protected void fireSelectionChanged()
 //	{
 //		Object[] listeners = selectionListeners.getListeners();
 //		for (Object listener : listeners) {
@@ -68,7 +68,7 @@ extends SelectionProvider
 //	}
 //
 //	/**
-//	 * 
+//	 *
 //	 * @see org.eclipse.jface.viewers.ISelectionProvider#addSelectionChangedListener(org.eclipse.jface.viewers.ISelectionChangedListener)
 //	 */
 //	public void addSelectionChangedListener(ISelectionChangedListener listener) {
@@ -76,7 +76,7 @@ extends SelectionProvider
 //	}
 //
 //	/**
-//	 * 
+//	 *
 //	 * @see org.eclipse.jface.viewers.ISelectionProvider#getSelection()
 //	 */
 //	public ISelection getSelection() {
@@ -84,7 +84,7 @@ extends SelectionProvider
 //	}
 //
 //	/**
-//	 * 
+//	 *
 //	 * @see org.eclipse.jface.viewers.ISelectionProvider#removeSelectionChangedListener(org.eclipse.jface.viewers.ISelectionChangedListener)
 //	 */
 //	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
@@ -95,31 +95,31 @@ extends SelectionProvider
 //	 * only accepts StructuredSelections
 //	 * @see org.eclipse.jface.viewers.ISelectionProvider#setSelection(org.eclipse.jface.viewers.ISelection)
 //	 */
-//	public void setSelection(ISelection newSelection) 
+//	public void setSelection(ISelection newSelection)
 //	{
 //		if (newSelection instanceof StructuredSelection) {
 //			selection = (StructuredSelection) newSelection;
 //			selectedObjects = selection.toList();
 //			fireSelectionChanged();
-//		}		
+//		}
 //	}
 //
 //	protected StructuredSelection selection;
 //	private List selectedObjects;
-//	
-//	protected List getSelectedObjectsList() 
+//
+//	protected List getSelectedObjectsList()
 //	{
 //		if (selectedObjects == null)
 //			selectedObjects = new ArrayList();
 //
 //		return selectedObjects;
 //	}
-//	
-//	public StructuredSelection getSelectedObjects() 
+//
+//	public StructuredSelection getSelectedObjects()
 //	{
 //		if (selectedObjects == null || selectedObjects.isEmpty())
 //			return StructuredSelection.EMPTY;
-//		
+//
 //		return new StructuredSelection(selectedObjects);
 //	}
 //}

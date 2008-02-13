@@ -31,15 +31,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.nightlabs.base.ui.resource.Messages;
 
-public class DoubleFieldEditor 
-extends StringFieldEditor 
+public class DoubleFieldEditor
+extends StringFieldEditor
 {
   private double minValidValue = 0;
   private double maxValidValue = Double.MAX_VALUE;
   private static final int DEFAULT_TEXT_LIMIT = 10;
   
   /**
-   * Creates a new double field editor 
+   * Creates a new double field editor
    */
   protected DoubleFieldEditor() {
   }
@@ -160,5 +160,5 @@ extends StringFieldEditor
    */
   public double getDoubleValue() throws NumberFormatException {
       return new Double(getStringValue()).doubleValue();
-  }  
+  }
 }

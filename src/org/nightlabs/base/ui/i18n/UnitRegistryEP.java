@@ -39,8 +39,8 @@ import org.nightlabs.i18n.unit.UnitRegistry;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
-public class UnitRegistryEP 
-extends AbstractEPProcessor 
+public class UnitRegistryEP
+extends AbstractEPProcessor
 {
 	public static final String EXTENSION_POINT_ID = "org.nightlabs.base.ui.unit"; //$NON-NLS-1$
 	
@@ -65,9 +65,9 @@ extends AbstractEPProcessor
 
 	@Override
 	public void processElement(IExtension extension, IConfigurationElement element)
-	throws Exception 
+	throws Exception
 	{
-		if (element.getName().equalsIgnoreCase(ELEMENT_UNIT)) 
+		if (element.getName().equalsIgnoreCase(ELEMENT_UNIT))
 		{
 			String unitID = element.getAttribute(ATTRIBUTE_UNIT_ID);
 			if (!checkString(unitID))
@@ -79,10 +79,10 @@ extends AbstractEPProcessor
  
 			double factor;
 			try {
-				factor = Double.parseDouble(element.getAttribute(ATTRIBUTE_FACTOR));				
+				factor = Double.parseDouble(element.getAttribute(ATTRIBUTE_FACTOR));
 			} catch (NumberFormatException e) {
 				throw new IllegalArgumentException("factor must be a double!"); //$NON-NLS-1$
-			}			
+			}
 			
 			String symbol = element.getAttribute(ATTRIBUTE_SYMBOL);
 			if (!checkString(symbol))
@@ -95,7 +95,7 @@ extends AbstractEPProcessor
 			IUnit unit = new Unit(unitID, name, symbol, factor);
 			getUnitRegistry().addUnit(unit, context);
 		}
-		if (element.getName().equalsIgnoreCase(ELEMENT_UNIT_CLASS)) 
+		if (element.getName().equalsIgnoreCase(ELEMENT_UNIT_CLASS))
 		{
 			String context = element.getAttribute(ATTRIBUTE_CONTEXT);
 			if (context == null || context.equals("")) //$NON-NLS-1$
@@ -103,28 +103,28 @@ extends AbstractEPProcessor
 			
 			try {
 				IUnit unit = (IUnit) element.createExecutableExtension(ATTRIBUTE_UNIT);
-				getUnitRegistry().addUnit(unit, context);				
+				getUnitRegistry().addUnit(unit, context);
 			} catch (CoreException ce) {
-				throw new EPProcessorException(ce); 
+				throw new EPProcessorException(ce);
 			}
 		}
 	}
 
 	private UnitRegistry unitRegistry = null;
-	public UnitRegistry getUnitRegistry() 
+	public UnitRegistry getUnitRegistry()
 	{
 		if (unitRegistry == null) {
-			unitRegistry = UnitRegistry.sharedInstance();			
+			unitRegistry = UnitRegistry.sharedInstance();
 		}
 		return unitRegistry;
-	}	
+	}
 	
 	private static UnitRegistryEP registry = null;
 	public static UnitRegistryEP sharedInstance() {
 		if (registry == null) {
 			registry = new UnitRegistryEP();
 			registry.checkProcessing();
-		}		
+		}
 		return registry;
 	}
 }

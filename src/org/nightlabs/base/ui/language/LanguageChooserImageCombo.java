@@ -47,7 +47,7 @@ import org.nightlabs.language.LanguageCf;
  * @deprecated Please use the {@link LanguageChooserCombo} instead!
  */
 @Deprecated
-public class LanguageChooserImageCombo 
+public class LanguageChooserImageCombo
 extends AbstractLanguageChooser
 {
 	/**
@@ -62,7 +62,7 @@ extends AbstractLanguageChooser
 		this(parent, true, true);
 	}
 	
-	protected SelectionListener comboSelectionListener = new SelectionAdapter() 
+	protected SelectionListener comboSelectionListener = new SelectionAdapter()
 	{
 		@Override
 		public void widgetSelected(SelectionEvent selectionEvent)
@@ -114,7 +114,7 @@ extends AbstractLanguageChooser
 		}
 	}
 
-	public LanguageCf getLanguage() 
+	public LanguageCf getLanguage()
 	{
 		return languages.get(combo.getSelectionIndex());
 	}

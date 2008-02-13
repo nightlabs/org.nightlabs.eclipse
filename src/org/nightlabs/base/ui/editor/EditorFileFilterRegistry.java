@@ -36,8 +36,8 @@ import org.eclipse.core.runtime.IExtension;
 import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
 import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
 
-public class EditorFileFilterRegistry 
-extends AbstractEPProcessor 
+public class EditorFileFilterRegistry
+extends AbstractEPProcessor
 {
 	public static final String EXTENSION_POINT_ID = "org.nightlabs.base.ui.editorfilefilter"; //$NON-NLS-1$
 
@@ -49,8 +49,8 @@ extends AbstractEPProcessor
 	}
 
 	@Override
-	public void processElement(IExtension extension, IConfigurationElement element) 
-	throws Exception 
+	public void processElement(IExtension extension, IConfigurationElement element)
+	throws Exception
 	{
 		if (element.getName().equalsIgnoreCase("editorFileFilter")) { //$NON-NLS-1$
 			String pattern = element.getAttribute("pattern"); //$NON-NLS-1$
@@ -62,7 +62,7 @@ extends AbstractEPProcessor
 
 	private String globalPattern;
 	
-	public String getGlobalPattern() 
+	public String getGlobalPattern()
 	{
 		checkProcessing();
 		
@@ -78,10 +78,10 @@ extends AbstractEPProcessor
 			globalPatternSB.append('$');
 			globalPattern = globalPatternSB.toString();
 		}
-		return globalPattern;			
+		return globalPattern;
 	}
 	
-	public boolean doesMatchEditorID(String id) 
+	public boolean doesMatchEditorID(String id)
 	{
 		checkProcessing();
 		if (patterns.size() == 0)
@@ -89,7 +89,7 @@ extends AbstractEPProcessor
 		return Pattern.matches(getGlobalPattern(), id);
 	}
 
-	public List getPatterns() 
+	public List getPatterns()
 	{
 		checkProcessing();
 		return patterns;

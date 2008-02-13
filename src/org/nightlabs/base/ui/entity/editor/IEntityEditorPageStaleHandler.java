@@ -4,7 +4,6 @@
 package org.nightlabs.base.ui.entity.editor;
 
 import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.widgets.Composite;
 
@@ -12,7 +11,7 @@ import org.eclipse.swt.widgets.Composite;
  * These handlers are used by the {@link EntityEditorStaleHandler}s of {@link EntityEditor}s
  * to display changed {@link IEntityEditorPageController}s to the user
  * and present him a choice of actions.
- *  
+ * 
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  */
 public interface IEntityEditorPageStaleHandler extends Runnable {
@@ -28,12 +27,12 @@ public interface IEntityEditorPageStaleHandler extends Runnable {
 	 * in create a {@link EditingSupport} for the second column
 	 * and will use the handler to control it.
 	 * <p>
-	 * Not that this method is required to create the cellEditor lazily 
-	 * to the given parent and return this one on subsequent calls. 
-	 * </p> 
+	 * Not that this method is required to create the cellEditor lazily
+	 * to the given parent and return this one on subsequent calls.
+	 * </p>
 	 * @param parent The parent to use.
 	 * @param element The element to create the cell editor for (this instance of {@link IEntityEditorPageStaleHandler})
-	 * @return The lazily created instance of the {@link CellEditor} for this handler. 
+	 * @return The lazily created instance of the {@link CellEditor} for this handler.
 	 */
 	CellEditor getCellEditor(Composite parent, Object element);
 	/**
@@ -51,7 +50,7 @@ public interface IEntityEditorPageStaleHandler extends Runnable {
 	/**
 	 * Get the LableProvider for this handler.
 	 * It is responsible to return a value for the first and second row.
-	 * The first row should describe the controller, the second is for 
+	 * The first row should describe the controller, the second is for
 	 * the handler to retrieve user input.
 	 * @return The LabelProvider.
 	 */

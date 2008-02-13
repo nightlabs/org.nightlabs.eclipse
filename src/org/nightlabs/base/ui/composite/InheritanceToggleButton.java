@@ -43,7 +43,7 @@ extends XComposite
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {
 				widgetSelected(e);
-			}		
+			}
 		});
 		if (caption != null) {
 			captionLabel = new Label(this, SWT.NONE);

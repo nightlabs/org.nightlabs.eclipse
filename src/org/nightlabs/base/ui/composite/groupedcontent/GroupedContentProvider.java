@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
  *
  */
-public interface GroupedContentProvider {	
+public interface GroupedContentProvider {
 	public Image getGroupIcon();
 	public String getGroupTitle();
 	public Composite createGroupContent(Composite parent);

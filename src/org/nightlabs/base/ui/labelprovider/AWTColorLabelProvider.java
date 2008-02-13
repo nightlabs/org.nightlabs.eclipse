@@ -32,17 +32,17 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.nightlabs.base.ui.util.ImageUtil;
 
-public class AWTColorLabelProvider 
+public class AWTColorLabelProvider
 //implements ILabelProvider
 extends LabelProvider
-{  
-  public AWTColorLabelProvider() 
+{
+  public AWTColorLabelProvider()
   {
-    super();    
+    super();
   }
 
   @Override
-	public Image getImage(Object element) 
+	public Image getImage(Object element)
   {
     if (element instanceof Color)
       return ImageUtil.createColorImage((Color)element);
@@ -51,7 +51,7 @@ extends LabelProvider
   }
 
   @Override
-	public String getText(Object element) 
+	public String getText(Object element)
   {
     if (element instanceof Color)
     {
@@ -65,7 +65,7 @@ extends LabelProvider
   }
 
   @Override
-	public void dispose() 
+	public void dispose()
   {
   }
 }

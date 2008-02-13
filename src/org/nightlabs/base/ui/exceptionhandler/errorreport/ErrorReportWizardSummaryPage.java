@@ -65,7 +65,7 @@ public class ErrorReportWizardSummaryPage extends DynamicPathWizardPage
     overviewLabel.setText(Messages.getString("org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportWizardSummaryPage.overviewLabel.text")); //$NON-NLS-1$
     
     overviewText = new Text(page, SWT.READ_ONLY | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.WRAP);
-    overviewText.setLayoutData(new GridData(GridData.FILL_BOTH));    
+    overviewText.setLayoutData(new GridData(GridData.FILL_BOTH));
 
     return page;
 	}
@@ -101,7 +101,7 @@ public class ErrorReportWizardSummaryPage extends DynamicPathWizardPage
 //    reportData.append(NLBasePlugin.getResourceString("errorreport.summarypage.systempropertieslabel"));
 //    reportData.append(errorReport.getSystemProperties());
 //    reportData.append(NLBasePlugin.getResourceString("errorreport.summarypage.breakafter"));
-//    
+//
 //    overviewText.setText(reportData.toString());
   }
 }

@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Text;
  * Provides a Text Widget with no border
  * and the same Background as
  * its parent. As subclassing of {@link org.eclipse.swt.widgets.Widget}
- * is not allowed a static method will 
+ * is not allowed a static method will
  * create and return a Text.
  * 
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
@@ -57,7 +57,7 @@ public class DisguisedText {
 	/**
 	 * Creates a Label and a disguised Text and adds
 	 * GridDatas to them assuming that the parent has
-	 * a GridLayout with two free columns in the current row. 
+	 * a GridLayout with two free columns in the current row.
 	 * 
 	 * @param title The title
 	 * @param parent The parent composite
@@ -110,5 +110,5 @@ public class DisguisedText {
 			this.textControl = textControl;
 		}
 
-	}	
+	}
 }

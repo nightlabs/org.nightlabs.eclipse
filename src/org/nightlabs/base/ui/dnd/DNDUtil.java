@@ -40,7 +40,7 @@ public class DNDUtil
 	public static final String DROP_TARGET_MOVE = "DROP_TARGET_MOVE"; //$NON-NLS-1$
 	public static final String DROP_DEFAULT = "DROP_DEFAULT"; //$NON-NLS-1$
 	
-	public static String getStringForCode(int value) 
+	public static String getStringForCode(int value)
 	{
 		StringBuffer sb = new StringBuffer();
 		

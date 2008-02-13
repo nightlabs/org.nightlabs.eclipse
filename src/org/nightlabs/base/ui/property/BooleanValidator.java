@@ -34,10 +34,10 @@ import org.eclipse.jface.viewers.ICellEditorValidator;
  * @deprecated It seems this class is not used anymore, after Daniel has modified the cell editor handling. I didn't delete it yet, because I don't want to break anything, but this class should be deleted soon.
  */
 @Deprecated
-public class BooleanValidator 
-implements ICellEditorValidator 
+public class BooleanValidator
+implements ICellEditorValidator
 {
-  public String isValid(Object value) 
+  public String isValid(Object value)
   {
     if (value instanceof Boolean)
       return null;

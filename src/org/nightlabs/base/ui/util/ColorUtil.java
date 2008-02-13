@@ -109,18 +109,18 @@ public class ColorUtil extends org.nightlabs.util.ColorUtil
 		return new Color(Display.getDefault(),c.getRed(), c.getGreen(), c.getBlue());
 	}
 	
-	public static java.awt.Color toAWTColor(RGB rgb) 
+	public static java.awt.Color toAWTColor(RGB rgb)
 	{
 	  if (rgb == null)
       throw new IllegalArgumentException("Param rgb must not be null!"); //$NON-NLS-1$
 	  return new java.awt.Color(rgb.red, rgb.green, rgb.blue);
 	}
 	
-	public static RGB toRGB(java.awt.Color c) 
+	public static RGB toRGB(java.awt.Color c)
 	{
 	  if(c == null)
 	    throw new IllegalArgumentException("Param c must not be null!"); //$NON-NLS-1$
 	    
 	  return new RGB(c.getRed(), c.getGreen(), c.getBlue());
-	}	
+	}
 }

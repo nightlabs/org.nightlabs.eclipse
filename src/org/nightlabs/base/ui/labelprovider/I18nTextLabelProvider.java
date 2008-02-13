@@ -33,7 +33,7 @@ import org.eclipse.swt.graphics.Image;
 import org.nightlabs.base.ui.language.LanguageManager;
 import org.nightlabs.i18n.I18nText;
 
-public class I18nTextLabelProvider 
+public class I18nTextLabelProvider
 extends LabelProvider
 {
 	private String languageID;
@@ -54,7 +54,7 @@ extends LabelProvider
 	}
 	
   @Override
-	public String getText(Object element) 
+	public String getText(Object element)
   {
     if (element == null)
         return ""; //$NON-NLS-1$
@@ -67,17 +67,17 @@ extends LabelProvider
     	return i18nText.getText();
     }
 
-    return super.getText(element);    	
+    return super.getText(element);
   }
   
   @Override
-	public Image getImage(Object element) 
+	public Image getImage(Object element)
   {
   	if (showImage) {
     	if (languageID != null)
     		return LanguageManager.sharedInstance().getFlag16x16Image(languageID);
     	
-    	return LanguageManager.sharedInstance().getFlag16x16Image(Locale.getDefault().getLanguage());  		
+    	return LanguageManager.sharedInstance().getFlag16x16Image(Locale.getDefault().getLanguage());
   	}
   	return null;
  	}

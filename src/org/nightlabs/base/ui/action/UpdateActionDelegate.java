@@ -14,8 +14,8 @@ import org.eclipse.update.ui.UpdateManagerUI;
  * @author Daniel Mazurek - daniel [at] nightlabs [dot] de
  *
  */
-public class UpdateActionDelegate 
-implements IWorkbenchWindowActionDelegate 
+public class UpdateActionDelegate
+implements IWorkbenchWindowActionDelegate
 {
 	private Shell shell = null;
 	public void dispose() {
@@ -27,7 +27,7 @@ implements IWorkbenchWindowActionDelegate
 	}
 
 	public void run(IAction action) {
-		UpdateManagerUI.openInstaller(shell); 
+		UpdateManagerUI.openInstaller(shell);
 	}
 
 	public void selectionChanged(IAction action, ISelection selection) {

@@ -41,8 +41,8 @@ import org.nightlabs.base.ui.action.IUpdateActionOrContributionItem;
  * 
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  */
-public class ToolBarSectionPart 
-extends MessageSectionPart 
+public class ToolBarSectionPart
+extends MessageSectionPart
 {
 	private ToolBar toolBar;
 	private ToolBarManager toolBarManager;
@@ -107,11 +107,11 @@ extends MessageSectionPart
 	 * This should be called after contributing to the ToolBarManager ({@link #getToolBarManager()})
 	 * and everytime you want the actions to be updated.
 	 * <p>
-	 * This iterates all {@link IAction}s registered by {@link #registerAction(IAction, boolean)} 
+	 * This iterates all {@link IAction}s registered by {@link #registerAction(IAction, boolean)}
 	 * and sets their enablement state according to their {@link IUpdateActionOrContributionItem#calculateEnabled()} method.
 	 * </p>
 	 */
-	public void updateToolBarManager() 
+	public void updateToolBarManager()
 	{
 //		for (int i=0; i<getToolBarManager().getItems().length; i++) {
 //			IContributionItem item = getToolBarManager().getItems()[i];

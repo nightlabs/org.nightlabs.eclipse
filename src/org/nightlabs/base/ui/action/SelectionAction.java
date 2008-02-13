@@ -38,11 +38,11 @@ import org.eclipse.jface.viewers.StructuredSelection;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
-public abstract class SelectionAction 
-extends Action 
-implements ISelectionAction 
-{	
-	public SelectionAction() {		
+public abstract class SelectionAction
+extends Action
+implements ISelectionAction
+{
+	public SelectionAction() {
 	}
 
 	/**
@@ -73,7 +73,7 @@ implements ISelectionAction
 	/* (non-Javadoc)
 	 * @see org.nightlabs.base.ui.action.ISelectionAction#getSelectedObjects()
 	 */
-	public List getSelectedObjects() 
+	public List getSelectedObjects()
 	{
 		if (!(getSelection() instanceof IStructuredSelection))
 			return Collections.EMPTY_LIST;
@@ -83,7 +83,7 @@ implements ISelectionAction
 	/* (non-Javadoc)
 	 * @see org.nightlabs.base.ui.action.ISelectionAction#getSelection()
 	 */
-	public ISelection getSelection() 
+	public ISelection getSelection()
 	{
 		if (selection == null)
 			selection = new StructuredSelection(Collections.EMPTY_LIST);

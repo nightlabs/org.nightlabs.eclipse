@@ -67,7 +67,7 @@ public class OutOfMemoryErrorDialog extends DefaultErrorDialog {
 				System.exit(1);
 			}
 		}
-		else			
+		else
 			super.buttonPressed(id);
 	}
 	

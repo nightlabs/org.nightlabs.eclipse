@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 
-public class CheckboxCellEditor  
+public class CheckboxCellEditor
 extends XCellEditor
 {
   protected Button checkbox;
@@ -70,7 +70,7 @@ extends XCellEditor
 	 * nothing and returns <code>null</code>.
 	 */
 	@Override
-	protected Control createControl(Composite parent) 
+	protected Control createControl(Composite parent)
 	{
 	   checkbox = new Button(parent, getStyle() | SWT.CHECK);
 	   return checkbox;
@@ -101,7 +101,7 @@ extends XCellEditor
 	 * @param value a Boolean value
 	 */
 	@Override
-	protected void doSetValue(Object value) 
+	protected void doSetValue(Object value)
 	{
 		if (isReadOnly())
 			return;

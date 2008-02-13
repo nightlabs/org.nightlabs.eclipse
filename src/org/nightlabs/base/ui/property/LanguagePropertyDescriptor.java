@@ -34,7 +34,7 @@ import org.nightlabs.base.ui.celleditor.LanguageCellEditor;
 import org.nightlabs.base.ui.labelprovider.LanguageLabelProvider;
 import org.nightlabs.i18n.I18nText;
 
-public class LanguagePropertyDescriptor 
+public class LanguagePropertyDescriptor
 extends PropertyDescriptor
 {
 	protected I18nText text;
@@ -44,18 +44,18 @@ extends PropertyDescriptor
 	}
 	
   @Override
-	public ILabelProvider getLabelProvider() 
+	public ILabelProvider getLabelProvider()
   {
   	return new LanguageLabelProvider(text);
 	}
 
 	@Override
-	public CellEditor createPropertyEditor(Composite parent) 
+	public CellEditor createPropertyEditor(Composite parent)
   {
     CellEditor editor = new LanguageCellEditor(text, parent);
     if (getValidator() != null)
       editor.setValidator(getValidator());
     return editor;
-  } 
+  }
 
 }

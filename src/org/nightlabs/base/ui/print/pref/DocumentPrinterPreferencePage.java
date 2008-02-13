@@ -52,7 +52,7 @@ public class DocumentPrinterPreferencePage
 extends PreferencePage
 implements IWorkbenchPreferencePage {
 
-	private XComposite wrapper; 
+	private XComposite wrapper;
 	
 	private String editedFileExt = null;
 	private EditDocumentPrinterTypeRegsComposite typeRegsComposite;

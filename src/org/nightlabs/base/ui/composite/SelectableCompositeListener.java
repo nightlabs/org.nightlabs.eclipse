@@ -38,7 +38,7 @@ public interface SelectableCompositeListener {
 	/**
 	 * Will be called when the selection state of a
 	 * SelectableComposite changes.
-	 *  
+	 * 
 	 * @param evt
 	 */
 	public void selectionStateChanged(CompositeSelectionEvent evt);

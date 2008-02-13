@@ -30,9 +30,9 @@ public class TimePatternSetBuilderEntryWizardPage extends WizardHopPage {
 	private List<ITimePatternSetBuilderWizardHop> builderHops = new ArrayList<ITimePatternSetBuilderWizardHop>();
 	private ITimePatternSetBuilderWizardHop currentBuilderHop;
 	
-	public TimePatternSetBuilderEntryWizardPage() {		
+	public TimePatternSetBuilderEntryWizardPage() {
 		super(
-				TimePatternSetBuilderEntryWizardPage.class.getName(), 
+				TimePatternSetBuilderEntryWizardPage.class.getName(),
 				Messages.getString("org.nightlabs.base.ui.timepattern.builder.TimePatternSetBuilderEntryWizardPage.title") //$NON-NLS-1$
 			);
 		setDescription(Messages.getString("org.nightlabs.base.ui.timepattern.builder.TimePatternSetBuilderEntryWizardPage.description")); //$NON-NLS-1$
@@ -101,7 +101,7 @@ public class TimePatternSetBuilderEntryWizardPage extends WizardHopPage {
 						if (getWizard() instanceof DynamicPathWizard) {
 							DynamicPathWizard wiz = (DynamicPathWizard)getWizard();
 							wiz.addDynamicWizardPage(currentBuilderHop.getEntryPage());
-						}					
+						}
 					}
 					getContainer().updateButtons();
 				}

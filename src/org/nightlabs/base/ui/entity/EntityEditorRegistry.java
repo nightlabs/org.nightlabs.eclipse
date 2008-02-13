@@ -79,7 +79,7 @@ public class EntityEditorRegistry extends AbstractEPProcessor
 
 	/**
 	 * BindingCarrier used to store and sort references/uses
-	 * of {@link IEntityTreeCategory}s. 
+	 * of {@link IEntityTreeCategory}s.
 	 */
 	private class BindingCarrier implements Comparable<BindingCarrier> {
 		private String categoryID;
@@ -209,8 +209,8 @@ public class EntityEditorRegistry extends AbstractEPProcessor
 	protected void processViewBinding(
 			IExtension extension, IConfigurationElement element,
 			String categoryID, IEntityTreeCategory category
-		) 
-	throws EPProcessorException, CoreException 
+		)
+	throws EPProcessorException, CoreException
 	{
 		String clazz = element.getAttribute("class"); //$NON-NLS-1$
 		IEntityTreeCategoryViewBinding viewBinding = null;
@@ -237,11 +237,11 @@ public class EntityEditorRegistry extends AbstractEPProcessor
 	}
 
 	/**
-	 * Overrides to resolve and sort the category bindings 
+	 * Overrides to resolve and sort the category bindings
 	 * after processing is done.
 	 */
 	@Override
-	public synchronized void process() 
+	public synchronized void process()
 	{
 		super.process();
 		category2Bindings = new HashMap<IEntityTreeCategory, Collection<IEntityTreeCategoryBinding>>();
@@ -251,7 +251,7 @@ public class EntityEditorRegistry extends AbstractEPProcessor
 				
 				Collection<IEntityTreeCategoryBinding> catBindings = category2Bindings.get(binding.getBinding().getEntityTreeCategory());
 				if (catBindings == null) {
-					catBindings = new HashSet<IEntityTreeCategoryBinding>(); 
+					catBindings = new HashSet<IEntityTreeCategoryBinding>();
 					category2Bindings.put(binding.getBinding().getEntityTreeCategory(), catBindings);
 				}
 				catBindings.add(binding.getBinding());
@@ -263,7 +263,7 @@ public class EntityEditorRegistry extends AbstractEPProcessor
 	/**
 	 * Get the category bindings to the given viewID.
 	 * 
-	 * @param viewID The id of the view registered categories should be searched for. 
+	 * @param viewID The id of the view registered categories should be searched for.
 	 * @return The view bindings for the given viewID.
 	 */
 	public IEntityTreeCategoryBinding[] getViewBindings(String viewID)
@@ -283,10 +283,10 @@ public class EntityEditorRegistry extends AbstractEPProcessor
 	}
 
 	/**
-	 * Returns all bindings of the given category in a new Set 
+	 * Returns all bindings of the given category in a new Set
 	 * (which can be modified, without changing the registration)
 	 * 
-	 * @param category The category all bindings should be searched for. 
+	 * @param category The category all bindings should be searched for.
 	 * @return All bindings of the given category.
 	 */
 	public Set<IEntityTreeCategoryBinding> getCategoryBindings(IEntityTreeCategory category) {

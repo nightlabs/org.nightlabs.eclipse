@@ -12,9 +12,9 @@ import org.nightlabs.timepattern.TimePatternSet;
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  *
  */
-public class DailyTimePatternBuilderHop 
-extends WizardHop 
-implements ITimePatternSetBuilderWizardHop 
+public class DailyTimePatternBuilderHop
+extends WizardHop
+implements ITimePatternSetBuilderWizardHop
 {
 
 	/**
@@ -28,11 +28,11 @@ implements ITimePatternSetBuilderWizardHop
 		return Messages.getString("org.nightlabs.base.ui.timepattern.builder.DailyTimePatternBuilderHop.hopDescription"); //$NON-NLS-1$
 	}
 
-	public void configureTimePatternSet(TimePatternSet timePatternSet) 
-	throws TimePatternFormatException 
+	public void configureTimePatternSet(TimePatternSet timePatternSet)
+	throws TimePatternFormatException
 	{
 		DailyTimePatternBuilderHopPage page = (DailyTimePatternBuilderHopPage) getEntryPage();
-		page.configureTimePatternSet(timePatternSet.createTimePattern());		
+		page.configureTimePatternSet(timePatternSet.createTimePattern());
 	}
 
 }

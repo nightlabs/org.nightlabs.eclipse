@@ -36,8 +36,8 @@ import org.nightlabs.base.ui.table.InvertableSorter;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
-public class TreeSortSelectionListener 
-implements SelectionListener 
+public class TreeSortSelectionListener
+implements SelectionListener
 {
 	private final TreeViewer viewer;
 	private final TreeColumn column;
@@ -61,7 +61,7 @@ implements SelectionListener
 	public TreeSortSelectionListener(TreeViewer viewer, TreeColumn column,
 			InvertableSorter sorter, int defaultDirection) {
 		this(viewer, column, sorter, defaultDirection, false);
-	}	
+	}
 	
 	/**
 	 * The constructor of this listener.
@@ -83,7 +83,7 @@ implements SelectionListener
 	 *
 	 * @deprecated This constructor is deprecated, because the behaviour "keepDirection"
 	 *		should be global (=> configuration) and not differ from view to view. (Marco)
-	 */	
+	 */
 	@Deprecated
 	public TreeSortSelectionListener(TreeViewer viewer, TreeColumn column,
 			InvertableSorter sorter, int defaultDirection,
@@ -96,20 +96,20 @@ implements SelectionListener
 		this.currentSorter = this.sorter;
 
 		this.column.addSelectionListener(this);
-	}	
+	}
 	
 	/**
 	 * Chooses the colum of this listener for sorting of the table. Mainly used
 	 * when first initialising the table.
 	 */
-	public void chooseColumnForSorting() 
+	public void chooseColumnForSorting()
 	{
 		viewer.getTree().setSortColumn(column);
 		viewer.getTree().setSortDirection(currentSorter.getSortDirection());
 		viewer.setSorter(currentSorter);
 		
 		System.out.println("sort Column = "+column.getText()); //$NON-NLS-1$
-	}	
+	}
 	
 	public void widgetDefaultSelected(SelectionEvent e) {
 		widgetSelected(e);

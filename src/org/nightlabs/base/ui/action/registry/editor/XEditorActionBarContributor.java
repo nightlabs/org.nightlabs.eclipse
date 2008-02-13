@@ -24,7 +24,7 @@ import org.nightlabs.base.ui.action.registry.ActionDescriptor;
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  *
  */
-public class XEditorActionBarContributor 
+public class XEditorActionBarContributor
 extends EditorActionBarContributor
 implements ISelectionChangedListener
 {
@@ -36,20 +36,20 @@ implements ISelectionChangedListener
 	public XEditorActionBarContributor() {
 	}
 	
-	private ISelectionListener selectionListener = new ISelectionListener(){	
+	private ISelectionListener selectionListener = new ISelectionListener(){
 		public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 //			if (part.equals(activeEditor)) {
 				updateSelectionSections(selection);
-				updateActions();									
+				updateActions();
 //			}
 			logger.debug("selection changed"); //$NON-NLS-1$
-		}	
+		}
 	};
 	
 //	private ISelectionChangedListener selectionChangedListener = new ISelectionChangedListener(){
 		public void selectionChanged(SelectionChangedEvent event) {
 			updateSelectionSections(event.getSelection());
-			updateActions();	
+			updateActions();
 			logger.debug("selection changed"); //$NON-NLS-1$
 		}
 //	};
@@ -58,15 +58,15 @@ implements ISelectionChangedListener
 //		return selectionChangedListener;
 //	}
 	
-	public AbstractActionRegistry getActionRegistry() 
+	public AbstractActionRegistry getActionRegistry()
 	{
-		if (actionRegistry == null && getActiveEditor() != null) 
+		if (actionRegistry == null && getActiveEditor() != null)
 			actionRegistry = EditorActionBarContributorRegistry.sharedInstance().getActionRegistry(
 					getActiveEditor().getEditorSite().getId());
 		return actionRegistry;
 	}
 	
-	protected void updateActions() 
+	protected void updateActions()
 	{
 		if (getActionRegistry() != null) {
 			for (ActionDescriptor actionDescriptor : getActionRegistry().getActionDescriptors()) {
@@ -78,11 +78,11 @@ implements ISelectionChangedListener
 					if (logger.isDebugEnabled())
 						logger.debug("enabled = "+enabled+" for action "+actionDescriptor.getAction().getId()); //$NON-NLS-1$ //$NON-NLS-2$
 				}
-			}			
+			}
 		}
 	}
 	
-	protected void updateSelectionSections(ISelection selection) 
+	protected void updateSelectionSections(ISelection selection)
 	{
 		if (getActionRegistry() == null)
 			return;
@@ -91,11 +91,11 @@ implements ISelectionChangedListener
 				ISelectionAction selectionAction = (ISelectionAction) actionDescriptor.getAction();
 				selectionAction.setSelection(selection);
 			}
-		}		
+		}
 	}
 	
 	@Override
-	public void setActiveEditor(IEditorPart targetEditor) 
+	public void setActiveEditor(IEditorPart targetEditor)
 	{
 		if (logger.isDebugEnabled())
 			logger.debug("setActiveEditor called"); //$NON-NLS-1$
@@ -126,7 +126,7 @@ implements ISelectionChangedListener
 //		updateSelectionSections(activeEditor.getSite().getPage().getSelection());
 		if (activeEditor.getSite().getSelectionProvider() != null) {
 			activeEditor.getSite().getSelectionProvider().addSelectionChangedListener(this);
-			updateSelectionSections(activeEditor.getSite().getSelectionProvider().getSelection());			
+			updateSelectionSections(activeEditor.getSite().getSelectionProvider().getSelection());
 		}
 
 		updateActions();
@@ -136,7 +136,7 @@ implements ISelectionChangedListener
 			contributeToToolBar(getActionBars().getToolBarManager());
 		
 		if (contributedToMenu && !activeEditor.equals(oldEditorPart))
-			contributeToMenu(getActionBars().getMenuManager());		
+			contributeToMenu(getActionBars().getMenuManager());
 	}
 	
 	public IEditorPart getActiveEditor() {
@@ -145,7 +145,7 @@ implements ISelectionChangedListener
 	
 //	private boolean contributedToCoolBar = false;
 	@Override
-	public void contributeToCoolBar(ICoolBarManager coolBarManager) 
+	public void contributeToCoolBar(ICoolBarManager coolBarManager)
 	{
 //		contributedToCoolBar = true;
 		updateActions();
@@ -155,7 +155,7 @@ implements ISelectionChangedListener
 	
 	private boolean contributedToToolBar = false;
 	@Override
-	public void contributeToToolBar(IToolBarManager toolBarManager) 
+	public void contributeToToolBar(IToolBarManager toolBarManager)
 	{
 		contributedToToolBar = true;
 		updateActions();
@@ -165,7 +165,7 @@ implements ISelectionChangedListener
 	
 	private boolean contributedToMenu = false;
 	@Override
-	public void contributeToMenu(IMenuManager menuManager) 
+	public void contributeToMenu(IMenuManager menuManager)
 	{
 		contributedToMenu = true;
 		updateActions();

@@ -38,7 +38,7 @@ import org.nightlabs.print.PrinterInterface;
  */
 public class PrinterConfiguratorDefault implements PrinterConfigurator {
 
-//	private static Logger logger = Logger.getLogger(PrinterConfiguratorDefault.class); 
+//	private static Logger logger = Logger.getLogger(PrinterConfiguratorDefault.class);
 	
 	private PrinterConfiguration initialConfiguration;
 	private PrinterConfiguratorComposite configuratorComposite;
@@ -90,7 +90,7 @@ public class PrinterConfiguratorDefault implements PrinterConfigurator {
 	 */
 	public void assignPrinterConfigurationInterface(
 			PrinterConfiguration printerConfiguration, PrinterInterface printerInterface
-		) 
+		)
 	{
 		// TODO Auto-generated method stub
 	}
