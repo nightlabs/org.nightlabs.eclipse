@@ -33,6 +33,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.nightlabs.base.ui.io.IOFilterRegistry;
+import org.nightlabs.base.ui.util.RCPUtil;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.viewer.ui.AbstractViewerDialog;
 import org.nightlabs.editor2d.viewer.ui.ViewerPlugin;
@@ -62,7 +63,7 @@ extends Action
 	@Override
 	public void run()
 	{
-		FileDialog fileDialog = new FileDialog(Display.getDefault().getActiveShell());
+		FileDialog fileDialog = new FileDialog(RCPUtil.getActiveShell());
 		IOFilterMan ioFilterMan = IOFilterRegistry.sharedInstance().getIOFilterMan();
 //		String[] fileExtensions = ioFilterMan.getAvailableFileExtensionsAsStrings(true);
 		String[] fileExtensions = ioFilterMan.getReadFileExtensions(true);
