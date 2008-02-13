@@ -244,7 +244,7 @@ public class EditDocumentPrinterTypeRegsComposite extends XComposite {
 	}
 
 	public static String openFileExtDlg() {
-		FileExtDialog dlg = new FileExtDialog(RCPUtil.getActiveWorkbenchShell());
+		FileExtDialog dlg = new FileExtDialog(RCPUtil.getActiveShell());
 		if (dlg.open() == Window.OK)
 			return dlg.getFileExt();
 		else

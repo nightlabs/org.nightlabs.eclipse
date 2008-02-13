@@ -97,7 +97,7 @@ extends Action
 	@Override
 	public void run()
 	{
-		FileDialog dialog = new FileDialog(Display.getDefault().getActiveShell(), SWT.OPEN);
+		FileDialog dialog = new FileDialog(RCPUtil.getActiveShell(), SWT.OPEN);
 		IEditorRegistry editorRegistry = PlatformUI.getWorkbench().getEditorRegistry();
 		String[] fileExtensions = getFileExtensions(editorRegistry);
 		dialog.setFilterExtensions(fileExtensions);

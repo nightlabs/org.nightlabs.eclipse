@@ -47,7 +47,7 @@ public class PrintDocumentAction implements IWorkbenchWindowActionDelegate {
 	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
 	 */
 	public void run(IAction arg0) {
-		FileDialog fileDialog = new FileDialog(RCPUtil.getActiveWorkbenchShell());
+		FileDialog fileDialog = new FileDialog(RCPUtil.getActiveShell());
 		String fileName = fileDialog.open();
 		if (fileName != null) {
 			try {

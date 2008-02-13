@@ -25,7 +25,7 @@ extends Action
 
 	@Override
 	public void run() {
-		UpdateManagerUI.openInstaller(RCPUtil.getActiveWorkbenchShell());
+		UpdateManagerUI.openInstaller(RCPUtil.getActiveShell());
 	}
 
 }

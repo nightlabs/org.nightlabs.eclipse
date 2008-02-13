@@ -237,7 +237,7 @@ extends AbstractContributionItem
 	  	toolItem.setWidth(100);
 	  	
 			toolBar = parent;
-	  	menu = createMenu(new Menu(RCPUtil.getActiveWorkbenchShell(), SWT.POP_UP));
+	  	menu = createMenu(new Menu(RCPUtil.getActiveShell(), SWT.POP_UP));
 	  	final ToolItem searchItem = new ToolItem(parent, SWT.DROP_DOWN);
 	  	searchItem.setImage(SharedImages.getSharedImage(NLBasePlugin.getDefault(),
 					SearchContributionItem.class));
@@ -341,7 +341,7 @@ extends AbstractContributionItem
 					dispose();
 				}
 			});
-	  	menu = createMenu(new Menu(RCPUtil.getActiveWorkbenchShell(), SWT.POP_UP));
+	  	menu = createMenu(new Menu(RCPUtil.getActiveShell(), SWT.POP_UP));
 	  	
 	  	toolItem = new ToolItem(toolBar, SWT.SEPARATOR);
 	  	createText(toolBar);

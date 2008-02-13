@@ -82,7 +82,7 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 	public DefaultErrorDialog()
 	{
 		super(
-				RCPUtil.getActiveWorkbenchShell(),
+				RCPUtil.getActiveShell(),
 				JFaceResources.getString("Problem_Occurred"), //$NON-NLS-1$
 				null,
 				JFaceResources.getString("Problem_Occurred"), //$NON-NLS-1$

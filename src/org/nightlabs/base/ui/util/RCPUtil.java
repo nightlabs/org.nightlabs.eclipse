@@ -75,6 +75,8 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.nightlabs.base.ui.composite.ChildStatusController;
+import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.layout.WeightedTableLayout;
 import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.util.IOUtil;
@@ -285,12 +287,35 @@ public class RCPUtil
 	}
 
 	/**
-	 * Returns the active WorkbenchWindow's shell.
-	 * @return The active WorkbenchWindow's shell.
+	 * Returns the active WorkbenchWindow's shell. In most use cases (e.g. opening a dialog), you should instead use {@link #getActiveShell()}.
+	 * @return The active WorkbenchWindow's shell or <code>null</code>, if there is no active workbench window (or if its {@link IWorkbenchWindow#getShell()} method returns <code>null</code>).
+	 * @see #getActiveShell()
 	 */
 	public static Shell getActiveWorkbenchShell() {
 		IWorkbenchWindow window = getActiveWorkbenchWindow();
 		return window == null ? null : window.getShell();
+	}
+
+	/**
+	 * Returns the active shell. This method first calls {@link Display#getActiveShell()}. If this returns <code>null</code>,
+	 * it calls {@link #getActiveWorkbenchShell()}.
+	 *
+	 * @return The active shell or <code>null</code>, if there is neither a global active shell nor an active workbench shell.
+	 */
+	public static Shell getActiveShell()
+	{
+		Shell shell = null;
+
+		if (Display.getCurrent() != null)
+			shell = Display.getCurrent().getActiveShell();
+
+		if (shell == null)
+			shell = Display.getDefault().getActiveShell();
+
+		if (shell == null)
+			shell = getActiveWorkbenchShell();
+
+		return shell;
 	}
 
 	/**
@@ -336,7 +361,7 @@ public class RCPUtil
 	 */
 	public static void showErrorDialog(String message)
 	{
-		MessageDialog.openError(getActiveWorkbenchShell(), Messages.getString("org.nightlabs.base.ui.util.RCPUtil.showErrorDialog.title"), message); //$NON-NLS-1$
+		MessageDialog.openError(getActiveShell(), Messages.getString("org.nightlabs.base.ui.util.RCPUtil.showErrorDialog.title"), message); //$NON-NLS-1$
 	}
 
 	/**
@@ -349,7 +374,7 @@ public class RCPUtil
 	public static boolean showConfirmOverwriteDialog(String fileName)
 	{
 		return MessageDialog.openConfirm(
-				getActiveWorkbenchShell(),
+				getActiveShell(),
 				Messages.getString("org.nightlabs.base.ui.util.RCPUtil.showConfirmOverwriteDialog.title"), //$NON-NLS-1$
 				String.format(Messages.getString("org.nightlabs.base.ui.util.RCPUtil.showConfirmOverwriteDialog.message"), new Object[] { fileName }) //$NON-NLS-1$
 			);
@@ -659,7 +684,7 @@ public class RCPUtil
 	public static void clearWorkspace(boolean ask)
 	{
 		if (ask) {
-			boolean ok = MessageDialog.openConfirm(RCPUtil.getActiveWorkbenchShell(),
+			boolean ok = MessageDialog.openConfirm(RCPUtil.getActiveShell(),
 					Messages.getString("org.nightlabs.base.ui.util.RCPUtil.clearWorkspace.title"), Messages.getString("org.nightlabs.base.ui.util.RCPUtil.clearWorkspace.message")); //$NON-NLS-1$ //$NON-NLS-2$
 			if (!ok)
 				return;
@@ -749,7 +774,7 @@ public class RCPUtil
 	}
 	
 	/**
-	 * Workaround method to apply normal {@link ColumnLayoutData}s to a table used in a {@link Form} with GridLayout.
+	 * Workaround method to apply normal {@link ColumnLayoutData}s to a table used in a {@link org.eclipse.ui.forms.widgets.Form} with GridLayout.
 	 * This prevents the table to calculate a wrong size in a {@link Form} and to let the Section grow on every resize.
 	 * 
 	 * @param table The table to layout that has already a TableLayout set.

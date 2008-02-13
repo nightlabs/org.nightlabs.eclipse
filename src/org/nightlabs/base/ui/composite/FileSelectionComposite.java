@@ -113,7 +113,7 @@ public abstract class FileSelectionComposite
 				@Override
 				public void widgetSelected(SelectionEvent e)
 				{
-					DirectoryDialog fileDialog = new DirectoryDialog(RCPUtil.getActiveWorkbenchShell());
+					DirectoryDialog fileDialog = new DirectoryDialog(RCPUtil.getActiveShell());
 					setUpFileDialog(fileDialog);
 					String selectedFile = fileDialog.open();
 					if (selectedFile != null) {
@@ -154,7 +154,7 @@ public abstract class FileSelectionComposite
 				@Override
 				public void widgetSelected(SelectionEvent e)
 				{
-					FileDialog fileDialog = new FileDialog(RCPUtil.getActiveWorkbenchShell());
+					FileDialog fileDialog = new FileDialog(RCPUtil.getActiveShell());
 					setUpFileDialog(fileDialog);
 					String selectedFile = fileDialog.open();
 					if (selectedFile != null) {

@@ -86,7 +86,7 @@ extends XComposite {
 				@Override
 				public void widgetSelected(SelectionEvent e)
 				{
-					FileDialog fileDialog = new FileDialog(RCPUtil.getActiveWorkbenchShell(), SWT.OPEN);
+					FileDialog fileDialog = new FileDialog(RCPUtil.getActiveShell(), SWT.OPEN);
 					String selectedFile = fileDialog.open();
 					if (selectedFile != null) {
 						File file = getFile(selectedFile);

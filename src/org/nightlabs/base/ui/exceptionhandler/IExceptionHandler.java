@@ -28,21 +28,20 @@ package org.nightlabs.base.ui.exceptionhandler;
 
 /**
  * Simple Interface for exception handling. Implement this to extend
- * extension-point "org.nightlabs.ipanema.rcp.eventloopexceptionhandler".
- * 
- * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
+ * extension-point "org.nightlabs.base.ui.exceptionhandler".
  *
+ * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
  */
 public interface IExceptionHandler {
 	/**
 	 * Method called to handle uncaught exceptions.
 	 * It will always be executed on the GUI thread.
-	 * 
+	 *
 	 * @param thread The thread the exception was thrown on.
 	 * @param thrownException The Exception actually thrown.
-	 * @param triggerException The Exception exception that caused the caller
+	 * @param triggerException The Exception that caused the caller
 	 *                         to pick this particular handler so this always should be
-	 *                         the Exception the handler was registered on
+	 *                         the Exception type the handler was registered on.
 	 */
 	public void handleException(Thread thread, Throwable thrownException, Throwable triggerException);
 }

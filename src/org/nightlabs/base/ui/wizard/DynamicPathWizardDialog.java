@@ -58,7 +58,7 @@ public class DynamicPathWizardDialog extends WizardDialog
 	 */
 	public DynamicPathWizardDialog(DynamicPathWizard wizard)
 	{
-		this(RCPUtil.getActiveWorkbenchShell(), wizard);
+		this(RCPUtil.getActiveShell(), wizard);
 	}
 
 	/**

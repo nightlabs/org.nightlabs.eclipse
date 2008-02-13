@@ -105,7 +105,7 @@ public class EditPrinterConfigurationDialog extends CenteredDialog {
 	 */
 	public static PrinterConfiguration openDialog(String printerUseCaseID, boolean preSelectionDoStore) {
 		EditPrinterConfigurationDialog dlg = new EditPrinterConfigurationDialog(
-				RCPUtil.getActiveWorkbenchShell(),
+				RCPUtil.getActiveShell(),
 				printerUseCaseID,
 				preSelectionDoStore
 			);

@@ -204,7 +204,7 @@ public class EntityEditorStaleHandler {
 		boolean openDialog = false;
 		synchronized (mutex) {
 			if (staleHandlers != null && staleHandlers.size() > 0 && staleHandlerDialog == null) {
-				staleHandlerDialog = new StaleHandlerDialog(Display.getDefault().getActiveShell());
+				staleHandlerDialog = new StaleHandlerDialog(RCPUtil.getActiveShell());
 				openDialog = true;
 			}
 		}
@@ -265,7 +265,7 @@ public class EntityEditorStaleHandler {
 			// handlers have to be presented to the user right away.
 			Display.getDefault().syncExec(new Runnable() {
 				public void run() {
-					Shell shell = RCPUtil.getActiveWorkbenchShell();
+					Shell shell = RCPUtil.getActiveShell();
 					if (shell != null) {
 						if (shellDeactivated)
 							return;
