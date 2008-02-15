@@ -22,8 +22,8 @@ public abstract class Job extends org.eclipse.core.runtime.jobs.Job {
 
 	private ProgressMonitorWrapper progressMonitorWrapper;
 	private IProgressMonitor progressMonitor;
-	private ProgressMonitorWrapper subProgressMonitorWrapper;
-	private IProgressMonitor subProgressMonitor;
+//	private ProgressMonitorWrapper subProgressMonitorWrapper;
+//	private IProgressMonitor subProgressMonitor;
 	
 	/**
 	 * Create a new Job with the given name.
@@ -47,13 +47,16 @@ public abstract class Job extends org.eclipse.core.runtime.jobs.Job {
 	 */
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
-		this.progressMonitor = monitor;
 		IStatus status;
+		this.progressMonitor = monitor;
 		try {
 			status = run(getProgressMonitorWrapper());
 		} catch (Throwable t) {
 			status = Status.CANCEL_STATUS;
 			ExceptionHandlerRegistry.asyncHandleException(t);
+		} finally {
+			this.progressMonitor = null;
+			this.progressMonitorWrapper = null;
 		}
 		return status;
 	}
@@ -101,17 +104,34 @@ public abstract class Job extends org.eclipse.core.runtime.jobs.Job {
 	 * 
 	 * @param subTicks The number of ticks the sub-task wants to notify.
 	 * @return A {@link ProgressMonitorWrapper} wrapping around a {@link SubProgressMonitor} to the {@link IProgressMonitor} of this Job.
+	 * @deprecated Use {@link #createSubProgressMonitorWrapper(int)} instead
 	 */
+	@Deprecated
 	public ProgressMonitorWrapper getSubProgressMonitorWrapper(int subTicks) {
-		if (subProgressMonitorWrapper == null) {
-			if (progressMonitor == null)
-				throw new IllegalStateException("getSubProgressMonitorWrapper must not be called before run(IProgressMonitor) was invoked."); //$NON-NLS-1$
-			subProgressMonitor = new SubProgressMonitor(progressMonitor, subTicks);
-			subProgressMonitorWrapper = new ProgressMonitorWrapper(subProgressMonitor);
-		}
-		return subProgressMonitorWrapper;
+		return createSubProgressMonitorWrapper(subTicks);
+	}
+
+	/**
+	 * Returns a {@link ProgressMonitorWrapper} wrapping around a {@link SubProgressMonitor} to the {@link IProgressMonitor} of this Job.
+	 * <p>
+	 * Note that this is set when the Job runs and will not
+	 * be accessible before {@link #run(IProgressMonitor)} was invoked and
+	 * an {@link IllegalStateException} will be thrown then.
+	 * </p>
+	 * 
+	 * @param subTicks The number of ticks the sub-task wants to notify.
+	 * @return A {@link ProgressMonitorWrapper} wrapping around a {@link SubProgressMonitor} to the {@link IProgressMonitor} of this Job.
+	 */
+	public ProgressMonitorWrapper createSubProgressMonitorWrapper(int subTicks) {
+		if (progressMonitor == null)
+			throw new IllegalStateException("getSubProgressMonitorWrapper must not be called before run(IProgressMonitor) was invoked."); //$NON-NLS-1$
+		return new ProgressMonitorWrapper(createSubProgressMonitor(subTicks));
 	}
 	
+	private SubProgressMonitor createSubProgressMonitor(int subTicks) {
+		return new SubProgressMonitor(progressMonitor, subTicks);
+	}
+
 	/**
 	 * Retuns the {@link IProgressMonitor} this Job runs with.
 	 * <p>
