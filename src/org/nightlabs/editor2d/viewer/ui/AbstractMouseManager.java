@@ -50,21 +50,7 @@ implements IMouseManager
 	public IViewer getViewer() {
 		return viewer;
 	}
-	
-//	protected double zoom = 1.0d;
-//	protected IZoomListener zoomListener = new IZoomListener()
-//	{
-//		public void zoomChanged(double zoom) {
-//			AbstractMouseManager.this.zoom = zoom;
-//		}
-//	};
-//	public IZoomListener getZoomListener() {
-//		return zoomListener;
-//	}
-//	public double getZoom() {
-//		return zoom;
-//	}
-	
+		
 	public double getZoom() {
 		return getViewer().getZoom();
 	}
@@ -118,20 +104,21 @@ implements IMouseManager
 		return absolutePoint;
 	}
  
-	protected Collection mouseChangedListeners = null;
-	protected Collection getMouseChangedListeners()
+	protected Collection<IMouseChangedListener> mouseChangedListeners = null;
+	protected Collection<IMouseChangedListener> getMouseChangedListeners()
 	{
 		if (mouseChangedListeners == null)
-			mouseChangedListeners = new ArrayList();
+			mouseChangedListeners = new ArrayList<IMouseChangedListener>();
 		
 		return mouseChangedListeners;
 	}
 
 	protected void doFireMouseChanged()
 	{
-		for (Iterator it = getMouseChangedListeners().iterator(); it.hasNext(); ) {
-			IMouseChangedListener l = (IMouseChangedListener) it.next();
-			l.mouseChanged(getRelativePoint(), getAbsolutePoint());
+		for (Iterator<IMouseChangedListener> it = getMouseChangedListeners().iterator(); it.hasNext(); ) {
+			IMouseChangedListener l = it.next();
+			if (l != null)
+				l.mouseChanged(getRelativePoint(), getAbsolutePoint());
 		}
 	}
 		
@@ -153,11 +140,11 @@ implements IMouseManager
 		getMouseChangedListeners().remove(l);
 	}
 		
-	protected Collection mouseMoveListenerer = null;
-	protected Collection getMouseMoveListeners()
+	protected Collection<MouseMoveListener> mouseMoveListenerer = null;
+	protected Collection<MouseMoveListener> getMouseMoveListeners()
 	{
 		if (mouseMoveListenerer == null)
-			mouseMoveListenerer = new ArrayList();
+			mouseMoveListenerer = new ArrayList<MouseMoveListener>();
 		
 		return mouseMoveListenerer;
 	}
@@ -176,7 +163,7 @@ implements IMouseManager
 		mouseEvent.setX(x);
 		mouseEvent.setY(y);
 		mouseEvent.setButton(mouseButton);
-		for (Iterator it = getMouseMoveListeners().iterator(); it.hasNext(); ) {
+		for (Iterator<MouseMoveListener> it = getMouseMoveListeners().iterator(); it.hasNext(); ) {
 			MouseMoveListener l = (MouseMoveListener) it.next();
 			l.mouseMoved(mouseEvent);
 		}
@@ -192,11 +179,11 @@ implements IMouseManager
 		});
 	}
 	
-	protected Collection mouseListeners = null;
-	protected Collection getMouseListeners()
+	protected Collection<MouseListener> mouseListeners = null;
+	protected Collection<MouseListener> getMouseListeners()
 	{
 		if (mouseListeners == null)
-			mouseListeners = new ArrayList();
+			mouseListeners = new ArrayList<MouseListener>();
 		
 		return mouseListeners;
 	}
@@ -214,8 +201,8 @@ implements IMouseManager
 		mouseEvent.setX(x);
 		mouseEvent.setY(y);
 		mouseEvent.setButton(mouseButton);
-		for (Iterator it = getMouseListeners().iterator(); it.hasNext(); ) {
-			MouseListener l = (MouseListener) it.next();
+		for (Iterator<MouseListener> it = getMouseListeners().iterator(); it.hasNext(); ) {
+			MouseListener l = it.next();
 			l.mousePressed(mouseEvent);
 		}
 	}
@@ -235,8 +222,8 @@ implements IMouseManager
 		mouseEvent.setX(x);
 		mouseEvent.setY(y);
 		mouseEvent.setButton(mouseButton);
-		for (Iterator it = getMouseListeners().iterator(); it.hasNext(); ) {
-			MouseListener l = (MouseListener) it.next();
+		for (Iterator<MouseListener> it = getMouseListeners().iterator(); it.hasNext(); ) {
+			MouseListener l = it.next();
 			l.mouseReleased(mouseEvent);
 		}
 	}
@@ -250,56 +237,5 @@ implements IMouseManager
 			}
 		});
 	}
-	
-//	protected DrawComponent oldDC = null;
-//	protected int oldRenderMode = 0;
-//	protected void drawRollOver(DrawComponent dc)
-//	{
-//    if (!dc.equals(oldDC)) {
-//			if (oldDC != null) {
-//				oldDC.setRenderMode(oldRenderMode);
-//				getViewer().getBufferedCanvas().getTempContentManager().removeFromTempContent(oldDC);
-//			}
-//			oldDC = dc;
-//			oldRenderMode = dc.getRenderMode();
-//			dc.setRenderMode(RenderModeManager.ROLLOVER_MODE);
-//			getViewer().getBufferedCanvas().getTempContentManager().addToTempContent(dc);
-//			getViewer().getBufferedCanvas().repaint();
-//    }
-//	}
-//
-//	protected void drawSelected(DrawComponent dc)
-//	{
-//
-//	}
-//
-//	protected boolean debug = false;
-//	protected boolean wasRepainted = false;
-//	protected void checkDrawComponents(int x, int y)
-//	{
-//		long startTime = 0;
-//		if (debug)
-//			startTime = System.currentTimeMillis();
-//
-//		DrawComponent dc = getViewer().findObjectAt(x, y);
-//		if (dc != null) {
-//			drawRollOver(dc);
-//		}
-//		else {
-//			if (oldDC != null) {
-////				if (!wasRepainted) {
-////					oldDC.setRenderMode(oldRenderMode);
-////					getViewer().getBufferedCanvas().repaint();
-////					wasRepainted = true;
-////				}
-//			}
-//		}
-//
-//		if (debug) {
-//			long endTime = System.currentTimeMillis() - startTime;
-//			LOGGER.debug("findObject took "+endTime+" ms");
-//		}
-//	}
-	 	
 	
 }
