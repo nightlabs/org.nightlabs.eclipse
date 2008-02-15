@@ -691,35 +691,39 @@ implements IBufferedViewport
 	private boolean drawTempContent = true;
 	public void drawTempContent(Graphics2D g2d)
 	{
-		for (Iterator it = getTempContentManager().getTempContent().iterator(); it.hasNext(); )
-		{
-			Object o = it.next();
-			if (o instanceof DrawComponent) {
-				DrawComponent dc = (DrawComponent) o;
-				Renderer r = null;
-				if (dc.getRoot() != null) {
-					r = dc.getRenderer();
-				}
-				if (r == null) {
-					String renderMode = dc.getRenderMode();
-//					r = getDrawComponent().getRenderModeManager().getRenderer(renderMode, dc.getClass());
-					r = getDrawComponent().getRenderModeManager().getRenderer(renderMode, dc.getClass().getName());
-				}
-				RenderUtil.paintJ2DRenderer(r, dc, g2d);
-			}
-			else if (o instanceof JToolTip)
+		if (getTempContentManager() != null && getTempContentManager().getTempContent() != null) {
+			for (Iterator it = getTempContentManager().getTempContent().iterator(); it.hasNext(); )
 			{
-				// TODO: find out why Tooltips are not painted at given location
-				JToolTip tooltip = (JToolTip) o;
-				tooltip.setComponent(this);
-				tooltip.paint(g2d);
-								
-				logger.debug("TooltTip painted!"); //$NON-NLS-1$
-				logger.debug("TooltTip Location = "+tooltip.getLocation()); //$NON-NLS-1$
-			}
-			else if (o instanceof Component) {
-				Component c = (Component) o;
-				c.paint(g2d);
+				Object o = it.next();
+				if (o != null) {
+					if (o instanceof DrawComponent) {
+						DrawComponent dc = (DrawComponent) o;
+						Renderer r = null;
+						if (dc.getRoot() != null) {
+							r = dc.getRenderer();
+						}
+						if (r == null) {
+							String renderMode = dc.getRenderMode();
+//							r = getDrawComponent().getRenderModeManager().getRenderer(renderMode, dc.getClass());
+							r = getDrawComponent().getRenderModeManager().getRenderer(renderMode, dc.getClass().getName());
+						}
+						RenderUtil.paintJ2DRenderer(r, dc, g2d);
+					}
+					else if (o instanceof JToolTip)
+					{
+						// TODO: find out why Tooltips are not painted at given location
+						JToolTip tooltip = (JToolTip) o;
+						tooltip.setComponent(this);
+						tooltip.paint(g2d);
+										
+						logger.debug("TooltTip painted!"); //$NON-NLS-1$
+						logger.debug("TooltTip Location = "+tooltip.getLocation()); //$NON-NLS-1$
+					}
+					else if (o instanceof Component) {
+						Component c = (Component) o;
+						c.paint(g2d);
+					}					
+				}
 			}
 		}
 	}
