@@ -282,7 +282,13 @@ public abstract class AbstractTableComposite<ElementType> extends XComposite imp
 	 * @param elements The elements to select.
 	 */
 	public void setSelectedElements(Collection<ElementType> elements) {
-		tableViewer.setSelection(new StructuredSelection(elements));
+		List<ElementType> elementList = null;
+		if (elements instanceof List) {
+			elementList = (List<ElementType>) elements;
+		} else {
+			elementList = new ArrayList<ElementType>(elements);
+		}
+		setSelection(elementList);
 
 		//		TableItem[] items = tableViewer.getTable().getItems();
 		//		List<Integer> selIndexes = new ArrayList<Integer>();
