@@ -137,8 +137,9 @@ extends XComposite
 		// SideToolBar
 		sideComp = new XComposite(comp, SWT.BORDER);
 		GridData sideData = new GridData(GridData.FILL_VERTICAL);
+		sideData.widthHint = 200;
 		sideComp.setLayoutData(sideData);
-		sideComp.setSize(200, 200);
+//		sideComp.setSize(200, 200);
 		
 		// BottomToolBar
 		bottomComp = new XComposite(parent, SWT.BORDER);
