@@ -46,7 +46,6 @@ extends MessageSectionPart
 {
 	private ToolBar toolBar;
 	private ToolBarManager toolBarManager;
-	
 	private LinkedList<IAction> registeredActions = null;
 	
 	public ToolBarSectionPart(IFormPage page, Composite parent, int style, String title) {
@@ -65,8 +64,9 @@ extends MessageSectionPart
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Returns the {@link ToolBarManager} where all registered {@link IAction}s 
+	 * are contained.
+	 * @return the {@link ToolBarManager}.
 	 */
 	public ToolBarManager getToolBarManager() {
 		return toolBarManager;
@@ -113,15 +113,6 @@ extends MessageSectionPart
 	 */
 	public void updateToolBarManager()
 	{
-//		for (int i=0; i<getToolBarManager().getItems().length; i++) {
-//			IContributionItem item = getToolBarManager().getItems()[i];
-//			if (item instanceof ToolItem) {
-//				ToolItem toolItem = (ToolItem) item;
-//				toolItem.getControl().setBackground(getSection().getTitleBarBackground());
-//			}
-//		}
-//		getSection().setBackgroundMode(SWT.INHERIT_FORCE);
-		getSection().setBackground(getSection().getTitleBarBackground());
 		if (registeredActions != null) {
 			for (IAction action : new ArrayList<IAction> (registeredActions)) {
 				if (action instanceof IUpdateActionOrContributionItem) {
