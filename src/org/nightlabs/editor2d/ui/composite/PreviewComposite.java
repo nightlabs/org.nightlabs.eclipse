@@ -162,7 +162,7 @@ extends Composite
 			zoomOutButton.addSelectionListener(zoomListener);
 			
 			if (renderModes) {
-				RenderModeContributionItem renderModeCI = new RenderModeContributionItem(getRenderModeMan());
+				RenderModeContributionItem renderModeCI = new RenderModeContributionItem(getRenderModeMan(), false);
 				renderModeCI.fill(buttonBar);
 			}
 			

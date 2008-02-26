@@ -369,7 +369,7 @@ extends ActionBarContributor
   	// RenderModes
   	RenderModeManager renderMan = RendererRegistry.sharedInstance().getRenderModeManager();
   	if (renderMan.getRenderModes().size() > 1)
-  		tbm.add(new RenderModeContributionItem(getPage()));
+  		tbm.add(new RenderModeContributionItem(getPage(), true));
   	tbm.add(new Separator());
   	
 //  	tbm.add(getAction(RepaintAction.ID));
