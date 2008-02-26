@@ -35,15 +35,14 @@ import org.nightlabs.editor2d.viewer.ui.AbstractViewerComposite;
 public class AWTViewerComposite
 extends AbstractViewerComposite
 {
-
 	public AWTViewerComposite(Composite parent, int style, DrawComponent dc) {
 		super(parent, style, dc);
 	}
 
-	public AWTViewerComposite(Composite parent, int style, LayoutMode layoutMode,
-			LayoutDataMode layoutDataMode, DrawComponent dc) {
-		super(parent, style, layoutMode, layoutDataMode, dc);
-	}
+//	public AWTViewerComposite(Composite parent, int style, LayoutMode layoutMode,
+//			LayoutDataMode layoutDataMode, DrawComponent dc) {
+//		super(parent, style, layoutMode, layoutDataMode, dc);
+//	}
 
 	@Override
 	protected AbstractCanvasComposite initCanvasComposite(Composite parent) {

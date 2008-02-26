@@ -42,6 +42,16 @@ implements ITool, MouseListener, MouseMoveListener
 	public static final String ID_DEFAULT = "DefaultToolID";  //$NON-NLS-1$
 	
 	private String id = ID_DEFAULT;
+	private IViewer viewer = null;
+	protected Point startPoint = null;
+	protected Point currentPoint = null;
+	protected Point deltaPoint = null;
+	protected boolean leftPressed = false;
+	protected boolean leftReleased = false;
+	protected boolean rightPressed = false;
+	protected boolean rightReleased = false;
+	private IDrawComponentConditional conditional = null;
+	
 	public String getID() {
 		return id;
 	}
@@ -73,7 +83,6 @@ implements ITool, MouseListener, MouseMoveListener
 		deltaPoint = null;
 	}
 
-	private IViewer viewer = null;
 	public void setViewer(IViewer viewer) {
 		this.viewer = viewer;
 	}
@@ -92,16 +101,7 @@ implements ITool, MouseListener, MouseMoveListener
 	protected void repaint() {
 		getViewer().getBufferedCanvas().repaint();
 	}
-	
-	protected Point startPoint = null;
-	protected Point currentPoint = null;
-	protected Point deltaPoint = null;
 		
-	protected boolean leftPressed = false;
-	protected boolean leftReleased = false;
-	protected boolean rightPressed = false;
-	protected boolean rightReleased = false;
-	
 	public void mouseMoved(MouseEvent me)
 	{
 		currentPoint.setLocation(me.getX(), me.getY());
@@ -162,7 +162,6 @@ implements ITool, MouseListener, MouseMoveListener
 		return ((int) Math.rint(y / getZoom())) + getRelativeScrollOffsetY();
 	}
 	
-	private IDrawComponentConditional conditional = null;
 	public void setConditional(IDrawComponentConditional conditional) {
 		this.conditional = conditional;
 	}

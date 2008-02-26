@@ -23,6 +23,26 @@ import org.nightlabs.editor2d.viewer.ui.IViewer;
  */
 public class ToolEntryManager
 {
+	private IToolEntry activeEntry = null;
+	private IToolEntry defaultEntry = null;
+	private ToolManager toolManager = null;
+	private IViewer viewer = null;
+	private Map<IToolEntry, ITool> toolEntry2Tool = new HashMap<IToolEntry, ITool>();	
+	private List<IToolEntry> toolEntries = new ArrayList<IToolEntry>();	
+	private Map<Button, IToolEntry> toolButton2ToolEntry = new HashMap<Button, IToolEntry>();
+	private Map<IToolEntry, Button> toolEntry2ToolButton = new HashMap<IToolEntry, Button>();
+	private SelectionListener toolSelectionListener = new SelectionListener()
+	{
+		public void widgetDefaultSelected(SelectionEvent arg0) {
+			widgetSelected(arg0);
+		}
+		public void widgetSelected(SelectionEvent arg0) {
+			Button b = (Button) arg0.getSource();
+			IToolEntry toolEntry = (IToolEntry) toolButton2ToolEntry.get(b);
+			setActiveToolEntry(toolEntry);
+		}
+	};
+
 	public ToolEntryManager(IViewer viewer)
 	{
 		super();
@@ -30,7 +50,6 @@ public class ToolEntryManager
 		toolManager = new ToolManager(viewer);
 	}
 
-	protected IViewer viewer = null;
 	public IViewer getViewer() {
 		return viewer;
 	}
@@ -39,14 +58,10 @@ public class ToolEntryManager
 		toolManager.setViewer(viewer);
 	}
 	
-	protected ToolManager toolManager = null;
 	public ToolManager getToolManager() {
 		return toolManager;
 	}
 	
-	protected Map<IToolEntry, ITool> toolEntry2Tool = new HashMap<IToolEntry, ITool>();
-	
-	protected List<IToolEntry> toolEntries = new ArrayList<IToolEntry>();
 	public void addToolEntry(IToolEntry toolEntry)
 	{
 		toolEntries.add(toolEntry);
@@ -58,7 +73,6 @@ public class ToolEntryManager
 		return toolEntries;
 	}
 	
-	protected IToolEntry defaultEntry = null;
 	public void setDefaultToolEntry(IToolEntry toolEntry) {
 		defaultEntry = toolEntry;
 	}
@@ -70,12 +84,20 @@ public class ToolEntryManager
 		return defaultEntry;
 	}
 	
-	protected IToolEntry activeEntry = null;
 	public void setActiveToolEntry(IToolEntry toolEntry)
 	{
+		if (activeEntry != null) {
+			Button oldActiveButton = toolEntry2ToolButton.get(activeEntry);
+			if (oldActiveButton != null) {
+				oldActiveButton.setSelection(false);
+			}
+		}
+		
 		activeEntry = toolEntry;
 		ITool tool = toolEntry2Tool.get(activeEntry);
 		getToolManager().setActiveTool(tool);
+		Button button = toolEntry2ToolButton.get(activeEntry);
+		button.setSelection(true);
 	}
 	public IToolEntry getActiveToolEntry() {
 		return activeEntry;
@@ -86,8 +108,7 @@ public class ToolEntryManager
 		for (Iterator<IToolEntry> it = getToolEntries().iterator(); it.hasNext(); )
 		{
 			IToolEntry toolEntry = it.next();
-//			Button toolButton = new Button(parent, SWT.TOGGLE);
-			Button toolButton = new Button(parent, SWT.PUSH);
+			Button toolButton = new Button(parent, SWT.TOGGLE);
 			GridData toolData = new GridData(GridData.FILL_HORIZONTAL);
 			toolButton.setLayoutData(toolData);
 			if (toolEntry.getName() != null)
@@ -102,19 +123,5 @@ public class ToolEntryManager
 			toolButton.addSelectionListener(toolSelectionListener);
 		}
 	}
-	
-	protected Map toolButton2ToolEntry = new HashMap();
-	protected Map toolEntry2ToolButton = new HashMap();
-	protected SelectionListener toolSelectionListener = new SelectionListener()
-	{
-		public void widgetDefaultSelected(SelectionEvent arg0) {
-			widgetSelected(arg0);
-		}
-		public void widgetSelected(SelectionEvent arg0) {
-			Button b = (Button) arg0.getSource();
-			IToolEntry toolEntry = (IToolEntry) toolButton2ToolEntry.get(b);
-			setActiveToolEntry(toolEntry);
-		}
-	};
-	
+		
 }

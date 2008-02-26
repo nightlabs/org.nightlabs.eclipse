@@ -60,7 +60,6 @@ extends BaseTool
 		rect.setLineColor(Color.BLACK);
 		rect.setFill(false);
 		rect.setLineWidth(2);
-//		rect.setLineStyle(2);
 		rect.setLineStyle(LineStyle.DASHED_1);
 		return rect;
 	}

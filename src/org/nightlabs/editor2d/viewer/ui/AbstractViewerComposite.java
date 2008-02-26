@@ -28,7 +28,6 @@ package org.nightlabs.editor2d.viewer.ui;
 
 import java.awt.Point;
 
-import org.apache.log4j.Logger;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.Separator;
@@ -47,7 +46,6 @@ import org.nightlabs.editor2d.render.RenderModeListener;
 import org.nightlabs.editor2d.render.RenderModeManager;
 import org.nightlabs.editor2d.viewer.ui.action.RenderModeContributionItem;
 import org.nightlabs.editor2d.viewer.ui.action.ZoomAllAction;
-import org.nightlabs.editor2d.viewer.ui.action.ZoomAllStateAction;
 import org.nightlabs.editor2d.viewer.ui.action.ZoomContributionItem;
 import org.nightlabs.editor2d.viewer.ui.action.ZoomInAction;
 import org.nightlabs.editor2d.viewer.ui.action.ZoomOutAction;
@@ -63,37 +61,39 @@ import org.nightlabs.editor2d.viewer.ui.tool.ZoomToolEntry;
 public abstract class AbstractViewerComposite
 extends XComposite
 {
-	private static final Logger logger = Logger.getLogger(AbstractViewerComposite.class);
+//	private static final Logger logger = Logger.getLogger(AbstractViewerComposite.class);
 	
-	protected AbstractViewerComposite(Composite parent, int style) {
+	protected AbstractViewerComposite(Composite parent, int style, boolean showTools) {
 		super(parent, style);
+		this.showTools = showTools;
 	}
 	
-	public AbstractViewerComposite(Composite parent, int style, DrawComponent dc)
-	{
-		super(parent, style);
-		init(dc);
+	public AbstractViewerComposite(Composite parent, int style, DrawComponent dc) {
+		this(parent, style, dc, true);
 	}
 
-	public AbstractViewerComposite(Composite parent, int style, LayoutMode layoutMode,
-			LayoutDataMode layoutDataMode, DrawComponent dc)
+	public AbstractViewerComposite(Composite parent, int style, DrawComponent dc,
+			boolean showTools) 
 	{
-		super(parent, style, layoutMode, layoutDataMode);
+		super(parent, style);
+		this.showTools = showTools;
 		init(dc);
 	}
-
-	protected DrawComponent drawComponent;
-	public DrawComponent getDrawComponent() {
-		return drawComponent;
-	}
 	
+	private boolean showTools = true;
+	private DrawComponent drawComponent;	
 	private ToolBarManager upperToolBarMan;
 	private AbstractCanvasComposite canvasComp;
 	private Composite sideComp;
 	private Composite bottomComp;
 	protected Composite toolsComp;
 	private Label mouseLabel = null;
+	private ToolEntryManager toolEntryManager = null;
 	
+	public DrawComponent getDrawComponent() {
+		return drawComponent;
+	}
+
 	protected void init(DrawComponent drawComponent)
 	{
 		if (drawComponent == null)
@@ -119,15 +119,20 @@ extends XComposite
 		GridData upperToolBarData = new GridData(GridData.FILL_HORIZONTAL);
 		upperToolBar.setLayoutData(upperToolBarData);
 		
-		// Middle Wrapper Composite (Canvas + SideToolBar)
+		// Middle Wrapper Composite (Tools + Canvas + SideToolBar)
 		XComposite comp = new XComposite(parent, SWT.NONE);
-		GridLayout compLayout = new GridLayout(3, false);
+		int size = 3;
+		if (!showTools)
+			size = 2;
+		GridLayout compLayout = new GridLayout(size, false);
 		comp.setLayout(compLayout);
 		
 		// Tools
-		toolsComp = new XComposite(comp, SWT.BORDER);
-		GridData toolsData = new GridData(GridData.FILL_VERTICAL);
-		toolsComp.setLayoutData(toolsData);
+		if (showTools) {
+			toolsComp = new XComposite(comp, SWT.BORDER);
+			GridData toolsData = new GridData(GridData.FILL_VERTICAL);
+			toolsComp.setLayoutData(toolsData);			
+		}
 		
 		// Canvas
 		canvasComp = initCanvasComposite(comp);
@@ -203,12 +208,13 @@ extends XComposite
 		toolEntryManager.addToolEntry(new MarqueeToolEntry());
 		toolEntryManager.addToolEntry(new ZoomToolEntry());
 		
-		toolEntryManager.createToolsComposite(toolsComp);
+		if (showTools) {
+			toolEntryManager.createToolsComposite(toolsComp);
+		}
 		toolEntryManager.setDefaultToolEntry(selectToolEntry);
 		toolEntryManager.setActiveToolEntry(selectToolEntry);
 	}
 	
-	private ToolEntryManager toolEntryManager = null;
 	public ToolEntryManager getToolEntryManager()
 	{
 		if (toolEntryManager == null)
@@ -222,7 +228,9 @@ extends XComposite
 		initUpperToolBar(upperToolBarMan);
 		initSideComposite(sideComp);
 		initBottomComposite(bottomComp);
-		registerToolEntries();
+//		if (showTools) {
+			registerToolEntries();
+//		}
 	}
 	
 	protected void initUpperToolBar(ToolBarManager tbm)
@@ -253,14 +261,14 @@ extends XComposite
 		
 		if (getRenderModeManager().getRenderModes().size() > 1)
 		{
-			IContributionItem item = new RenderModeContributionItem(getRenderModeManager());
+			IContributionItem item = new RenderModeContributionItem(getRenderModeManager(), false);
 			item.setVisible(true);
 			tbm.add(item);
 		}
 		
-		action = new ZoomAllStateAction(getZoomSupport());
-		action.setEnabled(true);
-		tbm.add(action);
+//		action = new ZoomAllStateAction(getZoomSupport());
+//		action.setEnabled(true);
+//		tbm.add(action);
 		
 //		tbm.add(new Separator());
 //		bgColorItem = new BackgroundContributionItem(getViewer());
@@ -342,4 +350,13 @@ extends XComposite
 			getViewer().dispose();
 		}
 	};
+
+	/**
+	 * Return the showTools.
+	 * @return the showTools
+	 */
+	public boolean isShowTools() {
+		return showTools;
+	}
+	
 }

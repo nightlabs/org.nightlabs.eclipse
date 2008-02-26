@@ -125,6 +125,7 @@ implements IMouseManager
 	protected void fireMouseChanged()
 	{
 		Display.getDefault().asyncExec(new Runnable()
+//		Display.getDefault().syncExec(new Runnable()
 		{
 			public void run() {
 				doFireMouseChanged();
@@ -172,6 +173,7 @@ implements IMouseManager
 	protected void fireMouseMoved(final int x, final int y, final int mouseButton)
 	{
 		Display.getDefault().asyncExec(new Runnable()
+//		Display.getDefault().syncExec(new Runnable()
 		{
 			public void run() {
 				doFireMouseMoved(x, y, mouseButton);
@@ -210,6 +212,7 @@ implements IMouseManager
 	protected void fireMousePressed(final int x, final int y, final int mouseButton)
 	{
 		Display.getDefault().asyncExec(new Runnable()
+//		Display.getDefault().syncExec(new Runnable()
 		{
 			public void run() {
 				doFireMousePressed(x, y, mouseButton);
@@ -231,6 +234,7 @@ implements IMouseManager
 	protected void fireMouseReleased(final int x, final int y, final int mouseButton)
 	{
 		Display.getDefault().asyncExec(new Runnable()
+//		Display.getDefault().syncExec(new Runnable()
 		{
 			public void run() {
 				doFireMouseReleased(x, y, mouseButton);

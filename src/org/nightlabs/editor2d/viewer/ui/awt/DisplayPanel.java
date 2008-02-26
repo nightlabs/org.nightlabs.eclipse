@@ -704,9 +704,8 @@ implements IBufferedViewport
 						}
 						if (r == null) {
 							String renderMode = dc.getRenderMode();
-//							r = getDrawComponent().getRenderModeManager().getRenderer(renderMode, dc.getClass());
-							r = getDrawComponent().getRenderModeManager().getRenderer(renderMode, dc.getClass().getName());
-						}
+							r = getDrawComponent().getRenderModeManager().getRenderer(renderMode, dc.getRenderModeClass().getName());
+						}						
 						RenderUtil.paintJ2DRenderer(r, dc, g2d);
 					}
 					else if (o instanceof JToolTip)

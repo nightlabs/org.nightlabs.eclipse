@@ -80,17 +80,20 @@ extends XContributionItem
   private Map<String, String> renderMode2String = new HashMap<String, String>();
 	private RenderModeManager renderModeMan;
   private Collection<Renderer> currentRenderers = null;
+  private boolean showCheckBoxes = true;
   
-	public RenderModeContributionItem(IWorkbenchPage page)
+	public RenderModeContributionItem(IWorkbenchPage page, boolean showCheckBoxes)
 	{
 		super(ID);
 		this.page = page;
+		this.showCheckBoxes = showCheckBoxes;
 		this.page.addPartListener(partListener);
 	}
 		
-	public RenderModeContributionItem(RenderModeManager renderModeMan)
+	public RenderModeContributionItem(RenderModeManager renderModeMan, boolean showCheckBoxes)
 	{
 		super(ID);
+		this.showCheckBoxes = showCheckBoxes;
 		setRenderModeMan(renderModeMan);
 	}
 	
@@ -124,8 +127,10 @@ extends XContributionItem
   	
 		if (renderModeMan == null) {
 			combo.setEnabled(false);
-			showString.setEnabled(false);
-			showFillColor.setEnabled(false);
+			if (showCheckBoxes) {
+				showString.setEnabled(false);
+				showFillColor.setEnabled(false);				
+			}
 		}
 		
 		if (renderModeMan != null)
@@ -175,7 +180,10 @@ extends XContributionItem
   protected Control createControl(Composite parent)
   {
   	Composite comp = new XComposite(parent, SWT.NONE, LayoutMode.TIGHT_WRAPPER);
-  	GridLayout layout = new GridLayout(3, false);
+  	int size = 3;
+  	if (!showCheckBoxes)
+  		size = 1;
+  	GridLayout layout = new GridLayout(size, false);
 		layout.verticalSpacing = 0;
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
@@ -194,17 +202,19 @@ extends XContributionItem
   	// Initialize width of combo
   	combo.add(null, initString, 0);
   	
-  	showString = new Button(comp, SWT.CHECK);
-  	showString.setText(Messages.getString("org.nightlabs.editor2d.viewer.ui.action.RenderModeContributionItem.text.showText")); //$NON-NLS-1$
-  	showString.setToolTipText(Messages.getString("org.nightlabs.editor2d.viewer.ui.action.RenderModeContributionItem.tooltip.showText")); //$NON-NLS-1$
-  	showString.addSelectionListener(showStringSelectionListener);
-  	showString.addDisposeListener(showStringDisposeListener);
-  	
-  	showFillColor = new Button(comp, SWT.CHECK);
-  	showFillColor.setText(ViewerPlugin.getResourceString(Messages.getString("org.nightlabs.editor2d.viewer.ui.action.RenderModeContributionItem.text.showFillColor"))); //$NON-NLS-1$
-  	showFillColor.setToolTipText(ViewerPlugin.getResourceString(Messages.getString("org.nightlabs.editor2d.viewer.ui.action.RenderModeContributionItem.tooltip.showFillColor"))); //$NON-NLS-1$
-  	showFillColor.addSelectionListener(showShapeSelectionListener);
-  	showFillColor.addDisposeListener(showFillColorDisposeListener);
+  	if (showCheckBoxes) {
+    	showString = new Button(comp, SWT.CHECK);
+    	showString.setText(Messages.getString("org.nightlabs.editor2d.viewer.ui.action.RenderModeContributionItem.text.showText")); //$NON-NLS-1$
+    	showString.setToolTipText(Messages.getString("org.nightlabs.editor2d.viewer.ui.action.RenderModeContributionItem.tooltip.showText")); //$NON-NLS-1$
+    	showString.addSelectionListener(showStringSelectionListener);
+    	showString.addDisposeListener(showStringDisposeListener);
+    	
+    	showFillColor = new Button(comp, SWT.CHECK);
+    	showFillColor.setText(ViewerPlugin.getResourceString(Messages.getString("org.nightlabs.editor2d.viewer.ui.action.RenderModeContributionItem.text.showFillColor"))); //$NON-NLS-1$
+    	showFillColor.setToolTipText(ViewerPlugin.getResourceString(Messages.getString("org.nightlabs.editor2d.viewer.ui.action.RenderModeContributionItem.tooltip.showFillColor"))); //$NON-NLS-1$
+    	showFillColor.addSelectionListener(showShapeSelectionListener);
+    	showFillColor.addDisposeListener(showFillColorDisposeListener);  		
+  	}
   	  	
   	if (toolitem != null)
   		toolitem.setWidth(computeWidth(comp));
@@ -381,14 +391,16 @@ extends XContributionItem
 	private DisposeListener showStringDisposeListener = new DisposeListener()
 	{
 		public void widgetDisposed(DisposeEvent e) {
-			showString.removeSelectionListener(showStringSelectionListener);
+			if (showCheckBoxes)
+				showString.removeSelectionListener(showStringSelectionListener);
 		}
 	};
 	
 	private DisposeListener showFillColorDisposeListener = new DisposeListener()
 	{
 		public void widgetDisposed(DisposeEvent e) {
-			showFillColor.removeSelectionListener(showShapeSelectionListener);
+			if (showCheckBoxes)
+				showFillColor.removeSelectionListener(showShapeSelectionListener);
 		}
 	};
 		
@@ -472,18 +484,20 @@ extends XContributionItem
 					stringRendererContained = true;
 				}
 			}
-			showFillColor.setEnabled(shapeRendererContained);
-			showString.setEnabled(stringRendererContained);
-			
-			// remove SelectionListener first to avoid repaint
-			showFillColor.removeSelectionListener(showShapeSelectionListener);
-			showString.removeSelectionListener(showStringSelectionListener);
-			
-			showFillColor.setSelection(showFillColorActive);
-			showString.setSelection(showStringActive);
-			
-			showFillColor.addSelectionListener(showShapeSelectionListener);
-			showString.addSelectionListener(showStringSelectionListener);
+			if (showCheckBoxes) {
+				showFillColor.setEnabled(shapeRendererContained);
+				showString.setEnabled(stringRendererContained);
+				
+				// remove SelectionListener first to avoid repaint
+				showFillColor.removeSelectionListener(showShapeSelectionListener);
+				showString.removeSelectionListener(showStringSelectionListener);
+				
+				showFillColor.setSelection(showFillColorActive);
+				showString.setSelection(showStringActive);
+				
+				showFillColor.addSelectionListener(showShapeSelectionListener);
+				showString.addSelectionListener(showStringSelectionListener);				
+			}
 		}
 	}
 		

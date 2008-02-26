@@ -53,7 +53,7 @@ extends RectangleTool
 		super.mouseReleased(me);
 		int currentX = getRelativeX(currentPoint.x);
 		int currentY = getRelativeY(currentPoint.y);
-		checkDrawComponents(currentX, currentY);
+		checkDrawComponents(currentX, currentY);			
 		leftPressed = false;
 		rightPressed = false;
 	}

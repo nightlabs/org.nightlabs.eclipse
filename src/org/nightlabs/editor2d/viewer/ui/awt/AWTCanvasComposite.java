@@ -52,6 +52,7 @@ extends AbstractCanvasComposite
 implements IComponentViewer
 {
 //	public static int styleFlag = SWT.EMBEDDED | SWT.DOUBLE_BUFFERED;
+//	public static int styleFlag = SWT.EMBEDDED | SWT.NO_BACKGROUND | SWT.NO_MERGE_PAINTS;
 	public static int styleFlag = SWT.EMBEDDED;
 	
 	public static final Logger logger = Logger.getLogger(AWTCanvasComposite.class);
