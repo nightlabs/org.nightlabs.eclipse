@@ -29,7 +29,6 @@ package org.nightlabs.editor2d.viewer.ui.tool;
 import java.awt.Point;
 import java.util.Collection;
 
-import org.apache.log4j.Logger;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.viewer.ui.IDrawComponentConditional;
 import org.nightlabs.editor2d.viewer.ui.IViewer;
@@ -41,22 +40,29 @@ public abstract class AbstractTool
 implements ITool, MouseListener, MouseMoveListener
 {
 	public static final String ID_DEFAULT = "DefaultToolID";  //$NON-NLS-1$
-	private static final Logger logger = Logger.getLogger(AbstractTool.class);
 	private String id = ID_DEFAULT;
 	private IViewer viewer = null;
 	protected Point startPoint = null;
 	protected Point currentPoint = null;
 	protected Point deltaPoint = null;
-	protected boolean leftPressed = false;
-	protected boolean leftReleased = false;
-	protected boolean rightPressed = false;
-	protected boolean rightReleased = false;
 	private IDrawComponentConditional conditional = null;
 	private boolean repaintNeeded = false;
+	private IToolManager toolManager = null;
+	private boolean leftPressed = false;
+	private boolean rightPressed = false;
+	
+	protected boolean isLeftPressed() {
+		return leftPressed;
+	}
+
+	protected boolean isRightPressed() {
+		return rightPressed;
+	}
 	
 	public boolean isRepaintNeeded() {
 		return repaintNeeded;
 	}
+	
 	public void setRepaintNeeded(boolean repaint) {
 		this.repaintNeeded = repaint;
 	}
@@ -64,29 +70,18 @@ implements ITool, MouseListener, MouseMoveListener
 	public String getID() {
 		return id;
 	}
+	
 	public void setID(String id) {
 		this.id = id;
 	}
 	
-	public void activate()
-	{
-		leftPressed = false;
-		leftReleased = false;
-		rightPressed = false;
-		rightReleased = false;
-		
+	public void activate() {
 		startPoint = new Point();
 		currentPoint = new Point();
 		deltaPoint = new Point();
 	}
 
-	public void deactivate()
-	{
-		leftPressed = false;
-		leftReleased = false;
-		rightPressed = false;
-		rightReleased = false;
-
+	public void deactivate() {
 		startPoint = null;
 		currentPoint = null;
 		deltaPoint = null;
@@ -95,6 +90,7 @@ implements ITool, MouseListener, MouseMoveListener
 	public void setViewer(IViewer viewer) {
 		this.viewer = viewer;
 	}
+	
 	public IViewer getViewer() {
 		return viewer;
 	}
@@ -108,45 +104,58 @@ implements ITool, MouseListener, MouseMoveListener
 		getViewer().getBufferedCanvas().getTempContentManager().removeFromTempContent(o);
 		repaintNeeded = true;
 	}
-		
-//	protected void repaint() {
-//		getViewer().getBufferedCanvas().repaint();
-//		if (logger.isDebugEnabled())
-//			logger.debug("repaint()");
-//	}
-		
-	public void mouseMoved(MouseEvent me)
-	{
+			
+	@Override
+	public void mouseMoved(MouseEvent me) {
 		currentPoint.setLocation(me.getX(), me.getY());
-		if (leftPressed) {
+		if (isLeftPressed()) {
 			deltaPoint.setLocation(me.getX() - startPoint.x, me.getY() - startPoint.y);
 		}
+		doMouseMoved(me);
 	}
 			
-	public void mousePressed(MouseEvent me)
-	{
-		if (me.getButton() == MouseEvent.BUTTON1 ){
+	/**
+	 * Subclasses can override this method to react on mouseMovement
+	 * @param me the {@link MouseEvent}
+	 */
+	protected void doMouseMoved(MouseEvent me) {
+		// Does nothing by default
+	}
+	
+	@Override
+	public void mousePressed(MouseEvent me) {
+		if (me.getButton() == java.awt.event.MouseEvent.BUTTON1)
 			leftPressed = true;
-			leftReleased = false;
-		}
-		if (me.getButton() == MouseEvent.BUTTON3) {
+		if (me.getButton() == java.awt.event.MouseEvent.BUTTON3)
 			rightPressed = true;
-			rightReleased = false;
-		}
 		
 		startPoint.setLocation(me.getX(), me.getY());
+		doMousePressed(me);		
 	}
 
-	public void mouseReleased(MouseEvent me)
-	{
-		if (me.getButton() == MouseEvent.BUTTON1) {
-			leftReleased = true;
-		}
-		if (me.getButton() == MouseEvent.BUTTON2) {
-			rightReleased = true;
-		}
+	/**
+	 * Subclasses can override this method to react on mousePressed
+	 * @param me the {@link MouseEvent}
+	 */	
+	protected void doMousePressed(MouseEvent me) {
+		// Does nothing by default
 	}
-		
+	
+	@Override
+	public void mouseReleased(MouseEvent me) {
+		doMouseReleased(me);
+		leftPressed = false;
+		rightPressed = false;
+	}
+
+	/**
+	 * Subclasses can override this method to react on mouseRelease
+	 * @param me the {@link MouseEvent}
+	 */		
+	protected void doMouseReleased(MouseEvent me) {
+		// Does nothing by default
+	}
+	
 	protected double getZoom() {
 		return getViewer().getZoom();
 	}
@@ -178,6 +187,7 @@ implements ITool, MouseListener, MouseMoveListener
 	public void setConditional(IDrawComponentConditional conditional) {
 		this.conditional = conditional;
 	}
+	
 	public IDrawComponentConditional getConditional() {
 		return conditional;
 	}
@@ -193,6 +203,16 @@ implements ITool, MouseListener, MouseMoveListener
 	{
 		return getViewer().getHitTestManager().findObjectAt(getViewer().getDrawComponent(),
 				x, y, conditional, null);
+	}
+	
+	@Override
+	public IToolManager getToolManager() {
+		return toolManager;
+	}
+	
+	@Override
+	public void setToolManager(IToolManager toolManager) {
+		this.toolManager = toolManager;
 	}
 	 
 }

@@ -33,6 +33,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.render.RenderModeManager;
+import org.nightlabs.editor2d.viewer.ui.tool.IToolManager;
 
 public abstract class AbstractCanvasComposite
 extends Composite
@@ -225,5 +226,22 @@ implements IViewer
 			zoomSupport = null;
 		}
 	};
+	
+	private IToolManager toolManager;
+	/**
+	 * Return the toolManager.
+	 * @return the toolManager
+	 */
+	public IToolManager getToolManager() {
+		return toolManager;
+	}
+
+	/**
+	 * Sets the toolManager.
+	 * @param toolManager the toolManager to set
+	 */
+	public void setToolManager(IToolManager toolManager) {
+		this.toolManager = toolManager;
+	}
 	
 }

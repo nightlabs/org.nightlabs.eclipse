@@ -89,7 +89,7 @@ implements IBufferedViewport
 	{		
 		super();
 		this.dc = dc;
-		setDebug(false, true);
+//		setDebug(false, true);
 		dc.clearBounds();	
 		Rectangle dcBounds = new Rectangle(dc.getBounds());
 		AffineTransform at = new AffineTransform();

@@ -7,7 +7,6 @@ import java.awt.Color;
 
 import javax.swing.JToolTip;
 
-import org.apache.log4j.Logger;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.viewer.ui.event.MouseEvent;
 import org.nightlabs.editor2d.viewer.ui.resource.Messages;
@@ -17,12 +16,11 @@ import org.nightlabs.editor2d.viewer.ui.util.ToolUtil;
 public class BaseTool
 extends AbstractTool
 {
-	private static final Logger logger = Logger.getLogger(BaseTool.class);
 	protected DrawComponent rollOverDC = null;
-//	private JToolTip toolTip = null;	
 	private boolean showRollOver = true;
-//	private boolean showTooltip = true;
 	protected DrawComponent mouseMovedDC = null;
+//  private JToolTip toolTip = null;	
+//  private boolean showTooltip = true;
 	
 	public void setShowRollOver(boolean b) {
 		this.showRollOver = b;
@@ -76,8 +74,7 @@ extends AbstractTool
 					getViewer().getDrawComponent(), currentX, currentY, getConditional(), null);			
 		}
 		
-		if (showRollOver && mouseMovedDC != null)
-		{
+		if (showRollOver && mouseMovedDC != null) {
 			rollOverDC = createRollOverDrawComponent(mouseMovedDC);
 			if (rollOverDC != null)
 				addToTempContent(rollOverDC);				

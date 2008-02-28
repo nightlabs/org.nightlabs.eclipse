@@ -122,7 +122,27 @@ public interface ITool
 	 */
 	IDrawComponentConditional getConditional();
 	
+	/**
+	 * Determines if the tool requested a repaint of the viewer
+	 * @return the status of the repaint request
+	 */
 	boolean isRepaintNeeded();
 	
+	/**
+	 * Sets the repaint request status
+	 * @param repaint the request paint status
+	 */
 	void setRepaintNeeded(boolean repaint);
+	
+	/**
+	 * Returns the ToolManager the tool belongs to.
+	 * @return the ToolManager the tool belongs to
+	 */
+	IToolManager getToolManager();
+	
+	/**
+	 * Sets the ToolManager the tool belongs to.
+	 * @param toolManager the ToolManager to set
+	 */
+	void setToolManager(IToolManager toolManager);
 }

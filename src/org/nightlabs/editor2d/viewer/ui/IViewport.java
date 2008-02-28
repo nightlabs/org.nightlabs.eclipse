@@ -89,7 +89,7 @@ public interface IViewport
 	int getOffsetY();
 	
 	/**
-	 * 
+	 * Adds a {@link PropertyChangeListener} to listen for viewport changes.
 	 * @param pcl the PropertyChangeListener which will be notified of
 	 * changes of the realBounds or the viewBounds, the corresponding
 	 * propertyName is either <code>VIEW_CHANGE</code> or <code>REAL_CHANGE</code>
@@ -97,12 +97,20 @@ public interface IViewport
 	void addPropertyChangeListener(PropertyChangeListener pcl);
 	
 	/**
-	 * 
+	 * Removes a previously added {@link PropertyChangeListener}.
 	 * @param pcl the propertyChangeListener to remove
 	 */
 	void removePropertyChangeListener(PropertyChangeListener pcl);
 	
+	/**
+	 * Returns the initial real bounds.
+	 * @return the initial real bounds
+	 */
 	Rectangle getInitRealBounds();
 	
+	/**
+	 * Returns the initial view bounds.
+	 * @return the initial view bounds
+	 */
 	Rectangle getInitViewBounds();
 }

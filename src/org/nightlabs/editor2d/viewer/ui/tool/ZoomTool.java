@@ -23,18 +23,13 @@ extends RectangleTool
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent me)
+	protected void doMouseReleased(MouseEvent me)
 	{
-		super.mouseReleased(me);
-		if (rect != null) {
-			if (leftPressed) {
-				getViewer().getZoomSupport().zoomTo(rect.getBounds());
-				getViewer().getZoomSupport().setZoomAll(false);	
-			}
+		super.doMouseReleased(me);
+		if (getRectangle() != null && isLeftPressed()) {
+			getViewer().getZoomSupport().zoomTo(getRectangle().getBounds());
+			getToolManager().setActiveTool(getToolManager().getDefaultTool());	
 		}
-		leftPressed = false;
-		rightPressed = false;
-		rect = null;
 	}
 			
 }

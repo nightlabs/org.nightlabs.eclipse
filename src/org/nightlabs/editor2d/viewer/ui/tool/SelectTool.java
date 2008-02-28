@@ -48,14 +48,14 @@ extends RectangleTool
 	}
 				
 	@Override
-	public void mouseReleased(MouseEvent me)
+	protected void doMouseReleased(MouseEvent me)
 	{
-		super.mouseReleased(me);
-		int currentX = getRelativeX(currentPoint.x);
-		int currentY = getRelativeY(currentPoint.y);
-		checkDrawComponents(currentX, currentY);			
-		leftPressed = false;
-		rightPressed = false;
+		super.doMouseReleased(me);
+		if (isLeftPressed()) {
+			int currentX = getRelativeX(currentPoint.x);
+			int currentY = getRelativeY(currentPoint.y);
+			checkDrawComponents(currentX, currentY);			
+		}
 	}
 
 	public SelectionInterceptor getSelectionInterceptor() {

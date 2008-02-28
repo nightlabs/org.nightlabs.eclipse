@@ -267,8 +267,8 @@ implements IZoomSupport
 	  double newX = ((absoluteRect.x) * zoom);
 	  double newY = ((absoluteRect.y) * zoom);
 	  	  	  	  	  
-  	getViewport().setViewLocation((int)newX, (int)newY);
-	  		  		
+  	getViewport().setViewLocation((int)newX, (int)newY);		  		
+  	
   	if (logger.isDebugEnabled()) {
   		logger.debug("absoluteRect = "+absoluteRect); //$NON-NLS-1$
   		logger.debug("absoluteView = "+absoluteView); //$NON-NLS-1$

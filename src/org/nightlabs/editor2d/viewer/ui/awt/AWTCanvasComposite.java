@@ -54,9 +54,11 @@ implements IComponentViewer
 //	public static int styleFlag = SWT.EMBEDDED | SWT.DOUBLE_BUFFERED;
 //	public static int styleFlag = SWT.EMBEDDED | SWT.NO_BACKGROUND | SWT.NO_MERGE_PAINTS;
 	public static int styleFlag = SWT.EMBEDDED;
-	
 	public static final Logger logger = Logger.getLogger(AWTCanvasComposite.class);
-	
+	private Frame frame = null;
+	private DisplayPanel displayPanel = null;
+//	private BufferedViewport displayPanel = null;	
+
 	public AWTCanvasComposite(Composite parent, int style, DrawComponent dc)
 	{
 		super(parent, style | styleFlag, dc);
@@ -102,9 +104,6 @@ implements IComponentViewer
 			getBufferedCanvas().notifyChange();
 	}
 
-	private Frame frame = null;
-	private DisplayPanel displayPanel = null;
-//	private BufferedViewport displayPanel = null;
 	@Override
 	protected ICanvas createCanvas(Composite parent)
 	{

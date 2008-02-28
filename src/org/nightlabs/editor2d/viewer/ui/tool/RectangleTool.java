@@ -17,18 +17,16 @@ import org.nightlabs.editor2d.viewer.ui.event.MouseEvent;
  *
  */
 public abstract class RectangleTool
-//extends AbstractTool
 extends BaseTool
 {
-
 	public RectangleTool() {
 		super();
 	}
 
-	protected RectangleDrawComponent rect;
+	private RectangleDrawComponent rect;
 	private boolean rectAdded = false;
-
 	private boolean showRectangle = true;
+	
 	public boolean isShowRectangle() {
 		return showRectangle;
 	}
@@ -36,6 +34,10 @@ extends BaseTool
 		this.showRectangle = showRectangle;
 	}
 
+	protected RectangleDrawComponent getRectangle() {
+		return rect;
+	}
+	
 	@Override
 	public void activate()
 	{
@@ -48,11 +50,10 @@ extends BaseTool
 	public void deactivate()
 	{
 		super.deactivate();
-		if (showRectangle)
-			rect = null;
+		rect = null;
 	}
 	
-	protected RectangleDrawComponent initRectangle()
+	protected void initRectangle()
 	{
 		rect = new RectangleDrawComponentImpl();
 		Rectangle r = new Rectangle(0, 0, 10, 10);
@@ -61,62 +62,66 @@ extends BaseTool
 		rect.setFill(false);
 		rect.setLineWidth(2);
 		rect.setLineStyle(LineStyle.DASHED_1);
-		return rect;
+	}
+	
+	protected boolean isRectangleRequirementFulfilled(MouseEvent me) {
+		return (showRectangle && isLeftPressed());
 	}
 	
 	@Override
 	public void mouseMoved(MouseEvent me)
 	{
 		super.mouseMoved(me);
-
-		if (showRectangle)
-		{
-			int currentX = getRelativeX(currentPoint.x);
-			int currentY = getRelativeY(currentPoint.y);
-			
-			// Draw Rectangle
-			if (leftPressed)
-			{
-				int startX = getRelativeX(startPoint.x);
-				int startY = getRelativeY(startPoint.y);
-				int width = Math.abs(currentX - startX);
-				int height = Math.abs(currentY - startY);
-
-				if (!rectAdded) {
-					initRectangle();
-					rect.setLocation(startX, startY);
-					addToTempContent(rect);
-					rectAdded = true;
-				}
-
-				if (startX > currentX)
-					rect.setX(currentX);
-				if (width != 0)
-					rect.setWidth(width);
-				
-				if (startY > currentY)
-					rect.setY(currentY);
-				if (height != 0)
-					rect.setHeight(height);
-				
-//				// TODO: avoid multiple repaints
-//				repaint();
-				setRepaintNeeded(true);
-			}
+		if (isRectangleRequirementFulfilled(me)) {
+			drawRectangle();
 		}
 	}
 	
 	@Override
-	public void mouseReleased(MouseEvent me)
+	protected void doMouseReleased(MouseEvent me)
 	{
-		super.mouseReleased(me);
-		if (showRectangle) {
+		super.doMouseReleased(me);
+		if (isRectangleRequirementFulfilled(me)) {
 			rectAdded = false;
 			removeTempContent(rect);
+//			rect = null;
 		}
-//		leftPressed = false;
-//		rightPressed = false;
-//		rect = null;
 	}
 	
+	@Override
+	public void mouseReleased(MouseEvent me) {
+		super.mouseReleased(me);
+		rect = null;
+	}
+	
+	protected void drawRectangle() 
+	{
+		int currentX = getRelativeX(currentPoint.x);
+		int currentY = getRelativeY(currentPoint.y);
+		int startX = getRelativeX(startPoint.x);
+		int startY = getRelativeY(startPoint.y);
+		int width = Math.abs(currentX - startX);
+		int height = Math.abs(currentY - startY);
+
+		if (!rectAdded) {
+			initRectangle();
+			rect.setLocation(startX, startY);
+			addToTempContent(rect);
+			rectAdded = true;
+		}
+
+		if (startX > currentX)
+			rect.setX(currentX);
+		if (width != 0)
+			rect.setWidth(width);
+		
+		if (startY > currentY)
+			rect.setY(currentY);
+		if (height != 0)
+			rect.setHeight(height);
+		
+//		// TODO: avoid multiple repaints
+//		repaint();
+		setRepaintNeeded(true);
+	}
 }

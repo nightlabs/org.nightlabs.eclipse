@@ -27,15 +27,13 @@ extends RectangleTool
 	}
 		
 	@Override
-	public void mouseReleased(MouseEvent me)
+	protected void doMouseReleased(MouseEvent me)
 	{
-		super.mouseReleased(me);
-		if (leftPressed)
-			selectDrawComponents(rect == null ? null : rect.getBounds());
-
-		leftPressed = false;
-		rightPressed = false;
-		rect = null;
+		super.doMouseReleased(me);
+		if (isLeftPressed() && getRectangle() != null) {
+			selectDrawComponents(getRectangle().getBounds());			
+			getToolManager().setActiveTool(getToolManager().getDefaultTool());
+		}
 	}
 
 	protected void selectDrawComponents(Rectangle r)

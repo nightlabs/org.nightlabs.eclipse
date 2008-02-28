@@ -44,14 +44,20 @@ implements IToolManager
 {
 	private static final Logger logger = Logger.getLogger(ToolManager.class);
 	
-	public ToolManager(IViewer viewer) {
-		setViewer(viewer);
+//	public ToolManager(IViewer viewer) {
+//		setViewer(viewer);
+//	}
+	public ToolManager(ToolEntryManager toolEntryManager) {
+		this.toolEntryManager = toolEntryManager;
+		setViewer(toolEntryManager.getViewer());
 	}
-	
+
+	private ToolEntryManager toolEntryManager;
 	private Map<String, ITool> id2Tool = new HashMap<String, ITool>();	
 	private List<ITool> tools = null;
 	private IViewer viewer = null;
 	private ITool activeTool = null;
+	private ITool defaultTool = null;
 	private IDrawComponentConditional conditional = null;
 	
 	private MouseMoveListener mouseMoveListener = new MouseMoveListener()
@@ -86,6 +92,7 @@ implements IToolManager
 	public void addTool(ITool tool)
 	{
 		tool.setViewer(viewer);
+		tool.setToolManager(this);
 		id2Tool.put(tool.getID(), tool);
 		getTools().add(tool);
 	}
@@ -124,11 +131,16 @@ implements IToolManager
 	
 	public void setActiveTool(ITool tool)
 	{
-		if (activeTool != null)
-			activeTool.deactivate();
-		
-		activeTool = tool;
-		activeTool.activate();
+		if (this.activeTool != tool) {
+			if (activeTool != null)
+				activeTool.deactivate();
+			
+			activeTool = tool;
+			activeTool.activate();
+			
+			IToolEntry toolEntry = getToolEntryManager().getToolEntry(activeTool);
+			getToolEntryManager().setActiveToolEntry(toolEntry);
+		}
 	}
 	
 	public ITool getActiveTool() {
@@ -174,6 +186,38 @@ implements IToolManager
 	
 	public IDrawComponentConditional getConditional() {
 		return conditional;
+	}
+
+	/**
+	 * Return the defaultTool.
+	 * @return the defaultTool
+	 */
+	public ITool getDefaultTool() 
+	{
+		if (defaultTool == null && !getTools().isEmpty()) {
+			defaultTool = getTools().get(0);
+		}
+		return defaultTool;
+	}
+
+	/**
+	 * Sets the defaultTool.
+	 * @param defaultTool the defaultTool to set
+	 */
+	public void setDefaultTool(ITool defaultTool) {
+		if (this.defaultTool != defaultTool) {
+			this.defaultTool = defaultTool;
+			IToolEntry toolEntry = getToolEntryManager().getToolEntry(defaultTool);
+			getToolEntryManager().setDefaultToolEntry(toolEntry);			
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see org.nightlabs.editor2d.viewer.ui.tool.IToolManager#getToolEntryManager()
+	 */
+	@Override
+	public ToolEntryManager getToolEntryManager() {
+		return toolEntryManager;
 	}
 
 }

@@ -51,8 +51,7 @@ extends AbstractMouseManager
 		return component;
 	}
 	
-	protected void init()
-	{
+	protected void init() {
 		component.addMouseListener(mouseListener);
 		component.addMouseMotionListener(mouseMotionListener);
 	}
@@ -62,7 +61,6 @@ extends AbstractMouseManager
 		@Override
 		public void mouseMoved(MouseEvent evt)
 		{
-//			System.out.println("mouseMoved called at "+System.currentTimeMillis());
 			x = evt.getX();
 			y = evt.getY();
 //			doFireMouseMoved(x, y, evt.getButton());

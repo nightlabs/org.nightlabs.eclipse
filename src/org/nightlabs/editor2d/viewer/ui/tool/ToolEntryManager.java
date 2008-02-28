@@ -31,6 +31,7 @@ public class ToolEntryManager
 	private List<IToolEntry> toolEntries = new ArrayList<IToolEntry>();	
 	private Map<Button, IToolEntry> toolButton2ToolEntry = new HashMap<Button, IToolEntry>();
 	private Map<IToolEntry, Button> toolEntry2ToolButton = new HashMap<IToolEntry, Button>();
+	private Map<ITool, IToolEntry> tool2ToolEntry = new HashMap<ITool, IToolEntry>();
 	private SelectionListener toolSelectionListener = new SelectionListener()
 	{
 		public void widgetDefaultSelected(SelectionEvent arg0) {
@@ -47,7 +48,7 @@ public class ToolEntryManager
 	{
 		super();
 		this.viewer = viewer;
-		toolManager = new ToolManager(viewer);
+		toolManager = new ToolManager(this);
 	}
 
 	public IViewer getViewer() {
@@ -67,6 +68,7 @@ public class ToolEntryManager
 		toolEntries.add(toolEntry);
 		toolManager.addTool(toolEntry.getTool());
 		toolEntry2Tool.put(toolEntry, toolEntry.getTool());
+		tool2ToolEntry.put(toolEntry.getTool(), toolEntry);
 	}
 	
 	public List<IToolEntry> getToolEntries() {
@@ -75,7 +77,10 @@ public class ToolEntryManager
 	
 	public void setDefaultToolEntry(IToolEntry toolEntry) {
 		defaultEntry = toolEntry;
+		ITool tool = toolEntry2Tool.get(defaultEntry);
+		getToolManager().setDefaultTool(tool);
 	}
+	
 	public IToolEntry getDefaultEntry()
 	{
 		if (defaultEntry == null)
@@ -124,4 +129,7 @@ public class ToolEntryManager
 		}
 	}
 		
+	public IToolEntry getToolEntry(ITool tool) {
+		return tool2ToolEntry.get(tool);
+	}
 }

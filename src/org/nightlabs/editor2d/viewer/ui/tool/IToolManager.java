@@ -86,4 +86,18 @@ public interface IToolManager
 	 * @return the active Tool
 	 */
 	public ITool getActiveTool();
+	
+	/**
+	 * Returns the default {@link ITool}.
+	 * @return the default {@link ITool}
+	 */
+	public ITool getDefaultTool();
+	
+	/**
+	 * Sets the default {@link ITool}.
+	 * @param defaultTool the default {@link ITool} to set
+	 */
+	public void setDefaultTool(ITool defaultTool);
+	
+	public ToolEntryManager getToolEntryManager();		
 }
