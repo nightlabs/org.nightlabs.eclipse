@@ -113,4 +113,6 @@ public interface IViewport
 	 * @return the initial view bounds
 	 */
 	Rectangle getInitViewBounds();
+	
+	void notifyChange();
 }

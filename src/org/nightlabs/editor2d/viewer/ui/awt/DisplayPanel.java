@@ -373,7 +373,7 @@ implements IBufferedViewport
 		firePropertyChange(VIEW_CHANGE, oldView, this.viewBounds);
 		checkBuffer();
 		repaint();
-				
+
 		if (debugBounds) {
 			logger.debug("realBounds = " + realBounds); //$NON-NLS-1$
 			logger.debug("bufferBounds = " + bufferBounds); //$NON-NLS-1$

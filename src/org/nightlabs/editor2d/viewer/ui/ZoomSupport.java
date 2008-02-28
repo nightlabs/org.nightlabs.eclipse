@@ -248,7 +248,7 @@ implements IZoomSupport
 	public void zoomTo(Rectangle r)
 	{
 		Rectangle absoluteRect = new Rectangle(r);
-		Rectangle absoluteView = getViewport().getViewBounds();
+		Rectangle absoluteView = new Rectangle(getViewport().getViewBounds());
 				
 		double oldZoom = getZoom();
 		double zoomX = oldZoom;
@@ -267,7 +267,15 @@ implements IZoomSupport
 	  double newX = ((absoluteRect.x) * zoom);
 	  double newY = ((absoluteRect.y) * zoom);
 	  	  	  	  	  
-  	getViewport().setViewLocation((int)newX, (int)newY);		  		
+  	getViewport().setViewLocation((int)newX, (int)newY);
+  	
+  	// FIXME: Workaround to avoid strange redraw bugs when zoom to rectangle
+  	Display.getDefault().timerExec(100, new Runnable(){
+			@Override
+			public void run() {
+		  	getViewport().notifyChange();
+			}
+		});
   	
   	if (logger.isDebugEnabled()) {
   		logger.debug("absoluteRect = "+absoluteRect); //$NON-NLS-1$
