@@ -33,6 +33,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import javax.swing.SwingUtilities;
+
 import org.apache.log4j.Logger;
 import org.eclipse.swt.widgets.Display;
 
@@ -268,12 +270,18 @@ implements IZoomSupport
 	  double newY = ((absoluteRect.y) * zoom);
 	  	  	  	  	  
   	getViewport().setViewLocation((int)newX, (int)newY);
-  	
+
   	// FIXME: Workaround to avoid strange redraw bugs when zoom to rectangle
-  	Display.getDefault().timerExec(100, new Runnable(){
+  	Display.getDefault().timerExec(300, new Runnable(){
 			@Override
 			public void run() {
-		  	getViewport().notifyChange();
+				SwingUtilities.invokeLater(new Runnable()
+				{
+					public void run()
+					{
+						getViewport().notifyChange();
+					}
+				});
 			}
 		});
   	

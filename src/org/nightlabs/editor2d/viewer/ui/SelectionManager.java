@@ -165,9 +165,11 @@ public class SelectionManager
 		if (!selectedDrawComponents.contains(dc))
 		{
 			selectedDrawComponents.add(dc);
+			readOnlySelectedDrawComponents = null;
+
 			if (fireNotification)
 				fireSelectionChanged();
-			
+
 			DrawComponent selectionDC = createSelectionDrawComponent(dc);
 			if (selectionDC != null) {
 				dc2SelectionDC.put(dc, selectionDC);
@@ -176,9 +178,6 @@ public class SelectionManager
 						
 			if (repaint)
 				getViewer().getBufferedCanvas().repaint();
-			
-			readOnlySelectedDrawComponents = null;
-//			LOGGER.debug("dc "+dc.getName()+" selected");
 		}
 	}
 		
@@ -217,21 +216,20 @@ public class SelectionManager
 		if (selectedDrawComponents.contains(dc))
 		{
 			selectedDrawComponents.remove(dc);
+			readOnlySelectedDrawComponents = null;
+
 			if (fireNotification)
 				fireSelectionChanged();
-			
+
 			DrawComponent selectionDC = dc2SelectionDC.get(dc);
 			if (selectionDC != null) {
 				removeTempContent(selectionDC);
 			} else {
 				logger.debug("selectionDC for "+dc.getName()+" not in dc2SelectionDC"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
-			
+
 			if (repaint)
 				getViewer().getBufferedCanvas().repaint();
-			
-			readOnlySelectedDrawComponents = null;
-//			LOGGER.debug("dc "+dc.getName()+" deselected");
 		}
 	}
 
@@ -319,6 +317,8 @@ public class SelectionManager
 			boolean fireNotification)
 	{
 		selectedDrawComponents.removeAll(dcs);
+		readOnlySelectedDrawComponents = null;
+
 		if (fireNotification)
 			fireSelectionChanged();
 		
@@ -334,8 +334,6 @@ public class SelectionManager
 		
 		if (repaint)
 			getViewer().getBufferedCanvas().repaint();
-		
-		readOnlySelectedDrawComponents = null;
 	}
 	
 	/**
@@ -367,6 +365,7 @@ public class SelectionManager
 	{
 		dc2SelectionDC.clear();
 		selectedDrawComponents.clear();
+		readOnlySelectedDrawComponents = null;
 		clearTempContent();
 		
 		if (fireNotification)
@@ -375,7 +374,6 @@ public class SelectionManager
 		if (repaint)
 			getViewer().getBufferedCanvas().repaint();
 		
-		readOnlySelectedDrawComponents = null;
 	}
 			
 	public boolean contains(DrawComponent dc)

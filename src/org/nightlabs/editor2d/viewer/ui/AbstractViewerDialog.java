@@ -51,27 +51,25 @@ extends FullScreenDialog
 		super.create();
 		getShell().setText(ViewerPlugin.getResourceString(Messages.getString("org.nightlabs.editor2d.viewer.ui.AbstractViewerDialog.title"))); //$NON-NLS-1$
 	}
-		
-	protected AbstractViewerComposite viewerComp;
+
+	private AbstractViewerComposite viewerComp;
 	public AbstractViewerComposite getViewerComposite() {
 		return viewerComp;
 	}
-	
+
 	@Override
 	protected Control createDialogArea(Composite parent)
 	{
-		viewerComp = initViewerComposite(parent);
+		viewerComp = createViewerComposite(parent);
 		GridData viewerData = new GridData(GridData.FILL_BOTH);
 		viewerComp.setLayoutData(viewerData);
-		
+		afterCreateViewerComposite(viewerComp);
 		return viewerComp;
 	}
 
-	@Override
-	protected void okPressed() {
-		super.okPressed();
+	protected abstract AbstractViewerComposite createViewerComposite(Composite parent);
+
+	protected void afterCreateViewerComposite(AbstractViewerComposite viewerComposite) {
+		// noop
 	}
-
-	protected abstract AbstractViewerComposite initViewerComposite(Composite parent);
-
 }

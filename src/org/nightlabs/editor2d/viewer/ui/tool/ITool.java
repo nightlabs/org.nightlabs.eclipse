@@ -145,4 +145,16 @@ public interface ITool
 	 * @param toolManager the ToolManager to set
 	 */
 	void setToolManager(IToolManager toolManager);
+
+	/**
+	 * Find out, whether the left mouse button is currently pressed.
+	 * @return <code>true</code>, iff the left mouse button is down right now.
+	 */
+	boolean isLeftPressed();
+
+	/**
+	 * Find out, whether the right mouse button is currently pressed.
+	 * @return <code>true</code>, iff the right mouse button is down right now.
+	 */
+	boolean isRightPressed();
 }

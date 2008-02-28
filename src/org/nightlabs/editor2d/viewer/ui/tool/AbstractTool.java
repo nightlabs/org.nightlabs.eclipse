@@ -51,11 +51,11 @@ implements ITool, MouseListener, MouseMoveListener
 	private boolean leftPressed = false;
 	private boolean rightPressed = false;
 	
-	protected boolean isLeftPressed() {
+	public boolean isLeftPressed() {
 		return leftPressed;
 	}
 
-	protected boolean isRightPressed() {
+	public boolean isRightPressed() {
 		return rightPressed;
 	}
 	

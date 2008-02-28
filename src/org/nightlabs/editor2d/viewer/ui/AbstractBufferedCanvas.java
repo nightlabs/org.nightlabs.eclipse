@@ -346,13 +346,13 @@ implements IBufferedCanvas, IViewport
 			logger.debug("viewBounds = "+viewBounds);			 //$NON-NLS-1$
 		}
 	}
-	
+
 	protected void initBuffer()
 	{
 		bufferBounds = new Rectangle(0, 0, initSize, initSize);
 		bufferedImage = new BufferedImage(bufferBounds.width, bufferBounds.height, imageType);
 	}
-		
+
 	protected boolean isChanged = false;
 	
 	/**
