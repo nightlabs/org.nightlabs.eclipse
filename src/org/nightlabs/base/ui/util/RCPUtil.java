@@ -31,7 +31,9 @@ import java.awt.Toolkit;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -87,52 +89,114 @@ import org.nightlabs.util.IOUtil;
  */
 public class RCPUtil
 {
+	private static Logger logger = Logger.getLogger(RCPUtil.class);
+
 	static {
+//		Display.getDefault().addFilter(SWT.MouseDown, new Listener() {
+//			@Override
+//			public void handleEvent(Event event)
+//			{
+//				mouseDownSet.add(event.button);
+//
+//				if (logger.isDebugEnabled())
+//					logger.debug("mouseDownEvent: button=" + event.button);
+//			}
+//		});
+//
+//		Display.getDefault().addFilter(SWT.MouseUp, new Listener() {
+//			@Override
+//			public void handleEvent(Event event)
+//			{
+//				mouseDownSet.remove(event.button);
+//
+//				if (logger.isDebugEnabled())
+//					logger.debug("mouseUpEvent: button=" + event.button);
+//			}
+//		});
+
 		Display.getDefault().addFilter(SWT.KeyDown, new Listener() {
 			public void handleEvent(Event event)
 			{
-				switch (event.keyCode) {
-					case SWT.CTRL:
-						keyDown_Ctrl = true;
-						break;
-					case SWT.SHIFT:
-						keyDown_Shift = true;
-						break;
-				}
+				keyDownSet.add(event.keyCode);
+
+				if (logger.isDebugEnabled())
+					logger.debug("keyDownEvent: key=" + event.keyCode);
+
+//				switch (event.keyCode) {
+//					case SWT.CTRL:
+//						keyDown_Ctrl = true;
+//						break;
+//					case SWT.SHIFT:
+//						keyDown_Shift = true;
+//						break;
+//				}
 			}
 		});
 		Display.getDefault().addFilter(SWT.KeyUp, new Listener() {
 			public void handleEvent(Event event)
 			{
-				switch (event.keyCode) {
-					case SWT.CTRL:
-						keyDown_Ctrl = false;
-						break;
-					case SWT.SHIFT:
-						keyDown_Shift = false;
-						break;
-				}
+				keyDownSet.remove(event.keyCode);
+
+				if (logger.isDebugEnabled())
+					logger.debug("keyUpEvent: key=" + event.keyCode);
+
+//				switch (event.keyCode) {
+//					case SWT.CTRL:
+//						keyDown_Ctrl = false;
+//						break;
+//					case SWT.SHIFT:
+//						keyDown_Shift = false;
+//						break;
+//				}
 			}
 		});
 	}
 
-	public static final int KEY_CTRL = SWT.CTRL;
-	public static final int KEY_SHIFT = SWT.CTRL;
+//	private static Set<Integer> mouseDownSet = new HashSet<Integer>();
+	private static Set<Integer> keyDownSet = new HashSet<Integer>();
 
-	private static boolean keyDown_Ctrl = false;
-	private static boolean keyDown_Shift = false;
-
+	/**
+	 * Find out, whether a certain key is currently pressed down. Warning! This works not 100% reliably. It only works if there is a focusable widget having the focus and I don't understand completely yet, under which circumstances it doesn't work.
+	 * <p>
+	 * In general, it is better to use the listeners of the widgets you're working with. We might even remove this method again.
+	 * </p>
+	 *
+	 * @param key the key - one of the {@link SWT} constants like {@link SWT#CTRL}, {@link SWT#SHIFT} etc.
+	 * @return <code>true</code> iff the key is currently in state down.
+	 */
 	public static boolean isKeyDown(int key)
 	{
-		switch (key) {
-			case SWT.CTRL:
-				return keyDown_Ctrl;
-			case SWT.SHIFT:
-				return keyDown_Shift;
-			default:
-				throw new IllegalArgumentException("Unknown key! Use one of the KEY_* constants!"); //$NON-NLS-1$
-		}
+		boolean res = keyDownSet.contains(key);
+
+		if (logger.isDebugEnabled())
+			logger.debug("isKeyDown: key=" + key + " down=" + res);
+
+		return res;
+//		switch (key) {
+//			case SWT.CTRL:
+//				return keyDown_Ctrl;
+//			case SWT.SHIFT:
+//				return keyDown_Shift;
+//			default:
+//				throw new IllegalArgumentException("Unknown key! Use one of the KEY_* constants!"); //$NON-NLS-1$
+//		}
 	}
+
+//	/**
+//	 * Find out, whether a certain mouse button is currently pressed down. It only works if there is a focusable widget having the focus and I don't understand completely yet, under which circumstances it doesn't work.
+//	 *
+//	 * @param button the button - one of the {@link SWT} constants like {@link SWT#BUTTON1}, {@link SWT#BUTTON2} etc.
+//	 * @return <code>true</code> iff the mouse button is currently in state down.
+//	 */
+//	public static boolean isMouseDown(int button)
+//	{
+//		boolean res = mouseDownSet.contains(button);
+//
+//		if (logger.isDebugEnabled())
+//			logger.debug("isMouseDown: button=" + button + " down=" + res);
+//
+//		return res;
+//	}
 
 	/**
 	 * Recursively sets the enabled flag for the given Composite and all its children.
@@ -775,7 +839,7 @@ public class RCPUtil
 	
 	/**
 	 * Workaround method to apply normal {@link ColumnLayoutData}s to a table used in a {@link org.eclipse.ui.forms.widgets.Form} with GridLayout.
-	 * This prevents the table to calculate a wrong size in a {@link Form} and to let the Section grow on every resize.
+	 * This prevents the table to calculate a wrong size in a {@link org.eclipse.ui.forms.widgets.Form} and to let the Section grow on every resize.
 	 * 
 	 * @param table The table to layout that has already a TableLayout set.
 	 * @param layoutData The layout data to apply to the table.
