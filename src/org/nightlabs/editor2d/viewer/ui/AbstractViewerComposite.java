@@ -26,13 +26,13 @@
 
 package org.nightlabs.editor2d.viewer.ui;
 
-import java.awt.Point;
-
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.layout.GridData;
@@ -49,7 +49,8 @@ import org.nightlabs.editor2d.viewer.ui.action.ZoomAllAction;
 import org.nightlabs.editor2d.viewer.ui.action.ZoomContributionItem;
 import org.nightlabs.editor2d.viewer.ui.action.ZoomInAction;
 import org.nightlabs.editor2d.viewer.ui.action.ZoomOutAction;
-import org.nightlabs.editor2d.viewer.ui.event.IMouseChangedListener;
+import org.nightlabs.editor2d.viewer.ui.event.MouseEvent;
+import org.nightlabs.editor2d.viewer.ui.event.MouseMoveListener;
 import org.nightlabs.editor2d.viewer.ui.preview.PreviewComposite;
 import org.nightlabs.editor2d.viewer.ui.render.RendererRegistry;
 import org.nightlabs.editor2d.viewer.ui.tool.IToolEntry;
@@ -94,12 +95,15 @@ extends XComposite
 		return drawComponent;
 	}
 
+	protected abstract AbstractCanvasComposite initCanvasComposite(Composite parent);
+	
 	protected void init(DrawComponent drawComponent)
 	{
 		if (drawComponent == null)
 			throw new IllegalArgumentException("Param drawComponent must not be null!"); //$NON-NLS-1$
 
 		this.drawComponent = drawComponent;
+//		drawComponent.clearBounds();
 		initRenderModeManager();
 		addDisposeListener(disposeListener);
 		createComposite(this);
@@ -228,9 +232,7 @@ extends XComposite
 		initUpperToolBar(upperToolBarMan);
 		initSideComposite(sideComp);
 		initBottomComposite(bottomComp);
-//		if (showTools) {
-			registerToolEntries();
-//		}
+		registerToolEntries();
 	}
 	
 	protected void initUpperToolBar(ToolBarManager tbm)
@@ -291,35 +293,42 @@ extends XComposite
 
 	protected void createPreviewComposite(Composite comp)
 	{
-		PreviewComposite previewComposite = new PreviewComposite(
-				getDrawComponent(), getViewer().getViewport(), comp, SWT.NONE);
+		final PreviewComposite previewComposite = new PreviewComposite(
+				getDrawComponent(), getViewer().getViewport(), comp, SWT.BORDER);
+		addControlListener(new ControlAdapter(){
+			@Override
+			public void controlResized(ControlEvent e) {
+				if (previewComposite != null) {
+					previewComposite.getPreviewPanel().clearBuffer();
+				}
+			}
+		});		
+//		GridData previewData = new GridData();
+//		previewData.widthHint = 200;
+//		previewData.heightHint = 200;
+//		previewComposite.setLayoutData(previewData);
+//		Composite spacer = new XComposite(comp, SWT.BORDER);
+//		spacer.setLayoutData(new GridData(GridData.FILL_BOTH));
 	}
 
 	protected void initBottomComposite(Composite comp)
 	{
 		mouseLabel = new Label(comp, SWT.NONE);
-		mouseLabel.setText("X=10000, Y=10000"); //$NON-NLS-1$
-		getViewer().getMouseManager().addMouseChangedListener(mouseListener);
-//		mouseLabel.addDisposeListener(mouseLabelDisposeListener); // the viewer is disposed together with the whole composite - I doubt that we need a disposeListener here.
+		mouseLabel.setText("X = 10000, Y = 10000"); //$NON-NLS-1$
+		getViewer().getMouseManager().addMouseMoveListener(mouseListener);
 	}
 
-	private IMouseChangedListener mouseListener = new IMouseChangedListener()
+	private MouseMoveListener mouseListener = new MouseMoveListener()
 	{
-		public void mouseChanged(Point relative, Point absolute)
-		{
-			if (!mouseLabel.isDisposed())
-				mouseLabel.setText("X = "+absolute.x+", Y = "+absolute.y); //$NON-NLS-1$ //$NON-NLS-2$
+		@Override
+		public void mouseMoved(MouseEvent me) {
+			if (!mouseLabel.isDisposed()) {
+				int x = getViewer().getMouseManager().getAbsoluteX();
+				int y = getViewer().getMouseManager().getAbsoluteY();
+				mouseLabel.setText("X = "+x+", Y = "+y); //$NON-NLS-1$ //$NON-NLS-2$
+			}			
 		}
 	};
-
-//	private DisposeListener mouseLabelDisposeListener = new DisposeListener()
-//	{
-//		public void widgetDisposed(DisposeEvent e)
-//		{
-//			if (e.getSource().equals(mouseLabel))
-//				getViewer().getMouseManager().removeMouseChangedListener(mouseListener);
-//		}
-//	};
 	
 	protected RenderModeListener renderModeListener = new RenderModeListener()
 	{
@@ -340,8 +349,6 @@ extends XComposite
 	public IViewer getViewer() {
 		return canvasComp;
 	}
-
-	protected abstract AbstractCanvasComposite initCanvasComposite(Composite parent);
 		
 	private DisposeListener disposeListener = new DisposeListener()
 	{

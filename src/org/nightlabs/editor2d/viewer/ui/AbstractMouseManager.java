@@ -27,12 +27,10 @@
 package org.nightlabs.editor2d.viewer.ui;
 
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 
+import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.swt.widgets.Display;
-import org.nightlabs.editor2d.viewer.ui.event.IMouseChangedListener;
 import org.nightlabs.editor2d.viewer.ui.event.MouseEvent;
 import org.nightlabs.editor2d.viewer.ui.event.MouseListener;
 import org.nightlabs.editor2d.viewer.ui.event.MouseMoveListener;
@@ -40,13 +38,22 @@ import org.nightlabs.editor2d.viewer.ui.event.MouseMoveListener;
 public abstract class AbstractMouseManager
 implements IMouseManager
 {
+	private static Logger logger = Logger.getLogger(AbstractMouseManager.class);	
+	private IViewer viewer;
+	protected int x = 0;
+	protected int y = 0;
+	private Point relativePoint = new Point(x,y);
+	private Point absolutePoint = new Point(x,y);
+	private MouseEvent mouseEvent = new MouseEvent();
+	private ListenerList mouseMoveListeners = new ListenerList();
+	private ListenerList mouseListeners = new ListenerList();
+
 	public AbstractMouseManager(IViewer viewer)
 	{
 		super();
 		this.viewer = viewer;
 	}
 	
-	protected IViewer viewer;
 	public IViewer getViewer() {
 		return viewer;
 	}
@@ -70,13 +77,11 @@ implements IMouseManager
 	protected int getRelativeScrollOffsetY() {
 		return (int) Math.rint(getAbsoluteScrollOffsetY() / getZoom());
 	}
-		
-	protected int x = 0;
-	protected int y = 0;
-	
+			
 	public int getRelativeX() {
 		return ((int) Math.rint(x / getZoom())) + getRelativeScrollOffsetX();
 	}
+	
 	public int getRelativeY() {
 		return ((int) Math.rint(y / getZoom())) + getRelativeScrollOffsetY();
 	}
@@ -84,11 +89,11 @@ implements IMouseManager
 	public int getAbsoluteX() {
 		return x + getAbsoluteScrollOffsetX();
 	}
+	
 	public int getAbsoluteY() {
 		return y + getAbsoluteScrollOffsetY();
 	}
 			
-	protected Point relativePoint = new Point(x,y);
 	public Point getRelativePoint()
 	{
 		relativePoint.x = getRelativeX();
@@ -96,7 +101,6 @@ implements IMouseManager
 		return relativePoint;
 	}
 	
-	protected Point absolutePoint = new Point(x,y);
 	public Point getAbsolutePoint()
 	{
 		absolutePoint.x = getAbsoluteX();
@@ -104,68 +108,24 @@ implements IMouseManager
 		return absolutePoint;
 	}
  
-	protected Collection<IMouseChangedListener> mouseChangedListeners = null;
-	protected Collection<IMouseChangedListener> getMouseChangedListeners()
-	{
-		if (mouseChangedListeners == null)
-			mouseChangedListeners = new ArrayList<IMouseChangedListener>();
-		
-		return mouseChangedListeners;
-	}
-
-	protected void doFireMouseChanged()
-	{
-		for (Iterator<IMouseChangedListener> it = getMouseChangedListeners().iterator(); it.hasNext(); ) {
-			IMouseChangedListener l = it.next();
-			if (l != null)
-				l.mouseChanged(getRelativePoint(), getAbsolutePoint());
-		}
-	}
-		
-	protected void fireMouseChanged()
-	{
-		Display.getDefault().asyncExec(new Runnable()
-//		Display.getDefault().syncExec(new Runnable()
-		{
-			public void run() {
-				doFireMouseChanged();
-			}
-		});
-	}
-	
-	public void addMouseChangedListener(IMouseChangedListener l) {
-		getMouseChangedListeners().add(l);
-	}
-	
-	public void removeMouseChangedListener(IMouseChangedListener l) {
-		getMouseChangedListeners().remove(l);
-	}
-		
-	protected Collection<MouseMoveListener> mouseMoveListenerer = null;
-	protected Collection<MouseMoveListener> getMouseMoveListeners()
-	{
-		if (mouseMoveListenerer == null)
-			mouseMoveListenerer = new ArrayList<MouseMoveListener>();
-		
-		return mouseMoveListenerer;
-	}
-
 	public void addMouseMoveListener(MouseMoveListener l) {
-		getMouseMoveListeners().add(l);
+		if (l != null)
+			mouseMoveListeners.add(l);
 	}
 	
 	public void removeMouseMoveListener(MouseMoveListener l) {
-		getMouseMoveListeners().remove(l);
+		if (l != null)
+			mouseMoveListeners.remove(l);
 	}
 
-	protected MouseEvent mouseEvent = new MouseEvent();
 	protected void doFireMouseMoved(int x, int y, int mouseButton)
 	{
 		mouseEvent.setX(x);
 		mouseEvent.setY(y);
 		mouseEvent.setButton(mouseButton);
-		for (Iterator<MouseMoveListener> it = getMouseMoveListeners().iterator(); it.hasNext(); ) {
-			MouseMoveListener l = (MouseMoveListener) it.next();
+		for (int i=0; i<mouseMoveListeners.size(); i++) {
+			MouseMoveListener l = (MouseMoveListener) mouseMoveListeners.getListeners()[i];
+//			l.mouseMoved(new MouseEvent(x, y, mouseButton));
 			l.mouseMoved(mouseEvent);
 		}
 	}
@@ -174,28 +134,19 @@ implements IMouseManager
 	{
 		Display.getDefault().asyncExec(new Runnable()
 //		Display.getDefault().syncExec(new Runnable()
-		{
+		{			
 			public void run() {
 				doFireMouseMoved(x, y, mouseButton);
 			}
 		});
 	}
 	
-	protected Collection<MouseListener> mouseListeners = null;
-	protected Collection<MouseListener> getMouseListeners()
-	{
-		if (mouseListeners == null)
-			mouseListeners = new ArrayList<MouseListener>();
-		
-		return mouseListeners;
-	}
-
 	public void addMouseListener(MouseListener l) {
-		getMouseListeners().add(l);
+		mouseListeners.add(l);
 	}
 	
 	public void removeMouseListener(MouseListener l) {
-		getMouseListeners().remove(l);
+		mouseListeners.remove(l);
 	}
 
 	protected void doFireMousePressed(int x, int y, int mouseButton)
@@ -203,8 +154,9 @@ implements IMouseManager
 		mouseEvent.setX(x);
 		mouseEvent.setY(y);
 		mouseEvent.setButton(mouseButton);
-		for (Iterator<MouseListener> it = getMouseListeners().iterator(); it.hasNext(); ) {
-			MouseListener l = it.next();
+		for (int i=0; i<mouseListeners.size(); i++) {
+			MouseListener l = (MouseListener) mouseListeners.getListeners()[i];
+//			l.mousePressed(new MouseEvent(x, y, mouseButton));
 			l.mousePressed(mouseEvent);
 		}
 	}
@@ -225,8 +177,9 @@ implements IMouseManager
 		mouseEvent.setX(x);
 		mouseEvent.setY(y);
 		mouseEvent.setButton(mouseButton);
-		for (Iterator<MouseListener> it = getMouseListeners().iterator(); it.hasNext(); ) {
-			MouseListener l = it.next();
+		for (int i=0; i<mouseListeners.size(); i++) {
+			MouseListener l = (MouseListener) mouseListeners.getListeners()[i];
+//			l.mouseReleased(new MouseEvent(x, y, mouseButton));
 			l.mouseReleased(mouseEvent);
 		}
 	}

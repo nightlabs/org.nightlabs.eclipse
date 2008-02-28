@@ -7,6 +7,7 @@ import java.awt.Color;
 
 import javax.swing.JToolTip;
 
+import org.apache.log4j.Logger;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.viewer.ui.event.MouseEvent;
 import org.nightlabs.editor2d.viewer.ui.resource.Messages;
@@ -16,10 +17,13 @@ import org.nightlabs.editor2d.viewer.ui.util.ToolUtil;
 public class BaseTool
 extends AbstractTool
 {
+	private static final Logger logger = Logger.getLogger(BaseTool.class);
 	protected DrawComponent rollOverDC = null;
-	private JToolTip toolTip = null;
-	
+//	private JToolTip toolTip = null;	
 	private boolean showRollOver = true;
+//	private boolean showTooltip = true;
+	protected DrawComponent mouseMovedDC = null;
+	
 	public void setShowRollOver(boolean b) {
 		this.showRollOver = b;
 	}
@@ -27,13 +31,12 @@ extends AbstractTool
 		return showRollOver;
 	}
 	
-	private boolean showTooltip = true;
-	public boolean isShowTooltip() {
-		return showTooltip;
-	}
-	public void setShowTooltip(boolean showTooltip) {
-		this.showTooltip = showTooltip;
-	}
+//	public boolean isShowTooltip() {
+//		return showTooltip;
+//	}
+//	public void setShowTooltip(boolean showTooltip) {
+//		this.showTooltip = showTooltip;
+//	}
 	
 	@Override
 	public void deactivate()
@@ -43,13 +46,11 @@ extends AbstractTool
 		if (showRollOver)
 			rollOverDC = null;
 		
-		if (showTooltip)
-			toolTip = null;
+//		if (showTooltip)
+//			toolTip = null;
 		
 		mouseMovedDC = null;
-	}
-		
-	protected DrawComponent mouseMovedDC = null;
+	}		
 	
 	@Override
 	public void mouseMoved(MouseEvent me)
@@ -59,41 +60,35 @@ extends AbstractTool
 		int currentX = getRelativeX(currentPoint.x);
 		int currentY = getRelativeY(currentPoint.y);
 				
-		if (showRollOver) {
+		if (showRollOver && rollOverDC != null) {
 			removeTempContent(rollOverDC);
-			rollOverDC = null;
+			rollOverDC = null;				
 		}
 		
-		if (showTooltip) {
-			removeTempContent(toolTip);
-			toolTip = null;
-		}
-
-		// TODO: dont hitTest on each mouse move
-		mouseMovedDC = getViewer().getHitTestManager().findObjectAt(
-				getViewer().getDrawComponent(), currentX, currentY, getConditional(), null);
+//		if (showTooltip && toolTip != null) {
+//			removeTempContent(toolTip);
+//			toolTip = null;
+//		}
 		
-		if (showRollOver)
+//		if (showRollOver || showTooltip) {
+		if (showRollOver) {
+			mouseMovedDC = getViewer().getHitTestManager().findObjectAt(
+					getViewer().getDrawComponent(), currentX, currentY, getConditional(), null);			
+		}
+		
+		if (showRollOver && mouseMovedDC != null)
 		{
-			if (mouseMovedDC != null) {
-				rollOverDC = createRollOverDrawComponent(mouseMovedDC);
-				if (rollOverDC != null)
-					addToTempContent(rollOverDC);
-			}
+			rollOverDC = createRollOverDrawComponent(mouseMovedDC);
+			if (rollOverDC != null)
+				addToTempContent(rollOverDC);				
 		}
 
-		if (showTooltip) {
-			toolTip = createToolTip(mouseMovedDC, null, me.getX(), me.getY());
-			addToTempContent(toolTip);
-		}
-		
-		if (showTooltip || showRollOver) {
-			// TODO: avoid multiple repaints
-			repaint();
-		}
+//		if (showTooltip && mouseMovedDC != null) {
+//			toolTip = createToolTip(mouseMovedDC, null, me.getX(), me.getY());
+//			addToTempContent(toolTip);
+//		}		
 	}
 						
-	
 	protected DrawComponent createRollOverDrawComponent(DrawComponent dc)
 	{
 		return ToolUtil.createFeedbackDrawComponent(dc, Color.BLACK, 5);
@@ -119,5 +114,6 @@ extends AbstractTool
 		}
 		return toolTip;
 	}
+	  
 }
 

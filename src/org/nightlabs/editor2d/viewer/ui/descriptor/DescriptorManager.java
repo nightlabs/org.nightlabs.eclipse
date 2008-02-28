@@ -37,7 +37,6 @@ import org.nightlabs.editor2d.DrawComponent;
 public class DescriptorManager
 //implements IDrawComponentDescriptor
 {
-
 	public DescriptorManager()
 	{
 		super();

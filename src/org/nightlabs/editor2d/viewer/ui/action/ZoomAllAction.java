@@ -26,7 +26,6 @@
 
 package org.nightlabs.editor2d.viewer.ui.action;
 
-import org.apache.log4j.Logger;
 import org.nightlabs.base.ui.resource.SharedImages;
 import org.nightlabs.editor2d.viewer.ui.IZoomSupport;
 import org.nightlabs.editor2d.viewer.ui.ViewerPlugin;
@@ -35,12 +34,8 @@ import org.nightlabs.editor2d.viewer.ui.resource.Messages;
 public class ZoomAllAction
 extends ZoomAction
 {
-	/**
-	 * LOG4J logger used by this class
-	 */
-	private static final Logger logger = Logger.getLogger(ZoomAllAction.class);
-
 	public static final String ID = ZoomAllAction.class.getName();
+	private double zoom = 1.0d;
 	
 	public ZoomAllAction(IZoomSupport zoomSupport)
 	{
@@ -57,14 +52,12 @@ extends ZoomAction
 		setImageDescriptor(SharedImages.getSharedImageDescriptor(ViewerPlugin.getDefault(), ZoomAllAction.class));
 	}
 
-	double zoom = 1.0d;
 	public void zoomChanged(double zoom) {
 		this.zoom = zoom;
 	}
 	
 	@Override
-	public void run()
-	{
+	public void run() {
 		getZoomSupport().zoomAll();
 	}
 }

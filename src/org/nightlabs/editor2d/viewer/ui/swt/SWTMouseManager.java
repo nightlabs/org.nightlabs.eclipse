@@ -64,7 +64,7 @@ extends AbstractMouseManager
 			x = e.x;
 			y = e.y;
 			
-			fireMouseChanged();
+//			fireMouseChanged();
 			fireMouseMoved(x, y, e.button);
 		}
 	};

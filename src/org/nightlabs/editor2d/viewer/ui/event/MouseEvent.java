@@ -38,16 +38,24 @@ package org.nightlabs.editor2d.viewer.ui.event;
  */
 public class MouseEvent
 {
-//	public static final int BUTTON1 = 1;
-//	public static final int BUTTON2 = 2;
-//	public static final int BUTTON3 = 3;
-//	public static final int NOBUTTON = 0;
 	public static final int BUTTON1 = java.awt.event.MouseEvent.BUTTON1;
 	public static final int BUTTON2 = java.awt.event.MouseEvent.BUTTON2;
 	public static final int BUTTON3 = java.awt.event.MouseEvent.BUTTON3;
 	public static final int NOBUTTON = java.awt.event.MouseEvent.NOBUTTON;
-	
+		
 	private int button = NOBUTTON;
+	private int x = 0;
+	private int y = 0;
+	
+	public MouseEvent() {		
+	}
+	
+	public MouseEvent(int x, int y, int mouseButton) {
+		this.x = x;
+		this.y = y;
+		this.button = mouseButton;
+	}
+	
 	public int getButton() {
 		return button;
 	}
@@ -55,7 +63,6 @@ public class MouseEvent
 		this.button = buttonMask;
 	}
 	
-	private int x = 0;
 	public void setX(int x) {
 		this.x = x;
 	}
@@ -63,7 +70,6 @@ public class MouseEvent
 		return x;
 	}
 	
-	private int y = 0;
 	public int getY() {
 		return y;
 	}

@@ -122,4 +122,7 @@ public interface ITool
 	 */
 	IDrawComponentConditional getConditional();
 	
+	boolean isRepaintNeeded();
+	
+	void setRepaintNeeded(boolean repaint);
 }

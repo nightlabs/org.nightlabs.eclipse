@@ -99,8 +99,9 @@ extends BaseTool
 				if (height != 0)
 					rect.setHeight(height);
 				
-				// TODO: avoid multiple repaints
-				repaint();
+//				// TODO: avoid multiple repaints
+//				repaint();
+				setRepaintNeeded(true);
 			}
 		}
 	}

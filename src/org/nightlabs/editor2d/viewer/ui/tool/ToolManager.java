@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.nightlabs.editor2d.viewer.ui.IDrawComponentConditional;
 import org.nightlabs.editor2d.viewer.ui.IViewer;
 import org.nightlabs.editor2d.viewer.ui.event.MouseEvent;
@@ -41,18 +42,39 @@ import org.nightlabs.editor2d.viewer.ui.event.MouseMoveListener;
 public class ToolManager
 implements IToolManager
 {
-
+	private static final Logger logger = Logger.getLogger(ToolManager.class);
+	
 	public ToolManager(IViewer viewer) {
 		setViewer(viewer);
 	}
 	
-	protected Map<String, ITool> id2Tool = new HashMap<String, ITool>();
+	private Map<String, ITool> id2Tool = new HashMap<String, ITool>();	
+	private List<ITool> tools = null;
+	private IViewer viewer = null;
+	private ITool activeTool = null;
+	private IDrawComponentConditional conditional = null;
 	
-	protected List<ITool> tools = null;
+	private MouseMoveListener mouseMoveListener = new MouseMoveListener()
+	{
+		public void mouseMoved(MouseEvent me) {
+			doMouseMoved(me);
+		}
+	};
+	
+	private MouseListener mouseListener = new MouseListener()
+	{
+		public void mouseReleased(MouseEvent me) {
+			doMouseReleased(me);
+		}
+		public void mousePressed(MouseEvent me) {
+			doMousePressed(me);
+		}
+	};
+
 	public List<ITool> getTools()
 	{
 		if (tools == null)
-			tools = new ArrayList();
+			tools = new ArrayList<ITool>();
 		
 		return tools;
 	}
@@ -73,10 +95,10 @@ implements IToolManager
 		id2Tool.remove(tool);
 	}
 
-	protected IViewer viewer = null;
 	public IViewer getViewer() {
 		return viewer;
 	}
+	
 	public void setViewer(IViewer viewer)
 	{
 		if (viewer != null) {
@@ -87,8 +109,8 @@ implements IToolManager
 		this.viewer = viewer;
 		viewer.getMouseManager().addMouseMoveListener(mouseMoveListener);
 		viewer.getMouseManager().addMouseListener(mouseListener);
-		for (Iterator it = getTools().iterator(); it.hasNext(); ) {
-			ITool tool = (ITool) it.next();
+		for (Iterator<ITool> it = getTools().iterator(); it.hasNext(); ) {
+			ITool tool = it.next();
 			tool.setViewer(viewer);
 		}
 	}
@@ -100,7 +122,6 @@ implements IToolManager
 			setActiveTool(tool);
 	}
 	
-	protected ITool activeTool = null;
 	public void setActiveTool(ITool tool)
 	{
 		if (activeTool != null)
@@ -109,6 +130,7 @@ implements IToolManager
 		activeTool = tool;
 		activeTool.activate();
 	}
+	
 	public ITool getActiveTool() {
 		return activeTool;
 	}
@@ -117,6 +139,14 @@ implements IToolManager
 	{
 		if (activeTool != null) {
 			activeTool.mouseMoved(me);
+//			System.out.println("Tool MouseMoved called at "+System.currentTimeMillis());
+			if (activeTool.isRepaintNeeded()) {
+				getViewer().getBufferedCanvas().repaint();
+//				if (logger.isDebugEnabled()) {
+//					logger.debug("Repaint requested at "+System.currentTimeMillis());
+//				}
+				activeTool.setRepaintNeeded(false);
+			}
 		}
 	}
 	
@@ -133,25 +163,7 @@ implements IToolManager
 			activeTool.mousePressed(me);
 		}
 	}
-	
-	protected MouseMoveListener mouseMoveListener = new MouseMoveListener()
-	{
-		public void mouseMoved(MouseEvent me) {
-			doMouseMoved(me);
-		}
-	};
-	
-	protected MouseListener mouseListener = new MouseListener()
-	{
-		public void mouseReleased(MouseEvent me) {
-			doMouseReleased(me);
-		}
-		public void mousePressed(MouseEvent me) {
-			doMousePressed(me);
-		}
-	};
-	
-	protected IDrawComponentConditional conditional = null;
+		
 	public void setConditional(IDrawComponentConditional conditional) {
 		this.conditional = conditional;
 		for (Iterator<ITool> it = getTools().iterator(); it.hasNext(); ) {
@@ -159,6 +171,7 @@ implements IToolManager
 			tool.setConditional(conditional);
 		}
 	}
+	
 	public IDrawComponentConditional getConditional() {
 		return conditional;
 	}

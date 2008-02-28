@@ -104,8 +104,8 @@ public class HitTestManager
 	{
 		if (dc instanceof DrawComponentContainer) {
 			DrawComponentContainer container = (DrawComponentContainer) dc;
-			for (Iterator it = container.getDrawComponents().iterator(); it.hasNext(); ) {
-				DrawComponent drawComponent = (DrawComponent) it.next();
+			for (Iterator<DrawComponent> it = container.getDrawComponents().iterator(); it.hasNext(); ) {
+				DrawComponent drawComponent = it.next();
 				initBounds(drawComponent);
 			}
 		}
@@ -119,8 +119,8 @@ public class HitTestManager
 //		unfilledShape2Area.clear();
 		if (dc instanceof DrawComponentContainer) {
 			DrawComponentContainer container = (DrawComponentContainer) dc;
-			for (Iterator it = container.getDrawComponents().iterator(); it.hasNext(); ) {
-				DrawComponent drawComponent = (DrawComponent) it.next();
+			for (Iterator<DrawComponent> it = container.getDrawComponents().iterator(); it.hasNext(); ) {
+				DrawComponent drawComponent = it.next();
 				initShapes(drawComponent);
 			}
 		}
@@ -134,20 +134,6 @@ public class HitTestManager
 		}
 	}
 	
-//	protected Area calculateOutlineArea(ShapeDrawComponent sdc, double hitTolerance)
-//	{
-//    Rectangle outerBounds = TransformUtil.expand(sdc.getBounds(), (int)hitTolerance, (int)hitTolerance, true);
-//    Rectangle innerBounds = TransformUtil.shrink(sdc.getBounds(), (int)hitTolerance, (int)hitTolerance, true);
-//    GeneralShape outerGS = (GeneralShape) sdc.getGeneralShape().clone();
-//    GeneralShape innerGS = (GeneralShape) sdc.getGeneralShape().clone();
-//    TransformUtil.transformGeneralShape(outerGS, sdc.getBounds(), outerBounds);
-//    TransformUtil.transformGeneralShape(innerGS, sdc.getBounds(), innerBounds);
-//    Area outlineArea = new Area(outerGS);
-//    Area innerArea = new Area(innerGS);
-//    outlineArea.exclusiveOr(innerArea);
-//    return outlineArea;
-//	}
-
 	protected Area calculateOutlineArea(ShapeDrawComponent sdc, double hitTolerance)
 	{
     if (sdc.getGeneralShape() != null) {
@@ -237,13 +223,13 @@ public class HitTestManager
 	 * the condition as well as are not included in the excludeList
 	 * if no drawComponents are found an empty List is returned
 	 */
-	public List findObjectsAt(DrawComponent dc, int x, int y,
-			IDrawComponentConditional conditional, Collection excludeList)
+	public List<DrawComponent> findObjectsAt(DrawComponent dc, int x, int y,
+			IDrawComponentConditional conditional, Collection<DrawComponent> excludeList)
 	{
-		List objects = findObjectsAt(dc, x, y);
-		for (Iterator it = objects.iterator(); it.hasNext(); )
+		List<DrawComponent> objects = findObjectsAt(dc, x, y);
+		for (Iterator<DrawComponent> it = objects.iterator(); it.hasNext(); )
 		{
-			DrawComponent drawComponent = (DrawComponent) it.next();
+			DrawComponent drawComponent = it.next();
 			if (conditional != null) {
 				if (!conditional.evalute(drawComponent))
 					it.remove();
@@ -262,20 +248,20 @@ public class HitTestManager
 	 * @param x the x-Coordinate
 	 * @param y the y-Coordinate
 	 * @param conditional an optional (maybe null) IDrawComponentConditional to filter the returned Objects
-	 * @param excludeList an optional (mybe null) Collection of excluded DrawComponents
+	 * @param excludeList an optional (maybe null) Collection of excluded DrawComponents
 	 * @return the topmost DrawComponent in the Z-Order which contains x and y and
-	 * fullfills the condition and is not included in the excludeList
+	 * fulfills the condition and is not included in the excludeList
 	 */
 	public DrawComponent findObjectAt(DrawComponent dc, int x, int y,
-			IDrawComponentConditional conditional, Collection excludeList)
+			IDrawComponentConditional conditional, Collection<DrawComponent> excludeList)
 	{
-		List objects = findObjectsAt(dc, x, y, conditional, excludeList);
+		List<DrawComponent> objects = findObjectsAt(dc, x, y, conditional, excludeList);
 		return !objects.isEmpty() ? (DrawComponent) objects.get(0) : null;
 	}
 	
 	/**
 	 * the order of the returned List represents the Z-Order of the hit-testing
-	 * (first entry = topmost, last entry = bottommost)
+	 * (first entry = topmost, last entry = bottom most)
 	 * 
 	 * 
 	 * @param dc the DrawComponent to iterate through
@@ -285,9 +271,9 @@ public class HitTestManager
 	 * if no drawComponents are found an empty List is returned
 	 * 
 	 */
-	public List findObjectsAt(DrawComponent dc, int x, int y)
+	public List<DrawComponent> findObjectsAt(DrawComponent dc, int x, int y)
 	{
-		List l = new LinkedList();
+		List<DrawComponent> l = new LinkedList<DrawComponent>();
 		if (dc instanceof DrawComponentContainer)
 		{
 			if (dc instanceof Layer)
@@ -303,7 +289,7 @@ public class HitTestManager
 				for (int i = size - 1; i >= 0; i--)
 				{
 					DrawComponent child = container.getDrawComponents().get(i);
-					List childrenObjects = findObjectsAt(child, x, y);
+					List<DrawComponent> childrenObjects = findObjectsAt(child, x, y);
 					if (!childrenObjects.isEmpty()) {
 						l.addAll(childrenObjects);
 					}
@@ -313,7 +299,7 @@ public class HitTestManager
 		else {
 			if (dc instanceof ShapeDrawComponent) {
 				ShapeDrawComponent sdc = (ShapeDrawComponent) dc;
-				//	TODO: calculate outlineArea for all not filled shapes once at initalization
+				//	TODO: calculate outlineArea for all not filled shapes once at initialization
 				if (contains(sdc, x, y))
 					l.add(sdc);
 			}
@@ -340,9 +326,9 @@ public class HitTestManager
 	 * @param r the Rectangle to check for intersection
 	 * @return a List of DrawCompoennts which intersects the Rectangle
 	 */
-	public List findObjectsAt(DrawComponent dc, Rectangle2D r)
+	public List<DrawComponent> findObjectsAt(DrawComponent dc, Rectangle2D r)
 	{
-		List l = new LinkedList();
+		List<DrawComponent> l = new LinkedList<DrawComponent>();
 		if (dc instanceof DrawComponentContainer)
 		{
 			if (dc instanceof Layer)
@@ -358,7 +344,7 @@ public class HitTestManager
 				for (int i = size - 1; i >= 0; i--)
 				{
 					DrawComponent child = container.getDrawComponents().get(i);
-					List childrenObjects = findObjectsAt(child, r);
+					List<DrawComponent> childrenObjects = findObjectsAt(child, r);
 					if (!childrenObjects.isEmpty()) {
 						l.addAll(childrenObjects);
 					}
@@ -379,20 +365,20 @@ public class HitTestManager
 	
 	/**
 	 * @param dc the DrawComponent to iterate through (if it is a DrawComponentContainer)
-	 * @param r the Rectangel to check for intersection
+	 * @param r the Rectangle to check for intersection
 	 * @param conditional an optional (maybe null) IDrawComponentConditional to filter the returned Objects
 	 * @param excludeList an optional (maybe null) Collection of excluded DrawComponents
-	 * @return a List which contains all DrawComponents which intersect r and fullfill
+	 * @return a List which contains all DrawComponents which intersect r and fulfill
 	 * the condition as well as are not included in the excludeList
 	 * if no drawComponents are found an empty List is returned
 	 */
-	public List findObjectsAt(DrawComponent dc, Rectangle2D r,
-			IDrawComponentConditional conditional, Collection excludeList)
+	public List<DrawComponent> findObjectsAt(DrawComponent dc, Rectangle2D r,
+			IDrawComponentConditional conditional, Collection<DrawComponent> excludeList)
 	{
-		List objects = findObjectsAt(dc, r);
-		for (Iterator it = objects.iterator(); it.hasNext(); )
+		List<DrawComponent> objects = findObjectsAt(dc, r);
+		for (Iterator<DrawComponent> it = objects.iterator(); it.hasNext(); )
 		{
-			DrawComponent drawComponent = (DrawComponent) it.next();
+			DrawComponent drawComponent = it.next();
 			if (conditional != null) {
 				if (!conditional.evalute(drawComponent))
 					it.remove();

@@ -37,6 +37,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.nightlabs.base.ui.action.AbstractContributionItem;
 import org.nightlabs.base.ui.custom.XCombo;
 import org.nightlabs.editor2d.viewer.ui.IZoomListener;
@@ -127,9 +128,15 @@ extends AbstractContributionItem
 	
 	protected void setText(double zoom)
 	{
-		int percentage = (int) Math.floor(zoom * 100);
-		if (combo != null)
-			combo.setText(""+percentage+" %"); //$NON-NLS-1$ //$NON-NLS-2$
+		final int percentage = (int) Math.floor(zoom * 100);
+		if (combo != null) {
+			Display.getDefault().syncExec(new Runnable(){
+				@Override
+				public void run() {
+					combo.setText(""+percentage+" %"); //$NON-NLS-1$ //$NON-NLS-2$
+				}
+			});
+		}
 	}
 			
 	protected SelectionListener selectionListener = new SelectionListener()

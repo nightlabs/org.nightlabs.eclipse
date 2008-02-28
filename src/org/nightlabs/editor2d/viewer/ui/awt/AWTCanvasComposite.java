@@ -104,14 +104,15 @@ implements IComponentViewer
 
 	private Frame frame = null;
 	private DisplayPanel displayPanel = null;
+//	private BufferedViewport displayPanel = null;
 	@Override
 	protected ICanvas createCanvas(Composite parent)
 	{
 		frame = SWT_AWT.new_Frame(parent);
 		frame.setLayout(new BorderLayout());
 		displayPanel = new DisplayPanel(getDrawComponent());
-		frame.add(displayPanel, BorderLayout.CENTER);
-		
+//		displayPanel = new BufferedViewport(getDrawComponent());
+		frame.add(displayPanel, BorderLayout.CENTER);		
 		frame.addWindowListener(new WindowAdapter(){
 			@Override
 			public void windowClosing(WindowEvent e) {

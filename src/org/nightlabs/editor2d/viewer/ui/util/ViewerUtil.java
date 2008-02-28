@@ -34,7 +34,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.DrawComponentContainer;
 import org.nightlabs.editor2d.Layer;
@@ -45,9 +44,8 @@ import org.nightlabs.editor2d.viewer.ui.IZoomSupport;
 
 public class ViewerUtil
 {
-	private static final Logger logger = Logger.getLogger(ViewerUtil.class);
-	
-	protected static int hitTolerance = 3;
+//	private static final Logger logger = Logger.getLogger(ViewerUtil.class);
+	private static int hitTolerance = 3;
 	
 	/**
 	 * 
@@ -82,7 +80,7 @@ public class ViewerUtil
 		}
 		if (dc instanceof ShapeDrawComponent) {
 			ShapeDrawComponent sdc = (ShapeDrawComponent) dc;
-			//  TODO: calculate outlineArea for all not filled shapes once at initalization
+			//  TODO: calculate outlineArea for all not filled shapes once at initialization
 			return contains(sdc, x, y) ? sdc : null;
 		}
 		else {
@@ -96,18 +94,18 @@ public class ViewerUtil
 	 * @param x the x-Coordinate
 	 * @param y the y-Coordinate
 	 * @param conditional an optional (maybe null) IDrawComponentConditional to filter the returned Objects
-	 * @param excludeList an optional (mybe null) Collection of excluded DrawComponents
-	 * @return a List which contains all DrawComponents which contain x and y and fullfill
+	 * @param excludeList an optional (maybe null) Collection of excluded DrawComponents
+	 * @return a List which contains all DrawComponents which contain x and y and fulfill
 	 * the condition as well as are not included in the excludeList
 	 * if no drawComponents are found an empty List is returned
 	 */
-	public static List findObjectsAt(DrawComponent dc, int x, int y,
-			IDrawComponentConditional conditional, Collection excludeList)
+	public static List<DrawComponent> findObjectsAt(DrawComponent dc, int x, int y,
+			IDrawComponentConditional conditional, Collection<DrawComponent> excludeList)
 	{
-		List objects = findObjectsAt(dc, x, y);
-		for (Iterator it = objects.iterator(); it.hasNext(); )
+		List<DrawComponent> objects = findObjectsAt(dc, x, y);
+		for (Iterator<DrawComponent> it = objects.iterator(); it.hasNext(); )
 		{
-			DrawComponent drawComponent = (DrawComponent) it.next();
+			DrawComponent drawComponent = it.next();
 			if (conditional != null) {
 				if (!conditional.evalute(drawComponent))
 					it.remove();
@@ -126,14 +124,14 @@ public class ViewerUtil
 	 * @param x the x-Coordinate
 	 * @param y the y-Coordinate
 	 * @param conditional an optional (maybe null) IDrawComponentConditional to filter the returned Objects
-	 * @param excludeList an optional (mybe null) Collection of excluded DrawComponents
+	 * @param excludeList an optional (maybe null) Collection of excluded DrawComponents
 	 * @return the topmost DrawComponent in the Z-Order which contains x and y and
-	 * fullfills the condition and is not included in the excludeList
+	 * fulfills the condition and is not included in the excludeList
 	 */
 	public static DrawComponent findObjectAt(DrawComponent dc, int x, int y,
-			IDrawComponentConditional conditional, Collection excludeList)
+			IDrawComponentConditional conditional, Collection<DrawComponent> excludeList)
 	{
-		List objects = findObjectsAt(dc, x, y, conditional, excludeList);
+		List<DrawComponent> objects = findObjectsAt(dc, x, y, conditional, excludeList);
 		return !objects.isEmpty() ? (DrawComponent) objects.get(0) : null;
 	}
 	
@@ -149,9 +147,9 @@ public class ViewerUtil
 	 * if no drawComponents are found an empty List is returned
 	 * 
 	 */
-	public static List findObjectsAt(DrawComponent dc, int x, int y)
+	public static List<DrawComponent> findObjectsAt(DrawComponent dc, int x, int y)
 	{
-		List l = new LinkedList();
+		List<DrawComponent> l = new LinkedList<DrawComponent>();
 		if (dc instanceof DrawComponentContainer)
 		{
 			if (dc instanceof Layer)
@@ -167,7 +165,7 @@ public class ViewerUtil
 				for (int i = size - 1; i >= 0; i--)
 				{
 					DrawComponent child = container.getDrawComponents().get(i);
-					List childrenObjects = findObjectsAt(child, x, y);
+					List<DrawComponent> childrenObjects = findObjectsAt(child, x, y);
 					if (!childrenObjects.isEmpty()) {
 						l.addAll(childrenObjects);
 					}
@@ -177,7 +175,7 @@ public class ViewerUtil
 		else {
 			if (dc instanceof ShapeDrawComponent) {
 				ShapeDrawComponent sdc = (ShapeDrawComponent) dc;
-				//	TODO: calculate outlineArea for all not filled shapes once at initalization
+				//	TODO: calculate outlineArea for all not filled shapes once at initialization
 				if (contains(sdc, x, y))
 					l.add(sdc);
 			}
@@ -229,9 +227,9 @@ public class ViewerUtil
 	 * @param r the Rectangle to check for intersection
 	 * @return a List of DrawCompoennts which intersects the Rectangle
 	 */
-	public static List findObjectsAt(DrawComponent dc, Rectangle2D r)
+	public static List<DrawComponent> findObjectsAt(DrawComponent dc, Rectangle2D r)
 	{
-		List l = new LinkedList();
+		List<DrawComponent> l = new LinkedList<DrawComponent>();
 		if (dc instanceof DrawComponentContainer)
 		{
 			if (dc instanceof Layer)
@@ -247,7 +245,7 @@ public class ViewerUtil
 				for (int i = size - 1; i >= 0; i--)
 				{
 					DrawComponent child = container.getDrawComponents().get(i);
-					List childrenObjects = findObjectsAt(child, r);
+					List<DrawComponent> childrenObjects = findObjectsAt(child, r);
 					if (!childrenObjects.isEmpty()) {
 						l.addAll(childrenObjects);
 					}
@@ -268,20 +266,20 @@ public class ViewerUtil
 	
 	/**
 	 * @param dc the DrawComponent to iterate through (if it is a DrawComponentContainer)
-	 * @param r the Rectangel to check for intersection
+	 * @param r the Rectangle to check for intersection
 	 * @param conditional an optional (maybe null) IDrawComponentConditional to filter the returned Objects
 	 * @param excludeList an optional (maybe null) Collection of excluded DrawComponents
-	 * @return a List which contains all DrawComponents which intersect r and fullfill
+	 * @return a List which contains all DrawComponents which intersect r and fulfill
 	 * the condition as well as are not included in the excludeList
 	 * if no drawComponents are found an empty List is returned
 	 */
-	public static List findObjectsAt(DrawComponent dc, Rectangle2D r,
-			IDrawComponentConditional conditional, Collection excludeList)
+	public static List<DrawComponent> findObjectsAt(DrawComponent dc, Rectangle2D r,
+			IDrawComponentConditional conditional, Collection<DrawComponent> excludeList)
 	{
-		List objects = findObjectsAt(dc, r);
-		for (Iterator it = objects.iterator(); it.hasNext(); )
+		List<DrawComponent> objects = findObjectsAt(dc, r);
+		for (Iterator<DrawComponent> it = objects.iterator(); it.hasNext(); )
 		{
-			DrawComponent drawComponent = (DrawComponent) it.next();
+			DrawComponent drawComponent = it.next();
 			if (conditional != null) {
 				if (!conditional.evalute(drawComponent))
 					it.remove();

@@ -52,6 +52,7 @@ import org.nightlabs.editor2d.util.RenderingHintsManager;
 import org.nightlabs.editor2d.viewer.ui.BufferManager;
 import org.nightlabs.editor2d.viewer.ui.DrawComponentPaintable;
 import org.nightlabs.editor2d.viewer.ui.IBufferedViewport;
+import org.nightlabs.editor2d.viewer.ui.ICanvas;
 import org.nightlabs.editor2d.viewer.ui.ITempContentManager;
 import org.nightlabs.editor2d.viewer.ui.TempContentManager;
 
@@ -59,20 +60,37 @@ public class DisplayPanel
 extends JPanel
 implements IBufferedViewport
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	/**
 	 * LOG4J logger used by this class
 	 */
 	private static final Logger logger = Logger.getLogger(DisplayPanel.class);
-		
+	private int imageType = BufferedImage.TYPE_INT_ARGB;
+	private DrawComponent dc;
+	private BufferedImage bufferedImage;
+	private BufferedImage viewImage;
+	private int initSize = 100;
+	private RenderingHintsManager renderingHintsManager = RenderingHintsManager.sharedInstance();
+	private double scale = 1.0d;
+	private double oldScale = scale;
+	private Color bgColor = Color.WHITE;
+	private Rectangle bufferBounds;	
+	private Rectangle initViewBounds;
+	private Rectangle initRealBounds;
+	private Rectangle realBounds;
+	private Rectangle viewBounds;
+	private ITempContentManager tempContentMan = new TempContentManager();
+	private boolean drawTempContent = true;
+	private boolean isChanged = false;
+	private boolean debugBounds = false;
+	private boolean debugPaint = false;
+	
 	public DisplayPanel(DrawComponent dc)
-	{
+	{		
 		super();
 		this.dc = dc;
-//		setDebug(false, false);
+		setDebug(false, true);
+		dc.clearBounds();	
 		Rectangle dcBounds = new Rectangle(dc.getBounds());
 		AffineTransform at = new AffineTransform();
 		at.translate(-dcBounds.x, -dcBounds.y);
@@ -82,10 +100,11 @@ implements IBufferedViewport
 			logger.debug("translateY = "+(-dcBounds.y)); //$NON-NLS-1$
 		}
 		dc.transform(at);
-		dc.clearBounds();
+		dc.clearBounds();		
 		if (debugBounds)
-			logger.debug("tranlated dcBounds = " + dc.getBounds()); //$NON-NLS-1$
+			logger.debug("translated dcBounds = " + dc.getBounds()); //$NON-NLS-1$
 		dcBounds = GeomUtil.translateToOriginAndAdjustSize(dc.getBounds());
+//		dcBounds = GeomUtil.translateToOrigin(dc.getBounds());
 		if (debugBounds)
 			logger.debug("translateToOriginAndAdjustSize dcBounds = " + dcBounds); //$NON-NLS-1$
 		
@@ -97,31 +116,20 @@ implements IBufferedViewport
 	public DrawComponent getDrawComponent() {
 		return dc;
 	}
-	
-	private boolean debugBounds = false;
-	private boolean debugPaint = false;
-	
-	private void setDebug(boolean paint, boolean bounds)
-	{
+		
+	private void setDebug(boolean paint, boolean bounds) {
 		debugPaint = paint;
 		debugBounds = bounds;
 	}
-	
-	private int imageType = BufferedImage.TYPE_INT_RGB;
-	private Rectangle bufferBounds;
-	private DrawComponent dc;
-	private BufferedImage bufferedImage;
-	private BufferedImage viewImage;
-	private int initSize = 100;
-	private RenderingHintsManager renderingHintsManager = RenderingHintsManager.sharedInstance();
 	
 	/**
 	 * paints the drawComponent, if no notifyChange has been called a BitBlockTransfer
 	 * from the BufferedImage is performed
 	 */
 	@Override
-	public void paint(Graphics g)
-	{
+//	public void paint(Graphics g)
+	public void paintComponent(Graphics g)
+	{ 
 		Graphics2D g2d = (Graphics2D) g;
 		
 		long startPaintTime = 0;
@@ -134,6 +142,7 @@ implements IBufferedViewport
 			if (debugPaint)
 				logger.debug("buffer cleared!");				 //$NON-NLS-1$
 							
+			viewImage = null;
 			paintDrawComponent();
 			isChanged = false;
 		}
@@ -143,15 +152,16 @@ implements IBufferedViewport
 			long startTime = 0;
 			if (debugPaint)
 				startTime = System.currentTimeMillis();
-									
+
 			// Do a BitBlock Transfer
 			calcBufferedViewImage();
-			if (viewImage != null)
-				g2d.drawImage(viewImage,0,0,this);
-						
+			if (viewImage != null) {
+				g2d.drawImage(viewImage, 0, 0, this);
+			}
+
 			if (debugPaint)
 				logger.debug("BitBlockTransfer took "+(System.currentTimeMillis()-startTime)+" ms!"); //$NON-NLS-1$ //$NON-NLS-2$
-			
+
 			if (debugBounds) {
 				logger.debug("viewImage width = "+viewImage.getWidth()); //$NON-NLS-1$
 				logger.debug("viewImage height = "+viewImage.getHeight()); //$NON-NLS-1$
@@ -160,9 +170,13 @@ implements IBufferedViewport
 		
 		// Draw Temporary Content above Buffer (SelectionRectangle etc.)
 		if (drawTempContent == true) {
+			long begin = System.currentTimeMillis();
 			g2d.translate(-getOffsetX(), -getOffsetY());
 			g2d.scale(getScale(), getScale());
 			drawTempContent(g2d);
+			if (debugPaint) {
+				logger.debug("Draw Temp Content took "+(System.currentTimeMillis()-begin)+" ms");
+			}
 		}
 				
 		if (debugPaint) {
@@ -181,8 +195,8 @@ implements IBufferedViewport
 		int offsetX = getBufferOffsetX();
 		int offsetY = getBufferOffsetY();
 				
-		if (viewImage != null)
-			viewImage.flush();
+//		if (viewImage != null)
+//			viewImage.flush();
 		
 		long startTime = 0;
 		if (debugPaint) {
@@ -191,11 +205,11 @@ implements IBufferedViewport
 
 		if (offsetX < 0) {
 			offsetX = 0;
-			logger.warn("offsetX "+offsetX+" < 0"); //$NON-NLS-1$ //$NON-NLS-2$
+			logger.debug("offsetX "+offsetX+" < 0"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		if (offsetY < 0) {
 			offsetY = 0;
-			logger.warn("offsetX "+offsetX+" < 0"); //$NON-NLS-1$ //$NON-NLS-2$
+			logger.debug("offsetX "+offsetX+" < 0"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		
 		if (bufferedImage != null)
@@ -206,8 +220,10 @@ implements IBufferedViewport
 //					&& offsetX >= 0 && offsetY >= 0
 					)
 			{
-				viewImage =
-					bufferedImage.getSubimage(offsetX, offsetY, viewBounds.width, viewBounds.height);
+//				if (viewImage == null) {
+					viewImage =
+						bufferedImage.getSubimage(offsetX, offsetY, viewBounds.width, viewBounds.height);					
+//				}
 			}
 			else {
 				if (logger.isDebugEnabled()) {
@@ -247,12 +263,8 @@ implements IBufferedViewport
 		Rectangle newRealBounds = new Rectangle(0, 0, newWidth, newHeight);
 		setRealBounds(newRealBounds);
 	}
-	
-	private double scale = 1.0d;
-	private double oldScale = scale;
-	
+		
 	/**
-	 * 
 	 * @param scale the scale of the Graphics
 	 */
 	public void setScale(double scale) {
@@ -282,13 +294,10 @@ implements IBufferedViewport
 		setViewLocation(viewBounds.x, (int)(viewBounds.y + translateY));
 	}
 	
-	private Color bgColor = Color.WHITE;
 	public void setBackground(int red, int green, int blue) {
 		bgColor = new Color(red, green, blue);
 		notifyChange();
 	}
-							
-	private Rectangle realBounds;
 	
 	/**
 	 * @return the realBounds which determine the whole area which
@@ -297,6 +306,7 @@ implements IBufferedViewport
 	public Rectangle getRealBounds() {
 		return realBounds;
 	}
+	
 	public void setRealBounds(Rectangle realBounds)
 	{
 		Rectangle oldReal = this.realBounds;
@@ -324,9 +334,7 @@ implements IBufferedViewport
 		
 		setViewLocation(newViewX, newViewY);
 	}
-	
-	private Rectangle viewBounds;
-	
+		
 	/**
 	 * 
 	 * @return the visible area of the IViewport
@@ -338,8 +346,7 @@ implements IBufferedViewport
 	/**
 	 * @see org.nightlabs.editor2d.viewer.ui.IViewport#getViewLocation()
 	 */
-	public Point2D getViewLocation()
-	{
+	public Point2D getViewLocation() {
 		return getViewBounds().getLocation();
 	}
 	
@@ -375,11 +382,10 @@ implements IBufferedViewport
 		}
 	}
 		
-	private Rectangle initRealBounds;
 	public Rectangle getInitRealBounds() {
 		return initRealBounds;
 	}
-	private Rectangle initViewBounds;
+
 	public Rectangle getInitViewBounds() {
 		return initViewBounds;
 	}
@@ -388,16 +394,15 @@ implements IBufferedViewport
 	{
 		initRealBounds = new Rectangle(realBounds);
 		initViewBounds = getVisibleRect();
-		
 		this.realBounds = realBounds;
 		viewBounds = getVisibleRect();
 		initBuffer();
 		paintDrawComponent();
 		addComponentListener(resizeListener);
-				
+		
 		if (debugBounds) {
-			logger.debug("realBounds = "+realBounds); //$NON-NLS-1$
-			logger.debug("viewBounds = "+viewBounds);			 //$NON-NLS-1$
+			logger.debug("realBounds = "+realBounds); 	//$NON-NLS-1$
+			logger.debug("viewBounds = "+viewBounds);		//$NON-NLS-1$
 		}
 	}
 	
@@ -428,18 +433,15 @@ implements IBufferedViewport
 			}
 		}
 	};
-	
-	private boolean isChanged = false;
-	
+		
 	/**
-	 * notifys that a new painting has to occur, and that
+	 * notifies that a new painting has to occur, and that
 	 * the buffer must be cleared
 	 */
 	public void notifyChange()
 	{
 		isChanged = true;
 		repaint();
-		
 		logger.debug("notifyChange!"); //$NON-NLS-1$
 	}
 	
@@ -459,7 +461,6 @@ implements IBufferedViewport
 			g2d.setBackground(bgColor);
 			g2d.setPaint(bgColor);
 			g2d.translate(-bufferBounds.x, -bufferBounds.y);
-			
 			g2d.setClip(bufferBounds);
 			g2d.fillRect(bufferBounds.x, bufferBounds.y, bufferBounds.width, bufferBounds.height);
 							
@@ -585,7 +586,6 @@ implements IBufferedViewport
 	}
 	
 	/**
-	 * 
 	 * @return true if the viewBounds are contained in the bufferBounds, else false
 	 */
 	protected boolean isViewInBuffer()
@@ -597,9 +597,8 @@ implements IBufferedViewport
 	}
 	
 	/**
-	 * 
 	 * @param r the Rectangle to check
-	 * @return true if the given Rectangle is conatined in the realBounds, else false
+	 * @return true if the given Rectangle is contained in the realBounds, else false
 	 */
 	protected boolean isRectangleInReal(Rectangle r)
 	{
@@ -610,7 +609,7 @@ implements IBufferedViewport
 	}
 	
 	/**
-	 * creates the Offscreen Image.
+	 * Creates the Offscreen Image.
 	 * The Size of the BufferedImage is the viewBounds * bufferScaleFactor
 	 *
 	 */
@@ -688,9 +687,9 @@ implements IBufferedViewport
 		}
 	}
 		
-	private boolean drawTempContent = true;
 	public void drawTempContent(Graphics2D g2d)
 	{
+//		PaintUtil.drawTempContent(g2d, getTempContentManager());
 		if (getTempContentManager() != null && getTempContentManager().getTempContent() != null) {
 			for (Iterator it = getTempContentManager().getTempContent().iterator(); it.hasNext(); )
 			{
@@ -727,7 +726,6 @@ implements IBufferedViewport
 		}
 	}
 		
-	private ITempContentManager tempContentMan = new TempContentManager();
 	public ITempContentManager getTempContentManager() {
 		return tempContentMan;
 	}

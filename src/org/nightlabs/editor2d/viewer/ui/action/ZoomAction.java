@@ -33,11 +33,8 @@ public abstract class ZoomAction
 extends Action
 implements IZoomAction
 {
-//	public ZoomAction() {
-//		super();
-//		init();
-//	}
-
+	private IZoomSupport zoomSupport = null;
+	
 	public ZoomAction(IZoomSupport zoomSupport, String text, int style) {
 		super(text, style);
 		init();
@@ -50,7 +47,6 @@ implements IZoomAction
 		setZoomSupport(zoomSupport);
 	}
 	
-	protected IZoomSupport zoomSupport = null;
 	public IZoomSupport getZoomSupport() {
 		return zoomSupport;
 	}

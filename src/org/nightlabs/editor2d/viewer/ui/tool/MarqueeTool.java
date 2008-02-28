@@ -6,6 +6,7 @@ package org.nightlabs.editor2d.viewer.ui.tool;
 import java.awt.Rectangle;
 import java.util.List;
 
+import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.viewer.ui.event.MouseEvent;
 
 /**
@@ -22,7 +23,7 @@ extends RectangleTool
 		super();
 		setID(ID);
 		setShowRollOver(false);
-		setShowTooltip(false);
+//		setShowTooltip(false);
 	}
 		
 	@Override
@@ -39,7 +40,7 @@ extends RectangleTool
 
 	protected void selectDrawComponents(Rectangle r)
 	{
-		List drawComponents = null;
+		List<DrawComponent> drawComponents = null;
 		if (r != null)
 			drawComponents = getViewer().getHitTestManager().findObjectsAt(
 					getViewer().getDrawComponent(),

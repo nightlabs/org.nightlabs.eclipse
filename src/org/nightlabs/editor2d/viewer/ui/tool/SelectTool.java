@@ -43,7 +43,7 @@ extends RectangleTool
 		super();
 		setID(ID);
 		setShowRectangle(false);
-		setShowTooltip(false);
+//		setShowTooltip(false);
 		setShowRollOver(true);
 	}
 				

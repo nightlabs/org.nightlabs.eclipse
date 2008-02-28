@@ -32,6 +32,10 @@ import java.awt.event.WindowEvent;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Composite;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.util.ColorUtil;
@@ -70,24 +74,35 @@ extends XComposite
 		this.dc = dc;
 		this.viewport = viewport;
 		init();
+		addDisposeListener(new DisposeListener() {
+			@Override
+			public void widgetDisposed(DisposeEvent e) {
+				if (previewPanel != null)
+					previewPanel.dispose();
+			}
+		});
 	}
 
 	private DrawComponent dc;
 	private IViewport viewport;
 	private Frame previewFrame;
 	private PreviewPanel previewPanel;
+	
 	private void init()
 	{
 		previewFrame = SWT_AWT.new_Frame(this);
 		previewFrame.setLayout(new BorderLayout());
 		previewPanel = new PreviewPanel(dc, viewport, ColorUtil.toAWTColor(getBackground()));
 		previewFrame.add(previewPanel, BorderLayout.CENTER);
-		
 		previewFrame.addWindowListener(new WindowAdapter(){
 			@Override
 			public void windowClosing(WindowEvent e) {
 				previewPanel.dispose();
 			}
 		});
+	}
+	
+	public PreviewPanel getPreviewPanel() {
+		return previewPanel;
 	}
 }

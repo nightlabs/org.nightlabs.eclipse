@@ -29,6 +29,7 @@ package org.nightlabs.editor2d.viewer.ui.tool;
 import java.awt.Point;
 import java.util.Collection;
 
+import org.apache.log4j.Logger;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.viewer.ui.IDrawComponentConditional;
 import org.nightlabs.editor2d.viewer.ui.IViewer;
@@ -40,7 +41,7 @@ public abstract class AbstractTool
 implements ITool, MouseListener, MouseMoveListener
 {
 	public static final String ID_DEFAULT = "DefaultToolID";  //$NON-NLS-1$
-	
+	private static final Logger logger = Logger.getLogger(AbstractTool.class);
 	private String id = ID_DEFAULT;
 	private IViewer viewer = null;
 	protected Point startPoint = null;
@@ -51,7 +52,15 @@ implements ITool, MouseListener, MouseMoveListener
 	protected boolean rightPressed = false;
 	protected boolean rightReleased = false;
 	private IDrawComponentConditional conditional = null;
+	private boolean repaintNeeded = false;
 	
+	public boolean isRepaintNeeded() {
+		return repaintNeeded;
+	}
+	public void setRepaintNeeded(boolean repaint) {
+		this.repaintNeeded = repaint;
+	}
+
 	public String getID() {
 		return id;
 	}
@@ -92,15 +101,19 @@ implements ITool, MouseListener, MouseMoveListener
  	
 	protected void addToTempContent(Object o) {
 		getViewer().getBufferedCanvas().getTempContentManager().addToTempContent(o);
+		repaintNeeded = true;
 	}
 
 	protected void removeTempContent(Object o) {
 		getViewer().getBufferedCanvas().getTempContentManager().removeFromTempContent(o);
+		repaintNeeded = true;
 	}
 		
-	protected void repaint() {
-		getViewer().getBufferedCanvas().repaint();
-	}
+//	protected void repaint() {
+//		getViewer().getBufferedCanvas().repaint();
+//		if (logger.isDebugEnabled())
+//			logger.debug("repaint()");
+//	}
 		
 	public void mouseMoved(MouseEvent me)
 	{
@@ -169,7 +182,8 @@ implements ITool, MouseListener, MouseMoveListener
 		return conditional;
 	}
 	
-	public DrawComponent getDrawComponent(int x, int y, IDrawComponentConditional conditional, Collection excludeList)
+	public DrawComponent getDrawComponent(int x, int y, IDrawComponentConditional conditional, 
+			Collection<DrawComponent> excludeList)
 	{
 		return getViewer().getHitTestManager().findObjectAt(getViewer().getDrawComponent(),
 				x, y, conditional, excludeList);

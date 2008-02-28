@@ -213,19 +213,6 @@ implements IViewer
 	protected abstract ICanvas createCanvas(Composite parent);
 	protected abstract IAutoScrollSupport initAutoScrollSupport();
 
-//	@Override
-//	public void dispose()
-//	{
-//		getZoomSupport().removeZoomListener(zoomListener);
-//
-//		hitTestManager = null;
-//		mouseManager = null;
-//		selectionManager = null;
-//		zoomSupport = null;
-//
-//		super.dispose();
-//	}
-
 	private DisposeListener disposeListener = new DisposeListener()
 	{
 		public void widgetDisposed(DisposeEvent e)

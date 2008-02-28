@@ -33,56 +33,56 @@ import org.nightlabs.editor2d.viewer.ui.IViewer;
 public interface IToolManager
 {
 	/**
-	 * 
+	 * Returns a List with all registered {@link ITool}s.
 	 * @return a List with all registered Tools
 	 */
-	List getTools();
+	List<ITool> getTools();
 	
 	/**
-	 * 
+	 * Returns the {@link ITool} with the corresponding ID.
 	 * @param id the id of the Tool
 	 * @return the Tool with the corresponding ID
 	 */
 	ITool getTool(String id);
 	
 	/**
-	 * adds a Tool to the ToolManager
+	 * Adds a Tool to the ToolManager.
 	 * @param tool the ITool to add
 	 */
 	void addTool(ITool tool);
 	
 	/**
-	 * removes a previously added Tool
+	 * Removes a previously added Tool.
 	 * @param tool the ITool to remove
 	 */
 	void removeTool(ITool tool);
 	
 	/**
-	 * 
+	 * Returns the {@link IViewer} for the ToolManager.
 	 * @return the IViewer for the ToolManager
 	 */
 	IViewer getViewer();
 	
 	/**
-	 * 
+	 * Sets the {@link IViewer} for the ToolManager.
 	 * @param viewer the IViewer for the ToolManager
 	 */
 	void setViewer(IViewer viewer);
 	
 	/**
-	 * 
+	 * Sets the active Tool.
 	 * @param tool the active Tool
 	 */
 	public void setActiveTool(ITool tool) ;
 	
 	/**
-	 * 
+	 * Sets the active Tool with the given ID.
 	 * @param id the ID of the Tool
 	 */
 	public void setActiveTool(int id) ;
 	
 	/**
-	 * 
+	 * Returns the active {@link ITool}.
 	 * @return the active Tool
 	 */
 	public ITool getActiveTool();

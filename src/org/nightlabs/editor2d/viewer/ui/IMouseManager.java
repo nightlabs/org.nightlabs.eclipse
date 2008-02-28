@@ -74,26 +74,20 @@ public interface IMouseManager
 	 * @return the Absolute Point
 	 */
 	Point getAbsolutePoint();
-	
+		
 //	/**
-//	 *
-//	 * @return the IZoomListener of the MouseManager
+//	 * adds an IMouseChangedListener which will be notified of
+//	 * all mouseMovements
+//	 * @param l the IMouseChangedListener to add
+//	 * 
 //	 */
-//	IZoomListener getZoomListener();
-	
-	/**
-	 * adds an IMouseChangedListener which will be notified of
-	 * all mouseMovements
-	 * @param l the IMouseChangedListener to add
-	 * 
-	 */
-	void addMouseChangedListener(IMouseChangedListener l);
-	
-	/**
-	 * 
-	 * @param l the IMouseChangedListener to remove
-	 */
-	void removeMouseChangedListener(IMouseChangedListener l);
+//	void addMouseChangedListener(IMouseChangedListener l);
+//	
+//	/**
+//	 * 
+//	 * @param l the IMouseChangedListener to remove
+//	 */
+//	void removeMouseChangedListener(IMouseChangedListener l);
 	
 	/**
 	 * 
@@ -123,21 +117,4 @@ public interface IMouseManager
 	 */
 	void removeMouseMoveListener(MouseMoveListener l);
 	
-//	/**
-//	 * called when the Mouse is moved
-//	 * @param me the MouseEvent
-//	 */
-//	void mouseMoved(MouseEvent me);
-//
-//	/**
-//	 * called when the mouse is pressed
-//	 * @param me the MouseEvent
-//	 */
-//	void mousePressed(MouseEvent me);
-//
-//	/**
-//	 * called when the mouse is released
-//	 * @param me the MouseEvent
-//	 */
-//	void mouseReleased(MouseEvent me);
 }

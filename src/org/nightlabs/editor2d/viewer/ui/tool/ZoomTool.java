@@ -19,7 +19,7 @@ extends RectangleTool
 		super();
 		setID(ID);
 		setShowRollOver(false);
-		setShowTooltip(false);
+//		setShowTooltip(false);
 	}
 
 	@Override
@@ -27,8 +27,10 @@ extends RectangleTool
 	{
 		super.mouseReleased(me);
 		if (rect != null) {
-			if (leftPressed)
+			if (leftPressed) {
 				getViewer().getZoomSupport().zoomTo(rect.getBounds());
+				getViewer().getZoomSupport().setZoomAll(false);	
+			}
 		}
 		leftPressed = false;
 		rightPressed = false;

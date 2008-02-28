@@ -23,9 +23,6 @@ public abstract class AbstractBufferedCanvas
 extends JPanel
 implements IBufferedCanvas, IViewport
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -278,8 +275,6 @@ implements IBufferedCanvas, IViewport
 	{
 		int newViewX = (int) (((viewBounds.x) / oldScale) * scale);
 		int newViewY = (int) (((viewBounds.y) / oldScale) * scale);
-//		int newViewX = (int) (((double)viewBounds.x) * scale);
-//		int newViewY = (int) (((double)viewBounds.y) * scale);
 				
 		if (debugBounds) {
 			logger.debug("newViewX = "+newViewX); //$NON-NLS-1$
@@ -361,7 +356,7 @@ implements IBufferedCanvas, IViewport
 	protected boolean isChanged = false;
 	
 	/**
-	 * notifys that a new painting has to occur, and that
+	 * notifies that a new painting has to occur, and that
 	 * the buffer must be cleared
 	 */
 	public void notifyChange()
@@ -458,7 +453,7 @@ implements IBufferedCanvas, IViewport
 	/**
 	 * 
 	 * @param r the Rectangle to check
-	 * @return true if the given Rectangle is conatined in the realBounds, else false
+	 * @return true if the given Rectangle is contained in the realBounds, else false
 	 */
 	protected boolean isRectangleInReal(Rectangle r)
 	{
@@ -550,8 +545,8 @@ implements IBufferedCanvas, IViewport
 				}
 				if (r == null) {
 					String renderMode = dc.getRenderMode();
-//					r = getDrawComponent().getRenderModeManager().getRenderer(renderMode, dc.getClass());
-					r = getDrawComponent().getRenderModeManager().getRenderer(renderMode, dc.getClass().getName());
+					r = getDrawComponent().getRenderModeManager().getRenderer(
+							renderMode, dc.getRenderModeClass().getName());
 				}
 				RenderUtil.paintJ2DRenderer(r, dc, g2d);
 			}

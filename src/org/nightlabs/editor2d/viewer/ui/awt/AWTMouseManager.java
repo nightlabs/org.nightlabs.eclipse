@@ -46,7 +46,7 @@ extends AbstractMouseManager
 		init();
 	}
 	
-	protected Component component = null;
+	private Component component = null;
 	public Component getComponent() {
 		return component;
 	}
@@ -57,14 +57,15 @@ extends AbstractMouseManager
 		component.addMouseMotionListener(mouseMotionListener);
 	}
 	
-	protected MouseMotionListener mouseMotionListener = new MouseMotionAdapter()
+	private MouseMotionListener mouseMotionListener = new MouseMotionAdapter()
 	{
 		@Override
 		public void mouseMoved(MouseEvent evt)
 		{
+//			System.out.println("mouseMoved called at "+System.currentTimeMillis());
 			x = evt.getX();
 			y = evt.getY();
-			fireMouseChanged();
+//			doFireMouseMoved(x, y, evt.getButton());
 			fireMouseMoved(x, y, evt.getButton());
 		}
 		
@@ -73,20 +74,22 @@ extends AbstractMouseManager
 		{
 			x = evt.getX();
 			y = evt.getY();
-			fireMouseChanged();
+//			doFireMouseMoved(x, y, evt.getButton());
 			fireMouseMoved(x, y, evt.getButton());
 		}
 	};
 	
-	protected MouseListener mouseListener = new MouseAdapter()
+	private MouseListener mouseListener = new MouseAdapter()
 	{
 		@Override
 		public void mousePressed(MouseEvent me) {
+//			doFireMousePressed(me.getX(), me.getY(), me.getButton());
 			fireMousePressed(me.getX(), me.getY(), me.getButton());
 		}
 		
 		@Override
 		public void mouseReleased(MouseEvent me) {
+//			doFireMouseReleased(me.getX(), me.getY(), me.getButton());
 			fireMouseReleased(me.getX(), me.getY(), me.getButton());
 		}
 	};

@@ -135,7 +135,6 @@ public class AWTSWTUtil
 		}
 		else
 			return convertToSWTImageData(bufferedImage, Display.getDefault());
-//		return null;
 	}
 	
 	public static Image toSWTImage(BufferedImage img, Device dev)
@@ -172,9 +171,9 @@ public class AWTSWTUtil
 	  Graphics2D g2d = bufferedImage.createGraphics();
 	  g2d.drawImage(ai, 0, 0, null);
 	  g2d.dispose();
-	  int[] data =
-	    ((DataBufferInt)bufferedImage.getData().getDataBuffer())
-	    .getData();
+//	  int[] data =
+//	    ((DataBufferInt)bufferedImage.getData().getDataBuffer())
+//	    .getData();
 	  ImageData imageData =
 	    new ImageData(width, height, 24,
 	      new PaletteData(0xFF0000, 0x00FF00, 0x0000FF));
