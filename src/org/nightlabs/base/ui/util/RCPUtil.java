@@ -92,62 +92,20 @@ public class RCPUtil
 	private static Logger logger = Logger.getLogger(RCPUtil.class);
 
 	static {
-//		Display.getDefault().addFilter(SWT.MouseDown, new Listener() {
-//			@Override
-//			public void handleEvent(Event event)
-//			{
-//				mouseDownSet.add(event.button);
-//
-//				if (logger.isDebugEnabled())
-//					logger.debug("mouseDownEvent: button=" + event.button);
-//			}
-//		});
-//
-//		Display.getDefault().addFilter(SWT.MouseUp, new Listener() {
-//			@Override
-//			public void handleEvent(Event event)
-//			{
-//				mouseDownSet.remove(event.button);
-//
-//				if (logger.isDebugEnabled())
-//					logger.debug("mouseUpEvent: button=" + event.button);
-//			}
-//		});
-
 		Display.getDefault().addFilter(SWT.KeyDown, new Listener() {
 			public void handleEvent(Event event)
 			{
 				keyDownSet.add(event.keyCode);
-
-				if (logger.isDebugEnabled())
-					logger.debug("keyDownEvent: key=" + event.keyCode);
-
-//				switch (event.keyCode) {
-//					case SWT.CTRL:
-//						keyDown_Ctrl = true;
-//						break;
-//					case SWT.SHIFT:
-//						keyDown_Shift = true;
-//						break;
-//				}
+//				if (logger.isDebugEnabled())
+//					logger.debug("keyDownEvent: key=" + event.keyCode);
 			}
 		});
 		Display.getDefault().addFilter(SWT.KeyUp, new Listener() {
 			public void handleEvent(Event event)
 			{
 				keyDownSet.remove(event.keyCode);
-
-				if (logger.isDebugEnabled())
-					logger.debug("keyUpEvent: key=" + event.keyCode);
-
-//				switch (event.keyCode) {
-//					case SWT.CTRL:
-//						keyDown_Ctrl = false;
-//						break;
-//					case SWT.SHIFT:
-//						keyDown_Shift = false;
-//						break;
-//				}
+//				if (logger.isDebugEnabled())
+//					logger.debug("keyUpEvent: key=" + event.keyCode);
 			}
 		});
 	}
@@ -168,18 +126,10 @@ public class RCPUtil
 	{
 		boolean res = keyDownSet.contains(key);
 
-		if (logger.isDebugEnabled())
-			logger.debug("isKeyDown: key=" + key + " down=" + res);
+//		if (logger.isDebugEnabled())
+//			logger.debug("isKeyDown: key=" + key + " down=" + res);
 
 		return res;
-//		switch (key) {
-//			case SWT.CTRL:
-//				return keyDown_Ctrl;
-//			case SWT.SHIFT:
-//				return keyDown_Shift;
-//			default:
-//				throw new IllegalArgumentException("Unknown key! Use one of the KEY_* constants!"); //$NON-NLS-1$
-//		}
 	}
 
 //	/**
