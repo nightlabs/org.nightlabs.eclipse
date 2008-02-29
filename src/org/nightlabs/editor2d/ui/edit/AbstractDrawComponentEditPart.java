@@ -217,10 +217,12 @@ implements EditorRequestConstants
   {
     Rectangle r = new Rectangle(J2DUtil.toDraw2D(getDrawComponent().getBounds()));
     
-    ((GraphicalEditPart) getParent()).setLayoutConstraint(
-        this,
-        getFigure(),
-        r);
+    if (getParent() != null) {
+      ((GraphicalEditPart) getParent()).setLayoutConstraint(
+          this,
+          getFigure(),
+          r);    	
+    }
     
     if (getFigure() instanceof RendererFigure) {
       getRendererFigure().setRenderer(getDrawComponent().getRenderer());
