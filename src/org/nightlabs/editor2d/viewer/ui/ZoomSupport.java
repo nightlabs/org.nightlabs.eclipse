@@ -120,18 +120,6 @@ implements IZoomSupport
 			fireZoomChanged();
 		}
 
-//		double oldZoom = zoom;
-//		zoom = zoomFactor;
-//
-//		if (zoomFactor > getMaxZoom())
-//			zoom = getMaxZoom();
-//
-//		if (zoomFactor < getMinZoom())
-//			zoom = getMinZoom();
-//
-//		if (oldZoom != zoom)
-//			fireZoomChanged();
-
 		doZoomAll();
 	}
 
@@ -193,8 +181,7 @@ implements IZoomSupport
 	 * 
 	 * @see org.nightlabs.editor2d.viewer.ui.IZoomSupport#canZoomIn()
 	 */
-	public boolean canZoomIn()
-	{
+	public boolean canZoomIn() {
 		return (zoom + zoomStep < maxZoom) ? true : false;
 	}
 
@@ -202,8 +189,7 @@ implements IZoomSupport
 	 * 
 	 * @see org.nightlabs.editor2d.viewer.ui.IZoomSupport#canZoomOut()
 	 */
-	public boolean canZoomOut()
-	{
+	public boolean canZoomOut() {
 		return (zoom - zoomStep > minZoom) ? true : false;
 	}
 
@@ -249,6 +235,9 @@ implements IZoomSupport
 	 */
 	public void zoomTo(Rectangle r)
 	{
+		// if once a zoomTo was performed set zoomAll to false
+		zoomAll = false;
+		
 		Rectangle absoluteRect = new Rectangle(r);
 		Rectangle absoluteView = new Rectangle(getViewport().getViewBounds());
 				
@@ -272,13 +261,11 @@ implements IZoomSupport
   	getViewport().setViewLocation((int)newX, (int)newY);
 
   	// FIXME: Workaround to avoid strange redraw bugs when zoom to rectangle
-  	Display.getDefault().timerExec(300, new Runnable(){
+  	Display.getDefault().timerExec(250, new Runnable(){
 			@Override
 			public void run() {
-				SwingUtilities.invokeLater(new Runnable()
-				{
-					public void run()
-					{
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
 						getViewport().notifyChange();
 					}
 				});
@@ -302,7 +289,6 @@ implements IZoomSupport
 	
 	public void setZoomAll(boolean zoomAll) {
 		this.zoomAll = zoomAll;
-//		if (zoomAll)
 		doZoomAll();
 	}
 
@@ -319,17 +305,23 @@ implements IZoomSupport
 			setZoom(scale);
 	}
 	
-	protected void doZoomAll()
-	{
-		Display.getDefault().asyncExec(new Runnable() {
-			public void run() {
-				if (zoomAll) {
-					logger.debug("zoomAll"); //$NON-NLS-1$
-					zoomAll();
-				}
-			}
-		});
+	protected void doZoomAll() {
+		if (zoomAll) {
+			zoomAll();
+		}
 	}
+	
+//	protected void doZoomAll()
+//	{
+////		Display.getDefault().asyncExec(new Runnable() {
+////			public void run() {
+////				if (zoomAll) {
+////					logger.debug("zoomAll"); //$NON-NLS-1$
+//					zoomAll();
+////				}
+////			}
+////		});
+//	}
 	
 	private PropertyChangeListener viewportListener = new PropertyChangeListener(){
 		public void propertyChange(PropertyChangeEvent evt) {
