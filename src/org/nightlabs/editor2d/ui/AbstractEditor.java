@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -231,7 +232,6 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		return unitManager;
 	}
 
-//	protected abstract RootDrawComponent createRootDrawComponent();
 	protected RootDrawComponent createRootDrawComponent() {
 		RootDrawComponent root = getModelFactory().createRootDrawComponent(false);
 		root.setNameProvider(getNameProvider());
@@ -244,7 +244,6 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	{
 		if (root == null) {
 			root = createRootDrawComponent();
-//			root.setNameProvider(getNameProvider());
 		}
 		return root;
 	}
@@ -476,7 +475,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		getSite().registerContextMenu("org.nightlabs.editor2d.ui.contextmenu", //$NON-NLS-1$
 				provider, viewer);
 		viewer.setKeyHandler(new EditorViewerKeyHandler(viewer)
-		.setParent(getCommonKeyHandler()));
+			.setParent(getCommonKeyHandler()));
 
 		loadProperties();
 
@@ -1096,9 +1095,11 @@ extends J2DGraphicalEditorWithFlyoutPalette
 
 		// Zoom
 		ZoomManager manager = (ZoomManager)getGraphicalViewer()
-		.getProperty(ZoomManager.class.toString());
+			.getProperty(ZoomManager.class.toString());
 		if (manager != null)
 			manager.setZoom(getRootDrawComponent().getZoom());
+		
+		
 	}
 
 	/**
@@ -1224,7 +1225,8 @@ extends J2DGraphicalEditorWithFlyoutPalette
 			{
 				URL url;
 				try {
-					url = f.toURL();
+					URI uri = f.toURI();
+					url = uri.toURL();
 					ip.setURL(url);
 					if (logger.isDebugEnabled())
 						logger.debug("url = "+url); //$NON-NLS-1$
@@ -1268,7 +1270,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 			{
 				saveProperties();
 				try {
-					boolean saved = save(file, monitor);
+					save(file, monitor);
 				}
 				catch (Exception e) {
 					throw new RuntimeException(e);

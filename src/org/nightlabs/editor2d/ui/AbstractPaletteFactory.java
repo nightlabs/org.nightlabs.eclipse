@@ -32,6 +32,7 @@ import org.eclipse.gef.palette.PaletteDrawer;
 import org.eclipse.gef.palette.PaletteGroup;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.palette.ToolEntry;
+import org.eclipse.gef.ui.palette.FlyoutPaletteComposite;
 import org.eclipse.gef.ui.palette.FlyoutPaletteComposite.FlyoutPreferences;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.nightlabs.base.ui.resource.SharedImages;
@@ -86,7 +87,7 @@ public abstract class AbstractPaletteFactory
     // set default flyout palette preference values, in case the preference store
     // does not hold stored values for the given preferences
     getPreferenceStore().setDefault(PALETTE_DOCK_LOCATION, -1);
-    getPreferenceStore().setDefault(PALETTE_STATE, -1);
+    getPreferenceStore().setDefault(PALETTE_STATE, FlyoutPaletteComposite.STATE_PINNED_OPEN);
     getPreferenceStore().setDefault(PALETTE_SIZE, DEFAULT_PALETTE_SIZE);
     
     return new FlyoutPreferences() {
