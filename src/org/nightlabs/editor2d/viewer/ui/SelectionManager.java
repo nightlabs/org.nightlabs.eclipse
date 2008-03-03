@@ -123,7 +123,8 @@ public class SelectionManager
 		for (Iterator<ISelectionChangedListener> it = getSelectionListener().iterator(); it.hasNext(); )
 		{
 			ISelectionChangedListener l = it.next();
-			l.selectionChanged(evt);
+			if (l != null)
+				l.selectionChanged(evt);
 		}
 		logger.debug("selection changed!"); //$NON-NLS-1$
 	}
@@ -224,8 +225,6 @@ public class SelectionManager
 			DrawComponent selectionDC = dc2SelectionDC.get(dc);
 			if (selectionDC != null) {
 				removeTempContent(selectionDC);
-			} else {
-				logger.debug("selectionDC for "+dc.getName()+" not in dc2SelectionDC"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 
 			if (repaint)

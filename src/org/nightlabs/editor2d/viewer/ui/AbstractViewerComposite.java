@@ -303,10 +303,9 @@ extends XComposite
 				}
 			}
 		});		
-//		GridData previewData = new GridData();
-//		previewData.widthHint = 200;
-//		previewData.heightHint = 200;
-//		previewComposite.setLayoutData(previewData);
+		GridData previewData = new GridData(GridData.FILL_BOTH);
+		previewData.minimumHeight = 150;
+		previewComposite.setLayoutData(previewData);
 //		Composite spacer = new XComposite(comp, SWT.BORDER);
 //		spacer.setLayoutData(new GridData(GridData.FILL_BOTH));
 	}
