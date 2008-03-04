@@ -53,7 +53,7 @@ import org.eclipse.swt.widgets.Label;
  * you can easily replace one by another.
  * </p>
  *
- * @deprecated Use {@link XComboComposite} instead: For aethetic reasons, it is recommended to use
+ * @deprecated Use {@link XComboComposite} instead: For aesthetic reasons, it is recommended to use
  * the same combo everywhere and the native combo lacks some important features which
  * <code>XCombo</code> supports.
  *

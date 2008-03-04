@@ -25,6 +25,7 @@
  ******************************************************************************/
 package org.nightlabs.base.ui.composite;
 
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Spinner;
@@ -65,8 +66,8 @@ extends XComposite
 //		return Math.pow(10, numDigits) * value.doubleValue();
 		if (numDigits > 0)
 			return Math.pow(10, numDigits) * value.doubleValue();
-		else
-			return value.longValue();
+		
+		return value.longValue();
 	}
 	
 	private Number minVal = 0;
@@ -137,5 +138,23 @@ extends XComposite
 	{
 		Number shortedValue = Util.getDouble(spinner.getSelection(), numDigits);
 		return shortedValue;
+	}
+
+	/**
+	 * @param listener
+	 * @see org.eclipse.swt.widgets.Spinner#addModifyListener(org.eclipse.swt.events.ModifyListener)
+	 */
+	public void addModifyListener(ModifyListener listener)
+	{
+		spinner.addModifyListener(listener);
+	}
+
+	/**
+	 * @param listener
+	 * @see org.eclipse.swt.widgets.Spinner#removeModifyListener(org.eclipse.swt.events.ModifyListener)
+	 */
+	public void removeModifyListener(ModifyListener listener)
+	{
+		spinner.removeModifyListener(listener);
 	}
 }
