@@ -143,10 +143,10 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 
 			@Override
 			protected void doSetFocus() {
-//				super.doSetFocus();
+				super.doSetFocus();
 				Text textWidget = (Text)getControl();
 				textWidget.setSelection(textWidget.getText().length());
-				textWidget.setFocus();
+//				textWidget.setFocus();
 			}
 		};
 		final ColumnViewerEditorActivationStrategy actSupport = new ColumnViewerEditorActivationStrategy(tableViewer) {
@@ -155,6 +155,9 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 					ColumnViewerEditorActivationEvent event) {
 
 				activationChar[0] = 0;
+
+				if (event.eventType == ColumnViewerEditorActivationEvent.MOUSE_DOUBLE_CLICK_SELECTION)
+					return true;
 
 				if (event.eventType == ColumnViewerEditorActivationEvent.KEY_PRESSED && (event.character == SWT.CR || event.keyCode == SWT.F2))
 					return true;
@@ -181,8 +184,6 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 			}
 			@Override
 			protected Object getValue(Object element) {
-//				if (activationChar[0] != 0)
-//					return Character.toString(activationChar[0]);
 				return ((Map.Entry<String, String>) element).getValue();
 			}
 
