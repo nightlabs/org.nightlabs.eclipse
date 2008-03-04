@@ -245,4 +245,7 @@ public class XComboComposite<T>
 		return imageCombo;
 	}
 
+	public int getItemCount() {
+		return imageCombo.getItemCount();
+	}
 }
