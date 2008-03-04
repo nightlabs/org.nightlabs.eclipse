@@ -8,12 +8,19 @@ import java.util.Map.Entry;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnPixelData;
+import org.eclipse.jface.viewers.ColumnViewerEditor;
+import org.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;
+import org.eclipse.jface.viewers.ColumnViewerEditorActivationStrategy;
 import org.eclipse.jface.viewers.ColumnWeightData;
-import org.eclipse.jface.viewers.ICellModifier;
+import org.eclipse.jface.viewers.EditingSupport;
+import org.eclipse.jface.viewers.FocusCellOwnerDrawHighlighter;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.TableViewerEditor;
+import org.eclipse.jface.viewers.TableViewerFocusCellManager;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
@@ -27,7 +34,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.language.I18nTextEditor.EditMode;
 import org.nightlabs.base.ui.layout.WeightedTableLayout;
@@ -36,7 +43,6 @@ import org.nightlabs.base.ui.table.TableContentProvider;
 import org.nightlabs.i18n.I18nText;
 import org.nightlabs.i18n.I18nTextBuffer;
 import org.nightlabs.language.LanguageCf;
-import org.nightlabs.util.Util;
 
 /**
  * Editor Table Composite for {@link I18nText}s. This will provide (or use) a
@@ -46,13 +52,14 @@ import org.nightlabs.util.Util;
  * not affect the original {@link I18nText}. This behaviour can be controlled
  * by
  * {@link #setEditMode(org.nightlabs.base.ui.language.yo.I18nTextEditorTable.EditMode)}.
- * 
+ *
  * Use {@link I18nText#copyFrom(I18nText)} with {@link #getI18nText()} as
  * parameter to reflect the changes in your {@link I18nText}. You can also call
  * {@link #copyToOriginal()} to let that be done for you.
- * 
+ *
  * @author Chairat Kongarayawetchakun - Chairat at nightlabs dot de
  * @author Marco Schulze - Marco at NightLabs dot de
+ * @author Tobias Langner <!-- tobias[dot]langner[at]nightlabs[dot]de -->
  */
 public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 {
@@ -72,7 +79,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 
 	private Table table;
 	private TableViewer tableViewer;
-	
+
 	public I18nTextEditorTable(Composite parent) {
 		this(parent, null);
 	}
@@ -86,7 +93,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 		this.setLayout(gridLayout);
 
 		GridData gd = new GridData(GridData.FILL_BOTH);
-		
+
 		if (title != null)
 			new Label(this, SWT.NONE).setText(title);
 
@@ -105,7 +112,9 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 
 		new TableColumn(table, SWT.LEFT).setText(Messages.getString("org.nightlabs.base.ui.language.I18nTextEditorTable.columnFlag.text")); //$NON-NLS-1$
 		new TableColumn(table, SWT.LEFT).setText(Messages.getString("org.nightlabs.base.ui.language.I18nTextEditorTable.columnLanguage.text")); //$NON-NLS-1$
-		new TableColumn(table, SWT.LEFT).setText(Messages.getString("org.nightlabs.base.ui.language.I18nTextEditorTable.columnText.text")); //$NON-NLS-1$
+		TableViewerColumn translationColumn = new TableViewerColumn(tableViewer, SWT.LEFT);
+		translationColumn.getColumn().setText(Messages.getString("org.nightlabs.base.ui.language.I18nTextEditorTable.columnText.text")); //$NON-NLS-1$
+//		new TableColumn(table, SWT.LEFT).setText(Messages.getString("org.nightlabs.base.ui.language.I18nTextEditorTable.columnText.text")); //$NON-NLS-1$
 
 		TableLayout tableLayout = new TableLayout();
 		tableLayout.addColumnData(new ColumnPixelData(24, false));
@@ -114,12 +123,91 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 		table.setLayout(new WeightedTableLayout(new int[] { -1, 15, 80 }, new int[] { 24, -1, -1 }));
 
 		// Assign the cell editors to the viewer
-		tableViewer.setCellEditors(new CellEditor[] { null, null, new TextCellEditor(table) });
-		tableViewer.setCellModifier(new I18nTextEditorTableCellModifier());
+//		tableViewer.setCellEditors(new CellEditor[] { null, null, new TextCellEditor(table) });
+//		tableViewer.setCellModifier(new I18nTextEditorTableCellModifier());
 
 		// Set the cell modifier for the viewer
 		tableViewer.setContentProvider(new I18nTextEditorTableContentProvider()); // Marco: removed the parameters - a ContentProvider never gets its content immutable this way - it gets it via the callback-method inputChanged(...)
 		tableViewer.setLabelProvider(new I18nTextLabelProvider());
+
+		TableViewerFocusCellManager focusCellManager = new TableViewerFocusCellManager(tableViewer, new FocusCellOwnerDrawHighlighter(tableViewer));
+		final char[] activationChar = new char[1];
+		final TextCellEditor textCellEditor = new TextCellEditor(tableViewer.getTable()) {
+			@Override
+			public void activate() {
+				super.activate();
+				if (activationChar[0] != 0) {
+					doSetValue(Character.toString(activationChar[0]));
+				}
+			}
+
+			@Override
+			protected void doSetFocus() {
+//				super.doSetFocus();
+				Text textWidget = (Text)getControl();
+				textWidget.setSelection(textWidget.getText().length());
+				textWidget.setFocus();
+			}
+		};
+		final ColumnViewerEditorActivationStrategy actSupport = new ColumnViewerEditorActivationStrategy(tableViewer) {
+			@Override
+			protected boolean isEditorActivationEvent(
+					ColumnViewerEditorActivationEvent event) {
+
+				activationChar[0] = 0;
+
+				if (event.eventType == ColumnViewerEditorActivationEvent.KEY_PRESSED && (event.character == SWT.CR || event.keyCode == SWT.F2))
+					return true;
+
+				if (event.eventType == ColumnViewerEditorActivationEvent.KEY_PRESSED && event.character != 0) {
+					activationChar[0] = event.character;
+					return true;
+				}
+
+				return false;
+			}
+		};
+
+		TableViewerEditor.create(tableViewer, focusCellManager, actSupport, ColumnViewerEditor.TABBING_VERTICAL | ColumnViewerEditor.KEYBOARD_ACTIVATION);
+
+		translationColumn.setEditingSupport(new EditingSupport(tableViewer) {
+			@Override
+			protected boolean canEdit(Object element) {
+				return true;
+			}
+			@Override
+			protected CellEditor getCellEditor(Object element) {
+				return textCellEditor;
+			}
+			@Override
+			protected Object getValue(Object element) {
+//				if (activationChar[0] != 0)
+//					return Character.toString(activationChar[0]);
+				return ((Map.Entry<String, String>) element).getValue();
+			}
+
+			@Override
+			protected void setValue(Object element, Object value) {
+				Entry<String, String> entry = ((Map.Entry<String, String>) element);
+				entry.setValue((String) value);
+				work.setText(entry.getKey(), entry.getValue());
+				tableViewer.update(element, null);
+
+				if (modifyListeners != null) {
+					Object[] listeners = modifyListeners.getListeners();
+					Event e = new Event();
+					e.widget = I18nTextEditorTable.this;
+					e.item = e.widget;
+					e.display = I18nTextEditorTable.this.getDisplay();
+					e.text = entry.getValue();
+					ModifyEvent event = new ModifyEvent(e);
+					for (Object l : listeners)
+						((ModifyListener)l).modifyText(event);
+				}
+
+				fireModificationFinished();
+			}
+		});
 	}
 
 	/** ************************************************************************** */
@@ -131,7 +219,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.nightlabs.base.ui.language.II18nTextEditor#addModifyListener(org.eclipse.swt.events.ModifyListener)
 	 */
 	public void addModifyListener(ModifyListener l) {
@@ -150,7 +238,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.nightlabs.base.ui.language.II18nTextEditor#getEditMode()
 	 */
 	public EditMode getEditMode() {
@@ -159,7 +247,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.nightlabs.base.ui.language.II18nTextEditor#getI18nText()
 	 */
 	public I18nText getI18nText() {
@@ -169,7 +257,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.nightlabs.base.ui.language.II18nTextEditor#getOriginal()
 	 */
 	public I18nText getOriginal() {
@@ -180,7 +268,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.nightlabs.base.ui.language.II18nTextEditor#refresh()
 	 */
 	public void refresh() {
@@ -189,7 +277,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.nightlabs.base.ui.language.II18nTextEditor#removeModifyListener(org.eclipse.swt.events.ModifyListener)
 	 */
 	public void removeModifyListener(ModifyListener l) {
@@ -201,7 +289,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.nightlabs.base.ui.language.II18nTextEditor#reset()
 	 */
 	public void reset() {
@@ -250,7 +338,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.nightlabs.base.ui.language.II18nTextEditor#setEditable(boolean)
 	 */
 	public void setEditable(boolean editable) {
@@ -273,7 +361,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.nightlabs.base.ui.language.II18nTextEditor#setI18nText(org.nightlabs.i18n.I18nText)
 	 */
 	public void setI18nText(I18nText i18nText) {
@@ -282,7 +370,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.nightlabs.base.ui.language.II18nTextEditor#setI18nText(org.nightlabs.i18n.I18nText,
 	 *      org.nightlabs.base.ui.language.I18nTextEditor.EditMode)
 	 */
@@ -328,53 +416,53 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 //		}
 	}
 
-	private class I18nTextEditorTableCellModifier
-	implements ICellModifier
-	{
-		public boolean canModify(Object element, String property)
-		{
-			return COLUMN_VALUE_NAME.equals(property);
-		}
-
-		@SuppressWarnings("unchecked")
-		public Object getValue(Object element, String property)
-		{
-			return ((Map.Entry<String, String>)element).getValue();
-		}
-
-		@SuppressWarnings("unchecked")
-		public void modify(Object element, String property, Object value)
-		{
-			if (COLUMN_VALUE_NAME.equals(property)) {
-				TableItem tableItem = (TableItem) element;
-				Map.Entry<String, String> mapEntry = (Entry<String, String>) tableItem.getData();
-				String languageID = mapEntry.getKey();
-				String oldText = mapEntry.getValue();
-				String newText = (String) value;
-				if (Util.equals(oldText, newText))
-					return;
-
-				work.setText(languageID, newText);
-				tableItem.setText(COLUMN_VALUE_INDEX, newText);
-				mapEntry.setValue(newText);
-				tableViewer.update(element, new String[] { property });
-
-				if (modifyListeners != null) {
-					Object[] listeners = modifyListeners.getListeners();
-					Event e = new Event();
-					e.widget = I18nTextEditorTable.this;
-					e.item = e.widget;
-					e.display = I18nTextEditorTable.this.getDisplay();
-					e.text = newText;
-					ModifyEvent event = new ModifyEvent(e);
-					for (Object l : listeners)
-						((ModifyListener)l).modifyText(event);
-				}
-
-				fireModificationFinished();
-			}
-		}
-	}
+//	private class I18nTextEditorTableCellModifier
+//	implements ICellModifier
+//	{
+//		public boolean canModify(Object element, String property)
+//		{
+//			return COLUMN_VALUE_NAME.equals(property);
+//		}
+//
+//		@SuppressWarnings("unchecked")
+//		public Object getValue(Object element, String property)
+//		{
+//			return ((Map.Entry<String, String>)element).getValue();
+//		}
+//
+//		@SuppressWarnings("unchecked")
+//		public void modify(Object element, String property, Object value)
+//		{
+//			if (COLUMN_VALUE_NAME.equals(property)) {
+//				TableItem tableItem = (TableItem) element;
+//				Map.Entry<String, String> mapEntry = (Entry<String, String>) tableItem.getData();
+//				String languageID = mapEntry.getKey();
+//				String oldText = mapEntry.getValue();
+//				String newText = (String) value;
+//				if (Util.equals(oldText, newText))
+//					return;
+//
+//				work.setText(languageID, newText);
+//				tableItem.setText(COLUMN_VALUE_INDEX, newText);
+//				mapEntry.setValue(newText);
+//				tableViewer.update(element, new String[] { property });
+//
+//				if (modifyListeners != null) {
+//					Object[] listeners = modifyListeners.getListeners();
+//					Event e = new Event();
+//					e.widget = I18nTextEditorTableKeyNavigation.this;
+//					e.item = e.widget;
+//					e.display = I18nTextEditorTableKeyNavigation.this.getDisplay();
+//					e.text = newText;
+//					ModifyEvent event = new ModifyEvent(e);
+//					for (Object l : listeners)
+//						((ModifyListener)l).modifyText(event);
+//				}
+//
+//				fireModificationFinished();
+//			}
+//		}
+//	}
 
 	/////////////////////////////////////////////////
 	private class I18nTextLabelProvider
@@ -451,12 +539,12 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 			return es.entrySet().toArray();
 		}
 	}
-	
+
 	/**
 	 * the {@link ListenerList} which holds added {@link ModificationFinishedListener}s
 	 */
 	private ListenerList modificationFinishedListeners = new ListenerList();
-	
+
 	/* (non-Javadoc)
 	 * @see org.nightlabs.base.ui.language.II18nTextEditor#addModificationFinishedListener(org.nightlabs.base.ui.language.ModificationFinishedListener)
 	 */
@@ -470,7 +558,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 	public void removeModificationFinishedListener(ModificationFinishedListener listener) {
 		modificationFinishedListeners.remove(listener);
 	}
-	
+
 	private void fireModificationFinished()
 	{
 		ModificationFinishedEvent event = new ModificationFinishedEvent(this);
