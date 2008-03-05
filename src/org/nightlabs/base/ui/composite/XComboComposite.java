@@ -152,7 +152,6 @@ public class XComboComposite<T>
 		imageCombo.add(labelProvider.getImage(element), labelProvider.getText(element));
 	}
 
-	
 	// Either initialise here, pass false to all superconstructors, create a constructor pyramid for
 	// this class (smallest constructor calls next bigger one), and call createGUIControl in biggest
 	// constructor, or do NOT initialise additional fields but only declare them here and initialise

@@ -27,6 +27,7 @@
 package org.nightlabs.base.ui.custom;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.accessibility.ACC;
 import org.eclipse.swt.accessibility.AccessibleAdapter;
 import org.eclipse.swt.accessibility.AccessibleControlAdapter;
@@ -37,6 +38,7 @@ import org.eclipse.swt.accessibility.AccessibleTextEvent;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -57,6 +59,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TypedListener;
+import org.eclipse.swt.widgets.Widget;
 import org.nightlabs.base.ui.composite.XComposite;
 
 /**
@@ -489,7 +492,13 @@ void createPopup(TableItem[] items, int selectionIndex) {
 		int [] listEvents = {SWT.MouseUp, SWT.Selection, SWT.Traverse, SWT.KeyDown, SWT.KeyUp, SWT.FocusIn, SWT.Dispose};
 		for (int i=0; i<listEvents.length; i++) table.addListener (listEvents [i], listener);
 		
-//		if (items != null) list.setItems (items);
+		if (items != null)
+		{
+			for (TableItem item : items)
+			{
+				add(item.getImage(), item.getText());
+			}
+		}
 		if (selectionIndex != -1) table.setSelection (selectionIndex);
 }
 /**
@@ -1046,6 +1055,7 @@ void listEvent (Event event) {
 			if (getShell () != popup.getParent ()) {
 				TableItem[] items = table.getItems ();
 				int selectionIndex = table.getSelectionIndex ();
+				popup.dispose();
 				popup = null;
 				table = null;
 				createPopup (items, selectionIndex);
