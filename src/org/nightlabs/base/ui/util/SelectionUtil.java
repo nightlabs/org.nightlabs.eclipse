@@ -32,6 +32,7 @@ import java.util.List;
 
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.nightlabs.base.ui.resource.Messages;
 
 public class SelectionUtil
 {
@@ -47,7 +48,7 @@ public class SelectionUtil
 	 * @return a StructuredSelection which contains only Objects from the given
 	 * selection of the given Class
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public static StructuredSelection checkSelection(ISelection selection, Class clazz)
 	{
 		if (!selection.isEmpty() && selection instanceof StructuredSelection)
@@ -79,7 +80,7 @@ public class SelectionUtil
 	 * @return a List which contains only Objects which are assignable from
 	 * the given Class and were contained in the given list
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public static List checkList(List l, Class clazz)
 	{
 		List<Object> list = new ArrayList<Object>();

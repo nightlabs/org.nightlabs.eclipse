@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.util.CollectionUtil;
 
 /**
@@ -91,7 +92,7 @@ public abstract class ObjectDAO<KeyType, ObjectType> {
 	 * @return All requested and existing objects.
 	 * @throws Exception in case of an error
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public synchronized ObjectType getObject(String scope, KeyType key, IProgressMonitor monitor)
 	{
 		try {
@@ -118,7 +119,7 @@ public abstract class ObjectDAO<KeyType, ObjectType> {
 	 * @return All requested and existing objects.
 	 * @throws Exception in case of an error
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public synchronized List<ObjectType> getObjects(String scope, List<KeyType> keys, IProgressMonitor monitor)
 	{
 		try	{

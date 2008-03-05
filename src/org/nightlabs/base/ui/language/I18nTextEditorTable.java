@@ -470,7 +470,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 	extends LabelProvider
 	implements ITableLabelProvider {
 
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked") //$NON-NLS-1$
 		public String getColumnText(Object element, int columnIndex) {
 			Map.Entry<String, String> item = (Map.Entry<String, String>)element;
 			switch (columnIndex) {
@@ -488,7 +488,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 		/**
 		 * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object, int)
 		 */
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked") //$NON-NLS-1$
 		public Image getColumnImage(Object element, int columnIndex) {
 			Map.Entry<String, String> item = (Map.Entry<String, String>)element;
 			switch (columnIndex) {
@@ -515,7 +515,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 		}
 
 		// Return the i18nText as an array of Objects
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked") //$NON-NLS-1$
 		@Override
 		public Object[] getElements(Object parent) {
 			if (i18nText == null)

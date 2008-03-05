@@ -488,7 +488,7 @@ public class EntityEditorController
 	public <T> T getSinglePageController(Class<T> clazz) {
 		Set<IEntityEditorPageController> res = getPageControllers(clazz);
 		if (res.size() > 1)
-			throw new IllegalStateException("This method expects only one (or none) IEntityEditorPageController to be registered of the given type (" + clazz + ")");
+			throw new IllegalStateException("This method expects only one (or none) IEntityEditorPageController to be registered of the given type (" + clazz + ")"); //$NON-NLS-1$ //$NON-NLS-2$
 		if (res.size() == 1)
 			return (T) res.iterator().next();
 		else

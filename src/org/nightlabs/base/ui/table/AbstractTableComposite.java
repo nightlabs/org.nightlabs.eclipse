@@ -52,6 +52,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.nightlabs.base.ui.composite.XComposite;
+import org.nightlabs.base.ui.resource.Messages;
 
 /**
  * A base class for Composites with a Table that takes care of creating a
@@ -174,7 +175,7 @@ public abstract class AbstractTableComposite<ElementType> extends XComposite imp
 	 * of the element types of this table.
 	 * @return the table viewer's selection
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public Collection<ElementType> getSelectedElements() {
 		ISelection sel = getTableViewer().getSelection();
 		if (sel == null || sel.isEmpty())
@@ -201,7 +202,7 @@ public abstract class AbstractTableComposite<ElementType> extends XComposite imp
 	 * 
 	 * @return The first selected element.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public ElementType getFirstSelectedElement() {
 		return (ElementType) getFirstSelectedElementUnchecked();
 	}
@@ -269,7 +270,7 @@ public abstract class AbstractTableComposite<ElementType> extends XComposite imp
 			public String getColumnText(Object element, int columnIndex) {
 				if (columnIndex == 0 && element != null)
 					return element.toString();
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 		});
 		getTableViewer().setContentProvider(new TableContentProvider());
@@ -357,7 +358,7 @@ public abstract class AbstractTableComposite<ElementType> extends XComposite imp
 	 * 
 	 * @return a list of all checked Elements.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public List<ElementType> getCheckedElements() {
 		if ((table.getStyle() & SWT.CHECK) == 0)
 			throw new IllegalStateException("Table is not of type SWT.CHECK, can't return checked Items!"); //$NON-NLS-1$

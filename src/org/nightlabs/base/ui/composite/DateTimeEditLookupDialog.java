@@ -28,19 +28,19 @@ public class DateTimeEditLookupDialog
 	private DateTimeEdit dateTimeEdit;
 	private Calendar calendar;
 
-	@SuppressWarnings("unused")
+	@SuppressWarnings("unused") //$NON-NLS-1$
 	private Spinner year = null;
 	private Spinner month = null;
-	@SuppressWarnings("unused")
+	@SuppressWarnings("unused") //$NON-NLS-1$
 	private Spinner day = null;
 
-	@SuppressWarnings("unused")
+	@SuppressWarnings("unused") //$NON-NLS-1$
 	private Spinner hour = null;
-	@SuppressWarnings("unused")
+	@SuppressWarnings("unused") //$NON-NLS-1$
 	private Spinner minute = null;
-	@SuppressWarnings("unused")
+	@SuppressWarnings("unused") //$NON-NLS-1$
 	private Spinner second = null;
-	@SuppressWarnings("unused")
+	@SuppressWarnings("unused") //$NON-NLS-1$
 	private Spinner milliSec = null;
 
 	private Map<Integer, Spinner> calendarField2Spinner = new HashMap<Integer, Spinner>();

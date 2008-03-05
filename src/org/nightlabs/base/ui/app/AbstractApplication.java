@@ -41,6 +41,7 @@ import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.exceptionhandler.ExceptionHandlerRegistry;
 import org.nightlabs.base.ui.exceptionhandler.SaveRunnableRunner;
 import org.nightlabs.base.ui.extensionpoint.RemoveExtensionRegistry;
+import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.config.Config;
 import org.nightlabs.config.ConfigException;
 import org.nightlabs.util.IOUtil;
@@ -89,7 +90,7 @@ implements IApplication
 //	 */
 //	public static final String APPLICATION_FOLDER_SYSTEM_PROPERTY_NAME = "nightlabs.base.application.folder"; //$NON-NLS-1$
 
-	public static final String LOG_DIR_PROPERTY_KEY = "org.nightlabs.base.ui.log.dir";
+	public static final String LOG_DIR_PROPERTY_KEY = "org.nightlabs.base.ui.log.dir"; //$NON-NLS-1$
 //	public static final String LOG_FILE_NAME_PROPERTY_KEY = "org.nightlabs.base.ui.log.filename";
 //	public static final String LOG_FILE_WITH_PATH_PROPERTY_KEY = "org.nightlabs.base.ui.log.file";
 
@@ -133,21 +134,21 @@ implements IApplication
 	 */
 	public static String getRootDir() {
 		if (rootDir.equals("")) { //$NON-NLS-1$
-			String osgiInstanceArea = System.getProperty("osgi.instance.area");
+			String osgiInstanceArea = System.getProperty("osgi.instance.area"); //$NON-NLS-1$
 			if (osgiInstanceArea == null) {
-				osgiInstanceArea = System.getProperty("osgi.instance.area.default");
+				osgiInstanceArea = System.getProperty("osgi.instance.area.default"); //$NON-NLS-1$
 				if (osgiInstanceArea == null) {
-					System.err.println("Neither the system property \"osgi.instance.area\" nor \"osgi.instance.area.default\" is set!!! You might want to set \"osgi.instance.area.default\" in your config.ini! And you should check your OSGI environment, because even without the default, a concrete value should be set!");
-					throw new IllegalStateException("Neither the system property \"osgi.instance.area\" nor \"osgi.instance.area.default\" is set!!! You might want to set \"osgi.instance.area.default\" in your config.ini! And you should check your OSGI environment, because even without the default, a concrete value should be set!");
+					System.err.println("Neither the system property \"osgi.instance.area\" nor \"osgi.instance.area.default\" is set!!! You might want to set \"osgi.instance.area.default\" in your config.ini! And you should check your OSGI environment, because even without the default, a concrete value should be set!"); //$NON-NLS-1$
+					throw new IllegalStateException("Neither the system property \"osgi.instance.area\" nor \"osgi.instance.area.default\" is set!!! You might want to set \"osgi.instance.area.default\" in your config.ini! And you should check your OSGI environment, because even without the default, a concrete value should be set!"); //$NON-NLS-1$
 				}
 			}
 
-			String prefix = "file:";
+			String prefix = "file:"; //$NON-NLS-1$
 			if (osgiInstanceArea.startsWith(prefix))
 				osgiInstanceArea = osgiInstanceArea.substring(prefix.length());
 
 			File f = new File(osgiInstanceArea).getAbsoluteFile();
-			f = new File(f, "data");
+			f = new File(f, "data"); //$NON-NLS-1$
 			f.mkdirs();
 			rootDir = f.getAbsolutePath();
 
@@ -245,9 +246,9 @@ implements IApplication
 		// create a backup and delete it, if necessary, in order to make it clear for an administrator
 		// that the file is not used anymore.
 		{
-			File oldConfFile = new File(getConfigDir(), "log4j.properties");
+			File oldConfFile = new File(getConfigDir(), "log4j.properties"); //$NON-NLS-1$
 			if (oldConfFile.exists()) {
-				File backup = new File(oldConfFile.getAbsolutePath() + ".bak-" + Long.toString(System.currentTimeMillis(), 36));
+				File backup = new File(oldConfFile.getAbsolutePath() + ".bak-" + Long.toString(System.currentTimeMillis(), 36)); //$NON-NLS-1$
 				oldConfFile.renameTo(backup);
 			}
 		}
@@ -375,7 +376,7 @@ implements IApplication
 		public void run()
 		{
 			long start = System.currentTimeMillis();
-			logger.info("Starting surveillance of application shutdown. Giving it " + timeoutMSec + " msec to finish the JVM cleanly.");
+			logger.info("Starting surveillance of application shutdown. Giving it " + timeoutMSec + " msec to finish the JVM cleanly."); //$NON-NLS-1$ //$NON-NLS-2$
 
 			while (!isInterrupted() && !interruptRequested) {
 				try {
@@ -386,7 +387,7 @@ implements IApplication
 
 				long duration = System.currentTimeMillis() - start;
 				if (duration > timeoutMSec) {
-					logger.error("The application did not finish cleanly within timeout (" + timeoutMSec + " msec)! Will force immediate termination of JVM now!!!");
+					logger.error("The application did not finish cleanly within timeout (" + timeoutMSec + " msec)! Will force immediate termination of JVM now!!!"); //$NON-NLS-1$ //$NON-NLS-2$
 					System.exit(0);
 				}
 			}

@@ -120,7 +120,7 @@ public abstract class FileSelectionComposite
 						fileTextForFolders.setText(selectedFile);
 						if (fileTextForFiles != null) {
 							updating = true;
-							fileTextForFiles.setText("");
+							fileTextForFiles.setText(""); //$NON-NLS-1$
 							updating = false;
 						}
 					}
@@ -161,7 +161,7 @@ public abstract class FileSelectionComposite
 						fileTextForFiles.setText(selectedFile);
 						if (fileTextForFolders != null) {
 							updating = true;
-							fileTextForFolders.setText("");
+							fileTextForFolders.setText(""); //$NON-NLS-1$
 							updating = false;
 						}
 					}
@@ -218,7 +218,7 @@ public abstract class FileSelectionComposite
 	 */
 	protected String doSetUpFileDialog(List<String> filterNames, List<String> filterExtensions) {
 		filterNames.add(Messages.getString("org.nightlabs.base.ui.composite.FileSelectComposite.filterName_allFiles")); //$NON-NLS-1$
-		filterExtensions.add("*.*");
+		filterExtensions.add("*.*"); //$NON-NLS-1$
 		return null;
 	}
 	

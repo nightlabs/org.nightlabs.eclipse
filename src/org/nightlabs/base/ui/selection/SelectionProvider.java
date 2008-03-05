@@ -11,6 +11,7 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.nightlabs.base.ui.resource.Messages;
 
 public class SelectionProvider
 implements ISelectionProvider
@@ -87,7 +88,7 @@ implements ISelectionProvider
 		return getStructuredSelection();
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public void setSelection(ISelection selection)
 	{
 		if (selection == null) { // TODO unfortunately, it is not documented in the ISelectionProvider, whether this method must support null parameters - I simply do it - I hope it doesn't hurt ;-) Marco.
@@ -118,7 +119,7 @@ implements ISelectionProvider
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	protected void addSelectedObject(Object o)
 	{
 		selectedObjects.add(o);
@@ -126,7 +127,7 @@ implements ISelectionProvider
 		fireSelectionChangedEvent();
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	protected void addSelectedObjects(Collection objects)
 	{
 		selectedObjects.addAll(objects);
@@ -166,7 +167,7 @@ implements ISelectionProvider
 		fireSelectionChangedEvent();
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	protected void removeSelectedObjects(Collection objects)
 	{
 		selectedObjects.removeAll(objects);
@@ -174,7 +175,7 @@ implements ISelectionProvider
 		fireSelectionChangedEvent();
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	protected void setSelection(Collection selectedObjects)
 	{
 		selectedObjects.clear();

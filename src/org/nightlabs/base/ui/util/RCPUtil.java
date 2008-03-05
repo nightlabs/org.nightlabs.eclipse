@@ -717,7 +717,7 @@ public class RCPUtil
 	 * @param contributionItem The contributionItem to fill the trim with.
 	 * @param prependTo The id of the trim the new trim should be prepended to.
 	 */
-	@SuppressWarnings("restriction")
+	@SuppressWarnings("restriction") //$NON-NLS-1$
 	public static void addContributionItemTrim(
 			Shell shell,
 			IContributionItem contributionItem,
@@ -814,7 +814,7 @@ public class RCPUtil
 //			tableLayout.addColumnData(new ColumnWeightData(10));
 			Field columnsField = null;
 			try {
-				columnsField = TableLayout.class.getDeclaredField("columns");
+				columnsField = TableLayout.class.getDeclaredField("columns"); //$NON-NLS-1$
 			} catch (NoSuchFieldException e) {
 				throw new RuntimeException(e);
 			}

@@ -5,6 +5,7 @@ package org.nightlabs.base.ui.action;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.update.ui.UpdateManagerUI;
+import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.util.RCPUtil;
 
 /**
@@ -19,8 +20,8 @@ extends Action
 	public UpdateAction() {
 		super();
 		setId(ID);
-		setText("Update");
-		setToolTipText("Update");
+		setText(Messages.getString("org.nightlabs.base.ui.action.UpdateAction.text.update")); //$NON-NLS-1$
+		setToolTipText(Messages.getString("org.nightlabs.base.ui.action.UpdateAction.tooltip.update")); //$NON-NLS-1$
 	}
 
 	@Override

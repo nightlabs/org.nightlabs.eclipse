@@ -7,6 +7,7 @@ import javax.print.PrintService;
 
 import org.eclipse.swt.widgets.Composite;
 import org.nightlabs.base.ui.composite.XComboComposite;
+import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.table.TableLabelProvider;
 import org.nightlabs.print.PrintUtil;
 
@@ -27,7 +28,7 @@ public class PrintServiceCombo extends XComboComposite<PrintService> {
 	 * @param parent
 	 * @param style
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public PrintServiceCombo(Composite parent, int comboStyle) {
 		super(parent, comboStyle, (String) null, new LabelProvider());
 		setInput( PrintUtil.lookupPrintServices() );

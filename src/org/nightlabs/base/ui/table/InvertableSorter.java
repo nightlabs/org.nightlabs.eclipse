@@ -28,6 +28,7 @@ package org.nightlabs.base.ui.table;
 
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
+import org.nightlabs.base.ui.resource.Messages;
 
 /**
  * @author Christian Soltenborn - http://www.eclipsezone.com/eclipse/forums/t59401.html
@@ -36,7 +37,7 @@ public abstract class InvertableSorter<T>
 extends ViewerSorter
 {
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public int compare(Viewer viewer, Object e1, Object e2)
 	{
 		return _compare(viewer, (T)e1, (T)e2);

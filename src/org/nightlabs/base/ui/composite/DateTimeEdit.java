@@ -45,6 +45,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.l10n.DateFormatProvider;
 import org.nightlabs.l10n.DateFormatter;
 import org.nightlabs.l10n.DateParseException;
@@ -56,7 +57,6 @@ public class DateTimeEdit extends XComposite
 {
 	private Text text;
 	private Button lookupButton;
-
 	private Date date;
 	private long flags;
 	private Button active;
@@ -151,7 +151,7 @@ public class DateTimeEdit extends XComposite
 		text.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
-				if (text.getText().equals(""))
+				if (text.getText().equals("")) //$NON-NLS-1$
 					setDate(null);
 				else if (DateTimeEdit.this.date != null)
 					setTimestamp(DateTimeEdit.this.date.getTime());
@@ -183,7 +183,8 @@ public class DateTimeEdit extends XComposite
 
 	private void lookupButtonClicked()
 	{
-		CalendarDateTimeEditLookupDialog dialog = new CalendarDateTimeEditLookupDialog(getShell(), this, lookupButton.toDisplay(0, 0));
+		CalendarDateTimeEditLookupDialog dialog = new CalendarDateTimeEditLookupDialog(getShell(), 
+				this, lookupButton.toDisplay(0, 0));
 		if (dialog.open() == Window.OK) {
 			setDate(dialog.getDate());
 		}
@@ -282,7 +283,7 @@ public class DateTimeEdit extends XComposite
 	public long getTimestamp()
 	{
 		if (date == null)
-			throw new NullPointerException("No date set.");
+			throw new NullPointerException("No date set."); //$NON-NLS-1$
 		
 		return date.getTime();
 	}

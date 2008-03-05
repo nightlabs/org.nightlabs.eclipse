@@ -25,6 +25,7 @@ import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.composite.XComposite.LayoutDataMode;
 import org.nightlabs.base.ui.composite.XComposite.LayoutMode;
 import org.nightlabs.base.ui.dialog.CenteredDialog;
+import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.util.RCPUtil;
 
 /**
@@ -60,7 +61,7 @@ public class EntityEditorStaleHandler {
 			XComposite wrapper = new XComposite(parent, SWT.NONE, LayoutMode.ORDINARY_WRAPPER, LayoutDataMode.GRID_DATA);
 			Label label = new Label(wrapper, SWT.BOLD | SWT.WRAP);
 			label.setText(
-					String.format("The object currently edited in '%s' was changed on the server.\nWhat do you want to do?",
+					String.format(Messages.getString("org.nightlabs.base.ui.entity.editor.EntityEditorStaleHandler.label.text"), //$NON-NLS-1$
 							getEntityEditor().getPartName()
 					)
 			);
@@ -84,7 +85,7 @@ public class EntityEditorStaleHandler {
 		@Override
 		protected void configureShell(Shell newShell) {
 			super.configureShell(newShell);
-			newShell.setText("Entity changed");
+			newShell.setText(Messages.getString("org.nightlabs.base.ui.entity.editor.EntityEditorStaleHandler.dialog.title")); //$NON-NLS-1$
 			setToCenteredLocationPreferredSize(newShell, 400, 300);
 		}
 	}

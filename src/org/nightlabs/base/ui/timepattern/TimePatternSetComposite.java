@@ -41,7 +41,7 @@ implements TimePatternSetEdit
 			this.timePatternSetComposite = timePatternSetComposite;
 		}
 
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked") //$NON-NLS-1$
 		public Object[] getElements(Object inputElement)
 		{
 			TimePatternSet timePatternSet = (TimePatternSet) inputElement;

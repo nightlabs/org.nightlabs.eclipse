@@ -31,6 +31,7 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
+import org.nightlabs.base.ui.resource.Messages;
 
 /**
  * @author Daniel.Mazurek [at] NightLabs [dot] de
@@ -90,7 +91,7 @@ extends InvertableSorter<Object>
 		}
 	};
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public int compare(Viewer viewer, Object e1, Object e2, int columnIndex)
 	{
 		int cat1 = category(e1);

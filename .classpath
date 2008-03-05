@@ -13,6 +13,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/activation.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/mailapi.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/smtp.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/swtcalendar.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/swtcalendar.jar" sourcepath="/SWTCalendar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

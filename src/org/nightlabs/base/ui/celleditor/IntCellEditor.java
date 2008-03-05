@@ -29,6 +29,7 @@ package org.nightlabs.base.ui.celleditor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
+import org.nightlabs.base.ui.resource.Messages;
 
 
 public class IntCellEditor
@@ -71,7 +72,7 @@ extends XCellEditor
 	protected Object doGetValue()
   {
     String stringVal = text.getText();
-    if (stringVal != null && !stringVal.trim().equals("")) {
+    if (stringVal != null && !stringVal.trim().equals("")) { //$NON-NLS-1$
       return new Integer(stringVal);
     }
     return null;

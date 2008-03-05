@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.nightlabs.base.ui.resource.Messages;
 import org.osgi.service.prefs.BackingStoreException;
 
 /**
@@ -73,7 +74,7 @@ public class RememberDecisionMessageDialog extends MessageDialog
 	protected Control createCustomArea(Composite parent)
 	{
 		final Button rememberDecisionButton = new Button(parent, SWT.CHECK);
-		rememberDecisionButton.setText("&Remember my decision");
+		rememberDecisionButton.setText(Messages.getString("org.nightlabs.base.ui.dialog.RememberDecisionMessageDialog.button.rememberDecision.text")); //$NON-NLS-1$
 		rememberDecisionButton.setSelection(rememberDecision);
 		rememberDecisionButton.addSelectionListener(new SelectionListener() {
 			@Override
@@ -236,7 +237,7 @@ public class RememberDecisionMessageDialog extends MessageDialog
 	{
   	IEclipsePreferences node = preferenceScope.getNode(nodeKey);
   	if(node == null)
-  		throw new IllegalStateException("getNode returned null for "+nodeKey);
+  		throw new IllegalStateException("getNode returned null for "+nodeKey); //$NON-NLS-1$
   	node.putBoolean(preferenceKey, decision);
   	node.flush();
 	}

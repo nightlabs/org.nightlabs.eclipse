@@ -45,6 +45,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
+import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.util.RCPUtil;
 import org.nightlabs.util.CollectionUtil;
 
@@ -80,7 +81,7 @@ extends XComposite {
 
 		if(type == ADD) {
 			Button addButton = new Button(buttonComposite, SWT.PUSH);
-			addButton.setText("Add");
+			addButton.setText(Messages.getString("org.nightlabs.base.ui.composite.FileListSelectionComposite.button.add.text")); //$NON-NLS-1$
 			addButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			addButton.addSelectionListener(new SelectionAdapter() {
 				@Override
@@ -101,7 +102,7 @@ extends XComposite {
 			});
 
 			Button removeButton = new Button(buttonComposite, SWT.PUSH);
-			removeButton.setText("Remove");
+			removeButton.setText(Messages.getString("org.nightlabs.base.ui.composite.FileListSelectionComposite.button.remove.text")); //$NON-NLS-1$
 			removeButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			removeButton.addSelectionListener(new SelectionAdapter() {
 				@Override

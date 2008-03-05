@@ -43,7 +43,7 @@ extends Action implements IUpdateActionOrContributionItem
 	public static final String ID = InheritanceAction.class.getName();
 	
 	public InheritanceAction() {
-		super("", IAction.AS_CHECK_BOX);
+		super("", IAction.AS_CHECK_BOX); //$NON-NLS-1$
 		setId(ID);
 		setToolTipText(Messages.getString("org.nightlabs.base.ui.action.InheritanceAction.toolTipText")); //$NON-NLS-1$
 		setImageDescriptor(SharedImages.getSharedImageDescriptor(

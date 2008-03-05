@@ -31,6 +31,7 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.nightlabs.base.ui.composite.XComboComposite;
+import org.nightlabs.base.ui.resource.Messages;
 
 /**
  * @author Daniel.Mazurek <at> Nightlabs <dot> de
@@ -92,7 +93,7 @@ extends XCellEditor
 		comboComposite.setFocus();
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	protected void doSetValue(Object value) {
 		comboComposite.selectElement((T) value);

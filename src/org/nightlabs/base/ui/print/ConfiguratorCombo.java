@@ -29,6 +29,7 @@ package org.nightlabs.base.ui.print;
 import org.eclipse.swt.widgets.Composite;
 import org.nightlabs.base.ui.composite.XComboComposite;
 import org.nightlabs.base.ui.print.PrinterConfigurationRegistry.ConfiguratorFactoryEntry;
+import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.table.TableLabelProvider;
 
 /**
@@ -52,7 +53,7 @@ public class ConfiguratorCombo extends XComboComposite<ConfiguratorFactoryEntry>
 	 * @param parent
 	 * @param style
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public ConfiguratorCombo(Composite parent, int style) {
 		super(parent,	style, (String) null, new LabelProvider());
 		setInput(	PrinterConfigurationRegistry.sharedInstance().getPrinterConfiguratorEntries() );

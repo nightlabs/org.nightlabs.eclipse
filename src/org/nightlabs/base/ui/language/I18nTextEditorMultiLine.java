@@ -29,6 +29,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
+import org.nightlabs.base.ui.resource.Messages;
 
 /**
  * @author Daniel.Mazurek [at] NightLabs [dot] de
@@ -111,8 +112,8 @@ extends I18nTextEditor
 	
 	public void setVisibleLineCount(int lineCount) {
 		if (text == null)
-			throw new IllegalStateException("The text has not been created yet! You should first create "+
-					"the editor widget and then call this method!");
+			throw new IllegalStateException("The text has not been created yet! You should first create "+ //$NON-NLS-1$
+					"the editor widget and then call this method!"); //$NON-NLS-1$
 		if (lineCount < 1)
 			return;
 		

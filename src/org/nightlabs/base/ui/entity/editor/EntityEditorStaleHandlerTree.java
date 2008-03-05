@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.ui.forms.editor.IFormPage;
+import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.table.TableLabelProvider;
 import org.nightlabs.base.ui.tree.AbstractTreeComposite;
 import org.nightlabs.base.ui.tree.TreeContentProvider;
@@ -80,7 +81,7 @@ public class EntityEditorStaleHandlerTree extends AbstractTreeComposite {
 			}
 			if (columnIndex == 0)
 				return String.valueOf(element);
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 	}
 	
@@ -159,9 +160,9 @@ public class EntityEditorStaleHandlerTree extends AbstractTreeComposite {
 	public void createTreeColumns(Tree tree) {
 		TableLayout l = new TableLayout();
 		TreeColumn tc = new TreeColumn(tree, SWT.LEFT);
-		tc.setText("Dirty page");
+		tc.setText(Messages.getString("org.nightlabs.base.ui.entity.editor.EntityEditorStaleHandlerTree.column.dirtyPage")); //$NON-NLS-1$
 		TreeColumn tc2 = new TreeColumn(tree, SWT.LEFT);
-		tc2.setText("Action");
+		tc2.setText(Messages.getString("org.nightlabs.base.ui.entity.editor.EntityEditorStaleHandlerTree.column.action")); //$NON-NLS-1$
 		TreeViewerColumn tvc = new TreeViewerColumn(getTreeViewer(), tc2);
 		tvc.setLabelProvider(new ColumnLabelProvider() {
 			@Override
