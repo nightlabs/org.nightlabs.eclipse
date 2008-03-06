@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.nightlabs.base.ui.resource.Messages;
-import org.nightlabs.base.ui.util.DateUtil;
+import org.nightlabs.base.ui.util.DateTimeUtil;
 import org.nightlabs.l10n.DateFormatProvider;
 
 /**
@@ -74,7 +74,7 @@ extends Dialog
 			XComposite dateComp = new XComposite(page, SWT.NONE);
 
 			calendarDateTime = new DateTime(dateComp, SWT.CALENDAR | SWT.BORDER);
-			DateUtil.setDate(date, calendarDateTime);
+			DateTimeUtil.setDate(date, calendarDateTime);
 			calendarDateTime.addSelectionListener(new SelectionAdapter(){
 				@Override
 				public void widgetSelected(SelectionEvent e) {
@@ -107,7 +107,7 @@ extends Dialog
 			new Label(timeComp, SWT.NONE).setText(Messages.getString("CalendarDateTimeEditLookupDialog.label.time")); //$NON-NLS-1$
 			timeDateTime = new DateTime(timeComp, timeStyle);
 			timeDateTime.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			DateUtil.setDate(date, timeDateTime);	
+			DateTimeUtil.setDate(date, timeDateTime);	
 		}
 		
 		page.setLayout(new GridLayout(numColumns, false));
@@ -117,7 +117,7 @@ extends Dialog
 	private void createDateDateTime(Composite parent) {
 		dateDateTime = new DateTime(parent, SWT.DATE);
 		dateDateTime.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		DateUtil.setDate(date, calendarDateTime);
+		DateTimeUtil.setDate(date, calendarDateTime);
 		dateDateTime.addSelectionListener(new SelectionAdapter(){
 			@Override
 			public void widgetSelected(SelectionEvent e) {

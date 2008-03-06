@@ -3,14 +3,18 @@ package org.nightlabs.base.ui.util;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.widgets.DateTime;
+import org.nightlabs.l10n.NumberFormatProvider;
 
 /**
  * Utility methods for working with {@link DateTime}s. 
  * @author Daniel Mazurek - daniel [at] nightlabs [dot] de
  */
-public class DateUtil 
+public class DateTimeUtil 
 {	
+	private static final Logger logger = Logger.getLogger(DateTimeUtil.class);
+	
 	/**
 	 * Returns the Date from the given DateTime.
 	 * @param dateTime the {@link DateTime} to get a {@link Date} from
@@ -36,7 +40,11 @@ public class DateUtil
 	{
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(year, month, day, hour, minute, second);
-		return calendar.getTime();
+		Date date = calendar.getTime(); 
+		if (logger.isDebugEnabled()) {
+			logger.debug("date = "+date);
+		}
+		return date;
 	}
 	
 	/**
