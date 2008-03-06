@@ -273,7 +273,7 @@ extends AbstractEPProcessor
 		}
 		coolBarContributionManager.update(true);
 	}
-	
+
 	/**
 	 * @param coolBarManager
 	 * @return Returns the number of visible items (i.e. actions) that have been added (because some

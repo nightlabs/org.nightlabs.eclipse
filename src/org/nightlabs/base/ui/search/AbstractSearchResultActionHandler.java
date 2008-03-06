@@ -32,9 +32,6 @@ package org.nightlabs.base.ui.search;
 public abstract class AbstractSearchResultActionHandler
 implements ISearchResultActionHandler
 {
-	public AbstractSearchResultActionHandler() {
-	}
-
 	private ISearchResultProvider searchResultProvider = null;
 	public ISearchResultProvider getSearchResultProvider() {
 		return searchResultProvider;

@@ -48,7 +48,7 @@ public class MenuDescriptor extends ItemDescriptor
 	/**
 	 * @return Returns instances of {@link ItemDescriptor}.
 	 */
-	public List getSubItems()
+	public List<ItemDescriptor> getSubItems()
 	{
 		return subItems;
 	}
@@ -59,14 +59,17 @@ public class MenuDescriptor extends ItemDescriptor
 		this.label = label;
 		this.path = path;
 	}
+	
 	public String getId()
 	{
 		return id;
 	}
+	
 	public String getLabel()
 	{
 		return label;
 	}
+	
 	public String getPath()
 	{
 		return path;

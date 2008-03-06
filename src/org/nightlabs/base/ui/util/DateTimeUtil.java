@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.DateTime;
 
 /**
@@ -19,9 +20,27 @@ public class DateTimeUtil
 	 * @param dateTime the {@link DateTime} to get a {@link Date} from
 	 * @return the Date from the given DateTime
 	 */
-	public static Date getDate(DateTime dateTime) {
+	public static Date getDate(DateTime dateTime) 
+	{
+		// WORKAROUND: to fix the wrong hours, minutes and seconds if 
+		// SWT.CALENDAR style is set
+		Calendar calendar = Calendar.getInstance();
+		if ((dateTime.getStyle() & SWT.CALENDAR) != 0 ||
+				(dateTime.getStyle() & SWT.DATE) != 0) 
+		{
+			return getDate(dateTime.getYear(), dateTime.getMonth(), dateTime.getDay(), 
+					calendar.get(Calendar.HOUR_OF_DAY), 
+					calendar.get(Calendar.MINUTE), 
+					calendar.get(Calendar.SECOND));			
+		}
+		else if ((dateTime.getStyle() & SWT.TIME) != 0) 
+		{
+			return getDate(calendar.get(Calendar.YEAR), 
+					calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), 
+					dateTime.getHours(), dateTime.getMinutes(), dateTime.getSeconds());			
+		}		
 		return getDate(dateTime.getYear(), dateTime.getMonth(), dateTime.getDay(), 
-				dateTime.getHours(), dateTime.getMinutes(), dateTime.getSeconds());
+				dateTime.getHours(), dateTime.getMinutes(), dateTime.getSeconds());			
 	}
 	
 	/**

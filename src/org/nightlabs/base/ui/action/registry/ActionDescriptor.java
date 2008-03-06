@@ -88,22 +88,27 @@ public class ActionDescriptor extends ItemDescriptor
 	{
 		return action;
 	}
+	
 	public IXContributionItem getContributionItem()
 	{
 		return contributionItem;
 	}
+	
 	public String getMenubarPath()
 	{
 		return menubarPath;
 	}
+	
 	public String getToolbarPath()
 	{
 		return toolbarPath;
 	}
+	
 	public String getContextmenuPath()
 	{
 		return contextmenuPath;
 	}
+	
 	public String getID()
 	{
 		return id;
@@ -140,26 +145,32 @@ public class ActionDescriptor extends ItemDescriptor
 	{
 		return visibleInMenubar;
 	}
+	
 	public boolean isVisibleInToolbar()
 	{
 		return visibleInToolbar;
 	}
+	
 	public boolean isVisibleInContextmenu()
 	{
 		return visibleInContextmenu;
 	}
+	
 	public void setVisibleInMenubar(boolean visibleInMenubar)
 	{
 		this.visibleInMenubar = visibleInMenubar;
 	}
+	
 	public void setVisibleInToolbar(boolean visibleInToolbar)
 	{
 		this.visibleInToolbar = visibleInToolbar;
 	}
+	
 	public void setVisibleInContextmenu(boolean visibleInContextmenu)
 	{
 		this.visibleInContextmenu = visibleInContextmenu;
 	}
+	
 	public void setID(String id)
 	{
 		this.id = id;

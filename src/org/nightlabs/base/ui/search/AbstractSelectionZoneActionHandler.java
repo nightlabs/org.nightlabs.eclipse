@@ -38,9 +38,6 @@ import org.nightlabs.notification.NotificationEvent;
 public abstract class AbstractSelectionZoneActionHandler
 extends AbstractSearchResultActionHandler
 {
-	public AbstractSelectionZoneActionHandler() {
-	}
-
 	public void run()
 	{
 		Collection selectedObjects = getSearchResultProvider().getSelectedObjects();
