@@ -5,7 +5,6 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.widgets.DateTime;
-import org.nightlabs.l10n.NumberFormatProvider;
 
 /**
  * Utility methods for working with {@link DateTime}s. 
@@ -40,9 +39,12 @@ public class DateTimeUtil
 	{
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(year, month, day, hour, minute, second);
-		Date date = calendar.getTime(); 
+		Date date = calendar.getTime();
+//		Date date = new Date(year-1900, month, day, hour, minute, second);
 		if (logger.isDebugEnabled()) {
+			logger.debug("year:"+year+",month:"+month+",day:"+day+",hour:"+hour+",minute:"+minute+",second:"+second);
 			logger.debug("date = "+date);
+			logger.debug("");
 		}
 		return date;
 	}
@@ -59,6 +61,12 @@ public class DateTimeUtil
 		dateTime.setHours(calendar.get(Calendar.HOUR_OF_DAY));
 		dateTime.setMinutes(calendar.get(Calendar.MINUTE));
 		dateTime.setSeconds(calendar.get(Calendar.SECOND));
+//		setDate(calendar.getTime(), dateTime);
+		if (logger.isDebugEnabled()) {
+			logger.debug("calendar date = "+calendar.getTime());
+			logger.debug("dateTime date = "+getDate(dateTime));
+			logger.debug("");
+		}
 	}
 	
 	/**
