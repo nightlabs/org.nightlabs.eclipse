@@ -757,14 +757,49 @@ public class RCPUtil
 	/**
 	 * Used internally for the TableLayout workaround.
 	 */
-	private static class WorkaroundTableLayout extends TableLayout {
+	private static class WorkaroundTableLayout
+		extends TableLayout
+	{
 		private List<ColumnLayoutData> originalData;
+		private List<ColumnPixelData> pixelData = null;
 		
-		public List<ColumnLayoutData> getOriginalData() {
+		/**
+		 * @param originalData
+		 */
+		public WorkaroundTableLayout(List<ColumnLayoutData> originalData)
+		{
+			assert originalData != null && !originalData.isEmpty();
+			this.originalData = originalData;
+			this.pixelData = new ArrayList<ColumnPixelData>(originalData.size());
+			for (int i=0; i < originalData.size(); i++)
+			{
+				// set min size of 10 pixels per column
+				final ColumnPixelData pData = new ColumnPixelData(10);
+				pixelData.add(pData);
+				addColumnData(pData);
+			}				
+		}
+		
+		public List<ColumnLayoutData> getOriginalData()
+		{
 			return originalData;
 		}
-		public void setOriginalData(List<ColumnLayoutData> originalData) {
-			this.originalData = originalData;
+		
+		@Override
+		public void layout(Composite c, boolean flush)
+		{
+			// check if there is currently a vertical scroll bar visible in the composite tree where
+			// the given tree of table is used in. If so reduce the available width.
+			// Note: The weird thing is, that the ScrollBar is always set and the width is always > 0,
+			//       BUT with this fix, the table width always matches perfectly. (marius) 
+			final int verticalScrollBarWidth = c.getVerticalBar().getSize().y;
+			final int width = c.getClientArea().width - verticalScrollBarWidth; 
+			
+			if (width > 1)
+			{
+				setPixelData(originalData, pixelData, width);
+			}
+			super.layout(c, flush);
 		}
 	}
 
@@ -788,6 +823,17 @@ public class RCPUtil
 	}
 	
 	/**
+	 * Delegates to {@link #workaroundFormTableLayout(Table, boolean)} with 
+	 * <code>doLayout = false</code>.
+	 * 
+	 * @param table The table to layout that has already a TableLayout set.
+	 */
+	public static void workaroundFormTableLayout(final Table table)
+	{
+		workaroundFormTableLayout(table, false);
+	}
+	
+	/**
 	 * Workaround method to apply normal {@link ColumnLayoutData}s to a table used in a {@link org.eclipse.ui.forms.widgets.Form} with GridLayout.
 	 * This prevents the table to calculate a wrong size in a {@link org.eclipse.ui.forms.widgets.Form} and to let the Section grow on every resize.
 	 * 
@@ -802,7 +848,7 @@ public class RCPUtil
 				!(table.getLayout() instanceof WeightedTableLayout)
 			)
 			return; // The table does not have a TableLayout set.
-		final WorkaroundTableLayout tableLayout = new WorkaroundTableLayout();
+		
 		List<ColumnLayoutData> lData = null;
 		if (table.getLayout() instanceof WorkaroundTableLayout) {
 			lData = ((WorkaroundTableLayout)table.getLayout()).getOriginalData();
@@ -826,17 +872,26 @@ public class RCPUtil
 				throw new RuntimeException(e);
 			}
 		}
-		tableLayout.setOriginalData(new ArrayList<ColumnLayoutData>(lData));
+		final WorkaroundTableLayout tableLayout =
+			new WorkaroundTableLayout(new ArrayList<ColumnLayoutData>(lData));
+		
 		table.setLayout(tableLayout);
-		final List<ColumnLayoutData> layoutData = lData;
-		final List<ColumnPixelData> pixelData = new ArrayList<ColumnPixelData>(layoutData.size());
-		for (ColumnLayoutData columnLayoutData : layoutData) {
-			final ColumnPixelData pData = new ColumnPixelData(0);
-			pixelData.add(pData);
-			tableLayout.addColumnData(pData);
-		}
-		final int clientWidth = table.getClientArea().width;
-		setPixelData(layoutData, pixelData, clientWidth);
+//		final List<ColumnLayoutData> layoutData = lData;
+//		final List<ColumnPixelData> pixelData = new ArrayList<ColumnPixelData>(layoutData.size());
+//		for (int i=0; i < layoutData.size(); i++)
+//		{
+//			// set min size of 10 pixels per column
+//			final ColumnPixelData pData = new ColumnPixelData(10);
+//			pixelData.add(pData);
+//			tableLayout.addColumnData(pData);
+//		}
+//		// in case the table hasn't been layouted yet, this width is 0 and the WorkaroundTableLayout 
+//		// has to set correct pixel datas on layout call. 
+//		final int clientWidth = table.getClientArea().width;
+//		if (clientWidth != 0)
+//		{
+//			setPixelData(layoutData, pixelData, clientWidth);			
+//		}
 //		table.addControlListener(new ControlAdapter() {
 //			public void controlResized(final ControlEvent e) {
 //				setPixelData(layoutData, pixelData, table.getClientArea().width);

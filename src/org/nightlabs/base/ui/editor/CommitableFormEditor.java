@@ -66,7 +66,7 @@ public abstract class CommitableFormEditor extends FormEditor
 	/**
 	 * Call commit on all managed from pages.
 	 * @param onSave <code>true</code> to indicate that
-	 * 		we are commiting because of an editor save.
+	 * 		we are committing because of an editor save.
 	 */
 	protected void commitFormPages(boolean onSave)
 	{

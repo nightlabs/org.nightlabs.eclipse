@@ -32,6 +32,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.forms.widgets.Form;
+import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.nightlabs.base.ui.form.NightlabsFormsToolkit;
 import org.nightlabs.base.ui.toolkit.IToolkit;
 
@@ -392,8 +394,8 @@ public class XComposite extends Composite
 	}
 	
 	/**
-	 * Returns the boarder flag according to the context this composite is used in;
-	 * Forms => SWT.NONE, since the toolkit draws one if needed
+	 * Returns the border flag according to the context this composite is used in;
+	 * Forms => toolkit.getBorderStyle(), since the toolkit draws one if needed
 	 * Other => SWT.Border <b>
 	 * 
 	 * <p>This method should be called if you want to create a border in any context but don't want to
@@ -426,11 +428,22 @@ public class XComposite extends Composite
 		return SWT.BORDER;
 	}
 	
-	private static IToolkit retrieveToolkit(Composite comp) {
+	public static IToolkit retrieveToolkit(Composite comp) {
 		Composite tmp = comp;
 		while( tmp != null ) {
-			if (tmp instanceof XComposite) {
-					return ((XComposite) tmp).toolkit;
+			if (tmp instanceof XComposite)
+			{
+				return ((XComposite) tmp).toolkit;
+			}
+			else if (tmp instanceof ScrolledForm)
+			{
+				final ScrolledForm scrolledForm = (ScrolledForm) tmp;
+				return new NightlabsFormsToolkit(scrolledForm.getDisplay()); 
+			}
+			else if (tmp instanceof Form)
+			{
+				final Form form = (Form) tmp;
+				return new NightlabsFormsToolkit(form.getDisplay());
 			}
 			tmp = tmp.getParent();
 		} // walk up the composite tree

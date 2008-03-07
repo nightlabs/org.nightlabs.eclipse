@@ -52,7 +52,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.nightlabs.base.ui.composite.XComposite;
-import org.nightlabs.base.ui.resource.Messages;
 
 /**
  * A base class for Composites with a Table that takes care of creating a
