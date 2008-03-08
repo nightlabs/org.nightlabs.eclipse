@@ -35,6 +35,7 @@ import java.util.List;
 
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IContentProvider;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -42,11 +43,13 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -75,8 +78,10 @@ import org.nightlabs.base.ui.composite.XComposite;
  *
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
  */
-public abstract class AbstractTableComposite<ElementType> extends XComposite implements ISelectionProvider {
-
+public abstract class AbstractTableComposite<ElementType> 
+extends XComposite 
+implements ISelectionProvider 
+{
 	/**
 	 * Default set of styles to use when constructing a single-selection viewer with border.
 	 */
@@ -95,8 +100,8 @@ public abstract class AbstractTableComposite<ElementType> extends XComposite imp
 
 	public static int DEFAULT_STYLE_MULTI = SWT.FULL_SELECTION | SWT.MULTI;
 
-	protected TableViewer tableViewer;
-	protected Table table;
+	private TableViewer tableViewer;
+	private Table table;
 
 	public AbstractTableComposite(Composite parent, int style) {
 		this(parent, style, true);
@@ -108,11 +113,6 @@ public abstract class AbstractTableComposite<ElementType> extends XComposite imp
 
 	public AbstractTableComposite(Composite parent, int style, boolean initTable, int viewerStyle) {
 		super(parent, style, LayoutMode.TIGHT_WRAPPER);
-		//		GridLayout thisLayout = new GridLayout();
-		//		this.setLayout(thisLayout);
-		//
-		//		GridData gd = new GridData(GridData.FILL_BOTH);
-		//		this.setLayoutData(gd);
 
 		tableViewer = new TableViewer(this, viewerStyle);
 		tableViewer.setUseHashlookup(true);
@@ -142,17 +142,26 @@ public abstract class AbstractTableComposite<ElementType> extends XComposite imp
 
 	private boolean sortColumns = true;
 
+	/**
+	 * Sets the sortColumns state.
+	 * If set to true all table columns of the {@link TableViewer} will be automatically
+	 * sorted in an alphabetic manner
+	 * @param sortColumns determines if the table columns should be sortable (true) or not (false)
+	 */
 	public void setSortColumns(boolean sortColumns) {
 		this.sortColumns = sortColumns;
 	}
 
 	/**
-	 * Calls refresh for the TableViewer.
-	 */
+	 * Delegating method for {@link TableViewer} 
+	 */		
 	public void refresh() {
 		tableViewer.refresh();
 	}
 
+	/**
+	 * Delegating method for {@link TableViewer} 
+	 */			
 	public void refresh(boolean updateLabels) {
 		tableViewer.refresh(updateLabels);
 	}
@@ -162,7 +171,7 @@ public abstract class AbstractTableComposite<ElementType> extends XComposite imp
 	}
 
 	/**
-	 * Override for initialisation to be done
+	 * Override for initialization to be done
 	 * before {@link #createTableColumns(TableViewer, Table)} and {@link #setTableProvider(TableViewer)}.
 	 * Default implementation does nothing.
 	 */
@@ -176,7 +185,7 @@ public abstract class AbstractTableComposite<ElementType> extends XComposite imp
 	 */
 	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public Collection<ElementType> getSelectedElements() {
-		ISelection sel = getTableViewer().getSelection();
+		ISelection sel = tableViewer.getSelection();
 		if (sel == null || sel.isEmpty())
 			return Collections.emptyList();
 		else if (sel instanceof IStructuredSelection) {
@@ -214,7 +223,7 @@ public abstract class AbstractTableComposite<ElementType> extends XComposite imp
 	 * @return The first selected element (of any type).
 	 */
 	public Object getFirstSelectedElementUnchecked() {
-		ISelection sel = getTableViewer().getSelection();
+		ISelection sel = tableViewer.getSelection();
 		if (sel == null || sel.isEmpty())
 			return null;
 		else if (sel instanceof IStructuredSelection)
@@ -237,7 +246,7 @@ public abstract class AbstractTableComposite<ElementType> extends XComposite imp
 	 */
 	protected abstract void setTableProvider(TableViewer tableViewer);
 
-	public Table getTable() {
+	protected Table getTable() {
 		return table;
 	}
 
@@ -246,9 +255,9 @@ public abstract class AbstractTableComposite<ElementType> extends XComposite imp
 	 */
 	public void setInput(Object input) {
 		if (tmpLabelProvider != null) {
-			getTableViewer().setInput(null);
-			getTableViewer().setLabelProvider(tmpLabelProvider);
-			getTableViewer().setContentProvider(tmpContentProvider);
+			tableViewer.setInput(null);
+			tableViewer.setLabelProvider(tmpLabelProvider);
+			tableViewer.setContentProvider(tmpContentProvider);
 		}
 		
 		if (tableViewer != null)
@@ -263,17 +272,17 @@ public abstract class AbstractTableComposite<ElementType> extends XComposite imp
 	 * @param message The message to be shown.
 	 */
 	public void setLoadingMessage(String message) {
-		tmpLabelProvider = getTableViewer().getLabelProvider();
-		tmpContentProvider = getTableViewer().getContentProvider();
-		getTableViewer().setLabelProvider(new TableLabelProvider() {
+		tmpLabelProvider = tableViewer.getLabelProvider();
+		tmpContentProvider = tableViewer.getContentProvider();
+		tableViewer.setLabelProvider(new TableLabelProvider() {
 			public String getColumnText(Object element, int columnIndex) {
 				if (columnIndex == 0 && element != null)
 					return element.toString();
 				return ""; //$NON-NLS-1$
 			}
 		});
-		getTableViewer().setContentProvider(new TableContentProvider());
-		getTableViewer().setInput(new String[] { message });
+		tableViewer.setContentProvider(new TableContentProvider());
+		tableViewer.setInput(new String[] { message });
 	}
 
 	/**
@@ -289,25 +298,12 @@ public abstract class AbstractTableComposite<ElementType> extends XComposite imp
 			elementList = new ArrayList<ElementType>(elements);
 		}
 		setSelection(elementList);
-
-		//		TableItem[] items = tableViewer.getTable().getItems();
-		//		List<Integer> selIndexes = new ArrayList<Integer>();
-		//		for (int i = 0; i < items.length; i++) {
-		//			if (elements.contains(items[i].getData()))
-		//				selIndexes.add(i);
-		//		}
-		//		int[] selection = new int[selIndexes.size()];
-		//		for (int i = 0; i < selection.length; i++) {
-		//			selection[i] = selIndexes.get(i);
-		//		}
-		//		tableViewer.getTable().setSelection(new int[] {});
-		//		tableViewer.getTable().select(selection);
 	}
 
 	/**
 	 * If the this table-composite's table was created with
 	 * the {@link SWT#CHECK} flag this method will
-	 * exlusively check the rows for the given element list.
+	 * exclusively check the rows for the given element list.
 	 * 
 	 * @param elements The element to check.
 	 */
@@ -377,7 +373,7 @@ public abstract class AbstractTableComposite<ElementType> extends XComposite imp
 	 * @see TableViewer#setSelection(ISelection)
 	 */
 	public void setSelection(List<ElementType> elements) {
-		getTableViewer().setSelection(new StructuredSelection(elements));
+		tableViewer.setSelection(new StructuredSelection(elements));
 	}
 
 	/**
@@ -388,11 +384,14 @@ public abstract class AbstractTableComposite<ElementType> extends XComposite imp
 	 * @see TableViewer#setSelection(ISelection, boolean)
 	 */
 	public void setSelection(List<ElementType> elements, boolean reveal) {
-		getTableViewer().setSelection(new StructuredSelection(elements), reveal);
+		tableViewer.setSelection(new StructuredSelection(elements), reveal);
 	}
 
+	/**
+	 * Delegating method for {@link TableViewer} 
+	 */			
 	public void addSelectionChangedListener(ISelectionChangedListener listener) {
-		getTableViewer().addSelectionChangedListener(listener);
+		tableViewer.addSelectionChangedListener(listener);
 	}
 
 	/**
@@ -413,10 +412,16 @@ public abstract class AbstractTableComposite<ElementType> extends XComposite imp
 		});
 	}
 
+	/**
+	 * Delegating method for {@link TableViewer} 
+	 */		
 	public ISelection getSelection() {
 		return tableViewer.getSelection();
 	}
 
+	/**
+	 * Delegating method for {@link TableViewer} 
+	 */		
 	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
 		tableViewer.removeSelectionChangedListener(listener);
 	}
@@ -425,18 +430,93 @@ public abstract class AbstractTableComposite<ElementType> extends XComposite imp
 		table.removeSelectionListener(listener);
 	}
 
+	/**
+	 * Delegating method for {@link TableViewer} 
+	 */		
 	public void setSelection(ISelection selection) {
 		tableViewer.setSelection(selection);
 	}
 
 	@Override
 	public Menu getMenu() {
-		return getTable().getMenu();
+		return table.getMenu();
 	}
 
 	@Override
 	public void setMenu(Menu menu) {
-		getTable().setMenu(menu);
+		table.setMenu(menu);
 	}
 
+	public int getItemCount() {
+		return table.getItemCount();
+	}
+	
+	public int getSelectionCount() {
+		return table.getSelectionCount();
+	}
+	
+	public void select(int index) {
+		table.select(index);
+	}
+	
+	public boolean setFocus() {
+		return table.setFocus();
+	}
+	
+	/**
+	 * Delegating method for {@link TableViewer} 
+	 */		
+	public void addDoubleClickListener(IDoubleClickListener listener) {
+		tableViewer.addDoubleClickListener(listener);
+	}
+	
+	/**
+	 * Delegating method for {@link TableViewer} 
+	 */		
+	public void removeDoubleClickListener(IDoubleClickListener listener) {
+		tableViewer.removeDoubleClickListener(listener);
+	}
+	
+	public void setLinesVisible(boolean visible) {
+		table.setLinesVisible(visible);
+	}
+	
+	public void setHeaderVisible(boolean visible) {
+		table.setHeaderVisible(visible);
+	}
+	
+	public int getSelectionIndex() {
+		return table.getSelectionIndex();
+	}
+	
+	/**
+	 * Delegating method for {@link TableViewer} 
+	 */		
+	public Control getControl() {
+		return tableViewer.getControl();
+	}
+
+	/**
+	 * Delegating method for {@link TableViewer} 
+	 */		
+	public void setComparator(ViewerComparator comparator) {
+		tableViewer.setComparator(comparator);
+	}
+	
+	/**
+	 * Adds an element to the {@link TableViewer}
+	 * @param element the ElementType to add
+	 */
+	public void addElement(ElementType element) {
+		tableViewer.add(element);
+	}
+
+	/**
+	 * Removes an element from the {@link TableViewer}
+	 * @param element the ElementType to remove
+	 */	
+	public void removeElement(ElementType element) {
+		tableViewer.remove(element);
+	}
+	
 }

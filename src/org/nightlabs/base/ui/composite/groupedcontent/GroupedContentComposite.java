@@ -58,7 +58,7 @@ public class GroupedContentComposite extends XComposite {
 	
 	private ISelectionChangedListener switcherListener = new ISelectionChangedListener() {
 		public void selectionChanged(SelectionChangedEvent event) {
-			IStructuredSelection selection = (IStructuredSelection)switcherTable.getTableViewer().getSelection();
+			IStructuredSelection selection = (IStructuredSelection)switcherTable.getSelection();
 			if (selection.size() != 1)
 				return;
 			GroupedContentProvider contentProvider = (GroupedContentProvider)selection.getFirstElement();
@@ -86,7 +86,7 @@ public class GroupedContentComposite extends XComposite {
 		tableWrapper.setLayoutData(tableGD);
 
 		switcherTable = new GroupedContentSwitcherTable(tableWrapper, SWT.NONE);
-		switcherTable.getTableViewer().addSelectionChangedListener(switcherListener);
+		switcherTable.addSelectionChangedListener(switcherListener);
 		
 		contentWrapper = new XComposite(this, SWT.NONE);
 		contentWrapper.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -124,8 +124,8 @@ public class GroupedContentComposite extends XComposite {
 	}
 	
 	private void preSelect() {
-		if (switcherTable.getTable().getItemCount() > 0 && switcherTable.getTable().getSelectionCount() == 0) {
-			switcherTable.getTable().select(0);
+		if (switcherTable.getItemCount() > 0 && switcherTable.getSelectionCount() == 0) {
+			switcherTable.select(0);
 			selectContentProvider(groupedContentProvider.get(0));
 		}
 	}

@@ -230,7 +230,7 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 		}
 		errorTable.setLayoutData(gd);
 		errorTable.setInput(errorList);
-		errorTable.getTableViewer().addSelectionChangedListener(
+		errorTable.addSelectionChangedListener(
 				new ISelectionChangedListener() {
 					public void selectionChanged(SelectionChangedEvent event)
 					{
