@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Dialog Plug-in
+Bundle-SymbolicName: org.nightlabs.eclipse.ui.dialog
+Bundle-Version: 1.0.0
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.jface,
+ org.apache.log4j,
+ org.eclipse.ui.forms,
+ org.nightlabs.eclipse.ui.composite
+Export-Package: org.nightlabs.eclipse.ui.dialog,
+ org.nightlabs.eclipse.ui.dialog.config,
+ org.nightlabs.eclipse.ui.dialog.resource
