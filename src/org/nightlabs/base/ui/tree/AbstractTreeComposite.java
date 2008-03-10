@@ -330,7 +330,8 @@ implements ISelectionProvider
 	 * Selects the given element in the tree. (Shortcut to #setSelection(List)).
 	 * @param element the element to be selected
 	 */
-	public void setSelection(Object element)
+//	public void setSelection(Object element)
+	public void setSelection(ElementType element)
 	{
 		getTreeViewer().setSelection(new StructuredSelection(element), true);
 	}
