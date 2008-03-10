@@ -31,9 +31,7 @@ import java.awt.Toolkit;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -61,8 +59,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.IEditorInput;
@@ -89,65 +85,6 @@ import org.nightlabs.util.IOUtil;
  */
 public class RCPUtil
 {
-	private static Logger logger = Logger.getLogger(RCPUtil.class);
-
-	static {
-		Display.getDefault().addFilter(SWT.KeyDown, new Listener() {
-			public void handleEvent(Event event)
-			{
-				keyDownSet.add(event.keyCode);
-//				if (logger.isDebugEnabled())
-//					logger.debug("keyDownEvent: key=" + event.keyCode);
-			}
-		});
-		Display.getDefault().addFilter(SWT.KeyUp, new Listener() {
-			public void handleEvent(Event event)
-			{
-				keyDownSet.remove(event.keyCode);
-//				if (logger.isDebugEnabled())
-//					logger.debug("keyUpEvent: key=" + event.keyCode);
-			}
-		});
-	}
-
-//	private static Set<Integer> mouseDownSet = new HashSet<Integer>();
-	private static Set<Integer> keyDownSet = new HashSet<Integer>();
-
-	/**
-	 * Find out, whether a certain key is currently pressed down. Warning! This works not 100% reliably. It only works if there is a focusable widget having the focus and I don't understand completely yet, under which circumstances it doesn't work.
-	 * <p>
-	 * In general, it is better to use the listeners of the widgets you're working with. We might even remove this method again.
-	 * </p>
-	 *
-	 * @param key the key - one of the {@link SWT} constants like {@link SWT#CTRL}, {@link SWT#SHIFT} etc.
-	 * @return <code>true</code> iff the key is currently in state down.
-	 */
-	public static boolean isKeyDown(int key)
-	{
-		boolean res = keyDownSet.contains(key);
-
-//		if (logger.isDebugEnabled())
-//			logger.debug("isKeyDown: key=" + key + " down=" + res);
-
-		return res;
-	}
-
-//	/**
-//	 * Find out, whether a certain mouse button is currently pressed down. It only works if there is a focusable widget having the focus and I don't understand completely yet, under which circumstances it doesn't work.
-//	 *
-//	 * @param button the button - one of the {@link SWT} constants like {@link SWT#BUTTON1}, {@link SWT#BUTTON2} etc.
-//	 * @return <code>true</code> iff the mouse button is currently in state down.
-//	 */
-//	public static boolean isMouseDown(int button)
-//	{
-//		boolean res = mouseDownSet.contains(button);
-//
-//		if (logger.isDebugEnabled())
-//			logger.debug("isMouseDown: button=" + button + " down=" + res);
-//
-//		return res;
-//	}
-
 	/**
 	 * Recursively sets the enabled flag for the given Composite and all its children.
 	 * <p>
