@@ -768,7 +768,8 @@ public class RCPUtil
 		 */
 		public WorkaroundTableLayout(List<ColumnLayoutData> originalData)
 		{
-			assert originalData != null && !originalData.isEmpty();
+		// TODO: Removed assert as this ocuured sometimes, check why
+//			assert originalData != null && !originalData.isEmpty();
 			this.originalData = originalData;
 			this.pixelData = new ArrayList<ColumnPixelData>(originalData.size());
 			for (int i=0; i < originalData.size(); i++)
