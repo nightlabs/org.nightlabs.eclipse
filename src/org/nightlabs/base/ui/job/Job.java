@@ -55,8 +55,9 @@ public abstract class Job extends org.eclipse.core.runtime.jobs.Job {
 			status = Status.CANCEL_STATUS;
 			ExceptionHandlerRegistry.asyncHandleException(t);
 		} finally {
-			this.progressMonitor = null;
-			this.progressMonitorWrapper = null;
+			// might be asynchronously still used (if the job ends asynchronously - eg. with a Display.getDefault().asyncExec())
+//			this.progressMonitor = null;
+//			this.progressMonitorWrapper = null;
 		}
 		return status;
 	}
