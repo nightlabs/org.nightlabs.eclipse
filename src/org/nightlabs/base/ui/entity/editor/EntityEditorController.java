@@ -52,16 +52,16 @@ import org.nightlabs.base.ui.resource.Messages;
 /**
  * <p>Controller used by {@link EntityEditor} to hold the
  * {@link IEntityEditorPageController} for the displayed pages.</p>
- * 
+ *
  * <p>In its default implementation an {@link EntityEditor} will call
  * its controller's {@link #doSave(IProgressMonitor)} method
  * when it needs to be saved. The controller will then delegate to all
  * it's registered {@link IEntityEditorPageController}s.</p>
- * 
+ *
  * <p>Additionally {@link EntityEditorController} provides a pool of Jobs
  * that will be scheduled by the controller taking care that not more than
  * a configurable number of jobs run simultaneously.</p>
- * 
+ *
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  */
 public class EntityEditorController
@@ -75,7 +75,7 @@ public class EntityEditorController
 	 * The editor this controller is linked to.
 	 */
 	private EntityEditor editor;
-	
+
 	/**
 	 * Map to hold the page controllers for the pages of this controller
 	 * editor. All work of this controller (load save get) will be delegated
@@ -103,15 +103,15 @@ public class EntityEditorController
 //	 * Reverse lookup map for {@link #pageID2pageController}.
 //	 */
 //	private Map<IEntityEditorPageController, Collection<IFormPage>> controllerPages = new HashMap<IEntityEditorPageController, Collection<IFormPage>>();
-	
+
 	private List<IEntityEditorPageController> dirtyPageControllers = new LinkedList<IEntityEditorPageController>();
-	
+
 	/**
 	 * Currently the maximum number of simultaneously running jobs is configured with this constant.
 	 * The current value is 3.
 	 */
 	public static final int MAX_RUNNING_JOB_COUNT = 3;
-	
+
 	/**
 	 * Map of one job per page controller that could be scheduled in background.
 	 * The number of allowed simultaneously running jobs can be configured by {@link #MAX_RUNNING_JOB_COUNT}.
@@ -131,7 +131,7 @@ public class EntityEditorController
 				}
 			}
 		);
-	
+
 	/**
 	 * Set of jobs that were in the pool and already scheduled.
 	 */
@@ -140,7 +140,7 @@ public class EntityEditorController
 	 * Counter for scheduled and unfinished (un-done()) jobs.
 	 */
 	private int runningJobs = 0;
-	
+
 	/**
 	 * Create an instance of this controller for
 	 * an {@link EntityEditor} and load the data.
@@ -156,7 +156,7 @@ public class EntityEditorController
 	 * The controller can later be referenced by the given page.
 	 * If the given pageFactory does not return a valid page controller
 	 * nothing will be done.
-	 * 
+	 *
 	 * @param page The page the controller should be created for.
 	 * @param pageFactory The factory the controller for the page should be created from.
 	 */
@@ -208,14 +208,14 @@ public class EntityEditorController
 					EntityEditorController.this.unsetSavingState();
 					return;
 				}
-				
+
 				if (source instanceof EntityEditor) {
 					EntityEditor editor = (EntityEditor) source;
 //					if (editor.isDirty()) {
 					IFormPage page = editor.getActivePageInstance();
 					IEntityEditorPageController pageController = pageID2pageController.get(page.getId());
 					if (pageController != null) {
-						logger.debug("pageControler.markDirty() for page "+page.getId()); //$NON-NLS-1$
+//						logger.debug("pageControler.markDirty() for page "+page.getId()); //$NON-NLS-1$
 //						pageController.markDirty();
 					}
 //					}
@@ -223,12 +223,12 @@ public class EntityEditorController
 			}
 		}
 	};
-	
+
 	/**
 	 * Returns the page controller registered to the given page.
 	 * If no page controller was linked or none could be found <code>null</code>
 	 * will be returned.
-	 * 
+	 *
 	 * @param page The page a controller should be searched for.
 	 * @return The page controller registered to the given page or <code>null</code> if none found.
 	 */
@@ -264,7 +264,7 @@ public class EntityEditorController
 	/**
 	 * Returns a collection of all pageControllers associated with this'
 	 * editor {@link EntityEditorController}.
-	 * 
+	 *
 	 * @return All page controllers.
 	 */
 	public Collection<IEntityEditorPageController> getPageControllers() {
@@ -283,10 +283,10 @@ public class EntityEditorController
 	/**
 	 * Adds a new job to the pool, that might be scheduled instantly or
 	 * some time later, depending on the numer of already running jobs.
-	 * 
+	 *
 	 * This method synchronized the job pool so other modifications
 	 * must wait.
-	 * 
+	 *
 	 * @param pageController The pageController the job to add is linked to.
 	 * @param loadJob The job to add.
 	 */
@@ -297,13 +297,13 @@ public class EntityEditorController
 			runPossibleJobs();
 		}
 	}
-	
+
 	/**
 	 * Remove and return the job linked to the given page controller from
 	 * the pool. Note that the job returned might be running (or finished) already.
 	 * If the job is currently running (checked by the isAlive() method of its thread)
 	 * the counter of running jobs will be decremented and
-	 * 
+	 *
 	 * @param pageController
 	 * @return
 	 */
@@ -339,7 +339,7 @@ public class EntityEditorController
 			}
 		}
 	}
-	
+
 	/**
 	 * Job listener to track finished jobs.
 	 */
@@ -365,7 +365,7 @@ public class EntityEditorController
 		public void sleeping(IJobChangeEvent event) {
 		}
 	};
-	
+
 	/**
 	 * Does nothing at the moment.
 	 * @param monitor The progress monitor to use.
@@ -373,7 +373,7 @@ public class EntityEditorController
 	public void doLoad(IProgressMonitor monitor)
 	{
 	}
-	
+
 	/**
 	 * Iterates through all IFormPages, and if a page is dirty the corresponding controller is added
 	 * to the dirtyPageControllers
@@ -416,7 +416,7 @@ public class EntityEditorController
 	/**
 	 * Delegates to the {@link IEntityEditorPageController#doSave(IProgressMonitor)}
 	 * method of all known dirty {@link IEntityEditorPageController}s.
-	 * 
+	 *
 	 * @param monitor The progress monitor to use.
 	 */
 	public void doSave(IProgressMonitor monitor)
@@ -441,7 +441,7 @@ public class EntityEditorController
 			controller.editorFocussed();
 		}
 	}
-	
+
 	/**
 	 * Dispatches to all {@link IEntityEditorPageController}s registered with this controller and
 	 * calls {@link IEntityEditorPageController#editorFocussed()}.
@@ -475,12 +475,12 @@ public class EntityEditorController
 
 		return Collections.emptySet();
 	}
-	
+
 	/**
 	 * This method is a convenience method calling {@link #getPageControllers(Class)} and
 	 * assuming that only one controller matching this class can be found in this editor.
 	 * If more than one controller is found this method will throw an {@link IllegalStateException}.
-	 * 
+	 *
 	 * @param clazz The class of controller to be returned.
 	 * @return Either the instance of an {@link IEntityEditorPageController} of the given type or <code>null</code>,
 	 * 		if none could be found.
