@@ -149,6 +149,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 //				textWidget.setFocus();
 			}
 		};
+
 		final ColumnViewerEditorActivationStrategy actSupport = new ColumnViewerEditorActivationStrategy(tableViewer) {
 			@Override
 			protected boolean isEditorActivationEvent(

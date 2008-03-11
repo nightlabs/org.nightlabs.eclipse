@@ -78,9 +78,9 @@ import org.nightlabs.base.ui.composite.XComposite;
  *
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
  */
-public abstract class AbstractTableComposite<ElementType> 
-extends XComposite 
-implements ISelectionProvider 
+public abstract class AbstractTableComposite<ElementType>
+extends XComposite
+implements ISelectionProvider
 {
 	/**
 	 * Default set of styles to use when constructing a single-selection viewer with border.
@@ -153,15 +153,15 @@ implements ISelectionProvider
 	}
 
 	/**
-	 * Delegating method for {@link TableViewer} 
-	 */		
+	 * Delegating method for {@link TableViewer}
+	 */
 	public void refresh() {
 		tableViewer.refresh();
 	}
 
 	/**
-	 * Delegating method for {@link TableViewer} 
-	 */			
+	 * Delegating method for {@link TableViewer}
+	 */
 	public void refresh(boolean updateLabels) {
 		tableViewer.refresh(updateLabels);
 	}
@@ -207,7 +207,7 @@ implements ISelectionProvider
 	 * to the ElementType this table composite was typed with.
 	 * If the selected element is not of this type a
 	 * {@link ClassCastException} will be thrown.
-	 * 
+	 *
 	 * @return The first selected element.
 	 */
 	@SuppressWarnings("unchecked") //$NON-NLS-1$
@@ -219,7 +219,7 @@ implements ISelectionProvider
 	 * Returns the first selected element without casting
 	 * it to the ElementType this table composite was
 	 * typed with.
-	 * 
+	 *
 	 * @return The first selected element (of any type).
 	 */
 	public Object getFirstSelectedElementUnchecked() {
@@ -241,7 +241,7 @@ implements ISelectionProvider
 
 	/**
 	 * Set your content and label provider for the tableViewer.
-	 * 
+	 *
 	 * @param tableViewer The TableViewer.
 	 */
 	protected abstract void setTableProvider(TableViewer tableViewer);
@@ -259,14 +259,14 @@ implements ISelectionProvider
 			tableViewer.setLabelProvider(tmpLabelProvider);
 			tableViewer.setContentProvider(tmpContentProvider);
 		}
-		
+
 		if (tableViewer != null)
 			tableViewer.setInput(input);
 	}
-	
+
 	private IBaseLabelProvider tmpLabelProvider;
 	private IContentProvider tmpContentProvider;
-	
+
 	/**
 	 * Here you can set a string message displayed to notify the user about an asynchronous load process.
 	 * @param message The message to be shown.
@@ -287,7 +287,7 @@ implements ISelectionProvider
 
 	/**
 	 * Sets the selection to the given list of elements.
-	 * 
+	 *
 	 * @param elements The elements to select.
 	 */
 	public void setSelectedElements(Collection<ElementType> elements) {
@@ -304,7 +304,7 @@ implements ISelectionProvider
 	 * If the this table-composite's table was created with
 	 * the {@link SWT#CHECK} flag this method will
 	 * exclusively check the rows for the given element list.
-	 * 
+	 *
 	 * @param elements The element to check.
 	 */
 	public void setCheckedElements(Collection<ElementType> elements) {
@@ -350,7 +350,7 @@ implements ISelectionProvider
 	 * If the this table-composite's table was created with
 	 * the {@link SWT#CHECK} flag this method will return a list of all
 	 * checked elements.
-	 * 
+	 *
 	 * @return a list of all checked Elements.
 	 */
 	@SuppressWarnings("unchecked") //$NON-NLS-1$
@@ -368,7 +368,7 @@ implements ISelectionProvider
 
 	/**
 	 * Set the viewers selection.
-	 * 
+	 *
 	 * @param elements The selection to set
 	 * @see TableViewer#setSelection(ISelection)
 	 */
@@ -378,7 +378,7 @@ implements ISelectionProvider
 
 	/**
 	 * Set the viewers selection.
-	 * 
+	 *
 	 * @param selection The selection to set.
 	 * @param reveal If true the selection will be made visible
 	 * @see TableViewer#setSelection(ISelection, boolean)
@@ -388,8 +388,8 @@ implements ISelectionProvider
 	}
 
 	/**
-	 * Delegating method for {@link TableViewer} 
-	 */			
+	 * Delegating method for {@link TableViewer}
+	 */
 	public void addSelectionChangedListener(ISelectionChangedListener listener) {
 		tableViewer.addSelectionChangedListener(listener);
 	}
@@ -397,7 +397,7 @@ implements ISelectionProvider
 	/**
 	 * Adds a selection listener that is triggered whenever the check state of a
 	 * table item is gets changed.
-	 * 
+	 *
 	 * @param listener
 	 */
 	public void addCheckStateChangedListener(final SelectionListener listener) {
@@ -413,15 +413,15 @@ implements ISelectionProvider
 	}
 
 	/**
-	 * Delegating method for {@link TableViewer} 
-	 */		
+	 * Delegating method for {@link TableViewer}
+	 */
 	public ISelection getSelection() {
 		return tableViewer.getSelection();
 	}
 
 	/**
-	 * Delegating method for {@link TableViewer} 
-	 */		
+	 * Delegating method for {@link TableViewer}
+	 */
 	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
 		tableViewer.removeSelectionChangedListener(listener);
 	}
@@ -431,8 +431,8 @@ implements ISelectionProvider
 	}
 
 	/**
-	 * Delegating method for {@link TableViewer} 
-	 */		
+	 * Delegating method for {@link TableViewer}
+	 */
 	public void setSelection(ISelection selection) {
 		tableViewer.setSelection(selection);
 	}
@@ -450,59 +450,60 @@ implements ISelectionProvider
 	public int getItemCount() {
 		return table.getItemCount();
 	}
-	
+
 	public int getSelectionCount() {
 		return table.getSelectionCount();
 	}
-	
+
 	public void select(int index) {
 		table.select(index);
 	}
-	
+
+	@Override
 	public boolean setFocus() {
 		return table.setFocus();
 	}
-	
+
 	/**
-	 * Delegating method for {@link TableViewer} 
-	 */		
+	 * Delegating method for {@link TableViewer}
+	 */
 	public void addDoubleClickListener(IDoubleClickListener listener) {
 		tableViewer.addDoubleClickListener(listener);
 	}
-	
+
 	/**
-	 * Delegating method for {@link TableViewer} 
-	 */		
+	 * Delegating method for {@link TableViewer}
+	 */
 	public void removeDoubleClickListener(IDoubleClickListener listener) {
 		tableViewer.removeDoubleClickListener(listener);
 	}
-	
+
 	public void setLinesVisible(boolean visible) {
 		table.setLinesVisible(visible);
 	}
-	
+
 	public void setHeaderVisible(boolean visible) {
 		table.setHeaderVisible(visible);
 	}
-	
+
 	public int getSelectionIndex() {
 		return table.getSelectionIndex();
 	}
-	
+
 	/**
-	 * Delegating method for {@link TableViewer} 
-	 */		
+	 * Delegating method for {@link TableViewer}
+	 */
 	public Control getControl() {
 		return tableViewer.getControl();
 	}
 
 	/**
-	 * Delegating method for {@link TableViewer} 
-	 */		
+	 * Delegating method for {@link TableViewer}
+	 */
 	public void setComparator(ViewerComparator comparator) {
 		tableViewer.setComparator(comparator);
 	}
-	
+
 	/**
 	 * Adds an element to the {@link TableViewer}
 	 * @param element the ElementType to add
@@ -514,9 +515,9 @@ implements ISelectionProvider
 	/**
 	 * Removes an element from the {@link TableViewer}
 	 * @param element the ElementType to remove
-	 */	
+	 */
 	public void removeElement(ElementType element) {
 		tableViewer.remove(element);
 	}
-	
+
 }
