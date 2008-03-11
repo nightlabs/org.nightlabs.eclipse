@@ -43,8 +43,8 @@ import org.nightlabs.i18n.I18nTextBuffer;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
-public abstract class AbstractSearchResultProviderFactory
-implements ISearchResultProviderFactory
+public abstract class AbstractSearchResultProviderFactory<T>
+implements ISearchResultProviderFactory<T>
 {
 	public AbstractSearchResultProviderFactory() {
 		super();

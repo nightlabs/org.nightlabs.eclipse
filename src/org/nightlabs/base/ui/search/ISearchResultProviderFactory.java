@@ -36,7 +36,7 @@ import org.nightlabs.i18n.I18nText;
  * 
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  */
-public interface ISearchResultProviderFactory
+public interface ISearchResultProviderFactory<T>
 extends IExecutableExtension
 {
 	public static final String WILDCARD_PERSPECTIVE_ID = "*"; //$NON-NLS-1$
@@ -46,7 +46,7 @@ extends IExecutableExtension
 	 * returns the ISearchResultProvider
 	 * @return the ISearchResultProvider
 	 */
-	ISearchResultProvider createSearchResultProvider();
+	ISearchResultProvider<T> createSearchResultProvider();
 	
 	/**
 	 * returns the multilanguage capable name of the type of search
@@ -58,7 +58,7 @@ extends IExecutableExtension
 	/**
 	 * @return the class of the results of the search
 	 */
-	Class getResultTypeClass();
+	Class<T> getResultTypeClass();
 	
 	/**
 	 * returns the {@link ISearchResultActionHandler} which should be used
