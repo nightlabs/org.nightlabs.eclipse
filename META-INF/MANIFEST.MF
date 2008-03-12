@@ -7,7 +7,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jface,
  org.apache.log4j,
  org.eclipse.ui.forms,
- org.nightlabs.eclipse.ui.composite
+ org.nightlabs.eclipse.ui.composite,
+ org.nightlabs.base
 Export-Package: org.nightlabs.eclipse.ui.dialog,
  org.nightlabs.eclipse.ui.dialog.config,
  org.nightlabs.eclipse.ui.dialog.resource
