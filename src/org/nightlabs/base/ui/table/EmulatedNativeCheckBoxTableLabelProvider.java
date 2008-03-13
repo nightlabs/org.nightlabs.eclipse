@@ -21,7 +21,7 @@ implements ITableLabelProvider
   private static final String UNCHECK_KEY = "UNCHECKED";
 
   public EmulatedNativeCheckBoxTableLabelProvider(TableViewer viewer) {
-    if( JFaceResources.getImageRegistry().getDescriptor(CHECKED_KEY) == null ) {
+    if (JFaceResources.getImageRegistry().getDescriptor(CHECKED_KEY) == null) {
       JFaceResources.getImageRegistry().put(UNCHECK_KEY, makeShot(viewer.getControl().getShell(), false));
       JFaceResources.getImageRegistry().put(CHECKED_KEY, makeShot(viewer.getControl().getShell(), true));
     }
