@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Text;
 import org.nightlabs.eclipse.ui.composite.XComposite;
 import org.nightlabs.eclipse.ui.composite.XComposite.LayoutDataMode;
 import org.nightlabs.eclipse.ui.composite.XComposite.LayoutMode;
+import org.nightlabs.eclipse.ui.dialog.resource.Messages;
 
 /**
  * A dialog that presents a textbox for a new password as well as another text box to confirm the new password.
@@ -56,7 +57,7 @@ public class ChangePasswordDialog extends CenteredDialog
 			}
 			
 			boolean okButtonEnabled = true;
-			String message = "";
+			String message = ""; //$NON-NLS-1$
 			
 			String validationMessage = passwordValidator.isValid(newPasswordText.getText());
 			if (validationMessage != null) {
@@ -64,7 +65,7 @@ public class ChangePasswordDialog extends CenteredDialog
 				message = validationMessage;
 			} else if (!newPasswordText.getText().equals(confirmPasswordText.getText())) {
 				okButtonEnabled = false;
-				message = "The passwords do not match.";
+				message = Messages.getString("org.nightlabs.base.ui.dialog.ChangePasswordDialog.message"); //$NON-NLS-1$
 			}
 			
 			getButton(IDialogConstants.OK_ID).setEnabled(okButtonEnabled);
@@ -106,17 +107,17 @@ public class ChangePasswordDialog extends CenteredDialog
 			return strength;
 		}
 		
-		private final char[] SPECIAL_CHARACTERS = "!§$%&/()=?`*'_:';,.-#+´\\}][{°^\"]<> ".toCharArray();
+		private final char[] SPECIAL_CHARACTERS = "!§$%&/()=?`*'_:';,.-#+´\\}][{°^\"]<> ".toCharArray(); //$NON-NLS-1$
 		private int countSpecialCharOccurences(String string) {
 			return countOccurences(string, SPECIAL_CHARACTERS);
 		}
 		
-		private final char[] NUMBERS = "01234567890".toCharArray();
+		private final char[] NUMBERS = "01234567890".toCharArray(); //$NON-NLS-1$
 		private int countNumberOccurences(String string) {
 			return countOccurences(string, NUMBERS);
 		}
 		
-		private final char[] UPPERCASE_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+		private final char[] UPPERCASE_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray(); //$NON-NLS-1$
 		private int countUppercaseLetterOccurences(String string) {
 			return countOccurences(string, UPPERCASE_LETTERS);
 		}
@@ -147,14 +148,14 @@ public class ChangePasswordDialog extends CenteredDialog
 			this.passwordMeter = passwordMeter;
 		
 		if (passwordValidator == null)
-			throw new IllegalArgumentException("passwordValidator must not be null!");
+			throw new IllegalArgumentException("passwordValidator must not be null!"); //$NON-NLS-1$
 		this.passwordValidator = passwordValidator;
 	}
 	
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
-		newShell.setText("Set the password");
+		newShell.setText(Messages.getString("org.nightlabs.base.ui.dialog.ChangePasswordDialog.shell.text")); //$NON-NLS-1$
 	}
 	
 	@Override
@@ -169,23 +170,23 @@ public class ChangePasswordDialog extends CenteredDialog
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		Label label = new Label(container, SWT.NONE);
-		label.setText("Please enter a new password.");
+		label.setText(Messages.getString("org.nightlabs.base.ui.dialog.ChangePasswordDialog.label.newPassword")); //$NON-NLS-1$
 		label.setLayoutData(gridData);
 
 		label = new Label(container, SWT.NONE);
-		label.setText("Password:");
+		label.setText(Messages.getString("org.nightlabs.base.ui.dialog.ChangePasswordDialog.label.password")); //$NON-NLS-1$
 		newPasswordText = new Text(container, SWT.BORDER);
 		newPasswordText.setEchoChar('*');
 		XComposite.setLayoutDataMode(LayoutDataMode.GRID_DATA_HORIZONTAL, newPasswordText);
 		
 		label = new Label(container, SWT.NONE);
-		label.setText("Confirmation:");
+		label.setText(Messages.getString("org.nightlabs.base.ui.dialog.ChangePasswordDialog.label.confirmation")); //$NON-NLS-1$
 		confirmPasswordText = new Text(container, SWT.BORDER);
 		confirmPasswordText.setEchoChar('*');
 		XComposite.setLayoutDataMode(LayoutDataMode.GRID_DATA_HORIZONTAL, confirmPasswordText);
 		
 		label = new Label(container, SWT.NONE);
-		label.setText("Password strength:");
+		label.setText(Messages.getString("org.nightlabs.base.ui.dialog.ChangePasswordDialog.label.passwordStrength")); //$NON-NLS-1$
 		passwordStrengthBar = new ProgressBar(container, SWT.NONE);
 		passwordStrengthBar.setMinimum(0);
 		passwordStrengthBar.setMaximum(passwordMeter.getMaxPasswordMetric());
