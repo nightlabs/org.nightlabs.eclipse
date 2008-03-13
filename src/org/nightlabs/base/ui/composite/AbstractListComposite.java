@@ -39,6 +39,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -614,8 +615,8 @@ implements ISelectionProvider
 		for (Iterator it = sel.iterator(); it.hasNext(); ) {
 			Object element = it.next();
 			int index = elements.indexOf(element);
-			if (index < 0)
-				throw new IllegalArgumentException("The object in the selection is not known in this list: " + element); //$NON-NLS-1$
+//			if (index < 0)
+//				throw new IllegalArgumentException("The object in the selection is not known in this list: " + element); //$NON-NLS-1$
 
 			selectionIndices.add(index);
 		}
@@ -633,7 +634,11 @@ implements ISelectionProvider
 	 * @param element The element to be selected.
 	 */
 	public void setSelection(final T element) {
-		IStructuredSelection sel = new StructuredSelection(element);
+		// put the given element in a Collection so we can also put the element into a 
+		// StructuredSelection even so it is null! And we work around the problem the the iterator 
+		// loop is skipped setSelection(ISelection), hence we can deselect all by passing null to this
+		// method. (if the underlying widget does support it -- XCombo does so)
+		IStructuredSelection sel = new StructuredSelection( Collections.singleton(element) );
 		
 		setSelection(sel);
 	}

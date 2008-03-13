@@ -38,6 +38,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -45,7 +46,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.l10n.DateFormatProvider;
 import org.nightlabs.l10n.DateFormatter;
 import org.nightlabs.l10n.DateParseException;
@@ -337,4 +337,23 @@ public class DateTimeEdit extends XComposite
 		this.active.setSelection(active);
 		activeSelected();
 	}
+
+	/**
+	 * @param listener
+	 * @see org.eclipse.swt.widgets.Button#addSelectionListener(org.eclipse.swt.events.SelectionListener)
+	 */
+	public void addActiveChangeListener(SelectionListener listener)
+	{
+		active.addSelectionListener(listener);
+	}
+
+	/**
+	 * @param listener
+	 * @see org.eclipse.swt.widgets.Button#removeSelectionListener(org.eclipse.swt.events.SelectionListener)
+	 */
+	public void removeActiveChangeListener(SelectionListener listener)
+	{
+		active.removeSelectionListener(listener);
+	}
+	
 }
