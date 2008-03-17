@@ -28,7 +28,6 @@ package org.nightlabs.editor2d.viewer.ui;
 
 import java.awt.Point;
 
-import org.nightlabs.editor2d.viewer.ui.event.IMouseChangedListener;
 import org.nightlabs.editor2d.viewer.ui.event.MouseListener;
 import org.nightlabs.editor2d.viewer.ui.event.MouseMoveListener;
 

@@ -44,7 +44,6 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JPanel;
 
-import org.apache.log4j.Logger;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.util.GeomUtil;
 import org.nightlabs.editor2d.viewer.ui.DrawComponentPaintable;
@@ -62,7 +61,7 @@ public class PreviewPanel
 extends JPanel
 {
 	private static final long serialVersionUID = 1L;
-	private static final Logger logger = Logger.getLogger(PreviewPanel.class);
+//	private static final Logger logger = Logger.getLogger(PreviewPanel.class);
 	private IViewport viewport = null;
 	private DrawComponent dc = null;
 	private Color bgColor = Color.WHITE;

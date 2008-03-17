@@ -27,7 +27,6 @@
 package org.nightlabs.editor2d.viewer.ui;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 
 public class TempContentManager
@@ -35,17 +34,18 @@ implements ITempContentManager
 {
 	public TempContentManager() { }
 
-	private Collection tempContent = new HashSet();
-	private Collection readOnlyTempContent = null;
+	private Collection<Object> tempContent = new HashSet<Object>();
+	private Collection<Object> readOnlyTempContent = null;
 
 	/**
 	 * @see ITempContentManager#getTempContent()
 	 */
-	public Collection getTempContent()
+	public Collection<Object> getTempContent()
 	{
 		if (readOnlyTempContent == null) {
 			synchronized (tempContent) {
-				readOnlyTempContent = Collections.unmodifiableCollection(new HashSet(tempContent));
+//				readOnlyTempContent = Collections.unmodifiableCollection(new HashSet(tempContent));
+				readOnlyTempContent = new HashSet<Object>(tempContent);
 			}
 		}
 		return readOnlyTempContent;
@@ -65,7 +65,7 @@ implements ITempContentManager
 	/**
 	 * @see ITempContentManager#removeFromTempContent(Collection)
 	 */
-	public void removeFromTempContent(Collection c)
+	public void removeFromTempContent(Collection<Object> c)
 	{
 		synchronized (tempContent) {
 			if (tempContent.removeAll(c))
@@ -79,22 +79,6 @@ implements ITempContentManager
 		}
 	}
 
-//	/**
-//	 * @see ITempContentManager#addToTempContent(Object)
-//	 */
-//	public void addToTempContent(Object _object)
-//	{
-//		if (_object instanceof DrawComponent || _object instanceof Component) {
-//			if (tempContent.contains(_object)) {
-//				return;
-//			}
-//			tempContent.add(_object);
-//			readOnlyTempContent = null;
-//		}
-//		else {
-//			throw new IllegalArgumentException("_object is neither a instance of DrawComponent nor Component!");
-//		}
-//	}
 	/**
 	 * @see ITempContentManager#addToTempContent(Object)
 	 */
@@ -109,7 +93,7 @@ implements ITempContentManager
 	/**
 	 * @see ITempContentManager#addToTempContent(Collection)
 	 */
-	public void addToTempContent(Collection c)
+	public void addToTempContent(Collection<Object> c)
 	{
 		synchronized (tempContent) {
 			tempContent.addAll(c);

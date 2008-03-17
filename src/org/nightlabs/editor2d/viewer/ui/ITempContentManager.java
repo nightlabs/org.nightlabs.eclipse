@@ -40,7 +40,7 @@ public interface ITempContentManager
 	 * 
 	 * @param c the Collection of Objects to add to the Temp Content
 	 */
-	void addToTempContent(Collection c);
+	void addToTempContent(Collection<Object> c);
 	
 	/**
 	 * 
@@ -52,7 +52,7 @@ public interface ITempContentManager
 	 * 
 	 * @param c the Collection of Objects to remove to the Temp Content
 	 */
-	void removeFromTempContent(Collection c);
+	void removeFromTempContent(Collection<Object> c);
 	
 	/**
 	 * clears the Temp Content
@@ -63,5 +63,5 @@ public interface ITempContentManager
 	 * 
 	 * @return a unmodifiable Collection which contains the Temp Content
 	 */
-	Collection getTempContent();
+	Collection<Object> getTempContent();
 }

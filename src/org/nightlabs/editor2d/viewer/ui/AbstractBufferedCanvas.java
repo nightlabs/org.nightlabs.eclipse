@@ -534,7 +534,7 @@ implements IBufferedCanvas, IViewport
 	protected boolean drawTempContent = true;
 	public void drawTempContent(Graphics2D g2d)
 	{
-		for (Iterator it = getTempContentManager().getTempContent().iterator(); it.hasNext(); )
+		for (Iterator<Object> it = getTempContentManager().getTempContent().iterator(); it.hasNext(); )
 		{
 			Object o = it.next();
 			if (o instanceof DrawComponent) {

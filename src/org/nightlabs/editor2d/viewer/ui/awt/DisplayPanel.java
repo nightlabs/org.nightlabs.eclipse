@@ -691,7 +691,7 @@ implements IBufferedViewport
 	{
 //		PaintUtil.drawTempContent(g2d, getTempContentManager());
 		if (getTempContentManager() != null && getTempContentManager().getTempContent() != null) {
-			for (Iterator it = getTempContentManager().getTempContent().iterator(); it.hasNext(); )
+			for (Iterator<Object> it = getTempContentManager().getTempContent().iterator(); it.hasNext(); )
 			{
 				Object o = it.next();
 				if (o != null) {

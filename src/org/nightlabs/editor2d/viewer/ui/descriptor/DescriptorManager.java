@@ -44,14 +44,15 @@ public class DescriptorManager
 	}
 
 	protected IDrawComponentDescriptor defaultDescriptor = new DrawComponentDescriptor(null);
-	protected IDrawComponentDescriptor currentDescriptor = defaultDescriptor;
-		
-	protected Map<Class, IDrawComponentDescriptor> class2Descriptor = new HashMap<Class, IDrawComponentDescriptor>();
-	public void addDescriptor(IDrawComponentDescriptor desc, Class dcClass) {
+	protected IDrawComponentDescriptor currentDescriptor = defaultDescriptor;		
+	protected Map<Class<? extends DrawComponent>, IDrawComponentDescriptor> class2Descriptor = 
+		new HashMap<Class<? extends DrawComponent>, IDrawComponentDescriptor>();
+	protected DrawComponent drawComponent = null;
+	
+	public void addDescriptor(IDrawComponentDescriptor desc, Class<? extends DrawComponent> dcClass) {
 		class2Descriptor.put(dcClass, desc);
 	}
 		
-	protected DrawComponent drawComponent = null;
 	public void setDrawComponent(DrawComponent dc)
 	{
 		this.drawComponent = dc;
@@ -64,6 +65,7 @@ public class DescriptorManager
 		}
 		currentDescriptor.setDrawComponent(dc);
 	}
+	
 	public DrawComponent getDrawComponent() {
 		return drawComponent;
 	}

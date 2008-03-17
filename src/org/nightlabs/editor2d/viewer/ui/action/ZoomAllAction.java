@@ -35,12 +35,12 @@ public class ZoomAllAction
 extends ZoomAction
 {
 	public static final String ID = ZoomAllAction.class.getName();
-	private double zoom = 1.0d;
+//	private double zoom = 1.0d;
 	
 	public ZoomAllAction(IZoomSupport zoomSupport)
 	{
 		super(zoomSupport);
-		this.zoom = zoomSupport.getZoom();
+//		this.zoom = zoomSupport.getZoom();
 	}
 
 	@Override
@@ -53,7 +53,7 @@ extends ZoomAction
 	}
 
 	public void zoomChanged(double zoom) {
-		this.zoom = zoom;
+//		this.zoom = zoom;
 	}
 	
 	@Override

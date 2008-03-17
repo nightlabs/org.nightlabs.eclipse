@@ -37,8 +37,8 @@ implements SWTRenderContext
   		DrawComponentContainer container = (DrawComponentContainer) dc;
   		if (container != null) {
   			if (container.isVisible()) {
-    			for (Iterator it = container.getDrawComponents().iterator(); it.hasNext(); ) {
-    				DrawComponent d = (DrawComponent) it.next();
+    			for (Iterator<DrawComponent> it = container.getDrawComponents().iterator(); it.hasNext(); ) {
+    				DrawComponent d = it.next();
     				if (d.isVisible()) {
       				Renderer r = d.getRenderer();
       				RenderContext rc = r.getRenderContext(SWTRenderContext.RENDER_CONTEXT_TYPE);

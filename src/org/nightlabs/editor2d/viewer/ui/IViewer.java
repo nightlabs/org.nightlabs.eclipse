@@ -29,7 +29,6 @@ package org.nightlabs.editor2d.viewer.ui;
 import org.eclipse.swt.graphics.Color;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.render.RenderModeManager;
-import org.nightlabs.editor2d.viewer.ui.tool.IToolManager;
 
 public interface IViewer
 {

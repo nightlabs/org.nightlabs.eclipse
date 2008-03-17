@@ -23,7 +23,7 @@ public class PaintUtil
 	public static void drawTempContent(Graphics2D g2d, ITempContentManager tempContentManager)
 	{
 		if (tempContentManager != null && tempContentManager.getTempContent() != null) {
-			for (Iterator it = tempContentManager.getTempContent().iterator(); it.hasNext(); )
+			for (Iterator<Object> it = tempContentManager.getTempContent().iterator(); it.hasNext(); )
 			{
 				Object o = it.next();
 				if (o != null) {

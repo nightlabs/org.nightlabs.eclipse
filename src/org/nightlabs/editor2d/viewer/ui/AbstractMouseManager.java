@@ -28,7 +28,6 @@ package org.nightlabs.editor2d.viewer.ui;
 
 import java.awt.Point;
 
-import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.swt.widgets.Display;
 import org.nightlabs.editor2d.viewer.ui.event.MouseEvent;
@@ -38,7 +37,7 @@ import org.nightlabs.editor2d.viewer.ui.event.MouseMoveListener;
 public abstract class AbstractMouseManager
 implements IMouseManager
 {
-	private static Logger logger = Logger.getLogger(AbstractMouseManager.class);	
+//	private static Logger logger = Logger.getLogger(AbstractMouseManager.class);	
 	private IViewer viewer;
 	protected int x = 0;
 	protected int y = 0;

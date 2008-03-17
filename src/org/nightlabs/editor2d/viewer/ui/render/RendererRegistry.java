@@ -26,7 +26,6 @@
 
 package org.nightlabs.editor2d.viewer.ui.render;
 
-import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.Platform;
@@ -46,10 +45,10 @@ extends AbstractEPProcessor
 {
 	public static final String EXTENSION_POINT_ID = "org.nightlabs.editor2d.viewer.ui.renderModeRegistry"; //$NON-NLS-1$
 	
-	/**
-	 * LOG4J logger used by this class
-	 */
-	private static final Logger logger = Logger.getLogger(RendererRegistry.class.getName());
+//	/**
+//	 * LOG4J logger used by this class
+//	 */
+//	private static final Logger logger = Logger.getLogger(RendererRegistry.class.getName());
 	
 	private static RendererRegistry _sharedInstance;
 	public static RendererRegistry sharedInstance()
