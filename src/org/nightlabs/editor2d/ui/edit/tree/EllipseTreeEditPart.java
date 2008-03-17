@@ -29,7 +29,6 @@ package org.nightlabs.editor2d.ui.edit.tree;
 
 import java.beans.PropertyChangeEvent;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.nightlabs.base.ui.resource.SharedImages;
@@ -42,12 +41,7 @@ import org.nightlabs.editor2d.ui.model.EllipsePropertySource;
 
 public class EllipseTreeEditPart
 extends DrawComponentTreeEditPart
-{
-	/**
-	 * LOG4J logger used by this class
-	 */
-	private static final Logger logger = Logger.getLogger(EllipseTreeEditPart.class);
-	
+{	
 	public static Image ELLIPSE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
 			AbstractPaletteFactory.class, "Ellipse", ImageFormat.gif).createImage();	 //$NON-NLS-1$
   

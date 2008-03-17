@@ -39,6 +39,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.actions.ActionFactory;
+import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.Layer;
 import org.nightlabs.editor2d.ui.actions.DeleteAction;
 import org.nightlabs.editor2d.ui.actions.EditShapeAction;
@@ -230,8 +231,8 @@ extends ContextMenuProvider
   	if (getViewer() instanceof AbstractEditor)
   	{
   		AbstractEditor editor = (AbstractEditor) getViewer();
-  		List layers = editor.getRootDrawComponent().getDrawComponents();
-  		for (Iterator it = layers.iterator(); it.hasNext(); )
+  		List<DrawComponent> layers = editor.getRootDrawComponent().getDrawComponents();
+  		for (Iterator<DrawComponent> it = layers.iterator(); it.hasNext(); )
   		{
   			Layer l = (Layer) it.next();
   			IAction action = new SendToLayerAction(editor, l);

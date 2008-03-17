@@ -35,6 +35,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.NameProvider;
 import org.nightlabs.editor2d.RootDrawComponent;
 
@@ -47,12 +48,12 @@ public class FilterManager
   public static final String FILTER_ADDED = "Filter added"; //$NON-NLS-1$
   public static final String FILTERS_ADDED = "Filters added"; //$NON-NLS-1$
 	    
-  public String getTypeName(Class c) {
+  public String getTypeName(Class<?> c) {
   	return nameProvider.getTypeName(c);
   }
   
-  protected List<Class> filters;
-  protected List<Class> allFilters;
+  protected List<Class<? extends DrawComponent>> filters;
+  protected List<Class<? extends DrawComponent>> allFilters;
   protected NameProvider nameProvider = null;
   public FilterManager(NameProvider nameProvider)
   {
@@ -60,7 +61,7 @@ public class FilterManager
     this.nameProvider = nameProvider;
   }
     
-  public void addFilter(Class clazz)
+  public void addFilter(Class<? extends DrawComponent> clazz)
   {
   	if (clazz == null)
 			throw new IllegalArgumentException("Param clazz must not be null!"); //$NON-NLS-1$
@@ -72,7 +73,7 @@ public class FilterManager
     pcs.firePropertyChange(FILTER_ADDED, null, clazz);
   }
   
-  public void addFilters(Collection classes)
+  public void addFilters(Collection<Class<? extends DrawComponent>> classes)
   {
   	if (classes == null)
 			throw new IllegalArgumentException("Param classes must not be null!"); //$NON-NLS-1$
@@ -84,23 +85,23 @@ public class FilterManager
     pcs.firePropertyChange(FILTERS_ADDED, null, classes);
   }
   
-  public List<Class> getFilters()
+  public List<Class<? extends DrawComponent>> getFilters()
   {
     if (filters == null)
-      filters = new ArrayList<Class>();
+      filters = new ArrayList<Class<? extends DrawComponent>>();
     
     return filters;
   }
   
-  public List<Class> getAllFilters()
+  public List<Class<? extends DrawComponent>> getAllFilters()
   {
     if (allFilters == null)
-      allFilters = new ArrayList<Class>();
+      allFilters = new ArrayList<Class<? extends DrawComponent>>();
     
     return allFilters;
   }
   
-  public void setFilter(Class clazz)
+  public void setFilter(Class<? extends DrawComponent> clazz)
   {
   	if (clazz == null)
 			throw new IllegalArgumentException("Param clazz must not be null!"); //$NON-NLS-1$
@@ -110,7 +111,7 @@ public class FilterManager
     pcs.firePropertyChange(FILTER_CHANGED, null, getFilters());
   }
   
-  public void setFilter(Collection<Class> classes)
+  public void setFilter(Collection<Class<? extends DrawComponent>> classes)
   {
   	if (classes == null)
 			throw new IllegalArgumentException("Param classes must not be null!"); //$NON-NLS-1$
@@ -144,10 +145,11 @@ public class FilterManager
 	
 	protected PropertyChangeListener newTypeListener = new PropertyChangeListener()
 	{
+		@SuppressWarnings("unchecked")
 		public void propertyChange(PropertyChangeEvent evt)
 		{
 			if (evt.getPropertyName().equals(RootDrawComponent.TYPE_ADDED)) {
-				Class c = (Class) evt.getNewValue();
+				Class<? extends DrawComponent> c = (Class<? extends DrawComponent>) evt.getNewValue();
 				addFilter(c);
 			}
 		}
@@ -157,8 +159,8 @@ public class FilterManager
 		return newTypeListener;
 	}
 	
-	protected List<Class> ignoreClasses = new ArrayList<Class>();
-	public void ignoreClass(Class c)
+	protected List<Class<? extends DrawComponent>> ignoreClasses = new ArrayList<Class<? extends DrawComponent>>();
+	public void ignoreClass(Class<? extends DrawComponent> c)
 	{
 		ignoreClasses.add(c);
 		checkIgnore();
@@ -166,8 +168,8 @@ public class FilterManager
 	
 	protected void checkIgnore()
 	{
-		for (Iterator<Class> it = ignoreClasses.iterator(); it.hasNext(); ) {
-			Class c = it.next();
+		for (Iterator<Class<? extends DrawComponent>> it = ignoreClasses.iterator(); it.hasNext(); ) {
+			Class<? extends DrawComponent> c = it.next();
 			if (getAllFilters().contains(c)) {
 				getAllFilters().remove(c);
 				if (getFilters().contains(c))

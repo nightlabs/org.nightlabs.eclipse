@@ -119,6 +119,7 @@ extends AbstractEditorSelectionAction
 	/**
 	 * Performs the delete action on the selected objects.
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
 		execute(createDeleteCommand(getSelectedObjects()));
@@ -129,7 +130,7 @@ extends AbstractEditorSelectionAction
 	 * @param objects The objects to be deleted.
 	 * @return The command to remove the selected objects.
 	 */
-	public Command createDeleteCommand(List objects) {
+	public Command createDeleteCommand(List<Object> objects) {
 		if (objects.isEmpty())
 			return null;
 		if (!(objects.get(0) instanceof EditPart))

@@ -163,7 +163,8 @@ extends SelectionAction
    * @param request the alignment request
    * @return the list of parts which will be aligned
    */
-  protected List getOperationSet(Request request) {
+  @SuppressWarnings("unchecked")
+	protected List getOperationSet(Request request) {
   	if (operationSet != null)
   		return operationSet;
   	List editparts = new ArrayList(getSelectedObjects());
@@ -186,7 +187,8 @@ extends SelectionAction
   /**
    * Initializes the actions UI presentation.
    */
-  protected void initUI() {
+  @SuppressWarnings("restriction")
+	protected void initUI() {
   	switch (alignment) {
   		case PositionConstants.LEFT:
   			setId(GEFActionConstants.ALIGN_LEFT);

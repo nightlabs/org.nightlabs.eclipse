@@ -38,13 +38,7 @@ import org.nightlabs.editor2d.ui.editpolicy.tree.DrawComponentTreeContainerEditP
 
 public abstract class DrawComponentContainerTreeEditPart
 extends DrawComponentTreeEditPart
-{
-	/**
-	 * LOG4J logger used by this class
-	 */
-	private static final org.apache.log4j.Logger logger = org.apache.log4j.Logger
-			.getLogger(DrawComponentContainerTreeEditPart.class);
-	
+{	
   /**
    * Constructor initializes this with the given model.
    *

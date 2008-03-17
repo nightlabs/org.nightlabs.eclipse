@@ -38,7 +38,6 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
 import org.eclipse.ui.forms.events.ExpansionEvent;
@@ -153,7 +152,7 @@ extends ViewPart
 	{
 		toolkit.paintBordersFor(parent);
 		
-		Label l = toolkit.createLabel(parent, labelText);
+		toolkit.createLabel(parent, labelText);
 //		Spinner spinner = toolkit.createSpinner(parent, SWT.NONE);
 		Spinner spinner = new Spinner(parent, SWT.BORDER);
 		

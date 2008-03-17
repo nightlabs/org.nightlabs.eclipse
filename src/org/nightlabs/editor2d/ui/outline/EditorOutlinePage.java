@@ -61,6 +61,7 @@ import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.PageBook;
 import org.holongate.j2d.J2DCanvas;
 import org.nightlabs.base.ui.resource.SharedImages;
+import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.ui.AbstractEditor;
 import org.nightlabs.editor2d.ui.EditorContextMenuProvider;
 import org.nightlabs.editor2d.ui.EditorPlugin;
@@ -79,13 +80,13 @@ implements IAdaptable
   
   private AbstractEditor editor;
   private FilterManager filterMan;
-  private IAction showFilterAction;
+//  private IAction showFilterAction;
   
   private PageBook pageBook;
   private Control outline;
   private IAction showOutlineAction;
   private IAction showOverviewAction;
-  private IAction filterOutlineAction;
+//  private IAction filterOutlineAction;
   private DisposeListener disposeListener;
       
   public EditorOutlinePage(AbstractEditor editor, EditPartViewer viewer){
@@ -171,7 +172,7 @@ implements IAdaptable
 //  private IAction newPageAction;
 //  private IAction deletePageAction;
   
-  private IAction createFilterAction(final Class c)
+  private IAction createFilterAction(final Class<? extends DrawComponent> c)
   {
 		IAction filterAction = new Action() {
       @Override
@@ -194,9 +195,9 @@ implements IAdaptable
 		filterNoneAction.setText(Messages.getString("org.nightlabs.editor2d.ui.outline.EditorOutlinePage.label.filterNone")); //$NON-NLS-1$
 		menuMan.add(filterNoneAction);
 		
-  	for (Iterator<Class> it = filterMan.getAllFilters().iterator(); it.hasNext(); )
+  	for (Iterator<Class<? extends DrawComponent>> it = filterMan.getAllFilters().iterator(); it.hasNext(); )
   	{
-  		Class c = it.next();
+  		Class<? extends DrawComponent> c = it.next();
 			IAction filterAction = createFilterAction(c);
 			menuMan.add(filterAction);
   	}
@@ -355,6 +356,7 @@ implements IAdaptable
  
   private PropertyChangeListener filterListener = new PropertyChangeListener()
   {
+		@SuppressWarnings("unchecked")
 		public void propertyChange(PropertyChangeEvent pce)
 		{
 			if (pce.getPropertyName().equals(FilterManager.FILTER_CHANGED))
@@ -377,8 +379,8 @@ implements IAdaptable
 				if (o instanceof Collection) {
 					IMenuManager menuMan = getSite().getActionBars().getMenuManager();
 					Collection classes = (Collection) o;
-					for (Iterator it = classes.iterator(); it.hasNext(); ) {
-						Class c = (Class) it.next();
+					for (Iterator<Class> it = classes.iterator(); it.hasNext(); ) {
+						Class c = it.next();
 						menuMan.add(createFilterAction(c));
 					}
 					getViewer().setContents(editor.getRootDrawComponent());

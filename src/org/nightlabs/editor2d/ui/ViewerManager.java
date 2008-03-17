@@ -108,6 +108,7 @@ public class ViewerManager
 				excludeListRef.getExcludeList().remove(it.next());
 			}
 		}
+		@SuppressWarnings("unchecked")
 		@Override
 		public void childAdded(EditPart child, int index)
 		{
@@ -119,8 +120,8 @@ public class ViewerManager
 		}
 	};
   
-  private List<Class> ignoredClasses = new ArrayList<Class>();
-  public void addIgnoreTypeCollection(Collection<Class> editPartTypes)
+  private List<Class<? extends EditPart>> ignoredClasses = new ArrayList<Class<? extends EditPart>>();
+  public void addIgnoreTypeCollection(Collection<Class<? extends EditPart>> editPartTypes)
   {
   	if (editPartTypes == null)
   		throw new IllegalArgumentException("Param editPartTypes must not be null!"); //$NON-NLS-1$
@@ -128,14 +129,14 @@ public class ViewerManager
   	if (editPartTypes.isEmpty())
   		return;
 
-  	for (Iterator<Class> it = editPartTypes.iterator(); it.hasNext(); ) {
-  		Class c = it.next();
+  	for (Iterator<Class<? extends EditPart>> it = editPartTypes.iterator(); it.hasNext(); ) {
+  		Class<? extends EditPart> c = it.next();
   		addIgnoreType(c);
   	}
   	conditionRef.setCondition(createIgnoreCondition(ignoredClasses));
   }
     
-  public void addIgnoreType(Class c)
+  public void addIgnoreType(Class<? extends EditPart> c)
   {
 		if (AbstractDrawComponentEditPart.class.isAssignableFrom(c) && !ignoredClasses.contains(c)) {
 			ignoredClasses.add(c);
@@ -315,7 +316,7 @@ public class ViewerManager
   }
   
   private ConditionRef conditionRef = null;
-  protected EditPartViewer.Conditional createIgnoreCondition(final Collection<Class> classes)
+  protected EditPartViewer.Conditional createIgnoreCondition(final Collection<Class<? extends EditPart>> classes)
   {
   	EditPartViewer.Conditional condition = new EditPartViewer.Conditional()
   	{
@@ -324,7 +325,7 @@ public class ViewerManager
   			if (!(part instanceof AbstractDrawComponentEditPart))
   				return false;
   			
-  			Class c = part.getClass();
+  			Class<? extends EditPart> c = part.getClass();
   			if (classes.contains(c)) {
   				return false;
   			}

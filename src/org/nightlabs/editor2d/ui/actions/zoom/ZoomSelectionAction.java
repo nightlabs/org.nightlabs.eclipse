@@ -68,9 +68,9 @@ extends AbstractEditorSelectionAction
   @Override
   protected boolean calculateEnabled()
   {
-  	Collection selectedObjects = getDefaultSelection(false);
+  	Collection<Object> selectedObjects = getDefaultSelection(false);
     if (!selectedObjects.isEmpty()) {
-    	for (Iterator it = selectedObjects.iterator(); it.hasNext(); ) {
+    	for (Iterator<Object> it = selectedObjects.iterator(); it.hasNext(); ) {
     		Object o = it.next();
     		if (o instanceof GraphicalEditPart) {
     			GraphicalEditPart editPart = (GraphicalEditPart) o;
@@ -84,7 +84,8 @@ extends AbstractEditorSelectionAction
     return false;
   }
   
-  @Override
+  @SuppressWarnings("unchecked")
+	@Override
 	public void run()
   {
     Rectangle totalBounds = null;

@@ -58,7 +58,8 @@ extends AbstractTreeEditPart
     super(drawComponent);
   }
   
-  @Override
+  @SuppressWarnings("unchecked")
+	@Override
 	public Object getAdapter(Class key)
   {
     /* override the default behavior defined in AbstractEditPart
@@ -268,6 +269,7 @@ extends AbstractTreeEditPart
 		}
 	}
 			
+	@SuppressWarnings("restriction")
 	protected void notifyLabelDecorator()
 	{
 		// TODO: create static instance which can cache the decorator definitions which match, to avoid iterate each time

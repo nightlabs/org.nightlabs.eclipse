@@ -38,7 +38,6 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
 import org.eclipse.ui.forms.events.ExpansionEvent;
@@ -183,7 +182,7 @@ extends XComposite
 	{
 		toolkit.paintBordersFor(parent);
 		
-		Label l = toolkit.createLabel(parent, labelText);
+		toolkit.createLabel(parent, labelText);
 		Spinner spinner = new Spinner(parent, SWT.NONE);
 		spinner.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
 		spinner.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

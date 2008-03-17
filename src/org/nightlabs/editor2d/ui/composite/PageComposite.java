@@ -39,7 +39,6 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.form.NightlabsFormsToolkit;
@@ -107,13 +106,13 @@ extends XComposite
 		comp.setLayoutData(new GridData(GridData.FILL_BOTH));
 		
 		// Predefined Page Sizes
-		Label pageSelectLabel = toolkit.createLabel(comp,
+		toolkit.createLabel(comp,
 				Messages.getString("org.nightlabs.editor2d.ui.composite.PageComposite.label.predefinedSizes")); //$NON-NLS-1$
 		pageSelectCombo = new Combo(comp, SWT.BORDER);
 		pageSelectCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
 		// Measurement Units
-		Label unitsLabel = toolkit.createLabel(comp,
+		toolkit.createLabel(comp,
 				Messages.getString("org.nightlabs.editor2d.ui.composite.PageComposite.label.units")); //$NON-NLS-1$
 		unitsCombo = new Combo(comp, SWT.BORDER);
 		unitsCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -121,19 +120,19 @@ extends XComposite
 		int textStyle = SWT.BORDER;
 		
 		// Width
-		Label pageWidthLabel = toolkit.createLabel(comp,
+		toolkit.createLabel(comp,
 				Messages.getString("org.nightlabs.editor2d.ui.composite.PageComposite.label.width")); //$NON-NLS-1$
 		pageWidthText = toolkit.createText(comp, "", textStyle); //$NON-NLS-1$
 		pageWidthText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
 		// Height
-		Label pageHeightLabel = toolkit.createLabel(comp,
+		toolkit.createLabel(comp,
 				Messages.getString("org.nightlabs.editor2d.ui.composite.PageComposite.label.height")); //$NON-NLS-1$
 		pageHeightText = toolkit.createText(comp, "", textStyle); //$NON-NLS-1$
 		pageHeightText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
 		// Resolution
-		Label resolutionLabel = toolkit.createLabel(comp,
+		toolkit.createLabel(comp,
 				Messages.getString("org.nightlabs.editor2d.ui.composite.PageComposite.label.resolution")); //$NON-NLS-1$
 		Composite c = new XComposite(comp, SWT.NONE, LayoutMode.TIGHT_WRAPPER, LayoutDataMode.NONE);
 		c.setLayout(new GridLayout(2, false));
@@ -232,17 +231,17 @@ extends XComposite
 		}
 	};
 	
-	private SelectionListener resolutionUnitListener = new SelectionListener()
-	{
-		public void widgetDefaultSelected(SelectionEvent e) {
-			widgetSelected(e);
-		}
-		public void widgetSelected(SelectionEvent e) {
-			IResolutionUnit unit = resolutionUnits.get(resolutionUnitsCombo.getSelectionIndex());
-			resolution.setResolutionUnit(unit);
-			resolutionText.setText(String.valueOf(resolution.getResolutionX()));
-		}
-	};
+//	private SelectionListener resolutionUnitListener = new SelectionListener()
+//	{
+//		public void widgetDefaultSelected(SelectionEvent e) {
+//			widgetSelected(e);
+//		}
+//		public void widgetSelected(SelectionEvent e) {
+//			IResolutionUnit unit = resolutionUnits.get(resolutionUnitsCombo.getSelectionIndex());
+//			resolution.setResolutionUnit(unit);
+//			resolutionText.setText(String.valueOf(resolution.getResolutionX()));
+//		}
+//	};
 
 	private SelectionListener resolutionUnitComboListener = new SelectionListener()
 	{

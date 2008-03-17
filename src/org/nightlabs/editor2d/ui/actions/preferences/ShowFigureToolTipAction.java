@@ -79,6 +79,7 @@ extends PreferencesAction
 		updateToolTips(modelRootEditPart);
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void updateToolTips(EditPart ep)
 	{
 		if (ep instanceof AbstractDrawComponentEditPart) {

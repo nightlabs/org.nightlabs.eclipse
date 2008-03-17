@@ -41,9 +41,9 @@ public interface FigureTile {
 	public boolean intersects(Rectangle rect);
 	public Rectangle getBounds();
 	
-	public Collection getTileFigures();
+	public Collection<IFigure> getTileFigures();
 	public void addFigure(IFigure figure);
 	public void removeFigure(IFigure figure);
 	
-	public Collection getIntersectingFigures(Rectangle rect);
+	public Collection<IFigure> getIntersectingFigures(Rectangle rect);
 }

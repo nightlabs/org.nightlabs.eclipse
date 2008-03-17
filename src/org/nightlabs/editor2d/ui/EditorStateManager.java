@@ -29,6 +29,7 @@ package org.nightlabs.editor2d.ui;
 
 import java.util.List;
 
+import org.eclipse.gef.EditPart;
 import org.nightlabs.editor2d.ui.edit.ShapeDrawComponentEditPart;
 import org.nightlabs.editor2d.ui.util.EditorUtil;
 
@@ -59,13 +60,13 @@ public class EditorStateManager
     EditorUtil.selectEditPart(sdc);
   }
 
-  public static void setNormalSelectionMode(List editParts)
+  public static void setNormalSelectionMode(List<EditPart> editParts)
   {
     setCurrentState(STATE_NORMAL_SELECTION);
     EditorUtil.selectEditParts(editParts);
   }
   
-  public static void setRotateMode(List editParts)
+  public static void setRotateMode(List<EditPart> editParts)
   {
     setCurrentState(STATE_ROTATE);
     EditorUtil.selectEditParts(editParts);

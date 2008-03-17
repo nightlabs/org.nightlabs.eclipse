@@ -25,7 +25,6 @@
  ******************************************************************************/
 package org.nightlabs.editor2d.ui.print;
 
-import org.apache.log4j.Logger;
 import org.nightlabs.base.ui.print.PrinterInterfaceManager;
 import org.nightlabs.editor2d.ui.AbstractEditor;
 import org.nightlabs.editor2d.ui.resource.Messages;
@@ -38,11 +37,6 @@ extends AbstractEditorPrintAction
 {
 	public static final String ID = EditorPrintSetupAction.class.getName();
 	
-	/**
-	 * LOG4J logger used by this class
-	 */
-	private static final Logger logger = Logger.getLogger(EditorPrintSetupAction.class);
-
 	/**
 	 * @param editor
 	 * @param style

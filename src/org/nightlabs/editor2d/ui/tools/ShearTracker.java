@@ -56,7 +56,8 @@ extends AbstractDragTracker
   /* (non-Javadoc)
    * @see org.eclipse.gef.tools.SimpleDragTracker#createSourceRequest()
    */
-  @Override
+  @SuppressWarnings("unchecked")
+	@Override
 	protected Request createSourceRequest()
   {
     EditorShearRequest request = new EditorShearRequest();

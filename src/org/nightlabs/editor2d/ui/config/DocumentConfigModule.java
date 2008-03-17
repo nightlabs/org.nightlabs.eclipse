@@ -31,6 +31,7 @@ import java.util.Map;
 import org.nightlabs.config.ConfigModule;
 import org.nightlabs.config.InitException;
 import org.nightlabs.editor2d.PageDrawComponent;
+import org.nightlabs.editor2d.ui.AbstractEditor;
 import org.nightlabs.editor2d.ui.Editor;
 import org.nightlabs.editor2d.ui.page.DocumentProperties;
 import org.nightlabs.i18n.unit.resolution.IResolutionUnit;
@@ -43,12 +44,13 @@ public class DocumentConfigModule
 extends ConfigModule
 {
 	private static final long serialVersionUID = 1L;
-	private Map<Class, DocumentProperties> editorClass2DocumentProperties = null;
-
+	private Map<Class<? extends AbstractEditor>, DocumentProperties> editorClass2DocumentProperties = null;
+	private Map<Class<? extends AbstractEditor>, String> editorClass2EditorID = null;
+	
 	/**
 	 * @return Returns the editorClass2DocumentProperties.
 	 */
-	public Map<Class, DocumentProperties> getEditorClass2DocumentProperties() {
+	public Map<Class<? extends AbstractEditor>, DocumentProperties> getEditorClass2DocumentProperties() {
 		return editorClass2DocumentProperties;
 	}
 
@@ -56,24 +58,22 @@ extends ConfigModule
 	 * @param editorClass2DocumentProperties The editorClass2DocumentProperties to set.
 	 */
 	public void setEditorClass2DocumentProperties(
-			Map<Class, DocumentProperties> editorClass2DocumentProperties) {
+			Map<Class<? extends AbstractEditor>, DocumentProperties> editorClass2DocumentProperties) {
 		this.editorClass2DocumentProperties = editorClass2DocumentProperties;
 		setChanged();
 	}
-
-	private Map<Class, String> editorClass2EditorID = null;
 	
 	/**
 	 * @return Returns the editorClass2EditorID.
 	 */
-	public Map<Class, String> getEditorClass2EditorID() {
+	public Map<Class<? extends AbstractEditor>, String> getEditorClass2EditorID() {
 		return editorClass2EditorID;
 	}
 
 	/**
 	 * @param editorClass2EditorID The editorClass2EditorID to set.
 	 */
-	public void setEditorClass2EditorID(Map<Class, String> editorClass2EditorID) {
+	public void setEditorClass2EditorID(Map<Class<? extends AbstractEditor>, String> editorClass2EditorID) {
 		this.editorClass2EditorID = editorClass2EditorID;
 	}
 
@@ -83,13 +83,13 @@ extends ConfigModule
 	{
 		super.init();
 		if (editorClass2DocumentProperties == null) {
-			editorClass2DocumentProperties = new HashMap<Class, DocumentProperties>();
+			editorClass2DocumentProperties = new HashMap<Class<? extends AbstractEditor>, DocumentProperties>();
 			DocumentProperties documentProperties = new DocumentProperties(new A4Page(),
 					PageDrawComponent.ORIENTATION_VERTICAL, IResolutionUnit.dpiUnit, 762);
 			editorClass2DocumentProperties.put(Editor.class, documentProperties);
 		}
 		if (editorClass2EditorID == null) {
-			editorClass2EditorID = new HashMap<Class, String>();
+			editorClass2EditorID = new HashMap<Class<? extends AbstractEditor>, String>();
 			editorClass2EditorID.put(Editor.class, "org.nightlabs.editor2d.ui.Editor"); //$NON-NLS-1$
 		}
 	}

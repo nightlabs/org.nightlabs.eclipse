@@ -29,7 +29,6 @@ package org.nightlabs.editor2d.ui.edit;
 
 import java.beans.PropertyChangeEvent;
 
-import org.apache.log4j.Logger;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.nightlabs.editor2d.EllipseDrawComponent;
 import org.nightlabs.editor2d.ui.model.EllipsePropertySource;
@@ -38,11 +37,6 @@ import org.nightlabs.editor2d.ui.model.EllipsePropertySource;
 public class EllipseEditPart
 extends ShapeDrawComponentEditPart
 {
-	/**
-	 * LOG4J logger used by this class
-	 */
-	private static final Logger logger = Logger.getLogger(EllipseEditPart.class);
-	
   public EllipseEditPart(EllipseDrawComponent drawComponent) {
     super(drawComponent);
   }

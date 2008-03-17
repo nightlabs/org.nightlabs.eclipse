@@ -121,6 +121,7 @@ public class SmartUpdateFreeformLayer
 	 * 
 	 * @param graphics the graphics to paint on
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void paint(Graphics graphics) {
 		
@@ -164,6 +165,7 @@ public class SmartUpdateFreeformLayer
 	/**
 	 * @see org.nightlabs.editor2d.ui.figures.BufferedFreeformLayer#refresh()
 	 */
+	@SuppressWarnings("unchecked")
 	public void refresh() {
 		for (Iterator iter = getChildren().iterator(); iter.hasNext();) {
 			Figure child = (Figure) iter.next();
@@ -176,6 +178,7 @@ public class SmartUpdateFreeformLayer
 	/**
 	 * @see BufferedFreeformLayer#refresh(IFigure)
 	 */
+	@SuppressWarnings("unchecked")
 	public void refresh(IFigure figure) {
 		for (Iterator iter = getChildren().iterator(); iter.hasNext();) {
 			Figure child = (Figure) iter.next();

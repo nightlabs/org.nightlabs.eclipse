@@ -44,7 +44,6 @@ import org.eclipse.swt.graphics.Cursor;
 public class EditorNonResizableHandleKit
 extends NonResizableHandleKit
 {
-
 	public EditorNonResizableHandleKit() {
 		super();
 	}

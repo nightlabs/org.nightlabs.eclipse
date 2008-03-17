@@ -223,7 +223,8 @@ implements EditorRequestConstants
   	return null;
   }
       
-  @Override
+  @SuppressWarnings("unchecked")
+	@Override
 	protected Command getAddCommand(Request generic)
   {
 //    LOGGER.debug("getAddCommand()");

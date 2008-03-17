@@ -47,7 +47,8 @@ implements EditorRequestConstants
     super(part);
   }
 
-  @Override
+  @SuppressWarnings("unchecked")
+	@Override
 	protected boolean calculateEnabled()
   {
     for (Iterator it = getSelectedObjects().iterator(); it.hasNext(); ) {
@@ -67,7 +68,8 @@ implements EditorRequestConstants
     return false;
   }
 
-  @Override
+  @SuppressWarnings("unchecked")
+	@Override
 	public void run()
   {
     for (Iterator it = getSelectedObjects().iterator(); it.hasNext(); )

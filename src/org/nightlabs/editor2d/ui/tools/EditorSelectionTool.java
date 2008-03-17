@@ -50,7 +50,8 @@ implements EditorRequestConstants
     super();
   }
   
-  @Override
+  @SuppressWarnings("unchecked")
+	@Override
 	protected boolean handleDoubleClick(int button)
   {
     if (EditorStateManager.getCurrentState() == EditorStateManager.STATE_NORMAL_SELECTION)

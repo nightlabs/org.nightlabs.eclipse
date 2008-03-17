@@ -72,7 +72,8 @@ extends AbstractDrawComponentContainerEditPart
     return (Layer) getModel();
   }
   
-  @Override
+  @SuppressWarnings("unchecked")
+	@Override
 	protected List getModelChildren()
   {
     if (getLayer().isVisible()) {

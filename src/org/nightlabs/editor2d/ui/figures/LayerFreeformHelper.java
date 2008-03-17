@@ -54,7 +54,8 @@ implements FreeformListener
   	this.host = host;
   }
 
-  public Rectangle getFreeformExtent()
+  @SuppressWarnings("unchecked")
+	public Rectangle getFreeformExtent()
   {
   	if (freeformExtent != null)
   		return freeformExtent;
@@ -131,7 +132,8 @@ implements FreeformListener
   	invalidate();
   }
 
-  public void setFreeformBounds(Rectangle bounds) {
+  @SuppressWarnings("unchecked")
+	public void setFreeformBounds(Rectangle bounds) {
   	host.setBounds(bounds);
   	bounds = bounds.getCopy();
   	host.translateFromParent(bounds);

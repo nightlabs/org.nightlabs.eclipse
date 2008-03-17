@@ -176,11 +176,11 @@ public class EditorUtil
     return null;
   }
   
-  public static Point getCenter(List editParts)
+  public static Point getCenter(List<EditPart> editParts)
   {
     Rectangle totalBounds = new Rectangle();
     int counter = 0;
-    for (Iterator it = editParts.iterator(); it.hasNext(); ) {
+    for (Iterator<EditPart> it = editParts.iterator(); it.hasNext(); ) {
       GraphicalEditPart editPart = (GraphicalEditPart) it.next();
       Rectangle figureBounds = editPart.getFigure().getBounds();
       if (counter == 0)
@@ -191,18 +191,15 @@ public class EditorUtil
     return totalBounds.getCenter();
   }
   
-  public static void selectEditParts(List editParts)
+  public static void selectEditParts(List<? extends EditPart> editParts)
   {
     if (editParts == null)
       throw new IllegalArgumentException("Param editParts must not be null!"); //$NON-NLS-1$
     
     EditPartViewer viewer = null;
     if (!editParts.isEmpty()) {
-      Object o = editParts.get(0);
-      if (o instanceof EditPart) {
-        EditPart editPart = (EditPart) o;
-        viewer = editPart.getViewer();
-      }
+      EditPart editPart = editParts.get(0);
+      viewer = editPart.getViewer();      
     }
     if (viewer != null) {
       StructuredSelection selection = new StructuredSelection(editParts);

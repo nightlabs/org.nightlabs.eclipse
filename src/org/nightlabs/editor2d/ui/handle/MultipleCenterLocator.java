@@ -30,20 +30,19 @@ package org.nightlabs.editor2d.ui.handle;
 import java.util.List;
 
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.gef.EditPart;
 import org.nightlabs.editor2d.ui.util.EditorUtil;
 
 
 public class MultipleCenterLocator
 extends AbstractMultipleLocator
 {
-
-  public MultipleCenterLocator(List editParts) {
+  public MultipleCenterLocator(List<EditPart> editParts) {
     super(editParts);
   }
 
   @Override
-	protected Point getLocation()
-  {
+	protected Point getLocation() {
     return EditorUtil.getCenter(editParts);
   }
 

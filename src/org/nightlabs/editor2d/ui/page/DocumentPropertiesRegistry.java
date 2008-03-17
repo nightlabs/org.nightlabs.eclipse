@@ -76,6 +76,7 @@ extends AbstractEPProcessor
 		return EXTENSION_POINT_ID;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void processElement(IExtension extension, IConfigurationElement element)
 	throws Exception

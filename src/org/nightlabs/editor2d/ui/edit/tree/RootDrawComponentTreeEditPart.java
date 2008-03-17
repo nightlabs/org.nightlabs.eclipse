@@ -93,9 +93,9 @@ extends DrawComponentContainerTreeEditPart
   protected List<DrawComponent> getModelChildren(DrawComponentContainer dcc)
   {
     List<DrawComponent> filterChildren = new ArrayList<DrawComponent>();
-  	for (Iterator<Class> itFilter = getFilterMan().getFilters().iterator(); itFilter.hasNext(); )
+  	for (Iterator<Class<? extends DrawComponent>> itFilter = getFilterMan().getFilters().iterator(); itFilter.hasNext(); )
   	{
-  		Class filter = itFilter.next();
+  		Class<? extends DrawComponent> filter = itFilter.next();
       for (Iterator<DrawComponent> itChildren = dcc.getDrawComponents().iterator(); itChildren.hasNext(); )
       {
         DrawComponent dc = itChildren.next();

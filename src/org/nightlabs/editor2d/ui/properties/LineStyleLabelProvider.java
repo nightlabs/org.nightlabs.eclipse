@@ -50,7 +50,7 @@ extends LabelProvider
   {
     if (element instanceof Integer)
     {
-      int lineStyle = ((Integer)element).intValue();
+//      int lineStyle = ((Integer)element).intValue();
       return ""; //$NON-NLS-1$
     }
     return super.getText(element);

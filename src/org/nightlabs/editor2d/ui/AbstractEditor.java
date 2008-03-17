@@ -1396,7 +1396,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		
 		IPredefinedPage defaultPage = null;
 		Resolution resolution = null;
-		Map<Class, DocumentProperties> editorClass2DocumentProperties =
+		Map<Class<? extends AbstractEditor>, DocumentProperties> editorClass2DocumentProperties =
 			DocumentPropertiesRegistry.sharedInstance().getDocumentConfModule().getEditorClass2DocumentProperties();
 		DocumentProperties documentProperties = editorClass2DocumentProperties.get(this.getClass());
 		if (documentProperties != null) {

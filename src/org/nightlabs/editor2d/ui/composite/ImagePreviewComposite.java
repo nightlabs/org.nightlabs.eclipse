@@ -94,7 +94,7 @@ extends XComposite
 		createComposite(this);
 	}
 
-	private NightlabsFormsToolkit toolkit = null;
+//	private NightlabsFormsToolkit toolkit = null;
 	private BufferedImage originalImage = null;
 	public BufferedImage getOriginalImage() {
 		return originalImage;

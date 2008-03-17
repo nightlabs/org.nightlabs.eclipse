@@ -33,6 +33,7 @@ import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.DragTracker;
+import org.eclipse.gef.EditPart;
 import org.nightlabs.editor2d.ui.edit.AbstractDrawComponentEditPart;
 import org.nightlabs.editor2d.ui.tools.RotateCenterTracker;
 
@@ -40,8 +41,8 @@ import org.nightlabs.editor2d.ui.tools.RotateCenterTracker;
 public class RotateCenterHandle
 extends EditorAbstractHandle
 {
-  protected List editParts;
-  public RotateCenterHandle(List editParts)
+//  protected List<EditPart> editParts;
+  public RotateCenterHandle(List<EditPart> editParts)
   {
     super();
     if (editParts.size() == 1) {

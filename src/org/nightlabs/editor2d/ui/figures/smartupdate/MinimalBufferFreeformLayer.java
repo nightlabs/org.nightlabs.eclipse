@@ -37,7 +37,6 @@ import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.J2DGraphics;
-import org.eclipse.draw2d.UpdateManager;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
@@ -58,10 +57,9 @@ public class MinimalBufferFreeformLayer
 	public static final int TYPE_SMART_UPDATE_ONLY = 1;
 	public static final int TYPE_USE_OFFSCREEN_BUFFER = 2;
 	
-	private Rectangle notifiedDamage;
-	
+//	private Rectangle notifiedDamage;	
 	private EditPart editPart;
-	private UpdateManager updateManager;
+//	private UpdateManager updateManager;
 	/**
 	 * The viewer control
 	 */
@@ -229,6 +227,7 @@ public class MinimalBufferFreeformLayer
 	/**
 	 * @see org.nightlabs.editor2d.ui.figures.BufferedFreeformLayer#refresh()
 	 */
+	@SuppressWarnings("unchecked")
 	public void refresh() {
 		for (Iterator iter = getChildren().iterator(); iter.hasNext();) {
 			Figure child = (Figure) iter.next();
@@ -241,6 +240,7 @@ public class MinimalBufferFreeformLayer
 	/**
 	 * @see BufferedFreeformLayer#refresh(IFigure)
 	 */
+	@SuppressWarnings("unchecked")
 	public void refresh(IFigure figure) {
 		for (Iterator iter = getChildren().iterator(); iter.hasNext();) {
 			Figure child = (Figure) iter.next();

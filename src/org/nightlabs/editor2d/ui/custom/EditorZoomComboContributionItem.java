@@ -33,7 +33,6 @@ import org.apache.log4j.Logger;
 import org.eclipse.gef.editparts.ZoomListener;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
-import org.eclipse.jface.util.Assert;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -97,10 +96,9 @@ extends XContributionItem
   public EditorZoomComboContributionItem(IPartService partService, String[] initStrings)
   {
   	super(GEFActionConstants.ZOOM_TOOLBAR_WIDGET);
-//    super(partService, initStrings);
+  	assert partService != null;
   	this.initStrings = initStrings;
   	service = partService;
-  	Assert.isNotNull(partService);
   	partService.addPartListener(partListener);
   }
   
@@ -256,7 +254,7 @@ extends XContributionItem
    */
   @Override
 	public final void fill(Menu parent, int index) {
-  	Assert.isTrue(false, "Can't add a control to a menu");//$NON-NLS-1$
+//  	Assert.isTrue(false, "Can't add a control to a menu");//$NON-NLS-1$
   }
   
   /*************************** BEGIN resolution recalculation ******************************/

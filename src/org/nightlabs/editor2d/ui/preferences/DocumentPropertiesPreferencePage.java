@@ -52,6 +52,7 @@ import org.nightlabs.base.ui.composite.XComposite.LayoutMode;
 import org.nightlabs.base.ui.i18n.ResolutionUnitEP;
 import org.nightlabs.base.ui.i18n.UnitRegistryEP;
 import org.nightlabs.base.ui.print.page.PredefinedPageEP;
+import org.nightlabs.editor2d.ui.AbstractEditor;
 import org.nightlabs.editor2d.ui.Editor;
 import org.nightlabs.editor2d.ui.config.DocumentConfigModule;
 import org.nightlabs.editor2d.ui.page.DocumentProperties;
@@ -84,7 +85,7 @@ implements IWorkbenchPreferencePage
 	private UnitComposite unitComp = null;
 	private Text resolutionText = null;
 	private PageOrientationComposite orientationComp = null;
-	private XComboComposite<Class> editorChooseCombo = null;
+	private XComboComposite<Class<? extends AbstractEditor>> editorChooseCombo = null;
 	
 	protected  DocumentConfigModule getDocumentConfigModule() {
 		return DocumentPropertiesRegistry.sharedInstance().getDocumentConfModule();
@@ -92,7 +93,7 @@ implements IWorkbenchPreferencePage
 	
 	private ISelectionChangedListener editorListener = new ISelectionChangedListener() {
 		public void selectionChanged(SelectionChangedEvent event) {
-			Class selectedClass = editorChooseCombo.getSelectedElement();
+			Class<? extends AbstractEditor> selectedClass = editorChooseCombo.getSelectedElement();
 			DocumentProperties documentProperties = getDocumentConfigModule().getEditorClass2DocumentProperties().get(selectedClass);
 			if (documentProperties != null) {
 				setDocumentProperties(documentProperties);
@@ -124,7 +125,7 @@ implements IWorkbenchPreferencePage
 		// Editors
 		Label editorSelectLabel = new Label(content, SWT.NONE);
 		editorSelectLabel.setText(Messages.getString("org.nightlabs.editor2d.ui.preferences.DocumentPropertiesPreferencePage.label.editor")); //$NON-NLS-1$
-		editorChooseCombo = new XComboComposite<Class>(content, SWT.NONE, editorLabelProvider);
+		editorChooseCombo = new XComboComposite<Class<? extends AbstractEditor>>(content, SWT.NONE, editorLabelProvider);
 		editorChooseCombo.setInput(getEditorClasses());
 		editorChooseCombo.selectElement(Editor.class);
 		editorChooseCombo.addSelectionChangedListener(editorListener);
@@ -219,12 +220,12 @@ implements IWorkbenchPreferencePage
 		orientationComp.selectOrientation(documentProperties.getOrientation());
 	}
 	
-	private List<Class> getEditorClasses()
+	private List<Class<? extends AbstractEditor>> getEditorClasses()
 	{
-		Map<Class, DocumentProperties> editorClass2DocumentProperties = getDocumentConfigModule().getEditorClass2DocumentProperties();
-		List<Class> editorClasses = new ArrayList<Class>();
-		for (Map.Entry<Class, DocumentProperties> entry : editorClass2DocumentProperties.entrySet()) {
-			Class editorClass = entry.getKey();
+		Map<Class<? extends AbstractEditor>, DocumentProperties> editorClass2DocumentProperties = getDocumentConfigModule().getEditorClass2DocumentProperties();
+		List<Class<? extends AbstractEditor>> editorClasses = new ArrayList<Class<? extends AbstractEditor>>();
+		for (Map.Entry<Class<? extends AbstractEditor>, DocumentProperties> entry : editorClass2DocumentProperties.entrySet()) {
+			Class<? extends AbstractEditor> editorClass = entry.getKey();
 			editorClasses.add(editorClass);
 		}
 		return editorClasses;
@@ -249,7 +250,7 @@ implements IWorkbenchPreferencePage
 	{
 		Preferences.getPreferenceStore().setValue(Preferences.PREF_STANDARD_UNIT_ID,
 				unitComp.getSelectedUnit().getUnitID());
-		Map<Class, DocumentProperties> editorClass2DocumentProperties = getDocumentConfigModule().getEditorClass2DocumentProperties();
+		Map<Class<? extends AbstractEditor>, DocumentProperties> editorClass2DocumentProperties = getDocumentConfigModule().getEditorClass2DocumentProperties();
 		editorClass2DocumentProperties.put(editorChooseCombo.getSelectedElement(), getCurrentDocmuentProperties());
 		getDocumentConfigModule().setEditorClass2DocumentProperties(editorClass2DocumentProperties);
 		

@@ -31,11 +31,11 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Area;
 
-import org.apache.log4j.Logger;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.J2DGraphics;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.editparts.ZoomListener;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.ShapeDrawComponent;
@@ -52,10 +52,10 @@ public class DrawComponentFigure
 extends Figure
 implements RendererFigure
 {
-	/**
-	 * LOG4J logger used by this class
-	 */
-	private static final Logger logger = Logger.getLogger(DrawComponentFigure.class.getName());
+//	/**
+//	 * LOG4J logger used by this class
+//	 */
+//	private static final Logger logger = Logger.getLogger(DrawComponentFigure.class.getName());
 
 	private J2DGraphics j2d;
 	private Graphics2D g2d;
@@ -275,10 +275,10 @@ implements RendererFigure
 		hitTestArea = null;
 	}
 
-	// only for debug
-	private void paintHitTestArea(Graphics2D g2d) {
-		g2d.draw(getAccurateHitTestArea());
-	}
+//	// only for debug
+//	private void paintHitTestArea(Graphics2D g2d) {
+//		g2d.draw(getAccurateHitTestArea());
+//	}
 
 	protected Shape getAccurateHitTestArea()
 	{

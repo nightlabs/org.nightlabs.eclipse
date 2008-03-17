@@ -67,7 +67,7 @@ public class FeedbackUtil
 	  }
 	  else if (modelPart instanceof DrawComponentContainer)
 	  {
-	    DrawComponentContainer container = (DrawComponentContainer) modelPart;
+//	    DrawComponentContainer container = (DrawComponentContainer) modelPart;
 	    gs = GeneralShapeFactory.createRectangle(1,1,1,1);
 	//    for (Iterator it = container.getDrawComponents().iterator(); it.hasNext(); ) {
 	//      DrawComponent dc = (DrawComponent) it.next();
