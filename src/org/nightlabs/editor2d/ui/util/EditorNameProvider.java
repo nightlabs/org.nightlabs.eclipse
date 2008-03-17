@@ -45,7 +45,7 @@ implements NameProvider
 		super();
 	}
 
-	public String getTypeName(Class c)
+	public String getTypeName(Class<?> c)
 	{
 //		if (DrawComponent.class.isAssignableFrom(c)) {
 //			return EditorPlugin.getResourceString("model.drawComponent.name");
@@ -77,7 +77,7 @@ implements NameProvider
 		else if (Layer.class.isAssignableFrom(c)) {
 			return Messages.getString("org.nightlabs.editor2d.ui.util.EditorNameProvider.layer"); //$NON-NLS-1$
 		}
-		
+
 		return Messages.getString("org.nightlabs.editor2d.ui.util.EditorNameProvider.object"); //$NON-NLS-1$
 	}
 }

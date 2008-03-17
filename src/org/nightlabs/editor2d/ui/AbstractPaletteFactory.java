@@ -61,12 +61,12 @@ public abstract class AbstractPaletteFactory
     super();
     this.factory = factory;
   }
-	
+
   protected Editor2DFactory factory = null;
   public Editor2DFactory getFactory() {
   	return factory;
   }
-  
+
   /** Default palette size. */
   protected static final int DEFAULT_PALETTE_SIZE = 125;
   /** Preference ID used to persist the palette location. */
@@ -75,10 +75,10 @@ public abstract class AbstractPaletteFactory
   protected static final String PALETTE_SIZE = "PaletteFactory.Size"; //$NON-NLS-1$
   /** Preference ID used to persist the flyout palette's state. */
   protected static final String PALETTE_STATE = "PaletteFactory.State"; //$NON-NLS-1$
-  
+
 //  public abstract CreationFactory getCreationFactory(Class targetClass);
-  public abstract IModelCreationFactory getCreationFactory(Class targetClass);
-  
+  public abstract IModelCreationFactory getCreationFactory(Class<?> targetClass);
+
   /**
    * Return a FlyoutPreferences instance used to save/load the preferences of a flyout palette.
    */
@@ -89,7 +89,7 @@ public abstract class AbstractPaletteFactory
     getPreferenceStore().setDefault(PALETTE_DOCK_LOCATION, -1);
     getPreferenceStore().setDefault(PALETTE_STATE, FlyoutPaletteComposite.STATE_PINNED_OPEN);
     getPreferenceStore().setDefault(PALETTE_SIZE, DEFAULT_PALETTE_SIZE);
-    
+
     return new FlyoutPreferences() {
       public int getDockLocation() {
         return getPreferenceStore().getInt(PALETTE_DOCK_LOCATION);
@@ -111,7 +111,7 @@ public abstract class AbstractPaletteFactory
       }
     };
   }
-    
+
   /**
   * Returns the preference store for the EditorPlugin.
   * @see org.eclipse.ui.plugin.AbstractUIPlugin#getPreferenceStore()
@@ -120,7 +120,7 @@ public abstract class AbstractPaletteFactory
 	{
   	return EditorPlugin.getDefault().getPreferenceStore();
 	}
- 
+
  protected PaletteContainer createShapesDrawer()
  {
   PaletteDrawer componentsDrawer = new PaletteDrawer(Messages.getString("org.nightlabs.editor2d.ui.AbstractPaletteFactory.category.shapes")); //$NON-NLS-1$
@@ -136,7 +136,7 @@ public abstract class AbstractPaletteFactory
   // add Line Tool
   component = createLineToolEntry();
   componentsDrawer.add(component);
-  
+
   // add Text Tool
   component = createTextToolEntry();
   componentsDrawer.add(component);
@@ -144,10 +144,10 @@ public abstract class AbstractPaletteFactory
   // add Image Tool
   component = createImageToolEntry();
   componentsDrawer.add(component);
-  
+
   return componentsDrawer;
  }
-  
+
  /**
   * Creates the PaletteRoot and adds all palette elements.
   * Use this factory method to create a new palette for your graphical editor.
@@ -160,7 +160,7 @@ public abstract class AbstractPaletteFactory
   palette.add(createShapesDrawer());
   return palette;
  }
- 
+
  protected PaletteContainer createToolsGroup(PaletteRoot palette)
  {
   PaletteGroup toolGroup = new PaletteGroup(Messages.getString("org.nightlabs.editor2d.ui.AbstractPaletteFactory.category.tools")); //$NON-NLS-1$
@@ -169,23 +169,23 @@ public abstract class AbstractPaletteFactory
   ToolEntry tool = createEditorSelectionToolEntry();
   toolGroup.add(tool);
   palette.setDefaultEntry(tool);
-  
+
 //  // Add a marquee tool to the group
 //  toolGroup.add(createMarqueeToolEntry());
 
   // Add a zoom tool to the group
   toolGroup.add(createZoomToolEntry());
-  
+
 //  // Add a (unnamed) separator to the group
 //  toolGroup.add(new PaletteSeparator());
 
   return toolGroup;
  }
- 
+
  protected ToolEntry createEditorSelectionToolEntry() {
 	  return new EditorSelectionToolEntry();
  }
- 
+
 // protected ToolEntry createMarqueeToolEntry()
 // {
 //	  return new MarqueeToolEntry();
@@ -201,7 +201,7 @@ public abstract class AbstractPaletteFactory
 		  		 ImageDimension._24x24, ImageFormat.png)
 	 );
  }
- 
+
  protected ToolEntry createRectangleToolEntry()
  {
 	 return new RectangleToolEntry (
@@ -214,7 +214,7 @@ public abstract class AbstractPaletteFactory
 	    		ImageDimension._24x24, ImageFormat.png)
 	  );
  }
- 
+
  protected ToolEntry createEllipseToolEntry()
  {
 	 return new EllipseToolEntry (
@@ -227,7 +227,7 @@ public abstract class AbstractPaletteFactory
 	    		ImageDimension._24x24, ImageFormat.png)
 	  );
  	}
- 
+
  	protected ToolEntry createLineToolEntry()
  	{
  		return new LineToolEntry
@@ -241,7 +241,7 @@ public abstract class AbstractPaletteFactory
  	    		ImageDimension._24x24, ImageFormat.png)
  	  );
  	}
- 	
+
  	protected ToolEntry createTextToolEntry()
  	{
  		return new TextToolEntry
@@ -255,7 +255,7 @@ public abstract class AbstractPaletteFactory
  	    		ImageDimension._24x24, ImageFormat.png)
  	  );
  	}
- 	
+
  	protected ToolEntry createImageToolEntry()
  	{
  		return new ImageToolEntry
@@ -269,5 +269,5 @@ public abstract class AbstractPaletteFactory
  	    		ImageDimension._24x24, ImageFormat.png)
  	  );
  	}
- 	
+
 }
