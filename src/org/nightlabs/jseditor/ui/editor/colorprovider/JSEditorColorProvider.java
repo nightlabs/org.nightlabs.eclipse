@@ -32,15 +32,15 @@ public class JSEditorColorProvider {
 	 * Release all of the color resources held onto by the receiver.
 	 */
 	public void dispose() {
-		Iterator e= fColorTable.values().iterator();
+		Iterator<Color> e= fColorTable.values().iterator();
 		while (e.hasNext())
-			 ((Color) e.next()).dispose();
+			 (e.next()).dispose();
 	}
-	
+
 	/**
 	 * Return the color that is stored in the color table under the given RGB
 	 * value.
-	 * 
+	 *
 	 * @param rgb the RGB value
 	 * @return the color stored in the color table for the given RGB value
 	 */

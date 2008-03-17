@@ -19,7 +19,7 @@ import org.nightlabs.jseditor.ui.JSEditorPlugin;
 import org.nightlabs.jseditor.ui.editor.colorprovider.JSEditorColorProvider;
 
 /**
- * 
+ *
  * @author Chairat Kongarayawetchakun <!-- chairat [AT] nightlabs [DOT] de -->
  *
  */
@@ -31,16 +31,12 @@ public class JSEditorComposite extends XComposite{
 
 	private Document document;
 
-	private IWorkbenchWindow wPart;
-
 	public JSEditorComposite(IWorkbenchWindow wPart, Composite parent) {
 		this(wPart, parent, null);
 	}
 
 	public JSEditorComposite(IWorkbenchWindow wPart, Composite parent, String title) {
 		super(parent, SWT.NONE, LayoutMode.TIGHT_WRAPPER);
-		this.wPart = wPart;
-
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 1;
 		setLayout(layout);

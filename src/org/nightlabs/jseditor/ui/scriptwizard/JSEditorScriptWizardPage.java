@@ -34,22 +34,22 @@ extends WizardHopPage
 	private TabFolder tabFolder;
 	private TabItem tabItem1;
 	private TabItem tabItem2;
-	
+
 	private List scriptList;
 	private JSEditorComposite srcText;
-	
+
 	private SourceViewer sourceViewer;
-	
+
 	private Text descText;
-	
+
 	public JSEditorScriptWizardPage(SourceViewer sourceViewer){
 		super(Messages.getString("org.nightlabs.jseditor.ui.scriptwizard.JSEditorScriptWizardPage.pageName")); //$NON-NLS-1$
 		this.sourceViewer = sourceViewer;
-		
+
 		setTitle(Messages.getString("org.nightlabs.jseditor.ui.scriptwizard.JSEditorScriptWizardPage.title")); //$NON-NLS-1$
 		setDescription(Messages.getString("org.nightlabs.jseditor.ui.scriptwizard.JSEditorScriptWizardPage.description")); //$NON-NLS-1$
 	}
-	
+
 	@Override
 	public Control createPageContents(Composite parent) {
 		/******************************
@@ -58,7 +58,7 @@ extends WizardHopPage
 		tabFolder =	new TabFolder(parent, SWT.BORDER);
 		GridData gridData = new GridData(GridData.FILL_BOTH);
 		tabFolder.setLayoutData(gridData);
-		
+
 		GridLayout tabFolderLayout = new GridLayout(1, true);
 		tabFolder.setLayout(tabFolderLayout);
 
@@ -68,7 +68,7 @@ extends WizardHopPage
 		tabItem1 =
 			new TabItem(tabFolder, SWT.NONE);
 		tabItem1.setText(Messages.getString("org.nightlabs.jseditor.ui.scriptwizard.JSEditorScriptWizardPage.availableScriptsTabItem.text")); //$NON-NLS-1$
-		
+
 		tabItem2 =
 			new TabItem(tabFolder, SWT.NONE);
 		tabItem2.setText(Messages.getString("org.nightlabs.jseditor.ui.scriptwizard.JSEditorScriptWizardPage.seachScriptsTabItem.text")); //$NON-NLS-1$
@@ -79,7 +79,7 @@ extends WizardHopPage
 		XComposite scriptTabItemComposite =
 			new XComposite(tabFolder, SWT.NONE);
 		scriptTabItemComposite.getGridLayout().numColumns = 4;
-		
+
 		/******************************
 		 * Script Group
 		 ******************************/
@@ -92,7 +92,7 @@ extends WizardHopPage
 		gridData.horizontalSpan = 1;
 		gridData.grabExcessVerticalSpace = true;
 		scriptGroup.setLayoutData(gridData);
-		
+
 		/******************************
 		 * Script List
 		 ******************************/
@@ -100,14 +100,14 @@ extends WizardHopPage
 		gridData = new GridData(GridData.FILL_BOTH);
 		gridData.horizontalSpan = 1;
 		scriptList.setLayoutData(gridData);
-		
+
 
 // Marco: This project (org.nightlabs.jseditor.ui) must not have a dependency on JFireTrade stuff.
 // 1st, this would create an illegal circular dependency and 2nd we want to use the jseditor in
 // other apps (which might not have JFireTrade deployed).
 // commented the following line:
 		appendListFunction(String.class);
-		
+
 		/******************************
 		 * Selection Listener
 		 ******************************/
@@ -128,7 +128,7 @@ extends WizardHopPage
 				}//if
 			}
 		});
-		
+
 		/******************************
 		 * Mouse Listener
 		 ******************************/
@@ -139,19 +139,19 @@ extends WizardHopPage
 				srcText.getDocument().set(srcText.getDocument().get().concat(selected[0]));
 			}
 		});
-		
+
 		/******************************
 		 * Button
 		 ******************************/
 		Button addButton = new Button(scriptTabItemComposite, SWT.PUSH);
 		addButton.setText(Messages.getString("org.nightlabs.jseditor.ui.scriptwizard.JSEditorScriptWizardPage.addButton.text")); //$NON-NLS-1$
-		
+
 		/******************************
 		 * Right Composite
 		 ******************************/
 		XComposite rightComposite = new XComposite(scriptTabItemComposite, SWT.NONE);
 		rightComposite.getGridLayout().numColumns = 1;
-		
+
 		/******************************
 		 * Editor Group
 		 ******************************/
@@ -162,7 +162,7 @@ extends WizardHopPage
 		gridData.verticalSpan = 1;
 		gridData.horizontalSpan = 2;
 		editorGroup.setLayoutData(gridData);
-		
+
 		/******************************
 		 * Source Preview
 		 ******************************/
@@ -173,12 +173,12 @@ extends WizardHopPage
 		gridData = new GridData(GridData.FILL_BOTH);
 		gridData.grabExcessHorizontalSpace = true;
 		srcText.setLayoutData(gridData);
-		
+
 		srcText.addFocusListener(new FocusAdapter() {
-			
+
 			@Override
 			public void focusGained(FocusEvent e) {
-				
+
 			}
 
 			@Override
@@ -197,7 +197,7 @@ extends WizardHopPage
 		gridData.verticalSpan = 1;
 		gridData.horizontalSpan = 2;
 		evalGroup.setLayoutData(gridData);
-		
+
 		/******************************
 		 * Description Group
 		 ******************************/
@@ -215,20 +215,20 @@ extends WizardHopPage
 		gridData = new GridData(GridData.FILL_BOTH);
 		gridData.grabExcessVerticalSpace = true;
 		descText.setLayoutData(gridData);
-		
+
 		tabItem1.setControl(scriptTabItemComposite);
 		/***********End***********/
-		
+
 		return tabFolder;
 	}
 
-	
+
 	private Map<String, Method> scriptMap;
-	public void appendListFunction(Class c){
+	public void appendListFunction(Class<?> c){
 		if(scriptMap == null){
 			scriptMap = new HashMap<String, Method>();
 		}//if
-		
+
 		String[] sArray = new String[c.getMethods().length];
 		int i = 0;
 		for(Method m : c.getMethods()){
@@ -238,10 +238,10 @@ extends WizardHopPage
 			scriptMap.put(s, m);
 			sArray[i++] = s;
 		}//for
-		
+
 		scriptList.setItems(sArray);
 	}
-	
+
 	public JSEditorComposite getSrcText(){
 		return srcText;
 	}
