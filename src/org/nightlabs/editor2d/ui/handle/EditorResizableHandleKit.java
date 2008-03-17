@@ -55,7 +55,7 @@ extends ResizableHandleKit
 	 * @param direction the integer constant from PositionConstants that refers to the handle
 	 * direction
 	 */
-	public static void addHandle(GraphicalEditPart part, List handles, int direction) {
+	public static void addHandle(GraphicalEditPart part, List<Handle> handles, int direction) {
 		handles.add(createHandle(part, direction));
 	}
 
@@ -70,7 +70,7 @@ extends ResizableHandleKit
 	 * direction
 	 * @param cursor the Cursor to use when hovering over this handle
 	 */
-	public static void addHandle(GraphicalEditPart part, List handles, int direction,
+	public static void addHandle(GraphicalEditPart part, List<Handle> handles, int direction,
 								 DragTracker tracker, Cursor cursor) {
 		handles.add(createHandle(part, direction, tracker, cursor));
 	}
@@ -81,7 +81,7 @@ extends ResizableHandleKit
 	 * @param part the owner GraphicalEditPart of the handles
 	 * @param handles the List to add the handles to
 	 */
-	public static void addHandles(GraphicalEditPart part, List handles) {
+	public static void addHandles(GraphicalEditPart part, List<Handle> handles) {
 		addMoveHandle(part, handles);
 		handles.add(createHandle(part, PositionConstants.EAST));
 		handles.add(createHandle(part, PositionConstants.SOUTH_EAST));
@@ -99,7 +99,7 @@ extends ResizableHandleKit
 	 * @param f the GraphicalEditPart thatis the owner of the handles
 	 * @param handles the List to add the handles to
 	 */
-	public static void addMoveHandle(GraphicalEditPart f, List handles) {
+	public static void addMoveHandle(GraphicalEditPart f, List<Handle> handles) {
 		handles.add(moveHandle(f));
 	}
 
@@ -111,7 +111,7 @@ extends ResizableHandleKit
 	 * @param handles the List to add the handles to
 	 * @param cursor the Cursor to use when hovering over this handle
 	 */
-	public static void addMoveHandle(GraphicalEditPart f, List handles, DragTracker tracker,
+	public static void addMoveHandle(GraphicalEditPart f, List<Handle> handles, DragTracker tracker,
 									 Cursor cursor) {
 		handles.add(moveHandle(f, tracker, cursor));
 	}

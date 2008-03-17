@@ -31,7 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.Handle;
 import org.nightlabs.editor2d.ui.edit.AbstractDrawComponentEditPart;
 
@@ -42,10 +42,10 @@ public class RotateHandleKit
     super();
   }
 
-  public static void addHandles(List selectedEditParts, List handles)
+  public static void addHandles(List<EditPart> selectedEditParts, List<Handle> handles)
   {
-    for (Iterator it = selectedEditParts.iterator(); it.hasNext(); ) {
-      GraphicalEditPart editPart = (GraphicalEditPart) it.next();
+    for (Iterator<EditPart> it = selectedEditParts.iterator(); it.hasNext(); ) {
+      EditPart editPart = it.next();
       if (editPart instanceof AbstractDrawComponentEditPart)
         createRotateHandles((AbstractDrawComponentEditPart)editPart, handles);
     }
@@ -53,13 +53,13 @@ public class RotateHandleKit
     handles.add(createRotateCenterHandle(selectedEditParts));
   }
   
-  protected static Handle createRotateCenterHandle(List editParts)
+  protected static Handle createRotateCenterHandle(List<EditPart> editParts)
   {
     RotateCenterHandle handle = new RotateCenterHandle(editParts);
     return handle;
   }
   
-  protected static void createRotateHandles(AbstractDrawComponentEditPart owner, List handles)
+  protected static void createRotateHandles(AbstractDrawComponentEditPart owner, List<Handle> handles)
   {
     handles.add(createRotateHandle(owner, PositionConstants.NORTH_WEST));
     handles.add(createRotateHandle(owner, PositionConstants.NORTH_EAST));

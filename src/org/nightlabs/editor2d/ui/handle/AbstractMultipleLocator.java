@@ -34,15 +34,16 @@ import org.eclipse.draw2d.Locator;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;
 
 
 public abstract class AbstractMultipleLocator
 implements Locator
 {
-  protected List editParts;
+  protected List<EditPart> editParts;
   protected IFigure figure;
-  public AbstractMultipleLocator(List editParts)
+  public AbstractMultipleLocator(List<EditPart> editParts)
   {
     super();
     this.editParts = editParts;

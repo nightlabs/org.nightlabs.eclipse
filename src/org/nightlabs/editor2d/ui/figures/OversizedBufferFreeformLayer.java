@@ -116,7 +116,7 @@ implements FreeformFigure, BufferedFreeformLayer
 	/**
 	 * To be able to paint children even if not an instance of RendererFigure
 	 */
-	private List nonDCFChildren = new ArrayList();
+	private List<Figure> nonDCFChildren = new ArrayList<Figure>();
 	
 	private boolean debug = false;
 	
@@ -156,6 +156,7 @@ implements FreeformFigure, BufferedFreeformLayer
 	 * 
 	 * @return The offscreen buffer
 	 */
+	@SuppressWarnings("unchecked")
 	protected BufferedImage getBufferedImage()
 	{
 		double tmpZoom = EditorUtil.getZoom(editPart);
@@ -269,8 +270,8 @@ implements FreeformFigure, BufferedFreeformLayer
 			);
 			g2d.dispose();
 			// Paint all children that are not an instance of DrawComponentFigure
-			for (Iterator iter = nonDCFChildren.iterator(); iter.hasNext();) {
-				Figure figure = (Figure) iter.next();
+			for (Iterator<Figure> iter = nonDCFChildren.iterator(); iter.hasNext();) {
+				Figure figure = iter.next();
 				figure.paint(graphics);
 			}
 		}
@@ -313,6 +314,7 @@ implements FreeformFigure, BufferedFreeformLayer
 		
 	private Rectangle childBounds;
 	
+	@SuppressWarnings("unchecked")
 	protected Rectangle getChildBounds()
 	{
 		if (childBounds == null) {
@@ -367,11 +369,11 @@ implements FreeformFigure, BufferedFreeformLayer
 	/**
 	 * @see FreeformFigure#fireExtentChanged()
 	 */
+	@SuppressWarnings("unchecked")
 	public void fireExtentChanged() {
 		Iterator iter = getListeners(FreeformListener.class);
 		while (iter.hasNext())
-			((FreeformListener)iter.next())
-			.notifyFreeformExtentChanged();
+			((FreeformListener)iter.next()).notifyFreeformExtentChanged();
 	}
 	
 //	/**

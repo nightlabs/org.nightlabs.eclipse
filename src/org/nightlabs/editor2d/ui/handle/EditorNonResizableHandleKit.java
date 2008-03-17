@@ -57,7 +57,7 @@ extends NonResizableHandleKit
 	 * @param tracker the handles' DragTracker
 	 * @param cursor the handles' Cursor
 	 */
-	public static void addCornerHandles(GraphicalEditPart part, List handles,
+	public static void addCornerHandles(GraphicalEditPart part, List<Handle> handles,
 										DragTracker tracker, Cursor cursor) {
 		handles.add(createHandle(part, PositionConstants.SOUTH_EAST, tracker, cursor));
 		handles.add(createHandle(part, PositionConstants.SOUTH_WEST, tracker, cursor));
@@ -71,7 +71,7 @@ extends NonResizableHandleKit
 	 * @param part the handles' GraphicalEditPart
 	 * @param handles the List to add the four corner handles to
 	 */
-	public static void addCornerHandles(GraphicalEditPart part, List handles) {
+	public static void addCornerHandles(GraphicalEditPart part, List<Handle> handles) {
 		handles.add(createHandle(part, PositionConstants.SOUTH_EAST));
 		handles.add(createHandle(part, PositionConstants.SOUTH_WEST));
 		handles.add(createHandle(part, PositionConstants.NORTH_WEST));
@@ -86,7 +86,7 @@ extends NonResizableHandleKit
 	 * @param direction the integer constant from PositionConstants that refers to the handle
 	 * direction
 	 */
-	public static void addHandle(GraphicalEditPart part, List handles, int direction) {
+	public static void addHandle(GraphicalEditPart part, List<Handle> handles, int direction) {
 		handles.add(createHandle(part, direction));
 	}
 
@@ -100,7 +100,7 @@ extends NonResizableHandleKit
 	 * direction
 	 * @param cursor the Cursor to use when hovering over this handle
 	 */
-	public static void addHandle(GraphicalEditPart part, List handles, int direction,
+	public static void addHandle(GraphicalEditPart part, List<Handle> handles, int direction,
 								 DragTracker tracker, Cursor cursor) {
 		handles.add(createHandle(part, direction, tracker, cursor));
 	}
@@ -110,7 +110,7 @@ extends NonResizableHandleKit
 	 * @param part the handles' GraphicalEditPart
 	 * @param handles the List to add the handles to
 	 */
-	public static void addHandles(GraphicalEditPart part, List handles) {
+	public static void addHandles(GraphicalEditPart part, List<Handle> handles) {
 		addMoveHandle(part, handles);
 		addCornerHandles(part, handles);
 	}
@@ -122,7 +122,7 @@ extends NonResizableHandleKit
 	 * @param tracker the handles' DragTracker
 	 * @param cursor the handles' Cursor
 	 */
-	public static void addHandles(GraphicalEditPart part, List handles, DragTracker tracker,
+	public static void addHandles(GraphicalEditPart part, List<Handle> handles, DragTracker tracker,
 								  Cursor cursor) {
 		addMoveHandle(part, handles, tracker, cursor);
 		addCornerHandles(part, handles, tracker, cursor);
@@ -134,7 +134,7 @@ extends NonResizableHandleKit
 	 * @param f the handles' GraphicalEditPart
 	 * @param handles the List to add the handles to
 	 */
-	public static void addMoveHandle(GraphicalEditPart f, List handles) {
+	public static void addMoveHandle(GraphicalEditPart f, List<Handle> handles) {
 		handles.add(moveHandle(f));
 	}
 
@@ -147,7 +147,7 @@ extends NonResizableHandleKit
 	 * @param handles the List to add the handles to
 	 * @param cursor the Cursor to use when hovering over this handle
 	 */
-	public static void addMoveHandle(GraphicalEditPart f, List handles, DragTracker tracker,
+	public static void addMoveHandle(GraphicalEditPart f, List<Handle> handles, DragTracker tracker,
 									 Cursor cursor) {
 		handles.add(moveHandle(f, tracker, cursor));
 	}

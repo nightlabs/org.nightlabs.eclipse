@@ -563,6 +563,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		};
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object getAdapter(Class type)
 	{
@@ -772,9 +773,9 @@ extends J2DGraphicalEditorWithFlyoutPalette
 
 	protected void configureFilterManager()
 	{
-		Map<Class, List<DrawComponent>> class2DrawComponents = getRootDrawComponent().getClass2DrawComponents();
-		for (Iterator<Class> it = class2DrawComponents.keySet().iterator(); it.hasNext(); ) {
-			Class c = it.next();
+		Map<Class<? extends DrawComponent>, List<DrawComponent>> class2DrawComponents = getRootDrawComponent().getClass2DrawComponents();
+		for (Iterator<Class<? extends DrawComponent>> it = class2DrawComponents.keySet().iterator(); it.hasNext(); ) {
+			Class<? extends DrawComponent> c = it.next();
 			getFilterManager().addFilter(c);
 		}
 		getRootDrawComponent().addPropertyChangeListener(getFilterManager().getTypeListener());
@@ -782,7 +783,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	}
 
 	/**
-	 * By Default this Method does nothing, but Inheritans can override this Method to define
+	 * By Default this Method does nothing, but subclasses can override this Method to define
 	 * excluded EditParts, ignored classes or an exclusive class
 	 * 
 	 * @see org.nightlabs.editor2d.ui.ViewerManager
@@ -793,7 +794,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	}
 
 	/**
-	 * By Default this Method does nothing, but Inheritans can override this Method to add
+	 * By Default this Method does nothing, but subclasses can override this Method to add
 	 * Descriptors for special classes to the DescriptorManager
 	 * 
 	 * @see DescriptorManager#addDescriptor(org.nightlabs.editor2d.ui.viewer.ui.descriptor.IDrawComponentDescriptor, Class)
@@ -819,6 +820,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		return null;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void createActions()
 	{

@@ -42,9 +42,6 @@ import org.nightlabs.print.page.A4Page;
 public class DocumentConfigModule
 extends ConfigModule
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private Map<Class, DocumentProperties> editorClass2DocumentProperties = null;
 

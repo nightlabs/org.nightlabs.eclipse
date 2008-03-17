@@ -27,9 +27,10 @@
 
 package org.nightlabs.editor2d.ui.model;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.nightlabs.editor2d.RootDrawComponent;
 
 public class RootDrawComponentPropertySource
@@ -40,9 +41,7 @@ extends DrawComponentPropertySource
 	}
 
 	@Override
-	protected List createPropertyDescriptors() {
-		return EMPTY_LIST;
+	protected List<IPropertyDescriptor> createPropertyDescriptors() {
+		return Collections.emptyList();
 	}
-	
-	public static final List EMPTY_LIST = new ArrayList(0);
 }

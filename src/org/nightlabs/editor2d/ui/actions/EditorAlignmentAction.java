@@ -48,7 +48,6 @@ import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.actions.SelectionAction;
 import org.eclipse.ui.IWorkbenchPart;
 
-
 public class EditorAlignmentAction
 extends SelectionAction
 {
@@ -98,7 +97,7 @@ extends SelectionAction
    *   <LI>GEFActionConstants.ALIGN_MIDDLE
    * </UL>
    * @param part the workbench part used to obtain context
-   * @param align the aligment ID.
+   * @param align the alignment ID.
    */
   public EditorAlignmentAction(IWorkbenchPart part, int align) {
   	super(part);
@@ -160,7 +159,7 @@ extends SelectionAction
   }
 
   /**
-   * Returns the list of editparts which will participate in alignment.
+   * Returns the list of edit parts which will participate in alignment.
    * @param request the alignment request
    * @return the list of parts which will be aligned
    */

@@ -119,7 +119,8 @@ implements EditorRequestConstants
     }
   }
   
-  public RootDrawComponentEditPart getModelRoot()
+  @SuppressWarnings("unchecked")
+	public RootDrawComponentEditPart getModelRoot()
   {
   	if (getRoot() instanceof RootDrawComponentEditPart) {
   		return (RootDrawComponentEditPart) getRoot();
@@ -247,7 +248,8 @@ implements EditorRequestConstants
   /**
    * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
    */
-  @Override
+  @SuppressWarnings("unchecked")
+	@Override
   public Object getAdapter(Class key)
   {
     /* override the default behavior defined in AbstractEditPart

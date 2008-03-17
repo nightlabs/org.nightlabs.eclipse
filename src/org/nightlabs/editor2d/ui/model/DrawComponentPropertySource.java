@@ -169,7 +169,7 @@ implements IPropertySource
 			
 			return descriptors;
 		}
-		return Collections.EMPTY_LIST;
+		return Collections.emptyList();
 	}
 	
 	private Map<String, DrawComponentProperty> id2DrawComponentProperty =

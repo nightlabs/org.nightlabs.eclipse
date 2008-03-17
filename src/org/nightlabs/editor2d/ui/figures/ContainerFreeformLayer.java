@@ -22,6 +22,7 @@ implements RendererFigure
 	/**
 	 * Overridden to paint only children
 	 */
+	@SuppressWarnings("unchecked")
 	public void paint(Graphics2D graphics)
 	{
 		for (Iterator iter = getChildren().iterator(); iter.hasNext();) {
@@ -35,6 +36,7 @@ implements RendererFigure
 	/**
 	 * Overridden to paint only children
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void paint(Graphics graphics)
 	{

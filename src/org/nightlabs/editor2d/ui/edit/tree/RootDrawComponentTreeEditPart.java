@@ -76,7 +76,8 @@ extends DrawComponentContainerTreeEditPart
 //  	installEditPolicy(EditPolicy.COMPONENT_ROLE, new RootComponentEditPolicy());
 //  }
   
-  @Override
+  @SuppressWarnings("unchecked")
+	@Override
 	protected List getModelChildren()
   {
   	if (getFilterMan().isAllFilterSet()) {
@@ -89,15 +90,15 @@ extends DrawComponentContainerTreeEditPart
   	}
   }
     
-  protected List getModelChildren(DrawComponentContainer dcc)
+  protected List<DrawComponent> getModelChildren(DrawComponentContainer dcc)
   {
-    List filterChildren = new ArrayList();
-  	for (Iterator itFilter = getFilterMan().getFilters().iterator(); itFilter.hasNext(); )
+    List<DrawComponent> filterChildren = new ArrayList<DrawComponent>();
+  	for (Iterator<Class> itFilter = getFilterMan().getFilters().iterator(); itFilter.hasNext(); )
   	{
-  		Class filter = (Class) itFilter.next();
-      for (Iterator itChildren = dcc.getDrawComponents().iterator(); itChildren.hasNext(); )
+  		Class filter = itFilter.next();
+      for (Iterator<DrawComponent> itChildren = dcc.getDrawComponents().iterator(); itChildren.hasNext(); )
       {
-        DrawComponent dc = (DrawComponent) itChildren.next();
+        DrawComponent dc = itChildren.next();
   			if (filter.isAssignableFrom(dc.getClass())) {
   				filterChildren.add(dc);
   			}

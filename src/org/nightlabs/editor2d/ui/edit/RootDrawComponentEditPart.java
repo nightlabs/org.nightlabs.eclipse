@@ -131,7 +131,8 @@ extends AbstractDrawComponentContainerEditPart
   /**
    * @return a List of all Layers
    */
-  @Override
+  @SuppressWarnings("unchecked")
+	@Override
 	protected List getModelChildren()
   {
     return getRootDrawComponent().getDrawComponents();
@@ -140,7 +141,8 @@ extends AbstractDrawComponentContainerEditPart
   /**
    * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
    */
-  @Override
+  @SuppressWarnings("unchecked")
+	@Override
 	public Object getAdapter(Class adapter)
   {
   	if (adapter == SnapToHelper.class) {

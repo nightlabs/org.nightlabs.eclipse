@@ -39,7 +39,7 @@ public interface DrawComponentProperty
 	
 	public void setPropertyValue(Object value);
 	
-	public Class getDrawComponentClass();
+	public Class<? extends DrawComponent> getDrawComponentClass();
 	
 //	public String getCategory();
 	

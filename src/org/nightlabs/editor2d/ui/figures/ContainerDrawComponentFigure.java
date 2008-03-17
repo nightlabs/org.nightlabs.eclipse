@@ -47,6 +47,7 @@ extends DrawComponentFigure
 	/**
 	 * Overridden to paint only children
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void paint(Graphics2D graphics) {
 		for (Iterator iter = getChildren().iterator(); iter.hasNext();) {
@@ -60,6 +61,7 @@ extends DrawComponentFigure
 	/**
 	 * Overridden to paint only children
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void paint(Graphics graphics) {
 		for (Iterator iter = getChildren().iterator(); iter.hasNext();) {

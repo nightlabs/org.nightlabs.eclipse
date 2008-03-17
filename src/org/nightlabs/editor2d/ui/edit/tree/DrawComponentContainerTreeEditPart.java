@@ -83,7 +83,8 @@ extends DrawComponentTreeEditPart
    *
    * @return  List of children.
    */
-  @Override
+  @SuppressWarnings("unchecked")
+	@Override
 	protected List getModelChildren()
   {
   	return getDrawComponentContainer().getDrawComponents();

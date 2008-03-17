@@ -122,9 +122,9 @@ extends EditorPartAction
 	 * of drawComponents
 	 * @param drawComponents
 	 */
-	public void selectEditPart(List drawComponents)
+	public void selectEditPart(List<DrawComponent> drawComponents)
 	{
-		List editParts = getEditParts(drawComponents);
+		List<EditPart> editParts = getEditParts(drawComponents);
 		getGraphicalViewer().setSelection(new StructuredSelection(editParts));
 	}
 	

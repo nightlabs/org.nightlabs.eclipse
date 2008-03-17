@@ -88,9 +88,9 @@ extends AbstractEditorSelectionAction
 			// sort the selection dependend on their index
 			Collections.sort(dcs, indexComparator);
 			CompoundCommand compoundCmd = new CompoundCommand();
-			for (Iterator it = dcs.iterator(); it.hasNext(); )
+			for (Iterator<DrawComponent> it = dcs.iterator(); it.hasNext(); )
 			{
-				DrawComponent dc = (DrawComponent) it.next();
+				DrawComponent dc = it.next();
 				Command cmd = changeOrder(dc, getContainer(), getNewIndex());
 				compoundCmd.add(cmd);
 			}
@@ -112,34 +112,28 @@ extends AbstractEditorSelectionAction
 	/**
 	 * compares the index of 2 DrawComponents
 	 */
-	protected Comparator indexComparator = new Comparator()
+	protected Comparator<DrawComponent> indexComparator = new Comparator<DrawComponent>()
 	{
-		public int compare(Object o1, Object o2)
+		public int compare(DrawComponent dc1, DrawComponent dc2)
 		{
-			if (o1 instanceof DrawComponent && o2 instanceof DrawComponent)
+			if (primarySelected != null)
 			{
-				DrawComponent dc1 = (DrawComponent) o1;
-				DrawComponent dc2 = (DrawComponent) o2;
-				if (primarySelected != null)
+				DrawComponentContainer primaryContainer = primarySelected.getParent();
+				if (!dc1.getParent().equals(primaryContainer) || !dc2.getParent().equals(primaryContainer))
 				{
-					DrawComponentContainer primaryContainer = primarySelected.getParent();
-					if (!dc1.getParent().equals(primaryContainer) || !dc2.getParent().equals(primaryContainer))
-					{
-						if (dc1.getParent().equals(primaryContainer) && !dc2.getParent().equals(primaryContainer))
-							return 1;
-						if (!dc1.getParent().equals(primaryContainer) && dc2.getParent().equals(primaryContainer))
-							return -1;
-						else {
-							return compareIndexInDifferentContainer(dc1, dc2);
-						}
+					if (dc1.getParent().equals(primaryContainer) && !dc2.getParent().equals(primaryContainer))
+						return 1;
+					if (!dc1.getParent().equals(primaryContainer) && dc2.getParent().equals(primaryContainer))
+						return -1;
+					else {
+						return compareIndexInDifferentContainer(dc1, dc2);
 					}
-					else
-						return compareIndexInSameContainer(dc1, dc2);
 				}
 				else
 					return compareIndexInSameContainer(dc1, dc2);
 			}
-			return 0;
+			else
+				return compareIndexInSameContainer(dc1, dc2);
 		}
 	};
 	

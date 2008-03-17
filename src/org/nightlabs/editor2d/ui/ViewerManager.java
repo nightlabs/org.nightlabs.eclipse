@@ -99,6 +99,7 @@ public class ViewerManager
   
   private EditPartListener rootListener = new EditPartListener.Stub()
   {
+		@SuppressWarnings("unchecked")
 		@Override
 		public void removingChild(EditPart child, int index)
 		{
@@ -113,7 +114,7 @@ public class ViewerManager
 			// exclude the ModelRoot (RootDrawComponent) and its Layers (Layer)
 			excludeListRef.getExcludeList().add(child);
 			for (Iterator it = child.getChildren().iterator(); it.hasNext(); ) {
-				excludeListRef.getExcludeList().add(it.next());
+				excludeListRef.getExcludeList().add((EditPart)it.next());
 			}
 		}
 	};
@@ -298,14 +299,17 @@ public class ViewerManager
 
   public static class ExcludeListRef
   {
-  	private Collection excludeList;
-  	public ExcludeListRef(Collection excludeList) {
+  	private Collection<EditPart> excludeList;
+  	
+  	public ExcludeListRef(Collection<EditPart> excludeList) {
   		this.excludeList = excludeList;
   	}
-		public Collection getExcludeList() {
+  	
+		public Collection<EditPart> getExcludeList() {
 			return excludeList;
 		}
-		public void setExcludeList(Collection excludeList) {
+		
+		public void setExcludeList(Collection<EditPart> excludeList) {
 			this.excludeList = excludeList;
 		}
   }

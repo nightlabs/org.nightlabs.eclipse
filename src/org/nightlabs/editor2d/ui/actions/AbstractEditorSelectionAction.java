@@ -105,8 +105,7 @@ extends SelectionAction
 	 * @return the RootDrawComponent of the AbstractEditor
 	 * @see org.nightlabs.editor2d.ui.RootDrawComponent
 	 */
-	public RootDrawComponent getRootDrawComponent()
-	{
+	public RootDrawComponent getRootDrawComponent() {
 		return getEditor().getRootDrawComponent();
 	}
 	
@@ -115,14 +114,14 @@ extends SelectionAction
 	 * as the given amount of the given class
 	 * 
 	 * @param clazz the Class to search for
-	 * @param amount the minimum amount of occurences of the given class
+	 * @param amount the minimum amount of occurrences of the given class
 	 * in the selected objects
 	 * @param model determines if the Class-Check should be performed on the
 	 * selected EditParts or the model (DrawComponent) of the EditParts
 	 * @return true if the selected objects contain minimum so many EditPart
 	 * as the given amount of the given class
 	 */
-	public boolean selectionContains(Class clazz, int amount, boolean model)
+	public boolean selectionContains(Class<?> clazz, int amount, boolean model)
 	{
 		return selectionContains(new Class[] {clazz}, amount, model);
 	}
@@ -132,14 +131,15 @@ extends SelectionAction
 	 * as the given amount of the given classes
 	 * 
 	 * @param clazzes an Array of classes to search for
-	 * @param amount the minimum amount of occurences of the given class
+	 * @param amount the minimum amount of occurrences of the given class
 	 * in the selected objects
 	 * @param model determines if the Class-Check should be performed on the
 	 * selected EditParts or the model (DrawComponent) of the EditParts
 	 * @return true if the selected objects contain minimum so many EditPart
 	 * as the given amount of the given class
 	 */
-	public boolean selectionContains(Class[] clazzes, int amount, boolean model)
+	@SuppressWarnings("unchecked")
+	public boolean selectionContains(Class<?>[] clazzes, int amount, boolean model)
 	{
 		if (!getSelectedObjects().isEmpty())
 		{
@@ -147,7 +147,7 @@ extends SelectionAction
 			for (Iterator it = getSelectedObjects().iterator(); it.hasNext(); )
 			{
 				EditPart editPart = (EditPart) it.next();
-				Class c = null;
+				Class<?> c = null;
 				if (!model)
 					c = editPart.getClass();
 				else
@@ -155,7 +155,7 @@ extends SelectionAction
 				
 				for (int i=0; i<clazzes.length; i++)
 				{
-					Class clazz = clazzes[i];
+					Class<?> clazz = clazzes[i];
 					if (clazz.isAssignableFrom(c)) {
 						counter++;
 						if (amount == counter)
@@ -168,17 +168,17 @@ extends SelectionAction
 	}
 		
 	/**
-	 * A Convenice Method which calls selectionContains with the amount 1
+	 * A Convenience Method which calls selectionContains with the amount 1
 	 * @param clazz the Class to search for
 	 * @param model determines if the search is performed on the selected EditParts or
 	 * the Model of the EditParts
 	 * @see #selectionContains(Class clazz, int amount, boolean model)
 	 */
-	public boolean selectionContains(Class clazz, boolean model) {
+	public boolean selectionContains(Class<?> clazz, boolean model) {
 		return selectionContains(clazz, 1, model);
 	}
 	
-	private static List EMPTY_LIST = Collections.EMPTY_LIST;
+	private static List<Object> EMPTY_LIST = Collections.emptyList();
 			
 	/**
 	 * 
@@ -188,9 +188,9 @@ extends SelectionAction
 	 * @return a Collection of all objects from the selection which are assignable
 	 * from the given class
 	 */
-	public Collection getSelection(Class clazz, boolean model)
-	{
-		return getSelection(new Class[] {clazz}, model);
+	@SuppressWarnings("unchecked")
+	public <T extends Object> Collection<T> getSelection(Class<T> clazz, boolean model) {
+		return (Collection<T>) getSelection(new Class[] {clazz}, model);
 	}
 
 	/**
@@ -201,11 +201,12 @@ extends SelectionAction
 	 * @return a List of all objects from the selection which are assignable
 	 * from the given classes
 	 */
+	@SuppressWarnings("unchecked")
 	public Collection getSelection(Class[] clazzes, boolean model)
 	{
 		if (!getSelectedObjects().isEmpty())
 		{
-			Collection selection = new HashSet();
+			Collection<Object> selection = new HashSet<Object>();
 			for (Iterator it = getSelectedObjects().iterator(); it.hasNext(); )
 			{
 				EditPart editPart = (EditPart) it.next();
@@ -240,9 +241,10 @@ extends SelectionAction
 	 * @return a Collection of all objects from the selection which are assignable
 	 * from the given class
 	 */
-	public List getSelectionAsList(Class clazz, boolean model)
+	@SuppressWarnings("unchecked")
+	public <T extends Object> List<T> getSelectionAsList(Class<T> clazz, boolean model)
 	{
-		return getSelectionAsList(new Class[] {clazz}, model);
+		return (List<T>) getSelectionAsList(new Class[] {clazz}, model);
 	}
 	
 	/**
@@ -253,11 +255,12 @@ extends SelectionAction
 	 * @return a List of all objects from the selection which are assignable
 	 * from the given classes
 	 */
-	public List getSelectionAsList(Class[] clazzes, boolean model)
+	@SuppressWarnings("unchecked")
+	public List<Object> getSelectionAsList(Class[] clazzes, boolean model)
 	{
 		if (!getSelectedObjects().isEmpty())
 		{
-			List selection = new LinkedList();
+			List<Object> selection = new LinkedList<Object>();
 			for (Iterator it = getSelectedObjects().iterator(); it.hasNext(); )
 			{
 				EditPart editPart = (EditPart) it.next();
@@ -288,14 +291,15 @@ extends SelectionAction
 		return EMPTY_LIST;
 	}
 	
-	private Class[] defaultEditPartExcludes = null;
-	private Class[] defaultModelExcludes = null;
+	private Class<? extends EditPart>[] defaultEditPartExcludes = null;
+	private Class<? extends DrawComponent>[] defaultModelExcludes = null;
 	
-	public Class[] getDefaultExcludes(boolean model)
+	@SuppressWarnings({ "unchecked", "unchecked" })
+	public Class<?>[] getDefaultExcludes(boolean model)
 	{
 		if (!model) {
 			if (defaultEditPartExcludes == null) {
-				defaultEditPartExcludes = new Class[4];
+				defaultEditPartExcludes = new Class[4];				
 				defaultEditPartExcludes[0] = RootEditPart.class;
 				defaultEditPartExcludes[1] = LayerEditPart.class;
 				defaultEditPartExcludes[2] = PageEditPart.class;
@@ -314,13 +318,13 @@ extends SelectionAction
 		}
 	}
 		
-	private Collection<Class> defaultExcludeList = null;
-	public Collection<Class> getDefaultExcludeList(boolean model)
+	private Collection<Class<? extends Object>> defaultExcludeList = null;
+	public Collection<Class<? extends Object>> getDefaultExcludeList(boolean model)
 	{
 		if (defaultExcludeList == null)
 		{
-			Class[] excludes = getDefaultExcludes(model);
-			defaultExcludeList = new ArrayList<Class>(excludes.length);
+			Class<?>[] excludes = getDefaultExcludes(model);
+			defaultExcludeList = new ArrayList<Class<? extends Object>>(excludes.length);
 			for (int i=0; i<excludes.length; i++) {
 				defaultExcludeList.add(excludes[i]);
 			}
@@ -328,9 +332,10 @@ extends SelectionAction
 		return defaultExcludeList;
 	}
 	
-	private Class[] defaultEditPartIncludes = null;
-	private Class[] defaultModelIncludes = null;
-	public Class[] getDefaultIncludes(boolean model)
+	private Class<? extends EditPart>[] defaultEditPartIncludes = null;
+	private Class<? extends DrawComponent>[] defaultModelIncludes = null;
+	@SuppressWarnings({ "unchecked", "unchecked" })
+	public Class<?>[] getDefaultIncludes(boolean model)
 	{
 		if (!model) {
 			if (defaultEditPartIncludes == null) {
@@ -360,12 +365,12 @@ extends SelectionAction
 		}
 	}
 	
-	private Collection<Class> defaultIncludeList = null;
-	public Collection<Class> getDefaultIncludeList(boolean model)
+	private Collection<Class<? extends Object>> defaultIncludeList = null;
+	public Collection<Class<? extends Object>> getDefaultIncludeList(boolean model)
 	{
 		if (defaultIncludeList == null) {
-			Class[] includes = getDefaultIncludes(model);
-			defaultIncludeList = new ArrayList<Class>(includes.length);
+			Class<?>[] includes = getDefaultIncludes(model);
+			defaultIncludeList = new ArrayList<Class<? extends Object>>(includes.length);
 			for (int i=0; i<includes.length; i++) {
 				defaultIncludeList.add(includes[i]);
 			}
@@ -373,12 +378,7 @@ extends SelectionAction
 		return defaultIncludeList;
 	}
 	
-//	public List getDefaultSelection(boolean model)
-//	{
-//		return getSelection(getDefaultIncludes(model), model);
-//	}
-	public Collection getDefaultSelection(boolean model)
-	{
+	public Collection<Object> getDefaultSelection(boolean model) {
 		return getSelection(getDefaultIncludes(model), model);
 	}
 	
@@ -414,12 +414,12 @@ extends SelectionAction
 	 * @param drawComponents a List of DrawComponents to find a EditParts for
 	 * @return a List of the corresponding EditParts
 	 */
-	public List getEditParts(List drawComponents)
+	public List<? extends EditPart> getEditParts(List<? extends DrawComponent> drawComponents)
 	{
-		List editParts = new ArrayList();
-		for (Iterator it = drawComponents.iterator(); it.hasNext(); )
+		List<EditPart> editParts = new ArrayList<EditPart>();
+		for (Iterator<? extends DrawComponent> it = drawComponents.iterator(); it.hasNext(); )
 		{
-			DrawComponent dc = (DrawComponent) it.next();
+			DrawComponent dc = it.next();
 			EditPart ep = getEditPart(dc);
 			editParts.add(ep);
 		}
@@ -431,9 +431,9 @@ extends SelectionAction
 	 * of drawComponents
 	 * @param drawComponents
 	 */
-	public void selectEditParts(List drawComponents)
+	public void selectEditParts(List<? extends DrawComponent> drawComponents)
 	{
-		List editParts = getEditParts(drawComponents);
+		List<? extends EditPart> editParts = getEditParts(drawComponents);
 		getGraphicalViewer().setSelection(new StructuredSelection(editParts));
 	}
 

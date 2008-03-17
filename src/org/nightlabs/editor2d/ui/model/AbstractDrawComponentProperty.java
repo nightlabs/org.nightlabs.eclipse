@@ -33,15 +33,16 @@ import org.nightlabs.editor2d.DrawComponent;
 public abstract class AbstractDrawComponentProperty
 implements DrawComponentProperty
 {
-
-	public Class getDrawComponentClass() {
+	private DrawComponent drawComponent;
+	
+	public Class<? extends DrawComponent> getDrawComponentClass() {
 		return drawComponent.getClass();
 	}
 
-	private DrawComponent drawComponent;
 	public void setDrawComponent(DrawComponent dc) {
 		this.drawComponent = dc;
 	}
+	
 	public DrawComponent getDrawComponent() {
 		return drawComponent;
 	}

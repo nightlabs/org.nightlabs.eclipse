@@ -90,7 +90,7 @@ implements ISmartUpdateFigure
 		/**
 		 * @see org.nightlabs.editor2d.ui.figures.smartupdate.FigureTile#getTileFigures()
 		 */
-		public Collection getTileFigures() {
+		public Collection<IFigure> getTileFigures() {
 			return figures;
 		}
 
@@ -112,10 +112,10 @@ implements ISmartUpdateFigure
 		/**
 		 * @see org.nightlabs.editor2d.ui.figures.smartupdate.FigureTile#getIntersectionFigures(org.eclipse.draw2d.geometry.Rectangle)
 		 */
-		public Collection getIntersectingFigures(Rectangle rect) {
-			List result = new ArrayList();
-			for (Iterator iter = figures.iterator(); iter.hasNext();) {
-				Figure figure = (Figure) iter.next();
+		public Collection<IFigure> getIntersectingFigures(Rectangle rect) {
+			List<IFigure> result = new ArrayList<IFigure>();
+			for (Iterator<IFigure> iter = figures.iterator(); iter.hasNext();) {
+				IFigure figure = iter.next();
 				if (figure.intersects(rect)) {
 					result.add(figure);
 				}
@@ -129,13 +129,13 @@ implements ISmartUpdateFigure
 	 * key: String: (x,y) upper left tile corner <br/>
 	 * value: FigureTile: The FigureTile for this tile
 	 */
-	private Map tiles = new HashMap();
+	private Map<String, FigureTile> tiles = new HashMap<String, FigureTile>();
 	
 	/**
 	 * key Figure: childfigure <br/>
 	 * value: Set of FigureTiles
 	 */
-	private Map figuresInTiles = new HashMap();
+	private Map<IFigure, Set<FigureTile>> figuresInTiles = new HashMap<IFigure, Set<FigureTile>>();
 
 	/**
 	 * The tile dimension calculated in {@link #rebuildTiles()}
@@ -190,10 +190,10 @@ implements ISmartUpdateFigure
 	 * @param figure The figure
 	 * @return The figures tiles.
 	 */
-	protected Set getTilesForFigure(IFigure figure) {
-		Set figureTiles = (Set)figuresInTiles.get(figure);
+	protected Set<FigureTile> getTilesForFigure(IFigure figure) {
+		Set<FigureTile> figureTiles = figuresInTiles.get(figure);
 		if (figureTiles == null) {
-			figureTiles = new HashSet();
+			figureTiles = new HashSet<FigureTile>();
 			figuresInTiles.put(figure, figureTiles);
 		}
 		return figureTiles;
@@ -226,9 +226,9 @@ implements ISmartUpdateFigure
 		Point bottomRightTilePosition = getTileTopLeft(figureBounds.x + figureBounds.width, figureBounds.y+figureBounds.height);
 		
 		// clear registration in current build
-		Set figureTiles = getTilesForFigure(figure);
-		for (Iterator iter = figureTiles.iterator(); iter.hasNext();) {
-			FigureTile figureTile = (FigureTile) iter.next();
+		Set<FigureTile> figureTiles = getTilesForFigure(figure);
+		for (Iterator<FigureTile> iter = figureTiles.iterator(); iter.hasNext();) {
+			FigureTile figureTile = iter.next();
 			figureTile.removeFigure(figure);
 		}
 		figureTiles.clear();
@@ -249,6 +249,7 @@ implements ISmartUpdateFigure
 	 * Clears and rebuilds the tiles
 	 *
 	 */
+	@SuppressWarnings("unchecked")
 	protected void rebuildTiles() {
 		tiles.clear();
 		figuresInTiles.clear();
@@ -273,6 +274,7 @@ implements ISmartUpdateFigure
 		internalPaintRegion(graphics, region);
 	}
 
+	@SuppressWarnings("unchecked")
 	private void internalPaintRegion(Object graphics, Rectangle region) {
 		if (!tilesBuild)
 			rebuildTiles();

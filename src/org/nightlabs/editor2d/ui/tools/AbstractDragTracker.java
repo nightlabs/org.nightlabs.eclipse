@@ -79,7 +79,8 @@ implements EditorRequestConstants
     }
   }
   
-  @Override
+  @SuppressWarnings("unchecked")
+	@Override
 	protected List createOperationSet()
   {
     List list = super.createOperationSet();

@@ -30,7 +30,6 @@ package org.nightlabs.editor2d.ui.edit;
 import java.beans.PropertyChangeEvent;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.XYLayout;
@@ -46,11 +45,6 @@ import org.nightlabs.editor2d.ui.figures.ContainerDrawComponentFigure;
 public abstract class AbstractDrawComponentContainerEditPart
 extends AbstractDrawComponentEditPart
 {
-	/**
-	 * LOG4J logger used by this class
-	 */
-	private static final Logger logger = Logger.getLogger(AbstractDrawComponentContainerEditPart.class);
-  
   /**
    * @param drawComponentContainer
    */
@@ -98,18 +92,17 @@ extends AbstractDrawComponentEditPart
 		super.propertyChanged(evt);
 		String propertyName = evt.getPropertyName();
 		if (propertyName.equals(DrawComponentContainer.CHILD_ADDED)) {
-//			logger.debug(propertyName);
 			refresh();
 			return;
 		}
 		else if (propertyName.equals(DrawComponentContainer.CHILD_REMOVED)) {
-//			logger.debug(propertyName);
 			refresh();
 			return;
 		}
 	}
 	
-  @Override
+  @SuppressWarnings("unchecked")
+	@Override
   protected List getModelChildren()
   {
     return getDrawComponentContainer().getDrawComponents();

@@ -194,9 +194,9 @@ implements IAdaptable
 		filterNoneAction.setText(Messages.getString("org.nightlabs.editor2d.ui.outline.EditorOutlinePage.label.filterNone")); //$NON-NLS-1$
 		menuMan.add(filterNoneAction);
 		
-  	for (Iterator it = filterMan.getAllFilters().iterator(); it.hasNext(); )
+  	for (Iterator<Class> it = filterMan.getAllFilters().iterator(); it.hasNext(); )
   	{
-  		Class c = (Class) it.next();
+  		Class c = it.next();
 			IAction filterAction = createFilterAction(c);
 			menuMan.add(filterAction);
   	}
@@ -243,7 +243,8 @@ implements IAdaptable
 //      return editor.getOutlineGraphicalViewer().getProperty(ZoomManager.class.toString());
 //    return null;
 //  }
-  public Object getAdapter(Class type) {
+  @SuppressWarnings("unchecked")
+	public Object getAdapter(Class type) {
     return null;
   }
 
@@ -364,8 +365,8 @@ implements IAdaptable
 			{
 				Object o = pce.getNewValue();
 				if (o instanceof Class) {
-					IMenuManager menuMan = getSite().getActionBars().getMenuManager();
 					Class c = (Class) o;
+					IMenuManager menuMan = getSite().getActionBars().getMenuManager();
 					menuMan.add(createFilterAction(c));
 					getViewer().setContents(editor.getRootDrawComponent());
 				}

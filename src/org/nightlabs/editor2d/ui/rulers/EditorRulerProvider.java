@@ -86,9 +86,9 @@ extends RulerProvider
   public EditorRulerProvider(EditorRuler ruler) {
   	this.ruler = ruler;
   	this.ruler.addPropertyChangeListener(rulerListener);
-  	List guides = getGuides();
+  	List<EditorGuide> guides = getGuides();
   	for (int i = 0; i < guides.size(); i++) {
-  		((EditorGuide)guides.get(i)).addPropertyChangeListener(guideListener);
+  		guides.get(i).addPropertyChangeListener(guideListener);
   	}
   }
 
@@ -114,7 +114,7 @@ extends RulerProvider
 
   @Override
 	public int[] getGuidePositions() {
-  	List guides = getGuides();
+  	List<EditorGuide> guides = getGuides();
   	int[] result = new int[guides.size()];
   	for (int i = 0; i < guides.size(); i++) {
   		result[i] = ((EditorGuide)guides.get(i)).getPosition();
@@ -143,7 +143,7 @@ extends RulerProvider
   }
 
   @Override
-	public List getGuides() {
+	public List<EditorGuide> getGuides() {
   	return ruler.getGuides();
   }
   

@@ -44,9 +44,9 @@ extends DrawComponentPropertySource
 	}
 	
 	@Override
-	protected List createPropertyDescriptors()
+	protected List<IPropertyDescriptor> createPropertyDescriptors()
 	{
-		List descriptors = getDescriptors();
+		List<IPropertyDescriptor> descriptors = getDescriptors();
 		// Name
 		descriptors.add(createNamePD());
 		// Visible

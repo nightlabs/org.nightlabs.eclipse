@@ -105,7 +105,7 @@ extends GraphicalViewerKeyHandler
 	protected List<Object> getSelectedObjects()
 	{
 		if (selectedObjects == null)
-			selectedObjects = Collections.EMPTY_LIST;
+			selectedObjects = Collections.emptyList();
 		
 		return selectedObjects;
 	}
@@ -125,7 +125,7 @@ extends GraphicalViewerKeyHandler
 					return;
 				}
 			}
-			selectedObjects = Collections.EMPTY_LIST;
+			selectedObjects = Collections.emptyList();
 		}
 	};
 	
@@ -181,10 +181,10 @@ extends GraphicalViewerKeyHandler
 	 * @param editParts a List of EditParts to translate
 	 * @param direction the translation direction
 	 */
-	protected void translate(List editParts, int direction)
+	protected void translate(List<Object> editParts, int direction)
 	{
 		CompoundCommand compoundCmd = new CompoundCommand();
-		for (Iterator it = editParts.iterator(); it.hasNext(); )
+		for (Iterator<Object> it = editParts.iterator(); it.hasNext(); )
 		{
 			EditPart ep = (EditPart) it.next();
 			if (ep instanceof AbstractDrawComponentEditPart)

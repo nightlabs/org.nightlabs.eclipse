@@ -31,6 +31,7 @@ import java.util.List;
 
 import org.eclipse.draw2d.Polyline;
 import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.gef.Handle;
 import org.nightlabs.editor2d.ui.edit.ShapeDrawComponentEditPart;
 import org.nightlabs.editor2d.ui.util.J2DUtil;
 
@@ -49,7 +50,7 @@ public class ShapeEditHandleKit
    * @param part the handles' ShapeDrawComponentEditPart
    * @param handles the List to add the handles to
    */
-  public static void addHandles(ShapeDrawComponentEditPart part, List handles)
+  public static void addHandles(ShapeDrawComponentEditPart part, List<Handle> handles)
   {
     Polyline polyline = J2DUtil.toPolyline(part.getGeneralShape());
     PointList points = polyline.getPoints();
