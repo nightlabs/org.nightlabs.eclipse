@@ -47,16 +47,6 @@
          <sequence>
             <element ref="renderContext" minOccurs="1" maxOccurs="unbounded"/>
          </sequence>
-         <attribute name="renderer" type="string" use="required">
-            <annotation>
-               <documentation>
-                  a Renderer Class which implements the org.nightlabs.editor2d.render.Renderer-Interface
-               </documentation>
-               <appInfo>
-                  <meta.attribute kind="java" basedOn=":org.nightlabs.editor2d.render.Renderer"/>
-               </appInfo>
-            </annotation>
-         </attribute>
          <attribute name="drawComponentClass" type="string" use="required">
             <annotation>
                <documentation>

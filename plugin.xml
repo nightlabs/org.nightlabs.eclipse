@@ -9,8 +9,7 @@
             description="%renderMode.default.shape.description"
             drawComponentClass="org.nightlabs.editor2d.ShapeDrawComponent"
             mode="default"
-            name="%renderMode.default.name"
-            renderer="org.nightlabs.editor2d.render.ShapeDefaultRenderer">
+            name="%renderMode.default.name">
          <renderContext
                renderContext="org.nightlabs.editor2d.render.j2d.J2DShapeDefaultRenderer"
                renderContextType="Java2D"/>
@@ -22,8 +21,7 @@
             description="%renderMode.default.image.description"
             drawComponentClass="org.nightlabs.editor2d.ImageDrawComponent"
             mode="default"
-            name="%renderMode.default.name"
-            renderer="org.nightlabs.editor2d.render.ImageDefaultRenderer">
+            name="%renderMode.default.name">
          <renderContext
                renderContext="org.nightlabs.editor2d.render.j2d.J2DImageDefaultRenderer"
                renderContextType="Java2D"/>
@@ -35,8 +33,7 @@
             description="%renderMode.default.page.description"
             drawComponentClass="org.nightlabs.editor2d.DrawComponentContainer"
             mode="default"
-            name="%renderMode.default.name"
-            renderer="org.nightlabs.editor2d.render.BaseRenderer">
+            name="%renderMode.default.name">
          <renderContext
                renderContext="org.nightlabs.editor2d.render.j2d.J2DBaseRenderer"
                renderContextType="Java2D"/>
@@ -48,8 +45,7 @@
             description="%renderMode.default.page.description"
             drawComponentClass="org.nightlabs.editor2d.PageDrawComponent"
             mode="default"
-            name="%renderMode.default.name"
-            renderer="org.nightlabs.editor2d.render.PageRenderer">
+            name="%renderMode.default.name">
          <renderContext
                renderContext="org.nightlabs.editor2d.render.j2d.J2DPageRenderer"
                renderContextType="Java2D"/>
@@ -58,8 +54,7 @@
             description="%renderMode.gray.shape.description"
             drawComponentClass="org.nightlabs.editor2d.ShapeDrawComponent"
             mode="gray"
-            name="%renderMode.gray.name"
-            renderer="org.nightlabs.editor2d.render.ShapeGrayscaleRenderer">
+            name="%renderMode.gray.name">
          <renderContext
                renderContext="org.nightlabs.editor2d.render.j2d.J2DShapeGrayscaleRenderer"
                renderContextType="Java2D"/>
@@ -68,8 +63,7 @@
             description="%renderMode.blackwhite.shape.description"
             drawComponentClass="org.nightlabs.editor2d.ShapeDrawComponent"
             mode="blackwhite"
-            name="%renderMode.blackwhite.name"
-            renderer="org.nightlabs.editor2d.render.ShapeBlackWhiteRenderer">
+            name="%renderMode.blackwhite.name">
          <renderContext
                renderContext="org.nightlabs.editor2d.render.j2d.J2DShapeBlackWhiteRenderer"
                renderContextType="Java2D"/>
