@@ -105,7 +105,7 @@ extends Dialog
 				timeStyle = timeStyle | SWT.LONG;
 			
 			new Label(timeComp, SWT.NONE).setText(Messages.getString("CalendarDateTimeEditLookupDialog.label.time")); //$NON-NLS-1$
-			timeDateTime = new DateTime(timeComp, timeStyle);
+			timeDateTime = new DateTime(timeComp, timeStyle | SWT.BORDER);
 			timeDateTime.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			DateTimeUtil.setDate(date, timeDateTime);	
 		}
@@ -115,7 +115,7 @@ extends Dialog
 	}
 		
 	private void createDateDateTime(Composite parent) {
-		dateDateTime = new DateTime(parent, SWT.DATE);
+		dateDateTime = new DateTime(parent, SWT.DATE | SWT.BORDER);
 		dateDateTime.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		DateTimeUtil.setDate(date, calendarDateTime);
 		dateDateTime.addSelectionListener(new SelectionAdapter(){
