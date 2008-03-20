@@ -356,4 +356,13 @@ public class DateTimeEdit extends XComposite
 		active.removeSelectionListener(listener);
 	}
 	
+	public void notifyActionChangeListener()
+	{
+		final Event event = new Event();
+		event.item = active;
+		event.display = active.getDisplay();
+		event.type = SWT.Selection;
+		event.widget = active;
+		active.notifyListeners(SWT.Selection, event);
+	}
 }

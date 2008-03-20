@@ -638,7 +638,7 @@ implements ISelectionProvider
 		// StructuredSelection even so it is null! And we work around the problem the the iterator 
 		// loop is skipped setSelection(ISelection), hence we can deselect all by passing null to this
 		// method. (if the underlying widget does support it -- XCombo does so)
-		IStructuredSelection sel = new StructuredSelection( Collections.singleton(element) );
+		IStructuredSelection sel = new StructuredSelection( Collections.singletonList(element) );
 		
 		setSelection(sel);
 	}
