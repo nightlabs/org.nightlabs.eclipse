@@ -75,6 +75,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.nightlabs.base.ui.composite.ChildStatusController;
 import org.nightlabs.base.ui.composite.XComposite;
+import org.nightlabs.base.ui.form.AbstractBaseFormPage;
 import org.nightlabs.base.ui.layout.WeightedTableLayout;
 import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.util.IOUtil;
@@ -705,8 +706,7 @@ public class RCPUtil
 		 */
 		public WorkaroundTableLayout(List<ColumnLayoutData> originalData)
 		{
-		// TODO: Removed assert as this ocuured sometimes, check why
-//			assert originalData != null && !originalData.isEmpty();
+			assert originalData != null;
 			this.originalData = originalData;
 			this.pixelData = new ArrayList<ColumnPixelData>(originalData.size());
 			for (int i=0; i < originalData.size(); i++)
@@ -747,7 +747,9 @@ public class RCPUtil
 	 * 
 	 * @param parent The parent to replace layouts for.
 	 * @param doLayout Whether the tables should be re-layouted.
+	 * @deprecated this shouldn't be needed anymore see {@link AbstractBaseFormPage}.
 	 */
+	@Deprecated
 	public static void workaroundFormPageTableLayouts(Control parent, boolean doLayout) {
 		if (parent instanceof Table) {
 			workaroundFormTableLayout((Table) parent, doLayout);
@@ -765,7 +767,9 @@ public class RCPUtil
 	 * <code>doLayout = false</code>.
 	 * 
 	 * @param table The table to layout that has already a TableLayout set.
+	 * @deprecated this shouldn't be needed anymore see {@link AbstractBaseFormPage}.
 	 */
+	@Deprecated
 	public static void workaroundFormTableLayout(final Table table)
 	{
 		workaroundFormTableLayout(table, false);
@@ -777,7 +781,9 @@ public class RCPUtil
 	 * 
 	 * @param table The table to layout that has already a TableLayout set.
 	 * @param layoutData The layout data to apply to the table.
+	 * @deprecated this shouldn't be needed anymore see {@link AbstractBaseFormPage}.
 	 */
+	@Deprecated
 	public static void workaroundFormTableLayout(final Table table, final boolean doLayout) {
 		// TODO: WORKAROUND: FIXME: XXX: This is a workaround for wrong size calculation within a form
 		if (

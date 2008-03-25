@@ -415,15 +415,7 @@ public abstract class EntityEditorPageWithProgress extends AbstractBaseFormPage 
 		
 		addSections(pageWrapper.getBody());
 		registerToDirtyStateProxies();
-		configureInitialStack();
-		
-		// TODO: WORKAROUND: FIXME: XXX: This is a workaround for wrong size calculation within a form
-		RCPUtil.workaroundFormPageTableLayouts(pageWrapper.getBody(), false);
-		Display.getDefault().asyncExec(new Runnable() {
-			public void run() {
-				RCPUtil.workaroundFormPageTableLayouts(pageWrapper.getBody(), true);
-			}
-		});
+		configureInitialStack();		
 	}
 
 	/**
