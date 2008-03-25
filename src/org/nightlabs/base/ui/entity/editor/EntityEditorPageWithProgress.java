@@ -47,6 +47,7 @@ import org.nightlabs.base.ui.composite.FadeableComposite;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.editor.IFormPartDirtyStateProxy;
 import org.nightlabs.base.ui.editor.IFormPartDirtyStateProxyListener;
+import org.nightlabs.base.ui.form.AbstractBaseFormPage;
 import org.nightlabs.base.ui.progress.CompoundProgressMonitor;
 import org.nightlabs.base.ui.progress.SaveProgressMonitorPart;
 import org.nightlabs.base.ui.resource.Messages;
@@ -89,7 +90,7 @@ import org.nightlabs.base.ui.util.RCPUtil;
  *
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  */
-public abstract class EntityEditorPageWithProgress extends FormPage implements Fadeable
+public abstract class EntityEditorPageWithProgress extends AbstractBaseFormPage implements Fadeable
 {
 	/**
 	 * Wrapper that holds the stack layout.
@@ -248,7 +249,6 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 	@Override
 	protected void createFormContent(IManagedForm managedForm)
 	{
-		super.createFormContent(managedForm);
 		ScrolledForm form = managedForm.getForm();
 		form.setExpandHorizontal(true);
 		form.setExpandVertical(true);
