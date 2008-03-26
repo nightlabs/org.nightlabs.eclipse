@@ -438,7 +438,8 @@ public class I18nTextEditor extends XComposite implements II18nTextEditor
 	private void storeText()
 	{
 		String newText = text.getText();
-		if (!newText.equals(orgText)) {
+		// removed to avoid NullPointerException for work at getI18nText() when String is empty
+//		if (!newText.equals(orgText)) {
 			if (work == null) {
 				if (original == null) {
 					_setI18nText(new I18nTextBuffer(), null);
@@ -452,7 +453,7 @@ public class I18nTextEditor extends XComposite implements II18nTextEditor
 
 			work.setText(textLanguage.getLanguageID(), newText);
 			orgText = newText;
-		}
+//		}
 	}
 
 	/**
