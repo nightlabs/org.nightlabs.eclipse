@@ -51,11 +51,12 @@ extends DrawComponentPropertySource
 		descriptors.add(createNamePD());
 		// Visible
 		descriptors.add(createVisiblePD());
-		
-		// PropertyDescriptors from extension point
-		List<IPropertyDescriptor> extensionPointProperties = getExtensionPointProperties();
-		if (!extensionPointProperties.isEmpty())
-			descriptors.addAll(extensionPointProperties);
+
+		// now done in getDescriptors();
+//		// PropertyDescriptors from extension point
+//		List<IPropertyDescriptor> extensionPointProperties = getExtensionPointProperties();
+//		if (!extensionPointProperties.isEmpty())
+//			descriptors.addAll(extensionPointProperties);
 		
 		return descriptors;
 	}

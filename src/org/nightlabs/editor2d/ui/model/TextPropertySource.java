@@ -49,6 +49,7 @@ extends ShapeDrawComponentPropertySource
 	 * LOG4J logger used by this class
 	 */
 	private static final Logger logger = Logger.getLogger(TextPropertySource.class);
+	public static final String CATEGORY_FONT = Messages.getString("org.nightlabs.editor2d.ui.model.TextPropertySource.category.font");	 //$NON-NLS-1$
 	
 	public TextPropertySource(TextDrawComponent text) {
 		super(text);
@@ -57,8 +58,6 @@ extends ShapeDrawComponentPropertySource
 	protected TextDrawComponent getTextDrawComponent() {
 		return (TextDrawComponent) drawComponent;
 	}
-	
-	public static final String CATEGORY_FONT = Messages.getString("org.nightlabs.editor2d.ui.model.TextPropertySource.category.font");	 //$NON-NLS-1$
 		
 	@Override
 	protected List<IPropertyDescriptor> createPropertyDescriptors()

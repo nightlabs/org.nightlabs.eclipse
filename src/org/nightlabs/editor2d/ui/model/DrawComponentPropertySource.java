@@ -111,8 +111,12 @@ implements IPropertySource
 	
 	protected List<IPropertyDescriptor> descriptors = null;
 	protected List<IPropertyDescriptor> getDescriptors() {
-		if (descriptors == null)
+		if (descriptors == null) {
 			descriptors = new ArrayList<IPropertyDescriptor>();
+			List<IPropertyDescriptor> extensionPointProperties = getExtensionPointProperties();
+			if (!extensionPointProperties.isEmpty())
+				descriptors.addAll(extensionPointProperties);			
+		}
 		return descriptors;
 	}
 		
@@ -141,10 +145,10 @@ implements IPropertySource
 		// Template
 		descriptors.add(createTemplatePD());
 		
-		// PropertyDescriptors from extension point
-		List<IPropertyDescriptor> extensionPointProperties = getExtensionPointProperties();
-		if (!extensionPointProperties.isEmpty())
-			descriptors.addAll(extensionPointProperties);
+//		// PropertyDescriptors from extension point
+//		List<IPropertyDescriptor> extensionPointProperties = getExtensionPointProperties();
+//		if (!extensionPointProperties.isEmpty())
+//			descriptors.addAll(extensionPointProperties);
 		
 		return descriptors;
 	}
