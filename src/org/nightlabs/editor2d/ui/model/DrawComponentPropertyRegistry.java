@@ -59,7 +59,6 @@ extends AbstractEPProcessor
 	}
 	
 	protected DrawComponentPropertyRegistry() {
-		
 	}
 
 	@Override
