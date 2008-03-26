@@ -36,11 +36,6 @@ public class AWTColorLabelProvider
 //implements ILabelProvider
 extends LabelProvider
 {
-  public AWTColorLabelProvider()
-  {
-    super();
-  }
-
   @Override
 	public Image getImage(Object element)
   {
