@@ -70,7 +70,7 @@ extends AbstractEditorAction
 	protected boolean calculateEnabled()
 	{
 		// Changed to Swing way of getting a printer list,
-		// as this system is acutally used for printing.
+		// as this system is actually used for printing.
 		PrintService[] pServices = PrintServiceLookup.lookupPrintServices(null, null);
 		return pServices != null && pServices.length > 0;
 	}
@@ -88,13 +88,13 @@ extends AbstractEditorAction
 		}
 		return (AWTPrinter) printer;
 	}
-		
+
 	public Printable getPrintable(PrintConstant printConstant) {
 		return new EditorPrintable(getDrawComponent(), printConstant);
 	}
-	
+
 	public DrawComponent getDrawComponent() {
 		return getRootDrawComponent();
 	}
-		
+
 }

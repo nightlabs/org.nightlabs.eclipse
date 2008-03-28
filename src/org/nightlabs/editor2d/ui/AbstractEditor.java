@@ -981,7 +981,8 @@ extends J2DGraphicalEditorWithFlyoutPalette
 //		registry.registerAction(action);
 
 		// Print Action
-		action = new EditorPrintAction(this);
+//		action = new EditorPrintAction(this);
+		action = createPrintAction();
 		registry.registerAction(action);
 		getPropertyActions().add(action.getId());
 
@@ -1036,6 +1037,10 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		getSelectionActions().add(action.getId());
 	}
 
+	protected IAction createPrintAction() {
+		return new EditorPrintAction(this);
+	}
+	
 	/**
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditor#createGraphicalViewer(org.eclipse.swt.widgets.Composite)
 	 */

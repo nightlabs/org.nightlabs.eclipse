@@ -75,7 +75,6 @@ extends AbstractEditorPrintAction
 		PrinterJob printJob = awtPrinter.getPrinterJob();
 		printJob.setJobName(getEditor().getTitle());
 
-
 		PageFormat pf = null;
 		if (awtPrinter.getConfiguration() != null) {
 			if (awtPrinter.getConfiguration().getPageFormat() != null)
