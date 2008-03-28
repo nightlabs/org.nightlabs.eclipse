@@ -45,6 +45,13 @@ extends SectionPart
 implements IDirtyStateManager, IFormPartDirtyStateProxy
 {
 	/**
+	 * The default section style consists of a title bar, a twistie and the client of the section 
+	 * is indented.
+	 */
+	public static final int DEFAULT_SECTION_STYLE = ExpandableComposite.TITLE_BAR | 
+		ExpandableComposite.TWISTIE | ExpandableComposite.CLIENT_INDENT;
+	
+	/**
 	 * Create an instance of this section part and add
 	 * it to a managed form.
 	 * @param parent The parent for this section part

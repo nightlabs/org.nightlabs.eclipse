@@ -100,7 +100,7 @@ public abstract class EntityEditorPageWithProgress extends AbstractBaseFormPage 
 	 * Wrapper for the page's real content
 	 */
 //	protected ScrolledForm pageWrapper;
-	protected Form pageWrapper;
+	protected Composite pageWrapper;
 	/**
 	 * Wrapper for the progress monitor
 	 */
@@ -350,7 +350,10 @@ public abstract class EntityEditorPageWithProgress extends AbstractBaseFormPage 
 		layout.marginTop = 0;
 		layout.marginBottom = 0;
 		body.setLayout(layout);
-		body.setLayoutData(new GridData(GridData.FILL_BOTH));
+		GridData gd = new GridData(GridData.FILL_BOTH);
+		gd.heightHint = 1;
+		gd.widthHint = 1;
+		body.setLayoutData(gd);
 	}
 	
 	/**
@@ -408,12 +411,15 @@ public abstract class EntityEditorPageWithProgress extends AbstractBaseFormPage 
 		progressMonitorPart = createProgressMonitorPart(progressWrapper);
 		progressWrapper.adaptToToolkit();
 		
-		pageWrapper = toolkit.createForm(wrapper);
-		configurePageWrapper(pageWrapper.getBody());
+		pageWrapper = new Composite(wrapper, SWT.NONE);
+		
+//		pageWrapper = toolkit.createForm(wrapper);
+		configurePageWrapper(pageWrapper);
 		
 		asyncLoadJob.schedule();
 		
-		addSections(pageWrapper.getBody());
+//		addSections(pageWrapper.getBody());
+		addSections(pageWrapper);
 		registerToDirtyStateProxies();
 		configureInitialStack();		
 	}

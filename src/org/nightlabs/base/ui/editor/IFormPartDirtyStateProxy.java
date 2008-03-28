@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.nightlabs.base.ui.editor;
 
 /**
