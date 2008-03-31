@@ -59,9 +59,7 @@ extends org.eclipse.gef.ui.parts.TreeViewer
 	  treeViewer.setLabelProvider(new DecoratingLabelProvider(new LabelProvider(), decorator));
 		
 		treeViewer.setInput(getRootEditPart());
-//		setControl(tree);
 		setControl(treeViewer.getControl());
-//		return tree;
 	  return treeViewer.getControl();
 	}
 	
