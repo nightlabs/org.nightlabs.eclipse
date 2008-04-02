@@ -270,7 +270,7 @@ extends AbstractTreeEditPart
 	}
 			
 	@SuppressWarnings("restriction")
-	protected void notifyLabelDecorator()
+	public void notifyLabelDecorator()
 	{
 		// TODO: create static instance which can cache the decorator definitions which match, to avoid iterate each time
 		DecoratorManager decoratorManager = (DecoratorManager) PlatformUI.getWorkbench().getDecoratorManager();
