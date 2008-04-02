@@ -54,7 +54,7 @@ extends MessageSectionPart
 	
 	public ToolBarSectionPart(FormToolkit toolkit, Composite parent, int style, String title) {
 		super(toolkit, parent, style, title);
-		toolBar = new ToolBar(getSection(), SWT.NONE);
+		toolBar = new ToolBar(getSection(), SWT.FLAT | SWT.HORIZONTAL);
 		toolBarManager = new ToolBarManager(toolBar);
 		toolBar.setBackground(getSection().getBackground());
 		toolBar.setBackgroundImage(getSection().getBackgroundImage());
