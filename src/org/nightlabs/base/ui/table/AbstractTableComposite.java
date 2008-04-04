@@ -50,10 +50,12 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.nightlabs.base.ui.composite.XComposite;
 
 /**
@@ -83,22 +85,35 @@ extends XComposite
 implements ISelectionProvider
 {
 	/**
-	 * Default set of styles to use when constructing a single-selection viewer with border.
-	 */
-	public static int DEFAULT_STYLE_SINGLE_BORDER = SWT.BORDER | SWT.FULL_SELECTION | SWT.SINGLE;
-
-	/**
 	 * Default set of styles to use when constructing a single-selection viewer without border.
 	 */
-	public static int DEFAULT_STYLE_SINGLE = SWT.FULL_SELECTION | SWT.SINGLE;
+	public static final int DEFAULT_STYLE_SINGLE = SWT.FULL_SELECTION | SWT.SINGLE;
+	
+	/**
+	 * Default set of styles to use when constructing a single-selection viewer with border.
+	 */
+	public static final int DEFAULT_STYLE_SINGLE_BORDER;
 
+	/**
+	 * Default set of styles to use when constructing a multi-selection viewer without border.
+	 */
+	public static final int DEFAULT_STYLE_MULTI = SWT.FULL_SELECTION | SWT.MULTI;
+	
 	/**
 	 * Default set of styles to use when constructing a multi-selection viewer.
 	 * This is used as default value when constructing an {@link AbstractTableComposite} without viewerStyle
 	 */
-	public static int DEFAULT_STYLE_MULTI_BORDER = SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI;
+	public static final int DEFAULT_STYLE_MULTI_BORDER;
 
-	public static int DEFAULT_STYLE_MULTI = SWT.FULL_SELECTION | SWT.MULTI;
+	// initialise default styles with correct borderStyle
+	static
+	{
+		final FormToolkit toolkit = new FormToolkit(Display.getDefault());
+		final int borderStyle = toolkit.getBorderStyle();
+		toolkit.dispose();
+		DEFAULT_STYLE_SINGLE_BORDER = DEFAULT_STYLE_SINGLE | borderStyle;
+		DEFAULT_STYLE_MULTI_BORDER = DEFAULT_STYLE_MULTI | borderStyle;
+	}
 
 	private TableViewer tableViewer;
 	private Table table;
@@ -125,13 +140,19 @@ implements ISelectionProvider
 
 		init();
 		if (initTable)
+		{
 			initTable();
+			
+			// set default minimum size 
+			tgd.minimumWidth = tableViewer.getTable().getColumnCount() * 30;
+			tgd.minimumHeight = 50;
+		}
 	}
 
 	protected void initTable() {
 		createTableColumns(tableViewer, table);
 		setTableProvider(tableViewer);
-
+		
 		if (sortColumns) {
 			for (int i = 0; i < tableViewer.getTable().getColumnCount(); i++) {
 				TableColumn tableColumn = tableViewer.getTable().getColumn(i);
