@@ -9,9 +9,12 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Shell;
+import org.nightlabs.base.ui.util.JFaceUtil;
 
 /**
  * Adapted from http://tom-eclipse-dev.blogspot.com/2007/01/tableviewers-and-nativelooking.html
+ * 
+ * You can also use the Util method of {@link JFaceUtil#getCheckBoxImage(org.eclipse.jface.viewers.StructuredViewer, boolean)}.
  */
 public abstract class EmulatedNativeCheckBoxTableLabelProvider
 extends TableLabelProvider

@@ -50,12 +50,10 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.nightlabs.base.ui.composite.XComposite;
 
 /**
@@ -92,7 +90,7 @@ implements ISelectionProvider
 	/**
 	 * Default set of styles to use when constructing a single-selection viewer with border.
 	 */
-	public static final int DEFAULT_STYLE_SINGLE_BORDER;
+	public static final int DEFAULT_STYLE_SINGLE_BORDER = DEFAULT_STYLE_SINGLE | SWT.BORDER;
 
 	/**
 	 * Default set of styles to use when constructing a multi-selection viewer without border.
@@ -103,17 +101,7 @@ implements ISelectionProvider
 	 * Default set of styles to use when constructing a multi-selection viewer.
 	 * This is used as default value when constructing an {@link AbstractTableComposite} without viewerStyle
 	 */
-	public static final int DEFAULT_STYLE_MULTI_BORDER;
-
-	// initialise default styles with correct borderStyle
-	static
-	{
-		final FormToolkit toolkit = new FormToolkit(Display.getDefault());
-		final int borderStyle = toolkit.getBorderStyle();
-		toolkit.dispose();
-		DEFAULT_STYLE_SINGLE_BORDER = DEFAULT_STYLE_SINGLE | borderStyle;
-		DEFAULT_STYLE_MULTI_BORDER = DEFAULT_STYLE_MULTI | borderStyle;
-	}
+	public static final int DEFAULT_STYLE_MULTI_BORDER = DEFAULT_STYLE_MULTI | SWT.BORDER;
 
 	private TableViewer tableViewer;
 	private Table table;
@@ -126,9 +114,17 @@ implements ISelectionProvider
 		this(parent, style, initTable, DEFAULT_STYLE_MULTI_BORDER | XComposite.getBorderStyle(parent));
 	}
 
-	public AbstractTableComposite(Composite parent, int style, boolean initTable, int viewerStyle) {
+	public AbstractTableComposite(Composite parent, int style, boolean initTable, int viewerStyle)
+	{
 		super(parent, style, LayoutMode.TIGHT_WRAPPER);
 
+		if ((viewerStyle & SWT.BORDER) == SWT.BORDER)
+		{
+			int borderStyle = XComposite.getBorderStyle(parent);
+// remove original SWT.BORDER flag by negating the SWT.BORDER mask and &-ing it with the original
+			viewerStyle &= ~SWT.BORDER;
+			viewerStyle |= borderStyle;
+		}
 		tableViewer = new TableViewer(this, viewerStyle);
 		tableViewer.setUseHashlookup(true);
 		GridData tgd = new GridData(GridData.FILL_BOTH);
