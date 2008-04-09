@@ -111,7 +111,7 @@ implements ISelectionProvider
 	}
 
 	public AbstractTableComposite(Composite parent, int style, boolean initTable) {
-		this(parent, style, initTable, DEFAULT_STYLE_MULTI_BORDER | XComposite.getBorderStyle(parent));
+		this(parent, style, initTable, DEFAULT_STYLE_MULTI_BORDER);
 	}
 
 	public AbstractTableComposite(Composite parent, int style, boolean initTable, int viewerStyle)

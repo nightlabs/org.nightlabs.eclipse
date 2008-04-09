@@ -285,7 +285,7 @@ public class XComposite extends Composite
 		this.setForeground(parent.getForeground());
 		this.setBackground(parent.getBackground());
 //	 force all XComposites to have the same toolkit as the highest one
-		toolkit = XComposite.retrieveToolkit(parent);
+		toolkit = retrieveToolkit(parent);
 
 		setLayout(getLayout(layoutMode, null, cols));
 		setLayoutDataMode(layoutDataMode, this);
@@ -336,10 +336,7 @@ public class XComposite extends Composite
 	
 	public IToolkit getToolkit(boolean createIfNotSet)
 	{
-		if (toolkit != null)
-			return toolkit;
-		
-		if (createIfNotSet)
+		if (toolkit == null && createIfNotSet)
 			toolkit = new NightlabsFormsToolkit(Display.getDefault());
 		
 		return toolkit;
@@ -428,12 +425,16 @@ public class XComposite extends Composite
 		return SWT.BORDER;
 	}
 	
-	public static IToolkit retrieveToolkit(Composite comp) {
+	public static IToolkit retrieveToolkit(Composite comp)
+	{
 		Composite tmp = comp;
-		while( tmp != null ) {
+		while( tmp != null )
+		{
 			if (tmp instanceof XComposite)
 			{
-				return ((XComposite) tmp).toolkit;
+				final XComposite xComp = (XComposite) tmp;
+				if (xComp.toolkit != null)
+					return xComp.toolkit;
 			}
 			else if (tmp instanceof ScrolledForm)
 			{
