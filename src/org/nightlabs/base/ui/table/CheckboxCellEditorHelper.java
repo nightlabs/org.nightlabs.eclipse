@@ -17,7 +17,7 @@ public class CheckboxCellEditorHelper {
 	}
 
 	/**
-	 * To be used by LabelProviders that whant to display a checked/unchecked icon for
+	 * To be used by LabelProviders that want to display a checked/unchecked icon for
 	 * the CheckboxCellEditor that does not have a Control.
 	 * 
 	 * @param cellModifier The ICellModifier for the CellEditor to provide the value
@@ -32,7 +32,7 @@ public class CheckboxCellEditorHelper {
 	/**
 	 * returns an checked checkbox image if value if true and an unchecked checkbox image if false
 	 * 
-	 * @param value the value to get the cooresponding image for
+	 * @param value the value to get the corresponding image for
 	 * @param disabled determines if the image should be disabled or not
 	 * @return an checked checkbox image if value if true and an unchecked checkbox image if false
 	 * 
