@@ -16,7 +16,7 @@ public class JSEditorView extends ViewPart {
 	 */
 	@Override
 	public void createPartControl(Composite parent) {
-		/*JSEditorComposite c = */new JSEditorComposite(getViewSite().getWorkbenchWindow(), parent);
+		new JSEditorComposite(parent);
 	}
 
 //	private void showMessage(String message) {

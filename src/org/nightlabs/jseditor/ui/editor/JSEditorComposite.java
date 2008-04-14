@@ -13,7 +13,6 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.IWorkbenchWindow;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.jseditor.ui.JSEditorPlugin;
 import org.nightlabs.jseditor.ui.editor.colorprovider.JSEditorColorProvider;
@@ -31,12 +30,28 @@ public class JSEditorComposite extends XComposite{
 
 	private Document document;
 
-	public JSEditorComposite(IWorkbenchWindow wPart, Composite parent) {
-		this(wPart, parent, null);
+//	public JSEditorComposite(IWorkbenchWindow wPart, Composite parent) {
+//		this(wPart, parent, null);
+//	}
+//
+//	public JSEditorComposite(IWorkbenchWindow wPart, Composite parent, String title) {
+//		this(wPart, parent, title, SWT.NONE);
+//	}
+//	
+//	public JSEditorComposite(IWorkbenchWindow wPart, Composite parent, String title, int style) {
+//		this(parent, title, style);
+//	}
+
+	public JSEditorComposite(Composite parent) {
+		this(parent, null);
 	}
 
-	public JSEditorComposite(IWorkbenchWindow wPart, Composite parent, String title) {
-		super(parent, SWT.NONE, LayoutMode.TIGHT_WRAPPER);
+	public JSEditorComposite(Composite parent, String title) {
+		this(parent, title, SWT.NONE);
+	}
+		
+	public JSEditorComposite(Composite parent, String title, int style) {
+		super(parent, style, LayoutMode.TIGHT_WRAPPER);
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 1;
 		setLayout(layout);
@@ -98,7 +113,7 @@ public class JSEditorComposite extends XComposite{
 			}
 		} );
 	}
-
+	
 	@Override
 	public void addFocusListener(FocusListener listener)
 	{

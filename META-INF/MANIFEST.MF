@@ -17,8 +17,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui,
  org.eclipse.ui.forms,
- org.eclipse.jface.text,
+ org.eclipse.jface.text;visibility:=reexport,
  org.eclipse.ui.editors,
- org.eclipse.ui.workbench.texteditor,
+ org.eclipse.ui.workbench.texteditor;visibility:=reexport,
  org.nightlabs.base.ui
 Eclipse-LazyStart: true

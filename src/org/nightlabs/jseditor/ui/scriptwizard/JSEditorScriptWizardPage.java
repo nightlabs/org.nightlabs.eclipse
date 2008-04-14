@@ -166,7 +166,7 @@ extends WizardHopPage
 		/******************************
 		 * Source Preview
 		 ******************************/
-		srcText = new JSEditorComposite(RCPUtil.getActiveWorkbenchWindow(), editorGroup);
+		srcText = new JSEditorComposite(editorGroup);
 		if(sourceViewer != null){
 			srcText.getDocument().set(sourceViewer.getTextWidget().getText());
 		}//if
