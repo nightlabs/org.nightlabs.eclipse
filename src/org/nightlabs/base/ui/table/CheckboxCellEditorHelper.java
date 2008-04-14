@@ -6,8 +6,10 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.resource.SharedImages;
+import org.nightlabs.base.ui.util.JFaceUtil;
 
 /**
+ * FIXME: Which of these helpers shall be used? This one of {@link JFaceUtil}? The other one should be deleted. (marius)
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
  */
 public class CheckboxCellEditorHelper {

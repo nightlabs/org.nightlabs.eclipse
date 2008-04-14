@@ -501,6 +501,7 @@ void createPopup(TableItem[] items, int selectionIndex) {
 		}
 		if (selectionIndex != -1) table.setSelection (selectionIndex);
 }
+
 /**
  * Deselects the item at the given zero-relative index in the receiver's
  * table.  If the item at the index was already deselected, it remains
@@ -1180,7 +1181,14 @@ void popupEvent(Event event) {
 			break;
 		case SWT.Deactivate:
 			dropDown (false);
-			shellJustDeactivated = true;
+			
+			// When clicked on the button set the flag indicating that the user wanted the popup to be
+			// closed -> when the button receives the selection event, it won't open the popup again.
+			final Control controlClickedOnTo = getDisplay().getCursorControl(); 
+			if (controlClickedOnTo == arrow)
+			{
+				shellJustDeactivated = true;
+			}
 			break;
 	}
 }
