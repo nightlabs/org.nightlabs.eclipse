@@ -21,11 +21,14 @@ import org.nightlabs.base.ui.composite.XComposite.LayoutMode;
 /**
  * Abstract base class for all form pages. This class does NOT change the behaviour not the handling
  * of the FormPage in any way. It is created to have the possibility of centralised changes for all
- * FormPages.
- * 
+ * FormPages. <br/>
  * It currently implements a fix for 
  * <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=215997#c4">Table resizing problems in
  * FormPages</a>. 
+ * 
+ * <p>This page will only implement a fix for horizontally growing tables, but may be configured via
+ * {@link #includeFixForVerticalScrolling()} to also implement a fix for vertically growing ones.
+ * This will unfortunalely result in no vertical scroll bars at all!</p> 
  * 
  * @author Marius Heinzmann - marius[at]nightlabs[dot]com
  */
@@ -102,10 +105,13 @@ public abstract class AbstractBaseFormPage
 					realBody.setLayout(XComposite.getLayout(LayoutMode.TOTAL_WRAPPER));
 					wrappedBody = new Composite(realBody, SWT.NONE);
 					GridData gd = new GridData(GridData.FILL_BOTH);
-					// FIXME: this is a workaround for growing tables in FromPages.
+					// WORKAROUND: this is a workaround for growing tables in FromPages.
 					// more information about this can be found at: https://bugs.eclipse.org/bugs/show_bug.cgi?id=215997#c4
 					gd.widthHint = 1;
-					gd.heightHint = 1;
+					if (AbstractBaseFormPage.this.includeFixForVerticalScrolling())
+					{
+						gd.heightHint = 1;						
+					}
 					wrappedBody.setLayoutData(gd);
 				}
 				
@@ -129,7 +135,18 @@ public abstract class AbstractBaseFormPage
 			}
 		});
 	}
-	
+
+	/**
+	 * Indicates whether the fix for vertically growing pages should be applied. As a side-effect,
+	 * this fix will prohibit vertical scroll bars and, hence should only be used if really necessary.
+	 * @return <code>true</code> if vertically growing tables shall be prevented (and no vertical
+	 * 	scrollbars shall be shown), <code>false</code> otherwise. 
+	 */
+	protected boolean includeFixForVerticalScrolling()
+	{
+		return false;
+	}
+
 	@Override
 	protected abstract void createFormContent(IManagedForm managedForm);
 	

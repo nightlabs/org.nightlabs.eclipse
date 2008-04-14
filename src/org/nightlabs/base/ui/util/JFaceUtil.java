@@ -6,14 +6,16 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 /**
  * Adapted from http://tom-eclipse-dev.blogspot.com/2007/01/tableviewers-and-nativelooking.html
  * 
- * @author unascribed
+ * @author Tom Schindl & Alexander Ljungberg (siehe link)
  * @author Marius Heinzmann - marius[at]nightlabs[dot]com
  */
 public final class JFaceUtil
@@ -21,26 +23,43 @@ public final class JFaceUtil
 	private static final String CHECKED_KEY = "CHECKED";
 	private static final String UNCHECK_KEY = "UNCHECKED";
 
-	private static Image makeShot(Shell shell, boolean type, Color backround)
+	private static Image makeShot(Control control, boolean type)
 	{
-		Shell s = new Shell(shell, SWT.NO_TRIM);
-		Button b = new Button(s, SWT.CHECK);
-		b.setBackground(backround);
-		b.setSelection(type);
-		Point bsize = b.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-		b.setSize(bsize);
-		b.setLocation(0, 0);
-		s.setSize(bsize);
-		s.open();
+		// Hopefully no platform uses exactly this color because we'll make
+		// it transparent in the image.
+		Color greenScreen = new Color(control.getDisplay(), 222, 223, 224);
 
-		GC gc = new GC(b);
-		Image image = new Image(shell.getDisplay(), bsize.x, bsize.y);
+		Shell shell = new Shell(control.getShell(), SWT.NO_TRIM);
+
+		// otherwise we have a default gray color
+		shell.setBackground(greenScreen);
+
+		Button button = new Button(shell, SWT.CHECK);
+		button.setBackground(greenScreen);
+		button.setSelection(type);
+
+		// otherwise an image is located in a corner
+		button.setLocation(1, 1);
+		Point bsize = button.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+
+		// otherwise an image is stretched by width
+		bsize.x = Math.max(bsize.x - 1, bsize.y - 1);
+		bsize.y = Math.max(bsize.x - 1, bsize.y - 1);
+		button.setSize(bsize);
+		shell.setSize(bsize);
+
+		shell.open();
+		GC gc = new GC(shell);
+		Image image = new Image(control.getDisplay(), bsize.x, bsize.y);
 		gc.copyArea(image, 0, 0);
 		gc.dispose();
+		shell.close();
 
-		s.close();
+		ImageData imageData = image.getImageData();
+		imageData.transparentPixel = imageData.palette.getPixel(greenScreen
+			.getRGB());
 
-		return image;
+		return new Image(control.getDisplay(), imageData);
 	}
 
 	/**
@@ -61,18 +80,16 @@ public final class JFaceUtil
 		if (JFaceResources.getImageRegistry().getDescriptor(CHECKED_KEY) == null)
 		{
 			JFaceResources.getImageRegistry().put(UNCHECK_KEY,
-				makeShot(viewer.getControl().getShell(), false, viewer.getControl().getBackground()));
+				makeShot(viewer.getControl(), false));
 			JFaceResources.getImageRegistry().put(CHECKED_KEY,
-				makeShot(viewer.getControl().getShell(), true, viewer.getControl().getBackground()));
+				makeShot(viewer.getControl(), true));
 		}
 
 		if (checkState)
 		{
 			return JFaceResources.getImageRegistry().getDescriptor(CHECKED_KEY).createImage();
 		}
-		else
-		{
-			return JFaceResources.getImageRegistry().getDescriptor(UNCHECK_KEY).createImage();
-		}
+
+		return JFaceResources.getImageRegistry().getDescriptor(UNCHECK_KEY).createImage();
 	}
 }

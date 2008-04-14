@@ -90,7 +90,7 @@ import org.nightlabs.base.ui.util.RCPUtil;
  *
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  */
-public abstract class EntityEditorPageWithProgress extends AbstractBaseFormPage implements Fadeable
+public abstract class EntityEditorPageWithProgress extends FormPage implements Fadeable
 {
 	/**
 	 * Wrapper that holds the stack layout.
@@ -255,7 +255,6 @@ public abstract class EntityEditorPageWithProgress extends AbstractBaseFormPage 
 		IToolkit toolkit = (IToolkit) getEditor().getToolkit(); // CommitableFormEditor uses NightlabsFormToolkit
 		String formText = getPageFormTitle();
 		form.setText(formText == null ? "" : formText);  //$NON-NLS-1$
-		form.setLayoutData(new GridData(GridData.FILL_BOTH));
 		fillBody(managedForm, toolkit);
 	}
 
@@ -317,10 +316,10 @@ public abstract class EntityEditorPageWithProgress extends AbstractBaseFormPage 
 	 * The default implementation will assign a {@link GridLayout}
 	 * with moderate indenting.
 	 * 
-	 * @param parent The Composite wrapping the page's
+	 * @param pageWrapper The Composite wrapping the page's
 	 * real content.
 	 */
-	protected void configurePageWrapper(Composite parent) {
+	protected void configurePageWrapper(Composite pageWrapper) {
 		GridLayout layout = new GridLayout();
 		layout.marginBottom = 10;
 		layout.marginTop = 5;
@@ -328,8 +327,7 @@ public abstract class EntityEditorPageWithProgress extends AbstractBaseFormPage 
 		layout.marginRight = 5;
 		layout.numColumns = 1;
 		layout.horizontalSpacing = 10;
-		parent.setLayout(layout);
-//		parent.setLayoutData(new GridData(GridData.FILL_BOTH | SWT.CENTER));
+		pageWrapper.setLayout(layout);
 	}
 	
 	/**
@@ -350,10 +348,6 @@ public abstract class EntityEditorPageWithProgress extends AbstractBaseFormPage 
 		layout.marginTop = 0;
 		layout.marginBottom = 0;
 		body.setLayout(layout);
-		GridData gd = new GridData(GridData.FILL_BOTH);
-		gd.heightHint = 1;
-		gd.widthHint = 1;
-		body.setLayoutData(gd);
 	}
 	
 	/**
@@ -406,6 +400,16 @@ public abstract class EntityEditorPageWithProgress extends AbstractBaseFormPage 
 		stackLayout.marginWidth = 0;
 		wrapper.setLayout(stackLayout);
 		
+		// WORKAROUND: this is a workaround for growing tables in FromPages.
+		// more information about this can be found at: https://bugs.eclipse.org/bugs/show_bug.cgi?id=215997#c4
+		GridData gd = new GridData(GridData.FILL_BOTH);
+		gd.widthHint = 1;
+		if (includeFixForVerticalScrolling())
+		{
+			gd.heightHint = 1;
+		}
+		wrapper.setLayoutData(gd);
+		
 		progressWrapper = new XComposite(wrapper, SWT.NONE);
 		configureProgressWrapper(progressWrapper);
 		progressMonitorPart = createProgressMonitorPart(progressWrapper);
@@ -413,15 +417,24 @@ public abstract class EntityEditorPageWithProgress extends AbstractBaseFormPage 
 		
 		pageWrapper = new Composite(wrapper, SWT.NONE);
 		
-//		pageWrapper = toolkit.createForm(wrapper);
 		configurePageWrapper(pageWrapper);
 		
 		asyncLoadJob.schedule();
 		
-//		addSections(pageWrapper.getBody());
 		addSections(pageWrapper);
 		registerToDirtyStateProxies();
 		configureInitialStack();		
+	}
+
+	/**
+	 * Indicates whether the fix for vertically growing pages should be applied. As a side-effect,
+	 * this fix will prohibit vertical scroll bars and, hence should only be used if really necessary.
+	 * @return <code>true</code> if vertically growing tables shall be prevented (and no vertical
+	 * 	scrollbars shall be shown), <code>false</code> otherwise. 
+	 */
+	protected boolean includeFixForVerticalScrolling()
+	{
+		return false;
 	}
 
 	/**
