@@ -121,7 +121,7 @@ public class CountdownMessageDialog extends MessageDialog
 
 	protected void showTimeHint(int timeLeft)
 	{
-		defaultButton.setText(String.format(Messages.getString("org.nightlabs.base.ui.dialog.CountdownMessageDialogdefaultButton.text"), originalButtonText, timeLeft)); //$NON-NLS-1$
+		defaultButton.setText(String.format(Messages.getString("org.nightlabs.eclipse.ui.dialog.CountdownMessageDialogdefaultButton.text"), originalButtonText, timeLeft)); //$NON-NLS-1$
 	}
 	
 	/* (non-Javadoc)

@@ -29,11 +29,12 @@ package org.nightlabs.eclipse.ui.dialog;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.swt.widgets.Shell;
-import org.nightlabs.config.Config;
-import org.nightlabs.eclipse.ui.dialog.config.DialogCf;
-import org.nightlabs.eclipse.ui.dialog.config.DialogCfMod;
 import org.nightlabs.eclipse.ui.dialog.resource.Messages;
 
+/**
+ * @deprecated Is this in use? Is it useful?
+ */
+@Deprecated
 public abstract class AbstractInputDialog
 extends InputDialog
 {
@@ -54,7 +55,7 @@ extends InputDialog
     public String isValid(String input)
     {
       if(input.trim().equals("")) //$NON-NLS-1$
-        return Messages.getString("org.nightlabs.base.ui.dialog.AbstractInputDialog.inputValidator.emptyString"); //$NON-NLS-1$
+        return Messages.getString("org.nightlabs.eclipse.ui.dialog.AbstractInputDialog.inputValidator.emptyString"); //$NON-NLS-1$
       
       return null;
     }
@@ -66,38 +67,4 @@ extends InputDialog
 
 	@Override
 	protected abstract void okPressed();
-
-	protected DialogCfMod getDialogCfMod()
-	{
-		return Config.sharedInstance().createConfigModule(DialogCfMod.class);
-	}
-
-	protected String getDialogIdentifier()
-	{
-		return this.getClass().getName();
-	}
-
-	@Override
-	public void create()
-	{
-		super.create();
-
-		DialogCf cf = getDialogCfMod().getDialogCf(getDialogIdentifier());
-		if (cf != null) {
-			getShell().setLocation(cf.getX(), cf.getY());
-			getShell().setSize(cf.getWidth(), cf.getHeight());
-		}
-	}
-
-	@Override
-	public boolean close()
-	{
-		getDialogCfMod().createDialogCf(
-				getDialogIdentifier(),
-				getShell().getLocation().x,
-				getShell().getLocation().y,
-				getShell().getSize().x,
-				getShell().getSize().y);
-		return super.close();
-	}
 }

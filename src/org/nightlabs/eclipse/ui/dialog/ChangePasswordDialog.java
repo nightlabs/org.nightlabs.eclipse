@@ -1,22 +1,22 @@
 package org.nightlabs.eclipse.ui.dialog;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.IInputValidator;
+import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.nightlabs.eclipse.ui.composite.XComposite;
-import org.nightlabs.eclipse.ui.composite.XComposite.LayoutDataMode;
-import org.nightlabs.eclipse.ui.composite.XComposite.LayoutMode;
 import org.nightlabs.eclipse.ui.dialog.resource.Messages;
 
 /**
@@ -24,13 +24,13 @@ import org.nightlabs.eclipse.ui.dialog.resource.Messages;
  * Additionally, it shows a bar that indicates the strength of the entered password.
  * 
  * @author Tobias Langner <!-- tobias[dot]langner[at]nightlabs[dot]de -->
+ * @author Marc Klinger - marc[at]nightlabs[dot]de
  */
-public class ChangePasswordDialog extends CenteredDialog
+public class ChangePasswordDialog extends TitleAreaDialog
 {
 	private Text newPasswordText;
 	private Text confirmPasswordText;
 	private ProgressBar passwordStrengthBar;
-	private Label messageLabel;
 	private IInputValidator passwordValidator;
 	private IPasswordMeter passwordMeter;
 	private String confirmedPassword;
@@ -56,20 +56,20 @@ public class ChangePasswordDialog extends CenteredDialog
 				passwordStrengthBar.setSelection(passwordMetric);
 			}
 			
-			boolean okButtonEnabled = true;
 			String message = ""; //$NON-NLS-1$
-			
 			String validationMessage = passwordValidator.isValid(newPasswordText.getText());
-			if (validationMessage != null) {
-				okButtonEnabled = false;
+			if (validationMessage != null)
 				message = validationMessage;
-			} else if (!newPasswordText.getText().equals(confirmPasswordText.getText())) {
-				okButtonEnabled = false;
-				message = Messages.getString("org.nightlabs.base.ui.dialog.ChangePasswordDialog.message"); //$NON-NLS-1$
-			}
+			else if (!newPasswordText.getText().equals(confirmPasswordText.getText()))
+				message = Messages.getString("org.nightlabs.eclipse.ui.dialog.ChangePasswordDialog.message"); //$NON-NLS-1$
 			
-			getButton(IDialogConstants.OK_ID).setEnabled(okButtonEnabled);
-			messageLabel.setText(message);
+			if(!message.isEmpty()) {
+				ChangePasswordDialog.this.setMessage(message, IMessageProvider.ERROR);
+				getButton(IDialogConstants.OK_ID).setEnabled(false);
+			} else {
+				ChangePasswordDialog.this.setMessage("", IMessageProvider.NONE); //$NON-NLS-1$
+				getButton(IDialogConstants.OK_ID).setEnabled(true);
+			}
 		}
 	};
 	
@@ -141,6 +141,7 @@ public class ChangePasswordDialog extends CenteredDialog
 	
 	public ChangePasswordDialog(Shell parentShell, IInputValidator passwordValidator, IPasswordMeter passwordMeter) {
 		super(parentShell);
+		setShellStyle(getShellStyle() | SWT.RESIZE);
 		
 		if (passwordMeter == null)
 			this.passwordMeter = defaultPasswordMeter;
@@ -152,51 +153,43 @@ public class ChangePasswordDialog extends CenteredDialog
 		this.passwordValidator = passwordValidator;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
+	 */
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
-		newShell.setText(Messages.getString("org.nightlabs.base.ui.dialog.ChangePasswordDialog.shell.text")); //$NON-NLS-1$
+		newShell.setText(Messages.getString("org.nightlabs.eclipse.ui.dialog.ChangePasswordDialog.shell.text")); //$NON-NLS-1$
 	}
 	
-	@Override
-	protected Point getInitialSize() {
-		return new Point(350, 220);
-	}
-	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.dialogs.TitleAreaDialog#createDialogArea(org.eclipse.swt.widgets.Composite)
+	 */
 	@Override
 	protected Control createDialogArea(Composite parent) {
-		XComposite container = new XComposite(parent, SWT.NONE, LayoutMode.ORDINARY_WRAPPER, LayoutDataMode.GRID_DATA, 2);
+		setTitle(Messages.getString("org.nightlabs.eclipse.ui.dialog.ChangePasswordDialog.label.newPassword"));
 		
-		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
-		gridData.horizontalSpan = 2;
-		Label label = new Label(container, SWT.NONE);
-		label.setText(Messages.getString("org.nightlabs.base.ui.dialog.ChangePasswordDialog.label.newPassword")); //$NON-NLS-1$
-		label.setLayoutData(gridData);
+		Composite container = new Composite(parent, SWT.NONE);
+		container.setLayout(new GridLayout(2, false));
+		container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
+		Label label;
 		label = new Label(container, SWT.NONE);
-		label.setText(Messages.getString("org.nightlabs.base.ui.dialog.ChangePasswordDialog.label.password")); //$NON-NLS-1$
-		newPasswordText = new Text(container, SWT.BORDER);
-		newPasswordText.setEchoChar('*');
-		XComposite.setLayoutDataMode(LayoutDataMode.GRID_DATA_HORIZONTAL, newPasswordText);
+		label.setText(Messages.getString("org.nightlabs.eclipse.ui.dialog.ChangePasswordDialog.label.password")); //$NON-NLS-1$
+		newPasswordText = new Text(container, SWT.BORDER | SWT.PASSWORD);
+		newPasswordText.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
 		
 		label = new Label(container, SWT.NONE);
-		label.setText(Messages.getString("org.nightlabs.base.ui.dialog.ChangePasswordDialog.label.confirmation")); //$NON-NLS-1$
-		confirmPasswordText = new Text(container, SWT.BORDER);
-		confirmPasswordText.setEchoChar('*');
-		XComposite.setLayoutDataMode(LayoutDataMode.GRID_DATA_HORIZONTAL, confirmPasswordText);
+		label.setText(Messages.getString("org.nightlabs.eclipse.ui.dialog.ChangePasswordDialog.label.confirmation")); //$NON-NLS-1$
+		confirmPasswordText = new Text(container, SWT.BORDER | SWT.PASSWORD);
+		confirmPasswordText.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
 		
 		label = new Label(container, SWT.NONE);
-		label.setText(Messages.getString("org.nightlabs.base.ui.dialog.ChangePasswordDialog.label.passwordStrength")); //$NON-NLS-1$
+		label.setText(Messages.getString("org.nightlabs.eclipse.ui.dialog.ChangePasswordDialog.label.passwordStrength")); //$NON-NLS-1$
 		passwordStrengthBar = new ProgressBar(container, SWT.NONE);
 		passwordStrengthBar.setMinimum(0);
 		passwordStrengthBar.setMaximum(passwordMeter.getMaxPasswordMetric());
-		XComposite.setLayoutDataMode(LayoutDataMode.GRID_DATA_HORIZONTAL, passwordStrengthBar);
-		
-		messageLabel = new Label(container, SWT.NONE);
-		gridData = new GridData(GridData.FILL_HORIZONTAL);
-		gridData.horizontalSpan = 2;
-		gridData.verticalIndent = 10;
-		messageLabel.setLayoutData(gridData);
+		passwordStrengthBar.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
 		
 		newPasswordText.addModifyListener(passwordModifyListener);
 		confirmPasswordText.addModifyListener(passwordModifyListener);
@@ -214,6 +207,9 @@ public class ChangePasswordDialog extends CenteredDialog
 		return occ;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.dialogs.Dialog#okPressed()
+	 */
 	@Override
 	protected void okPressed() {
 		if (newPasswordText.getText().equals(confirmPasswordText.getText()) && passwordValidator.isValid(newPasswordText.getText()) == null)
@@ -224,5 +220,19 @@ public class ChangePasswordDialog extends CenteredDialog
 	
 	public String getConfirmedPassword() {
 		return confirmedPassword;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.dialogs.Dialog#getDialogBoundsSettings()
+	 */
+	@Override
+	protected IDialogSettings getDialogBoundsSettings()
+	{
+		String sectionName = getClass().getName()+".dialogBounds";
+		IDialogSettings dialogSettings = DialogPlugin.getDefault().getDialogSettings();
+		IDialogSettings boundsSettings = dialogSettings.getSection(sectionName);
+		if(boundsSettings == null)
+			boundsSettings = dialogSettings.addNewSection(sectionName);
+		return boundsSettings;
 	}
 }

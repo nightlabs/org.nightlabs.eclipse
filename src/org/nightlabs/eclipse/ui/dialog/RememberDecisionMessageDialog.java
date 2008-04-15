@@ -74,7 +74,7 @@ public class RememberDecisionMessageDialog extends MessageDialog
 	protected Control createCustomArea(Composite parent)
 	{
 		final Button rememberDecisionButton = new Button(parent, SWT.CHECK);
-		rememberDecisionButton.setText(Messages.getString("org.nightlabs.base.ui.dialog.RememberDecisionMessageDialog.button.rememberDecision.text")); //$NON-NLS-1$
+		rememberDecisionButton.setText(Messages.getString("org.nightlabs.eclipse.ui.dialog.RememberDecisionMessageDialog.button.rememberDecision.text")); //$NON-NLS-1$
 		rememberDecisionButton.setSelection(rememberDecision);
 		rememberDecisionButton.addSelectionListener(new SelectionListener() {
 			@Override
@@ -91,53 +91,53 @@ public class RememberDecisionMessageDialog extends MessageDialog
 		return rememberDecisionButton;
 	}
 	
-  /**
-   * Convenience method to open a simple confirm (OK/Cancel) dialog.
-   * 
-   * @param parent
-   *            the parent shell of the dialog, or <code>null</code> if none
-   * @param title
-   *            the dialog's title, or <code>null</code> if none
-   * @param message
-   *            the message
-   * @return <code>true</code> if the user presses the OK button,
-   *         <code>false</code> otherwise
-   */
-  public static boolean openConfirm(Shell parent, String title, String message) {
-  	RememberDecisionMessageDialog dialog = new RememberDecisionMessageDialog(parent, title, null, // accept
-              // the
-              // default
-              // window
-              // icon
-              message, QUESTION, new String[] { IDialogConstants.OK_LABEL,
-                      IDialogConstants.CANCEL_LABEL }, 0); // OK is the
-      // default
-      return dialog.open() == 0;
-  }
-
-  /**
-   * Convenience method to open a simple Yes/No question dialog.
-   * 
-   * @param parent
-   *            the parent shell of the dialog, or <code>null</code> if none
-   * @param title
-   *            the dialog's title, or <code>null</code> if none
-   * @param message
-   *            the message
-   * @return <code>true</code> if the user presses the OK button,
-   *         <code>false</code> otherwise
-   */
-  public static boolean openQuestion(Shell parent, String title,
-          String message) {
-  	RememberDecisionMessageDialog dialog = new RememberDecisionMessageDialog(parent, title, null, // accept
-              // the
-              // default
-              // window
-              // icon
-              message, QUESTION, new String[] { IDialogConstants.YES_LABEL,
-                      IDialogConstants.NO_LABEL }, 0); // yes is the default
-      return dialog.open() == 0;
-  }
+//  /**
+//   * Convenience method to open a simple confirm (OK/Cancel) dialog.
+//   * 
+//   * @param parent
+//   *            the parent shell of the dialog, or <code>null</code> if none
+//   * @param title
+//   *            the dialog's title, or <code>null</code> if none
+//   * @param message
+//   *            the message
+//   * @return <code>true</code> if the user presses the OK button,
+//   *         <code>false</code> otherwise
+//   */
+//  public static boolean openConfirm(Shell parent, String title, String message) {
+//  	RememberDecisionMessageDialog dialog = new RememberDecisionMessageDialog(parent, title, null, // accept
+//              // the
+//              // default
+//              // window
+//              // icon
+//              message, QUESTION, new String[] { IDialogConstants.OK_LABEL,
+//                      IDialogConstants.CANCEL_LABEL }, 0); // OK is the
+//      // default
+//      return dialog.open() == 0;
+//  }
+//
+//  /**
+//   * Convenience method to open a simple Yes/No question dialog.
+//   * 
+//   * @param parent
+//   *            the parent shell of the dialog, or <code>null</code> if none
+//   * @param title
+//   *            the dialog's title, or <code>null</code> if none
+//   * @param message
+//   *            the message
+//   * @return <code>true</code> if the user presses the OK button,
+//   *         <code>false</code> otherwise
+//   */
+//  public static boolean openQuestion(Shell parent, String title,
+//          String message) {
+//  	RememberDecisionMessageDialog dialog = new RememberDecisionMessageDialog(parent, title, null, // accept
+//              // the
+//              // default
+//              // window
+//              // icon
+//              message, QUESTION, new String[] { IDialogConstants.YES_LABEL,
+//                      IDialogConstants.NO_LABEL }, 0); // yes is the default
+//      return dialog.open() == 0;
+//  }
   
   
   

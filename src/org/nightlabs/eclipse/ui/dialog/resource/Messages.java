@@ -5,7 +5,7 @@ import java.util.ResourceBundle;
 
 public class Messages
 {
-	private static final String BUNDLE_NAME = "org.nightlabs.base.ui.resource.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.nightlabs.eclipse.ui.dialog.resource.messages"; //$NON-NLS-1$
 
 	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle
 			.getBundle(BUNDLE_NAME);
@@ -19,6 +19,7 @@ public class Messages
 		try {
 			return RESOURCE_BUNDLE.getString(key);
 		} catch (MissingResourceException e) {
+			e.printStackTrace();
 			return '!' + key + '!';
 		}
 	}

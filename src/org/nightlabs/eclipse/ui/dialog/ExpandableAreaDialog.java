@@ -27,6 +27,8 @@
 package org.nightlabs.eclipse.ui.dialog;
 
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
@@ -38,100 +40,82 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
 import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
-import org.nightlabs.config.Config;
-import org.nightlabs.eclipse.ui.composite.ExpandableWrapperComposite;
-import org.nightlabs.eclipse.ui.dialog.config.DialogCf;
-import org.nightlabs.eclipse.ui.dialog.config.DialogCfMod;
 
 /**
  * Defines a Dialog with a "twistie" for toggling the expansion-state of a Composite.
  * This class is ment to be subclassed. You have to
  * define a constructor and override {@link #createStaticArea(Composite)} as well as
  * {@link #createExpandableArea(Composite)} to have your own Composites inside the Dialog.
- * <br/>
- * <br/>
+ * <p>
  * Here is an example:
  * <pre>
  * public class MyExpandableDialog extends ExpandableAreaDialog{
- * 		public MyExpandableDialog(Shell parent)
- *		{
- *			super(parent);
- *			setDialogTitle("My Dialog's Title");
- *			setExpandText("Expand Me");
- *		}
+ *   public MyExpandableDialog(Shell parent)
+ *   {
+ *     super(parent);
+ *		 setDialogTitle("My Dialog's Title");
+ *		 setExpandText("Expand Me");
+ *   }
  *
- *		protected Composite createStaticArea(Composite parent)
- *		{
- *			return new Composite(parent,SWT.NONE);
- *		}
- *
- *		protected Composite createExpandableArea(Composite parent)
- *		{
- *			return new Composite(parent,SWT.NONE);
- *		}
+ *   protected Composite createStaticArea(Composite parent)
+ *   {
+ *     Composite staticArea = super.createStaticArea(parent);
+ *     new Label(staticArea, SWT.NONE).setText("The static area");
+ *     return staticArea;
+ *   }
+ *			
+ *   protected Composite createExpandableArea(Composite parent)
+ *   {
+ *     Composite expandableArea = super.createExpandableArea(parent);
+ *     new Label(expandableArea, SWT.NONE).setText("The expandable area");
+ *     return expandableArea;
+ *   }
  * }
  * </pre>
+ * </p>
+ * <p>
  * You can still override methods from {@link org.eclipse.jface.dialogs.Dialog} in order to provide
  * your own ButtonBar. Please do not override createDialogArea or at least return super(parent).
+ * </p>
+ * <p>
+ * If you provide an implementation of {@link #getDialogBoundsSettings()}, the expansion state
+ * of the twistie will be saved in the dialog settings.
+ * </p>
  * 
  * @author Alexander Bieber
+ * @author Marc Klinger - marc[at]nightlabs[dot]de
  * @see org.eclipse.ui.forms.widgets.ExpandableComposite
  * @see org.eclipse.jface.dialogs.Dialog
- *
  */
-public class ExpandableAreaDialog extends Dialog {
+public abstract class ExpandableAreaDialog extends Dialog 
+{
+	/**
+	 * The dialog settings key name for the expansion state of the twistie.
+	 */
+	private static final String DIALOG_TWISTIE_EXPANSION_STATE = "DIALOG_TWISTIE_EXPANSION_STATE"; //$NON-NLS-1$
 	
+	private ExpandableAreaComp dialogAreaComp = null;
+	private Composite staticArea = null;
+	private Composite expandableArea = null;
 	
+	/**
+	 * Create a new ExpandableAreaDialog instance.
+	 * @param parent The parent shell
+	 */
 	public ExpandableAreaDialog(Shell parent)
 	{
-		this(parent,"","",SWT.RESIZE); //$NON-NLS-1$ //$NON-NLS-2$
-	}
-
-	public ExpandableAreaDialog(Shell parent, int style)
-	{
-		this(parent,"","",style); //$NON-NLS-1$ //$NON-NLS-2$
-	}
-
-	public ExpandableAreaDialog(Shell parent, String title)
-	{
-		this(parent,title,"",SWT.RESIZE); //$NON-NLS-1$
-	}
-
-	public ExpandableAreaDialog(Shell parent, String title, String expandText)
-	{
-		this(parent,title,expandText,SWT.RESIZE);
-	}
-	
-	
-	public ExpandableAreaDialog(Shell parent, String title, String expandText, int style)
-	{
 		super(parent);
-		setShellStyle(getShellStyle()|style);
-		this.dialogTitle = title;
-		this.expandText = expandText;
 	}
 	
-	private String dialogTitle = ""; //$NON-NLS-1$
 	private String expandText = ""; //$NON-NLS-1$
 	
 	/**
-	 * @return Returns the dialogTitle.
-	 */
-	public String getDialogTitle() {
-		return dialogTitle;
-	}
-	/**
-	 * @param dialogTitle The dialogTitle to set.
-	 */
-	public void setDialogTitle(String dialogTitle) {
-		this.dialogTitle = dialogTitle;
-	}
-	/**
-	 * @return Returns the expandText.
+	 * @return the expandText.
 	 */
 	public String getExpandText() {
 		return expandText;
 	}
+	
 	/**
 	 * @param expandText The expandText to set.
 	 */
@@ -139,43 +123,51 @@ public class ExpandableAreaDialog extends Dialog {
 		this.expandText = expandText;
 	}
 	
-	@Override
-	protected void configureShell(Shell shell) {
-		super.configureShell(shell);
-		shell.setText(dialogTitle);
-	}
-	
-	
-	private ExpandableAreaComp dialogAreaComp = null;
 	/** Do not override this method.
 	 * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		dialogAreaComp = new ExpandableAreaComp();
-		return dialogAreaComp.createComposite(parent,this,expandText);
+		return dialogAreaComp.createComposite(parent, this, expandText);
 	}
 	
-	
-	
-	private Composite staticArea = null;
 	/**
 	 * Override this method to return the Composite you want to be visible in the
 	 * upper area of the Dialog.
 	 * @param parent Add your Composite as child of this
 	 */
 	protected Composite createStaticArea(Composite parent){
-		return new Composite(parent,SWT.NONE);
+		// create a composite with no margins and standard spacing
+		Composite composite = new Composite(parent, SWT.NONE);
+		GridLayout layout = new GridLayout();
+		layout.marginHeight = 0;
+		layout.marginWidth = 0;
+		layout.verticalSpacing = convertVerticalDLUsToPixels(IDialogConstants.VERTICAL_SPACING);
+		layout.horizontalSpacing = convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_SPACING);
+		composite.setLayout(layout);
+		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
+		applyDialogFont(composite);
+		return composite;
 	}
 
-	private Composite expandableArea = null;
 	/**
 	 * Override this method to return the Composite you want to be the client of the
 	 * ExpandableComposite.
 	 * @param parent Add your Composite as child of this
 	 */
 	protected Composite createExpandableArea(Composite parent){
-		return new Composite(parent,SWT.NONE);
+		// create a composite with no margins and standard spacing
+		Composite composite = new Composite(parent, SWT.NONE);
+		GridLayout layout = new GridLayout();
+		layout.marginHeight = 0;
+		layout.marginWidth = 0;
+		layout.verticalSpacing = convertVerticalDLUsToPixels(IDialogConstants.VERTICAL_SPACING);
+		layout.horizontalSpacing = convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_SPACING);
+		composite.setLayout(layout);
+		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
+		applyDialogFont(composite);
+		return composite;
 	}
 	
 	
@@ -221,13 +213,6 @@ public class ExpandableAreaDialog extends Dialog {
 	@Override
 	public void create() {
 		super.create();
-
-		DialogCf cf = getDialogCfMod().getDialogCf(getDialogIdentifier());
-		if (cf != null) {
-			getShell().setLocation(cf.getX(), cf.getY());
-			getShell().setSize(cf.getWidth(), cf.getHeight());
-		}
-
 		doRelayout();
 	}
 	
@@ -338,29 +323,36 @@ public class ExpandableAreaDialog extends Dialog {
 			}
 					
 			// the ExpandableComposite
-			ExpandableWrapperComposite ec = new ExpandableWrapperComposite(parent, SWT.NONE, ExpandableComposite.TWISTIE|ExpandableComposite.COMPACT);
-			ec.removeExpansionListener();
-			ec.setText(expandText);
-			GridData gd = new GridData(GridData.FILL_BOTH);
-			ec.setLayoutData(gd);
-			// the ExpansionListener re-packs the dialog
-			ec.addExpansionListener(new ExpansionAdapter() {
+			ExpandableComposite expandableComposite = new ExpandableComposite(parent, SWT.NONE, ExpandableComposite.TWISTIE | ExpandableComposite.COMPACT);
+			expandableComposite.setText(expandText);
+			IDialogSettings settings = getDialogBoundsSettings();
+			if(settings != null)
+				expandableComposite.setExpanded(settings.getBoolean(DIALOG_TWISTIE_EXPANSION_STATE));
+			expandableComposite.addExpansionListener(new ExpansionAdapter() {
+				/* (non-Javadoc)
+				 * @see org.eclipse.ui.forms.events.ExpansionAdapter#expansionStateChanged(org.eclipse.ui.forms.events.ExpansionEvent)
+				 */
 				@Override
 				public void expansionStateChanged(ExpansionEvent e) {
+					IDialogSettings settings = getDialogBoundsSettings();
+					if(settings != null)
+						settings.put(DIALOG_TWISTIE_EXPANSION_STATE, e.getState());
 					getComp().layout(true);
 					getDialog().doRelayout();
 				}
 			});
+			GridData gd = new GridData(GridData.FILL_BOTH);
+			expandableComposite.setLayoutData(gd);
 
 			GridLayout ecLayout = new GridLayout();
 			ecLayout.verticalSpacing = 5;
 			ecLayout.horizontalSpacing= 5;
-			ec.setLayout(ecLayout);
+			expandableComposite.setLayout(ecLayout);
 			
 			// dummyComp wraps the expandable Comp one more time.
 			// Workaround, otherwise half of first row in expandableArea
 			// visible even when collapsed
-			Composite dummyComp = new Composite(ec,SWT.NONE);
+			Composite dummyComp = new Composite(expandableComposite,SWT.NONE);
 			gd = new GridData(GridData.FILL_BOTH);
 			dummyComp.setLayoutData(gd);
 			GridLayout gl = new GridLayout();
@@ -372,33 +364,10 @@ public class ExpandableAreaDialog extends Dialog {
 				gd = new GridData(GridData.FILL_BOTH);
 				expandableArea.setLayoutData(gd);
 				// tell the parent to manage this as expandable client
-				ec.setClient(dummyComp);
+				expandableComposite.setClient(dummyComp);
 			}
 
 			return expComp;
 		}
-		
-	}
-
-	protected DialogCfMod getDialogCfMod()
-	{
-		return Config.sharedInstance().createConfigModule(DialogCfMod.class);
-	}
-
-	protected String getDialogIdentifier()
-	{
-		return this.getClass().getName();
-	}
-
-	@Override
-	public boolean close()
-	{
-		getDialogCfMod().createDialogCf(
-				getDialogIdentifier(),
-				getShell().getLocation().x,
-				getShell().getLocation().y,
-				getShell().getSize().x,
-				getShell().getSize().y);
-		return super.close();
 	}
 }

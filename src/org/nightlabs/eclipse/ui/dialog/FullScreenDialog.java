@@ -26,35 +26,59 @@
 
 package org.nightlabs.eclipse.ui.dialog;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
-
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 
+/**
+ * @author unascribed
+ * @author Marc Klinger - marc[at]nightlabs[dot]de
+ */
 public class FullScreenDialog
 extends Dialog
 {
 
-	public FullScreenDialog(Shell arg0) {
-		super(arg0);
+	public FullScreenDialog(Shell shell) {
+		super(shell);
 		setShellStyle(getShellStyle() | SWT.RESIZE | SWT.MIN | SWT.MAX);
 	}
 
-	public FullScreenDialog(IShellProvider arg0) {
-		super(arg0);
+	public FullScreenDialog(IShellProvider shellProvider) {
+		super(shellProvider);
 		setShellStyle(getShellStyle() | SWT.RESIZE | SWT.MIN | SWT.MAX );
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.dialogs.Dialog#getInitialSize()
+	 */
 	@Override
-	public void create()
+	protected Point getInitialSize()
 	{
-		super.create();
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		getShell().setSize(screenSize.width, screenSize.height);
-		getShell().setLocation(0,0);
+		Monitor monitor;
+		Composite parent = getShell().getParent();
+		if (parent != null)
+			monitor = parent.getMonitor();
+		else
+			monitor = getShell().getDisplay().getPrimaryMonitor();
+		return new Point(monitor.getClientArea().width, monitor.getClientArea().height);
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.dialogs.Dialog#getInitialLocation(org.eclipse.swt.graphics.Point)
+	 */
+	@Override
+	protected Point getInitialLocation(Point initialSize)
+	{
+		Monitor monitor;
+		Composite parent = getShell().getParent();
+		if (parent != null)
+			monitor = parent.getMonitor();
+		else
+			monitor = getShell().getDisplay().getPrimaryMonitor();
+		return new Point(monitor.getClientArea().x, monitor.getClientArea().y);
+	}
 }
