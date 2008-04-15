@@ -32,10 +32,11 @@
 
 		<copy file="../NightLabsBase/dist/NightLabsBase.jar" todir="${project.dir}/${lib.dir}" failonerror="true" verbose="true"/>
 
+		<!--
 		<getlocalorremote 
 		  localpath="../deploy/jboss/server/default/lib/log4j.jar" 
 		  remotepath="http://download.nightlabs.de/lib/log4j/jars/log4j-1.2.8.jar"
 		  targetpath="${project.dir}/${lib.dir}/log4j.jar"/>
-		
+		-->
 	</target>
 </project>

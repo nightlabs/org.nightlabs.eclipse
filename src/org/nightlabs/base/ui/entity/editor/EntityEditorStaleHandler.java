@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.ShellListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -24,7 +26,6 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.composite.XComposite.LayoutDataMode;
 import org.nightlabs.base.ui.composite.XComposite.LayoutMode;
-import org.nightlabs.base.ui.dialog.CenteredDialog;
 import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.util.RCPUtil;
 
@@ -47,7 +48,7 @@ public class EntityEditorStaleHandler {
 	/**
 	 * The class used to display registered {@link IEntityEditorPageStaleHandler}s.
 	 */
-	class StaleHandlerDialog extends CenteredDialog {
+	class StaleHandlerDialog extends Dialog {
 
 		private EntityEditorStaleHandlerTree handlerTree;
 		
@@ -86,7 +87,11 @@ public class EntityEditorStaleHandler {
 		protected void configureShell(Shell newShell) {
 			super.configureShell(newShell);
 			newShell.setText(Messages.getString("org.nightlabs.base.ui.entity.editor.EntityEditorStaleHandler.dialog.title")); //$NON-NLS-1$
-			setToCenteredLocationPreferredSize(newShell, 400, 300);
+		}
+		
+		@Override
+		protected Point getInitialSize() {
+			return new Point(400, 300);
 		}
 	}
 

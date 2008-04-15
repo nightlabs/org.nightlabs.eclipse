@@ -26,15 +26,16 @@
 
 package org.nightlabs.base.ui.print;
 
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.nightlabs.base.ui.composite.XComposite;
-import org.nightlabs.base.ui.dialog.CenteredDialog;
 import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.util.RCPUtil;
 import org.nightlabs.print.PrinterConfiguration;
@@ -47,7 +48,7 @@ import org.nightlabs.print.PrinterConfigurationCfMod;
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  *
  */
-public class EditPrinterConfigurationDialog extends CenteredDialog {
+public class EditPrinterConfigurationDialog extends Dialog {
 
 	private EditPrinterConfigurationComposite configurationComposite;
 	private String printerUseCaseID;
@@ -71,7 +72,11 @@ public class EditPrinterConfigurationDialog extends CenteredDialog {
 	{
 		super.configureShell(newShell);
 		newShell.setText(Messages.getString("org.nightlabs.base.ui.print.EditPrinterConfigurationDialog.title")); //$NON-NLS-1$
-		newShell.setSize(400, 525);
+	}
+	
+	@Override
+	protected Point getInitialSize() {
+		return new Point(400, 525);
 	}
 
 	@Override

@@ -32,6 +32,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Map.Entry;
 
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -46,7 +47,6 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 import org.nightlabs.base.ui.composite.LabeledText;
 import org.nightlabs.base.ui.composite.XComposite;
-import org.nightlabs.base.ui.dialog.CenteredDialog;
 import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.util.RCPUtil;
 import org.nightlabs.print.DocumentPrinterDelegateConfig;
@@ -221,7 +221,7 @@ public class EditDocumentPrinterTypeRegsComposite extends XComposite {
 		updateList();
 	}
 	
-	public static class FileExtDialog extends CenteredDialog {
+	public static class FileExtDialog extends Dialog {
 		public LabeledText fileExtText;
 		private String fileExt;
 		public FileExtDialog(Shell parentShell) {
