@@ -173,7 +173,8 @@ Export-Package: com.lowagie.bc.asn1,
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.nightlabs.base.ui,
- org.nightlabs.jfire.base.j2ee;resolution:=optional
+ org.nightlabs.jfire.base.j2ee;resolution:=optional,
+ org.nightlabs.eclipse.ui.dialog
 Eclipse-LazyStart: true
 Eclipse-BuddyPolicy: registered
 Eclipse-RegisterBuddy: org.nightlabs.jfire.base.j2ee 
