@@ -1,0 +1,35 @@
+Dialogs - Best practices
+
+!!Shell styles
+Set shell styles in the Dialog constructor by using this pattern:
+<?plugin PhpHighlight
+setShellStyle(getShellStyle() | SWT.MY_STYLE1 | SWT.MY_STYLE2);
+?>
+Most dialogs should use <code>SWT.RESIZE</code> to make the dialog shell resizable.
+
+!!Initial bounds
+Set initial dialog bounds by overriding <code>getInitialSize()</code> and <code>getInitialLocation(Point initialSize)</code>.
+For the future, we should consider, storing initial default sizes in the localisation bundle.
+
+
+!!Saving bounds
+Since Eclipse 3.2, saving a dialogs bounds is implemented in the Dialog base class. To enable this feature you must override
+<code>getDialogBoundsSettings()</code> and return a non-null value.
+
+Example:
+<?plugin PhpHighlight
+@Override
+protected IDialogSettings getDialogBoundsSettings()
+{
+	// get a name as identifier. This uses the dialogs class name
+	// plus ".dialogBounds" as suffix.
+	String sectionName = getClass().getName()+".dialogBounds";
+	IDialogSettings dialogSettings = TheAbstractUIPluginClass.getDefault().getDialogSettings();
+	// get an existing section
+	IDialogSettings boundsSettings = dialogSettings.getSection(sectionName);
+	// create a new section if needed 
+	if(boundsSettings == null)
+		boundsSettings = dialogSettings.addNewSection(sectionName);
+	return boundsSettings;
+}
+?>
