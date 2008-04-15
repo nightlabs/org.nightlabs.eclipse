@@ -174,7 +174,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.nightlabs.base.ui,
  org.nightlabs.jfire.base.j2ee;resolution:=optional,
- org.nightlabs.eclipse.ui.dialog
+ org.nightlabs.eclipse.ui.dialog;visibility:=reexport
 Eclipse-LazyStart: true
 Eclipse-BuddyPolicy: registered
 Eclipse-RegisterBuddy: org.nightlabs.jfire.base.j2ee 
