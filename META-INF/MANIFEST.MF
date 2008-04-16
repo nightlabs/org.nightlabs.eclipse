@@ -4,13 +4,12 @@ Bundle-Name: Dialog Plug-in
 Bundle-SymbolicName: org.nightlabs.eclipse.ui.dialog;singleton:=true
 Bundle-Version: 1.1.0.qualifier
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.ui.workbench,
  org.eclipse.jface,
- org.apache.log4j,
+ org.eclipse.ui,
+ org.eclipse.ui.workbench,
  org.eclipse.ui.forms,
- org.eclipse.ui
-Export-Package: org.nightlabs.eclipse.ui.dialog,
- org.nightlabs.eclipse.ui.dialog.resource
+ org.apache.log4j
 Bundle-Activator: org.nightlabs.eclipse.ui.dialog.DialogPlugin
 Eclipse-LazyStart: true
 Bundle-Vendor: nightlabs.org
+Export-Package: org.nightlabs.eclipse.ui.dialog
