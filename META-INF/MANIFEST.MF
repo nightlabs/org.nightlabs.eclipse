@@ -3,6 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Dialog Plug-in
 Bundle-SymbolicName: org.nightlabs.eclipse.ui.dialog;singleton:=true
 Bundle-Version: 1.1.0.qualifier
+Bundle-ClassPath: org.nightlabs.eclipse.ui.dialog.jar
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jface,
  org.eclipse.ui,
