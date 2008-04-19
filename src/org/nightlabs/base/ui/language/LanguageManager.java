@@ -26,8 +26,6 @@
 
 package org.nightlabs.base.ui.language;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,8 +49,6 @@ import org.nightlabs.language.LanguageCf;
 public class LanguageManager
 implements ILanguageManager
 {
-	public static final String LANGUAGE_CHANGED = "language changed"; //$NON-NLS-1$
-	
 	private static LanguageManager sharedInstance = null;
 	public static LanguageManager sharedInstance()
 	{
@@ -110,14 +106,50 @@ implements ILanguageManager
 				LanguageCf langCf = (LanguageCf) it.next();
 				languageID2LanguageCf.put(langCf.getLanguageID(), langCf);
 			}
-			currentLanguage = getLanguage(Locale.getDefault(), false);
-			if (currentLanguage == null) {
-				currentLanguage = createDefaultLanguage();
-				addLanguage(currentLanguage);
-			}
 		} catch (ConfigException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	/**
+	 * Set the default value of Locale to a valid value.
+	 * It will be either the system default, the value of the nl parameter,
+	 * or the languageID stored in the {@link LanguageCfMod} if present and valid.
+	 */
+	public void setLanguage() {
+		if (langCfMod.getLanguageID() != null) {
+			if (checkLanguageID(langCfMod.getLanguageID()))
+				Locale.setDefault(new Locale(langCfMod.getLanguageID()));
+		}
+		if (!checkLanguageID(Locale.getDefault().getLanguage())) {
+			// if the current default locale is 
+			// invalid for some reason, we switch to default english
+			Locale.setDefault(Locale.ENGLISH);
+		}
+		currentLanguage = getLanguage(Locale.getDefault(), false);			
+		if (currentLanguage == null) {
+			currentLanguage = createDefaultLanguage();
+			addLanguage(currentLanguage);
+		}
+	}
+	
+	/**
+	 * Calls {@link LanguageCfMod#setLanguageID(String)}.
+	 * Note that this will not have any affect on the current locale or any labels in the application.
+	 * 
+	 * @param languageID The languageID to set.
+	 */
+	public void setLanguageID(String languageID) {
+		langCfMod.setLanguageID(languageID);
+	}
+	
+	private boolean checkLanguageID(String languageID) {
+		String[] isoLangs = Locale.getISOLanguages();
+		for (String lang : isoLangs) {
+			if (lang.equals(languageID))
+				return true;
+		}
+		return false;
 	}
 
 	protected LanguageCfMod langCfMod;
@@ -129,7 +161,8 @@ implements ILanguageManager
 	public void addLanguage(LanguageCf langCf) {
 		if (languageID2LanguageCf.containsKey(langCf.getLanguageID()))
 			return;
-
+		if (!checkLanguageID(langCf.getLanguageID()))
+			throw new IllegalArgumentException("The languageID " + langCf.getLanguageID() + " is invalid!");
 		langCf.init(langCfMod.getLanguageIDs());
 		langCfMod.getLanguages().add(langCf);
 		languageID2LanguageCf.put(langCf.getLanguageID(), langCf);
@@ -149,6 +182,8 @@ implements ILanguageManager
 		if (languageID2LanguageCf.containsKey(languageID))
 			return;
 
+		if (!checkLanguageID(languageID))
+			throw new IllegalArgumentException("The languageID " + languageID + " is invalid!");
 		LanguageCf langCf = createLanguage(languageID);
 		addLanguage(langCf);
 	}
@@ -161,6 +196,8 @@ implements ILanguageManager
 		if (languageID2LanguageCf.containsKey(locale.getLanguage()))
 			return;
 
+		if (!checkLanguageID(locale.getLanguage()))
+			throw new IllegalArgumentException("The languageID " + locale.getLanguage() + " is invalid!");
 		LanguageCf langCf = createLanguage(getLanguageID(locale));
 		addLanguage(langCf);
 	}
@@ -255,6 +292,8 @@ implements ILanguageManager
 	 * @return The current Language
 	 */
 	public LanguageCf getCurrentLanguage() {
+		if (currentLanguage == null)
+			setLanguage();
 		return currentLanguage;
 	}
 
@@ -265,68 +304,14 @@ implements ILanguageManager
 	public String getCurrentLanguageID() {
 		return getCurrentLanguage().getLanguageID();
 	}
-
-	/**
-	 * @param newCurrentLanguage The current Language to set
-	 * @deprecated The current language should be controlled by {@link Locale}. And changing the language on the fly is not that easy as all the labels
-	 * are already loaded.
-	 */
-	@Deprecated
-	public void setCurrentLanguage(LanguageCf newCurrentLanguage)
-	{
-		LanguageCf oldLanguage = currentLanguage;
-		this.currentLanguage = newCurrentLanguage;
-		pcs.firePropertyChange(LANGUAGE_CHANGED, oldLanguage, currentLanguage);
-	}
-
-	/**
-	 * @deprecated The current language should be controlled by {@link Locale}. And changing the language on the fly is not that easy as all the labels
-	 * are already loaded.
-	 */
-	@Deprecated
-	public void setCurrentLanguageID(String newLanguageID)
-	{
-		if (languageID2LanguageCf.containsKey(newLanguageID)) {
-			LanguageCf langCf = languageID2LanguageCf.get(newLanguageID);
-			setCurrentLanguage(langCf);
-		}
-		else {
-			LanguageCf langCf = createLanguage(newLanguageID);
-			setCurrentLanguage(langCf);
-		}
-	}
 	
-	protected PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-	
-	/**
-	 * 
-	 * @param pcl the java.beans.PropertyChangeListener to add
-	 */
-	public void addPropertyChangeListener(PropertyChangeListener pcl) {
-		pcs.addPropertyChangeListener(pcl);
-	}
-	/**
-	 * 
-	 * @param pcl the java.beans.PropertyChangeListener to remove
-	 */
-	public void removePropertyChangeListener(PropertyChangeListener pcl) {
-		pcs.removePropertyChangeListener(pcl);
+	public void removeLanguage(String languageID) {
+		if (!languageID2LanguageCf.containsKey(languageID))
+			return;
+		LanguageCf langCf = languageID2LanguageCf.remove(languageID);
+		langCfMod.getLanguages().remove(langCf);
 	}
 		
-//	/**
-//	 *
-//	 * @param languageID the ID of the Language (e.g. en, de, us) (@see java.util.Locale.getLanguage())
-//	 * @return the flag of the country for the given Language
-//	 */
-//	public static Image getImage(String languageID)
-//	{
-//		ImageDescriptor desc = SharedImages.getImageDescriptor(languageID);
-//		if (desc != null)
-//			return desc.createImage();
-//
-//		return null;
-//	}
-
 	/**
 	 * Calling this method will cause the config module to be marked as changed.
 	 *

@@ -27,6 +27,7 @@
 package org.nightlabs.base.ui.language;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -107,5 +108,18 @@ public class LanguageChooserList
 		StructuredSelection selection = (StructuredSelection) viewer.getSelection();
 		return (LanguageCf) selection.getFirstElement();
 	}
-
+	/**
+	 * @param listener
+	 * @see org.eclipse.jface.viewers.StructuredViewer#addDoubleClickListener(org.eclipse.jface.viewers.IDoubleClickListener)
+	 */
+	public void addDoubleClickListener(IDoubleClickListener listener) {
+		viewer.addDoubleClickListener(listener);
+	}
+	/**
+	 * @param listener
+	 * @see org.eclipse.jface.viewers.StructuredViewer#removeDoubleClickListener(org.eclipse.jface.viewers.IDoubleClickListener)
+	 */
+	public void removeDoubleClickListener(IDoubleClickListener listener) {
+		viewer.removeDoubleClickListener(listener);
+	}
 }

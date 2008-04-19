@@ -28,12 +28,14 @@ package org.nightlabs.base.ui.table;
 
 import java.util.Collection;
 
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 /**
  * TODO: Use Generics for this table provider.
- * 
+ * TODO: Hmm, there is {@link ArrayContentProvider}, think we don't really need this class. Alex.
+ *  
  * Adapter for ContentProviders for Tables.
  * 
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>

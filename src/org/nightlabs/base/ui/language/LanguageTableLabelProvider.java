@@ -26,6 +26,8 @@
 
 package org.nightlabs.base.ui.language;
 
+import java.util.Locale;
+
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
@@ -48,8 +50,14 @@ public class LanguageTableLabelProvider
 	 */
 	public Image getColumnImage(Object element, int columnIndex)
 	{
-		// TODO Here we should have the 16x16-language flag
-		return null;
+		String res = null;
+		if (element instanceof LanguageCf) {
+			LanguageCf language = (LanguageCf)element;
+			if (columnIndex == 0) {
+				return LanguageManager.sharedInstance().getFlag16x16Image(language.getLanguageID());
+			}
+		} // if (element instanceof Language) {
+		return null; //$NON-NLS-1$
 	}
 
 	/**

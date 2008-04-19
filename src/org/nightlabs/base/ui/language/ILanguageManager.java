@@ -31,12 +31,6 @@ import org.nightlabs.language.LanguageCf;
 
 public interface ILanguageManager
 {
-	/**
-	 * @deprecated use {@link Locale#getDefault()}<code>.getLanguage()</code> instead
-	 * @return the current languageID
-	 */
-	@Deprecated
-	public String getCurrentLanguageID();
 	
 	/**
 	 * adds a Language based on the given languageID
@@ -49,10 +43,4 @@ public interface ILanguageManager
 	 */
 	public Collection<LanguageCf> getLanguages();
 	
-	/**
-	 * @deprecated use {@link Locale#setDefault(Locale)} instead
-	 * @param newLanguageID the id of the new Language
-	 */
-	@Deprecated
-	public void setCurrentLanguageID(String newLanguageID);
 }

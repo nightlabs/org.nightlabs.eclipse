@@ -55,6 +55,9 @@ extends Action
 	@Override
 	public void run()
 	{
+		// TODO: Maybe we should present here a list of registered languages first and then somehow set nl parameter
+		// or maybe its even better to read the Locale from our config module and only fallback to the default locale
+		// if none is set in the config moduel or if its invalid.
 		Locale.setDefault(new Locale(languageID));
 //		langMan.setCurrentLanguageID(languageID);
 	}
