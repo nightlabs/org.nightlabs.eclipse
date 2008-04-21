@@ -180,16 +180,24 @@ implements IDynamicPathWizardPage
 	/**
 	 * @see org.nightlabs.base.ui.wizard.IDynamicPathWizardPage#onHide()
 	 */
-	public void onHide()
-	{
+	public void onHide() {
 	}
 	
+	/**
+	 * @see org.nightlabs.base.ui.wizard.IDynamicPathWizardPage#onNext()
+	 */
 	public void onNext() {
 	}
 	
+	/**
+	 * @see org.nightlabs.base.ui.wizard.IDynamicPathWizardPage#onPrevious()
+	 */
 	public void onPrevious() {
 	}
 	
+	/**
+	 * @see org.nightlabs.base.ui.wizard.IDynamicPathWizardPage#onFinish()
+	 */
 	public void onFinish() {
 	}
 }
