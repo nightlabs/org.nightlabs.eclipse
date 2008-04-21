@@ -26,33 +26,32 @@
 
 package org.nightlabs.base.ui.dialog;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.widgets.Shell;
+import org.nightlabs.eclipse.ui.dialog.ResizableTrayDialog;
 
 /**
  * @author Daniel.Mazurek <at> NightLabs <dot> de
- * @deprecated This dialog is completely useless, since {@link Dialog} is
- * 		centered by default and bounds are stored using the {@link #getDialogBoundsSettings()}
- * 		mechanism. Marc
+ * @deprecated Inherit {@link ResizableTrayDialog} or use {@link org.nightlabs.eclipse.ui.dialog.ResizableDialogSupport}.
  */
 @Deprecated
 public class CenteredDialog
-extends Dialog
+extends ResizableTrayDialog
 {
 	@Deprecated
 	public CenteredDialog(Shell parentShell) {
-		super(parentShell);
+		super(parentShell, null);
 	}
 
 	@Deprecated
 	public CenteredDialog(IShellProvider parentShell) {
-		super(parentShell);
+		super(parentShell, null);
 	}
 
 	/**
 	 * @deprecated Made final to prevent further use. Use the {@link #getDialogBoundsSettings()}
-	 * 		mechanism to store bounds. Marc
+	 * 		mechanism to store bounds or inherit {@link ResizableTrayDialog} or use 
+	 * 		{@link org.nightlabs.eclipse.ui.dialog.ResizableDialogSupport}.
 	 */
 	@Deprecated
 	final protected String getDialogIdentifier()
