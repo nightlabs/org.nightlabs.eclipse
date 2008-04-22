@@ -150,8 +150,8 @@ public class ResizableDialogSupport
 	private Point getInitialSizeFromBundle()
 	{
 		if(fBundle != null) {
-			int width = getBundleInt(dialogIdentifier+"."+DIALOG_BOUNDS_KEY+"."+WIDTH, 0);
-			int height= getBundleInt(dialogIdentifier+"."+DIALOG_BOUNDS_KEY+"."+HEIGHT, 0);
+			int width = getBundleInt(dialogIdentifier+"."+DIALOG_BOUNDS_KEY+"."+WIDTH, 0); //$NON-NLS-1$ //$NON-NLS-2$
+			int height= getBundleInt(dialogIdentifier+"."+DIALOG_BOUNDS_KEY+"."+HEIGHT, 0); //$NON-NLS-1$ //$NON-NLS-2$
 			if(width > 0 && height > 0)
 				return new Point(width, height);
 		}
@@ -161,7 +161,7 @@ public class ResizableDialogSupport
 	private Point getInitialSizeFromDialogSettings()
 	{
 		if(fSettings != null) {
-			IDialogSettings bounds= fSettings.getSection(dialogIdentifier+"."+DIALOG_BOUNDS_KEY); 
+			IDialogSettings bounds= fSettings.getSection(dialogIdentifier+"."+DIALOG_BOUNDS_KEY);  //$NON-NLS-1$
 			if (bounds != null) {
 				int width = 0;
 				int height = 0;
@@ -180,8 +180,8 @@ public class ResizableDialogSupport
 	private Point getInitialLocationFromBundle()
 	{
 		if(fBundle != null) {
-			int x = getBundleInt(dialogIdentifier+"."+DIALOG_BOUNDS_KEY+"."+X, 0);
-			int y= getBundleInt(dialogIdentifier+"."+DIALOG_BOUNDS_KEY+"."+Y, 0);
+			int x = getBundleInt(dialogIdentifier+"."+DIALOG_BOUNDS_KEY+"."+X, 0); //$NON-NLS-1$ //$NON-NLS-2$
+			int y= getBundleInt(dialogIdentifier+"."+DIALOG_BOUNDS_KEY+"."+Y, 0); //$NON-NLS-1$ //$NON-NLS-2$
 			if(x > 0 && y > 0)
 				return new Point(x, y);
 		}
@@ -191,7 +191,7 @@ public class ResizableDialogSupport
 	private Point getInitialLocationFromDialogSettings()
 	{
 		if(fSettings != null) {
-			IDialogSettings bounds= fSettings.getSection(dialogIdentifier+"."+DIALOG_BOUNDS_KEY); 
+			IDialogSettings bounds= fSettings.getSection(dialogIdentifier+"."+DIALOG_BOUNDS_KEY);  //$NON-NLS-1$
 			if (bounds != null) {
 				try {
 					int x= bounds.getInt(X);
@@ -290,7 +290,7 @@ public class ResizableDialogSupport
 	public void saveBounds()
 	{
 		if(dialog == null)
-			throw new IllegalStateException("Corresponding dialog is not set when trying to save dialog bounds.");
+			throw new IllegalStateException("Corresponding dialog is not set when trying to save dialog bounds."); //$NON-NLS-1$
 		Shell sh = dialog.getShell();
 		if(sh != null && !sh.isDisposed() && isBoundsChanged())
 			saveBounds(sh.getBounds());
@@ -303,9 +303,9 @@ public class ResizableDialogSupport
 	public void saveBounds(Rectangle bounds) 
 	{
 		if(fSettings != null) {
-			IDialogSettings dialogBounds= fSettings.getSection(dialogIdentifier+"."+DIALOG_BOUNDS_KEY);
+			IDialogSettings dialogBounds= fSettings.getSection(dialogIdentifier+"."+DIALOG_BOUNDS_KEY); //$NON-NLS-1$
 			if (dialogBounds == null) {
-				dialogBounds= new DialogSettings(dialogIdentifier+"."+DIALOG_BOUNDS_KEY);
+				dialogBounds= new DialogSettings(dialogIdentifier+"."+DIALOG_BOUNDS_KEY); //$NON-NLS-1$
 				fSettings.addSection(dialogBounds);
 			}
 			dialogBounds.put(X, bounds.x);

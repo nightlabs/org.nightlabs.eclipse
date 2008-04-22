@@ -19,6 +19,8 @@ import org.nightlabs.eclipse.ui.dialog.DialogPlugin;
 import org.nightlabs.eclipse.ui.dialog.ExpandableAreaDialog;
 import org.nightlabs.eclipse.ui.dialog.FullScreenDialog;
 import org.nightlabs.eclipse.ui.dialog.RememberDecisionMessageDialog;
+import org.nightlabs.eclipse.ui.dialog.ResizableTitleAreaDialog;
+import org.nightlabs.eclipse.ui.dialog.resource.Messages;
 import org.osgi.service.prefs.BackingStoreException;
 
 /**
@@ -84,7 +86,7 @@ public class DialogTest
 //						}
 //					}
 			);
-			System.out.println("Result: "+result);
+			System.out.println("Result: "+result); //$NON-NLS-1$
 		}
 	}
 
@@ -92,7 +94,7 @@ public class DialogTest
 	{
 		public void run(IAction action)
 		{
-			CountdownMessageDialog.openInformation(window.getShell(), "The Title", "The message of the message dialog.", 30);
+			CountdownMessageDialog.openInformation(window.getShell(), "The Title", "The message of the message dialog.", 30); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
@@ -108,7 +110,7 @@ public class DialogTest
 				protected Control createDialogArea(Composite parent)
 				{
 					Composite c = (Composite)super.createDialogArea(parent);
-					new Label(c, SWT.NONE).setText("Bla bla bla jlkhasjkhaksdhkj kjahsdkjh akjsd hkja hsdkj ahksdj hka hdkj ahdskjh akjd hkja hdsk ahsdkj");
+					new Label(c, SWT.NONE).setText("Bla bla bla jlkhasjkhaksdhkj kjahsdkjh akjsd hkja hsdkj ahksdj hka hdkj ahdskjh akjd hkja hdsk ahsdkj"); //$NON-NLS-1$
 					return c;
 				}
 			}.open();
@@ -123,12 +125,12 @@ public class DialogTest
 			try {
 				result = RememberDecisionMessageDialog.openQuestion(
 						window.getShell(), 
-						"What do you think?", 
-						"Should it be 'yes' or 'no'?", 
-						"nodeKey", 
-						"preferenceKey", 
+						"What do you think?",  //$NON-NLS-1$
+						"Should it be 'yes' or 'no'?",  //$NON-NLS-1$
+						"nodeKey",  //$NON-NLS-1$
+						"preferenceKey",  //$NON-NLS-1$
 						new ConfigurationScope());
-				System.out.println("Result: "+result);
+				System.out.println("Result: "+result); //$NON-NLS-1$
 			} catch (BackingStoreException e) {
 				e.printStackTrace();
 			}
@@ -158,9 +160,9 @@ public class DialogTest
 				protected Composite createStaticArea(Composite parent)
 				{
 					Composite staticArea = super.createStaticArea(parent);
-					new Label(staticArea, SWT.NONE).setText("The static area bla bla bla");
-					new Label(staticArea, SWT.NONE).setText("The static area bla bla bla");
-					new Label(staticArea, SWT.NONE).setText("The static area bla bla bla");
+					new Label(staticArea, SWT.NONE).setText("The static area bla bla bla"); //$NON-NLS-1$
+					new Label(staticArea, SWT.NONE).setText("The static area bla bla bla"); //$NON-NLS-1$
+					new Label(staticArea, SWT.NONE).setText("The static area bla bla bla"); //$NON-NLS-1$
 					return staticArea;
 				}
 				
@@ -171,9 +173,9 @@ public class DialogTest
 				protected Composite createExpandableArea(Composite parent)
 				{
 					Composite expandableArea = super.createExpandableArea(parent);
-					new Label(expandableArea, SWT.NONE).setText("The expandable area bla bla bla");
-					new Label(expandableArea, SWT.NONE).setText("The expandable area bla bla bla");
-					new Label(expandableArea, SWT.NONE).setText("The expandable area bla bla bla");
+					new Label(expandableArea, SWT.NONE).setText("The expandable area bla bla bla"); //$NON-NLS-1$
+					new Label(expandableArea, SWT.NONE).setText("The expandable area bla bla bla"); //$NON-NLS-1$
+					new Label(expandableArea, SWT.NONE).setText("The expandable area bla bla bla"); //$NON-NLS-1$
 					return expandableArea;
 				}
 				
@@ -183,12 +185,31 @@ public class DialogTest
 				@Override
 				protected IDialogSettings getDialogBoundsSettings()
 				{
-					String sectionName = getClass().getName()+".dialogBounds";
+					String sectionName = getClass().getName()+".dialogBounds"; //$NON-NLS-1$
 					IDialogSettings dialogSettings = DialogPlugin.getDefault().getDialogSettings();
 					IDialogSettings boundsSettings = dialogSettings.getSection(sectionName);
 					if(boundsSettings == null)
 						boundsSettings = dialogSettings.addNewSection(sectionName);
 					return boundsSettings;
+				}
+			}.open();
+		}
+	}
+	
+	public static class ResizableDialogTest extends ActionDelegate
+	{
+		public void run(IAction action)
+		{
+			new ResizableTitleAreaDialog(window.getShell(), Messages.getBundle())	{
+				/* (non-Javadoc)
+				 * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
+				 */
+				@Override
+				protected Control createDialogArea(Composite parent)
+				{
+					Composite c = (Composite)super.createDialogArea(parent);
+					new Label(c, SWT.NONE).setText("Bla bla bla jlkhasjkhaksdhkj kjahsdkjh akjsd hkja hsdkj ahksdj hka hdkj ahdskjh akjd hkja hdsk ahsdkj"); //$NON-NLS-1$
+					return c;
 				}
 			}.open();
 		}

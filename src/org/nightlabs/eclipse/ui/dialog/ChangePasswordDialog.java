@@ -167,7 +167,7 @@ public class ChangePasswordDialog extends TitleAreaDialog
 	 */
 	@Override
 	protected Control createDialogArea(Composite parent) {
-		setTitle(Messages.getString("org.nightlabs.eclipse.ui.dialog.ChangePasswordDialog.label.newPassword"));
+		setTitle(Messages.getString("org.nightlabs.eclipse.ui.dialog.ChangePasswordDialog.label.newPassword")); //$NON-NLS-1$
 		
 		Composite container = new Composite(parent, SWT.NONE);
 		container.setLayout(new GridLayout(2, false));
@@ -228,7 +228,7 @@ public class ChangePasswordDialog extends TitleAreaDialog
 	@Override
 	protected IDialogSettings getDialogBoundsSettings()
 	{
-		String sectionName = getClass().getName()+".dialogBounds";
+		String sectionName = getClass().getName()+".dialogBounds"; //$NON-NLS-1$
 		IDialogSettings dialogSettings = DialogPlugin.getDefault().getDialogSettings();
 		IDialogSettings boundsSettings = dialogSettings.getSection(sectionName);
 		if(boundsSettings == null)
