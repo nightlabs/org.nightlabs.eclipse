@@ -51,7 +51,8 @@ import org.nightlabs.util.CollectionUtil;
 
 /**
  * @author Chairat Kongarayawetchakun <chairat[AT]nightlabs[DOT]de>
- *
+ * TODO move this to the issuetracker and directly pass an Issue instance here!
+ * @deprecated Maybe it's even better to write a composite for managing IssueFileAttachment instances from scratch - with a table (columns "name", "size", "timestamp")
  */
 public class FileListSelectionComposite
 extends XComposite {
