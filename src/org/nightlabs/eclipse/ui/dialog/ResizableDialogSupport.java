@@ -43,7 +43,7 @@ import org.eclipse.swt.widgets.Shell;
  * public class MyDialog extends TrayDialog {
  *   private ResizableDialogSupport resizableDialogSupport;
  * 	
- *   public ResizableTrayDialog(Shell shell) {
+ *   public MyDialog(Shell shell) {
  *     super(shell);
  *     setShellStyle(getShellStyle() | SWT.RESIZE | SWT.MAX);
  *     this.resizableDialogSupport = new ResizableDialogSupport(this, Messages.getBundle());
@@ -56,16 +56,14 @@ import org.eclipse.swt.widgets.Shell;
  *     return super.getInitialSize();
  *   }
  *   
- *   protected Point getInitialLocation(Point initialSize)
- *   {
+ *   protected Point getInitialLocation(Point initialSize) {
  *     Point loc = resizableDialogSupport.getInitialLocation();
  *     if(loc != null)
  *   	   return loc;
  *     return super.getInitialLocation(initialSize);
  *   }
  *   
- *   public boolean close()
- *   {
+ *   public boolean close() {
  *     resizableDialogSupport.saveBounds();
  *     return super.close();
  *   }
@@ -96,12 +94,12 @@ public class ResizableDialogSupport
 	/**
 	 * The resource bundle.
 	 */
-	protected ResourceBundle fBundle;
+	private ResourceBundle bundle;
 	
 	/**
 	 * The dialog settings. 
 	 */
-	private IDialogSettings fSettings;
+	private IDialogSettings settings;
 	
 	/**
 	 * Track bounds changes.
@@ -121,11 +119,11 @@ public class ResizableDialogSupport
 	public ResizableDialogSupport(Dialog dialog, String dialogIdentifier, IDialogSettings dialogSettings, ResourceBundle bundle)
 	{
 		this.dialog = dialog;
-		this.fBundle= bundle;
+		this.bundle= bundle;
 		if(dialogSettings == null)
-			this.fSettings = DialogPlugin.getDefault().getDialogSettings();
+			this.settings = DialogPlugin.getDefault().getDialogSettings();
 		else
-			this.fSettings= dialogSettings;
+			this.settings= dialogSettings;
 		if(dialogIdentifier == null || dialogIdentifier.isEmpty()) {
 			if(dialog != null)
 				this.dialogIdentifier = dialog.getClass().getName();
@@ -149,7 +147,7 @@ public class ResizableDialogSupport
 	
 	private Point getInitialSizeFromBundle()
 	{
-		if(fBundle != null) {
+		if(bundle != null) {
 			int width = getBundleInt(dialogIdentifier+"."+DIALOG_BOUNDS_KEY+"."+WIDTH, 0); //$NON-NLS-1$ //$NON-NLS-2$
 			int height= getBundleInt(dialogIdentifier+"."+DIALOG_BOUNDS_KEY+"."+HEIGHT, 0); //$NON-NLS-1$ //$NON-NLS-2$
 			if(width > 0 && height > 0)
@@ -160,8 +158,8 @@ public class ResizableDialogSupport
 
 	private Point getInitialSizeFromDialogSettings()
 	{
-		if(fSettings != null) {
-			IDialogSettings bounds= fSettings.getSection(dialogIdentifier+"."+DIALOG_BOUNDS_KEY);  //$NON-NLS-1$
+		if(settings != null) {
+			IDialogSettings bounds= settings.getSection(dialogIdentifier+"."+DIALOG_BOUNDS_KEY);  //$NON-NLS-1$
 			if (bounds != null) {
 				int width = 0;
 				int height = 0;
@@ -179,7 +177,7 @@ public class ResizableDialogSupport
 
 	private Point getInitialLocationFromBundle()
 	{
-		if(fBundle != null) {
+		if(bundle != null) {
 			int x = getBundleInt(dialogIdentifier+"."+DIALOG_BOUNDS_KEY+"."+X, 0); //$NON-NLS-1$ //$NON-NLS-2$
 			int y= getBundleInt(dialogIdentifier+"."+DIALOG_BOUNDS_KEY+"."+Y, 0); //$NON-NLS-1$ //$NON-NLS-2$
 			if(x > 0 && y > 0)
@@ -190,8 +188,8 @@ public class ResizableDialogSupport
 
 	private Point getInitialLocationFromDialogSettings()
 	{
-		if(fSettings != null) {
-			IDialogSettings bounds= fSettings.getSection(dialogIdentifier+"."+DIALOG_BOUNDS_KEY);  //$NON-NLS-1$
+		if(settings != null) {
+			IDialogSettings bounds= settings.getSection(dialogIdentifier+"."+DIALOG_BOUNDS_KEY);  //$NON-NLS-1$
 			if (bounds != null) {
 				try {
 					int x= bounds.getInt(X);
@@ -270,9 +268,9 @@ public class ResizableDialogSupport
 	private int getBundleInt(String key, int defaultValue)
 	{
 		try {
-			if(fBundle == null)
+			if(bundle == null)
 				return defaultValue;
-			String value = fBundle.getString(key);
+			String value = bundle.getString(key);
 			if(value == null)
 				return defaultValue;
 			return Integer.parseInt(value);
@@ -302,11 +300,11 @@ public class ResizableDialogSupport
 	 */
 	public void saveBounds(Rectangle bounds) 
 	{
-		if(fSettings != null) {
-			IDialogSettings dialogBounds= fSettings.getSection(dialogIdentifier+"."+DIALOG_BOUNDS_KEY); //$NON-NLS-1$
+		if(settings != null) {
+			IDialogSettings dialogBounds= settings.getSection(dialogIdentifier+"."+DIALOG_BOUNDS_KEY); //$NON-NLS-1$
 			if (dialogBounds == null) {
 				dialogBounds= new DialogSettings(dialogIdentifier+"."+DIALOG_BOUNDS_KEY); //$NON-NLS-1$
-				fSettings.addSection(dialogBounds);
+				settings.addSection(dialogBounds);
 			}
 			dialogBounds.put(X, bounds.x);
 			dialogBounds.put(Y, bounds.y);

@@ -196,7 +196,7 @@ public class DialogTest
 		}
 	}
 	
-	public static class ResizableDialogTest extends ActionDelegate
+	public static class ResizableTitleAreaDialogTest extends ActionDelegate
 	{
 		public void run(IAction action)
 		{

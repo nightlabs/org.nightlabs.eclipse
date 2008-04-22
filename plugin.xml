@@ -44,6 +44,12 @@
                label="&amp;Expandable Area Dialog"
                menubarPath="testMenu/dialogsGroup">
          </action>
+         <action
+               class="org.nightlabs.eclipse.ui.dialog.test.DialogTest$ResizableTitleAreaDialogTest"
+               id="org.nightlabs.eclipse.ui.dialog.test.DialogTest$ResizableTitleAreaDialogTest"
+               label="&amp;Resizable Title Area Dialog"
+               menubarPath="testMenu/dialogsGroup">
+         </action>
       </actionSet>
    </extension>
 </plugin>
