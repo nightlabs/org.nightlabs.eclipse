@@ -11,6 +11,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.log4j
 Bundle-Activator: org.nightlabs.eclipse.ui.dialog.DialogPlugin
 Eclipse-LazyStart: true
-Bundle-Vendor: nightlabs.org
+Bundle-Vendor: NightLabs.org
 Export-Package: org.nightlabs.eclipse.ui.dialog
 
