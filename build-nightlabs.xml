@@ -1,6 +1,6 @@
 <!--
   Generic eclipse/rcp-plugin ant build file 
-  Version: 2008-04-16
+  Version: 2008-04-23
   Author: marc [at] nightlabs [dot] de
   Author: marco [at] nightlabs [dot] de
   Author: marius [at] nightlabs [dot] de
@@ -118,7 +118,7 @@
 		     are more than one "source..." and "output..." entries. -->
 		<grep property="project.buildid"
 		      srcFile="build.properties"
-		      pattern="^source\.(.+)\s*=.*$"/>
+		      pattern="^source\.(.+?)\s*=.*$"/>
 
 		<!-- finf out if there should be an inner jar. This is true
 		     if the source entry is in the form "source.xyz.jar". -->
