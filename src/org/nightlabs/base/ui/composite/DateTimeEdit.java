@@ -103,7 +103,7 @@ public class DateTimeEdit extends XComposite
 	 */
 	public DateTimeEdit(Composite parent, long flags, Date date, String caption)
 	{
-		super(parent, SWT.NONE, LayoutMode.ORDINARY_WRAPPER);
+		super(parent, SWT.NONE, LayoutMode.TIGHT_WRAPPER);
 		this.flags = flags;
 		this.getGridData().grabExcessHorizontalSpace = false;
 		this.getGridData().grabExcessVerticalSpace = false;
@@ -162,7 +162,7 @@ public class DateTimeEdit extends XComposite
 
 //		if ((DateFormatProvider.DATE & flags) != 0) {
 			lookupButton = new Button(this, SWT.NONE);
-			lookupButton.setText("..."); //$NON-NLS-1$
+			lookupButton.setText("...");
 			lookupButton.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e)
@@ -186,7 +186,7 @@ public class DateTimeEdit extends XComposite
 		CalendarDateTimeEditLookupDialog dialog = new CalendarDateTimeEditLookupDialog(getShell(), 
 				this, lookupButton.toDisplay(0, 0));
 		if (dialog.open() == Window.OK) {
-			setDate(dialog.getDate());
+			setDate(dialog.getDate().getTime());
 		}
 //		DateTimeEditLookupDialog dialog = new DateTimeEditLookupDialog(getShell(), this);
 //		if (dialog.open() == CalendarDateTimeEditLookupDialog.OK) {
@@ -245,8 +245,8 @@ public class DateTimeEdit extends XComposite
 			event.time = e.time;
 			event.data = e.data;
 			ModifyEvent me = new ModifyEvent(event);
-			for (Iterator it = modifyListeners.iterator(); it.hasNext(); ) {
-				ModifyListener l = (ModifyListener) it.next();
+			for (Iterator<ModifyListener> it = modifyListeners.iterator(); it.hasNext(); ) {
+				ModifyListener l = it.next();
 				l.modifyText(me);
 			}
 		}

@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.DateTime;
 /**
  * Utility methods for working with {@link DateTime}s. 
  * @author Daniel Mazurek - daniel [at] nightlabs [dot] de
+ * @author Marc Klinger - marc[at]nightlabs[dot]de
  */
 public class DateTimeUtil 
 {	
@@ -92,14 +93,12 @@ public class DateTimeUtil
 	 * Fills the given {@link DateTime} with the values of the given {@link Date}.
 	 * @param calendar the {@link Date} to set for the given {@link DateTime}
 	 * @param dateTime the {@link DateTime} to fill with the value of the given {@link Date}
+	 * @deprecated Use {@link #setDate(Calendar, DateTime)}
 	 */
+	@Deprecated
 	public static void setDate(Date date, DateTime dateTime) {
-		dateTime.setYear(date.getYear());
-		dateTime.setMonth(date.getMonth());
-		dateTime.setDay(date.getDate());
-		dateTime.setHours(date.getHours());
-		dateTime.setMinutes(date.getMinutes());
-		dateTime.setSeconds(date.getSeconds());
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		setDate(cal, dateTime);
 	}
-	
 }

@@ -1,5 +1,6 @@
 package org.nightlabs.base.ui.composite;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import org.eclipse.jface.dialogs.Dialog;
@@ -19,9 +20,8 @@ import org.nightlabs.base.ui.util.DateTimeUtil;
 import org.nightlabs.l10n.DateFormatProvider;
 
 /**
- * 
  * @author Daniel.Mazurek [at] NightLabs [dot] de
- *
+ * @author Marc Klinger - marc[at]nightlabs[dot]de
  */
 public class CalendarDateTimeEditLookupDialog
 extends Dialog
@@ -29,7 +29,7 @@ extends Dialog
 	private DateTime calendarDateTime;
 	private DateTime timeDateTime;
 	private DateTime dateDateTime;
-	private Date date;	
+	private Calendar date;	
 	private DateTimeEdit dateTimeEdit;
 	private Point initialLocation;
 	
@@ -42,9 +42,10 @@ extends Dialog
 	{
 		super(parentShell);
 		this.dateTimeEdit = dateTimeEdit;
-		date = dateTimeEdit.getDate();
-		if (date == null)
-			date = new Date();
+		date = Calendar.getInstance();
+		Date otherDate = dateTimeEdit.getDate();
+		if(otherDate != null)
+			date.setTime(otherDate);
 		this.initialLocation = initialLocation;
 	}
 
@@ -117,7 +118,7 @@ extends Dialog
 	private void createDateDateTime(Composite parent) {
 		dateDateTime = new DateTime(parent, SWT.DATE | SWT.BORDER);
 		dateDateTime.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		DateTimeUtil.setDate(date, calendarDateTime);
+		DateTimeUtil.setDate(date, dateDateTime);
 		dateDateTime.addSelectionListener(new SelectionAdapter(){
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -128,24 +129,28 @@ extends Dialog
 		});
 	}
 	
-	public Date getDate() {
+	public Calendar getDate() {
 		return date;
 	}
 
 	@Override
 	protected void okPressed() 
 	{
-		// It is unfortunately not possible to work with a calendar when
-		// using a DateTime
 		if (calendarDateTime != null) {
-			date.setYear(calendarDateTime.getYear());
-			date.setMonth(calendarDateTime.getMonth());
-			date.setDate(calendarDateTime.getDay());
+			date.set(Calendar.YEAR, calendarDateTime.getYear());
+			date.set(Calendar.MONTH, calendarDateTime.getMonth());
+			date.set(Calendar.DAY_OF_MONTH, calendarDateTime.getDay());
+//			date.setYear(calendarDateTime.getYear());
+//			date.setMonth(calendarDateTime.getMonth());
+//			date.setDate(calendarDateTime.getDay());
 		}
 		if (timeDateTime != null) {
-			date.setHours(timeDateTime.getHours());
-			date.setMinutes(timeDateTime.getMinutes());
-			date.setSeconds(timeDateTime.getSeconds());
+			date.set(Calendar.HOUR_OF_DAY, calendarDateTime.getHours());
+			date.set(Calendar.MINUTE, calendarDateTime.getMinutes());
+			date.set(Calendar.SECOND, calendarDateTime.getSeconds());
+//			date.setHours(timeDateTime.getHours());
+//			date.setMinutes(timeDateTime.getMinutes());
+//			date.setSeconds(timeDateTime.getSeconds());
 		}
 		super.okPressed();
 	}
