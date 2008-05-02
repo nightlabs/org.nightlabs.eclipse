@@ -23,7 +23,6 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 import org.nightlabs.base.ui.composite.XComposite;
-import org.nightlabs.base.ui.util.RCPUtil;
 import org.nightlabs.base.ui.wizard.WizardHopPage;
 import org.nightlabs.jseditor.ui.editor.JSEditorComposite;
 import org.nightlabs.jseditor.ui.resource.Messages;
