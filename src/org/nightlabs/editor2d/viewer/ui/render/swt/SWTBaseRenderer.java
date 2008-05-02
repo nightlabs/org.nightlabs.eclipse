@@ -8,6 +8,7 @@ import java.util.Iterator;
 import org.eclipse.swt.graphics.GC;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.DrawComponentContainer;
+import org.nightlabs.editor2d.IVisible;
 import org.nightlabs.editor2d.render.RenderContext;
 import org.nightlabs.editor2d.render.Renderer;
 

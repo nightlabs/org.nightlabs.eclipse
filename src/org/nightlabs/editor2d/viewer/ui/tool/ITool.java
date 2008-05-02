@@ -26,6 +26,7 @@
 
 package org.nightlabs.editor2d.viewer.ui.tool;
 
+import org.nightlabs.editor2d.viewer.ui.HitTestManager;
 import org.nightlabs.editor2d.viewer.ui.IDrawComponentConditional;
 import org.nightlabs.editor2d.viewer.ui.IViewer;
 import org.nightlabs.editor2d.viewer.ui.event.MouseEvent;
