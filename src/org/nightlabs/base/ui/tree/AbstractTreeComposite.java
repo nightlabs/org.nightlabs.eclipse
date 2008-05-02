@@ -181,7 +181,7 @@ implements ISelectionProvider
 //    {
 //    	if (e.widget instanceof TreeColumn) {
 //        TreeItem[] items = treeViewer.getTree().getItems();
-//        Collator collator = Collator.getInstance(Locale.getDefault());
+//        Collator collator = Collator.getInstance(NLLocale.getDefault());
 //        TreeColumn column = (TreeColumn)e.widget;
 //        int index = column == treeViewer.getTree().getColumns()[0] ? 0 : 1;
 //        for (int i = 1; i < items.length; i++) {
@@ -225,7 +225,7 @@ implements ISelectionProvider
 //			// sort the data based on column and direction
 //			final int index = currentColumn == treeViewer.getTree().getColumns()[0] ? 0 : 1;
 //			TreeItem[] items = treeViewer.getTree().getItems();
-//			Collator collator = Collator.getInstance(Locale.getDefault());
+//			Collator collator = Collator.getInstance(NLLocale.getDefault());
 //      for (int i = 1; i < items.length; i++) {
 //        String value1 = items[i].getText(index);
 //        for (int j = 0; j < i; j++){

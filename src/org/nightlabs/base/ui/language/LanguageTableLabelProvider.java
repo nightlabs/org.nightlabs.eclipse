@@ -26,8 +26,6 @@
 
 package org.nightlabs.base.ui.language;
 
-import java.util.Locale;
-
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;

@@ -45,6 +45,7 @@ import org.nightlabs.base.ui.config.LanguageCfMod;
 import org.nightlabs.config.Config;
 import org.nightlabs.config.ConfigException;
 import org.nightlabs.language.LanguageCf;
+import org.nightlabs.util.NLLocale;
 
 public class LanguageManager
 implements ILanguageManager
@@ -59,10 +60,10 @@ implements ILanguageManager
 	}
 	
 	/**
-	 * @return the default Language, by default the corresponding languageID is <code>Locale.getDefault().getLanguage()</code>.
+	 * @return the default Language, by default the corresponding languageID is <code>NLLocale.getDefault().getLanguage()</code>.
 	 */
 	public static LanguageCf createDefaultLanguage() {
-		LanguageCf lcf = new LanguageCf(Locale.getDefault().getLanguage());
+		LanguageCf lcf = new LanguageCf(NLLocale.getDefault().getLanguage());
 		lcf.init(null);
 		return lcf;
 	}
@@ -121,12 +122,12 @@ implements ILanguageManager
 			if (checkLanguageID(langCfMod.getLanguageID()))
 				Locale.setDefault(new Locale(langCfMod.getLanguageID()));
 		}
-		if (!checkLanguageID(Locale.getDefault().getLanguage())) {
+		if (!checkLanguageID(NLLocale.getDefault().getLanguage())) {
 			// if the current default locale is 
 			// invalid for some reason, we switch to default english
 			Locale.setDefault(Locale.ENGLISH);
 		}
-		currentLanguage = getLanguage(Locale.getDefault(), false);			
+		currentLanguage = getLanguage(NLLocale.getDefault(), false);			
 		if (currentLanguage == null) {
 			currentLanguage = createDefaultLanguage();
 			addLanguage(currentLanguage);

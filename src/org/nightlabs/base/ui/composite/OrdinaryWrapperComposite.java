@@ -26,6 +26,7 @@
 
 package org.nightlabs.base.ui.composite;
 
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
 

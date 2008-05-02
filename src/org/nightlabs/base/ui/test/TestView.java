@@ -16,6 +16,7 @@ import org.nightlabs.base.ui.composite.XComposite.LayoutMode;
 import org.nightlabs.base.ui.language.I18nTextEditorTable;
 import org.nightlabs.i18n.I18nText;
 import org.nightlabs.i18n.I18nTextBuffer;
+import org.nightlabs.util.NLLocale;
 
 public class TestView
 		extends ViewPart
@@ -30,7 +31,7 @@ public class TestView
 		XComposite page = new XComposite(parent, SWT.NONE, LayoutMode.TIGHT_WRAPPER);
 
 		i18nTextEditorTable = new I18nTextEditorTable(page);
-		i18nText.setText(Locale.getDefault().getLanguage(), "Test in my language."); //$NON-NLS-1$
+		i18nText.setText(NLLocale.getDefault().getLanguage(), "Test in my language."); //$NON-NLS-1$
 		i18nText.setText(Locale.FRENCH.getLanguage(), "C'est francais :-)"); //$NON-NLS-1$
 		i18nTextEditorTable.setI18nText(i18nText);
 

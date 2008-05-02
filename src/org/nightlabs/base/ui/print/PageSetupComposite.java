@@ -29,7 +29,6 @@ import java.awt.print.PageFormat;
 import java.awt.print.Paper;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -61,6 +60,7 @@ import org.nightlabs.i18n.unit.UnitRegistry;
 import org.nightlabs.i18n.unit.UnitUtil;
 import org.nightlabs.print.page.A4Page;
 import org.nightlabs.print.page.IPredefinedPage;
+import org.nightlabs.util.NLLocale;
 
 /**
  * @author Daniel.Mazurek [at] NightLabs [dot] de
@@ -378,7 +378,7 @@ extends XComposite
 		public String getText(Object element)
 		{
 			IPredefinedPage page = (IPredefinedPage) element;
-			return page.getName().getText(Locale.getDefault().getLanguage());
+			return page.getName().getText(NLLocale.getDefault().getLanguage());
 		}
 	};
 	

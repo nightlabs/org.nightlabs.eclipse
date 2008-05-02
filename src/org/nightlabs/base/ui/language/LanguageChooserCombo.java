@@ -29,7 +29,6 @@ package org.nightlabs.base.ui.language;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
@@ -41,10 +40,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.nightlabs.base.ui.custom.XCombo;
 import org.nightlabs.base.ui.exceptionhandler.ExceptionHandlerRegistry;
 import org.nightlabs.language.LanguageCf;
+import org.nightlabs.util.NLLocale;
 
 /**
  * This is an implementation of LanguageChooser showing all registered languages
- * in a combo box and automatically selecting the one from Locale.getDefault().getLanguage()
+ * in a combo box and automatically selecting the one from NLLocale.getDefault().getLanguage()
  *
  * @author Marco Schulze - marco at nightlabs dot de
  */
@@ -92,7 +92,7 @@ public class LanguageChooserCombo
 			// TODO We should load the languages only once into the client!
 			// They usually don't change...
 
-		  String userLanguageID = Locale.getDefault().getLanguage();
+		  String userLanguageID = NLLocale.getDefault().getLanguage();
 		  int languageIdx = -1;
 		  for (Iterator it = LanguageManager.sharedInstance().getLanguages().iterator(); it.hasNext(); ) {
 		  	LanguageCf language = (LanguageCf) it.next();

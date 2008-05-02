@@ -3,6 +3,7 @@ package org.nightlabs.base.ui.language;
 import org.eclipse.swt.events.ModifyListener;
 import org.nightlabs.base.ui.language.I18nTextEditor.EditMode;
 import org.nightlabs.i18n.I18nText;
+import org.nightlabs.i18n.I18nTextBuffer;
 
 public interface II18nTextEditor
 {

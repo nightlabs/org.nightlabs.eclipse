@@ -26,11 +26,13 @@
 
 package org.nightlabs.base.ui.entity.editor;
 
+import java.beans.PropertyChangeSupport;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.ui.forms.editor.IFormPage;
 import org.nightlabs.base.ui.notification.IDirtyStateManager;
+import org.nightlabs.util.bean.IPropertyChangeSupport;
 
 /**
  * <p>A controller that can be associated to a page that is displayed

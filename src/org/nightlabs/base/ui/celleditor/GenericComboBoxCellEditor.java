@@ -31,7 +31,6 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.nightlabs.base.ui.composite.XComboComposite;
-import org.nightlabs.base.ui.resource.Messages;
 
 /**
  * @author Daniel.Mazurek <at> Nightlabs <dot> de

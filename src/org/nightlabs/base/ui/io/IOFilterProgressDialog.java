@@ -28,13 +28,13 @@ package org.nightlabs.base.ui.io;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Locale;
 
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.nightlabs.io.AbstractIOFilterWithProgress;
 import org.nightlabs.io.IOFilter;
 import org.nightlabs.io.IOFilterWithProgress;
+import org.nightlabs.util.NLLocale;
 
 public class IOFilterProgressDialog
 extends ProgressMonitorDialog
@@ -47,10 +47,10 @@ extends ProgressMonitorDialog
 		if (ioFilter instanceof IOFilterWithProgress) {
 			IOFilterWithProgress progressFilter = (IOFilterWithProgress) ioFilter;
 			progressFilter.addPropertyChangeListener(subProgressListener);
-			getProgressMonitor().beginTask(ioFilter.getDescription().getText(Locale.getDefault().getLanguage()), progressFilter.getTotalWork());
+			getProgressMonitor().beginTask(ioFilter.getDescription().getText(NLLocale.getDefault().getLanguage()), progressFilter.getTotalWork());
 		}
 		else {
-			getProgressMonitor().beginTask(ioFilter.getDescription().getText(Locale.getDefault().getLanguage()), 2);
+			getProgressMonitor().beginTask(ioFilter.getDescription().getText(NLLocale.getDefault().getLanguage()), 2);
 		}
 	}
 	

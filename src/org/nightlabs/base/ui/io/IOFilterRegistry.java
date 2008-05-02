@@ -26,8 +26,6 @@
 
 package org.nightlabs.base.ui.io;
 
-import java.util.Locale;
-
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -38,6 +36,7 @@ import org.nightlabs.i18n.I18nTextBuffer;
 import org.nightlabs.io.IOFilter;
 import org.nightlabs.io.IOFilterInformationProvider;
 import org.nightlabs.io.IOFilterMan;
+import org.nightlabs.util.NLLocale;
 
 public class IOFilterRegistry
 extends AbstractEPProcessor
@@ -107,13 +106,13 @@ extends AbstractEPProcessor
 					if (checkString(name))
 					{
 						I18nText filterName = new I18nTextBuffer();
-						filterName.setText(Locale.getDefault().getLanguage(), name);
+						filterName.setText(NLLocale.getDefault().getLanguage(), name);
 						filter.setName(filterName);
 					}
 					if (checkString(filterDesciption))
 					{
 						I18nText filterDesc = new I18nTextBuffer();
-						filterDesc.setText(Locale.getDefault().getLanguage(), filterDesciption);
+						filterDesc.setText(NLLocale.getDefault().getLanguage(), filterDesciption);
 						filter.setDescription(filterDesc);
 					}
 					
@@ -134,7 +133,7 @@ extends AbstractEPProcessor
 							fileExtensions[i] = fileExtension;
 							if (checkString(description)) {
 								I18nText desc = new I18nTextBuffer();
-								desc.setText(Locale.getDefault().getLanguage(), description);
+								desc.setText(NLLocale.getDefault().getLanguage(), description);
 								filter.setFileExtensionDescription(fileExtension, desc);
 							}
 						}

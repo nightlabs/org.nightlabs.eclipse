@@ -26,12 +26,11 @@
 
 package org.nightlabs.base.ui.labelprovider;
 
-import java.util.Locale;
-
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.nightlabs.base.ui.language.LanguageManager;
 import org.nightlabs.i18n.I18nText;
+import org.nightlabs.util.NLLocale;
 
 public class I18nTextLabelProvider
 extends LabelProvider
@@ -77,7 +76,7 @@ extends LabelProvider
     	if (languageID != null)
     		return LanguageManager.sharedInstance().getFlag16x16Image(languageID);
     	
-    	return LanguageManager.sharedInstance().getFlag16x16Image(Locale.getDefault().getLanguage());
+    	return LanguageManager.sharedInstance().getFlag16x16Image(NLLocale.getDefault().getLanguage());
   	}
   	return null;
  	}

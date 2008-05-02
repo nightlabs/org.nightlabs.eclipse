@@ -26,7 +26,6 @@
 package org.nightlabs.base.ui.search;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
@@ -38,6 +37,7 @@ import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
 import org.nightlabs.base.ui.util.RCPUtil;
 import org.nightlabs.i18n.I18nText;
 import org.nightlabs.i18n.I18nTextBuffer;
+import org.nightlabs.util.NLLocale;
 
 /**
  * @author Daniel.Mazurek [at] NightLabs [dot] de
@@ -104,7 +104,7 @@ implements ISearchResultProviderFactory<T>
 			String priority = config.getAttribute(SearchResultProviderRegistry.ATTRIBUTE_PRIORITY);
 			String idString = config.getAttribute(SearchResultProviderRegistry.ATTRIBUTE_ID);
 			if (AbstractEPProcessor.checkString(name)) {
-				this.name.setText(Locale.getDefault().getLanguage(), name);
+				this.name.setText(NLLocale.getDefault().getLanguage(), name);
 			}
 			if (AbstractEPProcessor.checkString(iconString)) {
 				ImageDescriptor imageDescriptor = AbstractUIPlugin.imageDescriptorFromPlugin(

@@ -28,6 +28,7 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IEditorInput;
+import org.nightlabs.base.ui.entity.EntityEditorRegistry;
 
 /**
  * {@link IEntityTreeCategoryBinding}s are used to bind {@link IEntityTreeCategory}s

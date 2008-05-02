@@ -11,7 +11,6 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.nightlabs.base.ui.resource.Messages;
 
 public class SelectionProvider
 implements ISelectionProvider

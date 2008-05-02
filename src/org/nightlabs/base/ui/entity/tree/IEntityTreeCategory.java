@@ -24,10 +24,13 @@
 package org.nightlabs.base.ui.entity.tree;
 
 import org.eclipse.core.runtime.IExecutableExtension;
+import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.part.DrillDownAdapter;
 
 /**
  * Implementations of this interface can appear in

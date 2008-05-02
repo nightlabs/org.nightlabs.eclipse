@@ -27,6 +27,7 @@
 package org.nightlabs.base.ui.language;
 
 import java.util.Collection;
+
 import org.nightlabs.language.LanguageCf;
 
 public interface ILanguageManager

@@ -27,6 +27,8 @@
 package org.nightlabs.base.ui.action.registry;
 
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IContributionItem;
+import org.eclipse.jface.action.IContributionManager;
 import org.nightlabs.base.ui.action.IXContributionItem;
 
 public class ActionDescriptor extends ItemDescriptor

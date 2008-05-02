@@ -26,6 +26,7 @@
 
 package org.nightlabs.base.ui.entity.editor;
 
+import java.beans.PropertyChangeSupport;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.HashSet;

@@ -29,6 +29,7 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.Section;
+import org.nightlabs.base.ui.composite.XComposite;
 
 /**
  * @author Daniel.Mazurek <at> Nightlabs <dot> de

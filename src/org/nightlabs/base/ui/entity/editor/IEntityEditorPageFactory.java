@@ -27,6 +27,7 @@
 package org.nightlabs.base.ui.entity.editor;
 
 import org.eclipse.ui.forms.editor.FormEditor;
+import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.editor.IFormPage;
 
 /**

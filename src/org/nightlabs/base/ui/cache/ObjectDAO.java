@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.util.CollectionUtil;
 
 /**
