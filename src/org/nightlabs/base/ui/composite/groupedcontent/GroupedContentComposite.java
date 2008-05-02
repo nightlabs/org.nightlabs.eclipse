@@ -42,7 +42,6 @@ import org.nightlabs.base.ui.composite.XComposite;
 
 /**
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
- *
  */
 public class GroupedContentComposite extends XComposite {
 	
@@ -55,7 +54,6 @@ public class GroupedContentComposite extends XComposite {
 	private List<GroupedContentProvider> groupedContentProvider = new ArrayList<GroupedContentProvider>();
 	private Map<GroupedContentProvider, Composite> providerComposites = new HashMap<GroupedContentProvider, Composite>();
 	
-	
 	private ISelectionChangedListener switcherListener = new ISelectionChangedListener() {
 		public void selectionChanged(SelectionChangedEvent event) {
 			IStructuredSelection selection = (IStructuredSelection)switcherTable.getSelection();
@@ -66,16 +64,8 @@ public class GroupedContentComposite extends XComposite {
 		}
 	};
 	
-	
-	
-	
-	/**
-	 * @param parent
-	 * @param style
-	 * @param setLayoutData
-	 */
 	public GroupedContentComposite(Composite parent, int style, boolean setLayoutData) {
-		super(parent, style, LayoutMode.ORDINARY_WRAPPER,
+		super(parent, style, LayoutMode.TIGHT_WRAPPER,
 				setLayoutData ? LayoutDataMode.GRID_DATA : LayoutDataMode.NONE);
 		getGridLayout().numColumns = 2;
 
@@ -93,7 +83,6 @@ public class GroupedContentComposite extends XComposite {
 		contentStackLayout = new StackLayout();
 		contentWrapper.setLayout(contentStackLayout);
 	}
-	
 	
 	public void addGroupedContentProvider(GroupedContentProvider groupedContentProvider) {
 		this.groupedContentProvider.add(groupedContentProvider);

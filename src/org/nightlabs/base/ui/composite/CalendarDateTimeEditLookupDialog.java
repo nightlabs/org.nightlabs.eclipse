@@ -1,7 +1,6 @@
 package org.nightlabs.base.ui.composite;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
@@ -26,51 +25,80 @@ import org.nightlabs.l10n.DateFormatProvider;
 public class CalendarDateTimeEditLookupDialog
 extends Dialog
 {	
+	private long flags;
 	private DateTime calendarDateTime;
 	private DateTime timeDateTime;
 	private DateTime dateDateTime;
 	private Calendar date;	
-	private DateTimeEdit dateTimeEdit;
 	private Point initialLocation;
 	
-	public CalendarDateTimeEditLookupDialog(Shell parentShell, DateTimeEdit dateTimeEdit)
+	/**
+	 * Create a new CalendarDateTimeEditLookupDialog instance.
+	 * @param parentShell The parent shell
+	 * @param flags One of the "FLAGS_"-constants in {@link DateFormatProvider}.
+	 */
+	public CalendarDateTimeEditLookupDialog(Shell parentShell, long flags)
 	{
-		this(parentShell, dateTimeEdit, null);
+		this(parentShell, flags, null);
 	}
 
-	public CalendarDateTimeEditLookupDialog(Shell parentShell, DateTimeEdit dateTimeEdit, Point initialLocation)
+	/**
+	 * Create a new CalendarDateTimeEditLookupDialog instance.
+	 * @param parentShell The parent shell
+	 * @param flags One of the "FLAGS_"-constants in {@link DateFormatProvider}.
+	 * @param initialLocation The initial location for this dialog
+	 */
+	public CalendarDateTimeEditLookupDialog(Shell parentShell, long flags, Point initialLocation)
 	{
 		super(parentShell);
-		this.dateTimeEdit = dateTimeEdit;
 		date = Calendar.getInstance();
-		Date otherDate = dateTimeEdit.getDate();
-		if(otherDate != null)
-			date.setTime(otherDate);
+		this.flags = flags;
 		this.initialLocation = initialLocation;
 	}
 
+	/**
+	 * Set the initial date to show in this dialog. This must be called
+	 * before {@link #open()} to have any effect. Internally, a copy of
+	 * the given {@link Calendar} instance is used. The given instance
+	 * is never changed. Call {@link #getDate()} to get the date selected
+	 * by the user after {@link #open()} returns.
+	 * @param initialDate The initial date to set
+	 */
+	public void setInitialDate(Calendar initialDate)
+	{
+		date = (Calendar)initialDate.clone();
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.dialogs.Dialog#getInitialLocation(org.eclipse.swt.graphics.Point)
+	 */
 	@Override
 	protected Point getInitialLocation(Point initialSize)
 	{
 		if (initialLocation != null)
 			return initialLocation;
-
 		return super.getInitialLocation(initialSize);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.dialogs.Dialog#create()
+	 */
 	@Override
 	public void create() {
 		super.create();
 		getShell().setText(Messages.getString("org.nightlabs.base.ui.composite.CalendarDateTimeEditLookupDialog.title")); //$NON-NLS-1$
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
+	 */
 	@Override
 	protected Control createDialogArea(Composite parent)
 	{
 		Composite page = (Composite) super.createDialogArea(parent);
 		int numColumns = 0;
 
-		if ((DateFormatProvider.DATE & dateTimeEdit.getFlags()) == DateFormatProvider.DATE) {
+		if ((DateFormatProvider.DATE & flags) == DateFormatProvider.DATE) {
 			++numColumns;
 			XComposite dateComp = new XComposite(page, SWT.NONE);
 
@@ -85,11 +113,11 @@ extends Dialog
 				}
 			});
 			
-			if ((DateFormatProvider.TIME & dateTimeEdit.getFlags()) != DateFormatProvider.TIME)
+			if ((DateFormatProvider.TIME & flags) != DateFormatProvider.TIME)
 				createDateDateTime(dateComp);
 		}
 
-		if ((DateFormatProvider.TIME & dateTimeEdit.getFlags()) == DateFormatProvider.TIME) {
+		if ((DateFormatProvider.TIME & flags) == DateFormatProvider.TIME) {
 			++numColumns;
 			XComposite timeComp = new XComposite(page, SWT.NONE);
 			timeComp.getGridLayout().numColumns = 2;
@@ -99,10 +127,10 @@ extends Dialog
 			
 			int timeStyle = SWT.TIME;
 			
-			if ((DateFormatProvider.TIME_SEC & dateTimeEdit.getFlags()) == DateFormatProvider.TIME_SEC)
+			if ((DateFormatProvider.TIME_SEC & flags) == DateFormatProvider.TIME_SEC)
 				timeStyle = timeStyle | SWT.MEDIUM;
 			
-			if ((DateFormatProvider.TIME_MSEC & dateTimeEdit.getFlags()) == DateFormatProvider.TIME_MSEC)
+			if ((DateFormatProvider.TIME_MSEC & flags) == DateFormatProvider.TIME_MSEC)
 				timeStyle = timeStyle | SWT.LONG;
 			
 			new Label(timeComp, SWT.NONE).setText(Messages.getString("CalendarDateTimeEditLookupDialog.label.time")); //$NON-NLS-1$

@@ -52,6 +52,8 @@ public class EntityEditorUtil
 //		client.setToolkit(toolkit);
 		GridLayout layout = new GridLayout();
 		layout.marginRight = layout.marginLeft = toolkit.getBorderStyle() != SWT.NULL ? 0 : 2;
+		layout.marginHeight = 0;
+		layout.marginWidth = 0;
 		layout.numColumns = numColumns;
 		client.setLayout(layout);
 		client.setLayoutData(new GridData(GridData.FILL_BOTH));

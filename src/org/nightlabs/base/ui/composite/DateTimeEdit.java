@@ -26,6 +26,7 @@
 
 package org.nightlabs.base.ui.composite;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -51,8 +52,13 @@ import org.nightlabs.l10n.DateFormatter;
 import org.nightlabs.l10n.DateParseException;
 
 /**
+ * A date time edit control.
  * @author Marco Schulze - marco at nightlabs dot de
+ * @author Marc Klinger - marc[at]nightlabs[dot]de
+ * @deprecated Use {@link DateTimeControl} instead. Do the caption and
+ * 		checkbox stuff yourself.
  */
+@Deprecated
 public class DateTimeEdit extends XComposite
 {
 	private Text text;
@@ -69,7 +75,10 @@ public class DateTimeEdit extends XComposite
 	/**
 	 * This constructor calls {@link #DateTimeEdit(Composite, long, Date)}
 	 * with <tt>new Date()</tt>.
+	 * @deprecated Use {@link DateTimeControl} instead. Do the caption and
+	 * 		checkbox stuff yourself.
 	 */
+	@Deprecated
 	public DateTimeEdit(Composite parent, long flags)
 	{
 		this(parent, flags, new Date());
@@ -78,7 +87,10 @@ public class DateTimeEdit extends XComposite
 	/**
 	 * This constructor calls {@link #DateTimeEdit(Composite, long, Date, String)}
 	 * with <tt>new Date()</tt>.
+	 * @deprecated Use {@link DateTimeControl} instead. Do the caption and
+	 * 		checkbox stuff yourself.
 	 */
+	@Deprecated
 	public DateTimeEdit(Composite parent, long flags, String caption)
 	{
 		this(parent, flags, new Date(), caption);
@@ -87,7 +99,10 @@ public class DateTimeEdit extends XComposite
 	/**
 	 * This constructor calls {@link #DateTimeEdit(Composite, long, Date, String)}
 	 * with <tt>caption = null</tt>.
+	 * @deprecated Use {@link DateTimeControl} instead. Do the caption and
+	 * 		checkbox stuff yourself.
 	 */
+	@Deprecated
 	public DateTimeEdit(Composite parent, long flags, Date date)
 	{
 		this(parent, flags, date, null);
@@ -100,7 +115,10 @@ public class DateTimeEdit extends XComposite
 	 * @param flags One of the "FLAGS_"-constants in {@link DateFormatter} - if needed, combined with {@link #FLAGS_SHOW_ACTIVE_CHECK_BOX}.
 	 * @param date The current date to display. May be <code>null</code> to indicate that no initial date should be set.
 	 * @param caption Either <tt>null</tt> or a text that should be displayed above the date-input.
+	 * @deprecated Use {@link DateTimeControl} instead. Do the caption and
+	 * 		checkbox stuff yourself.
 	 */
+	@Deprecated
 	public DateTimeEdit(Composite parent, long flags, Date date, String caption)
 	{
 		super(parent, SWT.NONE, LayoutMode.TIGHT_WRAPPER);
@@ -184,14 +202,14 @@ public class DateTimeEdit extends XComposite
 	private void lookupButtonClicked()
 	{
 		CalendarDateTimeEditLookupDialog dialog = new CalendarDateTimeEditLookupDialog(getShell(), 
-				this, lookupButton.toDisplay(0, 0));
+				flags, lookupButton.toDisplay(0, 0));
+		Calendar cal = Calendar.getInstance();
+		if(date != null)
+			cal.setTime(date);
+		dialog.setInitialDate(cal);
 		if (dialog.open() == Window.OK) {
 			setDate(dialog.getDate().getTime());
 		}
-//		DateTimeEditLookupDialog dialog = new DateTimeEditLookupDialog(getShell(), this);
-//		if (dialog.open() == CalendarDateTimeEditLookupDialog.OK) {
-//			setDate(dialog.getDate());
-//		}
 	}
 
 	private LinkedList<ModifyListener> modifyListeners = null;
