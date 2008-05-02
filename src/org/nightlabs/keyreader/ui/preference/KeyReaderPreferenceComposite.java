@@ -1,7 +1,6 @@
 package org.nightlabs.keyreader.ui.preference;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -34,6 +33,7 @@ import org.nightlabs.keyreader.ui.KeyReaderImplementationRegistry;
 import org.nightlabs.keyreader.ui.KeyReaderUseCase;
 import org.nightlabs.keyreader.ui.KeyReaderUseCaseRegistry;
 import org.nightlabs.keyreader.ui.resource.Messages;
+import org.nightlabs.util.NLLocale;
 import org.nightlabs.util.Util;
 
 public class KeyReaderPreferenceComposite
@@ -86,7 +86,7 @@ extends XComposite
 			public String getText(Object element)
 			{
 				KeyReaderImplementation keyReaderImplementation = (KeyReaderImplementation) element;
-				return keyReaderImplementation.getName(Locale.getDefault());
+				return keyReaderImplementation.getName(NLLocale.getDefault());
 			}
 		});
 		keyReaderImplementationCombo.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -190,7 +190,7 @@ extends XComposite
 			public String getText(Object element)
 			{
 				ConnectionImplementation connectionImplementation = (ConnectionImplementation) element;
-				return connectionImplementation.getName(Locale.getDefault());
+				return connectionImplementation.getName(NLLocale.getDefault());
 			}
 		});
 		connectionImplementationCombo.addSelectionChangedListener(new ISelectionChangedListener() {
