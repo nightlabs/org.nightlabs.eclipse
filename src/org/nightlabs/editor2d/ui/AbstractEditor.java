@@ -46,7 +46,6 @@ import java.util.EventObject;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -190,6 +189,7 @@ import org.nightlabs.io.WriteException;
 import org.nightlabs.print.page.IPredefinedPage;
 import org.nightlabs.print.page.PredefinedPageRegistry;
 import org.nightlabs.print.page.PredefinedPageUtil;
+import org.nightlabs.util.NLLocale;
 
 
 public abstract class AbstractEditor
@@ -1259,7 +1259,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 					}
 				} catch (MalformedURLException e) {
 					logger.warn("fileInput.getFile() "+f+" could not be transformed into ULR", e); //$NON-NLS-1$ //$NON-NLS-2$
-					logger.warn("prepartion of IOFilterInformationProvider for IOFilter "+ioFilter.getName().getText(Locale.getDefault().getLanguage()) +" failed!"); //$NON-NLS-1$ //$NON-NLS-2$
+					logger.warn("prepartion of IOFilterInformationProvider for IOFilter "+ioFilter.getName().getText(NLLocale.getDefault().getLanguage()) +" failed!"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
 		}

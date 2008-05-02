@@ -32,6 +32,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 
 import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.J2DGraphics;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.geometry.Rectangle;

@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.util.Iterator;
 
 import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.FreeformFigure;
 import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.geometry.Rectangle;

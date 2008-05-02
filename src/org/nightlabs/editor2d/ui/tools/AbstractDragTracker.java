@@ -37,6 +37,7 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.SnapToHelper;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.handles.HandleBounds;
+import org.eclipse.gef.tools.ResizeTracker;
 import org.eclipse.gef.tools.SimpleDragTracker;
 import org.eclipse.gef.tools.ToolUtilities;
 import org.nightlabs.editor2d.ui.request.EditorRequestConstants;

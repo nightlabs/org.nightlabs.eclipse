@@ -48,6 +48,7 @@ import org.eclipse.swt.widgets.Group;
 import org.holongate.j2d.J2DCanvas;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.form.NightlabsFormsToolkit;
+import org.nightlabs.base.ui.form.XFormToolkit;
 import org.nightlabs.editor2d.ui.j2dswt.RenderedImagePaintable;
 import org.nightlabs.editor2d.ui.resource.Messages;
 import org.nightlabs.editor2d.util.ImageUtil;

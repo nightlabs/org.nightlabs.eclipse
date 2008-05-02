@@ -28,7 +28,6 @@ package org.nightlabs.editor2d.ui.composite;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -58,6 +57,7 @@ import org.nightlabs.i18n.unit.resolution.ResolutionUnitRegistry;
 import org.nightlabs.print.page.A4Page;
 import org.nightlabs.print.page.IPredefinedPage;
 import org.nightlabs.print.page.PredefinedPageRegistry;
+import org.nightlabs.util.NLLocale;
 
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
@@ -262,7 +262,7 @@ extends XComposite
 		pages = new LinkedList<IPredefinedPage>(registry.getPages());
 		for (Iterator<IPredefinedPage> it = pages.iterator(); it.hasNext(); ) {
 			IPredefinedPage page = it.next();
-			pageSelectCombo.add(page.getName().getText(Locale.getDefault().getLanguage()));
+			pageSelectCombo.add(page.getName().getText(NLLocale.getDefault().getLanguage()));
 		}
 		if (registry.getPageIDs().contains(A4Page.PAGE_ID)) {
 			int index = pages.indexOf(registry.getPage(A4Page.PAGE_ID));
@@ -284,7 +284,7 @@ extends XComposite
 		units = new LinkedList<IUnit>(registry.getUnits(UnitConstants.UNIT_CONTEXT_EDITOR2D, true));
 		for (Iterator<IUnit> it = units.iterator(); it.hasNext(); ) {
 			IUnit unit = it.next();
-			unitsCombo.add(unit.getName().getText(Locale.getDefault().getLanguage()));
+			unitsCombo.add(unit.getName().getText(NLLocale.getDefault().getLanguage()));
 		}
 		unitsCombo.select(0);
 	}
@@ -295,7 +295,7 @@ extends XComposite
 		resolutionUnits = new LinkedList<IResolutionUnit>(registry.getResolutionUnits());
 		for (Iterator<IResolutionUnit> it = resolutionUnits.iterator(); it.hasNext(); ) {
 			IResolutionUnit unit = it.next();
-			resolutionUnitsCombo.add(unit.getName().getText(Locale.getDefault().getLanguage()));
+			resolutionUnitsCombo.add(unit.getName().getText(NLLocale.getDefault().getLanguage()));
 		}
 		if (registry.getResolutionIDs().contains(DPIResolutionUnit.RESOLUTION_ID)) {
 			resolutionUnitsCombo.select(resolutionUnits.indexOf(registry.getResolutionUnit(DPIResolutionUnit.RESOLUTION_ID)));

@@ -36,6 +36,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import org.eclipse.gef.Request;
+import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.tools.CreationTool;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.FileDialog;
