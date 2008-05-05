@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.nightlabs.eclipse.ui.fckeditor.FCKEditor"
+            icon="icons/sample.gif"
+            id="org.nightlabs.eclipse.ui.fckeditor.FCKEditor"
+            name="FCKeditor">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="org.eclipse.ui.examples.rcp.browser.actionSet"
+            label="Test"
+            visible="true">
+         <menu
+               id="testMenu"
+               label="&amp;Test">
+            <separator
+                  name="testGroup">
+            </separator>
+         </menu>
+         <action
+               class="org.nightlabs.eclipse.ui.fckeditor.test.EditorAction"
+               icon="icons/sample.gif"
+               id="org.nightlabs.eclipse.ui.fckeditor.test.EditorAction"
+               label="&amp;FCKeditor"
+               menubarPath="testMenu/testGroup"
+               toolbarPath="testGroup"
+               tooltip="Open Test FCKeditor">
+         </action>
+      </actionSet>
+   </extension>
+
+</plugin>
