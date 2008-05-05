@@ -58,6 +58,12 @@ public class FCKEditorConfigFileProvider extends AbstractFileProvider {
 			"                                	['TextColor','BGColor'],\n"+
 			"                                	['ShowBlocks']\n"+
 			"                                ] ;\n"+
+			"FCKConfig.LinkBrowserURL = '"+getEditor().getBaseUrl()+"/nlfinder/nlfinder.html' ;\n"+
+			"FCKConfig.ImageBrowserURL = '"+getEditor().getBaseUrl()+"/nlfinder/nlfinder.html?type=Images' ;\n"+
+			"FCKConfig.FlashBrowserURL = '"+getEditor().getBaseUrl()+"/nlfinder/nlfinder.html?type=Flash' ;\n"+
+			"FCKConfig.LinkUploadURL = '"+getEditor().getBaseUrl()+"/nlfinder/upload.html?command=QuickUpload&type=Files' ;\n"+
+			"FCKConfig.ImageUploadURL = '"+getEditor().getBaseUrl()+"/nlfinder/upload.html?command=QuickUpload&type=Images' ;\n"+
+			"FCKConfig.FlashUploadURL = '"+getEditor().getBaseUrl()+"/nlfinder/upload.html?command=QuickUpload&type=Flash' ;\n"+			
 			"";
 		return new ByteArrayInputStream(configContents.getBytes());
 	}

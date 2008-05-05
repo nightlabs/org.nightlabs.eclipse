@@ -17,6 +17,7 @@ import org.nightlabs.eclipse.ui.fckeditor.server.FCKEditorHTTPD;
 import org.nightlabs.eclipse.ui.fckeditor.server.FCKEditorSaveDocumentProvider;
 import org.nightlabs.eclipse.ui.fckeditor.server.FCKEditorSkinFileProvider;
 import org.nightlabs.eclipse.ui.fckeditor.server.MarkDirtyProvider;
+import org.nightlabs.eclipse.ui.fckeditor.server.NLFinder;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
@@ -44,6 +45,7 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 		httpd.addFileProvider(this, new FCKEditorConfigFileProvider(this));
 		httpd.addFileProvider(this, new FCKEditorCSSProvider(this));
 		httpd.addFileProvider(this, new MarkDirtyProvider(this));
+		httpd.addFileProvider(this, new NLFinder(this));
 		this.httpd = httpd;
 		System.out.println("Editor URL: "+getBaseUrl());
 	}
