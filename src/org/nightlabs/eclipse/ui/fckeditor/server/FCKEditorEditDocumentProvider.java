@@ -20,11 +20,6 @@ public class FCKEditorEditDocumentProvider extends AbstractFileProvider
 		return "Loading...";
 	}
 	
-	protected String getFCKEditorId()
-	{
-		return "FCKeditor_"+getEditor().getBaseUrl();
-	}
-	
 	private static String escapeContents(String contents)
 	{
 		if(contents == null)
@@ -39,7 +34,7 @@ public class FCKEditorEditDocumentProvider extends AbstractFileProvider
 	@Override
 	public InputStream getFileContents(String filename, Properties parms) {
 		String loadingPaneText = getLoadingPaneText();
-		String editorId = getFCKEditorId();
+		String editorId = getEditor().getFCKEditorId();
 		String contents = getEditor().getEditorInput().getEditorContent().getHtml();
 		String escapedContents = escapeContents(contents);
 
@@ -57,7 +52,7 @@ public class FCKEditorEditDocumentProvider extends AbstractFileProvider
 				editContents +=
 			"<div id=\"loadingpane\" style=\"position:absolute; top:0px; left:0px; width: 100%; height: 150px; z-index:10000; background: white; padding: 5px;\">"+loadingPaneText+"</div>\n";
 			editContents +=
-			"        <form action=\""+getEditor().getBaseUrl()+"/save.html\" method=\"post\">\n"+
+			"        <form id=\"form_"+editorId+"\" action=\""+getEditor().getBaseUrl()+"/save.html\" method=\"post\">\n"+
 			"                <script type=\"text/javascript\">\n"+
 			"<!--\n"+
 			"var sBasePath = '"+getEditor().getBaseUrl()+"/fckeditor/';\n"+
@@ -99,7 +94,6 @@ public class FCKEditorEditDocumentProvider extends AbstractFileProvider
 			"    editorInstance.Focus();\n"+
 			"    \n"+
 			"    dirtyCheckInterval = setInterval('dirtyCheck()', 250);\n"+
-			"    \n"+
 			"    \n"+
 			"    \n"+
 			"}\n"+

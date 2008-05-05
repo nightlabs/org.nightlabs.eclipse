@@ -5,8 +5,9 @@
          point="org.eclipse.ui.editors">
       <editor
             class="org.nightlabs.eclipse.ui.fckeditor.FCKEditor"
-            icon="icons/sample.gif"
+            contributorClass="org.nightlabs.eclipse.ui.fckeditor.FCKEditorActionBarContributer"
             id="org.nightlabs.eclipse.ui.fckeditor.FCKEditor"
+            icon="icons/document.png"
             name="FCKeditor">
       </editor>
    </extension>
@@ -25,7 +26,7 @@
          </menu>
          <action
                class="org.nightlabs.eclipse.ui.fckeditor.test.EditorAction"
-               icon="icons/sample.gif"
+               icon="icons/document.png"
                id="org.nightlabs.eclipse.ui.fckeditor.test.EditorAction"
                label="&amp;FCKeditor"
                menubarPath="testMenu/testGroup"

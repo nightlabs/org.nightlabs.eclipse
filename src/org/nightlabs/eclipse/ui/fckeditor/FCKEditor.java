@@ -26,8 +26,15 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 	private boolean dirty;
 	private Browser browser;
 	private FCKEditorHTTPD httpd;
+	private String widgetBackgroundColor;
+	private String titleBackgroundColor;
+	private String titleBackgroundGradientColor;
 	
-	public FCKEditor() {
+	/**
+	 * Create a new FCKEditor instance.
+	 */
+	public FCKEditor() 
+	{
 		FCKEditorHTTPD httpd = FCKEditorHTTPD.sharedInstance();
 		httpd.addEditor(this);
 		httpd.addFileProvider(this, new FCKEditorFileProvider(this));
@@ -40,7 +47,10 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 		this.httpd = httpd;
 		System.out.println("Editor URL: "+getBaseUrl());
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.part.WorkbenchPart#dispose()
+	 */
 	@Override
 	public void dispose() {
 		httpd.removeEditor(this);
@@ -48,6 +58,9 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 		super.dispose();
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.part.EditorPart#getEditorInput()
+	 */
 	@Override
 	public IFCKEditorInput getEditorInput() {
 		return (IFCKEditorInput)super.getEditorInput();
@@ -58,8 +71,7 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 	 */
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		// TODO Auto-generated method stub
-		
+		browser.execute("var myform = document.getElementById('form_"+getFCKEditorId()+"'); myform.submit();");
 	}
 
 	/* (non-Javadoc)
@@ -67,10 +79,25 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 	 */
 	@Override
 	public void doSaveAs() {
-		// TODO Auto-generated method stub
-		
+		// not supported yet
 	}
 
+	/**
+	 * Get the HTML color representation string for an SWT system 
+	 * color id.
+	 * @param swtColorId The SWT system color.
+	 * @return The HTML color representation in the form 
+	 * 		<code>"#xxxxxx"</code> where every 'x' represents a hex 
+	 * 		digit.
+	 */
+	protected String getHtmlColor(int swtColorId)
+	{
+		Color color = getSite().getShell().getDisplay().getSystemColor(swtColorId);
+		if(color == null)
+			throw new IllegalArgumentException("Unknown SWT color: "+swtColorId);
+		return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.part.EditorPart#init(org.eclipse.ui.IEditorSite, org.eclipse.ui.IEditorInput)
 	 */
@@ -82,9 +109,11 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 		setSite(site);
 		setInput(input);
 		
-		Color color = site.getShell().getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
-		widgetBackgroundColor = String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
-		System.out.println("Color: "+widgetBackgroundColor);
+		setPartName(input.getName());
+		
+		widgetBackgroundColor = getHtmlColor(SWT.COLOR_WIDGET_BACKGROUND);
+		titleBackgroundColor = getHtmlColor(SWT.COLOR_TITLE_BACKGROUND);
+		titleBackgroundGradientColor = getHtmlColor(SWT.COLOR_TITLE_BACKGROUND_GRADIENT);
 	}
 
 	/* (non-Javadoc)
@@ -95,14 +124,20 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 		return dirty;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.nightlabs.eclipse.ui.fckeditor.IFCKEditor#setDirty(boolean)
+	 */
 	@Override
-	public void markDirty(boolean dirty) {
+	public void setDirty(boolean dirty) {
 		if(this.dirty != dirty) {
 			this.dirty = dirty;
-			System.out.println("FIRE");
-			firePropertyChange(PROP_DIRTY);
-			firePropertyChange(PROP_INPUT);
-			firePropertyChange(PROP_TITLE);
+			getSite().getShell().getDisplay().asyncExec(new Runnable() {
+				@Override
+				public void run()
+				{
+					firePropertyChange(PROP_DIRTY);
+				}
+			});
 		}
 		//firePartPropertyChanged(PROP_DIRTY, String.valueOf(!dirty), String.valueOf(dirty));
 	}
@@ -133,16 +168,61 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 	public void setFocus() {
 	}
 	
-	private String widgetBackgroundColor;
-	
+	/* (non-Javadoc)
+	 * @see org.nightlabs.eclipse.ui.fckeditor.IFCKEditor#getWidgetBackgroundColor()
+	 */
+	@Override
 	public String getWidgetBackgroundColor()
 	{
 		return widgetBackgroundColor;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.nightlabs.eclipse.ui.fckeditor.IFCKEditor#getBaseUrl()
+	 */
 	@Override
 	public String getBaseUrl() {
 		return httpd.getUrl(this);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.nightlabs.eclipse.ui.fckeditor.IFCKEditor#getFCKEditorId()
+	 */
+	@Override
+	public String getFCKEditorId()
+	{
+		return "FCKeditor_"+getBaseUrl();
+	}
+
+	/* (non-Javadoc)
+	 * @see org.nightlabs.eclipse.ui.fckeditor.IFCKEditor#getTitleBackgroundColor()
+	 */
+	@Override
+	public String getTitleBackgroundColor()
+	{
+		return titleBackgroundColor;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.nightlabs.eclipse.ui.fckeditor.IFCKEditor#getTitleBackgroundGradientColor()
+	 */
+	@Override
+	public String getTitleBackgroundGradientColor()
+	{
+		return titleBackgroundGradientColor;
+	}
+
+	private boolean executeFCKCommand(String command)
+	{
+		return browser.execute("var oEditor = FCKeditorAPI.GetInstance('"+getFCKEditorId()+"'); oEditor.Commands.GetCommand('"+command+"').Execute();");
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.nightlabs.eclipse.ui.fckeditor.IFCKEditor#print()
+	 */
+	@Override
+	public void print()
+	{
+		executeFCKCommand("Print");
+	}
 }

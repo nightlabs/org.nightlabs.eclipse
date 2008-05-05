@@ -21,7 +21,7 @@ public class MarkDirtyProvider extends AbstractFileProvider {
 	 */
 	@Override
 	public InputStream getFileContents(String subUri, Properties parms) {
-		getEditor().markDirty(true);
+		getEditor().setDirty(true);
 		String contents = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<dirty>true</dirty>\n";
 		try {
 			return new ByteArrayInputStream(contents.getBytes("UTF-8"));

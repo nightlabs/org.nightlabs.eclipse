@@ -29,11 +29,11 @@ public class FCKEditorSaveDocumentProvider extends FCKEditorEditDocumentProvider
 	
 	@Override
 	public InputStream getFileContents(String filename, Properties parms) {
-		String contents = parms.getProperty(getFCKEditorId());
+		String contents = parms.getProperty(getEditor().getFCKEditorId());
 		if(contents == null)
 			throw new RuntimeException("Error saving contents. Content parameter not found.");
 		getEditor().getEditorInput().getEditorContent().setHtml(contents);
-		getEditor().markDirty(false);
+		getEditor().setDirty(false);
 		return super.getFileContents(filename, parms);
 	}
 }
