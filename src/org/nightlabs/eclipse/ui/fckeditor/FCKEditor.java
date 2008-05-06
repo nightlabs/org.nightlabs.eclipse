@@ -8,6 +8,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 import org.nightlabs.eclipse.ui.fckeditor.server.FCKEditorCSSProvider;
 import org.nightlabs.eclipse.ui.fckeditor.server.FCKEditorConfigFileProvider;
@@ -16,7 +17,8 @@ import org.nightlabs.eclipse.ui.fckeditor.server.FCKEditorFileProvider;
 import org.nightlabs.eclipse.ui.fckeditor.server.FCKEditorHTTPD;
 import org.nightlabs.eclipse.ui.fckeditor.server.FCKEditorSaveDocumentProvider;
 import org.nightlabs.eclipse.ui.fckeditor.server.FCKEditorSkinFileProvider;
-import org.nightlabs.eclipse.ui.fckeditor.server.MarkDirtyProvider;
+import org.nightlabs.eclipse.ui.fckeditor.server.FCKPluginFileProvider;
+import org.nightlabs.eclipse.ui.fckeditor.server.UIBridge;
 import org.nightlabs.eclipse.ui.fckeditor.server.NLFinder;
 
 /**
@@ -36,18 +38,6 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 	 */
 	public FCKEditor() 
 	{
-		FCKEditorHTTPD httpd = FCKEditorHTTPD.sharedInstance();
-		httpd.addEditor(this);
-		httpd.addFileProvider(this, new FCKEditorFileProvider(this));
-		httpd.addFileProvider(this, new FCKEditorSkinFileProvider(this));
-		httpd.addFileProvider(this, new FCKEditorEditDocumentProvider(this));
-		httpd.addFileProvider(this, new FCKEditorSaveDocumentProvider(this));
-		httpd.addFileProvider(this, new FCKEditorConfigFileProvider(this));
-		httpd.addFileProvider(this, new FCKEditorCSSProvider(this));
-		httpd.addFileProvider(this, new MarkDirtyProvider(this));
-		httpd.addFileProvider(this, new NLFinder(this));
-		this.httpd = httpd;
-		System.out.println("Editor URL: "+getBaseUrl());
 	}
 
 	/* (non-Javadoc)
@@ -104,9 +94,27 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 	 * @see org.eclipse.ui.part.EditorPart#init(org.eclipse.ui.IEditorSite, org.eclipse.ui.IEditorInput)
 	 */
 	@Override
-	public void init(IEditorSite site, IEditorInput input) {
+	public void init(IEditorSite site, IEditorInput input) throws PartInitException 
+	{
 		if(!(input instanceof IFCKEditorInput))
-			throw new IllegalArgumentException("Invalid FCKeditor input");
+			throw new PartInitException("Invalid FCKeditor input");
+		
+		try {
+			httpd = FCKEditorHTTPD.sharedInstance();
+			httpd.addEditor(this);
+			httpd.addFileProvider(this, new FCKEditorFileProvider(this));
+			httpd.addFileProvider(this, new FCKEditorSkinFileProvider(this));
+			httpd.addFileProvider(this, new FCKEditorEditDocumentProvider(this));
+			httpd.addFileProvider(this, new FCKEditorSaveDocumentProvider(this));
+			httpd.addFileProvider(this, new FCKEditorConfigFileProvider(this));
+			httpd.addFileProvider(this, new FCKEditorCSSProvider(this));
+			httpd.addFileProvider(this, new FCKPluginFileProvider(this));
+			httpd.addFileProvider(this, new UIBridge(this));
+			httpd.addFileProvider(this, new NLFinder(this));
+			System.out.println("Editor URL: "+getBaseUrl());
+		} catch(Throwable e) {
+			throw new PartInitException("Error setting up internal httpd system", e);
+		}
 		
 		setSite(site);
 		setInput(input);

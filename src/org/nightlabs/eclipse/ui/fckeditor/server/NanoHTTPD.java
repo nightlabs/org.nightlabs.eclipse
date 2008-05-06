@@ -8,8 +8,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.Enumeration;
@@ -18,6 +20,11 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A simple, tiny, nicely embeddable HTTP 1.0 server in Java
@@ -185,29 +192,80 @@ public class NanoHTTPD
 	// Socket & server code
 	// ==================================================
 
+	private void handleSession(Socket s)
+	{
+		HTTPSession session = new HTTPSession(s);
+		Thread t = new Thread( session );
+		t.setDaemon( true );
+		t.start();
+	}
+
+	private void handleSession(Socket s, ExecutorService es)
+	{
+		es.execute(new HTTPSession(s));
+	}
+	
+	private boolean shutdown;
+	public void shutdown()
+	{
+		this.shutdown = true;
+	}
+
 	/**
 	 * Starts a HTTP server to given port.<p>
 	 * Throws an IOException if the socket is already in use
 	 */
-	public NanoHTTPD( int port ) throws IOException
+	public NanoHTTPD(int port) throws IOException
+	{
+		this(port, null);
+	}
+	
+	private ExecutorService es;
+	private ServerSocket ss;
+	
+	private ExecutorService createThreadPool()
+	{
+		//return Executors.newCachedThreadPool();
+		return new ThreadPoolExecutor(0, Integer.MAX_VALUE,
+                5L, TimeUnit.MINUTES,
+                new SynchronousQueue<Runnable>());		
+	}
+	
+	/**
+	 * Starts a HTTP server to given port.<p>
+	 * Throws an IOException if the socket is already in use
+	 */
+	public NanoHTTPD(int port, InetAddress address) throws IOException
 	{
 		myTcpPort = port;
 
-		final ServerSocket ss = new ServerSocket( myTcpPort );
-		Thread t = new Thread( new Runnable()
-			{
+		es = createThreadPool();
+		ss = new ServerSocket(myTcpPort, 50, address);
+		Thread t = new Thread(new Runnable() {
 				public void run()
 				{
-					try
-					{
-						while( true )
-							new HTTPSession( ss.accept());
+					try {
+						while(!shutdown) {
+							try {
+								ss.setSoTimeout(250);
+								Socket s = ss.accept();
+								handleSession(s, es);
+							} catch(SocketTimeoutException e) {}
+						}
+						es.shutdown();
+						// debugging stats:
+						if(es instanceof ThreadPoolExecutor) {
+							ThreadPoolExecutor tpe = (ThreadPoolExecutor)es;
+							System.out.println("Completed tasks: "+tpe.getCompletedTaskCount());
+							System.out.println("Largest pool size: "+tpe.getLargestPoolSize());
+						}
+					} catch (IOException ioe) {
+						ioe.printStackTrace();
 					}
-					catch ( IOException ioe )
-					{}
 				}
 			});
-		t.setDaemon( true );
+		t.setPriority(Thread.NORM_PRIORITY);
+		//t.setDaemon( true );
 		t.start();
 	}
 
@@ -265,9 +323,6 @@ public class NanoHTTPD
 		public HTTPSession( Socket s )
 		{
 			mySocket = s;
-			Thread t = new Thread( this );
-			t.setDaemon( true );
-			t.start();
 		}
 
 		public void run()
@@ -351,17 +406,15 @@ public class NanoHTTPD
 
 				in.close();
 			}
-			catch ( IOException ioe )
-			{
-				try
-				{
-					sendError( HTTP_INTERNALERROR, "SERVER INTERNAL ERROR: IOException: " + ioe.getMessage());
-				}
-				catch ( Throwable t ) {}
-			}
-			catch ( InterruptedException ie )
-			{
+			catch ( InterruptedException ie ) {
 				// Thrown by sendError, ignore and exit the thread.
+			}
+			catch ( Throwable e ) {
+				try {
+					System.err.println("Error serving request:");
+					e.printStackTrace();
+					sendError( HTTP_INTERNALERROR, "SERVER INTERNAL ERROR: " + e.getMessage());
+				} catch ( Throwable t ) {}
 			}
 		}
 

@@ -30,9 +30,12 @@ public abstract class BundleFileProvider extends AbstractFileProvider {
 	 */
 	@Override
 	public InputStream getFileContents(String subUri, Properties parms) throws IOException {
-		URL resource = Activator.getDefault().getBundle().getResource(getBundleFilename(subUri));
-		if(resource == null)
+		String bundleFilename = getBundleFilename(subUri);
+		URL resource = Activator.getDefault().getBundle().getResource(bundleFilename);
+		if(resource == null) {
+			System.err.println("Bundle resource not found: "+bundleFilename);
 			return null;
+		}
 		return resource.openStream();
 	}
 }

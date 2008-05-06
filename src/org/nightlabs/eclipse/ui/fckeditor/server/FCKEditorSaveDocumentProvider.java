@@ -1,5 +1,6 @@
 package org.nightlabs.eclipse.ui.fckeditor.server;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -18,6 +19,12 @@ public class FCKEditorSaveDocumentProvider extends FCKEditorEditDocumentProvider
 	}
 
 	@Override
+	protected String getBundleFilename(String subUri)
+	{
+		return super.getBundleFilename("/edit.html");
+	}
+	
+	@Override
 	public String getPath() {
 		return "/save.html";
 	}
@@ -28,7 +35,7 @@ public class FCKEditorSaveDocumentProvider extends FCKEditorEditDocumentProvider
 	}
 	
 	@Override
-	public InputStream getFileContents(String filename, Properties parms) {
+	public InputStream getFileContents(String filename, Properties parms) throws IOException {
 		String contents = parms.getProperty(getEditor().getFCKEditorId());
 		if(contents == null)
 			throw new RuntimeException("Error saving contents. Content parameter not found.");
