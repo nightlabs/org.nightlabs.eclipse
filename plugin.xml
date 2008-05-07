@@ -33,6 +33,15 @@
                toolbarPath="testGroup"
                tooltip="Open Test FCKeditor">
          </action>
+         <action
+               class="org.nightlabs.eclipse.ui.fckeditor.test.FileListAction"
+               icon="icons/document.png"
+               id="org.nightlabs.eclipse.ui.fckeditor.test.FileListAction"
+               label="&amp;File List"
+               menubarPath="testMenu/testGroup"
+               toolbarPath="testGroup"
+               tooltip="Open File List">
+         </action>
       </actionSet>
    </extension>
 
