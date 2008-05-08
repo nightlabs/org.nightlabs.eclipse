@@ -1,12 +1,9 @@
 package org.nightlabs.eclipse.ui.fckeditor.file;
 
 
-import java.awt.Desktop;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.util.List;
 
-import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -14,6 +11,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile;
 
@@ -22,19 +20,22 @@ public class FileListEntry extends Composite
 	private IFCKEditorContentFile file;
 	ImageProvider imageProvider;
 	private Label imageLabel;
+	private List<IAction> actions;
 
-	public FileListEntry(Composite parent, int style, IFCKEditorContentFile file, ImageProvider imageProvider)
+	public FileListEntry(Composite parent, int style, IFCKEditorContentFile file, ImageProvider imageProvider, List<IAction> actions)
 	{
 		super(parent, style);
 		this.file = file;
 		this.imageProvider = imageProvider;
+		this.actions = actions;
 		createContents();
 	}
 
 	protected void createContents()
 	{
 		setBackground(getParent().getBackground());
-		setLayout(new GridLayout(3, false));
+		int cols = actions == null || actions.isEmpty() ? 2 : 3;
+		setLayout(new GridLayout(cols, false));
 
 		Composite imageWrapper = new Composite(this, SWT.NONE);
 		imageWrapper.setBackground(imageWrapper.getParent().getBackground());
@@ -93,53 +94,45 @@ public class FileListEntry extends Composite
 //		gridData = new GridData(SWT.FILL, SWT.BEGINNING, true, false);
 //		sizeLabel.setLayoutData(gridData);
 
-		Composite buttonWrapper = new Composite(this, SWT.NONE);
+		if(actions != null && !actions.isEmpty())
+			createActions(this);
+	}
+
+	private void createActions(Composite parent)
+	{
+		Composite buttonWrapper = new Composite(parent, SWT.NONE);
 		buttonWrapper.setBackground(buttonWrapper.getParent().getBackground());
-		buttonWrapper.setLayout(new GridLayout(2, false));
-		gridData = new GridData(SWT.BEGINNING, SWT.BEGINNING, true, false);
+		buttonWrapper.setLayout(new GridLayout());
+		GridData gridData = new GridData(SWT.END, SWT.BEGINNING, false, false);
 		buttonWrapper.setLayoutData(gridData);
 
-		Button openButton = new Button(buttonWrapper, SWT.PUSH);
-		openButton.setText("&Open File...");
-		final String extension = getFileExtension(file);
-		if(extension == null || !Desktop.isDesktopSupported()) {
-			openButton.setEnabled(false);
-		} else {
-			openButton.addSelectionListener(new SelectionAdapter() {
+		for (final IAction action : actions) {
+			Button b = new Button(buttonWrapper, SWT.PUSH);
+			b.setText(action.getText());
+			b.setToolTipText(action.getToolTipText());
+			b.setEnabled(action.isEnabled());
+			b.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e)
 				{
-					try {
-						final File tmpFile = File.createTempFile(file.getName(), extension);
-						tmpFile.deleteOnExit();
-						FileOutputStream out = new FileOutputStream(tmpFile);
-						try {
-							out.write(file.getData());
-						} finally {
-							out.close();
-						}
-						Desktop.getDesktop().open(tmpFile);
-					} catch(IOException ex) {
-						MessageDialog.openError(getShell(), "Error", "Error launching application: "+ex.getLocalizedMessage());
-					}
+					Event eventToFire = new Event();
+					eventToFire.data = file;
+					eventToFire.detail = e.detail;
+					eventToFire.display = e.display;
+					eventToFire.doit = e.doit;
+					eventToFire.height = e.height;
+					eventToFire.item = e.item;
+					eventToFire.stateMask = e.stateMask;
+					eventToFire.text = e.text;
+					eventToFire.time = e.time;
+					eventToFire.widget = e.widget;
+					eventToFire.width = e.width;
+					eventToFire.x = e.x;
+					eventToFire.y = e.y;
+					action.runWithEvent(eventToFire);
 				}
 			});
 		}
-	}
-
-	private static String getFileExtension(IFCKEditorContentFile file)
-	{
-		if("application/pdf".equals(file.getContentType()))
-			return ".pdf";
-		else if("image/jpeg".equals(file.getContentType()))
-			return ".jpg";
-		else if("image/gif".equals(file.getContentType()))
-			return ".gif";
-		else if("image/png".equals(file.getContentType()))
-			return ".png";
-		else if("text/html".equals(file.getContentType()))
-			return ".html";
-		return null;
 	}
 
 	private void createEntry(Composite parent, String label, String value)

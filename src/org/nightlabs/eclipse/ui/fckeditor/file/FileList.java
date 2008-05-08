@@ -1,11 +1,19 @@
 package org.nightlabs.eclipse.ui.fckeditor.file;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile;
 
 /**
@@ -25,6 +33,39 @@ public class FileList extends Composite
 		createContents();
 	}
 
+	protected List<IAction> getActions(final IFCKEditorContentFile file)
+	{
+		final String extension = ContentTypeUtil.getFileExtension(file);
+		List<IAction> actions = new ArrayList<IAction>();
+		actions.add(new Action("&Open File...") {
+			@Override
+			public boolean isEnabled()
+			{
+				return Desktop.isDesktopSupported() && extension != null;
+			}
+
+			@Override
+			public void runWithEvent(Event event)
+			{
+				try {
+					final File tmpFile = File.createTempFile(file.getName(), extension);
+					tmpFile.deleteOnExit();
+					FileOutputStream out = new FileOutputStream(tmpFile);
+					try {
+						out.write(file.getData());
+					} finally {
+						out.close();
+					}
+					Desktop.getDesktop().open(tmpFile);
+				} catch(Throwable ex) {
+					ex.printStackTrace();
+					MessageDialog.openError(getShell(), "Error", "Error launching application: "+ex.getLocalizedMessage());
+				}
+			}
+		});
+		return actions;
+	}
+
 	protected void createContents()
 	{
 		setBackground(getShell().getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
@@ -33,8 +74,8 @@ public class FileList extends Composite
 		gridLayout.marginHeight = 0;
 		setLayout(gridLayout);
 
-		for (IFCKEditorContentFile file : files) {
-			FileListEntry fileListEntry = new FileListEntry(this, SWT.NONE, file, imageProvider);
+		for (final IFCKEditorContentFile file : files) {
+			FileListEntry fileListEntry = new FileListEntry(this, SWT.NONE, file, imageProvider, getActions(file));
 			GridData gridData = new GridData(SWT.FILL, SWT.BEGINNING, true, false);
 			fileListEntry.setLayoutData(gridData);
 		}

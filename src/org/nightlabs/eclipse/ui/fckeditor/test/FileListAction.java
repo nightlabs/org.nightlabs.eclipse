@@ -12,6 +12,7 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -126,6 +127,11 @@ public class FileListAction implements IWorkbenchWindowActionDelegate
 			files.add(file);
 
 			Dialog dialog = new Dialog(window.getShell()) {
+				@Override
+				protected Point getInitialSize()
+				{
+					return new Point(500, 450);
+				}
 //				@Override
 //				protected void configureShell(Shell newShell)
 //				{
@@ -136,6 +142,7 @@ public class FileListAction implements IWorkbenchWindowActionDelegate
 				protected Control createDialogArea(Composite parent)
 				{
 					Composite c = (Composite)super.createDialogArea(parent);
+//					FileListX fileList = new FileListX(c, SWT.BORDER, files);
 					FileList fileList = new FileList(c, SWT.BORDER, files);
 					GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
 					fileList.setLayoutData(gridData);
