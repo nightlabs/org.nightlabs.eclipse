@@ -2,29 +2,29 @@ package org.nightlabs.eclipse.ui.fckeditor.file;
 
 import java.io.ByteArrayInputStream;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.widgets.Display;
 import org.nightlabs.eclipse.ui.fckeditor.Activator;
 import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  */
-public class ImageProvider
+public class ImageProvider implements IImageProvider
 {
-	private Device device;
+	private Display device;
 	private Map<String, Image> imagesByContentType;
-	private Collection<Image> thumbnails;
+	private Map<Long, Image> thumbnails;
 	private int thumbnailSize = 64;
+	private ThumbnailLoaderThread thumbnailLoaderThread;
 
-	public ImageProvider(Device device)
+	public ImageProvider(Display device)
 	{
 		this.device = device;
 	}
@@ -49,64 +49,208 @@ public class ImageProvider
 		return image;
 	}
 
-	private synchronized Image getThumbnail(IFCKEditorContentFile file)
+	private Image getThumbnail(IFCKEditorContentFile file)
 	{
 		Image image = new Image(device, new ByteArrayInputStream(file.getData()));
 		int width = image.getImageData().width;
 		int height = image.getImageData().height;
-		if(width > thumbnailSize || height > thumbnailSize) {
-			float wx = (float)width / (float)thumbnailSize;
-			float wy = (float)height / (float)thumbnailSize;
+		int myThumbnailSize;
+		synchronized (this) {
+			myThumbnailSize = thumbnailSize;
+		}
+		if(width > myThumbnailSize || height > myThumbnailSize) {
+			float wx = (float)width / (float)myThumbnailSize;
+			float wy = (float)height / (float)myThumbnailSize;
 			float x = Math.max(wx, wy);
 			ImageData thumbnailData = image.getImageData().scaledTo(Math.round(width / x), Math.round(height / x));
 			Image thumbnail = new Image(device, thumbnailData);
 			image.dispose();
 			image = thumbnail;
 		}
-		if(thumbnails == null)
-			thumbnails = new ArrayList<Image>();
-		thumbnails.add(image);
+		synchronized(this) {
+			if(thumbnails == null)
+				thumbnails = new HashMap<Long, Image>();
+			thumbnails.put(file.getFileId(), image);
+		}
 		return image;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.nightlabs.eclipse.ui.fckeditor.file.IImageProvider#getImage(org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile)
+	 */
 	public Image getImage(IFCKEditorContentFile file)
+	{
+		return getImage(file, null);
+	}
+
+	private static class ThumbnailLoaderThread extends Thread
+	{
+		private ImageProvider imageProvider;
+		private volatile boolean shutdown;
+		
+		public ThumbnailLoaderThread(ImageProvider imageProvider)
+		{
+			this.imageProvider = imageProvider;
+			setPriority(Thread.MIN_PRIORITY);
+		}
+		
+		private static class File
+		{
+			IImageCallback imageCallback;
+			IFCKEditorContentFile file;
+		}
+		private LinkedList<File> files = new LinkedList<File>();
+		
+		public void addFile(IImageCallback imageCallback, IFCKEditorContentFile file)
+		{
+			File toAdd = new File();
+			toAdd.imageCallback = imageCallback;
+			toAdd.file = file;
+			//System.out.println("Have file: "+file);
+			synchronized (files) {
+				files.add(toAdd);
+				files.notifyAll();
+			}
+		}
+		
+		public void shutdown()
+		{
+			System.out.println("shutdown");
+			this.shutdown = true;
+		}
+		
+		/* (non-Javadoc)
+		 * @see java.lang.Runnable#run()
+		 */
+		@Override
+		public void run()
+		{
+			while(!shutdown) {
+				File _file = null;
+				synchronized (files) {
+					if(!files.isEmpty())
+						_file = files.poll();
+					else
+						try {
+							files.wait(100);
+						} catch (InterruptedException e) {
+							return;
+						}
+				}
+				if(_file != null) {
+					final IFCKEditorContentFile file = _file.file;
+					final IImageCallback imageCallback = _file.imageCallback;
+					System.out.println("Thumbnail loader thread loading: "+file.getName());
+					final Image thumbnail = imageProvider.getThumbnail(file);
+					if(thumbnail != null) {
+						imageProvider.device.asyncExec(new Runnable() {
+							/* (non-Javadoc)
+							 * @see java.lang.Runnable#run()
+							 */
+							@Override
+							public void run()
+							{
+								imageCallback.updateImage(file, thumbnail);
+							}
+						});
+					}
+				}
+			}
+			System.out.println("Thumbnail loader thread done.");
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.nightlabs.eclipse.ui.fckeditor.file.IImageProvider#getImage(org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile, org.nightlabs.eclipse.ui.fckeditor.file.IImageCallback)
+	 */
+	public Image getImage(IFCKEditorContentFile file, IImageCallback imageCallback)
 	{
 		String contentType = "application/unknown";
 		if(file != null && file.getContentType() != null)
 			contentType = file.getContentType();
-		if("image/jpeg".equals(contentType))
-			return getThumbnail(file);
-		else if("image/png".equals(contentType))
-			return getThumbnail(file);
-		else if("image/gif".equals(contentType))
-			return getThumbnail(file);
+		if(file.isImageFile()) {
+			synchronized (this) {
+				if(thumbnails != null) {
+					Image thumbnail = thumbnails.get(file.getFileId());
+					if(thumbnail != null)
+						 return thumbnail;
+				}
+			}
+			if(imageCallback == null)
+				return getThumbnail(file);
+			else {
+				synchronized(this) {
+					if(thumbnailLoaderThread == null) {
+						thumbnailLoaderThread = new ThumbnailLoaderThread(this);
+						thumbnailLoaderThread.start();
+					}
+				}
+				thumbnailLoaderThread.addFile(imageCallback, file);
+			}
+		}
 		Image image = getImage(contentType);
 		if(image == null)
 			image = getImage("application/unknown");
 		return image;
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.nightlabs.eclipse.ui.fckeditor.file.IImageProvider#dispose()
+	 */
+	public void dispose()
+	{
+		System.out.println("dispose");
+		stopThumbnailing();
+		disposeIcons();
+		disposeThumbnails();
+	}
 
-	public synchronized void dispose()
+	private synchronized void disposeIcons()
 	{
 		if(imagesByContentType != null) {
 			for (Image image : imagesByContentType.values())
 				image.dispose();
 			imagesByContentType = null;
 		}
+	}
+
+	private synchronized void disposeThumbnails()
+	{
 		if(thumbnails != null) {
-			for (Image image : thumbnails)
+			for (Image image : thumbnails.values())
 				image.dispose();
 			thumbnails = null;
 		}
 	}
 
-	public int getThumbnailSize()
+	/* (non-Javadoc)
+	 * @see org.nightlabs.eclipse.ui.fckeditor.file.IImageProvider#stopThumbnailing()
+	 */
+	public synchronized void stopThumbnailing()
+	{
+		if(thumbnailLoaderThread != null) {
+			thumbnailLoaderThread.shutdown();
+			thumbnailLoaderThread = null;
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.nightlabs.eclipse.ui.fckeditor.file.IImageProvider#getThumbnailSize()
+	 */
+	public synchronized int getThumbnailSize()
 	{
 		return thumbnailSize;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.nightlabs.eclipse.ui.fckeditor.file.IImageProvider#setThumbnailSize(int)
+	 */
 	public void setThumbnailSize(int thumbnailSize)
 	{
-		this.thumbnailSize = thumbnailSize;
+		stopThumbnailing();
+		disposeThumbnails();
+		synchronized (this) {
+			this.thumbnailSize = thumbnailSize;
+		}
 	}
 }

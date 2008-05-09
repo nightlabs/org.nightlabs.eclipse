@@ -7,6 +7,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -15,14 +16,14 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile;
 
-public class FileListEntry extends Composite
+public class FileListEntry extends Composite implements IImageCallback
 {
 	private IFCKEditorContentFile file;
-	ImageProvider imageProvider;
+	IImageProvider imageProvider;
 	private Label imageLabel;
 	private List<IAction> actions;
 
-	public FileListEntry(Composite parent, int style, IFCKEditorContentFile file, ImageProvider imageProvider, List<IAction> actions)
+	public FileListEntry(Composite parent, int style, IFCKEditorContentFile file, IImageProvider imageProvider, List<IAction> actions)
 	{
 		super(parent, style);
 		this.file = file;
@@ -50,7 +51,7 @@ public class FileListEntry extends Composite
 
 		imageLabel = new Label(imageWrapper, SWT.NONE);
 		imageLabel.setBackground(imageLabel.getParent().getBackground());
-		imageLabel.setImage(imageProvider.getImage(file));
+		imageLabel.setImage(imageProvider.getImage(file, this));
 		gridData = new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false);
 //		gridData.widthHint = imageProvider.getThumbnailSize();
 //		gridData.heightHint = imageProvider.getThumbnailSize();
@@ -145,5 +146,14 @@ public class FileListEntry extends Composite
 		valueLabel.setText(value);
 		GridData gridData = new GridData(SWT.FILL, SWT.BEGINNING, true, false);
 		valueLabel.setLayoutData(gridData);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.nightlabs.eclipse.ui.fckeditor.file.IImageCallback#updateImage(org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile, org.eclipse.swt.graphics.Image)
+	 */
+	@Override
+	public void updateImage(IFCKEditorContentFile file, final Image image)
+	{
+		imageLabel.setImage(image);
 	}
 }

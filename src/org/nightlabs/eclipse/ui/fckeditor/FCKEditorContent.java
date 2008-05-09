@@ -44,4 +44,25 @@ public class FCKEditorContent implements IFCKEditorContent
 	{
 		files.add(file);
 	}
+
+	/* (non-Javadoc)
+	 * @see org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContent#setFiles(java.util.List)
+	 */
+	@Override
+	public void setFiles(List<IFCKEditorContentFile> files)
+	{
+		this.files = files;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContent#getFile(long)
+	 */
+	@Override
+	public IFCKEditorContentFile getFile(long fileId)
+	{
+		for (IFCKEditorContentFile file : files)
+			if(file.getFileId() == fileId)
+				return file;
+		return null;
+	}
 }

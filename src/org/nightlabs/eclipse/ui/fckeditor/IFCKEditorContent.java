@@ -9,5 +9,7 @@ public interface IFCKEditorContent {
 	String getHtml();
 	void setHtml(String html);
 	List<IFCKEditorContentFile> getFiles();
+	void setFiles(List<IFCKEditorContentFile> files);
 	void addFile(IFCKEditorContentFile file);
+	IFCKEditorContentFile getFile(long fileId);
 }

@@ -1,13 +1,11 @@
 package org.nightlabs.eclipse.ui.fckeditor.test;
 
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.eclipse.ui.PartInitException;
-import org.nightlabs.eclipse.ui.fckeditor.FCKEditorContent;
 import org.nightlabs.eclipse.ui.fckeditor.FCKEditorInput;
-import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContent;
 import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorInput;
 
 public class EditorAction implements IWorkbenchWindowActionDelegate {
@@ -19,8 +17,6 @@ public class EditorAction implements IWorkbenchWindowActionDelegate {
 	 */
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
 	}
 
 	/* (non-Javadoc)
@@ -36,13 +32,11 @@ public class EditorAction implements IWorkbenchWindowActionDelegate {
 	 */
 	@Override
 	public void run(IAction action) {
-		IFCKEditorContent content = new FCKEditorContent();
-		double rand = Math.random();
-		content.setHtml("<p>Bla bla bla, <b>mein</b> Text</p><p>Hallo! "+rand+"</p>");
-		IFCKEditorInput editorInput = new FCKEditorInput(content, "Bla bla "+rand);
 		try {
+			IFCKEditorInput editorInput = new FCKEditorInput(TestUtil.getContent(), "Bla bla "+Math.random());
 			window.getActivePage().openEditor(editorInput, "org.nightlabs.eclipse.ui.fckeditor.FCKEditor");
-		} catch (PartInitException e) {
+		} catch (Throwable e) {
+			MessageDialog.openError(window.getShell(), "Error", "Error: "+e.toString());
 			e.printStackTrace();
 		}
 	}

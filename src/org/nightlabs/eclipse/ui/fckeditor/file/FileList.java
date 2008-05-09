@@ -22,14 +22,13 @@ import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile;
 public class FileList extends Composite
 {
 	private List<IFCKEditorContentFile> files;
-	private ImageProvider imageProvider;
+	private IImageProvider imageProvider;
 
-	public FileList(Composite parent, int style, List<IFCKEditorContentFile> files)
+	public FileList(Composite parent, int style, List<IFCKEditorContentFile> files, IImageProvider imageProvider)
 	{
 		super(parent, style);
 		this.files = files;
-		imageProvider = new ImageProvider(getShell().getDisplay());
-		imageProvider.setThumbnailSize(128);
+		this.imageProvider = imageProvider;
 		createContents();
 	}
 
@@ -79,13 +78,5 @@ public class FileList extends Composite
 			GridData gridData = new GridData(SWT.FILL, SWT.BEGINNING, true, false);
 			fileListEntry.setLayoutData(gridData);
 		}
-	}
-
-	@Override
-	public void dispose()
-	{
-		super.dispose();
-		imageProvider.dispose();
-		imageProvider = null;
 	}
 }

@@ -31,3 +31,5 @@ FCKLang['DlgMyReplaceWordChk']		= 'Match whole word' ;
 
 FCKLang['DlgMyFindTitle']			= 'Plugin - Find' ;
 FCKLang['DlgMyFindFindBtn']			= 'Find' ;
+
+FCKLang['MyDlgBtnBrowseServer'] = "Select Image...";

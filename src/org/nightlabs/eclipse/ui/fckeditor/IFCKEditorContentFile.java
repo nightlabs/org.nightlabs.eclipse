@@ -1,18 +1,24 @@
 package org.nightlabs.eclipse.ui.fckeditor;
 
+import java.util.Date;
+
 public interface IFCKEditorContentFile
 {
+	long getFileId();
+	
+	byte[] getData();
 
-	public abstract byte[] getData();
+	void setData(byte[] data);
 
-	public abstract void setData(byte[] data);
+	String getContentType();
 
-	public abstract String getContentType();
+	void setContentType(String contentType);
 
-	public abstract void setContentType(String contentType);
+	String getName();
 
-	public abstract String getName();
-
-	public abstract void setName(String name);
-
+	void setName(String name);
+	
+	boolean isImageFile();
+	
+	Date getChangeDT();
 }

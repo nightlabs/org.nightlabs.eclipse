@@ -10,6 +10,8 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
+import org.nightlabs.eclipse.ui.fckeditor.file.IImageProvider;
+import org.nightlabs.eclipse.ui.fckeditor.file.ImageProvider;
 import org.nightlabs.eclipse.ui.fckeditor.server.FCKEditorCSSProvider;
 import org.nightlabs.eclipse.ui.fckeditor.server.FCKEditorConfigFileProvider;
 import org.nightlabs.eclipse.ui.fckeditor.server.FCKEditorEditDocumentProvider;
@@ -32,6 +34,7 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 	private String widgetBackgroundColor;
 	private String titleBackgroundColor;
 	private String titleBackgroundGradientColor;
+	private IImageProvider imageProvider;
 	
 	/**
 	 * Create a new FCKEditor instance.
@@ -47,6 +50,8 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 	public void dispose() {
 		httpd.removeEditor(this);
 		httpd = null;
+		imageProvider.dispose();
+		imageProvider = null;
 		super.dispose();
 	}
 	
@@ -120,6 +125,8 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 		setInput(input);
 		
 		setPartName(input.getName());
+
+		imageProvider = new ImageProvider(getSite().getShell().getDisplay());
 		
 		widgetBackgroundColor = getHtmlColor(SWT.COLOR_WIDGET_BACKGROUND);
 		titleBackgroundColor = getHtmlColor(SWT.COLOR_TITLE_BACKGROUND);
@@ -234,5 +241,23 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 	public void print()
 	{
 		executeFCKCommand("Print");
+	}
+
+	/* (non-Javadoc)
+	 * @see org.nightlabs.eclipse.ui.fckeditor.IFCKEditor#setEnabled(boolean)
+	 */
+	@Override
+	public void setEnabled(boolean enabled)
+	{
+		browser.setEnabled(enabled);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.nightlabs.eclipse.ui.fckeditor.IFCKEditor#getImageProvider()
+	 */
+	@Override
+	public IImageProvider getImageProvider()
+	{
+		return imageProvider;
 	}
 }

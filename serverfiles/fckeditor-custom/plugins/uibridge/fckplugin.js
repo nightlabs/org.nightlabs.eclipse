@@ -19,6 +19,12 @@ FCKCommands.RegisterCommand( oUIBridgeSetDirtyCommand.Name , oUIBridgeSetDirtyCo
 
 // ---------------------------------------------
 
+var oUIBridgeImageCommand = new FCKDialogCommand( 'UIBridge_Image', FCKLang.DlgImgTitle, FCKConfig.PluginsPath + 'uibridge/_editor_dialog/fck_image.html', 450, 390 ) ;
+FCKCommands.RegisterCommand( 'UIBridge_Image' , oUIBridgeImageCommand ) ;
+var oUIBridgeImageItem = new FCKToolbarButton( 'UIBridge_Image', FCKLang.InsertImageLbl, FCKLang.InsertImage, null, false, true, 37 );
+FCKToolbarItems.RegisterItem( 'UIBridge_Image', oUIBridgeImageItem );
+
+/*
 var oUIBridgeInsertImageCommand = new Object() ;
 oUIBridgeInsertImageCommand.Name = 'UIBridge_InsertImage' ;
 
@@ -38,6 +44,9 @@ oUIBridgeInsertImageCommand.Execute = function()
 	//	else
 	//		oXml = null ;
 	oXmlHttp.send( null ) ;
+	
+	oCommand = new FCKDialogCommand( 'UIBridge_Image', FCKLang.DlgImgTitle, FCKConfig.PluginsPath + 'uibridge/_editor_dialog/fck_image.html', 450, 390 ) ;
+	oCommand.Execute();	
 }
 
 // This is the standard function used to retrieve the command state (it could be disabled for some reason).
@@ -52,6 +61,10 @@ FCKCommands.RegisterCommand( oUIBridgeInsertImageCommand.Name , oUIBridgeInsertI
 var oUIBridgeInsertImageItem = new FCKToolbarButton( oUIBridgeInsertImageCommand.Name, 'Insert Image' ) ;
 oUIBridgeInsertImageItem.IconPath = FCKConfig.PluginsPath + 'uibridge/document.png' ;
 FCKToolbarItems.RegisterItem( oUIBridgeInsertImageCommand.Name, oUIBridgeInsertImageItem );
+*/
+
+
+
 
 /*
 

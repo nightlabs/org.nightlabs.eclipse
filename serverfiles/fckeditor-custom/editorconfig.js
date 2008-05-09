@@ -18,7 +18,7 @@ FCKConfig.ToolbarSets["Default"] = [
                                 	['TextColor','BGColor'],
                                 	['ShowBlocks'],
                                 	'/',
-                                	['UIBridge_InsertImage']
+                                	['UIBridge_Image']
                                 ] ;
 FCKConfig.LinkBrowserURL = '${baseUrl}/nlfinder/nlfinder.html' ;
 FCKConfig.ImageBrowserURL = '${baseUrl}/nlfinder/nlfinder.html?type=Images' ;
