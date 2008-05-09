@@ -12,13 +12,11 @@ FCKConfig.ToolbarSets["Default"] = [
                                 	['OrderedList','UnorderedList','-','Outdent','Indent','Blockquote'],
                                 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
                                 	['Link','Unlink','Anchor'],
-                                	['Image','Table','Rule','Smiley','SpecialChar','PageBreak'],
+                                	['UIBridge_Image','Table','Rule','Smiley','SpecialChar','PageBreak'],
                                 	'/',
                                 	['Style','FontFormat','FontName','FontSize'],
                                 	['TextColor','BGColor'],
                                 	['ShowBlocks'],
-                                	'/',
-                                	['UIBridge_Image']
                                 ] ;
 FCKConfig.LinkBrowserURL = '${baseUrl}/nlfinder/nlfinder.html' ;
 FCKConfig.ImageBrowserURL = '${baseUrl}/nlfinder/nlfinder.html?type=Images' ;
