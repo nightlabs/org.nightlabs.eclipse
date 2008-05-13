@@ -24,6 +24,22 @@ FCKCommands.RegisterCommand( 'UIBridge_Image' , oUIBridgeImageCommand ) ;
 var oUIBridgeImageItem = new FCKToolbarButton( 'UIBridge_Image', FCKLang.InsertImageLbl, FCKLang.InsertImage, null, false, true, 37 );
 FCKToolbarItems.RegisterItem( 'UIBridge_Image', oUIBridgeImageItem );
 
+// ---------------------------------------------
+
+var oUIBridgeLinkCommand = new FCKDialogCommand( 'Link', FCKLang.DlgLnkWindowTitle, FCKConfig.PluginsPath + 'uibridge/_editor_dialog/fck_link.html', 400, 300 ) ;
+FCKCommands.RegisterCommand( 'UIBridge_Link' , oUIBridgeLinkCommand ) ;
+var oUIBridgeLinkItem = new FCKToolbarButton( 'UIBridge_Link', FCKLang.InsertLinkLbl, FCKLang.InsertLink, null, false, true, 34 );
+FCKToolbarItems.RegisterItem( 'UIBridge_Link', oUIBridgeLinkItem );
+
+// ---------------------------------------------
+
+var oUIBridgeFlashCommand = new FCKDialogCommand( 'UIBridge_Flash', FCKLang.DlgImgTitle, FCKConfig.PluginsPath + 'uibridge/_editor_dialog/fck_flash.html', 450, 390 ) ;
+FCKCommands.RegisterCommand( 'UIBridge_Flash' , oUIBridgeFlashCommand ) ;
+var oUIBridgeFlashItem = new FCKToolbarButton( 'UIBridge_Flash', FCKLang.InsertFlashLbl, FCKLang.InsertFlash, null, false, true, 38 );
+FCKToolbarItems.RegisterItem( 'UIBridge_Flash', oUIBridgeFlashItem );
+
+
+
 /*
 var oUIBridgeInsertImageCommand = new Object() ;
 oUIBridgeInsertImageCommand.Name = 'UIBridge_InsertImage' ;

@@ -36,11 +36,13 @@ public class FileListEntry extends Composite implements IImageCallback
 	{
 		setBackground(getParent().getBackground());
 		int cols = actions == null || actions.isEmpty() ? 2 : 3;
-		setLayout(new GridLayout(cols, false));
+		GridLayout gridLayout = new GridLayout(cols, false);
+		gridLayout.horizontalSpacing = 20;
+		setLayout(gridLayout);
 
 		Composite imageWrapper = new Composite(this, SWT.NONE);
 		imageWrapper.setBackground(imageWrapper.getParent().getBackground());
-		GridLayout gridLayout = new GridLayout();
+		gridLayout = new GridLayout();
 		gridLayout.marginHeight = 0;
 		gridLayout.marginWidth = 0;
 		imageWrapper.setLayout(gridLayout);
@@ -59,7 +61,10 @@ public class FileListEntry extends Composite implements IImageCallback
 
 		Composite right = new Composite(this, SWT.NONE);
 		right.setBackground(right.getParent().getBackground());
-		right.setLayout(new GridLayout(2, false));
+		gridLayout = new GridLayout(2, false);
+		gridLayout.marginHeight = 0;
+		gridLayout.marginWidth = 0;
+		right.setLayout(gridLayout);
 		gridData = new GridData(SWT.FILL, SWT.BEGINNING, true, false);
 		right.setLayoutData(gridData);
 
@@ -103,12 +108,16 @@ public class FileListEntry extends Composite implements IImageCallback
 	{
 		Composite buttonWrapper = new Composite(parent, SWT.NONE);
 		buttonWrapper.setBackground(buttonWrapper.getParent().getBackground());
-		buttonWrapper.setLayout(new GridLayout());
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.marginHeight = 0;
+		gridLayout.marginWidth = 0;
+		buttonWrapper.setLayout(gridLayout);
 		GridData gridData = new GridData(SWT.END, SWT.BEGINNING, false, false);
 		buttonWrapper.setLayoutData(gridData);
 
 		for (final IAction action : actions) {
 			Button b = new Button(buttonWrapper, SWT.PUSH);
+			b.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
 			b.setText(action.getText());
 			b.setToolTipText(action.getToolTipText());
 			b.setEnabled(action.isEnabled());

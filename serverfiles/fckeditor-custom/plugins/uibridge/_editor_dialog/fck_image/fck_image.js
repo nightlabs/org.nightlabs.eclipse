@@ -398,6 +398,9 @@ function ResetSizes()
 
 function BrowseServer()
 {
+	// ###################################
+	// ### CHANGES FOR UI INTEGRATION: ###
+	// ###################################
 	var oXmlHttp = FCKTools.CreateXmlObject( 'XmlHttp' ) ;
 	oXmlHttp.open( 'GET', FCKConfig.UIBridgeBaseUrl+'/uibridge/insertimage.xml', true ) ;
 	oXmlHttp.onreadystatechange=function() {

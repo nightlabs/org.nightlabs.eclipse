@@ -7,19 +7,62 @@ import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile;
  */
 public abstract class ContentTypeUtil
 {
-	public static String getFileExtension(IFCKEditorContentFile file)
+	// first entry in a list of equal content types is default extension
+	private static String[][] contentTypes = new String[][] {
+		{ "application/pdf", 	         ".pdf" },
+		{ "image/jpeg",                ".jpg" },
+		{ "image/jpeg",                ".jpeg" },
+		{ "image/gif",                 ".gif" },
+		{ "image/png",                 ".png" },
+		{ "text/html",                 ".html" },
+		{ "text/html",                 ".htm" },
+		{ "text/css",                  ".css" },
+		{ "text/plain",                ".txt" },
+		{ "text/plain",                ".asc" },
+		{ "text/xml",                  ".xml" },
+		{ "text/javascript",           ".js" },
+		{	"audio/mpeg",                ".mp3" },
+		{ "audio/mpeg-url",            ".m3u" },
+		{ "application/msword",        ".doc" },
+		{ "application/x-ogg",         ".ogg" },
+		{ "application/octet-stream",  ".bin" },
+		{ "application/octet-stream",  ".zip" },
+		{ "application/octet-stream",  ".exe" },
+		{ "application/octet-stream",  ".class" },
+		{ "application/unknown",       ".bin" },
+	};
+
+	public static String getFileExtension(String contentType)
 	{
-		if("application/pdf".equals(file.getContentType()))
-			return ".pdf";
-		else if("image/jpeg".equals(file.getContentType()))
-			return ".jpg";
-		else if("image/gif".equals(file.getContentType()))
-			return ".gif";
-		else if("image/png".equals(file.getContentType()))
-			return ".png";
-		else if("text/html".equals(file.getContentType()))
-			return ".html";
-		return null;
+		if(contentType != null) {
+			String _contentType = contentType.toLowerCase();
+			for (String[] pair : contentTypes) {
+				if(pair[0].equals(_contentType))
+						return pair[1];
+			}
+		}
+		return ".bin";
 	}
 
+	public static String getContentType(String fileName)
+	{
+		if(fileName != null) {
+			String _fileName = fileName.toLowerCase();
+			for (String[] pair : contentTypes) {
+				if(_fileName.endsWith(pair[1]))
+						return pair[0];
+			}
+		}
+		return "application/unknown";
+	}
+
+	public static String getFileExtension(IFCKEditorContentFile file)
+	{
+		return getFileExtension(file.getContentType());
+	}
+
+	public static String getContentType(IFCKEditorContentFile file)
+	{
+		return getContentType(file.getContentType());
+	}
 }

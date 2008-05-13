@@ -5,7 +5,7 @@ import java.util.Date;
 public interface IFCKEditorContentFile
 {
 	long getFileId();
-	
+
 	byte[] getData();
 
 	void setData(byte[] data);
@@ -17,8 +17,8 @@ public interface IFCKEditorContentFile
 	String getName();
 
 	void setName(String name);
-	
+
 	boolean isImageFile();
-	
+
 	Date getChangeDT();
 }

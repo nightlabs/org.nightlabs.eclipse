@@ -19,7 +19,7 @@ import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile;
 public class SelectFileDialog extends FileListDialog
 {
 	private IFCKEditorContentFile selectedFile;
-	
+
 	/**
 	 * Create a new SelectFileDialog instance.
 	 */
@@ -36,7 +36,7 @@ public class SelectFileDialog extends FileListDialog
 	{
 		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.nightlabs.eclipse.ui.fckeditor.file.FileListDialog#createDialogArea(org.eclipse.swt.widgets.Composite)
 	 */
@@ -47,7 +47,7 @@ public class SelectFileDialog extends FileListDialog
 		setMessage("Select a file to use in the editor by clicking 'Use File in Editor'");
 		return c;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.nightlabs.eclipse.ui.fckeditor.file.FileListDialog#createFileList(org.eclipse.swt.widgets.Composite)
 	 */
@@ -56,10 +56,11 @@ public class SelectFileDialog extends FileListDialog
 	{
 		return new FileList(parent, SWT.NONE, getFiles(), getImageProvider())
 		{
+			@Override
 			protected List<IAction> getActions(final IFCKEditorContentFile file)
 			{
 				List<IAction> actions = super.getActions(file);
-				actions.add(new Action("&Use File in Editor") {
+				actions.add(0, new Action("&Use File in Editor") {
 					@Override
 					public void runWithEvent(Event event)
 					{

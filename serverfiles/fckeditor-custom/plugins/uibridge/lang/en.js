@@ -32,4 +32,6 @@ FCKLang['DlgMyReplaceWordChk']		= 'Match whole word' ;
 FCKLang['DlgMyFindTitle']			= 'Plugin - Find' ;
 FCKLang['DlgMyFindFindBtn']			= 'Find' ;
 
-FCKLang['MyDlgBtnBrowseServer'] = "Select Image...";
+FCKLang['MyDlgBtnBrowseServer_Image'] = "Select Image...";
+FCKLang['MyDlgBtnBrowseServer_Link'] = "Select File...";
+FCKLang['MyDlgBtnBrowseServer_Flash'] = "Select Flash File...";

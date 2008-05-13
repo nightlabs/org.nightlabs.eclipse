@@ -16,7 +16,7 @@ import org.nightlabs.eclipse.ui.fckeditor.IFCKEditor;
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  */
-public class FCKEditorHTTPD extends NanoHTTPD 
+public class FCKEditorHTTPD extends NanoHTTPD
 {
 	private static final int minPort = 1024;
 	private static final int maxPort = 65535;
@@ -56,25 +56,26 @@ public class FCKEditorHTTPD extends NanoHTTPD
 	}
 
 	private Map<IFCKEditor, List<FileProvider>> fileProviders = new HashMap<IFCKEditor, List<FileProvider>>();
-	
+
 	public void addFileProvider(IFCKEditor editor, FileProvider fileProvider)
 	{
 		fileProviders.get(editor).add(fileProvider);
 	}
-	
+
 	/**
 	 * Create a new MyHTTPD instance.
 	 */
-	public FCKEditorHTTPD(int port) throws IOException 
+	public FCKEditorHTTPD(int port) throws IOException
 	{
 		// InetAddress.getLocalHost() results in binding tcp6 only... :-(
 		super(port, InetAddress.getByName("127.0.0.1")); //InetAddress.getLocalHost());
 		this.port = port;
 	}
-	
+
 	@Override
-	public Response serve(String uri, String method, Properties header,	Properties parms) 
+	public Response serve(String uri, String method, Properties header,	Properties parms)
 	{
+		System.out.println("URI: "+uri);
 		String path;
 		if(!uri.startsWith("/"))
 			throw new IllegalStateException("Illegal URI: "+uri);
@@ -82,11 +83,11 @@ public class FCKEditorHTTPD extends NanoHTTPD
 		if(idx == -1)
 			throw new IllegalStateException("Illegal URI: "+uri);
 		path = uri.substring(0, idx);
-		
+
 		IFCKEditor editor = getEditor(path);
 		if(editor == null)
 			throw new IllegalStateException("No editor");
-		
+
 		Response response = null;
 		for (FileProvider fileProvider : fileProviders.get(editor)) {
 			String subUri = uri.substring(path.length());
@@ -101,8 +102,8 @@ public class FCKEditorHTTPD extends NanoHTTPD
 				}
 				if(in != null) {
 					response = new Response(
-							HTTP_OK, 
-							fileProvider.getContentType(subUri), 
+							HTTP_OK,
+							fileProvider.getContentType(subUri),
 							in);
 					break;
 				}
@@ -115,17 +116,17 @@ public class FCKEditorHTTPD extends NanoHTTPD
 		}
 		return response;
 	}
-	
+
 	private Map<IFCKEditor, String> pathByEditor = new HashMap<IFCKEditor, String>();
 	private Map<String, IFCKEditor> editorByPath = new HashMap<String, IFCKEditor>();
 	Random rand = new Random();
-	
+
 	private String getRandomPath()
 	{
 		long l = rand.nextLong();
 		return "/"+Long.toHexString(l);
 	}
-	
+
 	public synchronized void addEditor(IFCKEditor editor)
 	{
 		String path = getRandomPath();
@@ -133,12 +134,12 @@ public class FCKEditorHTTPD extends NanoHTTPD
 		editorByPath.put(path, editor);
 		fileProviders.put(editor, new ArrayList<FileProvider>());
 	}
-	
+
 	public synchronized String getPath(IFCKEditor editor)
 	{
 		return pathByEditor.get(editor);
 	}
-	
+
 	public String getUrl(IFCKEditor editor)
 	{
 		String path = getPath(editor);
@@ -151,7 +152,7 @@ public class FCKEditorHTTPD extends NanoHTTPD
 	{
 		return editorByPath.get(path);
 	}
-	
+
 	public synchronized void removeEditor(IFCKEditor editor)
 	{
 		String url = pathByEditor.remove(editor);

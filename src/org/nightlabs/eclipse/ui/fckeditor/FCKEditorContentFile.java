@@ -15,7 +15,7 @@ public class FCKEditorContentFile implements IFCKEditorContentFile
 	{
 		return lastFileId++;
 	}
-	
+
 	/**
 	 * Create a new FCKEditorContentFile instance.
 	 */
@@ -24,7 +24,7 @@ public class FCKEditorContentFile implements IFCKEditorContentFile
 		this.changeDT = new Date();
 		this.fileId = getNextFileId();
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile#getData()
 	 */
@@ -81,7 +81,7 @@ public class FCKEditorContentFile implements IFCKEditorContentFile
 		this.name = name;
 		this.changeDT = new Date();
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile#isImageFile()
 	 */
@@ -110,5 +110,14 @@ public class FCKEditorContentFile implements IFCKEditorContentFile
 	public long getFileId()
 	{
 		return fileId;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString()
+	{
+		return super.toString()+"[name="+name+",contentType="+contentType+"]";
 	}
 }
