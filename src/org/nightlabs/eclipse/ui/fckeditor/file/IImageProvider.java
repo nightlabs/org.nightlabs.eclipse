@@ -9,7 +9,6 @@ import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile;
  */
 public interface IImageProvider
 {
-
 	Image getImage(IFCKEditorContentFile file);
 
 	Image getImage(IFCKEditorContentFile file, IImageCallback imageCallback);
@@ -21,5 +20,4 @@ public interface IImageProvider
 	int getThumbnailSize();
 
 	void setThumbnailSize(int thumbnailSize);
-
 }

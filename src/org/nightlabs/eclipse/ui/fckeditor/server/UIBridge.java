@@ -10,10 +10,16 @@ import java.util.List;
 import java.util.Properties;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.forms.events.HyperlinkAdapter;
+import org.eclipse.ui.forms.events.HyperlinkEvent;
+import org.eclipse.ui.forms.widgets.FormText;
 import org.nightlabs.eclipse.ui.fckeditor.IFCKEditor;
 import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile;
 import org.nightlabs.eclipse.ui.fckeditor.file.ContentTypeUtil;
+import org.nightlabs.eclipse.ui.fckeditor.file.NewImageDialog;
 import org.nightlabs.eclipse.ui.fckeditor.file.SelectFileDialog;
 
 /**
@@ -74,7 +80,28 @@ public class UIBridge extends AbstractFileProvider {
 			try {
 				SelectFileDialog dlg = new SelectFileDialog(
 						getEditor().getSite().getShell(),
-						files, getEditor().getImageProvider());
+						files, getEditor().getImageProvider()) {
+					@Override
+					protected Composite createTopArea(Composite parent)
+					{
+						final FormText formText = new FormText(parent, SWT.NONE);
+						formText.setText(String.format("<form><p>This document contains %d %s. <a href=\"addfile\">Click here to add a new %s</a>.</p></form>", files.size(), "files", "file"), true, false);
+						formText.addHyperlinkListener(new HyperlinkAdapter() {
+							@Override
+							public void linkActivated(HyperlinkEvent e)
+							{
+								System.out.println("LINK!");
+								NewImageDialog newImageDialog = new NewImageDialog(getShell());
+								int result = newImageDialog.open();
+								if(result == IDialogConstants.OK_ID) {
+									// TODO
+									System.out.println("Ok...");
+								}
+							}
+						});
+						return formText;
+					}
+				};
 				int result = dlg.open();
 				if(result == IDialogConstants.OK_ID)
 					try {
