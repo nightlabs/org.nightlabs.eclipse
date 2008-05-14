@@ -13,6 +13,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile;
 
@@ -78,5 +79,12 @@ public class FileList extends Composite
 			GridData gridData = new GridData(SWT.FILL, SWT.BEGINNING, true, false);
 			fileListEntry.setLayoutData(gridData);
 		}
+	}
+
+	public void setFiles(List<IFCKEditorContentFile> files)
+	{
+		for(Control child : getChildren())
+			child.dispose();
+		createContents();
 	}
 }

@@ -7,13 +7,17 @@ import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile;
  */
 public abstract class ContentTypeUtil
 {
+	public static final String IMAGE_PNG = "image/png";
+	public static final String IMAGE_GIF = "image/gif";
+	public static final String IMAGE_JPEG = "image/jpeg";
+
 	// first entry in a list of equal content types is default extension
 	private static String[][] contentTypes = new String[][] {
-		{ "application/pdf", 	         ".pdf" },
-		{ "image/jpeg",                ".jpg" },
-		{ "image/jpeg",                ".jpeg" },
-		{ "image/gif",                 ".gif" },
-		{ "image/png",                 ".png" },
+		{ "application/pdf", 	       ".pdf" },
+		{ IMAGE_JPEG,                  ".jpg" },
+		{ IMAGE_JPEG,                  ".jpeg" },
+		{ IMAGE_GIF,                   ".gif" },
+		{ IMAGE_PNG,                   ".png" },
 		{ "text/html",                 ".html" },
 		{ "text/html",                 ".htm" },
 		{ "text/css",                  ".css" },
@@ -21,7 +25,7 @@ public abstract class ContentTypeUtil
 		{ "text/plain",                ".asc" },
 		{ "text/xml",                  ".xml" },
 		{ "text/javascript",           ".js" },
-		{	"audio/mpeg",                ".mp3" },
+		{ "audio/mpeg",                ".mp3" },
 		{ "audio/mpeg-url",            ".m3u" },
 		{ "application/msword",        ".doc" },
 		{ "application/x-ogg",         ".ogg" },

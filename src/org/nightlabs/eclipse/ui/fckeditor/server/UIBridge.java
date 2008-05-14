@@ -1,6 +1,7 @@
 package org.nightlabs.eclipse.ui.fckeditor.server;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -11,11 +12,14 @@ import java.util.Properties;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.forms.events.HyperlinkAdapter;
 import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.forms.widgets.FormText;
+import org.nightlabs.eclipse.ui.fckeditor.FCKEditorContentFile;
 import org.nightlabs.eclipse.ui.fckeditor.IFCKEditor;
 import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile;
 import org.nightlabs.eclipse.ui.fckeditor.file.ContentTypeUtil;
@@ -63,14 +67,21 @@ public class UIBridge extends AbstractFileProvider {
 		return imageFiles;
 	}
 
+	private class FileHelper
+	{
+		String getFileSingular() { return "file"; }
+		String getFilePlural() { return "files"; }
+		List<IFCKEditorContentFile> getFilteredFiles() { return getEditor().getEditorInput().getEditorContent().getFiles(); }
+	}
+
 	private class SelectFileRunnable implements Runnable
 	{
-		List<IFCKEditorContentFile> files;
-		String imageUrl;
+		FileHelper fileHelper;
+		String fileUrl;
 
-		public SelectFileRunnable(List<IFCKEditorContentFile> files)
+		public SelectFileRunnable(FileHelper fileHelper)
 		{
-			this.files = files;
+			this.fileHelper = fileHelper;
 		}
 
 		@Override
@@ -80,12 +91,14 @@ public class UIBridge extends AbstractFileProvider {
 			try {
 				SelectFileDialog dlg = new SelectFileDialog(
 						getEditor().getSite().getShell(),
-						files, getEditor().getImageProvider()) {
+						fileHelper.getFilteredFiles(), getEditor().getImageProvider()) {
 					@Override
 					protected Composite createTopArea(Composite parent)
 					{
 						final FormText formText = new FormText(parent, SWT.NONE);
-						formText.setText(String.format("<form><p>This document contains %d %s. <a href=\"addfile\">Click here to add a new %s</a>.</p></form>", files.size(), "files", "file"), true, false);
+						formText.setText(String.format(
+								"<form><p>This document contains %d %s. <a href=\"addfile\">Click here to add a new %s</a>.</p></form>",
+								fileHelper.getFilteredFiles().size(), fileHelper.getFilePlural(), fileHelper.getFileSingular()), true, false);
 						formText.addHyperlinkListener(new HyperlinkAdapter() {
 							@Override
 							public void linkActivated(HyperlinkEvent e)
@@ -94,8 +107,24 @@ public class UIBridge extends AbstractFileProvider {
 								NewImageDialog newImageDialog = new NewImageDialog(getShell());
 								int result = newImageDialog.open();
 								if(result == IDialogConstants.OK_ID) {
-									// TODO
-									System.out.println("Ok...");
+									String filename = newImageDialog.getFilename();
+									String contentType = ContentTypeUtil.getContentType(filename);
+									ByteArrayOutputStream out = new ByteArrayOutputStream();
+									ImageLoader imageLoader = new ImageLoader();
+									imageLoader.data = new ImageData[] { newImageDialog.getImage().getImageData() };
+									// TODO: where to get an "anonymous" instance from?
+									IFCKEditorContentFile file = new FCKEditorContentFile();
+									if(ContentTypeUtil.IMAGE_JPEG.equals(contentType)) {
+										imageLoader.save(out, SWT.IMAGE_JPEG);
+										file.setContentType(ContentTypeUtil.IMAGE_JPEG);
+									} else {
+										imageLoader.save(out, SWT.IMAGE_PNG);
+										file.setContentType(ContentTypeUtil.IMAGE_PNG);
+									}
+									file.setData(out.toByteArray());
+									file.setName(filename);
+									getEditor().getEditorInput().getEditorContent().addFile(file);
+									setFiles(fileHelper.getFilteredFiles());
 								}
 							}
 						});
@@ -110,24 +139,43 @@ public class UIBridge extends AbstractFileProvider {
 						if(extension == null)
 							extension = ".bin";
 						String filename = file.getFileId()+extension;
-						imageUrl = getEditor().getBaseUrl()+"/uibridge/files/"+URLEncoder.encode(filename, "UTF-8");
+						fileUrl = getEditor().getBaseUrl()+"/uibridge/files/"+URLEncoder.encode(filename, "UTF-8");
 					} catch (UnsupportedEncodingException e) {
 						// should never happen
 						e.printStackTrace();
 					}
 				else
-					imageUrl = "";
+					fileUrl = "";
 			} finally {
 				getEditor().setEnabled(true);
 			}
 		}
 	}
 
-	private String selectFile(final Shell shell, final List<IFCKEditorContentFile> files)
+	private class ImageFileHelper extends FileHelper
 	{
-		SelectFileRunnable selectFileRunnable = new SelectFileRunnable(files);
-		shell.getDisplay().syncExec(selectFileRunnable);
-		return "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<file>"+selectFileRunnable.imageUrl+"</file>\n";
+		@Override
+		public String getFilePlural() { return "images"; }
+		@Override
+		public String getFileSingular() { return "image"; }
+		@Override
+		public List<IFCKEditorContentFile> getFilteredFiles()
+		{
+			return getImageFiles(super.getFilteredFiles());
+		}
+	}
+
+	private class FlashFileHelper extends FileHelper
+	{
+		@Override
+		public String getFilePlural() { return "Flash file"; }
+		@Override
+		public String getFileSingular() { return "Flash files"; }
+		@Override
+		public List<IFCKEditorContentFile> getFilteredFiles()
+		{
+			return getFlashFiles(super.getFilteredFiles());
+		}
 	}
 
 	/* (non-Javadoc)
@@ -136,35 +184,25 @@ public class UIBridge extends AbstractFileProvider {
 	@Override
 	public InputStream getFileContents(String subUri, Properties parms) {
 		final Shell shell = getEditor().getSite().getShell();
-		final List<IFCKEditorContentFile> allFiles = getEditor().getEditorInput().getEditorContent().getFiles();
 		if("/uibridge/setdirty.xml".equals(subUri)) {
 			getEditor().setDirty(true);
 			String contents = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<dirty>true</dirty>\n";
 			return getStreamForString(contents);
 		}
 		else if("/uibridge/insertimage.xml".equals(subUri)) {
-			return getStreamForString(selectFile(shell, getImageFiles(allFiles)));
-//			final Shell shell = getEditor().getSite().getShell();
-//			SelectFileRunnable selectFileRunnable = new SelectFileRunnable(getImageFiles(getEditor().getEditorInput().getEditorContent().getFiles()));
-//			shell.getDisplay().syncExec(selectFileRunnable);
-//			String contents = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<file>"+selectFileRunnable.imageUrl+"</file>\n";
-//			return getStreamForString(contents);
+			SelectFileRunnable selectFileRunnable = new SelectFileRunnable(new ImageFileHelper());
+			shell.getDisplay().syncExec(selectFileRunnable);
+			return getStreamForString("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<file>"+selectFileRunnable.fileUrl+"</file>\n");
 		}
 		else if("/uibridge/insertlink.xml".equals(subUri)) {
-			return getStreamForString(selectFile(shell, allFiles));
-//			final Shell shell = getEditor().getSite().getShell();
-//			SelectFileRunnable selectFileRunnable = new SelectFileRunnable(getEditor().getEditorInput().getEditorContent().getFiles());
-//			shell.getDisplay().syncExec(selectFileRunnable);
-//			String contents = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<file>"+selectFileRunnable.imageUrl+"</file>\n";
-//			return getStreamForString(contents);
+			SelectFileRunnable selectFileRunnable = new SelectFileRunnable(new FileHelper());
+			shell.getDisplay().syncExec(selectFileRunnable);
+			return getStreamForString("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<file>"+selectFileRunnable.fileUrl+"</file>\n");
 		}
 		else if("/uibridge/insertflash.xml".equals(subUri)) {
-			return getStreamForString(selectFile(shell, getFlashFiles(allFiles)));
-//			final Shell shell = getEditor().getSite().getShell();
-//			SelectFileRunnable selectFileRunnable = new SelectFileRunnable(getFlashFiles(getEditor().getEditorInput().getEditorContent().getFiles()));
-//			shell.getDisplay().syncExec(selectFileRunnable);
-//			String contents = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<file>"+selectFileRunnable.imageUrl+"</file>\n";
-//			return getStreamForString(contents);
+			SelectFileRunnable selectFileRunnable = new SelectFileRunnable(new FlashFileHelper());
+			shell.getDisplay().syncExec(selectFileRunnable);
+			return getStreamForString("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<file>"+selectFileRunnable.fileUrl+"</file>\n");
 		}
 		else if(subUri.startsWith("/uibridge/files/")) {
 			String filename = subUri.substring("/uibridge/files/".length());

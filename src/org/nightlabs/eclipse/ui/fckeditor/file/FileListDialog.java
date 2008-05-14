@@ -24,6 +24,7 @@ public class FileListDialog extends TitleAreaDialog
 		final List<IFCKEditorContentFile> files;
 //		private Point initialSize;
 		private IImageProvider imageProvider;
+		private FileList fileList;
 
 		public FileListDialog(Shell parentShell, List<IFCKEditorContentFile> files, IImageProvider imageProvider)
 		{
@@ -106,7 +107,7 @@ public class FileListDialog extends TitleAreaDialog
 		protected Composite createTopArea(final Composite parent)
 		{
 			final FormText formText = new FormText(parent, SWT.NONE);
-			formText.setText(String.format("<form><p>This document contains %d %s. <a href=\"addfile\">Click here to add a new %s</a>.</p></form>", files.size(), "files", "file"), true, false);
+			formText.setText(String.format("<form><p>This document contains %d files</p></form>", files.size()), true, false);
 //			formText.addHyperlinkListener(new HyperlinkAdapter() {
 //				@Override
 //				public void linkActivated(HyperlinkEvent e)
@@ -122,18 +123,18 @@ public class FileListDialog extends TitleAreaDialog
 
 		protected Composite createFileListArea(final Composite parent)
 		{
-				ScrolledComposite sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
-				sc.setBackground(getShell().getDisplay().getSystemColor(SWT.COLOR_RED));
-				sc.setExpandVertical(true);
-				sc.setExpandHorizontal(true);
-				GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
-				sc.setLayoutData(gridData);
-				FileList fileList = createFileList(sc);
-				sc.setContent(fileList);
-				Point fileListSize = fileList.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-				sc.setMinSize(fileListSize);
-				//initialSize = new Point(fileListSize.x + 64, 450);
-				return sc;
+			ScrolledComposite sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+			sc.setBackground(getShell().getDisplay().getSystemColor(SWT.COLOR_RED));
+			sc.setExpandVertical(true);
+			sc.setExpandHorizontal(true);
+			GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+			sc.setLayoutData(gridData);
+			fileList = createFileList(sc);
+			sc.setContent(fileList);
+			Point fileListSize = fileList.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+			sc.setMinSize(fileListSize);
+			//initialSize = new Point(fileListSize.x + 64, 450);
+			return sc;
 		}
 
 		protected FileList createFileList(Composite parent)
@@ -167,5 +168,10 @@ public class FileListDialog extends TitleAreaDialog
 		{
 			imageProvider.stopThumbnailing();
 			return super.close();
+		}
+
+		public void setFiles(List<IFCKEditorContentFile> files)
+		{
+			fileList.setFiles(files);
 		}
 	}
