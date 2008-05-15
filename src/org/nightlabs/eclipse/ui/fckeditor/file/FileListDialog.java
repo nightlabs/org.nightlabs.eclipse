@@ -14,8 +14,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.forms.widgets.FormText;
 import org.nightlabs.eclipse.ui.fckeditor.Activator;
 import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile;
 
@@ -24,7 +24,9 @@ public class FileListDialog extends TitleAreaDialog
 		final List<IFCKEditorContentFile> files;
 //		private Point initialSize;
 		private IImageProvider imageProvider;
+		private ScrolledComposite sc;
 		private FileList fileList;
+		private Label topLabel;
 
 		public FileListDialog(Shell parentShell, List<IFCKEditorContentFile> files, IImageProvider imageProvider)
 		{
@@ -104,10 +106,21 @@ public class FileListDialog extends TitleAreaDialog
 //			return c;
 		}
 
-		protected Composite createTopArea(final Composite parent)
+		private void updateTopLabel()
 		{
-			final FormText formText = new FormText(parent, SWT.NONE);
-			formText.setText(String.format("<form><p>This document contains %d files</p></form>", files.size()), true, false);
+			if(topLabel != null)
+				topLabel.setText(String.format("This document contains %d files", files.size()));
+		}
+
+		protected Control createTopArea(final Composite parent)
+		{
+			topLabel = new Label(parent, SWT.NONE);
+			topLabel.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
+			updateTopLabel();
+			return topLabel;
+//			final FormText formText = new FormText(parent, SWT.NONE);
+//			formText.setText(String.format("<form><p>This document contains %d files</p></form>", files.size()), true, false);
+
 //			formText.addHyperlinkListener(new HyperlinkAdapter() {
 //				@Override
 //				public void linkActivated(HyperlinkEvent e)
@@ -118,12 +131,12 @@ public class FileListDialog extends TitleAreaDialog
 //					if(filepath != null)
 //				}
 //			});
-			return formText;
+//			return formText;
 		}
 
 		protected Composite createFileListArea(final Composite parent)
 		{
-			ScrolledComposite sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+			sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
 			sc.setBackground(getShell().getDisplay().getSystemColor(SWT.COLOR_RED));
 			sc.setExpandVertical(true);
 			sc.setExpandHorizontal(true);
@@ -173,5 +186,9 @@ public class FileListDialog extends TitleAreaDialog
 		public void setFiles(List<IFCKEditorContentFile> files)
 		{
 			fileList.setFiles(files);
+			updateTopLabel();
+			Point fileListSize = fileList.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+			sc.setMinSize(fileListSize);
+			sc.layout(true, true);
 		}
 	}

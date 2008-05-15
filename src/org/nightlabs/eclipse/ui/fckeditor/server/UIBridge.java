@@ -12,13 +12,14 @@ import java.util.Properties;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.forms.events.HyperlinkAdapter;
-import org.eclipse.ui.forms.events.HyperlinkEvent;
-import org.eclipse.ui.forms.widgets.FormText;
 import org.nightlabs.eclipse.ui.fckeditor.FCKEditorContentFile;
 import org.nightlabs.eclipse.ui.fckeditor.IFCKEditor;
 import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile;
@@ -92,17 +93,34 @@ public class UIBridge extends AbstractFileProvider {
 				SelectFileDialog dlg = new SelectFileDialog(
 						getEditor().getSite().getShell(),
 						fileHelper.getFilteredFiles(), getEditor().getImageProvider()) {
-					@Override
-					protected Composite createTopArea(Composite parent)
+
+					private Link topLabel;
+
+					private void updateTopLabel()
 					{
-						final FormText formText = new FormText(parent, SWT.NONE);
-						formText.setText(String.format(
-								"<form><p>This document contains %d %s. <a href=\"addfile\">Click here to add a new %s</a>.</p></form>",
-								fileHelper.getFilteredFiles().size(), fileHelper.getFilePlural(), fileHelper.getFileSingular()), true, false);
-						formText.addHyperlinkListener(new HyperlinkAdapter() {
+						if(topLabel != null)
+							topLabel.setText(String.format("This document contains %d %s. <a href=\"addfile\">Click here to add a new %s</a>.",
+									fileHelper.getFilteredFiles().size(), fileHelper.getFilePlural(), fileHelper.getFileSingular()));
+					}
+
+					@Override
+					protected Control createTopArea(Composite parent)
+					{
+						topLabel = new Link(parent, SWT.NONE);
+						topLabel.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
+						updateTopLabel();
+//						final FormText formText = new FormText(parent, SWT.NONE);
+//						formText.setText(String.format(
+//								"<form><p>This document contains %d %s. <a href=\"addfile\">Click here to add a new %s</a>.</p></form>",
+//								fileHelper.getFilteredFiles().size(), fileHelper.getFilePlural(), fileHelper.getFileSingular()), true, false);
+						topLabel.addSelectionListener(new SelectionAdapter() {
 							@Override
-							public void linkActivated(HyperlinkEvent e)
-							{
+							public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+//						}
+//						addHyperlinkListener(new HyperlinkAdapter() {
+//							@Override
+//							public void linkActivated(HyperlinkEvent e)
+//							{
 								System.out.println("LINK!");
 								NewImageDialog newImageDialog = new NewImageDialog(getShell());
 								int result = newImageDialog.open();
@@ -111,7 +129,7 @@ public class UIBridge extends AbstractFileProvider {
 									String contentType = ContentTypeUtil.getContentType(filename);
 									ByteArrayOutputStream out = new ByteArrayOutputStream();
 									ImageLoader imageLoader = new ImageLoader();
-									imageLoader.data = new ImageData[] { newImageDialog.getImage().getImageData() };
+									imageLoader.data = new ImageData[] { newImageDialog.getImageData() };
 									// TODO: where to get an "anonymous" instance from?
 									IFCKEditorContentFile file = new FCKEditorContentFile();
 									if(ContentTypeUtil.IMAGE_JPEG.equals(contentType)) {
@@ -128,7 +146,17 @@ public class UIBridge extends AbstractFileProvider {
 								}
 							}
 						});
-						return formText;
+						return topLabel;
+					}
+
+					/* (non-Javadoc)
+					 * @see org.nightlabs.eclipse.ui.fckeditor.file.FileListDialog#setFiles(java.util.List)
+					 */
+					@Override
+					public void setFiles(List<IFCKEditorContentFile> files)
+					{
+						updateTopLabel();
+						super.setFiles(files);
 					}
 				};
 				int result = dlg.open();

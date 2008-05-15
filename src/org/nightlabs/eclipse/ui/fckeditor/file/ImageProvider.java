@@ -38,9 +38,9 @@ public class ImageProvider implements IImageProvider
 			return image;
 		String dir = thumbnailSize >= 128 ? "mimetypes_128" : "mimetypes_64";
 		String filename = "/icons/"+dir+"/"+contentType.toLowerCase().replaceAll("[^a-z0-9]", "_")+".png";
-		System.out.println("resource filename: "+filename);
+		//System.out.println("resource filename: "+filename);
 		URL resource = Activator.getDefault().getBundle().getResource(filename);
-		System.out.println("resource url: "+resource);
+		//System.out.println("resource url: "+resource);
 		if(resource == null)
 			return null;
 		ImageDescriptor imageDescriptor = ImageDescriptor.createFromURL(resource);
@@ -52,8 +52,9 @@ public class ImageProvider implements IImageProvider
 	private Image getThumbnail(IFCKEditorContentFile file)
 	{
 		Image image = new Image(device, new ByteArrayInputStream(file.getData()));
-		int width = image.getImageData().width;
-		int height = image.getImageData().height;
+		ImageData imageData = image.getImageData();
+		int width = imageData.width;
+		int height = imageData.height;
 		int myThumbnailSize;
 		synchronized (this) {
 			myThumbnailSize = thumbnailSize;
@@ -62,7 +63,7 @@ public class ImageProvider implements IImageProvider
 			float wx = (float)width / (float)myThumbnailSize;
 			float wy = (float)height / (float)myThumbnailSize;
 			float x = Math.max(wx, wy);
-			ImageData thumbnailData = image.getImageData().scaledTo(Math.round(width / x), Math.round(height / x));
+			ImageData thumbnailData = imageData.scaledTo(Math.round(width / x), Math.round(height / x));
 			Image thumbnail = new Image(device, thumbnailData);
 			image.dispose();
 			image = thumbnail;
@@ -87,20 +88,20 @@ public class ImageProvider implements IImageProvider
 	{
 		private ImageProvider imageProvider;
 		private volatile boolean shutdown;
-		
+
 		public ThumbnailLoaderThread(ImageProvider imageProvider)
 		{
 			this.imageProvider = imageProvider;
 			setPriority(Thread.MIN_PRIORITY);
 		}
-		
+
 		private static class File
 		{
 			IImageCallback imageCallback;
 			IFCKEditorContentFile file;
 		}
 		private LinkedList<File> files = new LinkedList<File>();
-		
+
 		public void addFile(IImageCallback imageCallback, IFCKEditorContentFile file)
 		{
 			File toAdd = new File();
@@ -112,13 +113,13 @@ public class ImageProvider implements IImageProvider
 				files.notifyAll();
 			}
 		}
-		
+
 		public void shutdown()
 		{
-			System.out.println("shutdown");
+			//System.out.println("shutdown");
 			this.shutdown = true;
 		}
-		
+
 		/* (non-Javadoc)
 		 * @see java.lang.Runnable#run()
 		 */
@@ -159,7 +160,7 @@ public class ImageProvider implements IImageProvider
 			System.out.println("Thumbnail loader thread done.");
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.nightlabs.eclipse.ui.fckeditor.file.IImageProvider#getImage(org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile, org.nightlabs.eclipse.ui.fckeditor.file.IImageCallback)
 	 */
@@ -193,7 +194,7 @@ public class ImageProvider implements IImageProvider
 			image = getImage("application/unknown");
 		return image;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.nightlabs.eclipse.ui.fckeditor.file.IImageProvider#dispose()
 	 */
@@ -233,7 +234,7 @@ public class ImageProvider implements IImageProvider
 			thumbnailLoaderThread = null;
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.nightlabs.eclipse.ui.fckeditor.file.IImageProvider#getThumbnailSize()
 	 */

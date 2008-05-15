@@ -85,6 +85,8 @@ public class FileList extends Composite
 	{
 		for(Control child : getChildren())
 			child.dispose();
+		this.files = files;
 		createContents();
+		layout(true, true);
 	}
 }

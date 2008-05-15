@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.DisposeEvent;
@@ -12,6 +13,7 @@ import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Cursor;
@@ -28,10 +30,13 @@ import org.nightlabs.eclipse.ui.fckeditor.Activator;
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  */
-public class ImageClippingArea extends Canvas implements PaintListener, ControlListener, MouseListener, MouseMoveListener, DisposeListener
+public class ImageClippingArea extends Canvas implements PaintListener, ControlListener, MouseListener, MouseMoveListener, MouseTrackListener, DisposeListener
 {
-	private Image sourceImage;
+//	private Image sourceImage;
+	private ImageData sourceImageData;
 	private Image previewImage;
+	private ImageData previewImageData;
+	private Image previewImageDisabled;
 	private Rectangle clippingArea;
 	private Image bgEvenImage;
 	private Pattern bgEven;
@@ -49,6 +54,13 @@ public class ImageClippingArea extends Canvas implements PaintListener, ControlL
 	private Cursor cursorSizeWE;
 
 	private Collection<ClippingAreaListener> listeners;
+	private static final int outerBorder = 0;
+	private Anchor anchor = Anchor.NONE;
+	private boolean dragging = false;
+	private Point dragStart;
+	private Rectangle dragClippingArea;
+	private static final int anchorSnapTolerance = 5;
+	private static final int clippingAreaMinimumSize = 2;
 
 	/**
 	 * Create a new ImageClippingArea instance.
@@ -63,6 +75,7 @@ public class ImageClippingArea extends Canvas implements PaintListener, ControlL
 		addControlListener(this);
 		addMouseMoveListener(this);
 		addMouseListener(this);
+		addMouseTrackListener(this);
 		addDisposeListener(this);
 	}
 
@@ -91,15 +104,15 @@ public class ImageClippingArea extends Canvas implements PaintListener, ControlL
 			listener.clippingAreaChanged(clippingAreaForSource);
 	}
 
-	private static final int outerBorder = 0;
-
 	public void paintControl(PaintEvent e) {
 		GC gc = e.gc;
 		gc.setAdvanced(true);
 
+//		System.out.println("paint: "+e.x+"/"+e.y+" "+e.width+"/"+e.height);
+
 		Point myBounds = getDimensions();
 
-		if(sourceImage == null) {
+		if(sourceImageData == null) {
 			gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW));
 			gc.drawLine(getClientArea().x, getClientArea().y, getClientArea().width - 1, getClientArea().height - 1);
 			gc.drawLine(getClientArea().width - 1, getClientArea().y, getClientArea().x, getClientArea().height - 1);
@@ -111,13 +124,54 @@ public class ImageClippingArea extends Canvas implements PaintListener, ControlL
 //				clippingArea = new Rectangle(0, 0, previewImageData.width, previewImageData.height);
 			createPreviewImage();
 		}
-		ImageData previewImageData = previewImage.getImageData();
 		int offsetX = Math.round((myBounds.x - previewImageData.width - outerBorder) / 2f);
 		int offsetY = Math.round((myBounds.y - previewImageData.height - outerBorder) / 2f);
 		imageX = getClientArea().x + offsetX + outerBorder;
 		imageY = getClientArea().y + offsetY + outerBorder;
-		gc.drawImage(previewImage, imageX, imageY);
 
+		boolean paintAll = false;
+
+		if(!paintAll) {
+			partialDrawImage(e, previewImageDisabled,
+					0,
+					0,
+					imageX,
+					imageY,
+					previewImageData.width,
+					previewImageData.height);
+		} else {
+			gc.drawImage(previewImageDisabled,
+					0,
+					0,
+					previewImageData.width,
+					previewImageData.height,
+					imageX,
+					imageY,
+					previewImageData.width,
+					previewImageData.height);
+		}
+
+		if(!paintAll) {
+			partialDrawImage(e, previewImage,
+					clippingArea.x,
+					clippingArea.y,
+					imageX + clippingArea.x,
+					imageY + clippingArea.y,
+					clippingArea.width,
+					clippingArea.height);
+		} else {
+			gc.drawImage(previewImage,
+					clippingArea.x,
+					clippingArea.y,
+					clippingArea.width,
+					clippingArea.height,
+					imageX + clippingArea.x,
+					imageY + clippingArea.y,
+					clippingArea.width,
+					clippingArea.height);
+		}
+
+		/*
 		gc.setBackgroundPattern(bgEven);
 		// top
 		gc.fillRectangle(
@@ -144,6 +198,7 @@ public class ImageClippingArea extends Canvas implements PaintListener, ControlL
 				imageY + clippingArea.y - 1,
 				previewImageData.width - clippingArea.x - clippingArea.width,
 				clippingArea.height + 2);
+		*/
 
 		gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_BLACK));
 		gc.drawRectangle(
@@ -153,6 +208,45 @@ public class ImageClippingArea extends Canvas implements PaintListener, ControlL
 				clippingArea.height + 1);
 	}
 
+	private static void partialDrawImage(PaintEvent e, Image image, int srcX, int srcY, int destX, int destY, int width, int height)
+	{
+		// nothing to do checks:
+		if(e.x + e.width < destX)
+			// target is left of image
+			return;
+		if(e.y + e.height < destY)
+			// target is top of image
+			return;
+		if(e.x > destX + width)
+			// target is right of image
+			return;
+		if(e.y > destY + height)
+			// target is bottom of image
+			return;
+
+		if(e.x > destX) {
+			int diff = e.x - destX;
+			destX += diff;
+			srcX += diff;
+			width -= diff;
+		}
+		if(e.y > destY) {
+			int diff = e.y - destY;
+			destY += diff;
+			srcY += diff;
+			height -= diff;
+		}
+		if(width > e.width) {
+			width = e.width;
+		}
+		if(height > e.height) {
+			height = e.height;
+		}
+
+		//System.out.println("draw: "+srcX+"/"+srcY+" -> "+destX+"/"+destY+" ("+width+"/"+height+")");
+		e.gc.drawImage(image, srcX, srcY, width, height, destX, destY, width, height);
+	}
+
 	private Point getDimensions()
 	{
 		return new Point(getClientArea().width - getClientArea().x, getClientArea().height - getClientArea().y);
@@ -160,17 +254,32 @@ public class ImageClippingArea extends Canvas implements PaintListener, ControlL
 
 	private void createPreviewImage()
 	{
-		ImageData sourceImageData = sourceImage.getImageData();
-		Point imageBounds = new Point(sourceImageData.width, sourceImageData.height);
-		Point myBounds = getDimensions();
-		float mx = (float)imageBounds.x / (float)myBounds.x;
-		float my = (float)imageBounds.y / (float)myBounds.y;
-		float m = Math.max(mx, my);
-		previewImage = new Image(getDisplay(), sourceImage.getImageData().scaledTo(Math.round(imageBounds.x / m) - 2, Math.round(imageBounds.y / m) - 2));
-		if(clippingArea == null) {
-			ImageData previewImageData = previewImage.getImageData();
-			clippingArea = new Rectangle(0, 0, previewImageData.width, previewImageData.height);
-		}
+		BusyIndicator.showWhile(getShell().getDisplay(), new Runnable() {
+			/* (non-Javadoc)
+			 * @see java.lang.Runnable#run()
+			 */
+			@Override
+			public void run()
+			{
+				Point imageBounds = new Point(sourceImageData.width, sourceImageData.height);
+				Point myBounds = getDimensions();
+				float mx = (float)imageBounds.x / (float)myBounds.x;
+				float my = (float)imageBounds.y / (float)myBounds.y;
+				float m = Math.max(mx, my);
+				previewImageData = sourceImageData.scaledTo(Math.round(imageBounds.x / m) - 2, Math.round(imageBounds.y / m) - 2);
+				previewImage = new Image(getDisplay(), previewImageData);
+
+				previewImageDisabled = new Image(getDisplay(), previewImageData);
+				GC gc = new GC(previewImageDisabled);
+				gc.setBackgroundPattern(bgEven);
+				gc.fillRectangle(0, 0, previewImageData.width, previewImageData.width);
+				gc.dispose();
+
+				if(clippingArea == null) {
+					clippingArea = new Rectangle(0, 0, previewImageData.width, previewImageData.height);
+				}
+			}
+		});
 	}
 
 	private void init()
@@ -203,7 +312,9 @@ public class ImageClippingArea extends Canvas implements PaintListener, ControlL
 		if(previewImage != null) {
 			previewImage.dispose();
 			previewImage = null;
+			previewImageData = null;
 		}
+		sourceImageData = null;
 		bgEvenImage.dispose();
 		bgEven.dispose();
 		cursorSizeAll.dispose();
@@ -211,16 +322,29 @@ public class ImageClippingArea extends Canvas implements PaintListener, ControlL
 		cursorSizeNS.dispose();
 		cursorSizeSE.dispose();
 		cursorSizeWE.dispose();
-		System.out.println("DISPOSE");
+		//System.out.println("DISPOSE");
 	}
 
 	/**
-	 * Get the sourceImage.
-	 * @return the sourceImage
+	 * Get the source image data.
+	 * @return the sourceImageData
 	 */
-	public Image getSourceImage()
+	public ImageData getSourceImageData()
 	{
-		return sourceImage;
+		return sourceImageData;
+	}
+
+	/**
+	 * Set the source image data.
+	 * @param sourceImage the sourceImageData to set
+	 */
+	public void setSourceImage(ImageData sourceImageData)
+	{
+		this.sourceImageData = sourceImageData;
+		if(previewImage != null) {
+			previewImage.dispose();
+			previewImage = null;
+		}
 	}
 
 	/**
@@ -229,11 +353,7 @@ public class ImageClippingArea extends Canvas implements PaintListener, ControlL
 	 */
 	public void setSourceImage(Image sourceImage)
 	{
-		this.sourceImage = sourceImage;
-		if(previewImage != null) {
-			previewImage.dispose();
-			previewImage = null;
-		}
+		setSourceImage(sourceImage.getImageData());
 	}
 
 	public Rectangle getClippingArea()
@@ -243,13 +363,13 @@ public class ImageClippingArea extends Canvas implements PaintListener, ControlL
 
 	public Rectangle getClippingAreaForSource()
 	{
-		if(sourceImage == null)
+		if(sourceImageData == null)
 			return null;
 		if(previewImage == null)
 			// should never be null here...
 			createPreviewImage();
-		float mx = (float)previewImage.getImageData().width / (float)sourceImage.getImageData().width;
-		float my = (float)previewImage.getImageData().height / (float)sourceImage.getImageData().height;
+		float mx = (float)previewImageData.width / (float)sourceImageData.width;
+		float my = (float)previewImageData.height / (float)sourceImageData.height;
 		//System.out.println("m: "+mx+" "+my);
 		return new Rectangle(
 				Math.round(clippingArea.x / mx),
@@ -274,13 +394,13 @@ public class ImageClippingArea extends Canvas implements PaintListener, ControlL
 	{
 		if(previewImage == null)
 			return;
-		int oldWidth = previewImage.getImageData().width;
-		int oldHeight = previewImage.getImageData().height;
+		int oldWidth = previewImageData.width;
+		int oldHeight = previewImageData.height;
 		previewImage.dispose();
 		previewImage = null;
 		createPreviewImage();
-		int newWidth = previewImage.getImageData().width;
-		int newHeight = previewImage.getImageData().height;
+		int newWidth = previewImageData.width;
+		int newHeight = previewImageData.height;
 		float mx = (float)newWidth / (float)oldWidth;
 		float my = (float)newHeight / (float)oldHeight;
 		//System.out.println("mx: "+mx+" my: "+my);
@@ -303,48 +423,42 @@ public class ImageClippingArea extends Canvas implements PaintListener, ControlL
 		W;
 	}
 
-	private Anchor anchor = Anchor.NONE;
-	private boolean dragging = false;
-	private Point dragStart;
-	private Rectangle dragClippingArea;
-
 	private void calculateAnchor(int mouseX, int mouseY)
 	{
-		int tolerance = 5;
 		//System.out.println(e.x+"/"+e.y);
 		int clippingAreaAbsX = imageX + clippingArea.x;
 		int clippingAreaAbsY = imageY + clippingArea.y;
 
-		if(mouseX > clippingAreaAbsX - tolerance &&
-				mouseY > clippingAreaAbsY - tolerance &&
-				mouseX - tolerance < clippingAreaAbsX + clippingArea.width &&
-				mouseY - tolerance < clippingAreaAbsY + clippingArea.height) {
-			if(Math.abs(mouseX - clippingAreaAbsX) < tolerance &&
-				Math.abs(mouseY - clippingAreaAbsY) < tolerance) {
+		if(mouseX > clippingAreaAbsX - anchorSnapTolerance &&
+				mouseY > clippingAreaAbsY - anchorSnapTolerance &&
+				mouseX - anchorSnapTolerance < clippingAreaAbsX + clippingArea.width &&
+				mouseY - anchorSnapTolerance < clippingAreaAbsY + clippingArea.height) {
+			if(Math.abs(mouseX - clippingAreaAbsX) < anchorSnapTolerance &&
+				Math.abs(mouseY - clippingAreaAbsY) < anchorSnapTolerance) {
 				// nw
 				anchor = Anchor.NW;
-			} else if(Math.abs(mouseX - (clippingAreaAbsX + clippingArea.width)) < tolerance &&
-					Math.abs(mouseY - clippingAreaAbsY) < tolerance) {
+			} else if(Math.abs(mouseX - (clippingAreaAbsX + clippingArea.width)) < anchorSnapTolerance &&
+					Math.abs(mouseY - clippingAreaAbsY) < anchorSnapTolerance) {
 				// ne
 				anchor = Anchor.NE;
-			} else if(Math.abs(mouseX - clippingAreaAbsX) < tolerance &&
-					Math.abs(mouseY - (clippingAreaAbsY + clippingArea.height)) < tolerance) {
+			} else if(Math.abs(mouseX - clippingAreaAbsX) < anchorSnapTolerance &&
+					Math.abs(mouseY - (clippingAreaAbsY + clippingArea.height)) < anchorSnapTolerance) {
 				// sw
 				anchor = Anchor.SW;
-			} else if(Math.abs(mouseX - (clippingAreaAbsX + clippingArea.width)) < tolerance &&
-					Math.abs(mouseY - (clippingAreaAbsY + clippingArea.height)) < tolerance) {
+			} else if(Math.abs(mouseX - (clippingAreaAbsX + clippingArea.width)) < anchorSnapTolerance &&
+					Math.abs(mouseY - (clippingAreaAbsY + clippingArea.height)) < anchorSnapTolerance) {
 				// se
 				anchor = Anchor.SE;
-			} else if(Math.abs(mouseY - clippingAreaAbsY) < tolerance) {
+			} else if(Math.abs(mouseY - clippingAreaAbsY) < anchorSnapTolerance) {
 				// n
 				anchor = Anchor.N;
-			} else if(Math.abs(mouseY - (clippingAreaAbsY + clippingArea.height)) < tolerance) {
+			} else if(Math.abs(mouseY - (clippingAreaAbsY + clippingArea.height)) < anchorSnapTolerance) {
 				// s
 				anchor = Anchor.S;
-			} else if(Math.abs(mouseX - clippingAreaAbsX) < tolerance) {
+			} else if(Math.abs(mouseX - clippingAreaAbsX) < anchorSnapTolerance) {
 				// w
 				anchor = Anchor.W;
-			} else if(Math.abs(mouseX - (clippingAreaAbsX + clippingArea.width)) < tolerance) {
+			} else if(Math.abs(mouseX - (clippingAreaAbsX + clippingArea.width)) < anchorSnapTolerance) {
 				// e
 				anchor = Anchor.E;
 			} else {
@@ -362,102 +476,88 @@ public class ImageClippingArea extends Canvas implements PaintListener, ControlL
 	@Override
 	public void mouseMove(MouseEvent e)
 	{
-		if(sourceImage == null)
+		if(sourceImageData == null)
 			return;
 
-		if(dragging) {
-			int dx = e.x - dragStart.x;
-			int dy = e.y - dragStart.y;
-//			System.out.println("diff: "+dx+"/"+dy);
-			int maxX = previewImage.getImageData().width - clippingArea.width;
-			int maxY = previewImage.getImageData().height - clippingArea.height;
-			int oldX = clippingArea.x;
-			int oldY = clippingArea.y;
-			switch (anchor) {
-			case INNER:
-				clippingArea.x = Math.max(0, Math.min(dragClippingArea.x + dx, maxX));
-				clippingArea.y = Math.max(0, Math.min(dragClippingArea.y + dy, maxY));
-				redraw();
-				fireClippingAreaChanged();
-				break;
-			case NW:
-				clippingArea.x = Math.max(0, dragClippingArea.x + dx);
-				clippingArea.y = Math.max(0, dragClippingArea.y + dy);
-				int actualdx = clippingArea.x - oldX;
-				int actualdy = clippingArea.y - oldY;
-				clippingArea.width -= actualdx;
-				clippingArea.height -= actualdy;
-				redraw();
-				fireClippingAreaChanged();
-				break;
-			case N:
-				clippingArea.y = Math.max(0, dragClippingArea.y + dy);
-				actualdy = clippingArea.y - oldY;
-				clippingArea.height -= actualdy;
-				redraw();
-				fireClippingAreaChanged();
-				break;
-			case W:
-				clippingArea.x = Math.max(0, dragClippingArea.x + dx);
-				System.out.println("w "+clippingArea.x);
-				actualdx = clippingArea.x - oldX;
-				clippingArea.width -= actualdx;
-				redraw();
-				fireClippingAreaChanged();
-				break;
-			case NE:
-				clippingArea.y = Math.max(0, dragClippingArea.y + dy);
-				actualdy = clippingArea.y - oldY;
-				clippingArea.height -= actualdy;
-				clippingArea.width = Math.min(dragClippingArea.width + dx, previewImage.getImageData().width - clippingArea.x);
-				redraw();
-				fireClippingAreaChanged();
-				break;
-			case E:
-				clippingArea.width = Math.min(dragClippingArea.width + dx, previewImage.getImageData().width - clippingArea.x);
-				redraw();
-				break;
-			case S:
-				clippingArea.height = Math.min(dragClippingArea.height + dy, previewImage.getImageData().height - clippingArea.y);
-				redraw();
-				fireClippingAreaChanged();
-				break;
-			case SE:
-				clippingArea.width = Math.min(dragClippingArea.width + dx, previewImage.getImageData().width - clippingArea.x);
-				clippingArea.height = Math.min(dragClippingArea.height + dy, previewImage.getImageData().height - clippingArea.y);
-				redraw();
-				fireClippingAreaChanged();
-				break;
-			case SW:
-				clippingArea.height = Math.min(dragClippingArea.height + dy, previewImage.getImageData().height - clippingArea.y);
-				clippingArea.x = Math.max(0, dragClippingArea.x + dx);
-				actualdx = clippingArea.x - oldX;
-				clippingArea.width -= actualdx;
-				redraw();
-				fireClippingAreaChanged();
-				break;
-			default:
-				break;
-			}
+		if(dragging)
+			applyDragging(e.x, e.y);
+		else
+			applyCursor(e.x, e.y);
+	}
 
+	/**
+	 * Change the clipping area depending on the mouse moving.
+	 * @param mouseX mouse x coordinate
+	 * @param mouseY mouse y coordinate
+	 */
+	private void applyDragging(int mouseX, int mouseY)
+	{
+		Rectangle oldClippingArea = new Rectangle(clippingArea.x, clippingArea.y, clippingArea.width, clippingArea.height);
+		int dx = mouseX - dragStart.x;
+		int dy = mouseY - dragStart.y;
+//			System.out.println("diff: "+dx+"/"+dy);
+		int maxX = previewImageData.width - clippingArea.width;
+		int maxY = previewImageData.height - clippingArea.height;
+		int oldX = clippingArea.x;
+		int oldY = clippingArea.y;
+		int actualdx;
+		int actualdy;
+
+		if(anchor == Anchor.INNER) {
+			clippingArea.x = Math.max(0, Math.min(dragClippingArea.x + dx, maxX));
+			clippingArea.y = Math.max(0, Math.min(dragClippingArea.y + dy, maxY));
 		} else {
-			calculateAnchor(e.x, e.y);
-			Cursor cursorToUse;
-			switch (anchor) {
-				case INNER: cursorToUse = cursorSizeAll; break;
-				case NW: cursorToUse = cursorSizeNW; break;
-				case N: cursorToUse = cursorSizeNS; break;
-				case NE: cursorToUse = cursorSizeNE; break;
-				case E: cursorToUse = cursorSizeWE; break;
-				case SE: cursorToUse = cursorSizeSE; break;
-				case S: cursorToUse = cursorSizeNS; break;
-				case SW: cursorToUse = cursorSizeSW; break;
-				case W: cursorToUse = cursorSizeWE; break;
-				default: cursorToUse = cursorDefault; break;
+			if(anchor == Anchor.N || anchor == Anchor.NW || anchor == Anchor.NE) {
+				clippingArea.y = Math.max(0, dragClippingArea.y + dy);
+				clippingArea.y = Math.min(clippingArea.y, dragClippingArea.y + dragClippingArea.height - clippingAreaMinimumSize);
+				actualdy = clippingArea.y - oldY;
+				clippingArea.height -= actualdy;
 			}
-			if(getShell().getCursor() != cursorToUse)
-				getShell().setCursor(cursorToUse);
+			if(anchor == Anchor.W || anchor == Anchor.NW || anchor == Anchor.SW) {
+				clippingArea.x = Math.max(0, dragClippingArea.x + dx);
+				clippingArea.x = Math.min(clippingArea.x, dragClippingArea.x + dragClippingArea.width - clippingAreaMinimumSize);
+				//System.out.println("w "+clippingArea.x);
+				actualdx = clippingArea.x - oldX;
+				clippingArea.width -= actualdx;
+			}
+			if(anchor == Anchor.E || anchor == Anchor.SE || anchor == Anchor.NE) {
+				clippingArea.width = Math.min(dragClippingArea.width + dx, previewImageData.width - clippingArea.x);
+				clippingArea.width = Math.max(clippingArea.width, clippingAreaMinimumSize);
+			}
+			if(anchor == Anchor.S || anchor == Anchor.SE || anchor == Anchor.SW) {
+				clippingArea.height = Math.min(dragClippingArea.height + dy, previewImageData.height - clippingArea.y);
+				clippingArea.height = Math.max(clippingArea.height, clippingAreaMinimumSize);
+			}
 		}
+
+		Rectangle redrawRect = oldClippingArea.union(clippingArea);
+		redraw(redrawRect.x + imageX - 1, redrawRect.y + imageY - 1, redrawRect.width + 2, redrawRect.height + 2, false);
+		fireClippingAreaChanged();
+	}
+
+	/**
+	 * Apply the cursor for the current mouse position.
+	 * @param mouseX mouse x coordinate
+	 * @param mouseY mouse y coordinate
+	 */
+	private void applyCursor(int mouseX, int mouseY)
+	{
+		calculateAnchor(mouseX, mouseY);
+		Cursor cursorToUse;
+		switch (anchor) {
+			case INNER: cursorToUse = cursorSizeAll; break;
+			case NW: cursorToUse = cursorSizeNW; break;
+			case N: cursorToUse = cursorSizeNS; break;
+			case NE: cursorToUse = cursorSizeNE; break;
+			case E: cursorToUse = cursorSizeWE; break;
+			case SE: cursorToUse = cursorSizeSE; break;
+			case S: cursorToUse = cursorSizeNS; break;
+			case SW: cursorToUse = cursorSizeSW; break;
+			case W: cursorToUse = cursorSizeWE; break;
+			default: cursorToUse = cursorDefault; break;
+		}
+		if(getShell().getCursor() != cursorToUse)
+			getShell().setCursor(cursorToUse);
 	}
 
 	/* (non-Javadoc)
@@ -466,15 +566,18 @@ public class ImageClippingArea extends Canvas implements PaintListener, ControlL
 	@Override
 	public void mouseDoubleClick(MouseEvent e)
 	{
-		if(sourceImage == null)
+		if(sourceImageData == null)
 			return;
 
 		clippingArea.x = 0;
 		clippingArea.y = 0;
-		clippingArea.width = previewImage.getImageData().width;
-		clippingArea.height = previewImage.getImageData().height;
+		clippingArea.width = previewImageData.width;
+		clippingArea.height = previewImageData.height;
 		fireClippingAreaChanged();
 		redraw();
+
+		// TEST:
+//		redraw(Math.max(0, e.x-10), Math.max(0, e.y-10), 20, 20, false);
 	}
 
 	/* (non-Javadoc)
@@ -483,13 +586,12 @@ public class ImageClippingArea extends Canvas implements PaintListener, ControlL
 	@Override
 	public void mouseDown(MouseEvent e)
 	{
-		if(sourceImage == null)
+		if(sourceImageData == null)
 			return;
 
 		dragging = true;
 		dragStart = new Point(e.x, e.y);
 		dragClippingArea = new Rectangle(clippingArea.x, clippingArea.y, clippingArea.width, clippingArea.height);
-		System.out.println("drag start");
 	}
 
 	/* (non-Javadoc)
@@ -498,12 +600,37 @@ public class ImageClippingArea extends Canvas implements PaintListener, ControlL
 	@Override
 	public void mouseUp(MouseEvent e)
 	{
-		if(sourceImage == null)
+		if(sourceImageData == null)
 			return;
 
 		dragging = false;
 		dragStart = null;
 		dragClippingArea = null;
-		System.out.println("drag end");
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.swt.events.MouseTrackListener#mouseEnter(org.eclipse.swt.events.MouseEvent)
+	 */
+	@Override
+	public void mouseEnter(MouseEvent e)
+	{
+		applyCursor(e.x, e.y);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.swt.events.MouseTrackListener#mouseExit(org.eclipse.swt.events.MouseEvent)
+	 */
+	@Override
+	public void mouseExit(MouseEvent e)
+	{
+		getShell().setCursor(cursorDefault);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.swt.events.MouseTrackListener#mouseHover(org.eclipse.swt.events.MouseEvent)
+	 */
+	@Override
+	public void mouseHover(MouseEvent e)
+	{
 	}
 }

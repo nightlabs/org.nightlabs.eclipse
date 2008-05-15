@@ -13,6 +13,8 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -42,7 +44,8 @@ public class NewImageDialog extends TitleAreaDialog
 	private Scale scale;
 
 	private ImageClippingArea imageView;
-	private Image image;
+//	private Image image;
+	private ImageData imageData;
 	private String filename;
 
 	/**
@@ -97,10 +100,8 @@ public class NewImageDialog extends TitleAreaDialog
 
 	protected void applyFile()
 	{
-		if(image != null) {
-			image.dispose();
-			image = null;
-		}
+		if(imageData != null)
+			imageData = null;
 		File f = new File(fileText.getText());
 		if(!f.isFile()) {
 			setErrorMessage("Please enter an existing file path or click the '...' button to choose a file.");
@@ -110,10 +111,13 @@ public class NewImageDialog extends TitleAreaDialog
 		FileInputStream in = null;
 		try {
 			in = new FileInputStream(f);
-			image = new Image(getShell().getDisplay(), in);
-			imageView.setSourceImage(image);
-			String width = String.valueOf(image.getImageData().width);
-			String height = String.valueOf(image.getImageData().height);
+			ImageLoader imageLoader = new ImageLoader();
+			imageData = imageLoader.load(in)[0];
+//			Image image = new Image(getShell().getDisplay(), in);
+//			imageData = image.getImageData();
+			imageView.setSourceImage(imageData);
+			String width = String.valueOf(imageData.width);
+			String height = String.valueOf(imageData.height);
 			originalWidth.setText(width);
 			originalHeight.setText(height);
 			selectionWidth.setText(width);
@@ -309,10 +313,7 @@ public class NewImageDialog extends TitleAreaDialog
 	public boolean close()
 	{
 		if(getReturnCode() != OK) {
-			if(image != null) {
-				image.dispose();
-				image = null;
-			}
+			imageData = null;
 		}
 		return super.close();
 	}
@@ -324,19 +325,14 @@ public class NewImageDialog extends TitleAreaDialog
 	protected void okPressed()
 	{
 		Rectangle clippingArea = imageView.getClippingAreaForSource();
-		if(clippingArea.x != 0 || clippingArea.y != 0 || clippingArea.width != image.getImageData().width || clippingArea.height != image.getImageData().height) {
-			Image croppedImage = crop(image, clippingArea.x, clippingArea.y, clippingArea.width, clippingArea.height);
-			image.dispose();
-			image = croppedImage;
+		if(clippingArea.x != 0 || clippingArea.y != 0 || clippingArea.width != imageData.width || clippingArea.height != imageData.height) {
+			imageData = crop(imageData, clippingArea.x, clippingArea.y, clippingArea.width, clippingArea.height);
 		}
 		int x = Integer.parseInt(scaleText.getText());
 		if(x != 100) {
-			Image scaledImage = new Image(getShell().getDisplay(),
-					image.getImageData().scaledTo(
+			imageData = imageData.scaledTo(
 							Math.round(clippingArea.width * (x / 100f)),
-							Math.round(clippingArea.height * (x / 100f))));
-			image.dispose();
-			image = scaledImage;
+							Math.round(clippingArea.height * (x / 100f)));
 		}
 
 		String filepath = fileText.getText();
@@ -346,15 +342,12 @@ public class NewImageDialog extends TitleAreaDialog
 		else
 			filename = filepath.substring(idx+1);
 
-//		ImageLoader imageLoader = new ImageLoader();
-//		imageLoader.data = new ImageData[] { image.getImageData() };
-//		imageLoader.save("/tmp/test.jpg", SWT.IMAGE_JPEG);
-
 		super.okPressed();
 	}
 
-	private static Image crop(Image src, int x, int y, int w, int h) {
-		Image cropImage = new Image(src.getDevice(), w, h);
+	private ImageData crop(ImageData srcData, int x, int y, int w, int h) {
+		Image src = new Image(getShell().getDisplay(), srcData);
+		Image cropImage = new Image(getShell().getDisplay(), w, h);
 
 		// Redefine w and h to void them to be too big
 		if (x+w > src.getBounds().width) {
@@ -371,18 +364,31 @@ public class NewImageDialog extends TitleAreaDialog
 				0, 0,
 				w, h);
 		cropGC.dispose();
+		src.dispose();
 
-		return cropImage;
+		ImageData cropImageData = cropImage.getImageData();
+		cropImage.dispose();
+		return cropImageData;
 	}
 
+//	/**
+//	 * Get the result image. This value is only available after the
+//	 * Ok button was pressed.
+//	 * @return The cropped and scaled image
+//	 */
+//	public Image getImage()
+//	{
+//		return image;
+//	}
+
 	/**
-	 * Get the result image. This value is only available after the
+	 * Get the result image data. This value is only available after the
 	 * Ok button was pressed.
-	 * @return The cropped and scaled image
+	 * @return The cropped and scaled image data
 	 */
-	public Image getImage()
+	public ImageData getImageData()
 	{
-		return image;
+		return imageData;
 	}
 
 	/**
