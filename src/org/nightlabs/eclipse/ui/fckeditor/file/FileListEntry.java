@@ -71,7 +71,7 @@ public class FileListEntry extends Composite implements IImageCallback
 		createEntry(right, "Name:", file.getName());
 		createEntry(right, "Type:", file.getContentType());
 		createEntry(right, "Size:", String.format("%d bytes", file.getData().length));
-		createEntry(right, "Noch was:", "Bla bla bla bla");
+		createEntry(right, "Description:", file.getDescription());
 
 //		Label nameLabelLabel = new Label(right, SWT.NONE);
 //		nameLabelLabel.setBackground(right.getParent().getBackground());
@@ -150,9 +150,9 @@ public class FileListEntry extends Composite implements IImageCallback
 		Label labelLabel = new Label(parent, SWT.NONE);
 		labelLabel.setBackground(parent.getParent().getBackground());
 		labelLabel.setText(label);
-		Label valueLabel = new Label(parent, SWT.NONE);
+		Label valueLabel = new Label(parent, SWT.NONE | SWT.WRAP);
 		valueLabel.setBackground(parent.getParent().getBackground());
-		valueLabel.setText(value);
+		valueLabel.setText(value == null ? "" : value);
 		GridData gridData = new GridData(SWT.FILL, SWT.BEGINNING, true, false);
 		valueLabel.setLayoutData(gridData);
 	}

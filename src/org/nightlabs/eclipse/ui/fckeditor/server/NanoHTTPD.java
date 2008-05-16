@@ -26,6 +26,8 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import org.nightlabs.eclipse.ui.fckeditor.Activator;
+
 /**
  * A simple, tiny, nicely embeddable HTTP 1.0 server in Java
  *
@@ -205,7 +207,7 @@ public class NanoHTTPD
 	{
 		es.execute(new HTTPSession(s));
 	}
-	
+
 	private boolean shutdown;
 	public void shutdown()
 	{
@@ -220,18 +222,18 @@ public class NanoHTTPD
 	{
 		this(port, null);
 	}
-	
+
 	private ExecutorService es;
 	private ServerSocket ss;
-	
+
 	private ExecutorService createThreadPool()
 	{
 		//return Executors.newCachedThreadPool();
 		return new ThreadPoolExecutor(0, Integer.MAX_VALUE,
                 5L, TimeUnit.MINUTES,
-                new SynchronousQueue<Runnable>());		
+                new SynchronousQueue<Runnable>());
 	}
-	
+
 	/**
 	 * Starts a HTTP server to given port.<p>
 	 * Throws an IOException if the socket is already in use
@@ -257,6 +259,7 @@ public class NanoHTTPD
 						// debugging stats:
 						if(es instanceof ThreadPoolExecutor) {
 							ThreadPoolExecutor tpe = (ThreadPoolExecutor)es;
+							// TODO: remove debug
 							System.out.println("Completed tasks: "+tpe.getCompletedTaskCount());
 							System.out.println("Largest pool size: "+tpe.getLargestPoolSize());
 						}
@@ -412,8 +415,7 @@ public class NanoHTTPD
 			}
 			catch ( Throwable e ) {
 				try {
-					System.err.println("Error serving request:");
-					e.printStackTrace();
+					Activator.err("Error serving request", e);
 					sendError( HTTP_INTERNALERROR, "SERVER INTERNAL ERROR: " + e.getMessage());
 				} catch ( Throwable t ) {}
 			}

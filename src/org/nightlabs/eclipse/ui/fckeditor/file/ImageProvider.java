@@ -141,6 +141,7 @@ public class ImageProvider implements IImageProvider
 				if(_file != null) {
 					final IFCKEditorContentFile file = _file.file;
 					final IImageCallback imageCallback = _file.imageCallback;
+					// TODO: remove debug
 					System.out.println("Thumbnail loader thread loading: "+file.getName());
 					final Image thumbnail = imageProvider.getThumbnail(file);
 					if(thumbnail != null) {
@@ -157,6 +158,7 @@ public class ImageProvider implements IImageProvider
 					}
 				}
 			}
+			// TODO: remove debug
 			System.out.println("Thumbnail loader thread done.");
 		}
 	}
@@ -200,7 +202,6 @@ public class ImageProvider implements IImageProvider
 	 */
 	public void dispose()
 	{
-		System.out.println("dispose");
 		stopThumbnailing();
 		disposeIcons();
 		disposeThumbnails();

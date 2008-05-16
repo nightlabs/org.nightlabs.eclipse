@@ -21,7 +21,6 @@ import org.nightlabs.eclipse.ui.fckeditor.server.FCKEditorSaveDocumentProvider;
 import org.nightlabs.eclipse.ui.fckeditor.server.FCKEditorSkinFileProvider;
 import org.nightlabs.eclipse.ui.fckeditor.server.FCKPluginFileProvider;
 import org.nightlabs.eclipse.ui.fckeditor.server.UIBridge;
-import org.nightlabs.eclipse.ui.fckeditor.server.NLFinder;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
@@ -35,11 +34,11 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 	private String titleBackgroundColor;
 	private String titleBackgroundGradientColor;
 	private IImageProvider imageProvider;
-	
+
 	/**
 	 * Create a new FCKEditor instance.
 	 */
-	public FCKEditor() 
+	public FCKEditor()
 	{
 	}
 
@@ -54,7 +53,7 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 		imageProvider = null;
 		super.dispose();
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.part.EditorPart#getEditorInput()
 	 */
@@ -62,7 +61,7 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 	public IFCKEditorInput getEditorInput() {
 		return (IFCKEditorInput)super.getEditorInput();
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.part.EditorPart#doSave(org.eclipse.core.runtime.IProgressMonitor)
 	 */
@@ -80,11 +79,11 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 	}
 
 	/**
-	 * Get the HTML color representation string for an SWT system 
+	 * Get the HTML color representation string for an SWT system
 	 * color id.
 	 * @param swtColorId The SWT system color.
-	 * @return The HTML color representation in the form 
-	 * 		<code>"#xxxxxx"</code> where every 'x' represents a hex 
+	 * @return The HTML color representation in the form
+	 * 		<code>"#xxxxxx"</code> where every 'x' represents a hex
 	 * 		digit.
 	 */
 	protected String getHtmlColor(int swtColorId)
@@ -94,16 +93,16 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 			throw new IllegalArgumentException("Unknown SWT color: "+swtColorId);
 		return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.part.EditorPart#init(org.eclipse.ui.IEditorSite, org.eclipse.ui.IEditorInput)
 	 */
 	@Override
-	public void init(IEditorSite site, IEditorInput input) throws PartInitException 
+	public void init(IEditorSite site, IEditorInput input) throws PartInitException
 	{
 		if(!(input instanceof IFCKEditorInput))
 			throw new PartInitException("Invalid FCKeditor input");
-		
+
 		try {
 			httpd = FCKEditorHTTPD.sharedInstance();
 			httpd.addEditor(this);
@@ -115,19 +114,18 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 			httpd.addFileProvider(this, new FCKEditorCSSProvider(this));
 			httpd.addFileProvider(this, new FCKPluginFileProvider(this));
 			httpd.addFileProvider(this, new UIBridge(this));
-			httpd.addFileProvider(this, new NLFinder(this));
-			System.out.println("Editor URL: "+getBaseUrl());
+			//System.out.println("Editor URL: "+getBaseUrl());
 		} catch(Throwable e) {
 			throw new PartInitException("Error setting up internal httpd system", e);
 		}
-		
+
 		setSite(site);
 		setInput(input);
-		
+
 		setPartName(input.getName());
 
 		imageProvider = new ImageProvider(getSite().getShell().getDisplay());
-		
+
 		widgetBackgroundColor = getHtmlColor(SWT.COLOR_WIDGET_BACKGROUND);
 		titleBackgroundColor = getHtmlColor(SWT.COLOR_TITLE_BACKGROUND);
 		titleBackgroundGradientColor = getHtmlColor(SWT.COLOR_TITLE_BACKGROUND_GRADIENT);
@@ -140,7 +138,7 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 	public boolean isDirty() {
 		return dirty;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.nightlabs.eclipse.ui.fckeditor.IFCKEditor#setDirty(boolean)
 	 */
@@ -184,7 +182,7 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 	@Override
 	public void setFocus() {
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.nightlabs.eclipse.ui.fckeditor.IFCKEditor#getWidgetBackgroundColor()
 	 */
@@ -233,7 +231,7 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 	{
 		return browser.execute("var oEditor = FCKeditorAPI.GetInstance('"+getFCKEditorId()+"'); oEditor.Commands.GetCommand('"+command+"').Execute();");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.nightlabs.eclipse.ui.fckeditor.IFCKEditor#print()
 	 */

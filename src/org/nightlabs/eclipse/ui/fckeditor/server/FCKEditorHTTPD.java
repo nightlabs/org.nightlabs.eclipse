@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 
+import org.nightlabs.eclipse.ui.fckeditor.Activator;
 import org.nightlabs.eclipse.ui.fckeditor.IFCKEditor;
 
 
@@ -43,12 +44,12 @@ public class FCKEditorHTTPD extends NanoHTTPD
 			int port = rand.nextInt(maxPort - minPort + 1) + minPort;
 			try {
 				sharedInstance = new FCKEditorHTTPD(port);
-				System.out.println("Using port "+port);
+				Activator.log("Using port "+port);
 				break;
 			} catch(IOException e) {
 				sharedInstance = null;
 				ex = e;
-				System.out.println("Port "+port+" unusable: "+e);
+				Activator.warn("Port "+port+" unusable: "+e);
 			}
 		}
 		if(sharedInstance == null)
@@ -75,6 +76,7 @@ public class FCKEditorHTTPD extends NanoHTTPD
 	@Override
 	public Response serve(String uri, String method, Properties header,	Properties parms)
 	{
+		// TODO: remove debug
 		System.out.println("URI: "+uri);
 		String path;
 		if(!uri.startsWith("/"))
@@ -110,8 +112,7 @@ public class FCKEditorHTTPD extends NanoHTTPD
 			}
 		}
 		if(response == null) {
-			// TODO: logger
-			System.err.println("Unable to serve: "+uri);
+			Activator.warn("Unable to serve: "+uri);
 			response = new Response(HTTP_NOTFOUND, MIME_PLAINTEXT, "Not found");
 		}
 		return response;
@@ -161,7 +162,7 @@ public class FCKEditorHTTPD extends NanoHTTPD
 		fileProviders.remove(editor);
 		synchronized(FCKEditorHTTPD.class) {
 			if(pathByEditor.isEmpty()) {
-				System.out.println("Shutting down.");
+				//System.out.println("Shutting down.");
 				shutdown();
 				sharedInstance = null;
 			}

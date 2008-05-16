@@ -9,6 +9,7 @@ public class FCKEditorContentFile implements IFCKEditorContentFile
 	private byte[] data;
 	private String contentType;
 	private String name;
+	private String description;
 	private Date changeDT;
 
 	private static synchronized long getNextFileId()
@@ -119,5 +120,23 @@ public class FCKEditorContentFile implements IFCKEditorContentFile
 	public String toString()
 	{
 		return super.toString()+"[name="+name+",contentType="+contentType+"]";
+	}
+
+	/* (non-Javadoc)
+	 * @see org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile#getDescription()
+	 */
+	@Override
+	public String getDescription()
+	{
+		return description;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile#setDescription(java.lang.String)
+	 */
+	@Override
+	public void setDescription(String description)
+	{
+		this.description = description;
 	}
 }

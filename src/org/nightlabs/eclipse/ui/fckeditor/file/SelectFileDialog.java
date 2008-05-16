@@ -64,12 +64,12 @@ public class SelectFileDialog extends FileListDialog
 					@Override
 					public void runWithEvent(Event event)
 					{
-						System.out.println("Selected file: "+file.getName());
+						//System.out.println("Selected file: "+file.getName());
 						selectedFile = file;
 						okPressed();
 					}
 				});
-				System.out.println("Added action");
+				//System.out.println("Added action");
 				return actions;
 			}
 		};

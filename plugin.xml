@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
+   <extension-point id="contentFileWizard" name="Content File Wizard" schema="schema/contentFileWizard.exsd"/>
    <extension
          point="org.eclipse.ui.editors">
       <editor
@@ -43,6 +44,24 @@
                tooltip="Open File List">
          </action>
       </actionSet>
+   </extension>
+   <extension
+         point="org.nightlabs.eclipse.ui.fckeditor.contentFileWizard">
+      <typeBinding
+            mimeType="image/jpeg"
+            priority="-1"
+            wizardClass="org.nightlabs.eclipse.ui.fckeditor.file.image.ContentImageFileWizard">
+      </typeBinding>
+      <typeBinding
+            mimeType="image/png"
+            priority="-1"
+            wizardClass="org.nightlabs.eclipse.ui.fckeditor.file.image.ContentImageFileWizard">
+      </typeBinding>
+      <typeBinding
+            mimeType="image/gif"
+            priority="-1"
+            wizardClass="org.nightlabs.eclipse.ui.fckeditor.file.image.ContentImageFileWizard">
+      </typeBinding>
    </extension>
 
 </plugin>

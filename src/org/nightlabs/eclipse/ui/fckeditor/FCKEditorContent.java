@@ -6,11 +6,11 @@ import java.util.List;
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  */
-public class FCKEditorContent implements IFCKEditorContent 
+public class FCKEditorContent implements IFCKEditorContent
 {
 	private String html;
 	private List<IFCKEditorContentFile> files = new LinkedList<IFCKEditorContentFile>();
-	
+
 	/* (non-Javadoc)
 	 * @see org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContent#getHtml()
 	 */
@@ -26,7 +26,7 @@ public class FCKEditorContent implements IFCKEditorContent
 	public void setHtml(String html) {
 		this.html = html;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContent#getFiles()
 	 */
@@ -35,7 +35,7 @@ public class FCKEditorContent implements IFCKEditorContent
 	{
 		return files;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContent#addFile(org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile)
 	 */
@@ -64,5 +64,20 @@ public class FCKEditorContent implements IFCKEditorContent
 			if(file.getFileId() == fileId)
 				return file;
 		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContent#getFileFactory()
+	 */
+	@Override
+	public IFCKEditorContentFileFactory getFileFactory()
+	{
+		return new IFCKEditorContentFileFactory() {
+			@Override
+			public IFCKEditorContentFile createContentFile()
+			{
+				return new FCKEditorContentFile();
+			}
+		};
 	}
 }

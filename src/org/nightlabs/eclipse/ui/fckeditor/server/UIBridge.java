@@ -1,7 +1,7 @@
 package org.nightlabs.eclipse.ui.fckeditor.server;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -10,21 +10,24 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Shell;
-import org.nightlabs.eclipse.ui.fckeditor.FCKEditorContentFile;
+import org.nightlabs.eclipse.ui.fckeditor.Activator;
 import org.nightlabs.eclipse.ui.fckeditor.IFCKEditor;
+import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContent;
 import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile;
 import org.nightlabs.eclipse.ui.fckeditor.file.ContentTypeUtil;
-import org.nightlabs.eclipse.ui.fckeditor.file.NewImageDialog;
+import org.nightlabs.eclipse.ui.fckeditor.file.IContentFileWizard;
 import org.nightlabs.eclipse.ui.fckeditor.file.SelectFileDialog;
 
 /**
@@ -116,32 +119,30 @@ public class UIBridge extends AbstractFileProvider {
 						topLabel.addSelectionListener(new SelectionAdapter() {
 							@Override
 							public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-//						}
-//						addHyperlinkListener(new HyperlinkAdapter() {
-//							@Override
-//							public void linkActivated(HyperlinkEvent e)
-//							{
-								System.out.println("LINK!");
-								NewImageDialog newImageDialog = new NewImageDialog(getShell());
-								int result = newImageDialog.open();
+								FileDialog fileDialog = new FileDialog(getShell());
+								fileDialog.setText("Open File");
+								String filepath = fileDialog.open();
+								if(filepath == null)
+									return;
+
+								String mimeType = ContentTypeUtil.getContentType(filepath);
+								IContentFileWizard contentFileWizard;
+								try {
+									contentFileWizard = Activator.getDefault().getContentFileWizard(mimeType);
+								} catch (CoreException e1) {
+									MessageDialog.openError(getShell(), "Error", "Error creating file wizard for mime type "+mimeType);
+									return;
+								}
+								contentFileWizard.setSourceFile(new File(filepath), mimeType);
+								int result = new WizardDialog(getShell(), contentFileWizard).open();
 								if(result == IDialogConstants.OK_ID) {
-									String filename = newImageDialog.getFilename();
-									String contentType = ContentTypeUtil.getContentType(filename);
-									ByteArrayOutputStream out = new ByteArrayOutputStream();
-									ImageLoader imageLoader = new ImageLoader();
-									imageLoader.data = new ImageData[] { newImageDialog.getImageData() };
-									// TODO: where to get an "anonymous" instance from?
-									IFCKEditorContentFile file = new FCKEditorContentFile();
-									if(ContentTypeUtil.IMAGE_JPEG.equals(contentType)) {
-										imageLoader.save(out, SWT.IMAGE_JPEG);
-										file.setContentType(ContentTypeUtil.IMAGE_JPEG);
-									} else {
-										imageLoader.save(out, SWT.IMAGE_PNG);
-										file.setContentType(ContentTypeUtil.IMAGE_PNG);
-									}
-									file.setData(out.toByteArray());
-									file.setName(filename);
-									getEditor().getEditorInput().getEditorContent().addFile(file);
+									IFCKEditorContent editorContent = getEditor().getEditorInput().getEditorContent();
+									IFCKEditorContentFile file = editorContent.getFileFactory().createContentFile();
+									file.setData(contentFileWizard.getData());
+									file.setContentType(contentFileWizard.getMimeType());
+									file.setName(contentFileWizard.getName());
+									file.setDescription(contentFileWizard.getDescription());
+									editorContent.addFile(file);
 									setFiles(fileHelper.getFilteredFiles());
 								}
 							}

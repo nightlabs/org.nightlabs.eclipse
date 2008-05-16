@@ -24,7 +24,7 @@ public abstract class BundleFileProvider extends AbstractFileProvider {
 	{
 		return "/serverfiles" + subUri;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.nightlabs.eclipse.ui.fckeditor.server.FileProvider#getFileContents(java.lang.String)
 	 */
@@ -33,7 +33,7 @@ public abstract class BundleFileProvider extends AbstractFileProvider {
 		String bundleFilename = getBundleFilename(subUri);
 		URL resource = Activator.getDefault().getBundle().getResource(bundleFilename);
 		if(resource == null) {
-			System.err.println("Bundle resource not found: "+bundleFilename);
+			Activator.err("Bundle resource not found: "+bundleFilename);
 			return null;
 		}
 		return resource.openStream();

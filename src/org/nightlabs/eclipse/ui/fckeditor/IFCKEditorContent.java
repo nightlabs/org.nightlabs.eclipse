@@ -12,4 +12,5 @@ public interface IFCKEditorContent {
 	void setFiles(List<IFCKEditorContentFile> files);
 	void addFile(IFCKEditorContentFile file);
 	IFCKEditorContentFile getFile(long fileId);
+	IFCKEditorContentFileFactory getFileFactory();
 }
