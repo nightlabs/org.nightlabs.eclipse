@@ -353,6 +353,7 @@ implements IApplication
 			} finally {
 				// When using the Editor2D-viewer (probably because of the SWT-AWT-bridge) the following display.dispose() sometimes hangs forever.
 				// Hence, we launch a surveillance-thread that will call a System.exit after a certain timeout.
+				// The Editor2D viewer bug is solved, but still it is very useful to ensure shutdown this way.
 				new ExitThread();
 				display.dispose();
 			}

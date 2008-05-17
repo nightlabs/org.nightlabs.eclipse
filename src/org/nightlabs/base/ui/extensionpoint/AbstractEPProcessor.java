@@ -117,7 +117,7 @@ implements IEPProcessor
 						IConfigurationElement element = elements[j];
 						try {
 							processElement(extension, element);
-						} catch (Exception e) {
+						} catch (Throwable e) { // we must catch Throwable instead of Exception since we often have NoClassDefFoundErrors (during first start or when server's class configuration changes)
 							// Only log the error and continue
 							logger.error("Error processing extension element. The element is located in an extension in bundle: " + extension.getNamespaceIdentifier(), e); //$NON-NLS-1$
 						}
