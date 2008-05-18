@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
-import org.eclipse.ui.forms.FormColors;
 import org.nightlabs.eclipse.ui.fckeditor.IFCKEditor;
 
 /**
