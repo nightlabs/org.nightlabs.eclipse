@@ -653,7 +653,8 @@ function BrowseServer()
 	oXmlHttp.onreadystatechange=function() {
 		if ( oXmlHttp.readyState == 4 ) {
 			oXml = oXmlHttp.responseXML ;
-			var uri = oXml.firstChild.textContent;
+			var fileEntries = oXml.getElementsByTagName('file');
+			var uri = fileEntries[0].firstChild.data;
 			if(uri != '')
 				SetUrl(uri);
 		}

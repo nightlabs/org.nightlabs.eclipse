@@ -23,7 +23,7 @@ oFCKeditor.Config["CustomConfigurationsPath"] = '${baseUrl}/editorconfig.js';
 oFCKeditor.Create();
 function dirtyCheck()
 {
-	oEditor = FCKeditorAPI.GetInstance('${editorId}') ;
+	var oEditor = FCKeditorAPI.GetInstance('${editorId}') ;
 	if(oEditor.IsDirty()) {
 		clearInterval(dirtyCheckInterval);
 		oEditor.Commands.GetCommand('UIBridge_SetDirty').Execute();
@@ -32,7 +32,7 @@ function dirtyCheck()
 function FCKeditor_OnComplete( editorInstance )
 {
     editorInstance.Commands.GetCommand('FitWindow').Execute();
-    loadingpane = document.getElementById('loadingpane');
+    var loadingpane = document.getElementById('loadingpane');
     loadingpane.style.display='none';
     editorInstance.Focus();
     dirtyCheckInterval = setInterval('dirtyCheck()', 100);
