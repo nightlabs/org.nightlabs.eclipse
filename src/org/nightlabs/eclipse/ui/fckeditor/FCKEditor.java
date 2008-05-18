@@ -9,6 +9,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.forms.FormColors;
+import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.part.EditorPart;
 import org.nightlabs.eclipse.ui.fckeditor.file.IImageProvider;
 import org.nightlabs.eclipse.ui.fckeditor.file.ImageProvider;
@@ -88,12 +90,24 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 	 */
 	protected String getHtmlColor(int swtColorId)
 	{
-		Color color = getSite().getShell().getDisplay().getSystemColor(swtColorId);
-		if(color == null)
-			throw new IllegalArgumentException("Unknown SWT color: "+swtColorId);
-		return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
+		return getHtmlColor(getSite().getShell().getDisplay().getSystemColor(swtColorId));
 	}
 
+	/**
+	 * Get the HTML color representation string for an SWT system
+	 * color.
+	 * @param color The SWT system color.
+	 * @return The HTML color representation in the form
+	 * 		<code>"#xxxxxx"</code> where every 'x' represents a hex
+	 * 		digit.
+	 */
+	protected String getHtmlColor(Color color)
+	{
+		if(color == null)
+			throw new NullPointerException("color");
+		return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.part.EditorPart#init(org.eclipse.ui.IEditorSite, org.eclipse.ui.IEditorInput)
 	 */
@@ -126,9 +140,12 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 
 		imageProvider = new ImageProvider(getSite().getShell().getDisplay());
 
+		FormColors formColors = new FormColors(getSite().getShell().getDisplay());
 		widgetBackgroundColor = getHtmlColor(SWT.COLOR_WIDGET_BACKGROUND);
-		titleBackgroundColor = getHtmlColor(SWT.COLOR_TITLE_BACKGROUND);
-		titleBackgroundGradientColor = getHtmlColor(SWT.COLOR_TITLE_BACKGROUND_GRADIENT);
+//		titleBackgroundColor = getHtmlColor(SWT.COLOR_TITLE_BACKGROUND);
+		titleBackgroundColor = getHtmlColor(formColors.getColor(IFormColors.TB_BG));
+//		titleBackgroundGradientColor = getHtmlColor(SWT.COLOR_TITLE_BACKGROUND_GRADIENT);
+		titleBackgroundGradientColor = getHtmlColor(formColors.getColor(IFormColors.TB_BORDER));
 	}
 
 	/* (non-Javadoc)
