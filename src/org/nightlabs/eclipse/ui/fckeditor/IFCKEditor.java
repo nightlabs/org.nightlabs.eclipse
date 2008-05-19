@@ -10,8 +10,8 @@ public interface IFCKEditor extends IEditorPart {
 	IFCKEditorInput getEditorInput();
 	String getBaseUrl();
 	String getWidgetBackgroundColor();
-	String getTitleBackgroundColor();
-	String getTitleBackgroundGradientColor();
+	String getWidgetSelectedColor();
+	String getWidgetHoverColor();
 	void setDirty(boolean dirty);
 	String getFCKEditorId();
 	

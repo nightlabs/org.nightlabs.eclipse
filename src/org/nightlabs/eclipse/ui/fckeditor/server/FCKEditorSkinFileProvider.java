@@ -41,8 +41,8 @@ public class FCKEditorSkinFileProvider extends BundleFileProvider
 					break;
 				contents.append(line
 						.replace("#abcde0", getEditor().getWidgetBackgroundColor())
-						.replace("#abcde1", getEditor().getTitleBackgroundColor())
-						.replace("#abcde2", getEditor().getTitleBackgroundGradientColor())
+						.replace("#abcde1", getEditor().getWidgetSelectedColor())
+						.replace("#abcde2", getEditor().getWidgetHoverColor())
 						);
 			}
 			in = new ByteArrayInputStream(contents.toString().getBytes("UTF-8"));

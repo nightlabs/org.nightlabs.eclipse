@@ -15,6 +15,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
+import org.nightlabs.eclipse.ui.fckeditor.Activator;
 import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile;
 
 /**
@@ -58,8 +59,9 @@ public class FileList extends Composite
 					}
 					Desktop.getDesktop().open(tmpFile);
 				} catch(Throwable ex) {
-					ex.printStackTrace();
-					MessageDialog.openError(getShell(), "Error", "Error launching application: "+ex.getLocalizedMessage());
+					String msg = String.format("Error launching application: %s", ex.getLocalizedMessage());
+					Activator.err(msg, ex);
+					MessageDialog.openError(getShell(), "Error", msg);
 				}
 			}
 		});

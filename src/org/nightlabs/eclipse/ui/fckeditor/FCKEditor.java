@@ -33,8 +33,8 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 	private Browser browser;
 	private FCKEditorHTTPD httpd;
 	private String widgetBackgroundColor;
-	private String titleBackgroundColor;
-	private String titleBackgroundGradientColor;
+	private String widgetSelectedColor;
+	private String widgetHoverColor;
 	private IImageProvider imageProvider;
 
 	/**
@@ -107,7 +107,7 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 			throw new NullPointerException("color");
 		return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.part.EditorPart#init(org.eclipse.ui.IEditorSite, org.eclipse.ui.IEditorInput)
 	 */
@@ -143,9 +143,9 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 		FormColors formColors = new FormColors(getSite().getShell().getDisplay());
 		widgetBackgroundColor = getHtmlColor(SWT.COLOR_WIDGET_BACKGROUND);
 //		titleBackgroundColor = getHtmlColor(SWT.COLOR_TITLE_BACKGROUND);
-		titleBackgroundColor = getHtmlColor(formColors.getColor(IFormColors.TB_BG));
+		widgetSelectedColor = getHtmlColor(formColors.getColor(IFormColors.TB_BORDER));
 //		titleBackgroundGradientColor = getHtmlColor(SWT.COLOR_TITLE_BACKGROUND_GRADIENT);
-		titleBackgroundGradientColor = getHtmlColor(formColors.getColor(IFormColors.TB_BORDER));
+		widgetHoverColor = getHtmlColor(formColors.getColor(IFormColors.TB_BG));
 	}
 
 	/* (non-Javadoc)
@@ -210,6 +210,24 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 	}
 
 	/* (non-Javadoc)
+	 * @see org.nightlabs.eclipse.ui.fckeditor.IFCKEditor#getWidgetSelectedColor()
+	 */
+	@Override
+	public String getWidgetSelectedColor()
+	{
+		return widgetSelectedColor;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.nightlabs.eclipse.ui.fckeditor.IFCKEditor#getWidgetHoverColor()
+	 */
+	@Override
+	public String getWidgetHoverColor()
+	{
+		return widgetHoverColor;
+	}
+
+	/* (non-Javadoc)
 	 * @see org.nightlabs.eclipse.ui.fckeditor.IFCKEditor#getBaseUrl()
 	 */
 	@Override
@@ -224,24 +242,6 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 	public String getFCKEditorId()
 	{
 		return "FCKeditor_"+getBaseUrl();
-	}
-
-	/* (non-Javadoc)
-	 * @see org.nightlabs.eclipse.ui.fckeditor.IFCKEditor#getTitleBackgroundColor()
-	 */
-	@Override
-	public String getTitleBackgroundColor()
-	{
-		return titleBackgroundColor;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.nightlabs.eclipse.ui.fckeditor.IFCKEditor#getTitleBackgroundGradientColor()
-	 */
-	@Override
-	public String getTitleBackgroundGradientColor()
-	{
-		return titleBackgroundGradientColor;
 	}
 
 	private boolean executeFCKCommand(String command)

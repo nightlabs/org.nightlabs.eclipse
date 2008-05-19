@@ -2,6 +2,7 @@ package org.nightlabs.eclipse.ui.fckeditor.server;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -130,7 +131,9 @@ public class UIBridge extends AbstractFileProvider {
 								try {
 									contentFileWizard = Activator.getDefault().getContentFileWizard(mimeType);
 								} catch (CoreException e1) {
-									MessageDialog.openError(getShell(), "Error", "Error creating file wizard for mime type "+mimeType);
+									String msg = String.format("Error creating file wizard for mime type '%s'", mimeType);
+									Activator.err(msg, e1);
+									MessageDialog.openError(getShell(), "Error", msg);
 									return;
 								}
 								contentFileWizard.setSourceFile(new File(filepath), mimeType);
@@ -138,7 +141,14 @@ public class UIBridge extends AbstractFileProvider {
 								if(result == IDialogConstants.OK_ID) {
 									IFCKEditorContent editorContent = getEditor().getEditorInput().getEditorContent();
 									IFCKEditorContentFile file = editorContent.getFileFactory().createContentFile();
-									file.setData(contentFileWizard.getData());
+									try {
+										file.setData(contentFileWizard.getData());
+									} catch (IOException e1) {
+										String msg = String.format("Loading file contents failed: %s", e1.toString());
+										Activator.err(msg, e1);
+										MessageDialog.openError(getShell(), "Error", msg);
+										return;
+									}
 									file.setContentType(contentFileWizard.getMimeType());
 									file.setName(contentFileWizard.getName());
 									file.setDescription(contentFileWizard.getDescription());
@@ -197,9 +207,9 @@ public class UIBridge extends AbstractFileProvider {
 	private class FlashFileHelper extends FileHelper
 	{
 		@Override
-		public String getFilePlural() { return "Flash file"; }
+		public String getFilePlural() { return "Flash files"; }
 		@Override
-		public String getFileSingular() { return "Flash files"; }
+		public String getFileSingular() { return "Flash file"; }
 		@Override
 		public List<IFCKEditorContentFile> getFilteredFiles()
 		{

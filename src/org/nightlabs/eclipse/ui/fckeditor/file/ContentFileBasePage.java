@@ -51,7 +51,7 @@ public class ContentFileBasePage extends WizardPage
 		applySourceFile();
 	}
 
-	private void applySourceFile()
+	protected void applySourceFile()
 	{
 		if(sourceFile != null) {
 			String filepath = sourceFile.getAbsolutePath();
@@ -74,25 +74,31 @@ public class ContentFileBasePage extends WizardPage
 	public void createControl(Composite parent)
 	{
 		Composite composite = new Composite(parent, SWT.NONE);
-		GridLayout gridLayout = new GridLayout(2, false);
+		GridLayout gridLayout = new GridLayout(3, false);
 		gridLayout.marginHeight = 0;
 		gridLayout.marginWidth = 0;
 		composite.setLayout(gridLayout);
 		GridData gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		composite.setLayoutData(gridData);
 
-		new Label(composite, SWT.NONE).setText("File:");
+		Label l = new Label(composite, SWT.NONE);
+		l.setText("File:");
 		fileText = new Text(composite, SWT.BORDER);
-		fileText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-		fileText.setEditable(false);
+		fileText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		fileText.setEnabled(false);
 
-		new Label(composite, SWT.NONE).setText("Name:");
+		l = new Label(composite, SWT.NONE);
+		l.setText("Name:");
 		nameText = new Text(composite, SWT.BORDER);
-		nameText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		nameText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
-		new Label(composite, SWT.NONE).setText("Description:");
+		l = new Label(composite, SWT.NONE);
+		l.setText("Description:");
+		l.setLayoutData(new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false));
 		descriptionText = new Text(composite, SWT.BORDER | SWT.MULTI);
-		descriptionText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		descriptionText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+
+		createCustomControls(composite);
 
 		applySourceFile();
 
@@ -108,6 +114,10 @@ public class ContentFileBasePage extends WizardPage
 				getWizard().getContainer().updateButtons();
 			}
 		});
+	}
+
+	protected void createCustomControls(Composite parent)
+	{
 	}
 
 	/* (non-Javadoc)
@@ -150,5 +160,14 @@ public class ContentFileBasePage extends WizardPage
 		monitor.worked(1);
 		monitor.done();
 		return true;
+	}
+
+	/**
+	 * Get the sourceFile.
+	 * @return the sourceFile
+	 */
+	public File getSourceFile()
+	{
+		return sourceFile;
 	}
 }

@@ -210,7 +210,8 @@ public class Activator extends AbstractUIPlugin
 			}
 			WizardDescriptor wizardDescriptor = wizards.get(mimeType);
 			if(wizardDescriptor == null)
-				// TODO: default file implementation here!
+				wizardDescriptor = wizards.get("*");
+			if(wizardDescriptor == null)
 				return null;
 			return wizardDescriptor.createWizard();
 		}

@@ -9,7 +9,7 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.wizard.Wizard;
-import org.nightlabs.eclipse.ui.fckeditor.file.ContentFileBasePage;
+import org.nightlabs.eclipse.ui.fckeditor.Activator;
 import org.nightlabs.eclipse.ui.fckeditor.file.IContentFileWizard;
 
 /**
@@ -17,7 +17,7 @@ import org.nightlabs.eclipse.ui.fckeditor.file.IContentFileWizard;
  */
 public class ContentImageFileWizard extends Wizard implements IContentFileWizard
 {
-	private ContentFileBasePage basePage;
+	private ContentImageFileBasePage basePage;
 	private ContentImageFileCropPage cropPage;
 
 	/**
@@ -25,7 +25,7 @@ public class ContentImageFileWizard extends Wizard implements IContentFileWizard
 	 */
 	public ContentImageFileWizard()
 	{
-		basePage = new ContentFileBasePage();
+		basePage = new ContentImageFileBasePage();
 		addPage(basePage);
 		cropPage = new ContentImageFileCropPage();
 		addPage(cropPage);
@@ -50,7 +50,9 @@ public class ContentImageFileWizard extends Wizard implements IContentFileWizard
 				}
 			});
 		} catch (InvocationTargetException e) {
-			MessageDialog.openError(getShell(), "Error", String.format("Error preparing image: %s", e.getLocalizedMessage()));
+			String msg = String.format("Error preparing image: %s", e.getLocalizedMessage());
+			Activator.err(msg, e);
+			MessageDialog.openError(getShell(), "Error", msg);
 		} catch (InterruptedException e) {
 			return false;
 		}

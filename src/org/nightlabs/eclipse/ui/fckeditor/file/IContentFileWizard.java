@@ -2,6 +2,7 @@
 package org.nightlabs.eclipse.ui.fckeditor.file;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.eclipse.jface.wizard.IWizard;
 
@@ -11,7 +12,7 @@ import org.eclipse.jface.wizard.IWizard;
 public interface IContentFileWizard extends IWizard
 {
 	void setSourceFile(File file, String mimeType);
-	byte[] getData();
+	byte[] getData() throws IOException;
 	String getMimeType();
 	String getName();
 	String getDescription();
