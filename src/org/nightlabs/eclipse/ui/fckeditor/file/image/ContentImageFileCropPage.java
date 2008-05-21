@@ -3,10 +3,11 @@ package org.nightlabs.eclipse.ui.fckeditor.file.image;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.SubProgressMonitor;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -17,7 +18,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
+import org.nightlabs.eclipse.ui.fckeditor.Activator;
 import org.nightlabs.eclipse.ui.fckeditor.file.ClippingAreaListener;
 import org.nightlabs.eclipse.ui.fckeditor.file.ContentTypeUtil;
 import org.nightlabs.eclipse.ui.fckeditor.file.ImageClippingArea;
@@ -77,20 +78,24 @@ public class ContentImageFileCropPage extends WizardPage
 	private void applySourceFile()
 	{
 		if(sourceFile != null && imageView != null) {
-			FileInputStream in = null;
 			try {
-				in = new FileInputStream(sourceFile);
-				ImageLoader imageLoader = new ImageLoader();
-				imageData = imageLoader.load(in)[0];
-			} catch(IOException e) {
-				// TODO
-				throw new RuntimeException(e);
-			} finally {
-				if(in != null)
-					try {	in.close();	} catch (IOException e) {}
+				imageData = ImageUtil.loadImage(sourceFile, new NullProgressMonitor());
+			} catch (Exception e) {
+				Activator.err("Loading image failed", e);
+				MessageDialog.openError(getShell(), "Error", "Loading image failed: "+e.getLocalizedMessage());
 			}
-//				Image image = new Image(getShell().getDisplay(), in);
-//				imageData = image.getImageData();
+//			FileInputStream in = null;
+//			try {
+//				in = new FileInputStream(sourceFile);
+//				ImageLoader imageLoader = new ImageLoader();
+//				imageData = imageLoader.load(in)[0];
+//			} catch(IOException e) {
+//				// TODO
+//				throw new RuntimeException(e);
+//			} finally {
+//				if(in != null)
+//					try {	in.close();	} catch (IOException e) {}
+//			}
 			imageView.setSourceImage(imageData);
 			String width = String.valueOf(imageData.width);
 			String height = String.valueOf(imageData.height);
@@ -226,14 +231,15 @@ public class ContentImageFileCropPage extends WizardPage
 
 	public boolean performFinish(IProgressMonitor monitor)
 	{
-		monitor.beginTask("Prepare image", 4);
-		monitor.subTask("Prepare image");
+		monitor.beginTask("Preparing image", 4);
+		monitor.subTask("Cropping");
 
 		Rectangle clippingArea = imageView.getClippingAreaForSource();
 		if(clippingArea.x != 0 || clippingArea.y != 0 || clippingArea.width != imageData.width || clippingArea.height != imageData.height) {
 			imageData = crop(imageData, clippingArea.x, clippingArea.y, clippingArea.width, clippingArea.height);
 		}
 		monitor.worked(1);
+		monitor.subTask("Scaling");
 		int x = Integer.parseInt(scaleText.getText());
 		if(x != 100) {
 			imageData = imageData.scaledTo(
@@ -242,18 +248,34 @@ public class ContentImageFileCropPage extends WizardPage
 		}
 		monitor.worked(1);
 
-		ImageLoader imageLoader = new ImageLoader();
-		imageLoader.data = new ImageData[] { imageData };
+		monitor.subTask("Saving");
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
+
 		mimeType = ContentTypeUtil.getContentType(sourceFile.getName());
-		if(ContentTypeUtil.IMAGE_JPEG.equals(mimeType)) {
-			imageLoader.save(out, SWT.IMAGE_JPEG);
-		} else {
+		if(!ContentTypeUtil.IMAGE_JPEG.equals(mimeType)) {
 			mimeType = ContentTypeUtil.IMAGE_PNG;
-			imageLoader.save(out, SWT.IMAGE_PNG);
+		}
+		try {
+			ImageUtil.saveImage(imageData, mimeType, out, new SubProgressMonitor(monitor, 2));
+		} catch (Exception e) {
+			Activator.err("Saving image failed", e);
+			MessageDialog.openError(getShell(), "Error", "Saving image failed: "+e.getLocalizedMessage());
+			monitor.done();
+			return false;
 		}
 		imageBinaryData = out.toByteArray();
-		monitor.worked(2);
+
+//		ImageLoader imageLoader = new ImageLoader();
+//		imageLoader.data = new ImageData[] { imageData };
+//		mimeType = ContentTypeUtil.getContentType(sourceFile.getName());
+//		if(ContentTypeUtil.IMAGE_JPEG.equals(mimeType)) {
+//			imageLoader.save(out, SWT.IMAGE_JPEG);
+//		} else {
+//			mimeType = ContentTypeUtil.IMAGE_PNG;
+//			imageLoader.save(out, SWT.IMAGE_PNG);
+//		}
+//		imageBinaryData = out.toByteArray();
+//		monitor.worked(2);
 
 		monitor.done();
 
