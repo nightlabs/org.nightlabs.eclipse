@@ -42,9 +42,31 @@ public class OverviewPage extends PreferencePage implements IWorkbenchPreference
 	protected Control createContents(Composite composite)
 	{
 		noDefaultAndApplyButton();
-		
-		GridData gd;
 
+		createTopContents(composite);
+		createSubPageContents(composite);
+		createBottomContents(composite);
+
+		return composite;
+	}
+
+	/**
+	 * Create the contents to be placed above the sub-page
+	 * link list. Sub-classes may override. The default implementation
+	 * does nothing.
+	 * @param composite The parent composite
+	 */
+	protected void createTopContents(Composite composite)
+	{
+	}
+
+	/**
+	 * Create the sub-page link list.
+	 * @param composite The parent composite
+	 */
+	protected void createSubPageContents(Composite composite)
+	{
+		GridData gd;
 		Label l = new Label(composite, SWT.WRAP);
 		l.setText(getIntroductionText());
 		gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -59,7 +81,7 @@ public class OverviewPage extends PreferencePage implements IWorkbenchPreference
 		gd.verticalIndent = 0;
 		gd.horizontalIndent = 5;
 		linkComposite.setLayoutData(gd);
-		
+
 		for (final String subPageId : getSubPageIds()) {
 			Label ll = new Label(linkComposite, SWT.NONE);
 			gd = new GridData();
@@ -67,7 +89,7 @@ public class OverviewPage extends PreferencePage implements IWorkbenchPreference
 			ll.setLayoutData(gd);
 			ll.setFont(composite.getFont());
 			ll.setText("- ");
-			
+
 			Link link = new Link(linkComposite, SWT.NONE);
 			gd = new GridData(GridData.FILL_HORIZONTAL);
 			gd.verticalIndent = 5;
@@ -83,8 +105,16 @@ public class OverviewPage extends PreferencePage implements IWorkbenchPreference
 				}
 			});
 		}
+	}
 
-		return composite;
+	/**
+	 * Create the contents to be placed under the sub-page
+	 * link list. Sub-classes may override. The default implementation
+	 * does nothing.
+	 * @param composite The parent composite
+	 */
+	protected void createBottomContents(Composite composite)
+	{
 	}
 
 	/* (non-Javadoc)
@@ -115,7 +145,7 @@ public class OverviewPage extends PreferencePage implements IWorkbenchPreference
 	protected boolean isProjectPreferencePage() {
 		return fProject != null;
 	}
-	
+
 	/**
 	 * Get the project or <code>null</code> if no project is assigned.
 	 * @return the project or <code>null</code> if no project is assigned
@@ -123,7 +153,7 @@ public class OverviewPage extends PreferencePage implements IWorkbenchPreference
 	protected IProject getProject() {
 		return fProject;
 	}
-	
+
 	/**
 	 * Get the pages introduction text. Subclasses may override to
 	 * return another text.
@@ -131,12 +161,12 @@ public class OverviewPage extends PreferencePage implements IWorkbenchPreference
 	 */
 	protected String getIntroductionText()
 	{
-		return "Chose one of the sub-pages:";
+		return "Choose one of the sub-pages:";
 	}
 
 	/**
 	 * Get the page ids to link to on the overview page.
-	 * The default implementation returns all sub pages. 
+	 * The default implementation returns all sub pages.
 	 * Subclassers may override to show only a filtered
 	 * set of pages.
 	 * @return The sub page ids
@@ -167,7 +197,7 @@ public class OverviewPage extends PreferencePage implements IWorkbenchPreference
 		}
 		return pageId;
 	}
-	
+
 	@SuppressWarnings("unchecked")
   private String getMyPageId()
 	{
@@ -182,11 +212,11 @@ public class OverviewPage extends PreferencePage implements IWorkbenchPreference
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Find the <code>IPreferenceNode</code> that has data the same id as the
 	 * supplied value.
-	 * 
+	 *
 	 * @param nodeId
 	 *            the id to search for.
 	 * @return <code>IPreferenceNode</code> or <code>null</code> if not
@@ -206,7 +236,7 @@ public class OverviewPage extends PreferencePage implements IWorkbenchPreference
 		}
 		return null;
 	}
-	
+
 	private void openPage(String id)
 	{
 		if(getContainer() instanceof IWorkbenchPreferenceContainer)
