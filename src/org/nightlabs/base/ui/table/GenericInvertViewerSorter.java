@@ -107,8 +107,7 @@ extends InvertableSorter<Object>
 			name1 = e1.toString();
 			name2 = e2.toString();
 		} else {
-			IBaseLabelProvider prov = ((ContentViewer) viewer)
-			.getLabelProvider();
+			IBaseLabelProvider prov = ((ContentViewer) viewer).getLabelProvider();
 			if (prov instanceof ITableLabelProvider) {
 				ITableLabelProvider lprov = (ITableLabelProvider) prov;
 				name1 = lprov.getColumnText(e1, columnIndex);
