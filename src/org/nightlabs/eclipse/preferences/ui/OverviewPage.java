@@ -66,6 +66,8 @@ public class OverviewPage extends PreferencePage implements IWorkbenchPreference
 	 */
 	protected void createSubPageContents(Composite composite)
 	{
+		// TODO: use SubPageList
+
 		GridData gd;
 		Label l = new Label(composite, SWT.WRAP);
 		l.setText(getIntroductionText());
