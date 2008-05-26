@@ -198,7 +198,6 @@ extends AbstractContributionItem
 
 	protected Menu createMenu(Menu menu)
 	{
-//		Menu menu = new Menu(RCPUtil.getActiveWorkbenchShell(), SWT.POP_UP);
 		Map<ISearchResultProviderFactory, ISearchResultProvider> factory2Instance = getUseCase().getFactory2Instance();
 		for (Map.Entry<ISearchResultProviderFactory, ISearchResultProvider> entry : factory2Instance.entrySet()) {
 			ISearchResultProviderFactory factory = entry.getKey();

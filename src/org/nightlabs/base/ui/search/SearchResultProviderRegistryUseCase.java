@@ -28,6 +28,8 @@ package org.nightlabs.base.ui.search;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * @author Daniel.Mazurek [at] NightLabs [dot] de
@@ -81,10 +83,11 @@ public class SearchResultProviderRegistryUseCase {
 		this.useCase = useCase;
 	}
 	
-	private Map<ISearchResultProviderFactory, ISearchResultProvider> factory2Instance = null;
-	public Map<ISearchResultProviderFactory, ISearchResultProvider> getFactory2Instance() {
+	private SortedMap<ISearchResultProviderFactory, ISearchResultProvider> factory2Instance = null;
+	public SortedMap<ISearchResultProviderFactory, ISearchResultProvider> getFactory2Instance() {
 		if (factory2Instance == null) {
-			factory2Instance = new HashMap<ISearchResultProviderFactory, ISearchResultProvider>();
+			factory2Instance = new TreeMap<ISearchResultProviderFactory, ISearchResultProvider>(
+					SearchResultProviderRegistry.FactoryComparator);
 			Set<ISearchResultProviderFactory> factories = SearchResultProviderRegistry.sharedInstance().getFactories();
 			for (ISearchResultProviderFactory factory : factories) {
 				factory2Instance.put(factory, factory.createSearchResultProvider());

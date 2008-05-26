@@ -28,7 +28,6 @@ package org.nightlabs.base.ui.search;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -58,6 +57,12 @@ extends AbstractEPProcessor
 	public static final String ATTRIBUTE_NAME = "name"; //$NON-NLS-1$
 	public static final String ATTRIBUTE_SEARCH_RESULT_PROVIDER_FACTORY_ID = "searchResultProviderFactoryID"; //$NON-NLS-1$
 
+	public static final Comparator<ISearchResultProviderFactory> FactoryComparator = new Comparator<ISearchResultProviderFactory>(){
+		public int compare(ISearchResultProviderFactory o1, ISearchResultProviderFactory o2) {
+			return o1.getPriority() - o2.getPriority();
+		}
+	};
+
 	private static SearchResultProviderRegistry sharedInstance;
 	public static SearchResultProviderRegistry sharedInstance() {
 		if (sharedInstance == null) {
@@ -69,6 +74,8 @@ extends AbstractEPProcessor
 		}
 		return sharedInstance;
 	}
+	
+	private boolean checked = false;
 	
 	protected SearchResultProviderRegistry() {}
 	
@@ -120,20 +127,13 @@ extends AbstractEPProcessor
 			}
 		}
 	}
-	
-	private Comparator<ISearchResultProviderFactory> factoryComparator = new Comparator<ISearchResultProviderFactory>(){
-		public int compare(ISearchResultProviderFactory o1, ISearchResultProviderFactory o2) {
-			return o1.getPriority() - o2.getPriority();
-		}
-	};
-	
-	private SortedSet<ISearchResultProviderFactory> factories = new TreeSet<ISearchResultProviderFactory>(factoryComparator);
-	public Set<ISearchResultProviderFactory> getFactories() {
+		
+	private SortedSet<ISearchResultProviderFactory> factories = new TreeSet<ISearchResultProviderFactory>(FactoryComparator);
+	public SortedSet<ISearchResultProviderFactory> getFactories() {
 		check();
 		return factories;
 	}
 	
-//	private Map<String, Set<ISearchResultActionHandler>> factoryID2ActionHandlers = new HashMap<String, Set<ISearchResultActionHandler>>();
 	private Map<String, Map<String, ISearchResultActionHandler>> factoryID2PerspectiveID2ActionHandler = new HashMap<String, Map<String, ISearchResultActionHandler>>();
 	private Map<String, SearchResultProviderRegistryUseCase> useCase2RegistryUse = new HashMap<String, SearchResultProviderRegistryUseCase>();
 	public SearchResultProviderRegistryUseCase getUseCase(String useCase) {
@@ -144,7 +144,6 @@ extends AbstractEPProcessor
 		useCase2RegistryUse.put(useCaseString, useCase);
 	}
 	
-	private boolean checked = false;
 	protected void check()
 	{
 		if (!checked) {
