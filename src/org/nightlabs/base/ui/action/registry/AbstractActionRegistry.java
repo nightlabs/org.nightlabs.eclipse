@@ -1209,10 +1209,6 @@ extends AbstractEPProcessor
 	{
 		boolean isAffected = PerspectiveExtensionRegistry.sharedInstance().
 			getRegisteredExtensionPointIDs().contains(getExtensionPointID());
-//		if (isAffected)
-//			logger.info("ExtensionPoint "+getExtensionPointID()+" affected by perspectiveExtension!");
-//		else
-//			logger.info("ExtensionPoint "+getExtensionPointID()+" NOT affected by perspectiveExtension!");
 		
 		return isAffected;
 	}
@@ -1242,7 +1238,9 @@ extends AbstractEPProcessor
 	protected void perspectiveChange(IPerspectiveDescriptor perspective)
 	{
 //		logger.debug("perspectiveChange for perspective "+perspective.getId());
-		activePerspectiveID = perspective.getId();
+		if (perspective != null)
+			activePerspectiveID = perspective.getId();
+
 		if (isAffectedOfPerspectiveExtension())
 		{
 			Collection<String> oldActiveExtensionIDs = Collections.emptyList();

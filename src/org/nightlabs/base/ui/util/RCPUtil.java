@@ -301,7 +301,8 @@ public class RCPUtil
 	 */
 	public static String getActivePerspectiveID() {
 		IWorkbenchPage page = getActiveWorkbenchPage();
-		return page == null ? null : page.getPerspective().getId();
+		IPerspectiveDescriptor perspectiveDescriptor = page == null ? null : page.getPerspective();
+		return perspectiveDescriptor == null ? null : perspectiveDescriptor.getId();
 	}
 
 	/**
