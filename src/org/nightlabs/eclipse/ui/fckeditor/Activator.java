@@ -43,7 +43,6 @@ import org.osgi.framework.BundleContext;
  * access to the registered extensions.
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  * @version $Revision$ - $Date$
- * test
  */
 public class Activator extends AbstractUIPlugin
 {
