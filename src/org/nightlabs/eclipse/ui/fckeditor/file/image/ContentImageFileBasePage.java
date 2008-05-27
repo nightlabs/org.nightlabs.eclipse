@@ -1,8 +1,6 @@
 package org.nightlabs.eclipse.ui.fckeditor.file.image;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -11,7 +9,9 @@ import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.nightlabs.eclipse.ui.fckeditor.Activator;
 import org.nightlabs.eclipse.ui.fckeditor.file.ContentFileBasePage;
+import org.nightlabs.eclipse.ui.fckeditor.resource.Messages;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
@@ -24,7 +24,7 @@ public class ContentImageFileBasePage extends ContentFileBasePage implements Dis
 
 	public ContentImageFileBasePage()
 	{
-		super(ContentImageFileBasePage.class.getName(), "Image Settings", null);
+		super(ContentImageFileBasePage.class.getName(), Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ContentImageFileBasePage.pageTitle"), null); //$NON-NLS-1$
 	}
 
 	@Override
@@ -50,7 +50,8 @@ public class ContentImageFileBasePage extends ContentFileBasePage implements Dis
 				previewImage = null;
 			}
 			try {
-				ImageData id = new ImageData(new FileInputStream(getSourceFile()));
+				ImageData id = ImageUtil.loadImage(getSourceFile(), new NullProgressMonitor());
+				//ImageData id = new ImageData(new FileInputStream(getSourceFile()));
 				float m = Math.max(id.width / 200f, id.height / 200f);
 				int width = Math.round(id.width / m);
 				int height = Math.round(id.height / m);
@@ -60,8 +61,10 @@ public class ContentImageFileBasePage extends ContentFileBasePage implements Dis
 					getShell().addDisposeListener(this);
 					disposeListenerRegistered = true;
 				}
-			} catch (FileNotFoundException e) {
+			} catch (Exception e) {
+				Activator.err("Error loading image preview", e); //$NON-NLS-1$
 				previewImage = null;
+				imageLabel.setText(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ContentImageFileBasePage.previewLoadingErrorText")); //$NON-NLS-1$
 			}
 		}
 	}
@@ -73,7 +76,7 @@ public class ContentImageFileBasePage extends ContentFileBasePage implements Dis
 	protected void createCustomControls(Composite parent)
 	{
 		Label l = new Label(parent, SWT.NONE);
-		l.setText("Preview:");
+		l.setText(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ContentImageFileBasePage.previewLabelText")); //$NON-NLS-1$
 		l.setLayoutData(new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false));
 		imageLabel = new Label(parent, SWT.NONE);
 //		GridData gd = new GridData();

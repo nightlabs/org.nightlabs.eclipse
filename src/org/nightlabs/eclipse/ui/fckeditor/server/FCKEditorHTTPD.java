@@ -12,6 +12,7 @@ import java.util.Random;
 
 import org.nightlabs.eclipse.ui.fckeditor.Activator;
 import org.nightlabs.eclipse.ui.fckeditor.IFCKEditor;
+import org.nightlabs.eclipse.ui.fckeditor.resource.Messages;
 
 
 /**
@@ -44,16 +45,16 @@ public class FCKEditorHTTPD extends NanoHTTPD
 			int port = rand.nextInt(maxPort - minPort + 1) + minPort;
 			try {
 				sharedInstance = new FCKEditorHTTPD(port);
-				Activator.log("Using port "+port);
+				Activator.log("Using port "+port); //$NON-NLS-1$
 				break;
 			} catch(IOException e) {
 				sharedInstance = null;
 				ex = e;
-				Activator.warn("Port "+port+" unusable: "+e);
+				Activator.warn("Port "+port+" unusable: "+e); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 		if(sharedInstance == null)
-			throw new IOException("Could not bind editor httpd", ex);
+			throw new IOException(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.server.FCKEditorHTTPD.bindErrorText"), ex); //$NON-NLS-1$
 	}
 
 	private Map<IFCKEditor, List<FileProvider>> fileProviders = new HashMap<IFCKEditor, List<FileProvider>>();
@@ -69,7 +70,7 @@ public class FCKEditorHTTPD extends NanoHTTPD
 	public FCKEditorHTTPD(int port) throws IOException
 	{
 		// InetAddress.getLocalHost() results in binding tcp6 only... :-(
-		super(port, InetAddress.getByName("127.0.0.1")); //InetAddress.getLocalHost());
+		super(port, InetAddress.getByName("127.0.0.1")); //InetAddress.getLocalHost()); //$NON-NLS-1$
 		this.port = port;
 	}
 
@@ -77,18 +78,18 @@ public class FCKEditorHTTPD extends NanoHTTPD
 	public Response serve(String uri, String method, Properties header,	Properties parms)
 	{
 		// TODO: remove debug
-		System.out.println("URI: "+uri);
+		System.out.println("URI: "+uri); //$NON-NLS-1$
 		String path;
-		if(!uri.startsWith("/"))
-			throw new IllegalStateException("Illegal URI: "+uri);
+		if(!uri.startsWith("/")) //$NON-NLS-1$
+			throw new IllegalStateException("Illegal URI: "+uri); //$NON-NLS-1$
 		int idx = uri.indexOf('/', 1);
 		if(idx == -1)
-			throw new IllegalStateException("Illegal URI: "+uri);
+			throw new IllegalStateException("Illegal URI: "+uri); //$NON-NLS-1$
 		path = uri.substring(0, idx);
 
 		IFCKEditor editor = getEditor(path);
 		if(editor == null)
-			throw new IllegalStateException("No editor");
+			throw new IllegalStateException("No editor"); //$NON-NLS-1$
 
 		Response response = null;
 		for (FileProvider fileProvider : fileProviders.get(editor)) {
@@ -112,8 +113,8 @@ public class FCKEditorHTTPD extends NanoHTTPD
 			}
 		}
 		if(response == null) {
-			Activator.warn("Unable to serve: "+uri);
-			response = new Response(HTTP_NOTFOUND, MIME_PLAINTEXT, "Not found");
+			Activator.warn("Unable to serve: "+uri); //$NON-NLS-1$
+			response = new Response(HTTP_NOTFOUND, MIME_PLAINTEXT, "Not found"); //$NON-NLS-1$
 		}
 		return response;
 	}
@@ -125,7 +126,7 @@ public class FCKEditorHTTPD extends NanoHTTPD
 	private String getRandomPath()
 	{
 		long l = rand.nextLong();
-		return "/"+Long.toHexString(l);
+		return "/"+Long.toHexString(l); //$NON-NLS-1$
 	}
 
 	public synchronized void addEditor(IFCKEditor editor)
@@ -146,7 +147,7 @@ public class FCKEditorHTTPD extends NanoHTTPD
 		String path = getPath(editor);
 		if(path == null)
 			return null;
-		return "http://127.0.0.1:"+port+path;
+		return "http://127.0.0.1:"+port+path; //$NON-NLS-1$
 	}
 
 	public synchronized IFCKEditor getEditor(String path)

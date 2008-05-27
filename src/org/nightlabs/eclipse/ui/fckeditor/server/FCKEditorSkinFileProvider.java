@@ -23,7 +23,7 @@ public class FCKEditorSkinFileProvider extends BundleFileProvider
 	 */
 	@Override
 	public String getPath() {
-		return "/fckeditor-skin/";
+		return "/fckeditor-skin/"; //$NON-NLS-1$
 	}
 	
 	@Override
@@ -31,7 +31,7 @@ public class FCKEditorSkinFileProvider extends BundleFileProvider
 			throws IOException
 	{
 		InputStream in = super.getFileContents(subUri, parms);
-		if(subUri.equals("/fckeditor-skin/fck_editor.css")) {
+		if(subUri.equals("/fckeditor-skin/fck_editor.css")) { //$NON-NLS-1$
 			// adapt colors
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 			StringBuilder contents = new StringBuilder();
@@ -40,12 +40,12 @@ public class FCKEditorSkinFileProvider extends BundleFileProvider
 				if(line == null)
 					break;
 				contents.append(line
-						.replace("#abcde0", getEditor().getWidgetBackgroundColor())
-						.replace("#abcde1", getEditor().getWidgetSelectedColor())
-						.replace("#abcde2", getEditor().getWidgetHoverColor())
+						.replace("#abcde0", getEditor().getWidgetBackgroundColor()) //$NON-NLS-1$
+						.replace("#abcde1", getEditor().getWidgetSelectedColor()) //$NON-NLS-1$
+						.replace("#abcde2", getEditor().getWidgetHoverColor()) //$NON-NLS-1$
 						);
 			}
-			in = new ByteArrayInputStream(contents.toString().getBytes("UTF-8"));
+			in = new ByteArrayInputStream(contents.toString().getBytes("UTF-8")); //$NON-NLS-1$
 		}
 		return in;
 	}

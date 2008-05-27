@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.nightlabs.eclipse.ui.fckeditor.Activator;
 import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile;
+import org.nightlabs.eclipse.ui.fckeditor.resource.Messages;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
@@ -38,7 +39,7 @@ public class FileList extends Composite
 	{
 		final String extension = ContentTypeUtil.getFileExtension(file);
 		List<IAction> actions = new ArrayList<IAction>();
-		actions.add(new Action("&Open File...") {
+		actions.add(new Action(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.FileList.openFileActionText")) { //$NON-NLS-1$
 			@Override
 			public boolean isEnabled()
 			{
@@ -59,9 +60,9 @@ public class FileList extends Composite
 					}
 					Desktop.getDesktop().open(tmpFile);
 				} catch(Throwable ex) {
-					String msg = String.format("Error launching application: %s", ex.getLocalizedMessage());
+					String msg = String.format(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.FileList.appLaunchError"), ex.getLocalizedMessage()); //$NON-NLS-1$
 					Activator.err(msg, ex);
-					MessageDialog.openError(getShell(), "Error", msg);
+					MessageDialog.openError(getShell(), Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.FileList.errorTitle"), msg); //$NON-NLS-1$
 				}
 			}
 		});

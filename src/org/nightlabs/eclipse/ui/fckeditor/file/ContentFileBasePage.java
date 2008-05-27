@@ -14,6 +14,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.nightlabs.eclipse.ui.fckeditor.resource.Messages;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
@@ -34,7 +35,7 @@ public class ContentFileBasePage extends WizardPage
 	 */
 	public ContentFileBasePage()
 	{
-		this(ContentFileBasePage.class.getName(), "File Settings", null);
+		this(ContentFileBasePage.class.getName(), Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.ContentFileBasePage.pageTitle"), null); //$NON-NLS-1$
 	}
 
 	/**
@@ -82,18 +83,18 @@ public class ContentFileBasePage extends WizardPage
 		composite.setLayoutData(gridData);
 
 		Label l = new Label(composite, SWT.NONE);
-		l.setText("File:");
+		l.setText(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.ContentFileBasePage.fileLabelText")); //$NON-NLS-1$
 		fileText = new Text(composite, SWT.BORDER);
 		fileText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		fileText.setEnabled(false);
 
 		l = new Label(composite, SWT.NONE);
-		l.setText("Name:");
+		l.setText(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.ContentFileBasePage.nameLabelText")); //$NON-NLS-1$
 		nameText = new Text(composite, SWT.BORDER);
 		nameText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
 		l = new Label(composite, SWT.NONE);
-		l.setText("Description:");
+		l.setText(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.ContentFileBasePage.descriptionLabelText")); //$NON-NLS-1$
 		l.setLayoutData(new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false));
 		descriptionText = new Text(composite, SWT.BORDER | SWT.MULTI);
 		descriptionText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
@@ -128,11 +129,11 @@ public class ContentFileBasePage extends WizardPage
 	{
 		File f = new File(fileText.getText());
 		if(!f.isFile()) {
-			setErrorMessage("Please choose a file.");
+			setErrorMessage(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.ContentFileBasePage.fileErrorText")); //$NON-NLS-1$
 			return false;
 		}
 		if(nameText.getText().isEmpty()) {
-			setErrorMessage("Please enter a name.");
+			setErrorMessage(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.ContentFileBasePage.nameErrorText")); //$NON-NLS-1$
 			return false;
 		}
 		setErrorMessage(null);
@@ -151,8 +152,8 @@ public class ContentFileBasePage extends WizardPage
 
 	public boolean performFinish(IProgressMonitor monitor)
 	{
-		monitor.beginTask("Preparing file", 1);
-		monitor.subTask("Preparing file");
+		monitor.beginTask(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.ContentFileBasePage.preparingTaskName"), 1); //$NON-NLS-1$
+		monitor.subTask(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.ContentFileBasePage.preparingTaskName")); //$NON-NLS-1$
 
 		this.userFileName = nameText.getText();
 		this.description = descriptionText.getText();

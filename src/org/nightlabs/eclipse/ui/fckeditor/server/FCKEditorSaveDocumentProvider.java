@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import org.nightlabs.eclipse.ui.fckeditor.IFCKEditor;
+import org.nightlabs.eclipse.ui.fckeditor.resource.Messages;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
@@ -21,17 +22,17 @@ public class FCKEditorSaveDocumentProvider extends FCKEditorEditDocumentProvider
 	@Override
 	protected String getBundleFilename(String subUri)
 	{
-		return super.getBundleFilename("/edit.html");
+		return super.getBundleFilename("/edit.html"); //$NON-NLS-1$
 	}
 	
 	@Override
 	public String getPath() {
-		return "/save.html";
+		return "/save.html"; //$NON-NLS-1$
 	}
 	
 	@Override
 	protected String getLoadingPaneText() {
-		return "Saving...";
+		return Messages.getString("org.nightlabs.eclipse.ui.fckeditor.server.FCKEditorSaveDocumentProvider.savingText"); //$NON-NLS-1$
 	}
 	
 	@Override

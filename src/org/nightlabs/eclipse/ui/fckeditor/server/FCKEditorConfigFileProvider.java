@@ -18,7 +18,7 @@ public class FCKEditorConfigFileProvider extends BundleTemplateFileProvider {
 	protected Map<String, String> getReplacements()
 	{
 		Map<String, String> replacements = super.getReplacements();
-		replacements.put("language", Locale.getDefault().getLanguage());
+		replacements.put("language", Locale.getDefault().getLanguage()); //$NON-NLS-1$
 		return replacements;
 	}
 	
@@ -27,6 +27,6 @@ public class FCKEditorConfigFileProvider extends BundleTemplateFileProvider {
 	 */
 	@Override
 	public String getPath() {
-		return "/editorconfig.js";
+		return "/editorconfig.js"; //$NON-NLS-1$
 	}
 }

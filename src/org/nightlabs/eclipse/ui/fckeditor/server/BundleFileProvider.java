@@ -22,7 +22,7 @@ public abstract class BundleFileProvider extends AbstractFileProvider {
 
 	protected String getBundleFilename(String subUri)
 	{
-		return "/serverfiles" + subUri;
+		return "/serverfiles" + subUri; //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
@@ -33,7 +33,7 @@ public abstract class BundleFileProvider extends AbstractFileProvider {
 		String bundleFilename = getBundleFilename(subUri);
 		URL resource = Activator.getDefault().getBundle().getResource(bundleFilename);
 		if(resource == null) {
-			Activator.err("Bundle resource not found: "+bundleFilename);
+			Activator.err("Bundle resource not found: "+bundleFilename); //$NON-NLS-1$
 			return null;
 		}
 		return resource.openStream();

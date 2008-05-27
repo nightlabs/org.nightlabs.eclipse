@@ -30,6 +30,7 @@ import org.nightlabs.eclipse.ui.fckeditor.Activator;
 import org.nightlabs.eclipse.ui.fckeditor.file.ClippingAreaListener;
 import org.nightlabs.eclipse.ui.fckeditor.file.ContentTypeUtil;
 import org.nightlabs.eclipse.ui.fckeditor.file.ImageClippingArea;
+import org.nightlabs.eclipse.ui.fckeditor.resource.Messages;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
@@ -58,7 +59,7 @@ public class ContentImageFileCropPage extends WizardPage
 	 */
 	public ContentImageFileCropPage()
 	{
-		this(ContentImageFileCropPage.class.getName(), "Resize and Crop the Image", null);
+		this(ContentImageFileCropPage.class.getName(), Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ContentImageFileCropPage.pageTitle"), null); //$NON-NLS-1$
 	}
 
 	/**
@@ -80,35 +81,23 @@ public class ContentImageFileCropPage extends WizardPage
 		if(sourceFile != null && imageView != null) {
 			try {
 				imageData = ImageUtil.loadImage(sourceFile, new NullProgressMonitor());
+				imageView.setSourceImage(imageData);
+				String width = String.valueOf(imageData.width);
+				String height = String.valueOf(imageData.height);
+				originalWidth.setText(width);
+				originalHeight.setText(height);
+				selectionWidth.setText(width);
+				selectionHeight.setText(height);
+				scaleText.setText("100"); //$NON-NLS-1$
+				scaleText.setEnabled(true);
+				scale.setSelection(100);
+				scale.setEnabled(true);
+				targetWidth.setText(width);
+				targetHeight.setText(height);
 			} catch (Exception e) {
-				Activator.err("Loading image failed", e);
-				MessageDialog.openError(getShell(), "Error", "Loading image failed: "+e.getLocalizedMessage());
+				Activator.err("Loading image failed", e); //$NON-NLS-1$
+				MessageDialog.openError(getShell(), Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ContentImageFileCropPage.errorTitle"), "Loading image failed: "+e.getLocalizedMessage()); //$NON-NLS-1$
 			}
-//			FileInputStream in = null;
-//			try {
-//				in = new FileInputStream(sourceFile);
-//				ImageLoader imageLoader = new ImageLoader();
-//				imageData = imageLoader.load(in)[0];
-//			} catch(IOException e) {
-//				// TODO
-//				throw new RuntimeException(e);
-//			} finally {
-//				if(in != null)
-//					try {	in.close();	} catch (IOException e) {}
-//			}
-			imageView.setSourceImage(imageData);
-			String width = String.valueOf(imageData.width);
-			String height = String.valueOf(imageData.height);
-			originalWidth.setText(width);
-			originalHeight.setText(height);
-			selectionWidth.setText(width);
-			selectionHeight.setText(height);
-			scaleText.setText("100");
-			scaleText.setEnabled(true);
-			scale.setSelection(100);
-			scale.setEnabled(true);
-			targetWidth.setText(width);
-			targetHeight.setText(height);
 		}
 	}
 
@@ -127,28 +116,28 @@ public class ContentImageFileCropPage extends WizardPage
 		composite.setLayoutData(gridData);
 
 		Label originalSizeLabel = new Label(composite, SWT.NONE);
-		originalSizeLabel.setText("Original size:");
+		originalSizeLabel.setText(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ContentImageFileCropPage.originalSizeLabelText")); //$NON-NLS-1$
 		originalWidth = new Text(composite, SWT.BORDER);
 		originalWidth.setEnabled(false);
-		new Label(composite, SWT.NONE).setText("x");
+		new Label(composite, SWT.NONE).setText(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ContentImageFileCropPage.xLabelText")); //$NON-NLS-1$
 		originalHeight = new Text(composite, SWT.BORDER);
 		originalHeight.setEnabled(false);
 
 		Label selectionSizeLabel = new Label(composite, SWT.NONE);
-		selectionSizeLabel.setText("Selection size:");
+		selectionSizeLabel.setText(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ContentImageFileCropPage.selectionSizeLabelText")); //$NON-NLS-1$
 		selectionWidth = new Text(composite, SWT.BORDER);
 		selectionWidth.setEnabled(false);
-		new Label(composite, SWT.NONE).setText("x");
+		new Label(composite, SWT.NONE).setText(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ContentImageFileCropPage.xLabelText")); //$NON-NLS-1$
 		selectionHeight = new Text(composite, SWT.BORDER);
 		selectionHeight.setEnabled(false);
 
 		Label scaleLabel = new Label(composite, SWT.NONE);
-		scaleLabel.setText("Scale:");
+		scaleLabel.setText(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ContentImageFileCropPage.scaleLabelText")); //$NON-NLS-1$
 
 		scaleText = new Text(composite, SWT.BORDER);
 		scaleText.setEnabled(false);
 
-		new Label(composite, SWT.NONE).setText("%");
+		new Label(composite, SWT.NONE).setText(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ContentImageFileCropPage.percentLabelText")); //$NON-NLS-1$
 
 		scale = new Scale(composite, SWT.NONE);
 		scale.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -158,10 +147,10 @@ public class ContentImageFileCropPage extends WizardPage
 		scale.setEnabled(false);
 
 		Label targetSizeLabel = new Label(composite, SWT.NONE);
-		targetSizeLabel.setText("Target size:");
+		targetSizeLabel.setText(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ContentImageFileCropPage.targetSizeLabelText")); //$NON-NLS-1$
 		targetWidth = new Text(composite, SWT.BORDER);
 		targetWidth.setEnabled(false);
-		new Label(composite, SWT.NONE).setText("x");
+		new Label(composite, SWT.NONE).setText(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ContentImageFileCropPage.xLabelText")); //$NON-NLS-1$
 		targetHeight = new Text(composite, SWT.BORDER);
 		targetHeight.setEnabled(false);
 
@@ -231,15 +220,15 @@ public class ContentImageFileCropPage extends WizardPage
 
 	public boolean performFinish(IProgressMonitor monitor)
 	{
-		monitor.beginTask("Preparing image", 4);
-		monitor.subTask("Cropping");
+		monitor.beginTask(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ContentImageFileCropPage.preparingImageTaskName"), 4); //$NON-NLS-1$
+		monitor.subTask(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ContentImageFileCropPage.croppingTaskName")); //$NON-NLS-1$
 
 		Rectangle clippingArea = imageView.getClippingAreaForSource();
 		if(clippingArea.x != 0 || clippingArea.y != 0 || clippingArea.width != imageData.width || clippingArea.height != imageData.height) {
 			imageData = crop(imageData, clippingArea.x, clippingArea.y, clippingArea.width, clippingArea.height);
 		}
 		monitor.worked(1);
-		monitor.subTask("Scaling");
+		monitor.subTask(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ContentImageFileCropPage.scalingTaskName")); //$NON-NLS-1$
 		int x = Integer.parseInt(scaleText.getText());
 		if(x != 100) {
 			imageData = imageData.scaledTo(
@@ -248,7 +237,7 @@ public class ContentImageFileCropPage extends WizardPage
 		}
 		monitor.worked(1);
 
-		monitor.subTask("Saving");
+		monitor.subTask(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ContentImageFileCropPage.savingTaskName")); //$NON-NLS-1$
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 
 		mimeType = ContentTypeUtil.getContentType(sourceFile.getName());
@@ -258,8 +247,8 @@ public class ContentImageFileCropPage extends WizardPage
 		try {
 			ImageUtil.saveImage(imageData, mimeType, out, new SubProgressMonitor(monitor, 2));
 		} catch (Exception e) {
-			Activator.err("Saving image failed", e);
-			MessageDialog.openError(getShell(), "Error", "Saving image failed: "+e.getLocalizedMessage());
+			Activator.err("Saving image failed", e); //$NON-NLS-1$
+			MessageDialog.openError(getShell(), Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ContentImageFileCropPage.errorTitle"), "Saving image failed: "+e.getLocalizedMessage()); //$NON-NLS-1$
 			monitor.done();
 			return false;
 		}

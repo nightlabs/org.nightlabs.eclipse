@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.nightlabs.eclipse.ui.fckeditor.Activator;
 import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile;
+import org.nightlabs.eclipse.ui.fckeditor.resource.Messages;
 
 public class FileListDialog extends TitleAreaDialog
 	{
@@ -43,7 +44,7 @@ public class FileListDialog extends TitleAreaDialog
 		protected void configureShell(Shell newShell)
 		{
 			super.configureShell(newShell);
-			newShell.setText("Document Files");
+			newShell.setText(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.FileListDialog.dialogTitle")); //$NON-NLS-1$
 		}
 
 		/* (non-Javadoc)
@@ -53,7 +54,7 @@ public class FileListDialog extends TitleAreaDialog
 		protected IDialogSettings getDialogBoundsSettings()
 		{
 			IDialogSettings pluginDialogSettings = Activator.getDefault().getDialogSettings();
-			String sectionName = getClass().getName()+".bounds";
+			String sectionName = getClass().getName()+".bounds"; //$NON-NLS-1$
 			IDialogSettings section = pluginDialogSettings.getSection(sectionName);
 			if(section == null)
 				section = pluginDialogSettings.addNewSection(sectionName);
@@ -71,8 +72,8 @@ public class FileListDialog extends TitleAreaDialog
 		@Override
 		protected Control createDialogArea(Composite parent)
 		{
-			setTitle("Document Files");
-			setMessage("Browse the document's files");
+			setTitle(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.FileListDialog.dialogMessageTitle")); //$NON-NLS-1$
+			setMessage(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.FileListDialog.dialogMessageMessage")); //$NON-NLS-1$
 
 			// create a composite with standard margins and spacing
 			final Composite composite = new Composite(parent, SWT.NONE);
@@ -109,7 +110,7 @@ public class FileListDialog extends TitleAreaDialog
 		private void updateTopLabel()
 		{
 			if(topLabel != null)
-				topLabel.setText(String.format("This document contains %d files", files.size()));
+				topLabel.setText(String.format(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.FileListDialog.topLabelText"), files.size())); //$NON-NLS-1$
 		}
 
 		protected Control createTopArea(final Composite parent)

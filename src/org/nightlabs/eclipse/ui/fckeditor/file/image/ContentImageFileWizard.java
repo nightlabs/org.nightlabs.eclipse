@@ -11,6 +11,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.wizard.Wizard;
 import org.nightlabs.eclipse.ui.fckeditor.Activator;
 import org.nightlabs.eclipse.ui.fckeditor.file.IContentFileWizard;
+import org.nightlabs.eclipse.ui.fckeditor.resource.Messages;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
@@ -43,16 +44,16 @@ public class ContentImageFileWizard extends Wizard implements IContentFileWizard
 				@Override
 				public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
 				{
-					monitor.beginTask("Preparing image", 6);
+					monitor.beginTask(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ContentImageFileWizard.preparingTaskName"), 6); //$NON-NLS-1$
 					basePage.performFinish(new SubProgressMonitor(monitor, 1));
 					cropPage.performFinish(new SubProgressMonitor(monitor, 5));
 					monitor.done();
 				}
 			});
 		} catch (InvocationTargetException e) {
-			String msg = String.format("Error preparing image: %s", e.getLocalizedMessage());
+			String msg = String.format(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ContentImageFileWizard.prepareError"), e.getLocalizedMessage()); //$NON-NLS-1$
 			Activator.err(msg, e);
-			MessageDialog.openError(getShell(), "Error", msg);
+			MessageDialog.openError(getShell(), Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ContentImageFileWizard.errorTitle"), msg); //$NON-NLS-1$
 		} catch (InterruptedException e) {
 			return false;
 		}

@@ -28,7 +28,7 @@ public abstract class BundleTemplateFileProvider extends BundleFileProvider
 	@Override
 	protected String getBundleFilename(String subUri)
 	{
-		return "/serverfiles/fckeditor-custom" + subUri;
+		return "/serverfiles/fckeditor-custom" + subUri; //$NON-NLS-1$
 	}
 	
 	@Override
@@ -44,18 +44,18 @@ public abstract class BundleTemplateFileProvider extends BundleFileProvider
 			if(line == null)
 				break;
 			for (Map.Entry<String, String> e : getReplacements().entrySet())
-				line = line.replace("${"+e.getKey()+"}", e.getValue());
+				line = line.replace("${"+e.getKey()+"}", e.getValue()); //$NON-NLS-1$ //$NON-NLS-2$
 			sb.append(line);
 			sb.append('\n');
 		}
-		return new ByteArrayInputStream(sb.toString().getBytes("UTF-8"));
+		return new ByteArrayInputStream(sb.toString().getBytes("UTF-8")); //$NON-NLS-1$
 	}
 	
 	protected Map<String, String> getReplacements()
 	{
 		Map<String, String> replacements = new HashMap<String, String>();
-		replacements.put("baseUrl", getEditor().getBaseUrl());
-		replacements.put("editorId", getEditor().getFCKEditorId());
+		replacements.put("baseUrl", getEditor().getBaseUrl()); //$NON-NLS-1$
+		replacements.put("editorId", getEditor().getFCKEditorId()); //$NON-NLS-1$
 		return replacements;
 	}
 	

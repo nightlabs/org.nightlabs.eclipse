@@ -285,7 +285,7 @@ public class ImageClippingArea extends Canvas implements PaintListener, ControlL
 	private void init()
 	{
 		try {
-			bgEvenImage = new Image(getDisplay(), Activator.getDefault().getBundle().getResource("/icons/bg-even.gif").openStream());
+			bgEvenImage = new Image(getDisplay(), Activator.getDefault().getBundle().getResource("/icons/bg-even.gif").openStream()); //$NON-NLS-1$
 			bgEven = new Pattern(getDisplay(), bgEvenImage);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block

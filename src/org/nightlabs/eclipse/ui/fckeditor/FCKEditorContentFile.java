@@ -119,7 +119,7 @@ public class FCKEditorContentFile implements IFCKEditorContentFile
 	@Override
 	public String toString()
 	{
-		return super.toString()+"[name="+name+",contentType="+contentType+"]";
+		return super.toString()+"[name="+name+",contentType="+contentType+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	/* (non-Javadoc)

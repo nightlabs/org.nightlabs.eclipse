@@ -34,4 +34,4 @@ FCKConfig.PluginsPath = '${baseUrl}/fckeditor-custom/plugins';
 // pluginName: The plugin name. The plugin directory must match this name.
 // availableLanguages: a list of available language files for the plugin (separated by a comma).
 //FCKConfig.Plugins.Add( 'uibridge', 'en,it,fr' ) ;
-FCKConfig.Plugins.Add( 'uibridge', 'en' ) ;
+FCKConfig.Plugins.Add( 'uibridge', 'en,de' ) ;

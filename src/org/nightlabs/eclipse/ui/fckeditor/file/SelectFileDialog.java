@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile;
+import org.nightlabs.eclipse.ui.fckeditor.resource.Messages;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
@@ -44,7 +45,7 @@ public class SelectFileDialog extends FileListDialog
 	protected Control createDialogArea(Composite parent)
 	{
 		Control c = super.createDialogArea(parent);
-		setMessage("Select a file to use in the editor by clicking 'Use File in Editor'");
+		setMessage(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.SelectFileDialog.dialogMessage")); //$NON-NLS-1$
 		return c;
 	}
 
@@ -60,7 +61,7 @@ public class SelectFileDialog extends FileListDialog
 			protected List<IAction> getActions(final IFCKEditorContentFile file)
 			{
 				List<IAction> actions = super.getActions(file);
-				actions.add(0, new Action("&Use File in Editor") {
+				actions.add(0, new Action(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.SelectFileDialog.useFileActionText")) { //$NON-NLS-1$
 					@Override
 					public void runWithEvent(Event event)
 					{

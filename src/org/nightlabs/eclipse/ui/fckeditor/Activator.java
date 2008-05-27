@@ -23,7 +23,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin
 {
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.nightlabs.eclipse.ui.fckeditor";
+	public static final String PLUGIN_ID = "org.nightlabs.eclipse.ui.fckeditor"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator plugin;
@@ -42,6 +42,13 @@ public class Activator extends AbstractUIPlugin
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+
+//		if(!ImageIO.getImageReadersByFormatName("pcx").hasNext()) { //$NON-NLS-1$
+//			IIORegistry iioReg = IIORegistry.getDefaultInstance();
+//			iioReg.registerServiceProvider(new PCXImageReaderSPI());
+//			iioReg.registerServiceProvider(new PCXImageWriterSPI());
+//		}
+
 		contentFileWizardRegistry = new ContentFileWizardRegistry();
 	}
 
@@ -184,10 +191,10 @@ public class Activator extends AbstractUIPlugin
 
 	private static class ContentFileWizardRegistry extends AbstractEPProcessor
 	{
-		private static final String TYPE_BINDING_ELEMENT = "typeBinding";
-		private static final String WIZARD_CLASS_ATTRIBUTE = "wizardClass";
-		private static final String MIME_TYPE_ATTRIBUTE = "mimeType";
-		private static final String PRIORITY_ATTRIBUTE = "priority";
+		private static final String TYPE_BINDING_ELEMENT = "typeBinding"; //$NON-NLS-1$
+		private static final String WIZARD_CLASS_ATTRIBUTE = "wizardClass"; //$NON-NLS-1$
+		private static final String MIME_TYPE_ATTRIBUTE = "mimeType"; //$NON-NLS-1$
+		private static final String PRIORITY_ATTRIBUTE = "priority"; //$NON-NLS-1$
 
 		private Map<String, WizardDescriptor> wizards;
 
@@ -210,7 +217,7 @@ public class Activator extends AbstractUIPlugin
 			}
 			WizardDescriptor wizardDescriptor = wizards.get(mimeType);
 			if(wizardDescriptor == null)
-				wizardDescriptor = wizards.get("*");
+				wizardDescriptor = wizards.get("*"); //$NON-NLS-1$
 			if(wizardDescriptor == null)
 				return null;
 			return wizardDescriptor.createWizard();
@@ -222,7 +229,7 @@ public class Activator extends AbstractUIPlugin
 		@Override
 		public String getExtensionPointID()
 		{
-			return "org.nightlabs.eclipse.ui.fckeditor.contentFileWizard";
+			return "org.nightlabs.eclipse.ui.fckeditor.contentFileWizard"; //$NON-NLS-1$
 		}
 
 		/* (non-Javadoc)
@@ -235,13 +242,13 @@ public class Activator extends AbstractUIPlugin
 				String mimeType = element.getAttribute(MIME_TYPE_ATTRIBUTE);
 				String className = element.getAttribute(WIZARD_CLASS_ATTRIBUTE);
 				if(mimeType == null || className == null)
-					throw new IllegalStateException("Invalid content file wizard type binding - mimeType: "+mimeType+" wizardClass: "+className);
+					throw new IllegalStateException("Invalid content file wizard type binding - mimeType: "+mimeType+" wizardClass: "+className); //$NON-NLS-1$ //$NON-NLS-2$
 				String priorityString = element.getAttribute(PRIORITY_ATTRIBUTE);
 				int priority;
 				try {
 					priority = Integer.parseInt(priorityString);
 				} catch(NumberFormatException e) {
-					warn("Invalid priority attribute for contentFileWizard extension in bundle "+extension.getNamespaceIdentifier());
+					warn("Invalid priority attribute for contentFileWizard extension in bundle "+extension.getNamespaceIdentifier()); //$NON-NLS-1$
 					priority = 0;
 				}
 				WizardDescriptor wizardDescriptor = new WizardDescriptor();

@@ -8,6 +8,7 @@ import java.awt.image.IndexColorModel;
 import java.awt.image.WritableRaster;
 import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,13 +29,13 @@ import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
 import org.nightlabs.eclipse.ui.fckeditor.Activator;
+import org.nightlabs.eclipse.ui.fckeditor.resource.Messages;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  */
 public class ImageUtil
 {
-
 	/**
 	 * converts a SWT Image to a SWT BufferedImage
 	 * taken from http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.swt.snippets/src/org/eclipse/swt/snippets/Snippet156.java
@@ -98,9 +99,9 @@ public class ImageUtil
 	 *
 	 * @param bufferedImage the image to convert
 	 * @return the corresponding SWT image data object
-	 * @throws UsupportedImageException if the color model of the given bufferedImage is unknown.
+	 * @throws UnsupportedImageException if the color model of the given bufferedImage is unknown.
 	 */
-	public static ImageData convertToSWT(BufferedImage bufferedImage) throws UsupportedImageException
+	public static ImageData convertToSWT(BufferedImage bufferedImage) throws UnsupportedImageException
 	{
 		if (bufferedImage.getColorModel() instanceof DirectColorModel) {
 			DirectColorModel colorModel = (DirectColorModel)bufferedImage.getColorModel();
@@ -142,7 +143,9 @@ public class ImageUtil
 			}
 			return data;
 		}
-		throw new UsupportedImageException("BufferedImage color model not supported: "+bufferedImage.getColorModel().getClass().getName());
+		String colorModelName = bufferedImage.getColorModel().getClass().getName();
+		throw new UnsupportedImageException(
+				String.format(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ImageUtil.colorModelError"), colorModelName)); //$NON-NLS-1$
 	}
 
 	/**
@@ -150,13 +153,13 @@ public class ImageUtil
 	 * @param in The input stream to load the image from
 	 * @return The loaded image data
 	 * @throws IOException In case of an error reading from the input stream
-	 * @throws UsupportedImageException If the image format is not supported
+	 * @throws UnsupportedImageException If the image format is not supported
 	 */
-	public static ImageData loadImage(InputStream in, IProgressMonitor monitor) throws IOException, UsupportedImageException
+	public static ImageData loadImage(InputStream in, IProgressMonitor monitor) throws IOException, UnsupportedImageException
 	{
 		// TODO: monitor handling
-		monitor.beginTask("Loading image", IProgressMonitor.UNKNOWN);
-		monitor.subTask("Loading image");
+		monitor.beginTask(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ImageUtil.loadingTaskName"), IProgressMonitor.UNKNOWN); //$NON-NLS-1$
+		monitor.subTask(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ImageUtil.loadingTaskName")); //$NON-NLS-1$
 
 		ImageData result = null;
 		BufferedInputStream bufferedInputStream = new BufferedInputStream(in);
@@ -169,16 +172,17 @@ public class ImageUtil
 		} catch(SWTException e) {
 			if(e.code == SWT.ERROR_IO)
 				throw new IOException(e.getMessage(), e);
-			Activator.warn("Unable to load image using SWT image loader", e);
+			Activator.warn("Unable to load image using SWT image loader", e); //$NON-NLS-1$
 		}
 
 		if(result == null) {
 			bufferedInputStream.reset();
 			BufferedImage bufferedImage = ImageIO.read(bufferedInputStream);
+			if(bufferedImage == null)
+				throw new UnsupportedImageException(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ImageUtil.imageLoadingError")); //$NON-NLS-1$
 			result = convertToSWT(bufferedImage);
-
 			if(result == null)
-				throw new UsupportedImageException("Unable to load image");
+				throw new UnsupportedImageException(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ImageUtil.imageLoadingError")); //$NON-NLS-1$
 		}
 
 		monitor.done();
@@ -191,13 +195,13 @@ public class ImageUtil
 	 * @param file The file to load the image from
 	 * @return The loaded image data
 	 * @throws IOException In case of an error reading from the file
-	 * @throws UsupportedImageException If the image format is not supported
+	 * @throws UnsupportedImageException If the image format is not supported
 	 */
-	public static ImageData loadImage(File file, IProgressMonitor monitor) throws IOException, UsupportedImageException
+	public static ImageData loadImage(File file, IProgressMonitor monitor) throws IOException, UnsupportedImageException
 	{
 		// TODO: monitor handling
-		monitor.beginTask("Loading image", IProgressMonitor.UNKNOWN);
-		monitor.subTask("Loading image");
+		monitor.beginTask(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ImageUtil.loadingTaskName"), IProgressMonitor.UNKNOWN); //$NON-NLS-1$
+		monitor.subTask(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ImageUtil.loadingTaskName")); //$NON-NLS-1$
 
 		ImageData result = null;
 
@@ -208,15 +212,17 @@ public class ImageUtil
 		} catch(SWTException e) {
 			if(e.code == SWT.ERROR_IO)
 				throw new IOException(e.getMessage(), e);
-			Activator.warn("Unable to load image using SWT image loader: "+file.getAbsolutePath(), e);
+			Activator.warn("Unable to load image using SWT image loader: "+file.getAbsolutePath(), e); //$NON-NLS-1$
 		}
 
 		if(result == null) {
-			BufferedImage bufferedImage = ImageIO.read(file);
+			BufferedImage bufferedImage = ImageIO.read(new FileInputStream(file));
+//			BufferedImage bufferedImage = ImageIO.read(file);
+			if(bufferedImage == null)
+				throw new UnsupportedImageException(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ImageUtil.imageLoadingError")); //$NON-NLS-1$
 			result = convertToSWT(bufferedImage);
-
 			if(result == null)
-				throw new UsupportedImageException("Unable to load image");
+				throw new UnsupportedImageException(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ImageUtil.imageLoadingError")); //$NON-NLS-1$
 		}
 
 		monitor.done();
@@ -227,39 +233,39 @@ public class ImageUtil
 	private static Map<String, Integer> imageTypes;
 	static {
 		imageTypes = new HashMap<String, Integer>();
-		imageTypes.put("image/jpeg", SWT.IMAGE_JPEG);
-		imageTypes.put("image/png", SWT.IMAGE_PNG);
-		imageTypes.put("image/gif", SWT.IMAGE_GIF);
-		imageTypes.put("image/tiff", SWT.IMAGE_TIFF);
+		imageTypes.put("image/jpeg", SWT.IMAGE_JPEG); //$NON-NLS-1$
+		imageTypes.put("image/png", SWT.IMAGE_PNG); //$NON-NLS-1$
+		imageTypes.put("image/gif", SWT.IMAGE_GIF); //$NON-NLS-1$
+		imageTypes.put("image/tiff", SWT.IMAGE_TIFF); //$NON-NLS-1$
 
-		imageTypes.put("image/vnd.microsoft.icon", SWT.IMAGE_ICO);
-		imageTypes.put("image/x-icon", SWT.IMAGE_ICO);
-		imageTypes.put("image/ico", SWT.IMAGE_ICO);
-		imageTypes.put("image/icon", SWT.IMAGE_ICO);
-		imageTypes.put("text/ico", SWT.IMAGE_ICO);
-		imageTypes.put("application/ico", SWT.IMAGE_ICO);
+		imageTypes.put("image/vnd.microsoft.icon", SWT.IMAGE_ICO); //$NON-NLS-1$
+		imageTypes.put("image/x-icon", SWT.IMAGE_ICO); //$NON-NLS-1$
+		imageTypes.put("image/ico", SWT.IMAGE_ICO); //$NON-NLS-1$
+		imageTypes.put("image/icon", SWT.IMAGE_ICO); //$NON-NLS-1$
+		imageTypes.put("text/ico", SWT.IMAGE_ICO); //$NON-NLS-1$
+		imageTypes.put("application/ico", SWT.IMAGE_ICO); //$NON-NLS-1$
 
-		imageTypes.put("image/bmp", SWT.IMAGE_BMP);
-		imageTypes.put("image/x-bmp", SWT.IMAGE_BMP);
-		imageTypes.put("image/x-bitmap", SWT.IMAGE_BMP);
-		imageTypes.put("image/x-xbitmap", SWT.IMAGE_BMP);
-		imageTypes.put("image/x-win-bitmap", SWT.IMAGE_BMP);
-		imageTypes.put("image/x-windows-bmp", SWT.IMAGE_BMP);
-		imageTypes.put("image/ms-bmp", SWT.IMAGE_BMP);
-		imageTypes.put("image/x-ms-bmp", SWT.IMAGE_BMP);
-		imageTypes.put("application/bmp", SWT.IMAGE_BMP);
-		imageTypes.put("application/x-bmp", SWT.IMAGE_BMP);
-		imageTypes.put("application/x-win-bitmap", SWT.IMAGE_BMP);
+		imageTypes.put("image/bmp", SWT.IMAGE_BMP); //$NON-NLS-1$
+		imageTypes.put("image/x-bmp", SWT.IMAGE_BMP); //$NON-NLS-1$
+		imageTypes.put("image/x-bitmap", SWT.IMAGE_BMP); //$NON-NLS-1$
+		imageTypes.put("image/x-xbitmap", SWT.IMAGE_BMP); //$NON-NLS-1$
+		imageTypes.put("image/x-win-bitmap", SWT.IMAGE_BMP); //$NON-NLS-1$
+		imageTypes.put("image/x-windows-bmp", SWT.IMAGE_BMP); //$NON-NLS-1$
+		imageTypes.put("image/ms-bmp", SWT.IMAGE_BMP); //$NON-NLS-1$
+		imageTypes.put("image/x-ms-bmp", SWT.IMAGE_BMP); //$NON-NLS-1$
+		imageTypes.put("application/bmp", SWT.IMAGE_BMP); //$NON-NLS-1$
+		imageTypes.put("application/x-bmp", SWT.IMAGE_BMP); //$NON-NLS-1$
+		imageTypes.put("application/x-win-bitmap", SWT.IMAGE_BMP); //$NON-NLS-1$
 
-		imageTypes.put("application/rle", SWT.IMAGE_BMP_RLE);
-		imageTypes.put("application/x-rle", SWT.IMAGE_BMP_RLE);
-		imageTypes.put("image/rle", SWT.IMAGE_BMP_RLE);
+		imageTypes.put("application/rle", SWT.IMAGE_BMP_RLE); //$NON-NLS-1$
+		imageTypes.put("application/x-rle", SWT.IMAGE_BMP_RLE); //$NON-NLS-1$
+		imageTypes.put("image/rle", SWT.IMAGE_BMP_RLE); //$NON-NLS-1$
 	}
 
-	public static void saveImage(ImageData imageData, String mimeType, OutputStream out, final IProgressMonitor monitor) throws IOException, UsupportedImageException
+	public static void saveImage(ImageData imageData, String mimeType, OutputStream out, final IProgressMonitor monitor) throws IOException, UnsupportedImageException
 	{
-		monitor.beginTask("Saving image", 120);
-		monitor.subTask("Saving image");
+		monitor.beginTask(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ImageUtil.savingTaskName"), 120); //$NON-NLS-1$
+		monitor.subTask(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ImageUtil.savingTaskName")); //$NON-NLS-1$
 
 		Integer swtFormat = imageTypes.get(mimeType);
 		if(swtFormat != null) {
@@ -283,7 +289,7 @@ public class ImageUtil
 				monitor.worked(100);
 				monitor.done();
 			} catch(SWTException e) {
-				Activator.warn("Unable to save image using SWT image loader", e);
+				Activator.warn("Unable to save image using SWT image loader", e); //$NON-NLS-1$
 				throw new IOException(e.getMessage(), e);
 			}
 		} else {
@@ -295,7 +301,8 @@ public class ImageUtil
 			if (iter.hasNext())
 				writer = iter.next();
 			if (writer == null)
-				throw new UsupportedImageException("Unable to save image with mime type "+mimeType);
+				throw new UnsupportedImageException(
+						String.format(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ImageUtil.imageSaveError"), mimeType)); //$NON-NLS-1$
 
 			writer.setOutput(out);
 			writer.addIIOWriteProgressListener(new IIOWriteProgressListener() {
@@ -340,7 +347,7 @@ public class ImageUtil
 		}
 	}
 
-	public static void saveImage(ImageData imageData, String mimeType, File file, final IProgressMonitor monitor) throws IOException, UsupportedImageException
+	public static void saveImage(ImageData imageData, String mimeType, File file, final IProgressMonitor monitor) throws IOException, UnsupportedImageException
 	{
 		FileOutputStream out = new FileOutputStream(file);
 		try {

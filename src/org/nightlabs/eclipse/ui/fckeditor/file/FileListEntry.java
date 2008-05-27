@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile;
+import org.nightlabs.eclipse.ui.fckeditor.resource.Messages;
 
 public class FileListEntry extends Composite implements IImageCallback
 {
@@ -68,10 +69,10 @@ public class FileListEntry extends Composite implements IImageCallback
 		gridData = new GridData(SWT.FILL, SWT.BEGINNING, true, false);
 		right.setLayoutData(gridData);
 
-		createEntry(right, "Name:", file.getName());
-		createEntry(right, "Type:", file.getContentType());
-		createEntry(right, "Size:", String.format("%d bytes", file.getData().length));
-		createEntry(right, "Description:", file.getDescription());
+		createEntry(right, Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.FileListEntry.nameLabelText"), file.getName()); //$NON-NLS-1$
+		createEntry(right, Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.FileListEntry.typeLabelText"), file.getContentType()); //$NON-NLS-1$
+		createEntry(right, Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.FileListEntry.sizeLabelText"), String.format(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.FileListEntry.sizeText"), file.getData().length)); //$NON-NLS-1$ //$NON-NLS-2$
+		createEntry(right, Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.FileListEntry.descriptionLabelText"), file.getDescription()); //$NON-NLS-1$
 
 //		Label nameLabelLabel = new Label(right, SWT.NONE);
 //		nameLabelLabel.setBackground(right.getParent().getBackground());
@@ -152,7 +153,7 @@ public class FileListEntry extends Composite implements IImageCallback
 		labelLabel.setText(label);
 		Label valueLabel = new Label(parent, SWT.NONE | SWT.WRAP);
 		valueLabel.setBackground(parent.getParent().getBackground());
-		valueLabel.setText(value == null ? "" : value);
+		valueLabel.setText(value == null ? "" : value); //$NON-NLS-1$
 		GridData gridData = new GridData(SWT.FILL, SWT.BEGINNING, true, false);
 		valueLabel.setLayoutData(gridData);
 	}

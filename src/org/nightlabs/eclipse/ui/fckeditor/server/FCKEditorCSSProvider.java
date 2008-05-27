@@ -19,6 +19,6 @@ public class FCKEditorCSSProvider extends BundleFileProvider {
 	 */
 	@Override
 	public String getPath() {
-		return "/style.css";
+		return "/style.css"; //$NON-NLS-1$
 	}
 }

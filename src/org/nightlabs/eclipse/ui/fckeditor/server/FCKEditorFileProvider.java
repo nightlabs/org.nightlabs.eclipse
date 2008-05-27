@@ -16,6 +16,6 @@ public class FCKEditorFileProvider extends BundleFileProvider
 	 */
 	@Override
 	public String getPath() {
-		return "/fckeditor/";
+		return "/fckeditor/"; //$NON-NLS-1$
 	}
 }

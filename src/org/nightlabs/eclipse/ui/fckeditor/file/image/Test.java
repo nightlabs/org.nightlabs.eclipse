@@ -13,7 +13,8 @@ public class Test
 //		IIORegistry.getDefaultInstance().registerServiceProvider(new PCXImageReaderSPI());
 //		IIORegistry.getDefaultInstance().registerServiceProvider(new PCXImageWriterSPI());
 
-		String[] x = ImageIO.getWriterMIMETypes();
+		String[] x;
+		x = ImageIO.getWriterMIMETypes();
 		for (String s : x) {
 			System.out.println(s);
 		}

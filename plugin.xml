@@ -63,6 +63,11 @@
             wizardClass="org.nightlabs.eclipse.ui.fckeditor.file.image.ContentImageFileWizard">
       </typeBinding>
       <typeBinding
+            mimeType="image/pcx"
+            priority="-1"
+            wizardClass="org.nightlabs.eclipse.ui.fckeditor.file.image.ContentImageFileWizard">
+      </typeBinding>
+      <typeBinding
             mimeType="*"
             priority="-1"
             wizardClass="org.nightlabs.eclipse.ui.fckeditor.file.ContentFileWizard">

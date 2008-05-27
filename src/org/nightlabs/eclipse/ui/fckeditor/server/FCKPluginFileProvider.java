@@ -18,6 +18,6 @@ public class FCKPluginFileProvider extends BundleFileProvider
 	@Override
 	public String getPath()
 	{
-		return "/fckeditor-custom/plugins/";
+		return "/fckeditor-custom/plugins/"; //$NON-NLS-1$
 	}
 }

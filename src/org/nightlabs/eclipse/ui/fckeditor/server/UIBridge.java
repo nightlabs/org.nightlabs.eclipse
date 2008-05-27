@@ -30,6 +30,7 @@ import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile;
 import org.nightlabs.eclipse.ui.fckeditor.file.ContentTypeUtil;
 import org.nightlabs.eclipse.ui.fckeditor.file.IContentFileWizard;
 import org.nightlabs.eclipse.ui.fckeditor.file.SelectFileDialog;
+import org.nightlabs.eclipse.ui.fckeditor.resource.Messages;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
@@ -43,7 +44,7 @@ public class UIBridge extends AbstractFileProvider {
 	private static InputStream getStreamForString(String contents)
 	{
 		try {
-			return new ByteArrayInputStream(contents.getBytes("UTF-8"));
+			return new ByteArrayInputStream(contents.getBytes("UTF-8")); //$NON-NLS-1$
 		} catch (UnsupportedEncodingException e) {
 			// should never happen
 			return null;
@@ -55,7 +56,7 @@ public class UIBridge extends AbstractFileProvider {
 		List<IFCKEditorContentFile> flashFiles = new LinkedList<IFCKEditorContentFile>(files);
 		for (Iterator<IFCKEditorContentFile> iterator = flashFiles.iterator(); iterator.hasNext();) {
 			IFCKEditorContentFile editorContentFile = iterator.next();
-			if(!"application/x-shockwave-flash".equals(editorContentFile.getContentType().toLowerCase()))
+			if(!"application/x-shockwave-flash".equals(editorContentFile.getContentType().toLowerCase())) //$NON-NLS-1$
 				iterator.remove();
 		}
 		return flashFiles;
@@ -74,8 +75,8 @@ public class UIBridge extends AbstractFileProvider {
 
 	private class FileHelper
 	{
-		String getFileSingular() { return "file"; }
-		String getFilePlural() { return "files"; }
+		String getFileSingular() { return Messages.getString("org.nightlabs.eclipse.ui.fckeditor.server.UIBridge.file"); } //$NON-NLS-1$
+		String getFilePlural() { return Messages.getString("org.nightlabs.eclipse.ui.fckeditor.server.UIBridge.files"); } //$NON-NLS-1$
 		List<IFCKEditorContentFile> getFilteredFiles() { return getEditor().getEditorInput().getEditorContent().getFiles(); }
 	}
 
@@ -103,7 +104,7 @@ public class UIBridge extends AbstractFileProvider {
 					private void updateTopLabel()
 					{
 						if(topLabel != null)
-							topLabel.setText(String.format("This document contains %d %s. <a href=\"addfile\">Click here to add a new %s</a>.",
+							topLabel.setText(String.format(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.server.UIBridge.topLabelText"), //$NON-NLS-1$
 									fileHelper.getFilteredFiles().size(), fileHelper.getFilePlural(), fileHelper.getFileSingular()));
 					}
 
@@ -121,7 +122,7 @@ public class UIBridge extends AbstractFileProvider {
 							@Override
 							public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 								FileDialog fileDialog = new FileDialog(getShell());
-								fileDialog.setText("Open File");
+								fileDialog.setText(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.server.UIBridge.openFileDialogTitle")); //$NON-NLS-1$
 								String filepath = fileDialog.open();
 								if(filepath == null)
 									return;
@@ -131,9 +132,9 @@ public class UIBridge extends AbstractFileProvider {
 								try {
 									contentFileWizard = Activator.getDefault().getContentFileWizard(mimeType);
 								} catch (CoreException e1) {
-									String msg = String.format("Error creating file wizard for mime type '%s'", mimeType);
+									String msg = String.format(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.server.UIBridge.wizardErrorText"), mimeType); //$NON-NLS-1$
 									Activator.err(msg, e1);
-									MessageDialog.openError(getShell(), "Error", msg);
+									MessageDialog.openError(getShell(), Messages.getString("org.nightlabs.eclipse.ui.fckeditor.server.UIBridge.errorTitle"), msg); //$NON-NLS-1$
 									return;
 								}
 								contentFileWizard.setSourceFile(new File(filepath), mimeType);
@@ -144,9 +145,9 @@ public class UIBridge extends AbstractFileProvider {
 									try {
 										file.setData(contentFileWizard.getData());
 									} catch (IOException e1) {
-										String msg = String.format("Loading file contents failed: %s", e1.toString());
+										String msg = String.format(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.server.UIBridge.loadingContentsErrorText"), e1.toString()); //$NON-NLS-1$
 										Activator.err(msg, e1);
-										MessageDialog.openError(getShell(), "Error", msg);
+										MessageDialog.openError(getShell(), Messages.getString("org.nightlabs.eclipse.ui.fckeditor.server.UIBridge.errorTitle"), msg); //$NON-NLS-1$
 										return;
 									}
 									file.setContentType(contentFileWizard.getMimeType());
@@ -176,15 +177,15 @@ public class UIBridge extends AbstractFileProvider {
 						IFCKEditorContentFile file = dlg.getSelectedFile();
 						String extension = ContentTypeUtil.getFileExtension(file);
 						if(extension == null)
-							extension = ".bin";
+							extension = ".bin"; //$NON-NLS-1$
 						String filename = file.getFileId()+extension;
-						fileUrl = getEditor().getBaseUrl()+"/uibridge/files/"+URLEncoder.encode(filename, "UTF-8");
+						fileUrl = getEditor().getBaseUrl()+"/uibridge/files/"+URLEncoder.encode(filename, "UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
 					} catch (UnsupportedEncodingException e) {
 						// should never happen
 						e.printStackTrace();
 					}
 				else
-					fileUrl = "";
+					fileUrl = ""; //$NON-NLS-1$
 			} finally {
 				getEditor().setEnabled(true);
 			}
@@ -194,9 +195,9 @@ public class UIBridge extends AbstractFileProvider {
 	private class ImageFileHelper extends FileHelper
 	{
 		@Override
-		public String getFilePlural() { return "images"; }
+		public String getFilePlural() { return Messages.getString("org.nightlabs.eclipse.ui.fckeditor.server.UIBridge.images"); } //$NON-NLS-1$
 		@Override
-		public String getFileSingular() { return "image"; }
+		public String getFileSingular() { return Messages.getString("org.nightlabs.eclipse.ui.fckeditor.server.UIBridge.image"); } //$NON-NLS-1$
 		@Override
 		public List<IFCKEditorContentFile> getFilteredFiles()
 		{
@@ -207,9 +208,9 @@ public class UIBridge extends AbstractFileProvider {
 	private class FlashFileHelper extends FileHelper
 	{
 		@Override
-		public String getFilePlural() { return "Flash files"; }
+		public String getFilePlural() { return Messages.getString("org.nightlabs.eclipse.ui.fckeditor.server.UIBridge.flashFiles"); } //$NON-NLS-1$
 		@Override
-		public String getFileSingular() { return "Flash file"; }
+		public String getFileSingular() { return Messages.getString("org.nightlabs.eclipse.ui.fckeditor.server.UIBridge.flashFile"); } //$NON-NLS-1$
 		@Override
 		public List<IFCKEditorContentFile> getFilteredFiles()
 		{
@@ -223,31 +224,31 @@ public class UIBridge extends AbstractFileProvider {
 	@Override
 	public InputStream getFileContents(String subUri, Properties parms) {
 		final Shell shell = getEditor().getSite().getShell();
-		if("/uibridge/setdirty.xml".equals(subUri)) {
+		if("/uibridge/setdirty.xml".equals(subUri)) { //$NON-NLS-1$
 			getEditor().setDirty(true);
-			String contents = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<dirty>true</dirty>\n";
+			String contents = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<dirty>true</dirty>\n"; //$NON-NLS-1$
 			return getStreamForString(contents);
 		}
-		else if("/uibridge/insertimage.xml".equals(subUri)) {
+		else if("/uibridge/insertimage.xml".equals(subUri)) { //$NON-NLS-1$
 			SelectFileRunnable selectFileRunnable = new SelectFileRunnable(new ImageFileHelper());
 			shell.getDisplay().syncExec(selectFileRunnable);
-			return getStreamForString("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<file>"+selectFileRunnable.fileUrl+"</file>\n");
+			return getStreamForString("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<file>"+selectFileRunnable.fileUrl+"</file>\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		else if("/uibridge/insertlink.xml".equals(subUri)) {
+		else if("/uibridge/insertlink.xml".equals(subUri)) { //$NON-NLS-1$
 			SelectFileRunnable selectFileRunnable = new SelectFileRunnable(new FileHelper());
 			shell.getDisplay().syncExec(selectFileRunnable);
-			return getStreamForString("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<file>"+selectFileRunnable.fileUrl+"</file>\n");
+			return getStreamForString("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<file>"+selectFileRunnable.fileUrl+"</file>\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		else if("/uibridge/insertflash.xml".equals(subUri)) {
+		else if("/uibridge/insertflash.xml".equals(subUri)) { //$NON-NLS-1$
 			SelectFileRunnable selectFileRunnable = new SelectFileRunnable(new FlashFileHelper());
 			shell.getDisplay().syncExec(selectFileRunnable);
-			return getStreamForString("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<file>"+selectFileRunnable.fileUrl+"</file>\n");
+			return getStreamForString("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<file>"+selectFileRunnable.fileUrl+"</file>\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		else if(subUri.startsWith("/uibridge/files/")) {
-			String filename = subUri.substring("/uibridge/files/".length());
+		else if(subUri.startsWith("/uibridge/files/")) { //$NON-NLS-1$
+			String filename = subUri.substring("/uibridge/files/".length()); //$NON-NLS-1$
 			int idx = filename.indexOf('.');
 			if(idx == -1)
-				throw new RuntimeException("Invalid file: "+filename);
+				throw new RuntimeException("Invalid file: "+filename); //$NON-NLS-1$
 			long fileId = Long.parseLong(filename.substring(0, idx));
 			IFCKEditorContentFile file = getEditor().getEditorInput().getEditorContent().getFile(fileId);
 			if(file == null)
@@ -262,6 +263,6 @@ public class UIBridge extends AbstractFileProvider {
 	 */
 	@Override
 	public String getPath() {
-		return "/uibridge/";
+		return "/uibridge/"; //$NON-NLS-1$
 	}
 }

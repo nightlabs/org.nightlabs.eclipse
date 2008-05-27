@@ -14,6 +14,7 @@ import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.part.EditorPart;
 import org.nightlabs.eclipse.ui.fckeditor.file.IImageProvider;
 import org.nightlabs.eclipse.ui.fckeditor.file.ImageProvider;
+import org.nightlabs.eclipse.ui.fckeditor.resource.Messages;
 import org.nightlabs.eclipse.ui.fckeditor.server.FCKEditorCSSProvider;
 import org.nightlabs.eclipse.ui.fckeditor.server.FCKEditorConfigFileProvider;
 import org.nightlabs.eclipse.ui.fckeditor.server.FCKEditorEditDocumentProvider;
@@ -69,7 +70,7 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 	 */
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		browser.execute("var myform = document.getElementById('form_"+getFCKEditorId()+"'); myform.submit();");
+		browser.execute("var myform = document.getElementById('form_"+getFCKEditorId()+"'); myform.submit();"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/* (non-Javadoc)
@@ -104,8 +105,8 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 	protected String getHtmlColor(Color color)
 	{
 		if(color == null)
-			throw new NullPointerException("color");
-		return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
+			throw new NullPointerException("color"); //$NON-NLS-1$
+		return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue()); //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
@@ -115,7 +116,7 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException
 	{
 		if(!(input instanceof IFCKEditorInput))
-			throw new PartInitException("Invalid FCKeditor input");
+			throw new PartInitException("Invalid FCKeditor input"); //$NON-NLS-1$
 
 		try {
 			httpd = FCKEditorHTTPD.sharedInstance();
@@ -130,7 +131,7 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 			httpd.addFileProvider(this, new UIBridge(this));
 			//System.out.println("Editor URL: "+getBaseUrl());
 		} catch(Throwable e) {
-			throw new PartInitException("Error setting up internal httpd system", e);
+			throw new PartInitException(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.FCKEditor.httpdError"), e); //$NON-NLS-1$
 		}
 
 		setSite(site);
@@ -190,7 +191,7 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 		FillLayout layout = new FillLayout();
 		parent.setLayout(layout);
 		browser = new Browser(parent, SWT.NONE);
-		browser.setUrl(httpd.getUrl(this)+"/edit.html");
+		browser.setUrl(httpd.getUrl(this)+"/edit.html"); //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
@@ -241,12 +242,12 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 	@Override
 	public String getFCKEditorId()
 	{
-		return "FCKeditor_"+getBaseUrl();
+		return "FCKeditor_"+getBaseUrl(); //$NON-NLS-1$
 	}
 
 	private boolean executeFCKCommand(String command)
 	{
-		return browser.execute("var oEditor = FCKeditorAPI.GetInstance('"+getFCKEditorId()+"'); oEditor.Commands.GetCommand('"+command+"').Execute();");
+		return browser.execute("var oEditor = FCKeditorAPI.GetInstance('"+getFCKEditorId()+"'); oEditor.Commands.GetCommand('"+command+"').Execute();"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	/* (non-Javadoc)
@@ -255,7 +256,7 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 	@Override
 	public void print()
 	{
-		executeFCKCommand("Print");
+		executeFCKCommand("Print"); //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
