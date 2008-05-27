@@ -42,6 +42,7 @@ import org.osgi.framework.BundleContext;
  * The activator class controls the plug-in life cycle and provides
  * access to the registered extensions.
  * @author Marc Klinger - marc[at]nightlabs[dot]de
+ * @version $Revision$ - $Date$
  */
 public class Activator extends AbstractUIPlugin
 {
