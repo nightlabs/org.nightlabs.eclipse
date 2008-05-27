@@ -29,6 +29,7 @@ import java.util.Properties;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
+ * @version $Revision$ - $Date$
  */
 public interface FileProvider 
 {

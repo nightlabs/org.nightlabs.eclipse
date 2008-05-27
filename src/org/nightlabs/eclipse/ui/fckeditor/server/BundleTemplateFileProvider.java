@@ -36,6 +36,7 @@ import org.nightlabs.eclipse.ui.fckeditor.IFCKEditor;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
+ * @version $Revision$ - $Date$
  */
 public abstract class BundleTemplateFileProvider extends BundleFileProvider
 {

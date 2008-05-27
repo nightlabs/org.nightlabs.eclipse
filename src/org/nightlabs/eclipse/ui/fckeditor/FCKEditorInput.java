@@ -28,6 +28,7 @@ import org.eclipse.ui.IPersistableElement;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
+ * @version $Revision$ - $Date$
  */
 public class FCKEditorInput implements IFCKEditorInput 
 {

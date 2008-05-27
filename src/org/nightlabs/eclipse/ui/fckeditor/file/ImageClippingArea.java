@@ -52,6 +52,7 @@ import org.nightlabs.eclipse.ui.fckeditor.Activator;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
+ * @version $Revision$ - $Date$
  */
 public class ImageClippingArea extends Canvas implements PaintListener, ControlListener, MouseListener, MouseMoveListener, MouseTrackListener, DisposeListener
 {

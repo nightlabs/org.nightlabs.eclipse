@@ -27,6 +27,7 @@ import org.eclipse.ui.IEditorInput;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
+ * @version $Revision$ - $Date$
  */
 public interface IFCKEditorInput extends IEditorInput {
 	IFCKEditorContent getEditorContent();

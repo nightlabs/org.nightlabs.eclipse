@@ -27,6 +27,7 @@ import javax.imageio.ImageIO;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
+ * @version $Revision$ - $Date$
  */
 public class Test
 {

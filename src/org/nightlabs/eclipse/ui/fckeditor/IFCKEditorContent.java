@@ -27,6 +27,7 @@ import java.util.List;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
+ * @version $Revision$ - $Date$
  */
 public interface IFCKEditorContent {
 	String getHtml();

@@ -40,6 +40,10 @@ import org.eclipse.swt.widgets.Label;
 import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile;
 import org.nightlabs.eclipse.ui.fckeditor.resource.Messages;
 
+/**
+ * @author Marc Klinger - marc[at]nightlabs[dot]de
+ * @version $Revision$ - $Date$
+ */
 public class FileListEntry extends Composite implements IImageCallback
 {
 	private IFCKEditorContentFile file;

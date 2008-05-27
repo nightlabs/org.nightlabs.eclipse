@@ -31,10 +31,14 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.nightlabs.eclipse.ui.fckeditor.FCKEditorInput;
 import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorInput;
 
+/**
+ * @author Marc Klinger - marc[at]nightlabs[dot]de
+ * @version $Revision$ - $Date$
+ */
 public class EditorAction implements IWorkbenchWindowActionDelegate {
 
 	IWorkbenchWindow window;
-	
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
 	 */

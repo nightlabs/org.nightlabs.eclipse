@@ -27,6 +27,7 @@ import org.eclipse.swt.graphics.Rectangle;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
+ * @version $Revision$ - $Date$
  */
 public interface ClippingAreaListener
 {

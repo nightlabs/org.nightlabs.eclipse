@@ -28,6 +28,7 @@ import org.nightlabs.eclipse.ui.fckeditor.file.ContentTypeUtil;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
+ * @version $Revision$ - $Date$
  */
 public abstract class AbstractFileProvider implements FileProvider {
 

@@ -42,6 +42,10 @@ import org.nightlabs.eclipse.ui.fckeditor.Activator;
 import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile;
 import org.nightlabs.eclipse.ui.fckeditor.resource.Messages;
 
+/**
+ * @author Marc Klinger - marc[at]nightlabs[dot]de
+ * @version $Revision$ - $Date$
+ */
 public class FileListDialog extends TitleAreaDialog
 	{
 		final List<IFCKEditorContentFile> files;

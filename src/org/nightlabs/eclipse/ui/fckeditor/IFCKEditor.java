@@ -28,6 +28,7 @@ import org.nightlabs.eclipse.ui.fckeditor.file.IImageProvider;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
+ * @version $Revision$ - $Date$
  */
 public interface IFCKEditor extends IEditorPart {
 	IFCKEditorInput getEditorInput();

@@ -34,6 +34,7 @@ import org.nightlabs.eclipse.ui.fckeditor.file.ImageProvider;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
+ * @version $Revision$ - $Date$
  */
 public class FileListAction implements IWorkbenchWindowActionDelegate
 {

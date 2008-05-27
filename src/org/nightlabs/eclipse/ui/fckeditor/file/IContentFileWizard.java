@@ -30,6 +30,7 @@ import org.eclipse.jface.wizard.IWizard;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
+ * @version $Revision$ - $Date$
  */
 public interface IContentFileWizard extends IWizard
 {

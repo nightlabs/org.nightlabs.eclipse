@@ -28,6 +28,7 @@ import java.util.ResourceBundle;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
+ * @version $Revision$ - $Date$
  */
 public class Messages
 {

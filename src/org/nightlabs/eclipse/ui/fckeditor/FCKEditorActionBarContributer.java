@@ -31,6 +31,7 @@ import org.eclipse.ui.part.EditorActionBarContributor;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
+ * @version $Revision$ - $Date$
  */
 public class FCKEditorActionBarContributer extends EditorActionBarContributor
 {
