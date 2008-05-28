@@ -42,6 +42,7 @@ public interface IExceptionHandler {
 	 * @param triggerException The Exception that caused the caller
 	 *                         to pick this particular handler so this always should be
 	 *                         the Exception type the handler was registered on.
+	 * @return <code>true</code> if this handler handled the exception; <code>false</code> if this handler decided not to handle it. 
 	 */
-	public void handleException(Thread thread, Throwable thrownException, Throwable triggerException);
+	public boolean handleException(Thread thread, Throwable thrownException, Throwable triggerException);
 }

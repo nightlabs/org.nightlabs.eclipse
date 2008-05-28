@@ -39,21 +39,15 @@ public class ThrowableHandler implements IExceptionHandler
 	 */
 	private static final Logger logger = Logger.getLogger(ThrowableHandler.class);
 	
-	/**
-	 * @see org.nightlabs.base.ui.exceptionhandler.IExceptionHandler#handleException(java.lang.Thread, java.lang.Throwable, java.lang.Throwable)
-	 */
-	public void handleException(Thread thread, Throwable thrownException,	Throwable triggerException)
+	@Override
+	public boolean handleException(Thread thread, Throwable thrownException,	Throwable triggerException)
 	{
-		try
-		{
-			logger.error("ThrowableHandler handling an error!", thrownException); //$NON-NLS-1$
-			//DefaultErrorDialog dlg = new DefaultErrorDialog(thrownException, triggerException);
-			//DefaultErrorDialog.addError(DefaultErrorDialog.class, null, null, thrownException, triggerException);
+		try {
+//			logger.error("ThrowableHandler handling an error!", thrownException); //$NON-NLS-1$ // already logged by ExceptionHandlerRegistry
 			ErrorDialogFactory.showError(DefaultErrorDialog.class, null, null, thrownException, triggerException);
-			
-		} catch (Throwable error)
-		{
+		} catch (Throwable error) {
 			logger.fatal("While handling an exception, another one occured!", error); //$NON-NLS-1$
 		}
+		return true;
 	}
 }

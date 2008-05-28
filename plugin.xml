@@ -38,11 +38,15 @@
     <extension-point id="workbenchListener" name="workbenchListener" schema="schema/workbenchListener.exsd"/>
     <extension point="org.nightlabs.base.ui.exceptionhandler">
         <exceptionHandler
-            class="org.nightlabs.base.ui.exceptionhandler.ThrowableHandler"
-            name="Default Handler for all Throwables" targetType="java.lang.Throwable"/>
+              class="org.nightlabs.base.ui.exceptionhandler.ThrowableHandler"
+              name="Default Handler for all Throwables"
+              priority="999"
+              targetType="java.lang.Throwable"/>
         <exceptionHandler
-            class="org.nightlabs.base.ui.exceptionhandler.OutOfMemoryHandler"
-            name="Handler for OutOfMemoryError" targetType="java.lang.OutOfMemoryError"/>
+              class="org.nightlabs.base.ui.exceptionhandler.OutOfMemoryHandler"
+              name="Handler for OutOfMemoryError"
+              priority="100"
+              targetType="java.lang.OutOfMemoryError"/>
     </extension>
     <extension point="org.eclipse.ui.elementFactories">
         <factory class="org.nightlabs.base.ui.io.FileEditorInputFactory" id="org.nightlabs.base.ui.io.FileEditorInputFactory"/>

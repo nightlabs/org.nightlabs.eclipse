@@ -31,15 +31,13 @@ import org.nightlabs.base.ui.resource.Messages;
 
 /**
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
- *
  */
-public class OutOfMemoryHandler implements IExceptionHandler {
-	/**
-	 * @see org.nightlabs.base.ui.exceptionhandler.IExceptionHandler#handleException(java.lang.Thread, java.lang.Throwable, java.lang.Throwable)
-	 */
-	public void handleException(Thread thread, Throwable thrownException, Throwable triggerException)
+public class OutOfMemoryHandler implements IExceptionHandler
+{
+	@Override
+	public boolean handleException(Thread thread, Throwable thrownException, Throwable triggerException)
 	{
-		//DefaultErrorDialog.addError(OutOfMemoryErrorDialog.class, "Out of memory error", null, thrownException, triggerException);
 		ErrorDialogFactory.showError(OutOfMemoryErrorDialog.class, Messages.getString("org.nightlabs.base.ui.exceptionhandler.OutOfMemoryHandler.dialogTitle"), null, thrownException, triggerException); //$NON-NLS-1$
+		return true;
 	}
 }

@@ -27,7 +27,11 @@
 package org.nightlabs.base.ui.exceptionhandler;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
@@ -35,7 +39,6 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.swt.widgets.Display;
 import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
-import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
 
 /**
  * Maintains a Map of {@link IExceptionHandler} and is able
@@ -46,6 +49,7 @@ import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
  * work with the default shared instance.
  * </p>
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
+ * @author marco schulze - marco at nightlabs dot de
  */
 public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 	/**
@@ -77,157 +81,134 @@ public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 	 * The current mode of the registry, will be initialised with {@link Mode#processByHandler}.
 	 */
 	private Mode mode = Mode.processByHandler;
-	
-	private Map<String, IExceptionHandler> exceptionHandlers = new HashMap<String, IExceptionHandler>();
+
+//	private Map<String, IExceptionHandler> exceptionHandlers = new HashMap<String, IExceptionHandler>();
+	private Map<String, ExceptionHandlerRegistryItem> targetTypeName2registryItem = new HashMap<String, ExceptionHandlerRegistryItem>();
 
 	// Dummy object to provide thread safety
 	// IMPROVE other synchronization strategy
-	private Object synchronizedObject = new Object();
-	
-	protected Map<String, IExceptionHandler> getExceptionHandlers(){
-		return exceptionHandlers;
-	}
-	
+	// Comment by Marco: why? what's the problem with this mutex?
+	private Object targetTypeName2registryItemMutex = new Object();
+
 	public void addExceptionHandler(String targetType, IExceptionHandler handler)
 	{
-		synchronized(synchronizedObject)
-		{
-//			if (exceptionHandlers.containsKey(targetType))
-//				throw new DuplicateHandlerRegistryException("An exceptionHandler was already defined for "+targetType);
-			logger.debug("An exceptionHandler was already defined for "+targetType+" !"); //$NON-NLS-1$ //$NON-NLS-2$
-			
-			exceptionHandlers.put(targetType, handler);
-		}
-	}
-	
-	/**
-	 * @param targetType
-	 * @return The registered IExceptionHandler for the given targetType. Null if none registered.
-	 */
-	protected IExceptionHandler getExceptionHandler(String targetType){
-		synchronized(synchronizedObject){
-			checkProcessing();
-			if (exceptionHandlers.containsKey(targetType))
-				return exceptionHandlers.get(targetType);
-			else
-				return null;
-		}
-	}
-	
-	
-	/**
-	 * Removes the registration of the given targetType
-	 * @param targetType
-	 */
-	public void removeExceptionHandler(String targetType){
-		synchronized(synchronizedObject){
-			if (exceptionHandlers.containsKey(targetType))
-				exceptionHandlers.remove(targetType);
-		}
-	}
-	
-	/**
-	 * @param targetType
-	 * @return The registered IExceptionHandler for the given targetType. Null if none registered.
-	 */
-	protected IExceptionHandler getExceptionHandler(Class targetType){
-		return getExceptionHandler(targetType.getName());
+		addExceptionHandler(targetType, handler, -1);
 	}
 
-	/**
-	 * Checks if a IExceptionHandler is registered for a specific Class
-	 * @param targetType
-	 */
-	protected boolean haveHandler(Class targetType){
-		return exceptionHandlers.containsKey(targetType.getName());
-	}
-	
-	public ExceptionHandlerSearchResult getTopLevelCauseHandler(Throwable x)
+	public void addExceptionHandler(String targetType, IExceptionHandler handler, int priority)
 	{
-		ExceptionHandlerSearchResult handler = null;
-		Throwable cause = x.getCause();
-		if(cause != null)
-			handler = getTopLevelCauseHandler(cause);
-		if((handler == null) || (cause == null)) {
-			if (haveHandler(x.getClass())) {
-				IExceptionHandler eHandler = getExceptionHandler(x.getClass());
-				handler = new ExceptionHandlerSearchResult();
-				handler.setHandler(eHandler);
-				handler.setTriggerException(x);
-			}
-		}
-		return handler;
-	}
-	
-	/**
-	 * Used as result for {@link ExceptionHandlerRegistry#searchHandler(Throwable)}
-	 * @author Alexander Bieber
-	 */
-	public static class ExceptionHandlerSearchResult {
-		private Throwable triggerException;
-		private IExceptionHandler handler;
-		
-		public IExceptionHandler getHandler() {
-			return handler;
-		}
-		public void setHandler(IExceptionHandler handler) {
-			this.handler = handler;
-		}
-		public Throwable getTriggerException() {
-			return triggerException;
-		}
-		public void setTriggerException(Throwable triggerException) {
-			this.triggerException = triggerException;
+		synchronized(targetTypeName2registryItemMutex) {
+			targetTypeName2registryItem.put(targetType, new ExceptionHandlerRegistryItem(targetType, handler, priority));
 		}
 	}
-	
+
+	public void removeExceptionHandler(String targetType)
+	{
+		synchronized(targetTypeName2registryItemMutex) {
+			targetTypeName2registryItem.remove(targetType);
+		}
+	}
+
+	protected ExceptionHandlerRegistryItem getExceptionHandlerRegistryItem(Class<?> targetType) {
+		return getExceptionHandlerRegistryItem(targetType.getName());
+	}
+
+	protected ExceptionHandlerRegistryItem getExceptionHandlerRegistryItem(String targetTypeName) {
+		synchronized(targetTypeName2registryItemMutex) {
+			return targetTypeName2registryItem.get(targetTypeName);
+		}
+	}
+
 	/**
 	 * Finds registered ExceptionHandlers. Moves up the class hierarchy for the
 	 * passed exception itself and all its nested cause exceptions to find
 	 * a handler for the specific class.
-	 * Returns null if no handler could be found.
-	 * @param exception
+	 * <p>
+	 * Note, that it starts at the root-cause and works its way up the wrapped exceptions.
+	 * </p>
+	 *
+	 * @param exception the exception thrown and in need to be handled.
+	 * @param skipItems all those items that should be ignored (usually, because they already have their handlers being triggered and their handlers returned false indicating that they don't want to handle the exception)
+	 * @return <code>null</code> if no handler could be found or an instance of {@link ExceptionHandlerSearchResult} containing the required information for triggering the handler.
 	 */
-	public ExceptionHandlerSearchResult searchHandler(Throwable exception){
+	protected ExceptionHandlerSearchResult searchHandler(Throwable exception, Set<ExceptionHandlerRegistryItem> skipItems) {
 		// make sure the registrations where made
 		checkProcessing();
 
-		ExceptionHandlerSearchResult rootCauseResult = getTopLevelCauseHandler(exception);
-		if (rootCauseResult != null)
-			return rootCauseResult;
-		
-		Class classRun = exception.getClass();
-		Throwable exceptionRun = exception;
-		while (exceptionRun != null) {
-			
-		  classRun = exceptionRun.getClass();
-		  while ( (!haveHandler(classRun)) && (!classRun.equals(Throwable.class)) ) {
-			  classRun = classRun.getSuperclass();
-		  }
-			
-		  if (!classRun.equals(Throwable.class))
-		  	if (haveHandler(classRun))
-		  		break;
-		  
-//		  exceptionRun = exceptionRun.getCause();
-			exceptionRun = ExceptionUtils.getCause(exceptionRun);
+		// Build a stack of causes with the root cause being the first and the wrappers following in order of wrapping.
+		// This is important, because if the priority of 2 handlers is the same (or it's the same handler), then
+		// the handler closest to the root-cause is used and the triggerException is the one closest to the root.
+		LinkedList<Throwable> causeStack = new LinkedList<Throwable>();
+		{
+			Throwable x = exception;
+			while (x != null) {
+				causeStack.addFirst(x);
+				x = ExceptionUtils.getCause(x);
+			}
 		}
-		
-		ExceptionHandlerSearchResult result = new ExceptionHandlerSearchResult();
-		result.setHandler(getExceptionHandler(classRun));
-		if (exceptionRun == null)
-			exceptionRun = exception;
-		result.setTriggerException(exceptionRun);
-		// returns null if none registered
+
+		// now iterate the causes and search for handler with highest logical (lowest numerical) priority
+		ExceptionHandlerSearchResult result = null;
+		ExceptionHandlerRegistryItem bestItem = null;
+		for (Iterator<Throwable> itCause = causeStack.iterator(); itCause.hasNext(); ) {
+			Throwable cause = itCause.next();
+			Class<?> searchClass = cause.getClass();
+
+			ExceptionHandlerRegistryItem item = getExceptionHandlerRegistryItem(searchClass);
+			if (item != null && skipItems.contains(item))
+				item = null;
+
+			// If there is no item found or the item is skipped, we step up the class hierarchy of the 'cause' to find
+			// a suitable item.
+			while (item == null && !Throwable.class.equals(searchClass)) {
+				searchClass = searchClass.getSuperclass();
+				item = getExceptionHandlerRegistryItem(searchClass);
+
+				// If there is no more wrapper-exception (i.e. itCause has no next element) and the found item is to be skipped,
+				// we continue going up the class hierarchy. This should end in the worst case with the default exception handler
+				// being used. But theoretically (if there is no default), this method might return null.
+				// If we have further wrapper-exceptions, we do not go up the hierarchy, because the skipped handler probably was the right
+				// one already and it obviously decided to skip this cause. I'm not completely sure yet, though, whether this strategy is the
+				// best. Marco.
+//				if (item != null && !itCause.hasNext() && skipItems.contains(item)) 
+//					item = null;
+				// hmmm... if a handler decided to ignore, we should probably better first stay at the same cause, climbing up the class
+				// hierarchy, because this behaviour seems to make more sense. If the default handler is found, it has a very low
+				// logical priority anyway, so that a more specific handler (having a higher logical priority) for a wrapping exception
+				// will be chosen instead anyway. Marco.
+				if (item != null && skipItems.contains(item))
+					item = null;
+			}
+
+			if (item == null)
+				continue;
+
+			if (skipItems.contains(item))
+				continue;
+
+			if (bestItem == null) {
+				bestItem = item;
+				result = new ExceptionHandlerSearchResult();
+				result.setExceptionHandlerRegistryItem(bestItem);
+				result.setTriggerException(cause);
+			}
+			else if (bestItem.getPriority() > item.getPriority()) {
+				bestItem = item;
+				result.setExceptionHandlerRegistryItem(bestItem);
+				result.setTriggerException(cause);
+			}
+		}
+
 		return result;
 	}
 	
 	/**
 	 * This method executes an ExceptionHandler on the GUI thread
 	 * and does not wait for it. If this method is executed on the GUI
-	 * thread, it will block, though.
+	 * thread, it the actual exception handling is performed in the next iteration
+	 * of the event loop and this method returns before the handling was done.
 	 *
-	 * @param exception
+	 * @param exception the exception that has been thrown and should be handled.
 	 */
 	public static void asyncHandleException(Throwable exception)
 	{
@@ -237,20 +218,21 @@ public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 	/**
 	 * This method executes an ExceptionHandler on the GUI thread
 	 * and does not wait for it. If this method is executed on the GUI
-	 * thread, it will block, though.
+	 * thread, it the actual exception handling is performed in the next iteration
+	 * of the event loop and this method returns before the handling was done.
 	 *
-	 * @param exception
+	 * @param exception the exception that has been thrown and should be handled.
 	 */
-	public static boolean asyncHandleException(Thread thread, Throwable exception)
+	public static void asyncHandleException(Thread thread, Throwable exception)
 	{
-		return sharedInstance().handleException(thread, exception, true);
+		sharedInstance().handleException(thread, exception, true);
 	}
 
 	/**
 	 * This method can be executed on every thread. It executes an
 	 * ExceptionHandler on the GUI thread and waits for it to return.
 	 *
-	 * @param exception
+	 * @param exception the exception that has been thrown and should be handled.
 	 */
 	public static boolean syncHandleException(Throwable exception)
 	{
@@ -261,7 +243,7 @@ public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 	 * This method can be executed on every thread. It executes an
 	 * ExceptionHandler on the GUI thread and waits for it to return.
 	 *
-	 * @param exception
+	 * @param exception the exception that has been thrown and should be handled.
 	 */
 	public static boolean syncHandleException(Thread thread, Throwable exception)
 	{
@@ -270,8 +252,12 @@ public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 
 	/**
 	 * Sets the mode of the registry.
-	 * See the mode description on what they mean.
-	 * 
+	 * See the {@link Mode} description on what they mean.
+	 * <p>
+	 * Important: This is a pretty internal method and you should well understand what you are doing when you decide to use it!
+	 * It is very unlikely that you really need this method. Think twice!
+	 * </p>
+	 *
 	 * @param mode The mode to set.
 	 */
 	public void setMode(Mode mode) {
@@ -288,23 +274,63 @@ public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 	 * @param thread The thread the exception occured on.
 	 * @param exception The exception to handle.
 	 * @param async Whether to handle asynchronously (value = <code>true</code>) or synchronously (value <code>true</code>)
-	 * @return Whether a appropriate handler could be found and invoked.
+	 * @return Whether a appropriate handler could be found and invoked. This is only a useful result, if <code>async</code> is <code>false</code>! If <code>async</code> is true, this is <code>null</code>.
 	 */
-	private boolean handleException(final Thread thread, final Throwable exception, boolean async)
+	private Boolean handleException(final Thread thread, final Throwable exception, final boolean async)
 	{
 		if (mode == Mode.bypass) {
-			logger.error("ExceptionHandlerRegistry bypassing (Mode.bypass) Exception: ", exception); //$NON-NLS-1$
-			return true;
+			logger.error("ExceptionHandlerRegistry bypassing (Mode.bypass) Exception: " + exception, exception); //$NON-NLS-1$
+			return async ? null : Boolean.TRUE;
 		}
-		final ExceptionHandlerSearchResult handlerSearch = sharedInstance().searchHandler(exception);
-		if (handlerSearch.getHandler() != null){
+		else {
+			logger.error(String.valueOf(exception), exception);
+		}
+
+		final Set<ExceptionHandlerRegistryItem> skipItems = new HashSet<ExceptionHandlerRegistryItem>();
+
+		// The first handler is searched on the calling thread. This is very likely the right handler.
+		// If not, we search further handlers on the UI thread (within the Runnable).
+		final ExceptionHandlerSearchResult finalSearchResult = searchHandler(exception, skipItems);
+
+		if (finalSearchResult != null) {
+
+			final Boolean[] result = new Boolean[] { null };
+
 			try {
 				Runnable runnable = new Runnable(){
-					public void run(){
+					public void run() {
+						if (!async)
+							result[0] = Boolean.FALSE;
+
 						try {
-							handlerSearch.getHandler().handleException(
-									thread,exception, handlerSearch.getTriggerException());
-						} catch(Throwable x) {
+							ExceptionHandlerSearchResult searchResult = finalSearchResult;
+
+							boolean handled = false;
+							while (true) {
+								skipItems.add(searchResult.getExceptionHandlerRegistryItem());
+								IExceptionHandler handler = searchResult.getExceptionHandlerRegistryItem().getExceptionHandler();
+								handled = handler.handleException(thread,exception, searchResult.getTriggerException());
+								if (handled)
+									break;
+
+								searchResult = searchHandler(exception, skipItems);
+								if (searchResult == null) {
+									StringBuilder foundHandlers = new StringBuilder();
+									for (ExceptionHandlerRegistryItem exceptionHandlerRegistryItem : skipItems) {
+										if (foundHandlers.length() != 0)
+											foundHandlers.append(", ");
+
+										foundHandlers.append(exceptionHandlerRegistryItem.getExceptionHandler().getClass().getName());
+									}
+									logger.fatal("None of the found ExceptionHandlers (" + foundHandlers + ") handled this Throwable!", exception); //$NON-NLS-1$
+									return;
+								}
+							}
+
+							if (handled && !async)
+								result[0] = Boolean.TRUE;
+
+						} catch (Throwable x) {
 							logger.fatal("Exception occured while handling exception on GUI thread!", x); //$NON-NLS-1$
 						}
 					}
@@ -318,15 +344,20 @@ public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 			} catch (Throwable ex) {
 				logger.fatal("Exception occured while handling exception on causing thread!", ex); //$NON-NLS-1$
 		  }
-			return true;
+
+			if (result[0] == null && !async)
+				result[0] = Boolean.FALSE;
+
+			return result[0];
 		}
 		else {
 			logger.fatal("Did not find an ExceptionHandler for this Throwable!", exception); //$NON-NLS-1$
-			return false;
+			return async ? null : Boolean.FALSE;
 		}
 	}
 	
-	public static final String ExtensionPointID = "org.nightlabs.base.ui.exceptionhandler"; //$NON-NLS-1$
+	private static final String EXTENSION_POINT_ID = "org.nightlabs.base.ui.exceptionhandler"; //$NON-NLS-1$
+
 	/**
 	 * Processes exceptionHandler extension-point elements.
 	 * For each element one instance of exceptionHandler.class is registered
@@ -337,21 +368,32 @@ public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 	public void processElement(IExtension extension, IConfigurationElement element)
 	throws Exception
 	{
-		try{
-			if (element.getName().toLowerCase().equals("exceptionhandler")) { //$NON-NLS-1$
-				String targetType = element.getAttribute("targetType"); //$NON-NLS-1$
-//				String handlerClassStr = element.getAttribute("class");
-				IExceptionHandler handler = (IExceptionHandler) element.createExecutableExtension("class"); //$NON-NLS-1$
-				if (!IExceptionHandler.class.isAssignableFrom(handler.getClass()))
-					throw new IllegalArgumentException("Specified class for element exceptionHandler must implement "+IExceptionHandler.class.getName()+". "+handler.getClass().getName()+" does not."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				ExceptionHandlerRegistry.sharedInstance().addExceptionHandler(targetType, handler);
+		if (element.getName().toLowerCase().equals("exceptionhandler")) { //$NON-NLS-1$
+			String targetType = element.getAttribute("targetType"); //$NON-NLS-1$
+
+			IExceptionHandler handler = (IExceptionHandler) element.createExecutableExtension("class"); //$NON-NLS-1$
+			if (!IExceptionHandler.class.isAssignableFrom(handler.getClass()))
+				throw new IllegalArgumentException("Specified class for element exceptionHandler must implement "+IExceptionHandler.class.getName()+". "+handler.getClass().getName()+" does not."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+			int priority = -1; // default => will be changed into 500
+			String priorityString = element.getAttribute("priority"); //$NON-NLS-1$
+			if (priorityString != null && !"".equals(priorityString)) {
+				try {
+					priority = Integer.parseInt(priorityString);
+					if (priority < 0 || priority > 1000)
+						throw new NumberFormatException("Out of range!");
+				} catch (NumberFormatException x) {
+					NumberFormatException y = new NumberFormatException("priority=\"" + priorityString + "\" is not a valid integer in the range between 0 and 1000!");
+					y.initCause(x);
+					throw y;
+				}
 			}
-			else {
-				// wrong element according to schema, probably checked earlier
-				throw new IllegalArgumentException("Element "+element.getName()+" is not supported by extension-point "+ExtensionPointID); //$NON-NLS-1$ //$NON-NLS-2$
-			}
-		}catch(Throwable e){
-			throw new EPProcessorException(e);
+
+			addExceptionHandler(targetType, handler, priority);
+		}
+		else {
+			// wrong element according to schema, probably checked earlier
+			throw new IllegalArgumentException("Element "+element.getName()+" is not supported by extension-point " + EXTENSION_POINT_ID); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
@@ -360,7 +402,7 @@ public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 	 */
 	@Override
 	public String getExtensionPointID() {
-		return ExtensionPointID;
+		return EXTENSION_POINT_ID;
 	}
 	
 	

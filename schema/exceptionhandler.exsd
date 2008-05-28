@@ -42,7 +42,7 @@
    <element name="exceptionHandler">
       <annotation>
          <documentation>
-            Defines handler for event loop exceptions
+            Defines exception handlers. For each cause in the stack trace of an exception, a handler is searched by stepping up the class hierarchy of the cause. As soon as a handler is found, the hierarchy traversal is abandoned and the handler picked as candidate. This means for each cause in the complete exception, there is one handler candidate. From these candidates, the one with the lowest numerical (i.e. highest logical) priority is chosen.
          </documentation>
       </annotation>
       <complexType>
@@ -51,6 +51,9 @@
                <documentation>
                   a fully qualified name of the exceptionClass this exceptionHandler listens to
                </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="java.lang.Throwable:"/>
+               </appInfo>
             </annotation>
          </attribute>
          <attribute name="class" type="string" use="required">
@@ -68,6 +71,13 @@
             <annotation>
                <documentation>
                   
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="priority" type="string" use="default" value="500">
+            <annotation>
+               <documentation>
+                  A priority from 0 to 999 where 0 is the highest logical priority (most likely to be chosen) and 999 the lowest logical priority.
                </documentation>
             </annotation>
          </attribute>

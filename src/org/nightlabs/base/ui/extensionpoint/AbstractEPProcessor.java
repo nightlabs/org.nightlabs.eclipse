@@ -86,13 +86,16 @@ implements IEPProcessor
 		return processed;
 	}
 
-	private boolean processing = false;
+	private volatile boolean processing = false;
 
 	protected boolean isProcessing() {
 		return processing;
 	}
 
 	public synchronized void process() {
+		if (processed)
+			return;
+
 		processing = true;
 		try {
 			for(IEPProcessListener listener : processListeners)
