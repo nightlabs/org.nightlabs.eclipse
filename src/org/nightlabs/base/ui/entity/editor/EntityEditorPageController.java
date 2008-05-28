@@ -44,6 +44,7 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.ui.forms.editor.IFormPage;
 import org.nightlabs.annotation.Implement;
+import org.nightlabs.base.ui.exceptionhandler.ExceptionHandlerRegistry;
 import org.nightlabs.base.ui.progress.CompoundProgressMonitor;
 import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.util.RCPUtil;
@@ -110,6 +111,8 @@ implements IEntityEditorPageController
 			} catch (Throwable t) {
 				logger.error("LoadJob failed!", t); //$NON-NLS-1$
 				// Workaround as we can not get a grip of exceptions within jobs
+				ExceptionHandlerRegistry.asyncHandleException(t);
+
 				this.loadException = t;
 				controller.setLoaded(false);
 				this.loaded = false;

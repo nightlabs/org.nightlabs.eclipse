@@ -70,10 +70,11 @@ public class ErrorTable extends AbstractTableComposite
 				ErrorItem error = (ErrorItem)element;
 				switch(columnIndex)
 				{
-				case 0:
-					return error.getThrownException().getClass().getName();
-				case 1:
-					return error.getMessage();
+					case 0:
+						return error.getTriggerException().getClass().getName(); // makes imho more sense to show this one instead of the thrown exception
+//						return error.getThrownException().getClass().getName();
+					case 1:
+						return error.getMessage();
 				}
 			}
 			

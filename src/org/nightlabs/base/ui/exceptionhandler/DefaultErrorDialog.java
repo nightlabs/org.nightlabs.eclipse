@@ -92,11 +92,12 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 		setShellStyle(getShellStyle() | SWT.RESIZE);
 	}
 
+	@Override
 	public void showError(String dialogTitle, String message, Throwable thrownException, Throwable triggerException)
 	{
 		this.title = dialogTitle == null ? JFaceResources.getString("Problem_Occurred") : dialogTitle; //$NON-NLS-1$
 
-		ErrorItem errorItem = new ErrorItem(message, thrownException, triggerException);
+		ErrorItem errorItem = creatErrorItem(dialogTitle, message, thrownException, triggerException);
 		errorList.add(errorItem);
 		if(errorTable != null) {
 			errorTable.refresh();
@@ -104,6 +105,11 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 		if(errorList.size() > 1)
 			showErrorTable(true);
 		setErrorItem(errorItem);
+	}
+
+	protected ErrorItem creatErrorItem(String dialogTitle, String message, Throwable thrownException, Throwable triggerException)
+	{
+		return new ErrorItem(message, thrownException, triggerException);
 	}
 
 	@Override
@@ -155,7 +161,7 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 		}
 	}
 
-	private void setErrorItem(ErrorItem errorItem)
+	protected void setErrorItem(ErrorItem errorItem)
 	{
 		String message = errorItem.getMessage();
 		String exMsg = errorItem.getThrownException().toString();
@@ -184,7 +190,6 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 
 			Point newSize = getShell().computeSize(SWT.DEFAULT, SWT.DEFAULT);
 			getShell().setSize(new Point(windowSize.x, windowSize.y + (newSize.y - oldSize.y)));
-
 		}
 		errorTableVisible = newVisible;
 	}
@@ -232,6 +237,7 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 		errorTable.setInput(errorList);
 		errorTable.addSelectionChangedListener(
 				new ISelectionChangedListener() {
+					@Override
 					public void selectionChanged(SelectionChangedEvent event)
 					{
 						setErrorItem(errorTable.getSelectedItem());
