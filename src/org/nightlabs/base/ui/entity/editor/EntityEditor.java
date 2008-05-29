@@ -44,6 +44,7 @@ import org.nightlabs.base.ui.editor.CommitableFormEditor;
 import org.nightlabs.base.ui.entity.EntityEditorRegistry;
 import org.nightlabs.base.ui.job.FadeableCompositeJob;
 import org.nightlabs.base.ui.job.Job;
+import org.nightlabs.base.ui.progress.ProgressMonitorWrapper;
 import org.nightlabs.base.ui.progress.RCPProgressMonitor;
 import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.progress.ProgressMonitor;
@@ -144,7 +145,7 @@ public class EntityEditor extends CommitableFormEditor
 
 	private IRunnableWithProgress saveRunnable = new IRunnableWithProgress() {
 		public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-			controller.doSave(monitor);
+			controller.doSave(new ProgressMonitorWrapper(monitor));
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
 					editorDirtyStateChanged();

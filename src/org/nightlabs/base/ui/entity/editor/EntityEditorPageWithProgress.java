@@ -28,7 +28,6 @@ package org.nightlabs.base.ui.entity.editor;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.layout.GridData;
@@ -40,19 +39,20 @@ import org.eclipse.ui.forms.IFormPart;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
-import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
+import org.eclipse.ui.forms.widgets.Section;
 import org.nightlabs.base.ui.composite.Fadeable;
 import org.nightlabs.base.ui.composite.FadeableComposite;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.editor.IFormPartDirtyStateProxy;
 import org.nightlabs.base.ui.editor.IFormPartDirtyStateProxyListener;
-import org.nightlabs.base.ui.form.AbstractBaseFormPage;
+import org.nightlabs.base.ui.job.Job;
 import org.nightlabs.base.ui.progress.CompoundProgressMonitor;
+import org.nightlabs.base.ui.progress.ProgressMonitorWrapper;
 import org.nightlabs.base.ui.progress.SaveProgressMonitorPart;
 import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.toolkit.IToolkit;
-import org.nightlabs.base.ui.util.RCPUtil;
+import org.nightlabs.progress.ProgressMonitor;
 
 /**
  * <p>An editor page to be used when you need to load data (with the editors controller)
@@ -155,7 +155,7 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 	 */
 	private Job asyncLoadJob = new Job(Messages.getString("org.nightlabs.base.ui.entity.editor.EntityEditorPageWithProgress.loadJob.name")) { //$NON-NLS-1$
 		@Override
-		protected IStatus run(IProgressMonitor monitor) {
+		protected IStatus run(ProgressMonitor monitor) {
 			final IEntityEditorPageController controller = getPageController();
 			if (controller != null) {
 				controller.addModifyListener(new IEntityEditorPageControllerModifyListener() {
@@ -164,7 +164,7 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 					}
 				});
 
-				CompoundProgressMonitor compoundMonitor = new CompoundProgressMonitor(progressMonitorPart, monitor);
+				CompoundProgressMonitor compoundMonitor = new CompoundProgressMonitor(new ProgressMonitorWrapper(progressMonitorPart), monitor);
 				if (controller instanceof EntityEditorPageController) {
 					((EntityEditorPageController)controller).load(compoundMonitor);
 //					((EntityEditorPageController)controller).addModifyListener(new IEntityEditorPageControllerModifyListener() {

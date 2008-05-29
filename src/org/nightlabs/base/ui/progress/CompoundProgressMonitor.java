@@ -34,6 +34,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.nightlabs.progress.ProgressMonitor;
 
 /**
  * An implementation of {@link IProgressMonitor} that takes
@@ -46,14 +47,14 @@ import org.eclipse.core.runtime.IProgressMonitor;
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  *
  */
-public class CompoundProgressMonitor implements IProgressMonitor {
+public class CompoundProgressMonitor implements ProgressMonitor {
 
 	/**
 	 * Logger used by this class.
 	 */
 	private static final Logger logger = Logger.getLogger(CompoundProgressMonitor.class);
 	
-	private Collection<IProgressMonitor> monitors = Collections.synchronizedList(new LinkedList<IProgressMonitor>());
+	private Collection<ProgressMonitor> monitors = Collections.synchronizedList(new LinkedList<ProgressMonitor>());
 	private List<MonitorInvocation> invocations = Collections.synchronizedList(new LinkedList<MonitorInvocation>());
 
 	/**
@@ -67,7 +68,7 @@ public class CompoundProgressMonitor implements IProgressMonitor {
 			this.methodName = methodName;
 			this.params = params;
 		}
-		public void invoke(IProgressMonitor monitor) {
+		public void invoke(ProgressMonitor monitor) {
 			Class[] paramTypes = new Class[params.length];
 			for (int i = 0; i < params.length; i++) {
 				paramTypes[i] = params[i].getClass();
@@ -93,7 +94,7 @@ public class CompoundProgressMonitor implements IProgressMonitor {
 	 * 
 	 * @param monitors The list of monitors to dispatch to.
 	 */
-	public CompoundProgressMonitor(IProgressMonitor... monitors) {
+	public CompoundProgressMonitor(ProgressMonitor... monitors) {
 		for (int i = 0; i < monitors.length; i++) {
 			this.monitors.add(monitors[i]);
 		}
@@ -109,8 +110,9 @@ public class CompoundProgressMonitor implements IProgressMonitor {
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.runtime.IProgressMonitor#beginTask(java.lang.String, int)
 	 */
+	@Override
 	public void beginTask(String name, int totalWork) {
-		for (IProgressMonitor monitor : monitors) {
+		for (ProgressMonitor monitor : monitors) {
 			monitor.beginTask(name, totalWork);
 		}
 		addInvocation("beginTask", name, totalWork); //$NON-NLS-1$
@@ -119,8 +121,9 @@ public class CompoundProgressMonitor implements IProgressMonitor {
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.runtime.IProgressMonitor#done()
 	 */
+	@Override
 	public void done() {
-		for (IProgressMonitor monitor : monitors) {
+		for (ProgressMonitor monitor : monitors) {
 			monitor.done();
 		}
 		addInvocation("done"); //$NON-NLS-1$
@@ -129,8 +132,9 @@ public class CompoundProgressMonitor implements IProgressMonitor {
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.runtime.IProgressMonitor#internalWorked(double)
 	 */
+	@Override
 	public void internalWorked(double work) {
-		for (IProgressMonitor monitor : monitors) {
+		for (ProgressMonitor monitor : monitors) {
 			monitor.internalWorked(work);
 		}
 		addInvocation("internalWorked", work); //$NON-NLS-1$
@@ -143,9 +147,10 @@ public class CompoundProgressMonitor implements IProgressMonitor {
 	 * 
 	 * @see org.eclipse.core.runtime.IProgressMonitor#isCanceled()
 	 */
+	@Override
 	public boolean isCanceled() {
 		boolean result = false;
-		for (IProgressMonitor monitor : monitors) {
+		for (ProgressMonitor monitor : monitors) {
 			result = result | monitor.isCanceled();
 		}
 		return result;
@@ -154,8 +159,9 @@ public class CompoundProgressMonitor implements IProgressMonitor {
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.runtime.IProgressMonitor#setCanceled(boolean)
 	 */
+	@Override
 	public void setCanceled(boolean value) {
-		for (IProgressMonitor monitor : monitors) {
+		for (ProgressMonitor monitor : monitors) {
 			monitor.setCanceled(value);
 		}
 		addInvocation("setCanceled", value); //$NON-NLS-1$
@@ -164,8 +170,9 @@ public class CompoundProgressMonitor implements IProgressMonitor {
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.runtime.IProgressMonitor#setTaskName(java.lang.String)
 	 */
+	@Override
 	public void setTaskName(String name) {
-		for (IProgressMonitor monitor : monitors) {
+		for (ProgressMonitor monitor : monitors) {
 			monitor.setTaskName(name);
 		}
 		addInvocation("setTaskName", name); //$NON-NLS-1$
@@ -174,8 +181,9 @@ public class CompoundProgressMonitor implements IProgressMonitor {
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.runtime.IProgressMonitor#subTask(java.lang.String)
 	 */
+	@Override
 	public void subTask(String name) {
-		for (IProgressMonitor monitor : monitors) {
+		for (ProgressMonitor monitor : monitors) {
 			monitor.subTask(name);
 		}
 		addInvocation("subTask", name); //$NON-NLS-1$
@@ -184,8 +192,9 @@ public class CompoundProgressMonitor implements IProgressMonitor {
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.runtime.IProgressMonitor#worked(int)
 	 */
+	@Override
 	public void worked(int work) {
-		for (IProgressMonitor monitor : monitors) {
+		for (ProgressMonitor monitor : monitors) {
 			monitor.worked(work);
 		}
 		addInvocation("worked", work); //$NON-NLS-1$
@@ -201,7 +210,7 @@ public class CompoundProgressMonitor implements IProgressMonitor {
 	 * 
 	 * @param monitor The monitor to integrate.
 	 */
-	public void addProgressMonitor(IProgressMonitor monitor) {
+	public void addProgressMonitor(ProgressMonitor monitor) {
 		for (MonitorInvocation invocation : new LinkedList<MonitorInvocation>(invocations)) {
 			invocation.invoke(monitor);
 		}

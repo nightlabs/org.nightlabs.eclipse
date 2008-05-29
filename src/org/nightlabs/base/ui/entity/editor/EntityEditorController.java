@@ -39,7 +39,6 @@ import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.Job;
@@ -48,6 +47,8 @@ import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.forms.editor.IFormPage;
 import org.nightlabs.base.ui.entity.editor.EntityEditorPageController.LoadJob;
 import org.nightlabs.base.ui.resource.Messages;
+import org.nightlabs.progress.ProgressMonitor;
+import org.nightlabs.progress.SubProgressMonitor;
 
 /**
  * <p>Controller used by {@link EntityEditor} to hold the
@@ -414,19 +415,23 @@ public class EntityEditorController
 	}
 
 	/**
-	 * Delegates to the {@link IEntityEditorPageController#doSave(IProgressMonitor)}
+	 * Delegates to the {@link IEntityEditorPageController#doSave(ProgressMonitor)}
 	 * method of all known dirty {@link IEntityEditorPageController}s.
 	 *
 	 * @param monitor The progress monitor to use.
 	 */
-	public void doSave(IProgressMonitor monitor)
+	public void doSave(ProgressMonitor monitor)
 	{
 		monitor.beginTask(Messages.getString("org.nightlabs.base.ui.entity.editor.EntityEditorController.doSave.monitor.taskName"), dirtyPageControllers.size()); //$NON-NLS-1$
-		logger.debug("Calling all page controllers doSave() method."); //$NON-NLS-1$
-		saving = true;
-		for (IEntityEditorPageController dirtyController : dirtyPageControllers) {
-			dirtyController.doSave(new SubProgressMonitor(monitor, 1));
-			dirtyController.markUndirty();
+		try {
+			logger.debug("Calling all page controllers doSave() method."); //$NON-NLS-1$
+			saving = true;
+			for (IEntityEditorPageController dirtyController : dirtyPageControllers) {
+				dirtyController.doSave(new SubProgressMonitor(monitor, 1));
+				dirtyController.markUndirty();
+			}
+		} finally {
+			monitor.done();
 		}
 	}
 

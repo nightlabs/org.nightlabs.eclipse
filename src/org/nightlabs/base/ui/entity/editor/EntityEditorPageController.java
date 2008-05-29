@@ -39,15 +39,18 @@ import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.ui.forms.editor.IFormPage;
 import org.nightlabs.annotation.Implement;
 import org.nightlabs.base.ui.exceptionhandler.ExceptionHandlerRegistry;
+import org.nightlabs.base.ui.job.Job;
 import org.nightlabs.base.ui.progress.CompoundProgressMonitor;
+import org.nightlabs.base.ui.progress.ProgressMonitorWrapper;
+import org.nightlabs.base.ui.progress.RCPProgressMonitor;
 import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.util.RCPUtil;
+import org.nightlabs.progress.ProgressMonitor;
 
 /**
  * <p>This implementation of {@link IEntityEditorPageController} can be used
@@ -60,8 +63,8 @@ import org.nightlabs.base.ui.util.RCPUtil;
  * or you can use the constructor {@link #EntityEditorPageController(boolean)}</p>
  * 
  * <p>If a thread needs to access this controllers data it should
- * use the {@link #load(IProgressMonitor)} method instead of invoking
- * {@link IEntityEditorPageController#doLoad(IProgressMonitor)} directly.</p>
+ * use the {@link #load(ProgressMonitor)} method instead of invoking
+ * {@link IEntityEditorPageController#doLoad(ProgressMonitor)} directly.</p>
  * 
  * <p>{@link EntityEditorPageController} extends {@link PropertyChangeSupport} and will
  * pass the {@link EntityEditor} this controller was created with as source to
@@ -85,7 +88,7 @@ implements IEntityEditorPageController
 
 	/**
 	 * The actual background loading job.
-	 * This calls {@link IEntityEditorPageController#doLoad(IProgressMonitor)}
+	 * This calls {@link IEntityEditorPageController#doLoad(ProgressMonitor)}
 	 * and notifies the wrapping page controller
 	 * of its end by the controller's {@link EntityEditorPageController#mutex}.
 	 */
@@ -102,7 +105,7 @@ implements IEntityEditorPageController
 		}
 
 		@Override
-		protected IStatus run(IProgressMonitor monitor) {
+		protected IStatus run(ProgressMonitor monitor) {
 			cMonitor = new CompoundProgressMonitor(monitor);
 			try {
 				controller.doLoad(cMonitor);
@@ -305,7 +308,7 @@ implements IEntityEditorPageController
 	private IRunnableWithProgress waitForLoadJob = new IRunnableWithProgress() {
 		public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 			if (!loaded)
-				loadJob.getCompoundProgressMonitor().addProgressMonitor(monitor);
+				loadJob.getCompoundProgressMonitor().addProgressMonitor(new ProgressMonitorWrapper(monitor));
 				synchronized (mutex) {
 					while (!loaded)
 						mutex.wait(200);
@@ -324,7 +327,7 @@ implements IEntityEditorPageController
 //	}
 	
 	/**
-	 * <p>Ensures that this controller's {@link IEntityEditorPageController#doLoad(IProgressMonitor)}
+	 * <p>Ensures that this controller's {@link IEntityEditorPageController#doLoad(ProgressMonitor)}
 	 * method has fully run and thus the controller is ready for use.</p>
 	 * 
 	 * <p>
@@ -336,7 +339,7 @@ implements IEntityEditorPageController
 	 * <p>Note that invoking this form the gui thread will cause a blocking
 	 * progress dialog to appear.</p>
 	 */
-	public synchronized void load(IProgressMonitor monitor)
+	public synchronized void load(ProgressMonitor monitor)
 	{
 		try {
 			if (loadJob != null) {
@@ -347,7 +350,7 @@ implements IEntityEditorPageController
 						dlg.run(true, false, waitForLoadJob);
 					}
 					else
-						waitForLoadJob.run(monitor);
+						waitForLoadJob.run(new RCPProgressMonitor(monitor));
 				}
 			}
 			else {
@@ -356,9 +359,9 @@ implements IEntityEditorPageController
 					dlg.run(true, false, new IRunnableWithProgress() {
 						public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException	{
 							monitor.beginTask(Messages.getString("org.nightlabs.base.ui.entity.editor.EntityEditorPageController.load.monitor.taskName"), IProgressMonitor.UNKNOWN); //$NON-NLS-1$
-							doLoad(monitor);
-							monitor.done();
+							doLoad(new ProgressMonitorWrapper(monitor));
 							setLoaded(true);
+							monitor.done();
 						}
 					});
 				}

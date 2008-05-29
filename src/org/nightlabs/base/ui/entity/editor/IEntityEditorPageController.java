@@ -29,9 +29,9 @@ package org.nightlabs.base.ui.entity.editor;
 import java.beans.PropertyChangeSupport;
 import java.util.Set;
 
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.ui.forms.editor.IFormPage;
 import org.nightlabs.base.ui.notification.IDirtyStateManager;
+import org.nightlabs.progress.ProgressMonitor;
 import org.nightlabs.util.bean.IPropertyChangeSupport;
 
 /**
@@ -114,7 +114,7 @@ extends IDirtyStateManager
 	 * so its better to extend the abstract Controller than to write job management yourself.
 	 * @param monitor The monitor to write status to.
 	 */
-	void doLoad(IProgressMonitor monitor);
+	void doLoad(ProgressMonitor monitor);
 	
 	boolean isLoaded();
 	
@@ -125,7 +125,7 @@ extends IDirtyStateManager
 	 * asynchronous callback job.
 	 * @param monitor The monitor to write status to.
 	 */
-	void doSave(IProgressMonitor monitor);
+	void doSave(ProgressMonitor monitor);
 	
 	/**
 	 * Performs cleanups when the editor is closed.
