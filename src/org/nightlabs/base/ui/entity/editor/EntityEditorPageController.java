@@ -452,6 +452,7 @@ implements IEntityEditorPageController
 	 *
 	 * @param listener The listener to be added.
 	 */
+	@Override
 	public void addModifyListener(IEntityEditorPageControllerModifyListener listener) {
 		listeners.add(listener);
 		EntityEditorPageControllerModifyEvent lastModifyEvent = this.lastModifyEvent;

@@ -158,11 +158,12 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 		protected IStatus run(ProgressMonitor monitor) {
 			final IEntityEditorPageController controller = getPageController();
 			if (controller != null) {
-				controller.addModifyListener(new IEntityEditorPageControllerModifyListener() {
-					public void controllerObjectModified(EntityEditorPageControllerModifyEvent modifyEvent) {
-						handleControllerObjectModified(modifyEvent);
-					}
-				});
+				// moved this to fillBody right after addSections
+//				controller.addModifyListener(new IEntityEditorPageControllerModifyListener() {
+//					public void controllerObjectModified(EntityEditorPageControllerModifyEvent modifyEvent) {
+//						handleControllerObjectModified(modifyEvent);
+//					}
+//				});
 
 				CompoundProgressMonitor compoundMonitor = new CompoundProgressMonitor(new ProgressMonitorWrapper(progressMonitorPart), monitor);
 				if (controller instanceof EntityEditorPageController) {
@@ -213,7 +214,8 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 	 * that will invoke {@link #handleControllerObjectModified(EntityEditorPageControllerModifyEvent)}.
 	 * </p>
 	 */
-	protected abstract void asyncCallback();
+	protected void asyncCallback() {
+	}
 	
 	
 	/**
@@ -423,7 +425,15 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 		
 		addSections(pageWrapper);
 		registerToDirtyStateProxies();
-		configureInitialStack();		
+		configureInitialStack();
+
+		// this will notify immediately, in case there was already an event.
+		getPageController().addModifyListener(new IEntityEditorPageControllerModifyListener() {
+			public void controllerObjectModified(EntityEditorPageControllerModifyEvent modifyEvent) {
+				switchToContent();
+				handleControllerObjectModified(modifyEvent);
+			}
+		});
 	}
 
 	/**
@@ -464,6 +474,9 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 		Runnable runnable = new Runnable() {
 			public void run() {
 				if (wrapper == null || wrapper.isDisposed())
+					return;
+
+				if (stackLayout.topControl == pageWrapper)
 					return;
 				
 				stackLayout.topControl = pageWrapper;

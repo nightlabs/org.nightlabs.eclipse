@@ -140,7 +140,8 @@ extends IDirtyStateManager
 	
 	/**
 	 * Adds a new {@link IEntityEditorPageControllerModifyListener} to this controller.
-	 * 
+	 * The new listener is immediately triggered with the last event (if there was already one).
+	 *
 	 * @param listener The listener to be added.
 	 */
 	void addModifyListener(IEntityEditorPageControllerModifyListener listener);
