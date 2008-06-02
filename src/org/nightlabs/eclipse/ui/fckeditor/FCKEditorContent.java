@@ -26,6 +26,10 @@ package org.nightlabs.eclipse.ui.fckeditor;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.nightlabs.htmlcontent.IFCKEditorContent;
+import org.nightlabs.htmlcontent.IFCKEditorContentFile;
+import org.nightlabs.htmlcontent.IFCKEditorContentFileFactory;
+
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  * @version $Revision$ - $Date$

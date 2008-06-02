@@ -23,7 +23,7 @@
  **************************************************************************/
 package org.nightlabs.eclipse.ui.fckeditor.file;
 
-import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile;
+import org.nightlabs.htmlcontent.IFCKEditorContentFile;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de

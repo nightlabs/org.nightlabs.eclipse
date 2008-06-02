@@ -25,6 +25,8 @@ package org.nightlabs.eclipse.ui.fckeditor;
 
 import java.util.Date;
 
+import org.nightlabs.htmlcontent.IFCKEditorContentFile;
+
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  * @version $Revision$ - $Date$

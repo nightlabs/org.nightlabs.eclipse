@@ -25,12 +25,13 @@ package org.nightlabs.eclipse.ui.fckeditor;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IPersistableElement;
+import org.nightlabs.htmlcontent.IFCKEditorContent;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  * @version $Revision$ - $Date$
  */
-public class FCKEditorInput implements IFCKEditorInput 
+public class FCKEditorInput implements IFCKEditorInput
 {
 	private IFCKEditorContent editorContent;
 	private String name;
@@ -40,7 +41,7 @@ public class FCKEditorInput implements IFCKEditorInput
 		this.editorContent = editorContent;
 		this.name = name;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.nightlabs.eclipse.ui.fckeditor.IFCKEditorInput#getEditorContent()
 	 */

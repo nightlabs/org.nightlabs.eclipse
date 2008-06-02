@@ -48,12 +48,12 @@ import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Shell;
 import org.nightlabs.eclipse.ui.fckeditor.Activator;
 import org.nightlabs.eclipse.ui.fckeditor.IFCKEditor;
-import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContent;
-import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile;
 import org.nightlabs.eclipse.ui.fckeditor.file.ContentTypeUtil;
 import org.nightlabs.eclipse.ui.fckeditor.file.IContentFileWizard;
 import org.nightlabs.eclipse.ui.fckeditor.file.SelectFileDialog;
 import org.nightlabs.eclipse.ui.fckeditor.resource.Messages;
+import org.nightlabs.htmlcontent.IFCKEditorContent;
+import org.nightlabs.htmlcontent.IFCKEditorContentFile;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de

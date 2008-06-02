@@ -33,8 +33,8 @@ import java.util.List;
 import org.nightlabs.eclipse.ui.fckeditor.Activator;
 import org.nightlabs.eclipse.ui.fckeditor.FCKEditorContent;
 import org.nightlabs.eclipse.ui.fckeditor.FCKEditorContentFile;
-import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContent;
-import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile;
+import org.nightlabs.htmlcontent.IFCKEditorContent;
+import org.nightlabs.htmlcontent.IFCKEditorContentFile;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
@@ -80,24 +80,24 @@ public class TestUtil
 		contents = getFileContents("/icons/test/DSC00304.JPG");
 		file.setData(contents);
 		files.add(file);
-		
+
 		file = new FCKEditorContentFile();
 		file.setContentType("image/jpeg");
 		file.setName("NightLabs Österreich");
 		contents = getFileContents("/icons/test/DSC00311.JPG");
 		file.setData(contents);
 		files.add(file);
-		
+
 		file = new FCKEditorContentFile();
 		file.setContentType("image/jpeg");
 		file.setName("Österreich");
 		contents = getFileContents("/icons/test/DSC00313.JPG");
 		file.setData(contents);
 		files.add(file);
-		
+
 		return files;
 	}
-	
+
 	private static byte[] getFileContents(String bundleFilePath) throws IOException
 	{
 		byte[] contents;
@@ -117,7 +117,7 @@ public class TestUtil
 		}
 		return contents;
 	}
-	
+
 
 	/**
 	 * Transfer data between streams.
@@ -159,7 +159,7 @@ public class TestUtil
 		out.flush();
 		return transferred;
 	}
-	
+
 	public static IFCKEditorContent getContent() throws IOException
 	{
 		IFCKEditorContent content = new FCKEditorContent();

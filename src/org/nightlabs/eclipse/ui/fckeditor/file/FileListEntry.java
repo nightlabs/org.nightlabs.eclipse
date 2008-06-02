@@ -37,8 +37,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
-import org.nightlabs.eclipse.ui.fckeditor.IFCKEditorContentFile;
 import org.nightlabs.eclipse.ui.fckeditor.resource.Messages;
+import org.nightlabs.htmlcontent.IFCKEditorContentFile;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
