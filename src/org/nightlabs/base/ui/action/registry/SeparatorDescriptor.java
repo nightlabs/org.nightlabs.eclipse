@@ -26,7 +26,9 @@
 
 package org.nightlabs.base.ui.action.registry;
 
-public class SeparatorDescriptor extends ItemDescriptor
+public class SeparatorDescriptor 
+extends ItemDescriptor 
+implements PathItemDescriptor
 {
 	private String name;
 	/**
@@ -49,9 +51,14 @@ public class SeparatorDescriptor extends ItemDescriptor
 	{
 		return name;
 	}
-	
+
 	public String getPath()
 	{
 		return path;
+	}
+
+	@Override
+	public String getID() {
+		return getName();
 	}
 }

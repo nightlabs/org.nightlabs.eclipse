@@ -205,8 +205,7 @@ extends MultiPageEditorActionBarContributor
 		contributedToCoolBar = true;
 //		updateActions();
 		if (getActionRegistry() != null) {
-			int visibleItems = getActionRegistry().contributeToCoolBar(coolBarManager);
-//			logger.debug("contributeToCoolBar "+visibleItems+" visibleItems!");
+			getActionRegistry().contributeToCoolBar(coolBarManager);
 		}
 	}
 	
@@ -217,8 +216,7 @@ extends MultiPageEditorActionBarContributor
 		contributedToToolBar = true;
 //		updateActions();
 		if (getActionRegistry() != null) {
-			int visibleItems = getActionRegistry().contributeToToolBar(toolBarManager);
-//			logger.debug("contributeToToolBar "+visibleItems+" visibleItems!");
+			getActionRegistry().contributeToToolBar(toolBarManager);
 		}
 	}
 	
@@ -229,7 +227,7 @@ extends MultiPageEditorActionBarContributor
 		contributedToMenu = true;
 //		updateActions();
 		if (getActionRegistry() != null) {
-			int visibleItems = getActionRegistry().contributeToMenuBar(menuManager);
+			getActionRegistry().contributeToMenuBar(menuManager);
 //			logger.debug("contributeToMenu "+visibleItems+" visibleItems!");
 		}
 	}

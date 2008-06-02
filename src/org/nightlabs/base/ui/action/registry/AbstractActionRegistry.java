@@ -28,12 +28,13 @@ package org.nightlabs.base.ui.action.registry;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -55,17 +56,10 @@ import org.eclipse.jface.action.SubCoolBarManager;
 import org.eclipse.jface.action.ToolBarContributionItem;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.IPerspectiveDescriptor;
-import org.eclipse.ui.IPerspectiveListener3;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchPartReference;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.internal.WorkbenchWindow;
+import org.eclipse.swt.widgets.Display;
 import org.nightlabs.base.ui.action.IXContributionItem;
 import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
 import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
-import org.nightlabs.base.ui.perspective.PerspectiveExtensionRegistry;
-import org.nightlabs.base.ui.util.RCPUtil;
 
 
 /**
@@ -103,6 +97,37 @@ import org.nightlabs.base.ui.util.RCPUtil;
 public abstract class AbstractActionRegistry
 extends AbstractEPProcessor
 {
+	protected static final String ELEMENT_NAME_SEPARATOR = "separator"; //$NON-NLS-1$
+	protected static final String ELEMENT_NAME_GROUP_MARKER = "groupMarker"; //$NON-NLS-1$
+	protected static final String ELEMENT_NAME_MENU = "menu"; //$NON-NLS-1$
+
+	protected static final String ATTRIBUTE_NAME_SEPARATOR_NAME = "name"; //$NON-NLS-1$
+	protected static final String ATTRIBUTE_NAME_SEPARATOR_PATH = "path"; //$NON-NLS-1$
+
+	protected static final String ATTRIBUTE_NAME_GROUP_MARKER_NAME = "name"; //$NON-NLS-1$
+	protected static final String ATTRIBUTE_NAME_GROUP_MARKER_PATH = "path"; //$NON-NLS-1$
+
+	protected static final String ATTRIBUTE_NAME_MENU_ID = "id"; //$NON-NLS-1$
+	protected static final String ATTRIBUTE_NAME_MENU_LABEL = "label"; //$NON-NLS-1$
+	protected static final String ATTRIBUTE_NAME_MENU_PATH = "path"; //$NON-NLS-1$
+
+	protected static final String ATTRIBUTE_NAME_ACTION_ID = "id"; //$NON-NLS-1$
+	protected static final String ATTRIBUTE_NAME_ACTION_NAME = "name"; //$NON-NLS-1$
+	protected static final String ATTRIBUTE_NAME_ACTION_TOOLTIP = "tooltip"; //$NON-NLS-1$
+	protected static final String ATTRIBUTE_NAME_ACTION_ICON = "icon"; //$NON-NLS-1$
+	protected static final String ATTRIBUTE_NAME_ACTION_DISABLED_ICON = "disabledIcon"; //$NON-NLS-1$
+	protected static final String ATTRIBUTE_NAME_ACTION_HOVER_ICON = "hoverIcon"; //$NON-NLS-1$
+	protected static final String ATTRIBUTE_NAME_ACTION_MENUBAR_PATH = "menubarPath"; //$NON-NLS-1$
+	protected static final String ATTRIBUTE_NAME_ACTION_TOOLBAR_PATH = "toolbarPath"; //$NON-NLS-1$
+	protected static final String ATTRIBUTE_NAME_ACTION_CONTEXTMENU_PATH = "contextmenuPath"; //$NON-NLS-1$
+
+	protected static final String ATTRIBUTE_NAME_ACTION_VISIBLE = "visible"; //$NON-NLS-1$
+	protected static final String ATTRIBUTE_NAME_ACTION_VISIBLE_IN_MENUBAR = "visibleInMenubar"; //$NON-NLS-1$
+	protected static final String ATTRIBUTE_NAME_ACTION_VISIBLE_IN_TOOLBAR = "visibleInToolbar"; //$NON-NLS-1$
+	protected static final String ATTRIBUTE_NAME_ACTION_VISIBLE_IN_CONTEXTMENU = "visibleInContextmenu"; //$NON-NLS-1$
+	
+	private String elementNameAction = null;
+	
 	/**
 	 * LOG4J logger used by this class
 	 */
@@ -119,15 +144,8 @@ extends AbstractEPProcessor
 	 */
 	private List<ItemDescriptor> menuRaw = new ArrayList<ItemDescriptor>();
 
-	private List<ItemDescriptor> menuSortedForMenubar = null;
-	private List<ItemDescriptor> menuSortedForContextmenu = null;
-	private List<ItemDescriptor> menuSortedForToolbar = null;
-
-	protected static final String KIND_MENUBAR = "menubar"; //$NON-NLS-1$
-	protected static final String KIND_CONTEXTMENU = "contextmenu"; //$NON-NLS-1$
-	protected static final String KIND_TOOLBAR = "toolbar"; //$NON-NLS-1$
-	protected static final String KIND_COOLBAR = "coolbar"; //$NON-NLS-1$
-
+	private Map<ContributionManagerKind, List<ItemDescriptor>> contributionManagerKind2menuSorted = new HashMap<ContributionManagerKind, List<ItemDescriptor>>();
+	
 	/**
 	 * This method populates the passed <code>menuManager</code> with all visible
 	 * {@link IAction}s and other {@link IXContributionItem}s (e.g. separators or group-markers).
@@ -145,9 +163,9 @@ extends AbstractEPProcessor
 	 * @return Returns the number of visible items (i.e. actions) that have been added (because some
 	 *		might be invisible and therefore not added).
 	 */
-	public int contributeToMenuBar(IMenuManager menuManager)
+	public Map<Class<? extends ItemDescriptor>, List<ItemDescriptor>> contributeToMenuBar(IMenuManager menuManager)
 	{
-		return contribute(menuManager, KIND_MENUBAR);
+		return contribute(menuManager, ContributionManagerKind.menuBar);
 	}
 
 	/**
@@ -167,9 +185,9 @@ extends AbstractEPProcessor
 	 * @return Returns the number of visible items (i.e. actions) that have been added (because some
 	 *		might be invisible and therefore not added).
 	 */
-	public int contributeToContextMenu(IMenuManager menuManager)
+	public Map<Class<? extends ItemDescriptor>, List<ItemDescriptor>> contributeToContextMenu(IMenuManager menuManager)
 	{
-		return contribute(menuManager, KIND_CONTEXTMENU);
+		return contribute(menuManager, ContributionManagerKind.contextMenu);
 	}
 
 	/**
@@ -189,13 +207,71 @@ extends AbstractEPProcessor
 	 * @return Returns the number of visible items (i.e. actions) that have been added (because some
 	 *		might be invisible and therefore not added).
 	 */
-	public int contributeToToolBar(IToolBarManager toolBarManager)
+	public Map<Class<? extends ItemDescriptor>, List<ItemDescriptor>> contributeToToolBar(IToolBarManager toolBarManager)
 	{
-		return contribute(toolBarManager, KIND_TOOLBAR);
+		return contribute(toolBarManager, ContributionManagerKind.toolBar);
 	}
 
+	private ActionVisibilityDecider actionVisibilityDecider;
+
 	private static boolean useRemoveInsteadOfUnvisibleWorkaround = true;
-	
+
+	public void removeAllFromMenuBar(IMenuManager menuManager)
+	{
+		removeAll(menuManager, ContributionManagerKind.menuBar);
+	}
+
+	public void removeAllFromContextMenu(IMenuManager menuManager)
+	{
+		removeAll(menuManager, ContributionManagerKind.contextMenu);
+	}
+
+	protected void removeAll(IContributionManager contributionManager, ContributionManagerKind kind)
+	{
+		MenuManager tmpMenu = new MenuManager();
+		ActionVisibilityDecider backupActionVisibilityDecider = this.actionVisibilityDecider;
+		Map<Class<? extends ItemDescriptor>, List<ItemDescriptor>> itemDescriptorsToRemove;
+		try {
+			this.actionVisibilityDecider = actionVisibilityDeciderAlwaysVisible;
+			itemDescriptorsToRemove = contribute(tmpMenu, kind);
+		} finally {
+			this.actionVisibilityDecider = backupActionVisibilityDecider;
+		}
+
+		// We only remove ActionDescriptors (i.e. ContributionItems or Actions) and NO menus,
+		// because menus and separators/groupmarkers might be used by someone else.
+		List<ItemDescriptor> actionDescriptorsToRemove = itemDescriptorsToRemove.get(ActionDescriptor.class);
+		if (actionDescriptorsToRemove != null) {
+			for (ItemDescriptor _actionDescriptor : actionDescriptorsToRemove) {
+				ActionDescriptor ad = (ActionDescriptor) _actionDescriptor;
+				String path = getPath(ad, kind);
+				IContributionItem anchor = findUsingPath(contributionManager, path);
+
+				if (anchor != null) {
+					if (anchor instanceof MenuManager) {
+						IContributionItem removedItem = ((MenuManager)anchor).remove(ad.getID());
+						String removed = removedItem != null ? "" : "NOT ";
+						logger.debug("ActionDescriptor with id "+ad.getID()+" was " + removed + "removed from "+kind+" !");
+					} 
+					else {
+						IContributionManager parent = ((ContributionItem)anchor).getParent(); 
+						if (parent != null) {
+							IContributionItem removedItem = parent.remove(ad.getID());
+							String removed = removedItem != null ? "" : "NOT ";
+							logger.debug("ActionDescriptor with id "+ad.getID()+" was " + removed + "removed from "+kind+" !");
+						}
+					}					
+				}
+			}
+		}
+	}
+
+	private ActionVisibilityDecider actionVisibilityDeciderAlwaysVisible = new ActionVisibilityDecider() {
+		public boolean isVisible(ActionVisibilityContext actionVisibilityContext, ActionDescriptor actionDescriptor) {
+			return true;
+		}
+	};
+
 	/**
 	 * Removes all contributions of this registry from the CoolBar of the
 	 * given coolBarManager. Ideally this is done by making the contributions
@@ -207,31 +283,44 @@ extends AbstractEPProcessor
 	 * @param coolBarManager The {@link ICoolBarManager} where the contributions of this registry should be removed from.
 	 */
 	public void removeAllFromCoolBar(ICoolBarManager coolBarManager) {
-		IContributionManager coolBarContributionManager = ((SubCoolBarManager)coolBarManager).getParent();
+		if (Display.getCurrent() == null)
+			throw new IllegalStateException("This method must be called on the UI thread!");
+
+		IContributionManager coolBarContributionManager = coolBarManager;
+		if (coolBarManager instanceof SubCoolBarManager)
+			coolBarContributionManager = ((SubCoolBarManager)coolBarManager).getParent();
+
 		if (!useRemoveInsteadOfUnvisibleWorkaround)
 			((SubCoolBarManager)coolBarManager).setVisible(false);
-		
+
 		String baseID = this.getClass().getName();
 		String orphanageToolbarID = baseID + '.' + ORPHANAGE_TOOLBAR_ID;
 		// We use a temporary MenuManager which will be translated into the real
 		// coolbar afterwards.
 		MenuManager tmpMenu = new MenuManager();
-		contribute(tmpMenu, KIND_COOLBAR);
+		ActionVisibilityDecider backupActionVisibilityDecider = this.actionVisibilityDecider;
+		try {
+			this.actionVisibilityDecider = actionVisibilityDeciderAlwaysVisible;
+			contribute(tmpMenu, ContributionManagerKind.coolBar);
+		} finally {
+			this.actionVisibilityDecider = backupActionVisibilityDecider;
+		}
 
 		// convert the existing items of the real coolbar-manager into a Map - the new items might
 		// already exist because of Eclipse's workspace memory (and then the old ones need to be
 		// manipulated - new ones would be ignored because of a bug/feature in the EclipseRCP)
-		IContributionItem[] coolBarItems = ((SubCoolBarManager)coolBarManager).getParent().getItems();
-	
+//		IContributionItem[] coolBarItems = ((SubCoolBarManager)coolBarManager).getParent().getItems();
+		IContributionItem[] coolBarItems = coolBarContributionManager.getItems();
+
 		// key: String itemId
 		// value: IXContributionItem
 		Map<String, IContributionItem> coolBarItemMap = new HashMap<String, IContributionItem>(coolBarItems.length);
 		for (int i = 0; i < coolBarItems.length; ++i) {
 			IContributionItem coolBarItem = coolBarItems[i];
 			coolBarItemMap.put(coolBarItem.getId(), coolBarItem);
-			System.out.println("Having "+coolBarItem.getId()+" in CoolBar"); //$NON-NLS-1$ //$NON-NLS-2$
+			logger.debug("Having "+coolBarItem.getId()+" in CoolBar"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		
+
 		ToolBarContributionItem orphanageToolBarContributionItem = getToolBarContributionItem(coolBarItemMap.get(orphanageToolbarID));
 		if (orphanageToolBarContributionItem != null) {
 			IContributionItem item = coolBarContributionManager.find(orphanageToolBarContributionItem.getId());
@@ -245,7 +334,7 @@ extends AbstractEPProcessor
 				}
 			}
 		}
-		
+
 		// Now, we iterate all the "precompiled" items and contribute them to the coolbar
 		IContributionItem[] tmpItems = tmpMenu.getItems();
 		for (int i = 0; i < tmpItems.length; ++i) {
@@ -279,21 +368,28 @@ extends AbstractEPProcessor
 	 * @return Returns the number of visible items (i.e. actions) that have been added (because some
 	 *		might be invisible and therefore not added).
 	 */
-	public int contributeToCoolBar(ICoolBarManager coolBarManager)
+	public Map<Class<? extends ItemDescriptor>, List<ItemDescriptor>> contributeToCoolBar(ICoolBarManager coolBarManager)
 	{
-		if (!perspectiveListenerAdded)
-			earlyContributed = true;
-		
 		if (coolBarManager instanceof SubContributionManager)
 			((SubCoolBarManager)coolBarManager).setVisible(true);
-			
+
 		String baseID = this.getClass().getName();
 		String orphanageToolbarID = baseID + '.' + ORPHANAGE_TOOLBAR_ID;
 
 		// We use a temporary MenuManager which will be translated into the real
 		// coolbar afterwards.
 		MenuManager tmpMenu = new MenuManager();
-		int res = contribute(tmpMenu, KIND_COOLBAR);
+		Map<Class<? extends ItemDescriptor>, List<ItemDescriptor>> res = contribute(tmpMenu, ContributionManagerKind.coolBar);
+
+		// all contributionItems with these IDs must not be added to the orphanage menu but directly
+		// to the coolbar
+		// TODO this should be somehow cached
+		Set<String> additions_contributionItemIDs = new HashSet<String>();
+		additions_contributionItemIDs.add("additions"); // additions itself must not end up in orphanage menu
+		for (ActionDescriptor actionDescriptor : getActionDescriptors()) {
+			if ("additions".equals(actionDescriptor.getToolbarPath()))
+				additions_contributionItemIDs.add(actionDescriptor.getID());
+		}
 
 		// convert the existing items of the real coolbar-manager into a Map - the new items might
 		// already exist because of Eclipse's workspace memory (and then the old ones need to be
@@ -305,7 +401,7 @@ extends AbstractEPProcessor
 		else if (coolBarManager instanceof IContributionManager) {
 			coolBarItems = ((IContributionManager)coolBarManager).getItems();
 		}
-//			IContributionItem[] coolBarItems = ((SubCoolBarManager)coolBarManager).getParent().getItems();
+//		IContributionItem[] coolBarItems = ((SubCoolBarManager)coolBarManager).getParent().getItems();
 
 		// key: String itemId
 		// value: IXContributionItem
@@ -323,6 +419,8 @@ extends AbstractEPProcessor
 
 		// We need to collect all the "orphaned" actions in a menu first and at them after all the other menus.
 		MenuManager orphanageMenu = new MenuManager();
+
+		List<IContributionItem> additionsToBeAddedDirectlyToCoolBar = new ArrayList<IContributionItem>();
 
 		// Now, we iterate all the "precompiled" items and contribute them to the coolbar
 		IContributionItem[] tmpItems = tmpMenu.getItems();
@@ -349,7 +447,10 @@ extends AbstractEPProcessor
 				addFlattenedMenu(toolBarManager, tmpSubMenuID + ".separator", tmpSubMenu); //$NON-NLS-1$
 			}
 			else {
-				orphanageMenu.add(tmpItem);
+				if (additions_contributionItemIDs.contains(tmpItem.getId()))
+					additionsToBeAddedDirectlyToCoolBar.add(tmpItem);
+				else
+					orphanageMenu.add(tmpItem);
 			}
 		} // for (int i = 0; i < tmpItems.length; ++i) {
 
@@ -369,13 +470,18 @@ extends AbstractEPProcessor
 			addFlattenedMenu(toolBarManager, orphanageToolbarID + ".separator", orphanageMenu); //$NON-NLS-1$
 		}
 
+		// contribute this stuff directly into the CoolBar (not a nested ToolBar).
+		for (IContributionItem contributionItem : additionsToBeAddedDirectlyToCoolBar) {
+			coolBarManager.add(contributionItem);
+		}
+
+//		coolBarManager.update(true);
 		coolBarManager.update(true);
+		
+//		if (coolBarManager instanceof CoolBarManager)
+//			((CoolBarManager)coolBarManager).refresh();
 
 		return res;
-//		}
-//		else {
-//			return contribute(coolBarManager, KIND_COOLBAR);
-//		}
 	}
 
 	protected static ToolBarContributionItem getToolBarContributionItem(Object item)
@@ -424,7 +530,7 @@ extends AbstractEPProcessor
 				IContributionItem item = mgr.find(id);
 				if (i == parts.length - 1)
 					return item;
-				
+
 				if (item instanceof IMenuManager) {
 					StringBuffer sbSubPath = new StringBuffer();
 					for (int n = i+1; n < parts.length; ++n) {
@@ -463,225 +569,273 @@ extends AbstractEPProcessor
 		}
 	}
 
+	public AbstractActionRegistry(ActionVisibilityDecider actionVisibilityDecider)
+	{
+		this.actionVisibilityDecider = actionVisibilityDecider;
+		if (this.actionVisibilityDecider == null)
+			this.actionVisibilityDecider = new ActionVisibilityDecider();
+	}
+
 	public AbstractActionRegistry()
 	{
-		super();
-//		if (isAffectedOfPerspectiveExtension()) {
-//			RCPUtil.getActiveWorkbenchWindow().addPerspectiveListener(perspectiveListener);
-//		}
+		this(null);
 	}
-	
+
 //	/**
-//	 * This method contributes WITHOUT removing items before.
-//	 *
-//	 * @param contributionManager
-//	 * @param kind
-//	 * @return Returns the number of visible contribution items (i.e. actions) that have been added.
-//	 */
+//	* This method contributes WITHOUT removing items before.
+//	*
+//	* @param contributionManager
+//	* @param kind
+//	* @return Returns the number of visible contribution items (i.e. actions) that have been added.
+//	*/
 //	protected int contribute(IContributionManager contributionManager, String kind)
 //	{
-//			int visibleContributionItemCount = 0;
-//
-//			List menuSorted;
-//			if (KIND_MENUBAR.equals(kind))
-//				menuSorted = menuSortedForMenubar;
-//			else if (KIND_CONTEXTMENU.equals(kind))
-//				menuSorted = menuSortedForContextmenu;
-//			else if (KIND_TOOLBAR.equals(kind))
-//				menuSorted = menuSortedForToolbar;
-//			else if (KIND_COOLBAR.equals(kind))
-//				menuSorted = menuSortedForToolbar;
-//			else
-//				throw new IllegalArgumentException("kind \"" + kind + "\" invalid!");
-//
-//			boolean firstRun = menuSorted == null;
-//			LinkedList menuRaw = null;
-//			int lastMenuRawSize = 0;
-//			if (firstRun) {
-//				menuRaw = new LinkedList(this.menuRaw);
-//				lastMenuRawSize = menuRaw.size();
-//				menuSorted = new LinkedList();
-//			}
-//
-////			contributionManager.removeAll();
-//
-//			while ((firstRun && !menuRaw.isEmpty()) || !firstRun) {
-//				for (Iterator itTopLevel = (firstRun ? menuRaw : menuSorted).iterator(); itTopLevel.hasNext(); ) {
-//					ItemDescriptor item = (ItemDescriptor) itTopLevel.next();
-//					if (item instanceof ActionDescriptor)
-//					{
-//						ActionDescriptor ad = (ActionDescriptor) item;
-//						String path;
-//						if (KIND_MENUBAR.equals(kind))
-//							path = ad.getMenubarPath();
-//						else if (KIND_CONTEXTMENU.equals(kind))
-//							path = ad.getContextmenuPath();
-//						else if (KIND_TOOLBAR.equals(kind))
-//							path = ad.getToolbarPath();
-//						else if (KIND_COOLBAR.equals(kind))
-//							path = ad.getToolbarPath();
-//						else
-//							throw new IllegalArgumentException("kind \"" + kind + "\" invalid!");
-//
-//						IContributionItem anchor = path == null ? null : findUsingPath(contributionManager, path);
-//						if (anchor != null) {
-//							boolean visible = ad.isVisible();
-//							if (visible) {
-//								if (KIND_MENUBAR.equals(kind))
-//									visible = ad.isVisibleInMenubar();
-//								else if (KIND_CONTEXTMENU.equals(kind))
-//									visible = ad.isVisibleInContextmenu();
-//								else if (KIND_TOOLBAR.equals(kind))
-//									visible = ad.isVisibleInToolbar();
-//								else if (KIND_COOLBAR.equals(kind))
-//									visible = ad.isVisibleInToolbar();
-//								else
-//									throw new IllegalArgumentException("kind \"" + kind + "\" invalid!");
-//							}
-//
-//							if (visible) {
-//								++visibleContributionItemCount;
-//								if (ad.getAction() != null)
-//									((ContributionItem)anchor).getParent().insertAfter(anchor.getId(), ad.getAction());
-//								else if (ad.getContributionItem() != null)
-//									((ContributionItem)anchor).getParent().insertAfter(anchor.getId(), ad.getContributionItem());
-//							}
-//
-//							if (firstRun) {
-//								menuSorted.add(item);
-//								itTopLevel.remove();
-//							}
-//						}
-//					}
-//					else if (item instanceof SeparatorDescriptor) {
-//						SeparatorDescriptor s = (SeparatorDescriptor) item;
-//						String path = s.getPath();
-//						IContributionItem anchor = path == null ? null : findUsingPath(contributionManager, path);
-//						if (path == null || anchor != null) {
-//							Separator separator = new Separator(s.getName());
-//							if (anchor == null)
-//								contributionManager.add(separator);
-//							else
-//								((ContributionItem)anchor).getParent().insertAfter(anchor.getId(), separator);
-//
-//							if (firstRun) {
-//								menuSorted.add(item);
-//								itTopLevel.remove();
-//							}
-//						}
-//					}
-//					else if (item instanceof GroupMarkerDescriptor) {
-//						GroupMarkerDescriptor gm = (GroupMarkerDescriptor) item;
-//						String path = gm.getPath();
-//						IContributionItem anchor = path == null ? null : findUsingPath(contributionManager, path);
-//						if (path == null || anchor != null) {
-//							GroupMarker groupMarker = new GroupMarker(gm.getName());
-//							if (anchor == null)
-//								contributionManager.add(groupMarker);
-//							else
-//								((ContributionItem)anchor).getParent().insertAfter(anchor.getId(), groupMarker);
-//
-//							if (firstRun) {
-//								menuSorted.add(item);
-//								itTopLevel.remove();
-//							}
-//						}
-//					}
-//					else if (item instanceof MenuDescriptor) {
-//						MenuDescriptor md = (MenuDescriptor) item;
-//						String path = md.getPath();
-//						IContributionItem anchor = path == null ? null : findUsingPath(contributionManager, path);
-//						if (path == null || anchor != null) {
-//							MenuManager subMenu = new MenuManager(md.getLabel(), md.getId());
-//
-//							for (Iterator itSub = md.getSubItems().iterator(); itSub.hasNext(); ) {
-//								Object obj = itSub.next();
-//								if (obj instanceof SeparatorDescriptor) {
-//									SeparatorDescriptor separator = (SeparatorDescriptor) obj;
-//									subMenu.add(new Separator(separator.getName()));
-//								}
-//								else if (obj instanceof GroupMarkerDescriptor) {
-//									GroupMarkerDescriptor groupMarker = (GroupMarkerDescriptor) obj;
-//									subMenu.add(new GroupMarker(groupMarker.getName()));
-//								}
-//								else
-//									throw new IllegalStateException("SubItem of menu is neither a SeparatorDescriptor nor a GroupMarkerDescriptor but " + obj.getClass().getName());
-//							}
-//
-//							if (anchor == null)
-//								contributionManager.add(subMenu);
-//							else
-//								((ContributionItem)anchor).getParent().insertAfter(anchor.getId(), subMenu);
-//
-//							if (firstRun) {
-//								menuSorted.add(item);
-//								itTopLevel.remove();
-//							}
-//						}
-//					}
-//					else
-//						throw new IllegalStateException("Item in menuRaw of type " + item.getClass() + " is an instance of an unknown class!");
-//				}
-//
-//				if (firstRun && (lastMenuRawSize == menuRaw.size())) {
-//					if (logger.isDebugEnabled()) {
-//						logger.debug("Could not add the following contributions to the menu (kind " + kind + "):");
-//						for (Iterator it = menuRaw.iterator(); it.hasNext(); ) {
-//							ItemDescriptor item = (ItemDescriptor) it.next();
-//							if (item instanceof ActionDescriptor) {
-//								logger.debug("    Action with id=" + ((ActionDescriptor)item).getAction().getId());
-//							}
-//							else if (item instanceof MenuDescriptor) {
-//								logger.debug("    Menu with id=" + ((MenuDescriptor)item).getId());
-//							}
-//							else if (item instanceof SeparatorDescriptor) {
-//								logger.debug("    Separator with name=" + ((SeparatorDescriptor)item).getName());
-//							}
-//							else if (item instanceof GroupMarkerDescriptor) {
-//								logger.debug("    GroupMarker with name=" + ((GroupMarkerDescriptor)item).getName());
-//							}
-//							else
-//								logger.debug("    " + item);
-//						}
-//					}
-//					break;
-//				}
-//
-//				if (!firstRun)
-//					break;
-//
-//				lastMenuRawSize = menuRaw.size();
-//			} // while ((firstRun && !menuRaw.isEmpty()) || !firstRun) {
-//
-//			if (firstRun) {
-//				if (KIND_MENUBAR.equals(kind))
-//					menuSortedForMenubar = menuSorted;
-//				else if (KIND_CONTEXTMENU.equals(kind))
-//					menuSortedForContextmenu = menuSorted;
-//				else if (KIND_TOOLBAR.equals(kind))
-//					menuSortedForToolbar = menuSorted;
-//				else if (KIND_COOLBAR.equals(kind))
-//					menuSortedForToolbar = menuSorted;
-//				else
-//					throw new IllegalArgumentException("kind \"" + kind + "\" invalid!");
-//			}
-//
-//			// flatten the menus if we're contributing to the toolbar (which doesn't understand sub-menus)
-//			// the coolbar is handled by contributeToCoolBar(...) directly
-//			if (KIND_TOOLBAR.equals(kind)) {
-//				IContributionItem[] items = contributionManager.getItems();
-//				contributionManager.removeAll();
-//				for (int i = 0; i < items.length; ++i) {
-//					IContributionItem item = items[i];
-//					if (item instanceof IMenuManager)
-//						addFlattenedMenu(contributionManager, null, (IMenuManager)item);
-//					else
-//						contributionManager.add(item);
-//				}
-//			}
-//			contributionManager.update(true);
-//			return visibleContributionItemCount;
+//	int visibleContributionItemCount = 0;
+
+//	List menuSorted;
+//	if (ContributionManagerKind.MENUBAR.equals(kind))
+//	menuSorted = menuSortedForMenubar;
+//	else if (ContributionManagerKind.CONTEXTMENU.equals(kind))
+//	menuSorted = menuSortedForContextmenu;
+//	else if (ContributionManagerKind.TOOLBAR.equals(kind))
+//	menuSorted = menuSortedForToolbar;
+//	else if (ContributionManagerKind.COOLBAR.equals(kind))
+//	menuSorted = menuSortedForToolbar;
+//	else
+//	throw new IllegalArgumentException("kind \"" + kind + "\" invalid!");
+
+//	boolean firstRun = menuSorted == null;
+//	LinkedList menuRaw = null;
+//	int lastMenuRawSize = 0;
+//	if (firstRun) {
+//	menuRaw = new LinkedList(this.menuRaw);
+//	lastMenuRawSize = menuRaw.size();
+//	menuSorted = new LinkedList();
 //	}
+
+////contributionManager.removeAll();
+
+//	while ((firstRun && !menuRaw.isEmpty()) || !firstRun) {
+//	for (Iterator itTopLevel = (firstRun ? menuRaw : menuSorted).iterator(); itTopLevel.hasNext(); ) {
+//	ItemDescriptor item = (ItemDescriptor) itTopLevel.next();
+//	if (item instanceof ActionDescriptor)
+//	{
+//	ActionDescriptor ad = (ActionDescriptor) item;
+//	String path;
+//	if (ContributionManagerKind.MENUBAR.equals(kind))
+//	path = ad.getMenubarPath();
+//	else if (ContributionManagerKind.CONTEXTMENU.equals(kind))
+//	path = ad.getContextmenuPath();
+//	else if (ContributionManagerKind.TOOLBAR.equals(kind))
+//	path = ad.getToolbarPath();
+//	else if (ContributionManagerKind.COOLBAR.equals(kind))
+//	path = ad.getToolbarPath();
+//	else
+//	throw new IllegalArgumentException("kind \"" + kind + "\" invalid!");
+
+//	IContributionItem anchor = path == null ? null : findUsingPath(contributionManager, path);
+//	if (anchor != null) {
+//	boolean visible = ad.isVisible();
+//	if (visible) {
+//	if (ContributionManagerKind.MENUBAR.equals(kind))
+//	visible = ad.isVisibleInMenubar();
+//	else if (ContributionManagerKind.CONTEXTMENU.equals(kind))
+//	visible = ad.isVisibleInContextmenu();
+//	else if (ContributionManagerKind.TOOLBAR.equals(kind))
+//	visible = ad.isVisibleInToolbar();
+//	else if (ContributionManagerKind.COOLBAR.equals(kind))
+//	visible = ad.isVisibleInToolbar();
+//	else
+//	throw new IllegalArgumentException("kind \"" + kind + "\" invalid!");
+//	}
+
+//	if (visible) {
+//	++visibleContributionItemCount;
+//	if (ad.getAction() != null)
+//	((ContributionItem)anchor).getParent().insertAfter(anchor.getId(), ad.getAction());
+//	else if (ad.getContributionItem() != null)
+//	((ContributionItem)anchor).getParent().insertAfter(anchor.getId(), ad.getContributionItem());
+//	}
+
+//	if (firstRun) {
+//	menuSorted.add(item);
+//	itTopLevel.remove();
+//	}
+//	}
+//	}
+//	else if (item instanceof SeparatorDescriptor) {
+//	SeparatorDescriptor s = (SeparatorDescriptor) item;
+//	String path = s.getPath();
+//	IContributionItem anchor = path == null ? null : findUsingPath(contributionManager, path);
+//	if (path == null || anchor != null) {
+//	Separator separator = new Separator(s.getName());
+//	if (anchor == null)
+//	contributionManager.add(separator);
+//	else
+//	((ContributionItem)anchor).getParent().insertAfter(anchor.getId(), separator);
+
+//	if (firstRun) {
+//	menuSorted.add(item);
+//	itTopLevel.remove();
+//	}
+//	}
+//	}
+//	else if (item instanceof GroupMarkerDescriptor) {
+//	GroupMarkerDescriptor gm = (GroupMarkerDescriptor) item;
+//	String path = gm.getPath();
+//	IContributionItem anchor = path == null ? null : findUsingPath(contributionManager, path);
+//	if (path == null || anchor != null) {
+//	GroupMarker groupMarker = new GroupMarker(gm.getName());
+//	if (anchor == null)
+//	contributionManager.add(groupMarker);
+//	else
+//	((ContributionItem)anchor).getParent().insertAfter(anchor.getId(), groupMarker);
+
+//	if (firstRun) {
+//	menuSorted.add(item);
+//	itTopLevel.remove();
+//	}
+//	}
+//	}
+//	else if (item instanceof MenuDescriptor) {
+//	MenuDescriptor md = (MenuDescriptor) item;
+//	String path = md.getPath();
+//	IContributionItem anchor = path == null ? null : findUsingPath(contributionManager, path);
+//	if (path == null || anchor != null) {
+//	MenuManager subMenu = new MenuManager(md.getLabel(), md.getId());
+
+//	for (Iterator itSub = md.getSubItems().iterator(); itSub.hasNext(); ) {
+//	Object obj = itSub.next();
+//	if (obj instanceof SeparatorDescriptor) {
+//	SeparatorDescriptor separator = (SeparatorDescriptor) obj;
+//	subMenu.add(new Separator(separator.getName()));
+//	}
+//	else if (obj instanceof GroupMarkerDescriptor) {
+//	GroupMarkerDescriptor groupMarker = (GroupMarkerDescriptor) obj;
+//	subMenu.add(new GroupMarker(groupMarker.getName()));
+//	}
+//	else
+//	throw new IllegalStateException("SubItem of menu is neither a SeparatorDescriptor nor a GroupMarkerDescriptor but " + obj.getClass().getName());
+//	}
+
+//	if (anchor == null)
+//	contributionManager.add(subMenu);
+//	else
+//	((ContributionItem)anchor).getParent().insertAfter(anchor.getId(), subMenu);
+
+//	if (firstRun) {
+//	menuSorted.add(item);
+//	itTopLevel.remove();
+//	}
+//	}
+//	}
+//	else
+//	throw new IllegalStateException("Item in menuRaw of type " + item.getClass() + " is an instance of an unknown class!");
+//	}
+
+//	if (firstRun && (lastMenuRawSize == menuRaw.size())) {
+//	if (logger.isDebugEnabled()) {
+//	logger.debug("Could not add the following contributions to the menu (kind " + kind + "):");
+//	for (Iterator it = menuRaw.iterator(); it.hasNext(); ) {
+//	ItemDescriptor item = (ItemDescriptor) it.next();
+//	if (item instanceof ActionDescriptor) {
+//	logger.debug("    Action with id=" + ((ActionDescriptor)item).getAction().getId());
+//	}
+//	else if (item instanceof MenuDescriptor) {
+//	logger.debug("    Menu with id=" + ((MenuDescriptor)item).getId());
+//	}
+//	else if (item instanceof SeparatorDescriptor) {
+//	logger.debug("    Separator with name=" + ((SeparatorDescriptor)item).getName());
+//	}
+//	else if (item instanceof GroupMarkerDescriptor) {
+//	logger.debug("    GroupMarker with name=" + ((GroupMarkerDescriptor)item).getName());
+//	}
+//	else
+//	logger.debug("    " + item);
+//	}
+//	}
+//	break;
+//	}
+
+//	if (!firstRun)
+//	break;
+
+//	lastMenuRawSize = menuRaw.size();
+//	} // while ((firstRun && !menuRaw.isEmpty()) || !firstRun) {
+
+//	if (firstRun) {
+//	if (ContributionManagerKind.MENUBAR.equals(kind))
+//	menuSortedForMenubar = menuSorted;
+//	else if (ContributionManagerKind.CONTEXTMENU.equals(kind))
+//	menuSortedForContextmenu = menuSorted;
+//	else if (ContributionManagerKind.TOOLBAR.equals(kind))
+//	menuSortedForToolbar = menuSorted;
+//	else if (ContributionManagerKind.COOLBAR.equals(kind))
+//	menuSortedForToolbar = menuSorted;
+//	else
+//	throw new IllegalArgumentException("kind \"" + kind + "\" invalid!");
+//	}
+
+//	// flatten the menus if we're contributing to the toolbar (which doesn't understand sub-menus)
+//	// the coolbar is handled by contributeToCoolBar(...) directly
+//	if (ContributionManagerKind.TOOLBAR.equals(kind)) {
+//	IContributionItem[] items = contributionManager.getItems();
+//	contributionManager.removeAll();
+//	for (int i = 0; i < items.length; ++i) {
+//	IContributionItem item = items[i];
+//	if (item instanceof IMenuManager)
+//	addFlattenedMenu(contributionManager, null, (IMenuManager)item);
+//	else
+//	contributionManager.add(item);
+//	}
+//	}
+//	contributionManager.update(true);
+//	return visibleContributionItemCount;
+//	}
+
+	private static void addVisibleItemDescriptor(Map<Class<? extends ItemDescriptor>, List<ItemDescriptor>> visibleItemDescriptors, Class<? extends ItemDescriptor> c, ItemDescriptor i)
+	{
+		List<ItemDescriptor> l = visibleItemDescriptors.get(c);
+		if (l == null) {
+			l = new ArrayList<ItemDescriptor>();
+			visibleItemDescriptors.put(c, l);
+		}
+		l.add(i);
+	}
+
+//	private static String getPath(ItemDescriptor itemDescriptor, ContributionManagerKind kind) 
+//	{
+//		if (itemDescriptor instanceof ActionDescriptor) {
+//			return getPath((ActionDescriptor)itemDescriptor, kind);
+//		}
+//		else if (itemDescriptor instanceof PathItemDescriptor) {
+//			return ((PathItemDescriptor)itemDescriptor).getPath(); 
+//		}
+//		
+//		return null;
+//	}
+	
+	private static String getPath(ActionDescriptor actionDescriptor, ContributionManagerKind kind)
+	{
+		String path;
+		switch (kind) {
+			case menuBar:
+				path = actionDescriptor.getMenubarPath();
+				break;
+			case contextMenu:
+				path = actionDescriptor.getContextmenuPath();
+				break;
+			case toolBar:
+				path = actionDescriptor.getToolbarPath();
+				break;
+			case coolBar:
+				path = actionDescriptor.getToolbarPath();
+				break;
+			default:
+				throw new IllegalArgumentException("kind \"" + kind + "\" invalid!"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		return path;
+	}
 
 	/**
 	 * This method contributes WITHOUT removing items before.
@@ -690,223 +844,224 @@ extends AbstractEPProcessor
 	 * @param kind
 	 * @return Returns the number of visible contribution items (i.e. actions) that have been added.
 	 */
-	protected int contribute(IContributionManager contributionManager, String kind)
+	protected Map<Class<? extends ItemDescriptor>, List<ItemDescriptor>> contribute(IContributionManager contributionManager, ContributionManagerKind kind)
 	{
-		if (!perspectiveListenerAdded)
-			earlyContributed = true;
-		
-			int visibleContributionItemCount = 0;
+		Map<Class<? extends ItemDescriptor>, List<ItemDescriptor>> visibleItemDescriptors = new HashMap<Class<? extends ItemDescriptor>, List<ItemDescriptor>>();
+		ActionVisibilityContext actionVisibilityContext = new ActionVisibilityContext(kind);
+		List<ItemDescriptor> menuSorted = contributionManagerKind2menuSorted.get(kind);
 
-			List<ItemDescriptor> menuSorted;
-			if (KIND_MENUBAR.equals(kind))
-				menuSorted = menuSortedForMenubar;
-			else if (KIND_CONTEXTMENU.equals(kind))
-				menuSorted = menuSortedForContextmenu;
-			else if (KIND_TOOLBAR.equals(kind))
-				menuSorted = menuSortedForToolbar;
-			else if (KIND_COOLBAR.equals(kind))
-				menuSorted = menuSortedForToolbar;
-			else
-				throw new IllegalArgumentException("kind \"" + kind + "\" invalid!"); //$NON-NLS-1$ //$NON-NLS-2$
+		boolean firstRun = menuSorted == null;
+		LinkedList<ItemDescriptor> menuRaw = null;
+		int lastMenuRawSize = 0;
+		if (firstRun) {
+			menuRaw = new LinkedList<ItemDescriptor>(this.menuRaw);
+			menuRaw.add(new SeparatorDescriptor("additions"));
+			lastMenuRawSize = menuRaw.size();
+			menuSorted = new LinkedList<ItemDescriptor>();
+		}
 
-			boolean firstRun = menuSorted == null;
-			LinkedList<ItemDescriptor> menuRaw = null;
-			int lastMenuRawSize = 0;
-			if (firstRun) {
-				menuRaw = new LinkedList<ItemDescriptor>(this.menuRaw);
-				lastMenuRawSize = menuRaw.size();
-				menuSorted = new LinkedList<ItemDescriptor>();
-			}
-			
-//			contributionManager.removeAll();
-			
-			while ((firstRun && !menuRaw.isEmpty()) || !firstRun) {
-				for (Iterator itTopLevel = (firstRun ? menuRaw : menuSorted).iterator(); itTopLevel.hasNext(); ) {
-					ItemDescriptor item = (ItemDescriptor) itTopLevel.next();
-					if (item instanceof ActionDescriptor)
-					{
-						ActionDescriptor ad = (ActionDescriptor) item;
-						
-						if (getActiveExtensionIDs().contains(ad.getID()))
-						{
-							String path;
-							if (KIND_MENUBAR.equals(kind))
-								path = ad.getMenubarPath();
-							else if (KIND_CONTEXTMENU.equals(kind))
-								path = ad.getContextmenuPath();
-							else if (KIND_TOOLBAR.equals(kind))
-								path = ad.getToolbarPath();
-							else if (KIND_COOLBAR.equals(kind))
-								path = ad.getToolbarPath();
-							else
-								throw new IllegalArgumentException("kind \"" + kind + "\" invalid!"); //$NON-NLS-1$ //$NON-NLS-2$
+//		contributionManager.removeAll();
 
-							IContributionItem anchor = path == null ? null : findUsingPath(contributionManager, path);
-							if (anchor != null) {
-								boolean visible = ad.isVisible();
-								if (visible) {
-									if (KIND_MENUBAR.equals(kind))
-										visible = ad.isVisibleInMenubar();
-									else if (KIND_CONTEXTMENU.equals(kind))
-										visible = ad.isVisibleInContextmenu();
-									else if (KIND_TOOLBAR.equals(kind))
-										visible = ad.isVisibleInToolbar();
-									else if (KIND_COOLBAR.equals(kind))
-										visible = ad.isVisibleInToolbar();
-									else
-										throw new IllegalArgumentException("kind \"" + kind + "\" invalid!"); //$NON-NLS-1$ //$NON-NLS-2$
-								}
+		while ((firstRun && !menuRaw.isEmpty()) || !firstRun) {
+			for (Iterator<?> itTopLevel = (firstRun ? menuRaw : menuSorted).iterator(); itTopLevel.hasNext(); ) {
+				ItemDescriptor item = (ItemDescriptor) itTopLevel.next();
+				if (item instanceof ActionDescriptor)
+				{
+					ActionDescriptor ad = (ActionDescriptor) item;
 
-								if (visible) {
-									++visibleContributionItemCount;
-									if (anchor instanceof MenuManager) {
-										if (ad.getAction() != null)
-											((MenuManager)anchor).add(ad.getAction());
-										else if (ad.getContributionItem() != null)
-											((MenuManager)anchor).add(ad.getContributionItem());
-									} else {
-										if (ad.getAction() != null)
-											((ContributionItem)anchor).getParent().insertAfter(anchor.getId(), ad.getAction());
-										else if (ad.getContributionItem() != null)
-											((ContributionItem)anchor).getParent().insertAfter(anchor.getId(), ad.getContributionItem());
-									}
-								}
+					String path = getPath(ad, kind);
 
-								if (firstRun) {
-									menuSorted.add(item);
-									itTopLevel.remove();
-								}
+					IContributionItem anchor = path == null ? null : findUsingPath(contributionManager, path);
+					if (anchor != null) {
+						if (actionVisibilityDecider.isVisible(actionVisibilityContext, ad)) {
+							addVisibleItemDescriptor(visibleItemDescriptors, ActionDescriptor.class, ad);
+
+							if (anchor instanceof MenuManager) {
+								if (ad.getAction() != null)
+									((MenuManager)anchor).add(ad.getAction());
+								else if (ad.getContributionItem() != null)
+									((MenuManager)anchor).add(ad.getContributionItem());
+							} else {
+								if (ad.getAction() != null)
+									((ContributionItem)anchor).getParent().insertAfter(anchor.getId(), ad.getAction());
+								else if (ad.getContributionItem() != null)
+									((ContributionItem)anchor).getParent().insertAfter(anchor.getId(), ad.getContributionItem());
 							}
-						} // if (getActiveExtensionIDs().contains(ad.getID()))
+						}
+
+						if (firstRun) {
+							menuSorted.add(item);
+							itTopLevel.remove();
+						}
 					}
-					else if (item instanceof SeparatorDescriptor) {
-						SeparatorDescriptor s = (SeparatorDescriptor) item;
-						String path = s.getPath();
-						IContributionItem anchor = path == null ? null : findUsingPath(contributionManager, path);
-						if (path == null || anchor != null) {
-							Separator separator = new Separator(s.getName());
-							if (anchor == null)
+				}
+				else if (item instanceof SeparatorDescriptor) {
+					addVisibleItemDescriptor(visibleItemDescriptors, SeparatorDescriptor.class, item);
+
+					SeparatorDescriptor s = (SeparatorDescriptor) item;
+					String path = s.getPath();
+					IContributionItem anchor = path == null ? null : findUsingPath(contributionManager, path);
+					if (path == null || anchor != null) {
+						Separator separator = new Separator(s.getName());
+
+						if (anchor == null) {
+							if (contributionManager.find(item.getID()) == null)
 								contributionManager.add(separator);
-							else
+						}
+						else {
+							if (((ContributionItem)anchor).getParent().find(item.getID()) == null)
 								((ContributionItem)anchor).getParent().insertAfter(anchor.getId(), separator);
+						}
 
-							if (firstRun) {
-								menuSorted.add(item);
-								itTopLevel.remove();
-							}
+						if (firstRun) {
+							menuSorted.add(item);
+							itTopLevel.remove();
 						}
 					}
-					else if (item instanceof GroupMarkerDescriptor) {
-						GroupMarkerDescriptor gm = (GroupMarkerDescriptor) item;
-						String path = gm.getPath();
-						IContributionItem anchor = path == null ? null : findUsingPath(contributionManager, path);
-						if (path == null || anchor != null) {
-							GroupMarker groupMarker = new GroupMarker(gm.getName());
-							if (anchor == null)
+				}
+				else if (item instanceof GroupMarkerDescriptor) {
+					addVisibleItemDescriptor(visibleItemDescriptors, GroupMarkerDescriptor.class, item);
+
+					GroupMarkerDescriptor gm = (GroupMarkerDescriptor) item;
+					String path = gm.getPath();
+					IContributionItem anchor = path == null ? null : findUsingPath(contributionManager, path);
+					if (path == null || anchor != null) {
+						GroupMarker groupMarker = new GroupMarker(gm.getName());
+
+						if (anchor == null) {
+							if (contributionManager.find(item.getID()) == null)
 								contributionManager.add(groupMarker);
-							else
+						}
+						else {
+							if (((ContributionItem)anchor).getParent().find(item.getID()) == null)
 								((ContributionItem)anchor).getParent().insertAfter(anchor.getId(), groupMarker);
+						}
 
-							if (firstRun) {
-								menuSorted.add(item);
-								itTopLevel.remove();
-							}
+						if (firstRun) {
+							menuSorted.add(item);
+							itTopLevel.remove();
 						}
 					}
-					else if (item instanceof MenuDescriptor) {
-						MenuDescriptor md = (MenuDescriptor) item;
-						String path = md.getPath();
-						IContributionItem anchor = path == null ? null : findUsingPath(contributionManager, path);
-						if (path == null || anchor != null) {
-							MenuManager subMenu = new MenuManager(md.getLabel(), md.getId());
+				}
+				else if (item instanceof MenuDescriptor) {
+					addVisibleItemDescriptor(visibleItemDescriptors, MenuDescriptor.class, item);
+					MenuDescriptor md = (MenuDescriptor) item;
+					String path = md.getPath();
 
-							for (Iterator itSub = md.getSubItems().iterator(); itSub.hasNext(); ) {
-								Object obj = itSub.next();
-								if (obj instanceof SeparatorDescriptor) {
-									SeparatorDescriptor separator = (SeparatorDescriptor) obj;
-									subMenu.add(new Separator(separator.getName()));
-								}
-								else if (obj instanceof GroupMarkerDescriptor) {
-									GroupMarkerDescriptor groupMarker = (GroupMarkerDescriptor) obj;
-									subMenu.add(new GroupMarker(groupMarker.getName()));
-								}
-								else
-									throw new IllegalStateException("SubItem of menu is neither a SeparatorDescriptor nor a GroupMarkerDescriptor but " + obj.getClass().getName()); //$NON-NLS-1$
+					// already existing in the contribution-manager?
+					IContributionItem anchor = path == null ? null : findUsingPath(contributionManager, path);
+					if (path == null || anchor != null) {
+						MenuManager subMenu = new MenuManager(md.getLabel(), md.getID());
+
+						for (Iterator<?> itSub = md.getSubItems().iterator(); itSub.hasNext(); ) {
+							Object obj = itSub.next();
+							if (obj instanceof SeparatorDescriptor) {
+								SeparatorDescriptor separator = (SeparatorDescriptor) obj;
+								subMenu.add(new Separator(separator.getName()));
 							}
+							else if (obj instanceof GroupMarkerDescriptor) {
+								GroupMarkerDescriptor groupMarker = (GroupMarkerDescriptor) obj;
+								subMenu.add(new GroupMarker(groupMarker.getName()));
+							}
+							else
+								throw new IllegalStateException("SubItem of menu is neither a SeparatorDescriptor nor a GroupMarkerDescriptor but " + obj.getClass().getName()); //$NON-NLS-1$
+						}
 
-							if (anchor == null)
+						if (anchor == null) {
+							if (contributionManager.find(item.getID()) == null)
 								contributionManager.add(subMenu);
-							else
+						}
+						else {
+							if (((ContributionItem)anchor).getParent().find(item.getID()) == null)
 								((ContributionItem)anchor).getParent().insertAfter(anchor.getId(), subMenu);
+						}
 
-							if (firstRun) {
-								menuSorted.add(item);
-								itTopLevel.remove();
-							}
+						if (firstRun) {
+							menuSorted.add(item);
+							itTopLevel.remove();
 						}
 					}
-					else
-						throw new IllegalStateException("Item in menuRaw of type " + item.getClass() + " is an instance of an unknown class!"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
-
-				if (firstRun && (lastMenuRawSize == menuRaw.size())) {
-					if (logger.isDebugEnabled()) {
-						logger.debug("Could not add the following contributions to the menu (kind " + kind + "):"); //$NON-NLS-1$ //$NON-NLS-2$
-						for (Iterator it = menuRaw.iterator(); it.hasNext(); ) {
-							ItemDescriptor item = (ItemDescriptor) it.next();
-							if (item instanceof ActionDescriptor) {
-								logger.debug("    Action with id=" + ((ActionDescriptor)item).getID()); //$NON-NLS-1$
-							}
-							else if (item instanceof MenuDescriptor) {
-								logger.debug("    Menu with id=" + ((MenuDescriptor)item).getId()); //$NON-NLS-1$
-							}
-							else if (item instanceof SeparatorDescriptor) {
-								logger.debug("    Separator with name=" + ((SeparatorDescriptor)item).getName()); //$NON-NLS-1$
-							}
-							else if (item instanceof GroupMarkerDescriptor) {
-								logger.debug("    GroupMarker with name=" + ((GroupMarkerDescriptor)item).getName()); //$NON-NLS-1$
-							}
-							else
-								logger.debug("    " + item); //$NON-NLS-1$
-						}
-					}
-					break;
-				}
-
-				if (!firstRun)
-					break;
-
-				lastMenuRawSize = menuRaw.size();
-			} // while ((firstRun && !menuRaw.isEmpty()) || !firstRun) {
-
-			if (firstRun) {
-				if (KIND_MENUBAR.equals(kind))
-					menuSortedForMenubar = menuSorted;
-				else if (KIND_CONTEXTMENU.equals(kind))
-					menuSortedForContextmenu = menuSorted;
-				else if (KIND_TOOLBAR.equals(kind))
-					menuSortedForToolbar = menuSorted;
-				else if (KIND_COOLBAR.equals(kind))
-					menuSortedForToolbar = menuSorted;
 				else
-					throw new IllegalArgumentException("kind \"" + kind + "\" invalid!"); //$NON-NLS-1$ //$NON-NLS-2$
+					throw new IllegalStateException("Item in menuRaw of type " + item.getClass() + " is an instance of an unknown class!"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 
-			// flatten the menus if we're contributing to the toolbar (which doesn't understand sub-menus)
-			// the coolbar is handled by contributeToCoolBar(...) directly
-			if (KIND_TOOLBAR.equals(kind)) {
-				IContributionItem[] items = contributionManager.getItems();
-				contributionManager.removeAll();
-				for (int i = 0; i < items.length; ++i) {
-					IContributionItem item = items[i];
-					if (item instanceof IMenuManager)
-						addFlattenedMenu(contributionManager, null, (IMenuManager)item);
-					else
-						contributionManager.add(item);
+			if (firstRun && (lastMenuRawSize == menuRaw.size())) {
+				if (logger.isDebugEnabled()) {
+					logger.debug("Could not add the following contributions to the menu (kind " + kind + "):"); //$NON-NLS-1$ //$NON-NLS-2$
+					for (Iterator it = menuRaw.iterator(); it.hasNext(); ) {
+						ItemDescriptor item = (ItemDescriptor) it.next();
+						if (item instanceof ActionDescriptor) {
+							logger.debug("    Action with id=" + ((ActionDescriptor)item).getID()); //$NON-NLS-1$
+						}
+						else if (item instanceof MenuDescriptor) {
+							logger.debug("    Menu with id=" + ((MenuDescriptor)item).getID()); //$NON-NLS-1$
+						}
+						else if (item instanceof SeparatorDescriptor) {
+							logger.debug("    Separator with name=" + ((SeparatorDescriptor)item).getName()); //$NON-NLS-1$
+						}
+						else if (item instanceof GroupMarkerDescriptor) {
+							logger.debug("    GroupMarker with name=" + ((GroupMarkerDescriptor)item).getName()); //$NON-NLS-1$
+						}
+						else
+							logger.debug("    " + item); //$NON-NLS-1$
+					}
 				}
+				break;
 			}
-			contributionManager.update(true);
-			return visibleContributionItemCount;
+
+			if (!firstRun)
+				break;
+
+			lastMenuRawSize = menuRaw.size();
+		} // while ((firstRun && !menuRaw.isEmpty()) || !firstRun) {
+
+		if (firstRun)
+			contributionManagerKind2menuSorted.put(kind, menuSorted);
+
+		// flatten the menus if we're contributing to the toolbar (which doesn't understand sub-menus)
+		// the coolbar is handled by contributeToCoolBar(...) directly
+		if (ContributionManagerKind.toolBar == kind) {
+			IContributionItem[] items = contributionManager.getItems();
+			contributionManager.removeAll();
+			for (int i = 0; i < items.length; ++i) {
+				IContributionItem item = items[i];
+				if (item instanceof IMenuManager)
+					addFlattenedMenu(contributionManager, null, (IMenuManager)item);
+				else
+					contributionManager.add(item);
+			}
+		}
+		contributionManager.update(true);
+		
+		debugContributions(visibleItemDescriptors, kind, true);
+		
+		return visibleItemDescriptors;
+	}
+
+	private void debugContributions(Map<Class<? extends ItemDescriptor>, List<ItemDescriptor>> itemDescriptors, ContributionManagerKind kind, boolean addIfTrueRemoveIfFalse) 
+	{
+		for (Map.Entry<Class<? extends ItemDescriptor>, List<ItemDescriptor>> entry : itemDescriptors.entrySet()) {
+			Class clazz = entry.getKey();
+			String descriptorKind = null;
+			if (clazz == ActionDescriptor.class) {
+				descriptorKind = "ActionDescriptor";
+			}
+			else if (clazz == MenuDescriptor.class) {
+				descriptorKind = "MenuDescriptor";
+			}
+			else if (clazz == GroupMarkerDescriptor.class) {
+				descriptorKind = "GroupMarkerDescriptor";
+			}
+			else if (clazz == SeparatorDescriptor.class) {
+				descriptorKind = "SeparatorDescriptor";
+			}
+
+			String contributionKind = addIfTrueRemoveIfFalse ? "added to " : "removed from "; 
+			for (ItemDescriptor itemDescriptor : entry.getValue()) {
+				logger.debug(descriptorKind + " " + itemDescriptor.getID() + " has been " + contributionKind + kind);
+			}
+		}
 	}
 	
 	/**
@@ -968,70 +1123,6 @@ extends AbstractEPProcessor
 	{
 	}
 
-	private String elementNameAction = null;
-	protected static final String ELEMENT_NAME_SEPARATOR = "separator"; //$NON-NLS-1$
-	protected static final String ELEMENT_NAME_GROUP_MARKER = "groupMarker"; //$NON-NLS-1$
-	protected static final String ELEMENT_NAME_MENU = "menu"; //$NON-NLS-1$
-
-	protected static final String ATTRIBUTE_NAME_SEPARATOR_NAME = "name"; //$NON-NLS-1$
-	protected static final String ATTRIBUTE_NAME_SEPARATOR_PATH = "path"; //$NON-NLS-1$
-
-	protected static final String ATTRIBUTE_NAME_GROUP_MARKER_NAME = "name"; //$NON-NLS-1$
-	protected static final String ATTRIBUTE_NAME_GROUP_MARKER_PATH = "path"; //$NON-NLS-1$
-
-	protected static final String ATTRIBUTE_NAME_MENU_ID = "id"; //$NON-NLS-1$
-	protected static final String ATTRIBUTE_NAME_MENU_LABEL = "label"; //$NON-NLS-1$
-	protected static final String ATTRIBUTE_NAME_MENU_PATH = "path"; //$NON-NLS-1$
-
-	protected static final String ATTRIBUTE_NAME_ACTION_ID = "id"; //$NON-NLS-1$
-	protected static final String ATTRIBUTE_NAME_ACTION_NAME = "name"; //$NON-NLS-1$
-	protected static final String ATTRIBUTE_NAME_ACTION_TOOLTIP = "tooltip"; //$NON-NLS-1$
-	protected static final String ATTRIBUTE_NAME_ACTION_ICON = "icon"; //$NON-NLS-1$
-	protected static final String ATTRIBUTE_NAME_ACTION_DISABLED_ICON = "disabledIcon"; //$NON-NLS-1$
-	protected static final String ATTRIBUTE_NAME_ACTION_HOVER_ICON = "hoverIcon"; //$NON-NLS-1$
-	protected static final String ATTRIBUTE_NAME_ACTION_MENUBAR_PATH = "menubarPath"; //$NON-NLS-1$
-	protected static final String ATTRIBUTE_NAME_ACTION_TOOLBAR_PATH = "toolbarPath"; //$NON-NLS-1$
-	protected static final String ATTRIBUTE_NAME_ACTION_CONTEXTMENU_PATH = "contextmenuPath"; //$NON-NLS-1$
-	
-	protected static final String ATTRIBUTE_NAME_ACTION_VISIBLE = "visible"; //$NON-NLS-1$
-	protected static final String ATTRIBUTE_NAME_ACTION_VISIBLE_IN_MENUBAR = "visibleInMenubar"; //$NON-NLS-1$
-	protected static final String ATTRIBUTE_NAME_ACTION_VISIBLE_IN_TOOLBAR = "visibleInToolbar"; //$NON-NLS-1$
-	protected static final String ATTRIBUTE_NAME_ACTION_VISIBLE_IN_CONTEXTMENU = "visibleInContextmenu"; //$NON-NLS-1$
-
-	@Override
-	public synchronized void process()
-	{
-//		if (elementNameAction == null)
-//			elementNameAction = getActionElementName();
-		super.process();
-
-		if (isAffectedOfPerspectiveExtension()) {
-			checkPerspectiveListenerAdded();
-		}
-	}
-
-	public boolean checkPerspectiveListenerAdded()
-	{
-		if (!perspectiveListenerAdded) {
-			if (RCPUtil.getActiveWorkbenchWindow() != null) {
-				RCPUtil.getActiveWorkbenchWindow().addPerspectiveListener(perspectiveListener);
-				perspectiveListenerAdded = true;
-				// if there were early contributions, before a perspective listener could be added
-				// also display the necessary items
-				if (earlyContributed) {
-					if (RCPUtil.getActiveWorkbenchWindow().getActivePage() != null)
-						perspectiveChange(RCPUtil.getActiveWorkbenchWindow().getActivePage().getPerspective());
-				}
-			}
-		}
-		return perspectiveListenerAdded;
-	}
-	
-//	protected boolean checkEarlyContribution() {
-//		if (!perspectiveListenerAdded)
-//			earlyContributed = true;
-//	}
-	
 	/**
 	 * Override this method if you need an extended <code>ActionDescriptor</code>. Note, that you
 	 * cannot initialize it here, but you should then additionally extend the method
@@ -1065,11 +1156,11 @@ extends AbstractEPProcessor
 
 	@Override
 	public void processElement(IExtension extension, IConfigurationElement element)
-			throws Exception
+	throws Exception
 	{
 		if (elementNameAction == null)
 			elementNameAction = getActionElementName();
-		
+
 		String elementName = element.getName();
 		if (ELEMENT_NAME_SEPARATOR.equals(elementName)) {
 			String name = element.getAttribute(ATTRIBUTE_NAME_SEPARATOR_NAME);
@@ -1158,7 +1249,7 @@ extends AbstractEPProcessor
 				contributionItem.setId(id);
 				initContributionItem(contributionItem, extension, element);
 //				if (!id.equals(contributionItem.getId()))
-//					throw new EPProcessorException("Your IContribution, which you created for the ActionDescriptor defined in extension " + extension.getNamespace() + " with id=" + id + " does have the wrong id (\"" + contributionItem.getId() + "\") set! Check your method " + this.getClass().getName() + ".createActionOrContributionItem(...)!");
+//				throw new EPProcessorException("Your IContribution, which you created for the ActionDescriptor defined in extension " + extension.getNamespace() + " with id=" + id + " does have the wrong id (\"" + contributionItem.getId() + "\") set! Check your method " + this.getClass().getName() + ".createActionOrContributionItem(...)!");
 			}
 			else
 				throw new EPProcessorException("Action class defined in extension " + extension.getNamespace() + " with id=" + id + " does neither implement IAction nor IXContributionItem! It must implement ONE of them!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -1199,101 +1290,5 @@ extends AbstractEPProcessor
 
 		return descriptor;
 	}
-	
-//	private Map<IContributionManager, Collection<String>> contributionManager2ExtensionIDs =
-//		new HashMap<IContributionManager, Collection<String>>();
-	
-	protected boolean earlyContributed = false;
-	protected boolean perspectiveListenerAdded = false;
-	protected boolean isAffectedOfPerspectiveExtension()
-	{
-		boolean isAffected = PerspectiveExtensionRegistry.sharedInstance().
-			getRegisteredExtensionPointIDs().contains(getExtensionPointID());
-		
-		return isAffected;
-	}
-	
-	protected void updateActivePerspectiveExtensions()
-	{
-		Map<String, Collection<String>> perspectiveID2ExtensionIDs =
-			PerspectiveExtensionRegistry.sharedInstance().getPerspectiveID2ExtensionIDs(
-					getExtensionPointID());
-		activeExtensionIDs = perspectiveID2ExtensionIDs.get(activePerspectiveID);
-	}
-	
-	private String activePerspectiveID = ""; //$NON-NLS-1$
-	protected String getActivePerspectiveID() {
-		return activePerspectiveID;
-	}
-	
-	private Collection<String> activeExtensionIDs = Collections.emptyList();
-	public Collection<String> getActiveExtensionIDs()
-	{
-		if (!isAffectedOfPerspectiveExtension()) {
-			return actionDescriptorsByID.keySet();
-		}
-		return activeExtensionIDs;
-	}
-	
-	protected void perspectiveChange(IPerspectiveDescriptor perspective)
-	{
-//		logger.debug("perspectiveChange for perspective "+perspective.getId());
-		if (perspective != null)
-			activePerspectiveID = perspective.getId();
 
-		if (isAffectedOfPerspectiveExtension())
-		{
-			Collection<String> oldActiveExtensionIDs = Collections.emptyList();
-			if (getActiveExtensionIDs() != null)
-				oldActiveExtensionIDs = new ArrayList<String>(getActiveExtensionIDs());
-			updateActivePerspectiveExtensions();
-			if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() instanceof WorkbenchWindow)
-			{
-				WorkbenchWindow workbenchWindow = (WorkbenchWindow) PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-				ICoolBarManager coolBarManager = workbenchWindow.getCoolBarManager();
-				if (coolBarManager != null) {
-					removeContributionItems(coolBarManager, oldActiveExtensionIDs);
-					contributeToCoolBar(coolBarManager);
-				}
-				IToolBarManager toolBarManager = workbenchWindow.getToolBarManager();
-				if (toolBarManager != null) {
-					removeContributionItems(toolBarManager, oldActiveExtensionIDs);
-					contributeToToolBar(toolBarManager);
-				}
-				IMenuManager menuManager = workbenchWindow.getMenuManager();
-				if (menuManager != null) {
-					removeContributionItems(menuManager, oldActiveExtensionIDs);
-					contributeToMenuBar(menuManager);
-				}
-			}
-		}
-	}
-	
-	protected void removeContributionItems(IContributionManager manager, Collection<String> ids) {
-		for (String id : ids) {
-			manager.remove(id);
-		}
-	}
-	
-	private IPerspectiveListener3 perspectiveListener = new IPerspectiveListener3()
-	{
-		public void perspectiveActivated(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
-			perspectiveChange(perspective);
-		}
-		public void perspectiveChanged(IWorkbenchPage page, IPerspectiveDescriptor perspective, String changeId) {
-			perspectiveChange(perspective);
-		}
-		public void perspectiveChanged(IWorkbenchPage page, IPerspectiveDescriptor perspective, IWorkbenchPartReference partRef, String changeId) {
-		}
-		public void perspectiveSavedAs(IWorkbenchPage page, IPerspectiveDescriptor oldPerspective, IPerspectiveDescriptor newPerspective) {
-		}
-		public void perspectiveOpened(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
-			perspectiveChange(perspective);
-		}
-		public void perspectiveDeactivated(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
-		}
-		public void perspectiveClosed(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
-		}
-	};
-	
 }

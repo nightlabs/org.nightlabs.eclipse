@@ -29,7 +29,9 @@ package org.nightlabs.base.ui.action.registry;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MenuDescriptor extends ItemDescriptor
+public class MenuDescriptor
+extends ItemDescriptor 
+implements PathItemDescriptor
 {
 	private String id;
 	private String label;
@@ -60,7 +62,7 @@ public class MenuDescriptor extends ItemDescriptor
 		this.path = path;
 	}
 	
-	public String getId()
+	public String getID()
 	{
 		return id;
 	}

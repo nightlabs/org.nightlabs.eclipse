@@ -26,7 +26,9 @@
 
 package org.nightlabs.base.ui.action.registry;
 
-public class GroupMarkerDescriptor extends ItemDescriptor
+public class GroupMarkerDescriptor 
+extends ItemDescriptor 
+implements PathItemDescriptor
 {
 	private String name;
 	/**
@@ -53,5 +55,10 @@ public class GroupMarkerDescriptor extends ItemDescriptor
 	public String getPath()
 	{
 		return path;
+	}
+
+	@Override
+	public String getID() {
+		return getName();
 	}
 }

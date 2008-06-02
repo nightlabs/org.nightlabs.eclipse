@@ -25,9 +25,14 @@
  ******************************************************************************/
 package org.nightlabs.base.ui.search;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jface.action.ContributionItem;
+import org.eclipse.jface.action.IContributionManager;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -48,7 +53,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.nightlabs.base.ui.NLBasePlugin;
-import org.nightlabs.base.ui.action.AbstractContributionItem;
+import org.nightlabs.base.ui.action.XContributionItem;
 import org.nightlabs.base.ui.resource.SharedImages;
 import org.nightlabs.base.ui.util.RCPUtil;
 
@@ -57,135 +62,27 @@ import org.nightlabs.base.ui.util.RCPUtil;
  *
  */
 public class SearchContributionItem
-extends AbstractContributionItem
+//extends AbstractSearchContributionItem
+extends XContributionItem
 {
 	private static final Logger logger = Logger.getLogger(SearchContributionItem.class);
-
+	
 	private ISearchResultProviderFactory selectedFactory = null;
-	private Item selectedItem = null;
+	private Map<MenuItem, ISearchResultProviderFactory> menuItem2Factory = new HashMap<MenuItem, ISearchResultProviderFactory>();	
 	private Text searchText = null;
+	private ToolItem selectedItem = null;
 	
 	public SearchContributionItem() {
-		super();
+		super(SearchContributionItem.class.getName());
 	}
-	
-	protected ISearchResultProviderFactory getSelectedFactory() {
-		if (selectedFactory == null) {
-			selectedFactory = getUseCase().getCurrentSearchResultProviderFactory();
-		}
-		return selectedFactory;
-	}
-	
-	protected SearchResultProviderRegistryUseCase getUseCase() {
-		SearchResultProviderRegistryUseCase useCase = SearchResultProviderRegistry.sharedInstance().getUseCase(getUseCaseKey());
-		if (useCase == null) {
-			useCase = new SearchResultProviderRegistryUseCase();
-			// TODO get the factory with the highest priority
-			ISearchResultProviderFactory factory = useCase.getFactory2Instance().keySet().iterator().next();
-			useCase.setCurrentSearchResultProviderFactory(factory);
-		}
-		return useCase;
-	}
-	
-	protected void updateUseCase()
-	{
-		SearchResultProviderRegistryUseCase useCase = getUseCase();
-		if (searchText != null && !searchText.isDisposed()) {
-			useCase.setCurrentSearchText(searchText.getText());
-		}
-		useCase.setCurrentSearchResultProviderFactory(getSelectedFactory());
-	}
-	
-	protected String getUseCaseKey() {
-		return SearchContributionItem.class.getName() + RCPUtil.getActivePerspectiveID();
-	}
-		
-	protected void createText(Composite parent)
+
+	protected Control createText(Composite parent)
 	{
 		searchText = new Text(parent, SWT.BORDER);
-//		searchText.setText("          ");
 		searchText.addSelectionListener(buttonSelectionListener);
+		return searchText;
 	}
-	
-//	private Button searchButton = null;
-//	private Combo searchTypeCombo;
-//
-//	private void fillSearchTypeCombo()
-//	{
-//		searchTypeCombo.setItems(getSearchTypes().toArray(new String[getSearchTypes().size()]));
-//		if (getSearchTypes().indexOf(selectedType) != -1)
-//			searchTypeCombo.select(getSearchTypes().indexOf(selectedType));
-//	}
-//
-//	private SelectionListener comboSelectionListener = new SelectionListener(){
-//		public void widgetSelected(SelectionEvent e) {
-//			selectedType = searchTypes.get(searchTypeCombo.getSelectionIndex());
-//		}
-//		public void widgetDefaultSelected(SelectionEvent e) {
-//			widgetSelected(e);
-//		}
-//	};
-		
-//	private String selectedType = null;
-//	protected String getSelectedType() {
-//		return selectedType;
-//	}
 
-//	private ISearchResultProvider selectedSearchResultProvider = null;
-//	protected ISearchResultProvider getSelectedSearchResultProvider() {
-//		return selectedSearchResultProvider;
-//	}
-	
-	@Override
-	protected Control createControl(Composite parent) {
-		return null;
-	}
-	
-//	@Override
-//	protected Control createControl(Composite parent)
-//	{
-//		checkSelectedType();
-//
-//		Composite comp = new XComposite(parent, SWT.NONE, LayoutMode.TIGHT_WRAPPER);
-//		GridLayout layout = new GridLayout(1, false);
-//		layout.verticalSpacing = 0;
-//		layout.marginHeight = 0;
-//		layout.marginWidth = 0;
-//		layout.marginLeft = 0;
-//		layout.marginRight = 0;
-//		layout.marginTop = 0;
-//		layout.marginBottom = 0;
-//		comp.setLayout(layout);
-//
-//		createText(comp);
-//
-//		searchButton = new Button(comp, SWT.BOTTOM | SWT.PUSH);
-//		searchButton.setImage(SharedImages.getSharedImage(NLBasePlugin.getDefault(),
-//				SearchContributionItem.class, "", ImageDimension._12x12, ImageFormat.png));
-//		searchButton.addSelectionListener(buttonSelectionListener);
-//
-//		searchTypeCombo = new Combo(comp, SWT.NONE);
-//		fillSearchTypeCombo();
-//		searchTypeCombo.addSelectionListener(comboSelectionListener);
-//
-//		return comp;
-//	}
-		
-	protected void searchPressed()
-	{
-		if (getSelectedFactory() != null) {
-			ISearchResultProvider searchResultProvider = getUseCase().getFactory2Instance().get(getSelectedFactory());
-			updateUseCase();
-			searchResultProvider.setSearchText(searchText.getText());
-//			Collection selectedObjects = searchResultProvider.getSelectedObjects();
-			ISearchResultActionHandler actionHandler = getSelectedFactory().getActionHandler();
-			if (actionHandler != null) {
-				actionHandler.setSearchResultProvider(searchResultProvider);
-				actionHandler.run();
-			}
-		}
-	}
-	
 	private SelectionListener buttonSelectionListener = new SelectionListener()
 	{
 		public void widgetSelected(SelectionEvent e) {
@@ -195,221 +92,268 @@ extends AbstractContributionItem
 			widgetSelected(e);
 		}
 	};
-
-	protected Menu createMenu(Menu menu)
-	{
-		Map<ISearchResultProviderFactory, ISearchResultProvider> factory2Instance = getUseCase().getFactory2Instance();
-		for (Map.Entry<ISearchResultProviderFactory, ISearchResultProvider> entry : factory2Instance.entrySet()) {
-			ISearchResultProviderFactory factory = entry.getKey();
-			MenuItem menuItem = new MenuItem(menu, SWT.PUSH);
-			menuItem.setText(factory.getName().getText());
-			menuItem.setImage(factory.getImage());
-			menuItem.setData(factory);
-			menuItem.addSelectionListener(new SelectionListener(){
-				public void widgetSelected(SelectionEvent e) {
-					selectedFactory = (ISearchResultProviderFactory) ((MenuItem) e.getSource()).getData();
-					selectedItem.setImage(getSelectedFactory().getComposedDecoratorImage());
+	
+	private ToolItem createSearchItem(final ToolBar toolBar, final Menu menu) {
+		ToolItem searchItem = new ToolItem(toolBar, SWT.DROP_DOWN);
+		searchItem.setImage(SharedImages.getSharedImage(NLBasePlugin.getDefault(),
+				SearchContributionItem.class));
+		searchItem.addListener(SWT.Selection, new Listener(){
+			public void handleEvent(Event event)
+			{
+				logger.info("event.detail = "+event.detail); //$NON-NLS-1$
+				if (event.detail == SWT.ARROW) {
+						Rectangle rect = getSelectedItem().getBounds();
+						Point p = new Point(rect.x, rect.y + rect.height);
+						p = toolBar.toDisplay(p);
+						menu.setLocation(p.x, p.y);
+						menu.setVisible(true);						
+				}
+				if (event.detail == SWT.NONE) {
 					searchPressed();
 				}
-				public void widgetDefaultSelected(SelectionEvent e) {
-					widgetSelected(e);
-				}
-			});
-		}
-		return menu;
+			}
+		});
+		searchItem.setImage(getSelectedFactory().getComposedDecoratorImage());
+		return searchItem;
 	}
 	
 	@Override
 	public void fill(ToolBar parent, int index)
 	{
-		if (fillToolBar)
-		{
-			parent.addDisposeListener(new DisposeListener(){
-				public void widgetDisposed(DisposeEvent e) {
-					dispose();
-				}
-			});
-			
-			toolItem = new ToolItem(parent, SWT.SEPARATOR, index);
-	  	createText(parent);
-	  	toolItem.setControl(searchText);
-	  	toolItem.setWidth(100);
-	  	
-			toolBar = parent;
-	  	menu = createMenu(new Menu(RCPUtil.getActiveShell(), SWT.POP_UP));
-	  	final ToolItem searchItem = new ToolItem(parent, SWT.DROP_DOWN);
-	  	searchItem.setImage(SharedImages.getSharedImage(NLBasePlugin.getDefault(),
-					SearchContributionItem.class));
-	  	searchItem.addListener(SWT.Selection, new Listener(){
-	  		public void handleEvent(Event event) {
-	  			if (event.detail == SWT.ARROW) {
-	  				Rectangle rect = searchItem.getBounds();
-	  				Point p = new Point(rect.x, rect.y + rect.height);
-	  				p = toolBar.toDisplay(p);
-	  				menu.setLocation(p.x, p.y);
-	  				menu.setVisible(true);
-	  			}
-	  			if (event.detail == SWT.NONE) {
-	  				searchPressed();
-	  			}
-	  		}
-	  	});
-	  	selectedItem = searchItem;
-	  	selectedItem.setImage(getSelectedFactory().getComposedDecoratorImage());
-	  	toolBar.layout(true, true);
-		}
+//		fillToolBar(parent, index);
+		IContributionManager toolBarManager = getParent();
+
+		String id1 = ToolBarContributionItemText.class.getName();
+		toolBarManager.remove(id1);
+		toolBarManager.add(new ToolBarContributionItemText(id1));
+
+		String id2 = ToolBarContributionItemButton.class.getName();		
+		toolBarManager.remove(id2);
+		toolBarManager.add(new ToolBarContributionItemButton(id2));
 	}
+	
+	private void fillToolBar(ToolBar parent, int index)
+	{
+		final ToolBar toolBar = parent;
+
+		final ToolItem toolItem = new ToolItem(toolBar, SWT.SEPARATOR);
+		toolItem.setControl(createText(toolBar));
+		toolItem.setWidth(100);
+//		toolItem.setData(new SubContributionItem(this));
 		
-//	@Override
-//	public void fill(CoolBar parent, int index)
-//	{
-//		if (fillCoolBar)
-//		{
-//			parent.addDisposeListener(new DisposeListener(){
-//				public void widgetDisposed(DisposeEvent e) {
-//					dispose();
-//				}
-//			});
-//
-//			final CoolBar coolBar = parent;
-//			toolBar = new ToolBar(coolBar, SWT.FLAT | SWT.WRAP);
-//			toolBar.addDisposeListener(new DisposeListener(){
-//				public void widgetDisposed(DisposeEvent e) {
-//					dispose();
-//				}
-//			});
-//	  	menu = createMenu();
-//
-//	  	toolItem = new ToolItem(toolBar, SWT.SEPARATOR);
-//	  	createText(toolBar);
-//	  	toolItem.setControl(searchText);
-//	  	toolItem.setWidth(100);
-//
-//	  	final ToolItem searchItem = new ToolItem(toolBar, SWT.DROP_DOWN);
-//	  	searchItem.setImage(SharedImages.getSharedImage(NLBasePlugin.getDefault(),
-//					SearchContributionItem.class));
-//	  	searchItem.addListener(SWT.Selection, new Listener(){
-//	  		public void handleEvent(Event event)
-//	  		{
-//	  			logger.info("event.detail = "+event.detail);
-//	  			if (event.detail == SWT.ARROW) {
-//	  				Rectangle rect = searchItem.getBounds();
-//	  				Point p = new Point(rect.x, rect.y + rect.height);
-//	  				p = toolBar.toDisplay(p);
-//	  				menu.setLocation(p.x, p.y);
-//	  				menu.setVisible(true);
-//	  			}
-//	  			if (event.detail == SWT.NONE) {
-//	  				searchPressed();
-//	  			}
-//	  		}
-//	  	});
-//	  	selectedItem = searchItem;
-//	  	selectedItem.setImage(getSelectedFactory().getComposedDecoratorImage());
-//	  	toolBar.layout(true, true);
-//
-//	  	coolItem = new CoolItem(coolBar, SWT.SEPARATOR);
-//	  	coolItem.setControl(toolBar);
-////	  	Point size = toolBar.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-////	  	Point coolSize = coolItem.computeSize(size.x, size.y);
-////	  	coolItem.setMinimumSize(coolSize.x - 10, coolSize.y);
-////	  	coolItem.setSize(coolSize.x - 10, coolSize.y);
-//
-//	  	toolBar.layout(true, true);
-//	  	coolBar.layout(true, true);
-//		}
-//	}
+		final Menu menu = createMenu(new Menu(RCPUtil.getActiveShell(), SWT.POP_UP));		
+		setSelectedItem(createSearchItem(toolBar, menu));
+//		selectedItem.setData(new SubContributionItem(this));
+		getSelectedItem().addDisposeListener(new DisposeListener(){
+			@Override
+			public void widgetDisposed(DisposeEvent e) {
+				logger.debug("selectedItem DISPOSE!!!"); //$NON-NLS-1$
+			}
+		});		
+
+		toolBar.pack();
+	}
 
 	@Override
 	public void fill(CoolBar parent, int index)
 	{
-		if (fillCoolBar)
-		{
-			parent.addDisposeListener(new DisposeListener(){
-				public void widgetDisposed(DisposeEvent e) {
-					dispose();
-				}
-			});
+		final CoolBar coolBar = parent;
+		ToolBar toolBar = new ToolBar(parent, SWT.FLAT | SWT.WRAP);
 
-			final CoolBar coolBar = parent;
-//			Composite wrapper = new XComposite(coolBar, SWT.NONE, LayoutMode.TIGHT_WRAPPER);
-//			toolBar = new ToolBar(wrapper, SWT.FLAT | SWT.WRAP);
-			toolBar = new ToolBar(parent, SWT.FLAT | SWT.WRAP);
-			toolBar.addDisposeListener(new DisposeListener(){
-				public void widgetDisposed(DisposeEvent e) {
-					dispose();
-				}
-			});
-	  	menu = createMenu(new Menu(RCPUtil.getActiveShell(), SWT.POP_UP));
-	  	
-	  	toolItem = new ToolItem(toolBar, SWT.SEPARATOR);
-	  	createText(toolBar);
-	  	toolItem.setControl(searchText);
-	  	toolItem.setWidth(100);
-	  	
-	  	final ToolItem searchItem = new ToolItem(toolBar, SWT.DROP_DOWN);
-	  	searchItem.setImage(SharedImages.getSharedImage(NLBasePlugin.getDefault(),
-					SearchContributionItem.class));
-	  	searchItem.addListener(SWT.Selection, new Listener(){
-	  		public void handleEvent(Event event)
-	  		{
-	  			logger.info("event.detail = "+event.detail); //$NON-NLS-1$
-	  			if (event.detail == SWT.ARROW) {
-	  				Rectangle rect = searchItem.getBounds();
-	  				Point p = new Point(rect.x, rect.y + rect.height);
-	  				p = toolBar.toDisplay(p);
-	  				menu.setLocation(p.x, p.y);
-	  				menu.setVisible(true);
-	  			}
-	  			if (event.detail == SWT.NONE) {
-	  				searchPressed();
-	  			}
-	  		}
-	  	});
-	  	selectedItem = searchItem;
-	  	selectedItem.setImage(getSelectedFactory().getComposedDecoratorImage());
-	  	toolBar.layout(true, true);
-	  	
-	  	coolItem = new CoolItem(coolBar, SWT.SEPARATOR);
-//	  	coolItem.setControl(wrapper);
-	  	coolItem.setControl(toolBar);
+		fillToolBar(toolBar, index);
 
-	  	// FIXME: set size for contributionItem leads to strange layout problems when restting perspective
-	  	Point size = toolBar.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-	  	Point coolSize = coolItem.computeSize(size.x, size.y);
-	  	coolItem.setSize(coolSize.x - 10, coolSize.y);
-	  	coolItem.setMinimumSize(coolSize.x - 10, coolSize.y);
-	  	coolItem.setPreferredSize(coolSize.x - 10, coolSize.y);
-	  	toolBar.layout(true, true);
-	  	coolBar.layout(true, true);
-	  	
-//	  	coolItem.setSize(SWT.DEFAULT, SWT.DEFAULT);
-//	  	coolItem.setMinimumSize(SWT.DEFAULT, SWT.DEFAULT);
-//	  	coolItem.setPreferredSize(SWT.DEFAULT, SWT.DEFAULT);
+		CoolItem coolItem = new CoolItem(coolBar, SWT.SEPARATOR);
+		coolItem.setControl(toolBar);
+
+//		// FIXME: set size for contributionItem leads to strange layout problems when resetting perspective
+		Point size = toolBar.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+		Point coolSize = coolItem.computeSize(size.x, size.y);
+		int diffX = 0;
+		coolItem.setSize(coolSize.x - diffX, coolSize.y);
+		coolItem.setMinimumSize(coolSize.x - diffX, coolSize.y);
+		coolItem.setPreferredSize(coolSize.x - diffX, coolSize.y);
+//		toolBar.layout(true, true);
+//		coolBar.layout(true, true);
+		
+		coolBar.pack();
+	}
+	
+	class ToolBarContributionItemText extends ContributionItem
+	{				
+		public ToolBarContributionItemText(String id) {
+			super(id);
+		}
+
+		@Override
+		public void fill(ToolBar parent, int index) {
+			final ToolItem toolItem = new ToolItem(parent, SWT.SEPARATOR);
+			toolItem.setControl(createText(parent));
+			toolItem.setWidth(100);
 		}
 	}
 	
-	@Override
-	public void fill(Menu menu, int index)
+	class ToolBarContributionItemButton extends ContributionItem
 	{
-//		super.fill(menu, index);
-		createMenu(menu);
+		public ToolBarContributionItemButton(String id) {
+			super(id);
+		}
+
+		@Override
+		public void fill(ToolBar parent, int index) {
+			final Menu menu = createMenu(new Menu(RCPUtil.getActiveShell(), SWT.POP_UP));		
+			setSelectedItem(createSearchItem(parent, menu));
+			getSelectedItem().addDisposeListener(new DisposeListener(){
+				@Override
+				public void widgetDisposed(DisposeEvent e) {
+					logger.debug("selectedItem DISPOSE!!!"); //$NON-NLS-1$
+				}
+			});
+		}
 	}
 
-	private CoolItem coolItem = null;
-	private ToolBar toolBar = null;
-	private Menu menu = null;
-	
-	@Override
-	public void dispose()
+	/* (non-Javadoc)
+	 * @see org.nightlabs.base.ui.search.AbstractSearchContributionItem#getSearchText()
+	 */
+	protected String getSearchText() 
 	{
-		super.dispose();
-		if (searchText != null)
-			searchText.dispose();
-		if (coolItem != null)
-			coolItem.dispose();
-		if (menu != null)
-			menu.dispose();
+		if (searchText != null && !searchText.isDisposed())
+			return searchText.getText();
+		
+		return null;
+	}
+
+	@Override
+	public void fill(Menu menu, int index)
+	{ 
+		String id = SearchContributionItem.class.getName();
+		getParent().remove(id);
+		IMenuManager menuManager = new MenuManager(Messages.getString("org.nightlabs.base.ui.search.SearchContributionItem.menu.search.title"), id); //$NON-NLS-1$
+		
+		Map<ISearchResultProviderFactory, ISearchResultProvider> factory2Instance = getUseCase().getFactory2Instance();
+		for (Map.Entry<ISearchResultProviderFactory, ISearchResultProvider> entry : factory2Instance.entrySet()) {
+			ISearchResultProviderFactory factory = entry.getKey();
+			MenuContributionItem item = new MenuContributionItem(factory);
+			menuManager.add(item);
+		}
+		
+		if (getParent() != null)
+			getParent().add(menuManager);
+		
+//		createMenu(menu);
 	}
 	
+	class MenuContributionItem extends ContributionItem
+	{
+		private ISearchResultProviderFactory factory;
+		public MenuContributionItem(ISearchResultProviderFactory factory) {
+			this.factory = factory;
+			setId(factory.getClass().getName());
+		}
+
+		@Override
+		public void fill(Menu menu, int index) {
+			createMenuItem(menu, factory);
+		}
+	}	
+	
+	private SelectionListener menuSelectionListener = new SelectionListener(){
+		public void widgetSelected(SelectionEvent e) 
+		{
+			selectedFactory = menuItem2Factory.get((MenuItem) e.getSource());
+			if (selectedItem != null && !selectedItem.isDisposed())
+				selectedItem.setImage(getSelectedFactory().getComposedDecoratorImage());
+			searchPressed();
+		}
+		public void widgetDefaultSelected(SelectionEvent e) {
+			widgetSelected(e);
+		}
+	};
+
+	protected MenuItem createMenuItem(Menu menu, ISearchResultProviderFactory factory) {
+		MenuItem menuItem = new MenuItem(menu, SWT.PUSH);
+		menuItem.setText(factory.getName().getText());
+		menuItem.setImage(factory.getImage());
+		menuItem2Factory.put(menuItem, factory);
+		menuItem.addSelectionListener(menuSelectionListener);
+		menuItem.addDisposeListener(new DisposeListener(){
+			@Override
+			public void widgetDisposed(DisposeEvent e) {
+				MenuItem menuItem = (MenuItem) e.getSource();
+				menuItem2Factory.remove(menuItem);
+			}
+		});
+				
+		return menuItem;
+	}
+
+	protected ISearchResultProviderFactory getSelectedFactory() {
+		if (selectedFactory == null) {
+			selectedFactory = getUseCase().getCurrentSearchResultProviderFactory();
+		}
+		return selectedFactory;
+	}
+
+	protected SearchResultProviderRegistryUseCase getUseCase() {
+		SearchResultProviderRegistryUseCase useCase = SearchResultProviderRegistry.sharedInstance().getUseCase(getUseCaseKey());
+		if (useCase == null) {
+			useCase = new SearchResultProviderRegistryUseCase();
+			ISearchResultProviderFactory factory = useCase.getFactory2Instance().keySet().iterator().next();
+			useCase.setCurrentSearchResultProviderFactory(factory);
+		}
+		return useCase;
+	}
+
+	protected void updateUseCase()
+	{
+		SearchResultProviderRegistryUseCase useCase = getUseCase();
+		if (getSearchText() != null) {
+			useCase.setCurrentSearchText(getSearchText());
+		}
+		useCase.setCurrentSearchResultProviderFactory(getSelectedFactory());
+	}
+
+	protected String getUseCaseKey() {
+		return SearchContributionItem.class.getName() + RCPUtil.getActivePerspectiveID();
+	}	
+	
+	protected void searchPressed()
+	{
+		if (getSelectedFactory() != null) {
+			ISearchResultProvider searchResultProvider = getUseCase().getFactory2Instance().get(getSelectedFactory());
+			updateUseCase();
+			if (getSearchText() != null)
+				searchResultProvider.setSearchText(getSearchText());
+			ISearchResultActionHandler actionHandler = getSelectedFactory().getActionHandler();
+			if (actionHandler != null) {
+				actionHandler.setSearchResultProvider(searchResultProvider);
+				actionHandler.run();
+			}
+		}
+	}
+	
+	protected Menu createMenu(Menu menu)
+	{
+		Map<ISearchResultProviderFactory, ISearchResultProvider> factory2Instance = getUseCase().getFactory2Instance();
+		for (Map.Entry<ISearchResultProviderFactory, ISearchResultProvider> entry : factory2Instance.entrySet()) {
+			ISearchResultProviderFactory factory = entry.getKey();
+			createMenuItem(menu, factory);
+		}
+		return menu;
+	}
+
+	/**
+	 * Return the selectedItem.
+	 * @return the selectedItem
+	 */
+	protected ToolItem getSelectedItem() {
+		return selectedItem;
+	}
+
+	/**
+	 * Sets the selectedItem.
+	 * @param selectedItem the selectedItem to set
+	 */
+	protected void setSelectedItem(ToolItem selectedItem) {
+		this.selectedItem = selectedItem;
+	}	
 }

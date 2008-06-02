@@ -36,18 +36,26 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
+import org.eclipse.jface.action.IContributionManager;
 import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PerspectiveAdapter;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.ContributionItemFactory;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
@@ -59,9 +67,14 @@ import org.nightlabs.base.ui.action.INewFileAction;
 import org.nightlabs.base.ui.action.NewFileRegistry;
 import org.nightlabs.base.ui.action.OpenFileAction;
 import org.nightlabs.base.ui.action.ReOpenFileAction;
+import org.nightlabs.base.ui.action.registry.ActionDescriptor;
+import org.nightlabs.base.ui.action.registry.ActionVisibilityContext;
+import org.nightlabs.base.ui.action.registry.ActionVisibilityDecider;
+import org.nightlabs.base.ui.action.registry.ItemDescriptor;
 import org.nightlabs.base.ui.config.RecentFileCfMod;
-import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
+import org.nightlabs.base.ui.perspective.PerspectiveExtensionRegistry;
 import org.nightlabs.base.ui.resource.Messages;
+import org.nightlabs.base.ui.util.RCPUtil;
 import org.nightlabs.config.Config;
 import org.nightlabs.config.ConfigException;
 
@@ -301,6 +314,8 @@ extends ActionBarAdvisor
 	{
 		this.addToMenuGroup(menu, new ActionContributionItem(action), groupName);
 	}
+
+	private IMenuManager menuBar;
 	
 	/**
 	 * @see org.eclipse.ui.application.ActionBarAdvisor#fillMenuBar(org.eclipse.jface.action.IMenuManager)
@@ -308,6 +323,8 @@ extends ActionBarAdvisor
 	@Override
 	public void fillMenuBar(IMenuManager menuBar)
 	{
+		this.menuBar = menuBar;
+
 	  // File-Menu
 		fileMenu = new MenuManager(Messages.getString("org.nightlabs.base.ui.app.DefaultActionBuilder.fileMenu.text"),  //$NON-NLS-1$
 				IWorkbenchActionConstants.M_FILE);
@@ -396,14 +413,8 @@ extends ActionBarAdvisor
 		
     fileMenu.add(new GroupMarker(IWorkbenchActionConstants.FILE_END));
     menuBar.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
-    
-//    // Menus form contributionItemSet-ExtensionPoint
-//		try {
-//			ContributionItemSetRegistry.sharedInstance().contributeToMenuBar(menuBar);
-//		} catch (EPProcessorException e) {
-//			logger.error("There occured an error while processing the ContributionItemSetRegistry!", e);
-//			e.printStackTrace();
-//		}
+        
+		createContributionItemSetRegistry();
     
     // Window-Menu
 		windowMenu = new MenuManager(Messages.getString("org.nightlabs.base.ui.app.DefaultActionBuilder.windowMenu.text"),  //$NON-NLS-1$
@@ -448,31 +459,108 @@ extends ActionBarAdvisor
 		if (updateAction != null)
 			helpMenu.add(updateAction);
 		helpMenu.add(aboutAction);
-		
-		try {
-			ContributionItemSetRegistry.sharedInstance().contributeToMenuBar(menuBar);
-		} catch (EPProcessorException e) {
-			logger.error("There occured an error while processing the ContributionItemSetRegistry!", e); //$NON-NLS-1$
-			e.printStackTrace();
+	}
+
+	private ContributionItemSetRegistry contributionItemSetRegistry;
+	private ICoolBarManager coolBar;
+	private void createContributionItemSetRegistry() {
+		if (contributionItemSetRegistry == null) {
+			contributionItemSetRegistry = new ContributionItemSetRegistry(new ActionVisibilityDecider() {
+				@Override
+				public boolean isVisible(ActionVisibilityContext actionVisibilityContext, ActionDescriptor actionDescriptor) {
+					if (!super.isVisible(actionVisibilityContext, actionDescriptor))
+						return false;
+
+					Map<String, Set<String>> perspectiveID2ExtensionIDs = PerspectiveExtensionRegistry.sharedInstance().getPerspectiveID2ExtensionIDs(
+							contributionItemSetRegistry.getExtensionPointID());
+					if (perspectiveID2ExtensionIDs != null) {
+						String perspectiveID = RCPUtil.getActivePerspectiveID();
+						Set<String> extensionIDs = perspectiveID2ExtensionIDs.get(perspectiveID);
+						if (extensionIDs != null) {
+							return extensionIDs.contains(actionDescriptor.getID());
+						}
+						else {
+							return false;
+						}
+					}
+					
+					return true;
+				}
+			});
+			contributionItemSetRegistry.process();
+		}
+
+		if (RCPUtil.getActiveWorkbenchWindow() == null) {
+			// This Thread is necessary in order to prevent blocking the application from shutdown.
+			// It might happen, that the application never has an active perspective, because it is shut down before
+			// completely starting (e.g. when the classloader-config changed and the login occurs very early
+			// and decides to restart the application.
+			Thread thread = new Thread() {
+				@Override
+				public void run() {
+					logger.info("activeWorkbenchWindow is null. Will re-enqueue this method into the event dispatcher and exit."); //$NON-NLS-1$
+					try {
+						Thread.sleep(500);
+					} catch (InterruptedException e) {
+						// ignore
+					}
+					Display.getDefault().asyncExec(new Runnable() {
+						public void run() {
+							createContributionItemSetRegistry();
+						}
+					});
+				}
+			};
+			thread.setDaemon(true);
+			thread.start();
+
+			return;
+		} // if (RCPUtil.getActiveWorkbenchWindow() == null) {
+
+		RCPUtil.getActiveWorkbenchWindow().addPerspectiveListener(new PerspectiveAdapter() {
+			@Override
+			public void perspectiveActivated(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
+				contribute();
+			}
+		});
+
+		contribute();
+	}
+
+	private void contribute()
+	{
+		if (menuBar != null) {
+			contributeToMenuBar(menuBar);
+		}
+
+		if (coolBar != null) {
+			contributeToCoolBar(coolBar);
 		}
 	}
 
+	private void contributeToMenuBar(IMenuManager menu) {
+		contributionItemSetRegistry.removeAllFromMenuBar(menu);
+		contributionItemSetRegistry.contributeToMenuBar(menu);
+	}
+	
+	private void contributeToCoolBar(ICoolBarManager coolBarManager) {
+		contributionItemSetRegistry.removeAllFromCoolBar(coolBarManager);
+		contributionItemSetRegistry.contributeToCoolBar(coolBarManager);		
+	}
+ 
 	@Override
 	public void fillCoolBar(ICoolBarManager coolBar)
 	{
-		try {
-			ContributionItemSetRegistry.sharedInstance().contributeToCoolBar(coolBar);
-		} catch (EPProcessorException e) {
-			logger.error("There occured an error while processing the ContributionItemSetRegistry!", e); //$NON-NLS-1$
-			e.printStackTrace();
-		}
+		this.coolBar = coolBar;
+		createContributionItemSetRegistry();
+//		contributeToCoolBar(coolBar);
 	}
 	
 	@Override
 	public void dispose()
 	{
-	  	aboutAction.dispose();
-	    quitAction.dispose();
+	  aboutAction.dispose();
+	  quitAction.dispose();
 	    
 	  for (IWorkbenchAction action : actions.values())
 	  		action.dispose();

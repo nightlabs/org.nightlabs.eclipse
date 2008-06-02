@@ -26,6 +26,7 @@
 
 package org.nightlabs.base.ui.action.registry;
 
-public class ItemDescriptor
+public abstract class ItemDescriptor
 {
+	public abstract String getID();
 }

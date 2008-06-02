@@ -29,9 +29,8 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
-import org.eclipse.jface.action.ICoolBarManager;
 import org.nightlabs.base.ui.action.registry.AbstractActionRegistry;
-import org.nightlabs.base.ui.action.registry.ActionDescriptor;
+import org.nightlabs.base.ui.action.registry.ActionVisibilityDecider;
 import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
 
 /**
@@ -43,35 +42,14 @@ extends AbstractActionRegistry
 {
 	private static final Logger logger = Logger.getLogger(ContributionItemSetRegistry.class);
 	
-	private static ContributionItemSetRegistry sharedInstance;
-	private static boolean initializingSharedInstance = false;
-	public static synchronized ContributionItemSetRegistry sharedInstance()
-	throws EPProcessorException
-	{
-		if (initializingSharedInstance)
-			throw new IllegalStateException("Circular call to the method sharedInstance() during initialization!"); //$NON-NLS-1$
-
-		if (sharedInstance == null) {
-			initializingSharedInstance = true;
-			try {
-				sharedInstance = new ContributionItemSetRegistry();
-				sharedInstance.process();
-			} finally {
-				initializingSharedInstance = false;
-			}
-		}
-
-		return sharedInstance;
-	}
-	
 	public static final String EXTENSION_POINT_ID = "org.nightlabs.base.ui.contributionItemSet"; //$NON-NLS-1$
 	public static final String ELEMENT_CONTRIBUTION_ITEM = "contributionItem"; //$NON-NLS-1$
 	public static final String ATTRIBUTE_CLASS = "class"; //$NON-NLS-1$
 	public static final String ATTRIBUTE_ID = "id"; //$NON-NLS-1$
 	public static final String ATTRIBUTE_NAME = "name"; //$NON-NLS-1$
-	
-	protected ContributionItemSetRegistry() {
-		super();
+
+	public ContributionItemSetRegistry(ActionVisibilityDecider actionVisibilityDecider) {
+		super(actionVisibilityDecider);
 	}
 
 	@Override
@@ -115,36 +93,6 @@ extends AbstractActionRegistry
 	@Override
 	protected String getActionElementName() {
 		return ELEMENT_CONTRIBUTION_ITEM;
-	}
-
-	@Override
-	public int contributeToCoolBar(ICoolBarManager coolBarManager)
-	{
-		if (!perspectiveListenerAdded)
-			earlyContributed = true;
-		
-		checkPerspectiveListenerAdded();
-		
-		if (!isAffectedOfPerspectiveExtension()) {
-			for (ActionDescriptor actionDescriptor : getActionDescriptors()) {
-				IXContributionItem contributionItem = actionDescriptor.getContributionItem();
-				coolBarManager.add(contributionItem);
-			}
-			return getActionDescriptors().size();
-		}
-		else {
-			// TODO: why is the contributionItem after restore not visible although it is added
-			if (getActiveExtensionIDs() != null) {
-				for (String extensionID : getActiveExtensionIDs()) {
-					ActionDescriptor actionDescriptor = getActionDescriptor(extensionID, false);
-					IXContributionItem contributionItem = actionDescriptor.getContributionItem();
-					coolBarManager.add(contributionItem);
-//					coolBarManager.update(true);
-				}
-				return getActiveExtensionIDs().size();
-			}
-			return 0;
-		}
 	}
 		
 }

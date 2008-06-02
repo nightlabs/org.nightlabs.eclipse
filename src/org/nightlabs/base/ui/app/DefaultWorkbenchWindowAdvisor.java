@@ -33,14 +33,11 @@ import java.util.HashSet;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
-import org.nightlabs.base.ui.action.ContributionItemSetRegistry;
 import org.nightlabs.base.ui.app.DefaultActionBuilder.ActionBarItem;
-import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
 
 /**
  * 
@@ -96,22 +93,23 @@ extends WorkbenchWindowAdvisor
 		return new Point(screenSize.width, screenSize.height);
 	}
 
-	@Override
-	public void postWindowOpen() {
-		try {
-			ContributionItemSetRegistry.sharedInstance().checkPerspectiveListenerAdded();
-		} catch (EPProcessorException e) {
-			logger.error("There occured an error getting the ContributionItemSetRegistry", e); //$NON-NLS-1$
-		}
-	}
-		
-	@Override
-	public void postWindowRestore() throws WorkbenchException {
-		super.postWindowRestore();
-		try {
-			ContributionItemSetRegistry.sharedInstance().checkPerspectiveListenerAdded();
-		} catch (EPProcessorException e) {
-			logger.error("There occured an error getting the ContributionItemSetRegistry", e); //$NON-NLS-1$
-		}
-	}
+//	@Override
+//	public void postWindowOpen() {
+//		super.postWindowOpen();
+//		try {
+//			ContributionItemSetRegistry.sharedInstance().checkPerspectiveListenerAdded();
+//		} catch (EPProcessorException e) {
+//			logger.error("There occured an error getting the ContributionItemSetRegistry", e); //$NON-NLS-1$
+//		}
+//	}
+//		
+//	@Override
+//	public void postWindowRestore() throws WorkbenchException {
+//		super.postWindowRestore();
+//		try {
+//			ContributionItemSetRegistry.sharedInstance().checkPerspectiveListenerAdded();
+//		} catch (EPProcessorException e) {
+//			logger.error("There occured an error getting the ContributionItemSetRegistry", e); //$NON-NLS-1$
+//		}
+//	}
 }
