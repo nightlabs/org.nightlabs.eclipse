@@ -28,19 +28,29 @@ package org.nightlabs.base.ui.exceptionhandler.errorreport;
 
 import java.util.Properties;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.mail.Address;
 import javax.mail.Message;
+import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+
+
 
 import org.apache.log4j.Logger;
 import org.nightlabs.config.Config;
 
+import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeBodyPart;
+
 /**
  * @author Simon Lehmann - simon@nightlabs.de
  * @author Marc Klinger - marc[at]nightlabs[dot]de
+ * @author Fitas Amine - fitas[at]nightlabs[dot]de
  */
 public class ErrorReportSenderEMail implements ErrorReportSender
 {
@@ -64,18 +74,48 @@ public class ErrorReportSenderEMail implements ErrorReportSender
 			Message msg = new MimeMessage(mailConnection);
 			Address mailFrom = new InternetAddress(cfMod.getMailFrom());
 
-			msg.setText(errorReport.toString());
+
 			msg.setFrom(mailFrom);
-			
+
 			for (String recipient : cfMod.getMailTo())
 				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
-			
+
 			msg.setSubject(errorReport.getFirstThrowable().getClass().getSimpleName() +  " " + errorReport.getTimeAsString()); //$NON-NLS-1$
 
+			if(errorReport.getScreenshotFileName() != null)
+			{
+				// create the message part 
+				MimeBodyPart messageBodyPart = 
+					new MimeBodyPart();
+				//fill message
+				messageBodyPart.setText(errorReport.toString());
+
+			
+				// Part two is attachment
+				MimeBodyPart attachBodyPart = new MimeBodyPart();
+				DataSource source = 
+					new FileDataSource(errorReport.getScreenshotFileName());
+				attachBodyPart.setDataHandler(
+						new DataHandler(source));
+				attachBodyPart.setFileName(errorReport.getScreenshotFileName());
+			
+				
+					
+				Multipart multipart = new MimeMultipart();
+//				multipart.addBodyPart(messageBodyPart);
+//				multipart.addBodyPart(attachBodyPart);
+
+				// Put parts in message
+				msg.setContent(multipart);
+			}
+			else
+				msg.setText(errorReport.toString());
+
+
 			Transport.send(msg);
-			
+
 			logger.info("Message was sent to "+cfMod.getMailTo().size()+" recipient(s)"); //$NON-NLS-1$ //$NON-NLS-2$
-			
+
 		} catch (Exception e) {
 			logger.fatal("Sending error report by eMail failed.", e); //$NON-NLS-1$
 		}

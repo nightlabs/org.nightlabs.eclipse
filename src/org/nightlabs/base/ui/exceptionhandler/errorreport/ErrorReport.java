@@ -50,15 +50,16 @@ public class ErrorReport
 implements Serializable
 {
 	private static final long serialVersionUID = 2L;
-	
+
 //	Tobias: replaced by collection of ExceptionPair in order to provide error reports of multiple exceptions.
-//
+
 	private String userComment;
+	private String screenshotFileName = null;
 	private Properties systemProperties;
 	private Date time;
-	
+
 	private List<CauseEffectThrowablePair> throwablePairList;
-	
+
 	/**
 	 * Initialize an empty error report.
 	 */
@@ -69,68 +70,68 @@ implements Serializable
 		time = new Date();
 		this.systemProperties = System.getProperties();
 	}
-	
+
 	public void addThrowablePair(Throwable throwable, Throwable causeThrowable) {
 		Assert.isNotNull(throwable);
 		Assert.isNotNull(causeThrowable);
 		throwablePairList.add(new CauseEffectThrowablePair(throwable, causeThrowable));
 	}
-	
+
 	public List<CauseEffectThrowablePair> getThrowablePairList() {
 		return throwablePairList;
 	}
-	
+
 	public Throwable getFirstThrowable() {
 		return throwablePairList.get(0).getEffectThrowable();
 	}
 
 //	/**
-//	 * Initialize this error report with a thrown and a trigger exception.
-//	 * @param thrownException The exception thrown
-//	 * @param triggerException The exception that triggered the error handler
-//	 */
+//	* Initialize this error report with a thrown and a trigger exception.
+//	* @param thrownException The exception thrown
+//	* @param triggerException The exception that triggered the error handler
+//	*/
 //	public ErrorReport(Throwable thrownException, Throwable triggerException)
 //	{
-//		setThrownException(thrownException);
-//		setTriggerException(triggerException);
-//		this.systemProperties = System.getProperties();
-//		this.time = new Date();
+//	setThrownException(thrownException);
+//	setTriggerException(triggerException);
+//	this.systemProperties = System.getProperties();
+//	this.time = new Date();
 //	}
-	
+
 //	/**
-//	 * @return The thrownException.
-//	 */
+//	* @return The thrownException.
+//	*/
 //	public Throwable getThrownException()
 //	{
-//		return thrownException;
+//	return thrownException;
 //	}
-//
+
 //	/**
-//	 * @param error The thrownException to set.
-//	 */
+//	* @param error The thrownException to set.
+//	*/
 //	public void setThrownException(Throwable error)
 //	{
-//		if (error == null)
-//			throw new NullPointerException("Parameter thrownException must not be null!");
-//		this.thrownException = error;
+//	if (error == null)
+//	throw new NullPointerException("Parameter thrownException must not be null!");
+//	this.thrownException = error;
 //	}
-//
+
 //	/**
-//	 * @return The triggerException.
-//	 */
+//	* @return The triggerException.
+//	*/
 //	public Throwable getTriggerException()
 //	{
-//		return triggerException;
+//	return triggerException;
 //	}
-//
+
 //	/**
-//	 * @param triggerException The triggerException to set.
-//	 */
+//	* @param triggerException The triggerException to set.
+//	*/
 //	public void setTriggerException(Throwable triggerException)
 //	{
-//		if (triggerException == null)
-//			throw new NullPointerException("Parameter triggerException must not be null!");
-//		this.triggerException = triggerException;
+//	if (triggerException == null)
+//	throw new NullPointerException("Parameter triggerException must not be null!");
+//	this.triggerException = triggerException;
 //	}
 
 	/**
@@ -176,6 +177,22 @@ implements Serializable
 	{
 		return systemProperties;
 	}
+
+	/* 
+	 * * @param userComment The userComment to set.
+	 */
+
+
+	public void setScreenshotFileName(String filename)
+	{
+		screenshotFileName = filename;
+	}
+
+	public String getScreenshotFileName()
+	{
+		return screenshotFileName;
+	}
+
 
 	/**
 	 * @param systemProperties The system properties to associate with this error report
@@ -230,7 +247,7 @@ implements Serializable
 	@Override
 	public String toString()
 	{
-		
+
 //		StringBuffer props = new StringBuffer();
 //		for (Iterator it = systemProperties.entrySet().iterator(); it.hasNext(); ) {
 //		Map.Entry me = (Map.Entry)it.next();
@@ -241,13 +258,13 @@ implements Serializable
 //		}
 
 		StringBuffer sb = new StringBuffer("Time:\n"+ getTimeAsString() +"\n\nUser Comment:\n" + userComment + "\n\nThrown exception stack trace(s):\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		
+
 		for (CauseEffectThrowablePair causeEffectThrowablePair : throwablePairList) {
 			sb.append(getExceptionStackTraceAsString(causeEffectThrowablePair.getEffectThrowable()) + "\n"); //$NON-NLS-1$
 		}
 //		"Thrown exception stack trace(s):\n" + getExceptionStackTraceAsString(thrownException) +
 		sb.append("\nSystem Properties:\n"); //$NON-NLS-1$
-		
+
 		try {
 			DataBuffer db = new DataBuffer(1024);
 			OutputStream out = db.createOutputStream();
@@ -261,7 +278,7 @@ implements Serializable
 		} catch (Exception x) {
 			sb.append("Dumping system properties failed: " + x.getMessage()); //$NON-NLS-1$
 		}
-		
+
 		return sb.toString();
 	}
 

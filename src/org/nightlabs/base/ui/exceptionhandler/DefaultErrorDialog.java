@@ -26,8 +26,16 @@
 
 package org.nightlabs.base.ui.exceptionhandler;
 
+import java.awt.AWTException;
+import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.Toolkit;
+import javax.imageio.ImageIO;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -46,6 +54,9 @@ import org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReport;
 import org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportWizardDialog;
 import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.util.RCPUtil;
+
+
+
 
 /**
  * The default error dialog implementation. Error dialogs should be opened
@@ -152,6 +163,25 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 				else
 					errorReport.addThrowablePair(error.getThrownException(), error.getTriggerException());
 			}
+			
+			
+			Robot robot;
+				try {
+					robot = new Robot();
+					BufferedImage screenShot = robot.createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
+					ImageIO.write(screenShot, "JPG", new File(errorReport.getFirstThrowable().getClass().getSimpleName()  +".jpg"));
+					errorReport.setScreenshotFileName(errorReport.getFirstThrowable().getClass().getSimpleName()  +".jpg");
+				} catch (AWTException e) {
+
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			
+			
 			ErrorReportWizardDialog dlg = new ErrorReportWizardDialog(errorReport);
 			okPressed();
 			dlg.open();
