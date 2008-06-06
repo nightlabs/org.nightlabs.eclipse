@@ -39,13 +39,16 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.mail.internet.MimeBodyPart;
+
+
 
 
 
 import org.apache.log4j.Logger;
 import org.nightlabs.config.Config;
 
-import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeBodyPart;
+//import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeBodyPart;
 
 /**
  * @author Simon Lehmann - simon@nightlabs.de
@@ -102,8 +105,8 @@ public class ErrorReportSenderEMail implements ErrorReportSender
 				
 					
 				Multipart multipart = new MimeMultipart();
-//				multipart.addBodyPart(messageBodyPart);
-//				multipart.addBodyPart(attachBodyPart);
+				multipart.addBodyPart(messageBodyPart);
+				multipart.addBodyPart(attachBodyPart);
 
 				// Put parts in message
 				msg.setContent(multipart);
