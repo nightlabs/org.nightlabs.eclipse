@@ -163,25 +163,29 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 				else
 					errorReport.addThrowablePair(error.getThrownException(), error.getTriggerException());
 			}
-			
-			
+
+//			take a screen shot and save a temp file on disk and then send it by email
+
 			Robot robot;
-				try {
-					robot = new Robot();
-					BufferedImage screenShot = robot.createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
-					ImageIO.write(screenShot, "JPG", new File(errorReport.getFirstThrowable().getClass().getSimpleName()  +".jpg"));
-					errorReport.setScreenshotFileName(errorReport.getFirstThrowable().getClass().getSimpleName()  +".jpg");
-				} catch (AWTException e) {
+			try {
+				robot = new Robot();
+				BufferedImage screenShot = robot.createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));					
+				File temp = File.createTempFile(errorReport.getFirstThrowable().getClass().getSimpleName(), ".jpg");    
+				// Delete temp file when program exits.
+				temp.deleteOnExit();	
+				ImageIO.write(screenShot, "JPG",temp);
+				errorReport.setScreenshotFileName(temp.getAbsolutePath());
+			} catch (AWTException e) {
 
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
-			
-			
+
+
 			ErrorReportWizardDialog dlg = new ErrorReportWizardDialog(errorReport);
 			okPressed();
 			dlg.open();
