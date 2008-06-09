@@ -93,7 +93,6 @@ public class ErrorReportSenderEMail implements ErrorReportSender
 				//fill message
 				messageBodyPart.setText(errorReport.toString());
 
-			
 				// Part two is attachment
 				MimeBodyPart attachBodyPart = new MimeBodyPart();
 				DataSource source = 
@@ -101,9 +100,7 @@ public class ErrorReportSenderEMail implements ErrorReportSender
 				attachBodyPart.setDataHandler(
 						new DataHandler(source));
 				attachBodyPart.setFileName(errorReport.getScreenshotFileName());
-			
-				
-					
+
 				Multipart multipart = new MimeMultipart();
 				multipart.addBodyPart(messageBodyPart);
 				multipart.addBodyPart(attachBodyPart);
