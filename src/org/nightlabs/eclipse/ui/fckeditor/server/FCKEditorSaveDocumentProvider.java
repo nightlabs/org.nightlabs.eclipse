@@ -65,6 +65,7 @@ public class FCKEditorSaveDocumentProvider extends FCKEditorEditDocumentProvider
 		if(contents == null)
 			throw new RuntimeException("Error saving contents. Content parameter not found.");
 		getEditor().getEditorInput().getEditorContent().setHtml(contents);
+		getEditor().doReallySave();
 		getEditor().setDirty(false);
 		return super.getFileContents(filename, parms);
 	}

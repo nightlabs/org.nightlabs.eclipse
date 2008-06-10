@@ -117,102 +117,7 @@ public class UIBridge extends AbstractFileProvider {
 		@Override
 		public void run()
 		{
-			getEditor().setEnabled(false);
-			try {
-				SelectFileDialog dlg = new SelectFileDialog(
-						getEditor().getSite().getShell(),
-						fileHelper.getFilteredFiles(), getEditor().getImageProvider()) {
-
-					private Link topLabel;
-
-					private void updateTopLabel()
-					{
-						if(topLabel != null)
-							topLabel.setText(String.format(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.server.UIBridge.topLabelText"), //$NON-NLS-1$
-									fileHelper.getFilteredFiles().size(), fileHelper.getFilePlural(), fileHelper.getFileSingular()));
-					}
-
-					@Override
-					protected Control createTopArea(Composite parent)
-					{
-						topLabel = new Link(parent, SWT.NONE);
-						topLabel.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
-						updateTopLabel();
-//						final FormText formText = new FormText(parent, SWT.NONE);
-//						formText.setText(String.format(
-//								"<form><p>This document contains %d %s. <a href=\"addfile\">Click here to add a new %s</a>.</p></form>",
-//								fileHelper.getFilteredFiles().size(), fileHelper.getFilePlural(), fileHelper.getFileSingular()), true, false);
-						topLabel.addSelectionListener(new SelectionAdapter() {
-							@Override
-							public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-								FileDialog fileDialog = new FileDialog(getShell());
-								fileDialog.setText(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.server.UIBridge.openFileDialogTitle")); //$NON-NLS-1$
-								String filepath = fileDialog.open();
-								if(filepath == null)
-									return;
-
-								String mimeType = ContentTypeUtil.getContentType(filepath);
-								IContentFileWizard contentFileWizard;
-								try {
-									contentFileWizard = Activator.getDefault().getContentFileWizard(mimeType);
-								} catch (CoreException e1) {
-									String msg = String.format(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.server.UIBridge.wizardErrorText"), mimeType); //$NON-NLS-1$
-									Activator.err(msg, e1);
-									MessageDialog.openError(getShell(), Messages.getString("org.nightlabs.eclipse.ui.fckeditor.server.UIBridge.errorTitle"), msg); //$NON-NLS-1$
-									return;
-								}
-								contentFileWizard.setSourceFile(new File(filepath), mimeType);
-								int result = new WizardDialog(getShell(), contentFileWizard).open();
-								if(result == IDialogConstants.OK_ID) {
-									IFCKEditorContent editorContent = getEditor().getEditorInput().getEditorContent();
-									IFCKEditorContentFile file = editorContent.getFileFactory().createContentFile();
-									try {
-										file.setData(contentFileWizard.getData());
-									} catch (IOException e1) {
-										String msg = String.format(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.server.UIBridge.loadingContentsErrorText"), e1.toString()); //$NON-NLS-1$
-										Activator.err(msg, e1);
-										MessageDialog.openError(getShell(), Messages.getString("org.nightlabs.eclipse.ui.fckeditor.server.UIBridge.errorTitle"), msg); //$NON-NLS-1$
-										return;
-									}
-									file.setContentType(contentFileWizard.getMimeType());
-									file.setName(contentFileWizard.getName());
-									file.setDescription(contentFileWizard.getDescription());
-									editorContent.addFile(file);
-									setFiles(fileHelper.getFilteredFiles());
-								}
-							}
-						});
-						return topLabel;
-					}
-
-					/* (non-Javadoc)
-					 * @see org.nightlabs.eclipse.ui.fckeditor.file.FileListDialog#setFiles(java.util.List)
-					 */
-					@Override
-					public void setFiles(List<IFCKEditorContentFile> files)
-					{
-						updateTopLabel();
-						super.setFiles(files);
-					}
-				};
-				int result = dlg.open();
-				if(result == IDialogConstants.OK_ID)
-					try {
-						IFCKEditorContentFile file = dlg.getSelectedFile();
-						String extension = ContentTypeUtil.getFileExtension(file);
-						if(extension == null)
-							extension = ".bin"; //$NON-NLS-1$
-						String filename = file.getFileId()+extension;
-						fileUrl = getEditor().getBaseUrl()+"/uibridge/files/"+URLEncoder.encode(filename, "UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
-					} catch (UnsupportedEncodingException e) {
-						// should never happen
-						e.printStackTrace();
-					}
-				else
-					fileUrl = ""; //$NON-NLS-1$
-			} finally {
-				getEditor().setEnabled(true);
-			}
+			fileUrl = selectFile(fileHelper);
 		}
 	}
 
@@ -288,5 +193,132 @@ public class UIBridge extends AbstractFileProvider {
 	@Override
 	public String getPath() {
 		return "/uibridge/"; //$NON-NLS-1$
+	}
+
+	private static class MySelectFileDialog extends SelectFileDialog
+	{
+		private FileHelper fileHelper;
+		private IFCKEditor editor;
+		private Link topLabel;
+		
+		public MySelectFileDialog(IFCKEditor editor, FileHelper fileHelper)
+		{
+			super(editor.getSite().getShell(), fileHelper.getFilteredFiles(), editor.getImageProvider());
+			this.editor = editor;
+			this.fileHelper = fileHelper;
+		}
+
+		private void updateTopLabel()
+		{
+			if(topLabel != null)
+				topLabel.setText(String.format(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.server.UIBridge.topLabelText"), //$NON-NLS-1$
+						fileHelper.getFilteredFiles().size(), fileHelper.getFilePlural(), fileHelper.getFileSingular()));
+		}
+
+		@Override
+		protected Control createTopArea(Composite parent)
+		{
+			topLabel = new Link(parent, SWT.NONE);
+			topLabel.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
+			updateTopLabel();
+//				final FormText formText = new FormText(parent, SWT.NONE);
+//				formText.setText(String.format(
+//						"<form><p>This document contains %d %s. <a href=\"addfile\">Click here to add a new %s</a>.</p></form>",
+//						fileHelper.getFilteredFiles().size(), fileHelper.getFilePlural(), fileHelper.getFileSingular()), true, false);
+			topLabel.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+					List<IFCKEditorContentFile> newFiles = openNewFileWizard(getShell(), fileHelper);
+					if(newFiles != null) {
+						setFiles(newFiles);
+					}
+				}
+			});
+			return topLabel;
+		}
+
+		/* (non-Javadoc)
+		 * @see org.nightlabs.eclipse.ui.fckeditor.file.FileListDialog#setFiles(java.util.List)
+		 */
+		@Override
+		public void setFiles(List<IFCKEditorContentFile> files)
+		{
+			updateTopLabel();
+			super.setFiles(files);
+		}
+		
+		/**
+		 * @return <code>null</code> if nothing has changed or the complete list of
+		 * 		files after the wizard has finished. 
+		 */
+		private List<IFCKEditorContentFile> openNewFileWizard(Shell shell, FileHelper fileHelper)
+		{
+			FileDialog fileDialog = new FileDialog(shell);
+			fileDialog.setText(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.server.UIBridge.openFileDialogTitle")); //$NON-NLS-1$
+			String filepath = fileDialog.open();
+			if(filepath == null)
+				return null;
+
+			String mimeType = ContentTypeUtil.getContentType(filepath);
+			IContentFileWizard contentFileWizard;
+			try {
+				contentFileWizard = Activator.getDefault().getContentFileWizard(mimeType);
+			} catch (CoreException e1) {
+				String msg = String.format(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.server.UIBridge.wizardErrorText"), mimeType); //$NON-NLS-1$
+				Activator.err(msg, e1);
+				MessageDialog.openError(shell, Messages.getString("org.nightlabs.eclipse.ui.fckeditor.server.UIBridge.errorTitle"), msg); //$NON-NLS-1$
+				return null;
+			}
+			contentFileWizard.setSourceFile(new File(filepath), mimeType);
+			int result = new WizardDialog(shell, contentFileWizard).open();
+			if(result == IDialogConstants.OK_ID) {
+				IFCKEditorContent editorContent = editor.getEditorInput().getEditorContent();
+				IFCKEditorContentFile file = editorContent.getFileFactory().createContentFile();
+				try {
+					file.setData(contentFileWizard.getData());
+				} catch (IOException e1) {
+					String msg = String.format(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.server.UIBridge.loadingContentsErrorText"), e1.toString()); //$NON-NLS-1$
+					Activator.err(msg, e1);
+					MessageDialog.openError(shell, Messages.getString("org.nightlabs.eclipse.ui.fckeditor.server.UIBridge.errorTitle"), msg); //$NON-NLS-1$
+					return null;
+				}
+				file.setContentType(contentFileWizard.getMimeType());
+				file.setName(contentFileWizard.getName());
+				file.setDescription(contentFileWizard.getDescription());
+				editorContent.addFile(file);
+				editor.setDirty(true);
+				return fileHelper.getFilteredFiles();
+			}
+			return null;
+		}
+	}
+	
+	/**
+	 * @return The URL of the selected file or an empty string if nothing was
+	 * 		selected
+	 */
+	private String selectFile(final FileHelper fileHelper)
+	{
+		getEditor().setEnabled(false);
+		try {
+			SelectFileDialog dlg = new MySelectFileDialog(getEditor(), fileHelper);
+			int result = dlg.open();
+			if(result == IDialogConstants.OK_ID)
+				try {
+					IFCKEditorContentFile file = dlg.getSelectedFile();
+					String extension = ContentTypeUtil.getFileExtension(file);
+					if(extension == null)
+						extension = ".bin"; //$NON-NLS-1$
+					String filename = file.getFileId()+extension;
+					return getEditor().getBaseUrl()+"/uibridge/files/"+URLEncoder.encode(filename, "UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
+				} catch (UnsupportedEncodingException e) {
+					// should never happen
+					throw new RuntimeException(e);
+				}
+			else
+				return ""; //$NON-NLS-1$
+		} finally {
+			getEditor().setEnabled(true);
+		}
 	}
 }

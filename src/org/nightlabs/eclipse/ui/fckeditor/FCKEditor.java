@@ -105,6 +105,15 @@ public class FCKEditor extends EditorPart implements IFCKEditor {
 		// not supported yet
 	}
 
+	/* (non-Javadoc)
+	 * @see org.nightlabs.eclipse.ui.fckeditor.IFCKEditor#doReallySave()
+	 */
+	@Override
+	public void doReallySave()
+	{
+		// sub classes should implement this method
+	}
+	
 	/**
 	 * Get the HTML color representation string for an SWT system
 	 * color id.

@@ -30,7 +30,8 @@ import org.nightlabs.eclipse.ui.fckeditor.file.IImageProvider;
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  * @version $Revision$ - $Date$
  */
-public interface IFCKEditor extends IEditorPart {
+public interface IFCKEditor extends IEditorPart 
+{
 	IFCKEditorInput getEditorInput();
 	String getBaseUrl();
 	String getWidgetBackgroundColor();
@@ -46,4 +47,11 @@ public interface IFCKEditor extends IEditorPart {
 	void setEnabled(boolean enabled);
 	
 	IImageProvider getImageProvider();
+	
+	/**
+	 * Save the contents of the editor. This is an extra method because
+	 * org.eclipse.ui.part.EditorPart#doSave(org.eclipse.core.runtime.IProgressMonitor)
+	 * is needed for the two-way browser widget communication.
+	 */
+	void doReallySave();
 }
