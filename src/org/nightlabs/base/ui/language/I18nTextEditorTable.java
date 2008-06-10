@@ -93,6 +93,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 		this.setLayout(gridLayout);
 
 		GridData gd = new GridData(GridData.FILL_BOTH);
+		gd.minimumHeight = 100;
 
 		if (title != null)
 			new Label(this, SWT.NONE).setText(title);
