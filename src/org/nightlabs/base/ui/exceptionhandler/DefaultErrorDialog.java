@@ -37,6 +37,7 @@ import java.util.List;
 import java.awt.Toolkit;
 import javax.imageio.ImageIO;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.JFaceResources;
@@ -55,9 +56,6 @@ import org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportWizardDialo
 import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.util.RCPUtil;
 
-
-
-
 /**
  * The default error dialog implementation. Error dialogs should be opened
  * by calling one of the <code>showError</code> methods in {@link ErrorDialogFactory}.
@@ -69,6 +67,8 @@ import org.nightlabs.base.ui.util.RCPUtil;
  */
 public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 {
+	private static final Logger logger = Logger.getLogger(DefaultErrorDialog.class);
+	
 	private static final int CUSTOM_ELEMENTS_WIDTH_HINT = 300;
 
 	private static final int ERROR_TABLE_HEIGHT_HINT = 180;
@@ -143,6 +143,7 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 		super.configureShell(shell);
 		if(this.title != null)
 			shell.setText(this.title);
+
 	}
 
 	@Override
@@ -176,15 +177,10 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 				ImageIO.write(screenShot, "JPG",temp);
 				errorReport.setScreenshotFileName(temp.getAbsolutePath());
 			} catch (AWTException e) {
-
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error("There occured an error during taking the scrrenshot for the error report", e);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error("There occured an error during taking the screenshot for the error report", e);
 			}
-
-
 
 			ErrorReportWizardDialog dlg = new ErrorReportWizardDialog(errorReport);
 			okPressed();
