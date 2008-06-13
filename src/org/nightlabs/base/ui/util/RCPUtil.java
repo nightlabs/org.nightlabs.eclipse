@@ -26,13 +26,17 @@
 
 package org.nightlabs.base.ui.util;
 
+import java.awt.AWTException;
 import java.awt.Dimension;
+import java.awt.Robot;
 import java.awt.Toolkit;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IResource;
@@ -54,7 +58,6 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -117,19 +120,44 @@ public class RCPUtil
 	 */
 	public static void setButtonSelected(Composite parent, Button button)
 	{
-	  button.setSelection(true);
-	  Control[] children = parent.getChildren();
-	  for (int i = 0; i < children.length; i++) {
-	    if (!children[i].equals(button)) {
-	      if ( (((children[i].getStyle() & SWT.TOGGLE) != 0) || ((children[i].getStyle() & SWT.RADIO) != 0))
-	          && (children[i] instanceof Button) )
-	      {
-	        ((Button)children[i]).setSelection(false);
-	      }
-	    }
-	  }
+		button.setSelection(true);
+		Control[] children = parent.getChildren();
+		for (int i = 0; i < children.length; i++) {
+			if (!children[i].equals(button)) {
+				if ( (((children[i].getStyle() & SWT.TOGGLE) != 0) || ((children[i].getStyle() & SWT.RADIO) != 0))
+						&& (children[i] instanceof Button) )
+				{
+					((Button)children[i]).setSelection(false);
+				}
+			}
+		}
 	}
-	
+
+
+	/**
+	 * Returns wether the ViewPart with the given id is currently visble in
+	 * one of the pages of the active Workbench window. Will also return
+	 * true when the page-book containing this view is minimized.
+	 * 
+	 * @return buffered image of the current screen
+	 */
+
+	public static BufferedImage takeScreenShot() {
+		BufferedImage screenShot = null;
+//		take a screen shot and save a temp file on disk and then send it by email
+		Robot robot;
+
+		try {
+			robot = new Robot();
+			screenShot = robot.createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));					
+		} catch (AWTException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return screenShot;
+	}
+
+
 	/**
 	 * Returns wether the ViewPart with the given id is currently visble in
 	 * one of the pages of the active Workbench window. Will also return
@@ -149,7 +177,7 @@ public class RCPUtil
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Show/Hide all ViewActions of the given View.
 	 * 
@@ -192,7 +220,7 @@ public class RCPUtil
 		}
 		return visible;
 	}
-	
+
 	/**
 	 * Shows the view with the given viewID in all workbench-pages
 	 * 
@@ -209,7 +237,7 @@ public class RCPUtil
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Shows the view with the given viewID and
 	 * gives it focus.
@@ -330,9 +358,9 @@ public class RCPUtil
 				getActiveShell(),
 				Messages.getString("org.nightlabs.base.ui.util.RCPUtil.showConfirmOverwriteDialog.title"), //$NON-NLS-1$
 				String.format(Messages.getString("org.nightlabs.base.ui.util.RCPUtil.showConfirmOverwriteDialog.message"), new Object[] { fileName }) //$NON-NLS-1$
-			);
+		);
 	}
-	
+
 	/**
 	 * disposes the given Composite with all of its children
 	 * 
@@ -351,7 +379,7 @@ public class RCPUtil
 			}
 		}
 	}
-  
+
 	/**
 	 * Opens an editor with the given input and editorID and returns it.
 	 * 
@@ -365,7 +393,7 @@ public class RCPUtil
 	{
 		return getActiveWorkbenchPage().openEditor(input, editorID);
 	}
-  
+
 	/**
 	 * Opens an editor with the given input and editorID and returns it.
 	 * 
@@ -379,7 +407,7 @@ public class RCPUtil
 	{
 		return getActiveWorkbenchPage().openEditor(input, editorID, activate);
 	}
-	
+
 	/**
 	 * Finds the editor for the given input in the workbench's
 	 * active workbenchpage. Returns null if no editor for
@@ -438,7 +466,7 @@ public class RCPUtil
 			x = (((int)screenSize.getWidth()) - bounds.width) / 2;
 		if (bounds.height < screenSize.getHeight())
 			y = (((int)screenSize.getHeight()) - bounds.height) / 2;
-		
+
 		return new Point(x,y);
 	}
 
@@ -453,9 +481,9 @@ public class RCPUtil
 			layout.addPerspectiveShortcut(perspectives[i].getId());
 //		IConfigurationElement[] configPerspectives =  Platform.getExtensionRegistry().getConfigurationElementsFor("org.eclipse.ui.perspectives");
 //		for(int i = 0; i < configPerspectives.length; i++)
-//			layout.addPerspectiveShortcut(configPerspectives[i].getAttribute("id"));
+//		layout.addPerspectiveShortcut(configPerspectives[i].getAttribute("id"));
 	}
-	
+
 	/**
 	 * 
 	 * @param comp the Composite to set the Form Border for
@@ -465,7 +493,7 @@ public class RCPUtil
 	{
 		comp.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
 	}
-	
+
 	/**
 	 * sets the location of a dialog so that it apperas in the center of the screen
 	 * @param d the Dialog to center
@@ -478,38 +506,38 @@ public class RCPUtil
 		int diffHeight = screenSize.height - shellSize.y;
 		d.getShell().setLocation(diffWidth/2, diffHeight/2);
 	}
-	
-  /**
-   * checks if a IMenuManager with the given ID is contained in
-   * the given IMenuManager and returns it.
-   * 
-   * @param id the ID of the ContributionItem
-   * @param menuMan the MenuManager to search in
-   * @return the ContributionItem with the given ID or null if not contained
-   */
-  public static IContributionItem getMenuItem(String id, IMenuManager menuMan)
-  {
-  	if (menuMan != null) {
-    	IContributionItem[] menuItems = menuMan.getItems();
-    	for (int i=0; i<menuItems.length; i++) {
-    		IContributionItem menuItem = menuItems[i];
-    		if (menuItem != null && menuItem.getId() != null) {
-      		if (menuItem.getId().equals(id))
-      			return menuItem;
-    		}
-    	}
-  	}
-  	return null;
-  }
-  
-  /**
-   * Returns the either the active {@link IWorkbenchPage}
-   * or the first found. If none can be found <code>null</code>
-   * will be returned.
-   * 
-   * @return An {@link IWorkbenchPage} or null
-   */
-  public static IWorkbenchPage searchWorkbenchPage() {
+
+	/**
+	 * checks if a IMenuManager with the given ID is contained in
+	 * the given IMenuManager and returns it.
+	 * 
+	 * @param id the ID of the ContributionItem
+	 * @param menuMan the MenuManager to search in
+	 * @return the ContributionItem with the given ID or null if not contained
+	 */
+	public static IContributionItem getMenuItem(String id, IMenuManager menuMan)
+	{
+		if (menuMan != null) {
+			IContributionItem[] menuItems = menuMan.getItems();
+			for (int i=0; i<menuItems.length; i++) {
+				IContributionItem menuItem = menuItems[i];
+				if (menuItem != null && menuItem.getId() != null) {
+					if (menuItem.getId().equals(id))
+						return menuItem;
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Returns the either the active {@link IWorkbenchPage}
+	 * or the first found. If none can be found <code>null</code>
+	 * will be returned.
+	 * 
+	 * @return An {@link IWorkbenchPage} or null
+	 */
+	public static IWorkbenchPage searchWorkbenchPage() {
 		IWorkbenchWindow window = getActiveWorkbenchWindow();
 		if (window == null)
 			return null;
@@ -518,15 +546,15 @@ public class RCPUtil
 			return pages[0];
 		else
 			return null;
-  }
-  
-  /**
-   * Tries to find a reference for the given part somewhere in the Workbench and returns it.
-   * If a reference can not be found <code>null</code> will be returned.
-   * 
-   * @param part The part to search a reference for
-   */
-  public static IWorkbenchPartReference searchPartReference(IWorkbenchPart part) {
+	}
+
+	/**
+	 * Tries to find a reference for the given part somewhere in the Workbench and returns it.
+	 * If a reference can not be found <code>null</code> will be returned.
+	 * 
+	 * @param part The part to search a reference for
+	 */
+	public static IWorkbenchPartReference searchPartReference(IWorkbenchPart part) {
 		IWorkbenchWindow window = getActiveWorkbenchWindow();
 		if (window == null)
 			return null;
@@ -537,15 +565,15 @@ public class RCPUtil
 				return ref;
 		}
 		return null;
-  }
-	
-  /**
-   * logs all parents and its layoutData of the given control to the given logger
-   * 
-   * @param control the {@link Control} to log its parents
-   * @param logger the logger to log
-   * @param logLevel the logLevel to use
-   */
+	}
+
+	/**
+	 * logs all parents and its layoutData of the given control to the given logger
+	 * 
+	 * @param control the {@link Control} to log its parents
+	 * @param logger the logger to log
+	 * @param logLevel the logLevel to use
+	 */
 	public static void logControlParents(Control control, Logger logger, Level logLevel)
 	{
 		Composite parent = control.getParent();
@@ -558,8 +586,8 @@ public class RCPUtil
 			logControlParents(parent, logger, logLevel);
 		}
 	}
-	
-	
+
+
 	private static IProgressMonitor nullMonitor = new NullProgressMonitor();
 
 	/**
@@ -574,7 +602,7 @@ public class RCPUtil
 			return monitor;
 		return nullMonitor;
 	}
-	
+
 	public static boolean isDisplayThread() {
 		return Display.getDefault().getThread().equals(Thread.currentThread());
 	}
@@ -589,7 +617,7 @@ public class RCPUtil
 	{
 		return new File(ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString());
 	}
-	
+
 	/**
 	 * Returns a {@link File} representation of the given {@link IResource}.
 	 * 
@@ -599,7 +627,7 @@ public class RCPUtil
 	public static File getResourceAsFile(IResource resource) {
 		return new File(resource.getWorkspace().getRoot().getLocation().toFile(), resource.getFullPath().toOSString());
 	}
-	
+
 	/**
 	 * Sets the font of the given Control to its old font adding/removing the given styles.
 	 * So, for example, to maket the text bold do:
@@ -621,7 +649,7 @@ public class RCPUtil
 				oldFont.getFontData()[0].getName(),
 				oldFont.getFontData()[0].getHeight(),
 				newStyle
-			);
+		);
 		control.setFont(newFont);
 		control.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
@@ -629,7 +657,7 @@ public class RCPUtil
 			}
 		});
 	}
-	
+
 	/**
 	 * clears the workspace folder
 	 * @param ask determines if the user should be asked before
@@ -645,7 +673,7 @@ public class RCPUtil
 		File workspace = Platform.getLocation().toFile();
 		IOUtil.deleteDirectoryRecursively(workspace);
 	}
-	
+
 	/**
 	 * Adds a new {@link org.eclipse.ui.internal.layout.IWindowTrim}
 	 * to the {@link org.eclipse.ui.internal.layout.TrimLayout} of the given shell
@@ -692,16 +720,16 @@ public class RCPUtil
 			comp.setVisible(true);
 		}
 	}
-	
+
 	/**
 	 * Used internally for the TableLayout workaround.
 	 */
 	private static class WorkaroundTableLayout
-		extends TableLayout
+	extends TableLayout
 	{
 		private List<ColumnLayoutData> originalData;
 		private List<ColumnPixelData> pixelData = null;
-		
+
 		/**
 		 * @param originalData
 		 */
@@ -718,12 +746,12 @@ public class RCPUtil
 				addColumnData(pData);
 			}				
 		}
-		
+
 		public List<ColumnLayoutData> getOriginalData()
 		{
 			return originalData;
 		}
-		
+
 		@Override
 		public void layout(Composite c, boolean flush)
 		{
@@ -733,7 +761,7 @@ public class RCPUtil
 			//       BUT with this fix, the table width always matches perfectly. (marius) 
 			final int verticalScrollBarWidth = c.getVerticalBar().getSize().y;
 			final int width = c.getClientArea().width - verticalScrollBarWidth; 
-			
+
 			if (width > 1)
 			{
 				setPixelData(originalData, pixelData, width);
@@ -762,7 +790,7 @@ public class RCPUtil
 			}
 		}
 	}
-	
+
 	/**
 	 * Delegates to {@link #workaroundFormTableLayout(Table, boolean)} with 
 	 * <code>doLayout = false</code>.
@@ -775,7 +803,7 @@ public class RCPUtil
 	{
 		workaroundFormTableLayout(table, false);
 	}
-	
+
 	/**
 	 * Workaround method to apply normal {@link ColumnLayoutData}s to a table used in a {@link org.eclipse.ui.forms.widgets.Form} with GridLayout.
 	 * This prevents the table to calculate a wrong size in a {@link org.eclipse.ui.forms.widgets.Form} and to let the Section grow on every resize.
@@ -791,9 +819,9 @@ public class RCPUtil
 				!(table.getLayout() instanceof TableLayout) &&
 				!(table.getLayout() instanceof WorkaroundTableLayout) &&
 				!(table.getLayout() instanceof WeightedTableLayout)
-			)
+		)
 			return; // The table does not have a TableLayout set.
-		
+
 		List<ColumnLayoutData> lData = null;
 		if (table.getLayout() instanceof WorkaroundTableLayout) {
 			lData = ((WorkaroundTableLayout)table.getLayout()).getOriginalData();
@@ -819,47 +847,47 @@ public class RCPUtil
 		}
 		final WorkaroundTableLayout tableLayout =
 			new WorkaroundTableLayout(new ArrayList<ColumnLayoutData>(lData));
-		
+
 		table.setLayout(tableLayout);
 //		final List<ColumnLayoutData> layoutData = lData;
 //		final List<ColumnPixelData> pixelData = new ArrayList<ColumnPixelData>(layoutData.size());
 //		for (int i=0; i < layoutData.size(); i++)
 //		{
-//			// set min size of 10 pixels per column
-//			final ColumnPixelData pData = new ColumnPixelData(10);
-//			pixelData.add(pData);
-//			tableLayout.addColumnData(pData);
+//		// set min size of 10 pixels per column
+//		final ColumnPixelData pData = new ColumnPixelData(10);
+//		pixelData.add(pData);
+//		tableLayout.addColumnData(pData);
 //		}
 //		// in case the table hasn't been layouted yet, this width is 0 and the WorkaroundTableLayout 
 //		// has to set correct pixel datas on layout call. 
 //		final int clientWidth = table.getClientArea().width;
 //		if (clientWidth != 0)
 //		{
-//			setPixelData(layoutData, pixelData, clientWidth);			
+//		setPixelData(layoutData, pixelData, clientWidth);			
 //		}
 //		table.addControlListener(new ControlAdapter() {
-//			public void controlResized(final ControlEvent e) {
-//				setPixelData(layoutData, pixelData, table.getClientArea().width);
-//				try {
-//					final Field firstTimeField = TableLayout.class.getDeclaredField("firstTime");
-//					firstTimeField.setAccessible(true);
-//					firstTimeField.set(tableLayout, true);
-//				} catch (final Exception ex) {
-//					table.layout(true, true);
-//					return; // well, the workaround broke.
-//				}
-//				table.layout(true, true);
-//			}
+//		public void controlResized(final ControlEvent e) {
+//		setPixelData(layoutData, pixelData, table.getClientArea().width);
+//		try {
+//		final Field firstTimeField = TableLayout.class.getDeclaredField("firstTime");
+//		firstTimeField.setAccessible(true);
+//		firstTimeField.set(tableLayout, true);
+//		} catch (final Exception ex) {
+//		table.layout(true, true);
+//		return; // well, the workaround broke.
+//		}
+//		table.layout(true, true);
+//		}
 //		});
 		if (doLayout) {
 			table.layout(true, true);
 		}
 	}
-	
+
 	private static void setPixelData(
-		List<ColumnLayoutData> layoutData,
-		List<ColumnPixelData> pixelDatas,
-		int clientWidth
+			List<ColumnLayoutData> layoutData,
+			List<ColumnPixelData> pixelDatas,
+			int clientWidth
 	) {
 		int clientRest = clientWidth - 25;
 		int weightSum = 0;
