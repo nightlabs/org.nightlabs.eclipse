@@ -6,7 +6,6 @@ import org.nightlabs.config.ConfigModule;
 public class ScreenShotCfMod extends ConfigModule {
 
 	private static final long serialVersionUID = 1L;
-
 	protected boolean screenShotAllowed =false;
 
 	public ScreenShotCfMod() { }
