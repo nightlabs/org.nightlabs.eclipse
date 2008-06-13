@@ -444,7 +444,7 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 	 */
 	protected boolean includeFixForVerticalScrolling()
 	{
-		return false;
+		return true;
 	}
 
 	/**
