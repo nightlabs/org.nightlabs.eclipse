@@ -6,23 +6,22 @@ import org.nightlabs.config.ConfigModule;
 public class ScreenShotCfMod extends ConfigModule {
 
 	private static final long serialVersionUID = 1L;
-	protected boolean screenShotAllowed =false;
+	protected boolean screenShotAllowed = false;
 
 	public ScreenShotCfMod() { }
-
 	/**
 	 * @return a boolean value if screenShot is allowed or no. 
 	 */
-	public boolean getScreenShotAllowed() {
+	public boolean getConfigScreenShotAllowed() {
 		return screenShotAllowed;
 	}
 	/**
-	 * setScreenShotAllowed.
-	 * See {@link #getScreenShotAllowed()()}.
+	 * setConfigScreenShotAllowed.
+	 * See {@link #getConfigScreenShotAllowed()()}.
 	 * 
 	 * @param allowed if a screenshot option is  allowed or no.
 	 */
-	public void setScreenShotAllowed(boolean allowed) {
+	public void setConfigScreenShotAllowed(boolean allowed) {
 		this.screenShotAllowed = allowed;
 		setChanged();
 	}
