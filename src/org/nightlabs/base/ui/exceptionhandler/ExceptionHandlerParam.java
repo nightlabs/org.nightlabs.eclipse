@@ -24,7 +24,7 @@ public class ExceptionHandlerParam {
 	 * @param triggerException The Exception that caused the caller
 	 *                         to pick this particular handler so this always should be
 	 *                         the Exception type the handler was registered on.                         
-  */	
+	 */	
 	public ExceptionHandlerParam(Thread thread, Throwable thrownException, Throwable triggerException)
 	{
 		this.thread = thread;
