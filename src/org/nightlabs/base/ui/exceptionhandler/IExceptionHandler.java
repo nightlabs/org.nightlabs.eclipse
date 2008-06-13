@@ -44,5 +44,5 @@ public interface IExceptionHandler {
 	 *                         the Exception type the handler was registered on.
 	 * @return <code>true</code> if this handler handled the exception; <code>false</code> if this handler decided not to handle it. 
 	 */
-	public boolean handleException(Thread thread, Throwable thrownException, Throwable triggerException);
+	public boolean handleException(ExceptionHandlerParam handlerParam);
 }

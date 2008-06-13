@@ -39,6 +39,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.swt.widgets.Display;
 import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
+import org.nightlabs.base.ui.util.RCPUtil;
 
 /**
  * Maintains a Map of {@link IExceptionHandler} and is able
@@ -309,7 +310,10 @@ public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 							while (true) {
 								skipItems.add(searchResult.getExceptionHandlerRegistryItem());
 								IExceptionHandler handler = searchResult.getExceptionHandlerRegistryItem().getExceptionHandler();
-								handled = handler.handleException(thread,exception, searchResult.getTriggerException());
+							
+								ExceptionHandlerParam exceptionParam = new ExceptionHandlerParam(thread,exception, searchResult.getTriggerException()); 
+								exceptionParam.setErrorScreenShot(RCPUtil.takeScreenShot());
+								handled = handler.handleException(exceptionParam);
 								if (handled)
 									break;
 

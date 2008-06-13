@@ -9,9 +9,9 @@ public class SimpleExceptionHandler implements IExceptionHandler
 	}
 
 	@Override
-	public boolean handleException(Thread thread, Throwable thrownException, Throwable triggerException)
+	public boolean handleException(ExceptionHandlerParam handlerParam)
 	{
-		ErrorDialogFactory.showError(DefaultErrorDialog.class, null, message, thrownException, triggerException);
+		ErrorDialogFactory.showError(DefaultErrorDialog.class, null, message,handlerParam);
 		return true;
 	}
 }

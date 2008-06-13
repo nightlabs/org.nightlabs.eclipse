@@ -61,12 +61,12 @@ public abstract class ErrorDialogFactory
 	 * @return <code>true</code> if the error could successfully be shown -
 	 * 		<code>false</code> otherwise.
 	 */
-	public static boolean showError(Class<? extends IErrorDialog> dialogClass, String dialogTitle, String message, Throwable thrownException, Throwable triggerException)
+	public static boolean showError(Class<? extends IErrorDialog> dialogClass, String dialogTitle, String message, ExceptionHandlerParam exceptionHandlerParam)
 	{
 		IErrorDialog dialog = getErrorDialog(dialogClass);
 		if(dialog == null)
 			return false;
-		dialog.showError(dialogTitle, message, thrownException, triggerException);
+		dialog.showError(dialogTitle, message, exceptionHandlerParam);
 		dialog.open();
 		return true;
 	}

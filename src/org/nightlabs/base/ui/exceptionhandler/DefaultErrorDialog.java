@@ -73,10 +73,16 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 
 	private static final int ERROR_TABLE_HEIGHT_HINT = 180;
 
+	
+	
 	private static final int STACK_TRACE_LINE_COUNT = 15;
 
 	protected static final int SEND_ERROR_REPORT_ID = IDialogConstants.CLIENT_ID + 1;
 
+	private ExceptionHandlerParam exceptHandlerParam;
+	
+	
+	
 	/**
 	 * Dialog title (a localized string).
 	 */
@@ -104,11 +110,12 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 	}
 
 	@Override
-	public void showError(String dialogTitle, String message, Throwable thrownException, Throwable triggerException)
+	public void showError(String dialogTitle, String message,  ExceptionHandlerParam exceptionHandlerParam)
 	{
 		this.title = dialogTitle == null ? JFaceResources.getString("Problem_Occurred") : dialogTitle; //$NON-NLS-1$
-
-		ErrorItem errorItem = creatErrorItem(dialogTitle, message, thrownException, triggerException);
+		exceptHandlerParam = exceptionHandlerParam;
+		
+		ErrorItem errorItem = creatErrorItem(dialogTitle, message, exceptHandlerParam.getThrownException(), exceptHandlerParam.getTriggerException());
 		errorList.add(errorItem);
 		if(errorTable != null) {
 			errorTable.refresh();
@@ -164,24 +171,6 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 				else
 					errorReport.addThrowablePair(error.getThrownException(), error.getTriggerException());
 			}
-
-//			take a screen shot and save a temp file on disk and then send it by email
-
-			Robot robot;
-			try {
-				robot = new Robot();
-				BufferedImage screenShot = robot.createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));					
-				File temp = File.createTempFile(errorReport.getFirstThrowable().getClass().getSimpleName(), ".jpg");    
-				// Delete temp file when program exits.
-				temp.deleteOnExit();	
-				ImageIO.write(screenShot, "JPG",temp);
-				errorReport.setScreenshotFileName(temp.getAbsolutePath());
-			} catch (AWTException e) {
-				logger.error("There occured an error during taking the scrrenshot for the error report", e);
-			} catch (IOException e) {
-				logger.error("There occured an error during taking the screenshot for the error report", e);
-			}
-
 			ErrorReportWizardDialog dlg = new ErrorReportWizardDialog(errorReport);
 			okPressed();
 			dlg.open();

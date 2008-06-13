@@ -40,11 +40,11 @@ public class ThrowableHandler implements IExceptionHandler
 	private static final Logger logger = Logger.getLogger(ThrowableHandler.class);
 	
 	@Override
-	public boolean handleException(Thread thread, Throwable thrownException,	Throwable triggerException)
+	public boolean handleException(ExceptionHandlerParam handlerParam)
 	{
 		try {
 //			logger.error("ThrowableHandler handling an error!", thrownException); //$NON-NLS-1$ // already logged by ExceptionHandlerRegistry
-			ErrorDialogFactory.showError(DefaultErrorDialog.class, null, null, thrownException, triggerException);
+			ErrorDialogFactory.showError(DefaultErrorDialog.class, null, null, handlerParam);
 		} catch (Throwable error) {
 			logger.fatal("While handling an exception, another one occured!", error); //$NON-NLS-1$
 		}

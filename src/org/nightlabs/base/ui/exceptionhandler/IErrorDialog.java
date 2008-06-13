@@ -13,11 +13,9 @@ public interface IErrorDialog
 	 * Show an error in this error dialog.
 	 * @param dialogTitle The dialog title
 	 * @param message The error message
-	 * @param thrownException The thrown exception
-	 * @param triggerException The exception that triggered the
-	 * 		corresponding error handler
+	 * @param ExceptionHandlerParam  The thrown exception
 	 */
-	public void showError(String dialogTitle, String message, Throwable thrownException, Throwable triggerException);
+	public void showError(String dialogTitle, String message, ExceptionHandlerParam handlerParam);
 	
 	/**
 	 * Open the error dialog.
