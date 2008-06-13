@@ -78,6 +78,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.nightlabs.base.ui.composite.ChildStatusController;
 import org.nightlabs.base.ui.composite.XComposite;
+import org.nightlabs.base.ui.entity.editor.EntityEditorController;
 import org.nightlabs.base.ui.form.AbstractBaseFormPage;
 import org.nightlabs.base.ui.layout.WeightedTableLayout;
 import org.nightlabs.base.ui.resource.Messages;
@@ -87,6 +88,11 @@ import org.nightlabs.util.IOUtil;
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
  * @author Marco Schulze - marco at nightlabs dot de
  */
+
+
+
+
+
 public class RCPUtil
 {
 	/**
@@ -102,6 +108,14 @@ public class RCPUtil
 	 * @param comp The parent control
 	 * @param enabled The enabled flag to set
 	 */
+
+	
+	/**
+	 * LOG4J logger used by this class
+	 */
+	private static final Logger logger = Logger.getLogger( RCPUtil.class);
+	
+	
 	public static void setControlEnabledRecursive(Composite comp, boolean enabled) {
 		comp.setEnabled(enabled);
 		Control[] children = comp.getChildren();
@@ -151,9 +165,9 @@ public class RCPUtil
 			robot = new Robot();
 			screenShot = robot.createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));					
 		} catch (AWTException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("There occured an error during taking the scrrenshot for the error report", e);
 		}
+	
 		return screenShot;
 	}
 
