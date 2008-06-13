@@ -30,13 +30,12 @@ import java.awt.AWTException;
 import java.awt.Dimension;
 import java.awt.Robot;
 import java.awt.Toolkit;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IResource;
@@ -58,6 +57,7 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -76,9 +76,6 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.nightlabs.base.ui.composite.ChildStatusController;
-import org.nightlabs.base.ui.composite.XComposite;
-import org.nightlabs.base.ui.entity.editor.EntityEditorController;
 import org.nightlabs.base.ui.form.AbstractBaseFormPage;
 import org.nightlabs.base.ui.layout.WeightedTableLayout;
 import org.nightlabs.base.ui.resource.Messages;
@@ -88,11 +85,6 @@ import org.nightlabs.util.IOUtil;
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
  * @author Marco Schulze - marco at nightlabs dot de
  */
-
-
-
-
-
 public class RCPUtil
 {
 	/**
@@ -149,13 +141,8 @@ public class RCPUtil
 
 
 	/**
-	 * Returns wether the ViewPart with the given id is currently visble in
-	 * one of the pages of the active Workbench window. Will also return
-	 * true when the page-book containing this view is minimized.
-	 * 
 	 * @return buffered image of the current screen
 	 */
-
 	public static BufferedImage takeScreenShot() {
 		BufferedImage screenShot = null;
 //		take a screen shot and save a temp file on disk and then send it by email
@@ -163,7 +150,8 @@ public class RCPUtil
 
 		try {
 			robot = new Robot();
-			screenShot = robot.createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));					
+			screenShot = robot.createScreenCapture(
+					new java.awt.Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));					
 		} catch (AWTException e) {
 			logger.error("There occured an error during taking the scrrenshot for the error report", e);
 		}
@@ -173,12 +161,12 @@ public class RCPUtil
 
 
 	/**
-	 * Returns wether the ViewPart with the given id is currently visble in
+	 * Returns whether the ViewPart with the given id is currently visible in
 	 * one of the pages of the active Workbench window. Will also return
 	 * true when the page-book containing this view is minimized.
 	 * 
 	 * @param viewID The id of the view to be queried
-	 * @return Wether the view is visible
+	 * @return Whether the view is visible
 	 */
 	public static boolean isViewVisible(String viewID) {
 //		IWorkbenchPage[] pages = Workbench.getInstance().getActiveWorkbenchWindow().getPages();
