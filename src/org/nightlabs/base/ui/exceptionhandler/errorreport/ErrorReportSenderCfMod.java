@@ -30,21 +30,17 @@ import org.nightlabs.config.ConfigModule;
 import org.nightlabs.config.InitException;
 
 /**
- * @author Simon Lehmann - simon@nightlabs.de
+ * @author Simon Lehmann - simon at nightlabs dot de
+ * @author marco schulze - marco at nightlabs dot de
  */
 public class ErrorReportSenderCfMod extends ConfigModule
 {
 	private static final long serialVersionUID = 1L;
 	
 	private String errorReportSenderClass;
+	private boolean attachScreenShotToErrorReport_default;
+	private boolean attachScreenShotToErrorReport_decide;
 	
-	public ErrorReportSenderCfMod()
-	{
-	}
-
-	/**
-	 * @see org.nightlabs.config.ConfigModule#init()
-	 */
 	@Override
 	public void init() throws InitException
 	{
@@ -59,6 +55,42 @@ public class ErrorReportSenderCfMod extends ConfigModule
 	public void setErrorReportSenderClass(String errorReportSenderClass)
 	{
 		this.errorReportSenderClass = errorReportSenderClass;
+		setChanged();
+	}
+
+	/**
+	 * Is the user allowed to override the default value specified by {@link #isAttachScreenShotToErrorReport_default()}?
+	 *
+	 * @return whether the user is allowed to decide about sending a screen shot.
+	 */
+	public boolean isAttachScreenShotToErrorReport_decide() {
+		return attachScreenShotToErrorReport_decide;
+	}
+	/**
+	 * Set whether the user is allowed to override the default value specified by {@link #isAttachScreenShotToErrorReport_default()}.
+	 *
+	 * @param attachScreenShotToErrorReport_decide whether the user is allowed to decide (or must take the default value).
+	 */
+	public void setAttachScreenShotToErrorReport_decide(boolean attachScreenShotToErrorReport_decide) {
+		this.attachScreenShotToErrorReport_decide = attachScreenShotToErrorReport_decide;
+		setChanged();
+	}
+
+	/**
+	 * Send a screen shot by default?
+	 *
+	 * @return the default value.
+	 */
+	public boolean isAttachScreenShotToErrorReport_default() {
+		return attachScreenShotToErrorReport_default;
+	}
+	/**
+	 * Set the default value, whether to send a screen shot.
+	 *
+	 * @param attachScreenShotToErrorReport_default the new default value.
+	 */
+	public void setAttachScreenShotToErrorReport_default(boolean attachScreenShotToErrorReport_default) {
+		this.attachScreenShotToErrorReport_default = attachScreenShotToErrorReport_default;
 		setChanged();
 	}
 }
