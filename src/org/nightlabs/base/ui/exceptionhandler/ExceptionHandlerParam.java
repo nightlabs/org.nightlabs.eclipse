@@ -108,5 +108,5 @@ public class ExceptionHandlerParam {
 	public void setErrorScreenShot(BufferedImage errorScreenShot) {
 		this.errorScreenShot = errorScreenShot;
 	}
-	
+
 }
