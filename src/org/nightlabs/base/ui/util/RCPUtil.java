@@ -233,7 +233,6 @@ public class RCPUtil
 	 * 
 	 * @return Image of the new resized Image
 	 */	
-
 	public static Image resize(Image image, int width, int height) {
 		Image scaled = new Image(Display.getDefault(), width, height);
 		GC gc = new GC(scaled);
