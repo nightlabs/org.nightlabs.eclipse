@@ -48,7 +48,8 @@ public class ErrorReportWizard extends DynamicPathWizard
 	private ErrorReportWizardEntryPage entryPage;
 	private ErrorReportWizardCommentPage sendExceptionPage;
 	private ErrorReportWizardSummaryPage exceptionSummaryPage;
-
+	private ErrorReportWizardScreenShotPage ScreenShotPage;
+	
 	/**
 	 * @param errorReport A raw <tt>ErrorReport</tt>. It will be populated with user comment
 	 * and other data by this wizard.
@@ -58,9 +59,12 @@ public class ErrorReportWizard extends DynamicPathWizard
 		this.errorReport = errorReport;
 		entryPage = new ErrorReportWizardEntryPage();
 		sendExceptionPage = new ErrorReportWizardCommentPage();
+		ScreenShotPage = new ErrorReportWizardScreenShotPage();
 		exceptionSummaryPage = new ErrorReportWizardSummaryPage();
+		
 		addPage(entryPage);
 		addPage(sendExceptionPage);
+		addPage(ScreenShotPage);
 		addPage(exceptionSummaryPage);
 	}
 

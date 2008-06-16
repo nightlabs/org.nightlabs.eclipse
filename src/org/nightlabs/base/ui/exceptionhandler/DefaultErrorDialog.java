@@ -113,7 +113,7 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 	public void showError(String dialogTitle, String message,  ExceptionHandlerParam exceptionHandlerParam)
 	{
 		this.title = dialogTitle == null ? JFaceResources.getString("Problem_Occurred") : dialogTitle; //$NON-NLS-1$
-		exceptHandlerParam = exceptionHandlerParam;
+		this.exceptHandlerParam = exceptionHandlerParam;
 		
 		ErrorItem errorItem = creatErrorItem(dialogTitle, message, exceptHandlerParam.getThrownException(), exceptHandlerParam.getTriggerException());
 		errorList.add(errorItem);
@@ -171,6 +171,10 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 				else
 					errorReport.addThrowablePair(error.getThrownException(), error.getTriggerException());
 			}
+			
+			if(this.exceptHandlerParam.getErrorScreenShot() != null)
+			errorReport.setErrorScreenshot(this.exceptHandlerParam.getErrorScreenShot());
+			
 			ErrorReportWizardDialog dlg = new ErrorReportWizardDialog(errorReport);
 			okPressed();
 			dlg.open();

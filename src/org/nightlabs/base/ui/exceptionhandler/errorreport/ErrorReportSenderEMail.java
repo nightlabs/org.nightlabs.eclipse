@@ -26,11 +26,14 @@
 
 package org.nightlabs.base.ui.exceptionhandler.errorreport;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
+import javax.imageio.ImageIO;
 import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.Multipart;
@@ -67,6 +70,8 @@ public class ErrorReportSenderEMail implements ErrorReportSender
 	 */
 	public void sendErrorReport(ErrorReport errorReport)
 	{
+
+		File tempscreenshot;
 		try {
 			ErrorReportEMailCfMod cfMod = Config.sharedInstance().createConfigModule(ErrorReportEMailCfMod.class);
 			Properties props = new Properties();
@@ -85,7 +90,7 @@ public class ErrorReportSenderEMail implements ErrorReportSender
 
 			msg.setSubject(errorReport.getFirstThrowable().getClass().getSimpleName() +  " " + errorReport.getTimeAsString()); //$NON-NLS-1$
 
-			if(errorReport.getScreenshotFileName() != null)
+			if(errorReport.getErrorScreenshot() != null)
 			{
 				// create the message part 
 				MimeBodyPart messageBodyPart = 
@@ -95,11 +100,27 @@ public class ErrorReportSenderEMail implements ErrorReportSender
 
 				// Part two is attachment
 				MimeBodyPart attachBodyPart = new MimeBodyPart();
-				DataSource source = 
-					new FileDataSource(errorReport.getScreenshotFileName());
-				attachBodyPart.setDataHandler(
-						new DataHandler(source));
-				attachBodyPart.setFileName(errorReport.getScreenshotFileName());
+
+				//	Create the screenShot on a file and delete on exit
+				try {
+					// Create temp file.
+					tempscreenshot = File.createTempFile("screenShot", ".jpg");    
+					// Delete temp file when program exits.
+					tempscreenshot.deleteOnExit();
+					ImageIO.write(errorReport.getErrorScreenshot(), "JPG",tempscreenshot);
+
+					DataSource source = 
+						new FileDataSource(tempscreenshot.getAbsolutePath());
+					attachBodyPart.setDataHandler(
+							new DataHandler(source));
+					attachBodyPart.setFileName(tempscreenshot.getAbsolutePath());
+
+				} catch (IOException e) {
+
+					logger.fatal("Couldnt save the screenshot on disk.", e); //$NON-NLS-1$
+
+				}
+
 
 				Multipart multipart = new MimeMultipart();
 				multipart.addBodyPart(messageBodyPart);

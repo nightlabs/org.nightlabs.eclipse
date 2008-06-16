@@ -26,6 +26,7 @@
 
 package org.nightlabs.base.ui.exceptionhandler.errorreport;
 
+import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -54,8 +55,8 @@ implements Serializable
 //	Tobias: replaced by collection of ExceptionPair in order to provide error reports of multiple exceptions.
 
 	private String userComment;
-	private String screenshotFileName = null;
 	private Properties systemProperties;
+	private BufferedImage errorScreenShot = null;
 	private Date time;
 
 	private List<CauseEffectThrowablePair> throwablePairList;
@@ -181,16 +182,14 @@ implements Serializable
 	/* 
 	 * * @param userComment The userComment to set.
 	 */
-
-
-	public void setScreenshotFileName(String filename)
+	public void setErrorScreenshot(BufferedImage errorScreenShot)
 	{
-		screenshotFileName = filename;
+		this.errorScreenShot = errorScreenShot;
 	}
 
-	public String getScreenshotFileName()
+	public BufferedImage  getErrorScreenshot()
 	{
-		return screenshotFileName;
+		return this.errorScreenShot;
 	}
 
 
