@@ -1,6 +1,8 @@
 package org.nightlabs.base.ui.exceptionhandler.errorreport;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.layout.GridData;
@@ -22,7 +24,7 @@ public class ErrorReportWizardScreenShotPage extends DynamicPathWizardPage {
 
 	public ErrorReportWizardScreenShotPage() {
 
-		super(ErrorReportWizardScreenShotPage.class.getName(), "ScreenShot"); 
+		super(ErrorReportWizardScreenShotPage.class.getName(), "Send an error report"); 
 
 		// TODO Auto-generated constructor stub
 	}
@@ -32,21 +34,30 @@ public class ErrorReportWizardScreenShotPage extends DynamicPathWizardPage {
 		// TODO Auto-generated method stub
 
 		XComposite page = new XComposite(parent, SWT.NONE, LayoutMode.TIGHT_WRAPPER);
-
+		
+		Label titleLabel = new Label(page, SWT.WRAP);
+		titleLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		titleLabel.setText("Attach a screenshot of the Error"); 
+		
 		screenshotImage = new Label(page, SWT.WRAP);
 		screenshotImage.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		Button sendScreenShotCheckBox = new Button(page, SWT.CHECK);
 		sendScreenShotCheckBox.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		sendScreenShotCheckBox.setText("Attach the Above ScreenShot in the Report");
+		sendScreenShotCheckBox.addSelectionListener(new SelectionListener() {
+		      public void widgetSelected(SelectionEvent arg0) {
+		    	  setIsSendscreenshotImage(!getIsSendsScreenshotImage());
+		      }
 
+		      public void widgetDefaultSelected(SelectionEvent arg0) {
+		      }
+		    });		    
 
 		ErrorReportSenderCfMod cfMod = Config.sharedInstance().createConfigModule(ErrorReportSenderCfMod.class);
-
 		sendScreenShotCheckBox.setSelection(cfMod.isAttachScreenShotToErrorReport_default());
 
 		sendScreenShotCheckBox.setToolTipText("decides whether to Attach the ScreenShot in the Error Report E-Mail");
-
 		if(!cfMod.isAttachScreenShotToErrorReport_decide())
 		{
 			sendScreenShotCheckBox.setEnabled(false);
@@ -55,7 +66,6 @@ public class ErrorReportWizardScreenShotPage extends DynamicPathWizardPage {
 		}		
 		
 		setIsSendscreenshotImage(sendScreenShotCheckBox.getSelection());
-		
 		return page;
 	}
 
