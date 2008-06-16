@@ -230,14 +230,19 @@ public class RCPUtil
 
 	/**
 	 *this method Resizes an Image SWT 
-	 * 
+	 * @param image to resize
+	 * @param width, height new desired Image Size
+	 * @param highQuality if the resize should be high quality thus slower
 	 * @return Image of the new resized Image
 	 */	
-	public static Image resize(Image image, int width, int height) {
+	public static Image resize(Image image, int width, int height,Boolean highQuality) {
 		Image scaled = new Image(Display.getDefault(), width, height);
 		GC gc = new GC(scaled);
-		//gc.setAntialias(SWT.ON);
-		//gc.setInterpolation(SWT.HIGH);
+		if(highQuality)
+		{
+			gc.setAntialias(SWT.ON);
+			gc.setInterpolation(SWT.HIGH);
+		}
 		gc.drawImage(image, 0, 0,
 				image.getBounds().width, image.getBounds().height,
 				0, 0, width, height);
