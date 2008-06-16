@@ -57,6 +57,7 @@ implements Serializable
 	private String userComment;
 	private Properties systemProperties;
 	private BufferedImage errorScreenShot = null;
+	private Boolean IsSendScreenShot = false;
 	private Date time;
 
 	private List<CauseEffectThrowablePair> throwablePairList;
@@ -293,5 +294,13 @@ implements Serializable
 	public static String getTimeAsString(Date time)
 	{
 		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time); //$NON-NLS-1$
+	}
+
+	public Boolean getIsSendScreenShot() {
+		return IsSendScreenShot;
+	}
+
+	public void setIsSendScreenShot(Boolean sendScreenShot) {
+		this.IsSendScreenShot = sendScreenShot;
 	}
 }

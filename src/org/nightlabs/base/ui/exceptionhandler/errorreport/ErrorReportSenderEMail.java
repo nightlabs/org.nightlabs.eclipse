@@ -90,7 +90,7 @@ public class ErrorReportSenderEMail implements ErrorReportSender
 
 			msg.setSubject(errorReport.getFirstThrowable().getClass().getSimpleName() +  " " + errorReport.getTimeAsString()); //$NON-NLS-1$
 
-			if(errorReport.getErrorScreenshot() != null)
+			if(errorReport.getIsSendScreenShot() != null && errorReport.getIsSendScreenShot())
 			{
 				// create the message part 
 				MimeBodyPart messageBodyPart = 
@@ -116,11 +116,8 @@ public class ErrorReportSenderEMail implements ErrorReportSender
 					attachBodyPart.setFileName(tempscreenshot.getAbsolutePath());
 
 				} catch (IOException e) {
-
 					logger.fatal("Couldnt save the screenshot on disk.", e); //$NON-NLS-1$
-
 				}
-
 
 				Multipart multipart = new MimeMultipart();
 				multipart.addBodyPart(messageBodyPart);

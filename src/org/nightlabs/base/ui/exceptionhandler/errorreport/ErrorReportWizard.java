@@ -93,6 +93,8 @@ public class ErrorReportWizard extends DynamicPathWizard
 				throw new ClassCastException(
 						"Invalid configuration parameter in \"" + ErrorReportSenderCfMod.class + "\": Class \"" + cfMod.getErrorReportSenderClass() + "\" does not implement interface \""+ErrorReportSender.class.getName()+"\"!");  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
+			errorReport.setIsSendScreenShot(ScreenShotPage.getIsSendsScreenshotImage());
+			
 			ErrorReportSender sender = (ErrorReportSender) clazz.newInstance();
 			sender.sendErrorReport(errorReport);
 			return true;
