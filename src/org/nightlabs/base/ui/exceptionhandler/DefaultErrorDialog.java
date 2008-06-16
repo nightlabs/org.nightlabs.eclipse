@@ -173,7 +173,7 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 			}
 			
 			if(this.exceptHandlerParam.getErrorScreenShot() != null)
-			errorReport.setErrorScreenshot(this.exceptHandlerParam.getErrorScreenShot());
+				errorReport.setErrorScreenshot(this.exceptHandlerParam.getErrorScreenShot());
 			
 			ErrorReportWizardDialog dlg = new ErrorReportWizardDialog(errorReport);
 			okPressed();
