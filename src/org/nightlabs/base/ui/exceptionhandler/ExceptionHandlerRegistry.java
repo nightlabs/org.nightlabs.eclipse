@@ -337,6 +337,7 @@ public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 						} catch (Throwable x) {
 							logger.fatal("Exception occured while handling exception on GUI thread!", x); //$NON-NLS-1$
 						}
+			
 					}
 				};
 

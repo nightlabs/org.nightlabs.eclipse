@@ -31,7 +31,6 @@ import java.awt.Dimension;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
 import java.awt.image.DirectColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.WritableRaster;
@@ -153,25 +152,25 @@ public class RCPUtil
 	/**
 	 * @return buffered image of the current screen
 	 */
-	public static BufferedImage takeScreenShot() {
+	public static BufferedImage takeScreenShot() throws AWTException {
 		BufferedImage screenShot = null;
 //		take a screen shot and save a temp file on disk and then send it by email
 		Robot robot;
-		try {
+		org.eclipse.swt.graphics.Rectangle rect;
 
-			Display display = Display.getCurrent();
-			if (display == null)
-				throw new IllegalStateException("This method must be called on the SWT UI thread!");
-			else
-				for (Shell shell : display.getShells())
-					shell.redraw();
-			display.readAndDispatch();		
-			robot = new Robot();
-			screenShot = robot.createScreenCapture(
-					new java.awt.Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));					
-		} catch (AWTException e) {
-			logger.error("There occured an error during taking the scrrenshot for the error report", e);
-		}
+		Display display = Display.getCurrent();
+		if (display == null)
+			throw new IllegalStateException("This method must be called on the SWT UI thread!");
+		else
+			for (Shell shell : display.getShells())
+				shell.redraw();
+		display.readAndDispatch();		
+		robot = new Robot();
+
+		rect = display.getActiveShell().getBounds();
+		//Toolkit.getDefaultToolkit().getScreenSize()
+		screenShot = robot.createScreenCapture(
+				new java.awt.Rectangle(rect.x,rect.y,rect.width,rect.height));					
 
 		return screenShot;
 	}
