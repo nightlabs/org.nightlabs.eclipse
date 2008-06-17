@@ -37,7 +37,10 @@ import java.awt.image.WritableRaster;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Vector;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -84,6 +87,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.internal.Workbench;
 import org.nightlabs.base.ui.form.AbstractBaseFormPage;
 import org.nightlabs.base.ui.layout.WeightedTableLayout;
 import org.nightlabs.base.ui.resource.Messages;
@@ -158,19 +162,53 @@ public class RCPUtil
 		Robot robot;
 		org.eclipse.swt.graphics.Rectangle rect;
 
+		Vector xCollect = new Vector();
+		Vector yCollect = new Vector();
+		int minX;
+		int minY;
+		int maxX;
+		int maxY;
+		int addwidth = 0;
+		int addheight = 0;
+
 		Display display = Display.getCurrent();
 		if (display == null)
 			throw new IllegalStateException("This method must be called on the SWT UI thread!");
-		else
-			for (Shell shell : display.getShells())
-				shell.redraw();
+
+		/*
+		 * find the area rectangle of the screen that contains all the shell
+		 * */
+		
+		for (Shell shell : display.getShells())
+		{
+			shell.redraw();
+			xCollect.add(new Integer(shell.getBounds().x));
+			yCollect.add(new Integer(shell.getBounds().y));
+		}
+
+		minX  = (Integer)(Collections.min(xCollect));
+		minY  = (Integer)(Collections.min(yCollect));
+		maxX  = (Integer)(Collections.max(xCollect));
+		maxY  = (Integer)(Collections.max(yCollect));
+
+		for (Shell shell : display.getShells())
+		{
+			shell.redraw();
+			if(shell.getBounds().x == maxX)
+				if(shell.getBounds().width > addwidth)
+					addwidth = shell.getBounds().width;
+
+			if(shell.getBounds().y == maxY)
+				if(shell.getBounds().height > addheight)
+					addheight = shell.getBounds().height;
+
+		}		 
+		addheight = (maxY - minY)  + addheight;
+		addwidth = (maxX - minX) +  addwidth;
+		
 		display.readAndDispatch();		
 		robot = new Robot();
-
-		rect = display.getActiveShell().getBounds();
-		//Toolkit.getDefaultToolkit().getScreenSize()
-		screenShot = robot.createScreenCapture(
-				new java.awt.Rectangle(rect.x,rect.y,rect.width,rect.height));					
+		screenShot = robot.createScreenCapture(new java.awt.Rectangle(minX,minY,addwidth,addheight));									
 
 		return screenShot;
 	}
