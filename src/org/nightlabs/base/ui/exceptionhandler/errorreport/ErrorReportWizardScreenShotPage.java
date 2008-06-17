@@ -35,12 +35,7 @@ public class ErrorReportWizardScreenShotPage extends DynamicPathWizardPage {
 		// TODO Auto-generated method stub
 
 		XComposite page = new XComposite(parent, SWT.NONE, LayoutMode.TIGHT_WRAPPER);
-		page.addListener(SWT.Resize, new Listener() {
-			public void handleEvent(Event e) {
-				onShow();
-			}
-		});
-
+		
 		Label titleLabel = new Label(page, SWT.WRAP);
 		titleLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		titleLabel.setText("Attach a screenshot of the Error"); 
@@ -72,6 +67,13 @@ public class ErrorReportWizardScreenShotPage extends DynamicPathWizardPage {
 		}		
 
 		setIsSendscreenshotImage(sendScreenShotCheckBox.getSelection());
+		
+		parent.addListener(SWT.Resize, new Listener() {
+			public void handleEvent(Event e) {
+				onShow();
+			}
+		});
+		
 		return page;
 	}
 
