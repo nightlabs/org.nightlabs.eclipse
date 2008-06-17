@@ -157,8 +157,15 @@ public class RCPUtil
 		BufferedImage screenShot = null;
 //		take a screen shot and save a temp file on disk and then send it by email
 		Robot robot;
-
 		try {
+
+			Display display = Display.getCurrent();
+			if (display == null)
+				throw new IllegalStateException("This method must be called on the SWT UI thread!");
+			else
+				for (Shell shell : display.getShells())
+					shell.redraw();
+			display.readAndDispatch();		
 			robot = new Robot();
 			screenShot = robot.createScreenCapture(
 					new java.awt.Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));					
