@@ -44,6 +44,11 @@ public class ErrorReportEMailCfMod extends ConfigModule
 	private List<String> mailTo = null;
 	private String smtpHost = null;
 	private String smtpLocalhost = null;
+	private String smtpUsername = null;
+	private String smtpPassword = null;
+	private Integer smtpPort = null;
+	private boolean enableTLS = false;
+	private boolean authenticate = false;
 
 	/* (non-Javadoc)
 	 * @see org.nightlabs.config.ConfigModule#init()
@@ -55,18 +60,28 @@ public class ErrorReportEMailCfMod extends ConfigModule
 		if (mailFrom == null) {
 			// since our sources are public, we write it this way for spam-protection - should be harder for a bot to read
 			mailFrom = "jfire" + '@' + //$NON-NLS-1$
-					"nightlabs.org"; //$NON-NLS-1$
+			"nightlabs.org"; //$NON-NLS-1$
 		}
 		if (mailTo == null) {
 			mailTo = new CfModList<String>(this);
 			mailTo.add(
 					"bugreport" + '@' + //$NON-NLS-1$
-					"nightlabs.org"); //$NON-NLS-1$
+			"nightlabs.org"); //$NON-NLS-1$
 		}
 		if (smtpHost == null)
 			smtpHost = "mail.nightlabs.de"; //$NON-NLS-1$
 		if(smtpLocalhost == null)
 			smtpLocalhost = "www.nightlabs.org"; //$NON-NLS-1$
+
+		if(smtpUsername == null)	
+			smtpUsername = "test";
+
+		if(smtpPassword == null)	
+			smtpPassword = "test";
+
+		if(smtpPort == null)
+			smtpPort = 25;
+
 	}
 
 	/**
@@ -142,6 +157,52 @@ public class ErrorReportEMailCfMod extends ConfigModule
 	public void setSmtpLocalhost(String smtpLocalhost)
 	{
 		this.smtpLocalhost = smtpLocalhost;
+		setChanged();
+	}
+
+	public String getSmtpUsername() {
+		return smtpUsername;
+
+	}
+
+	public void setSmtpUsername(String smtpUsername) {
+		this.smtpUsername = smtpUsername;
+		setChanged();
+	}
+
+	public String getSmtpPassword() {
+		return smtpPassword;
+	}
+
+	public void setSmtpPassword(String smtpPassword) {
+		this.smtpPassword = smtpPassword;
+		setChanged();
+	}
+
+	public Integer getSmtpPort() {
+		return smtpPort;
+	}
+
+	public void setSmtpPort(Integer smtpPort) {
+		this.smtpPort = smtpPort;
+		setChanged();
+	}
+
+	public boolean isEnableTLS() {
+		return enableTLS;
+	}
+
+	public void setEnableTLS(boolean enableTLS) {
+		this.enableTLS = enableTLS;
+		setChanged();
+	}
+
+	public boolean isAuthenticate() {
+		return authenticate;
+	}
+
+	public void setAuthenticate(boolean authenticate) {
+		this.authenticate = authenticate;
 		setChanged();
 	}
 }

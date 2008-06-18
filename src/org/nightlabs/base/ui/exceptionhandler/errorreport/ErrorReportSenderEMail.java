@@ -70,27 +70,31 @@ public class ErrorReportSenderEMail implements ErrorReportSender
 	 */
 	public void sendErrorReport(ErrorReport errorReport)
 	{
-
 		File tempscreenshot;
-		try {
+		try {		
+
 			ErrorReportEMailCfMod cfMod = Config.sharedInstance().createConfigModule(ErrorReportEMailCfMod.class);
+
 			Properties props = new Properties();
+			props.put("mail.smtp.auth", String.valueOf(cfMod.isAuthenticate()));
 			props.put("mail.host", cfMod.getSmtpHost()); //$NON-NLS-1$
 			props.put("mail.smtp.localhost", cfMod.getSmtpLocalhost()); //$NON-NLS-1$
+			props.put("mail.smtp.port", cfMod.getSmtpPort());
+			props.put("mail.smtp.starttls.enable", String.valueOf(cfMod.isEnableTLS()));
+			
+			Session mailConnection = Session.getInstance(props, null);		
 
-			Session mailConnection = Session.getInstance(props, null);
 			Message msg = new MimeMessage(mailConnection);
 			Address mailFrom = new InternetAddress(cfMod.getMailFrom());
-
 
 			msg.setFrom(mailFrom);
 
 			for (String recipient : cfMod.getMailTo())
-				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
+				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));			
 
 			msg.setSubject(errorReport.getFirstThrowable().getClass().getSimpleName() +  " " + errorReport.getTimeAsString()); //$NON-NLS-1$
 
-			if(errorReport.getIsSendScreenShot() != null && errorReport.getIsSendScreenShot())
+			if(errorReport.getErrorScreenshot() != null && errorReport.getIsSendScreenShot() == true)
 			{
 				// create the message part 
 				MimeBodyPart messageBodyPart = 
@@ -130,12 +134,28 @@ public class ErrorReportSenderEMail implements ErrorReportSender
 				msg.setText(errorReport.toString());
 
 
-			Transport.send(msg);
+			if(cfMod.isAuthenticate())
+			{
+				Transport tr = mailConnection.getTransport("smtp");
+				try {
+					tr.connect(cfMod.getSmtpHost(), cfMod.getSmtpUsername(), cfMod.getSmtpPassword());
+					tr.sendMessage(msg, msg.getAllRecipients());
+				} finally {
+					tr.close();
+				}
+			}
+			else
+				Transport.send(msg);
 
-			logger.info("Message was sent to "+cfMod.getMailTo().size()+" recipient(s)"); //$NON-NLS-1$ //$NON-NLS-2$
+
+			logger.info("Message was sent to "+ cfMod.getMailTo().size() +" recipient(s)"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		} catch (Exception e) {
 			logger.fatal("Sending error report by eMail failed.", e); //$NON-NLS-1$
 		}
 	}
+
+
 }
+
+
