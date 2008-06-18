@@ -179,8 +179,10 @@ implements ISelectionProvider
 	/**
 	 * Delegating method for {@link TableViewer}
 	 */
-	public void refresh(boolean updateLabels) {
-		tableViewer.refresh(updateLabels);
+	public void refresh(boolean updateLabels) 
+	{
+		if (!tableViewer.getTable().isDisposed())
+			tableViewer.refresh(updateLabels);
 	}
 
 	public TableViewer getTableViewer() {
