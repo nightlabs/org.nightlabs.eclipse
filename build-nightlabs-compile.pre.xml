@@ -1,0 +1,6 @@
+<project>
+	<target name="compile.pre">
+		<unzip src="serverfiles.zip" dest="${project.dir}/serverfiles">
+		</unzip>
+	</target>
+</project>
