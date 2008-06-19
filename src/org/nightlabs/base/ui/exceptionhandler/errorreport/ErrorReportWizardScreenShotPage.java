@@ -87,17 +87,18 @@ public class ErrorReportWizardScreenShotPage extends DynamicPathWizardPage {
 
 			ErrorReportWizard wizard = (ErrorReportWizard) getWizard();
 			ErrorReport errorReport = wizard.getErrorReport();
-			ImageData data = RCPUtil.convertToSWT(errorReport.getErrorScreenshot());				
+			ImageData data = RCPUtil.convertToSWT(errorReport.getErrorScreenshot());			
 			Image image = new Image(Display.getCurrent(), data);
-
+			
 			if(screenshotImage.getSize().x > screenshotImage.getSize().y)							
-				imgRatio = (double)(screenshotImage.getSize().y)  / (double)(image.getBounds().height);
+				imgRatio = (double)(screenshotImage.getSize().y)  / (double)(data.height);
 			else
-				imgRatio = (double)(screenshotImage.getSize().x)  / (double)(image.getBounds().width);
+				imgRatio = (double)(screenshotImage.getSize().x)  / (double)(data.width);
 
-			imgRatio = imgRatio + (imgRatio * 0.1); // increase image size 10%
-
-			image = RCPUtil.resize(image,(int)(screenshotImage.getSize().x * imgRatio),(int)(screenshotImage.getSize().y * imgRatio),false);		
+			imgRatio = imgRatio - (imgRatio * 0.1); // decrease image size 10%
+			if ((data.width * imgRatio) > 0 && (data.height * imgRatio) > 0) {
+				image = RCPUtil.resize(image,(int)(data.width * imgRatio),(int)(data.height * imgRatio),false);
+			}
 			screenshotImage.setImage(image);
 			screenshotImage.redraw();
 		}
