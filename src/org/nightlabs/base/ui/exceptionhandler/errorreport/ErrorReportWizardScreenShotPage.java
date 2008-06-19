@@ -15,9 +15,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.composite.XComposite.LayoutMode;
-import org.nightlabs.base.ui.util.RCPUtil;
+import org.nightlabs.base.ui.util.ImageUtil;
 import org.nightlabs.base.ui.wizard.DynamicPathWizardPage;
 import org.nightlabs.config.Config;
+
 
 public class ErrorReportWizardScreenShotPage extends DynamicPathWizardPage {
 	protected Label screenshotImage;
@@ -82,13 +83,14 @@ public class ErrorReportWizardScreenShotPage extends DynamicPathWizardPage {
 	public void onShow()
 	{
 		if(screenshotImage.getSize().x > 0 && screenshotImage.getSize().y > 0 )
-		{
+		{	
 			double imgRatio;
 
 			ErrorReportWizard wizard = (ErrorReportWizard) getWizard();
 			ErrorReport errorReport = wizard.getErrorReport();
-			ImageData data = RCPUtil.convertToSWT(errorReport.getErrorScreenshot());			
+			ImageData data = ImageUtil.convertToSWT(errorReport.getErrorScreenshot());			
 			Image image = new Image(Display.getCurrent(), data);
+			Image scaledImage = image;
 			
 			if(screenshotImage.getSize().x > screenshotImage.getSize().y)							
 				imgRatio = (double)(screenshotImage.getSize().y)  / (double)(data.height);
@@ -97,9 +99,12 @@ public class ErrorReportWizardScreenShotPage extends DynamicPathWizardPage {
 
 			imgRatio = imgRatio - (imgRatio * 0.1); // decrease image size 10%
 			if ((data.width * imgRatio) > 0 && (data.height * imgRatio) > 0) {
-				image = RCPUtil.resize(image,(int)(data.width * imgRatio),(int)(data.height * imgRatio),false);
+				scaledImage = ImageUtil.resize(image,(int)(data.width * imgRatio),(int)(data.height * imgRatio),false);
 			}
-			screenshotImage.setImage(image);
+			
+			image.dispose(); 
+			
+			screenshotImage.setImage(scaledImage);
 			screenshotImage.redraw();
 		}
 

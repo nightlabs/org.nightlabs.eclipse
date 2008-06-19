@@ -33,6 +33,7 @@ import java.awt.image.DirectColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.WritableRaster;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
@@ -192,5 +193,29 @@ public class ImageUtil
   public static Image createLineStyleImage(int lineStyle) {
     return createLineStyleImage(lineStyle, 16, 64);
   }
+  
+	/**
+	 *this method Resizes an Image SWT 
+	 * @param image to resize
+	 * @param width, height new desired Image Size
+	 * @param highQuality if the resize should be high quality thus slower
+	 * @return Image of the new resized Image
+	 */	
+	public static Image resize(Image image, int width, int height,Boolean highQuality) {
+		Image scaled = new Image(Display.getDefault(), width, height);
+		GC gc = new GC(scaled);
+		if(highQuality)
+		{
+			gc.setAntialias(SWT.ON);
+			gc.setInterpolation(SWT.HIGH);
+		}
+		gc.drawImage(image, 0, 0,
+				image.getBounds().width, image.getBounds().height,
+				0, 0, width, height);
+		gc.dispose();
+		return scaled;
+	}
+  
+  
      	
 }
