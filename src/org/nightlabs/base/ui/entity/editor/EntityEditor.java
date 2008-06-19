@@ -283,13 +283,4 @@ public class EntityEditor extends CommitableFormEditor
 		}
 		return pages;
 	}
-	
-//	private Set<NotificationListener> globalNotificationListeners;
-//	FIXME: Mit Alex über eine Möglichkeit der editorweiten Registrierung von NotificationListenern.
-//		Wie wird das bisher gemacht? Sollen wir hier im Editor eine Möglichkeit schaffen sowas zu machen?
-//		Wie kann die aussehen?
-//	Alex: Notification jetzt über den ActiveEntityEditorPageController in Zusammenarbeit mit dem
-//	StaleHandler gelöst, ich denke das ist ok. Oder waren die NotificationListener noch für etwas
-//	anderes sein als die Reaktion auf remote Veränderungen des Objekts?
-	
 }
