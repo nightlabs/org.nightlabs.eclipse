@@ -77,6 +77,7 @@ import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.util.RCPUtil;
 import org.nightlabs.config.Config;
 import org.nightlabs.config.ConfigException;
+import org.nightlabs.util.CollectionUtil;
 
 /**
  * 
@@ -173,7 +174,9 @@ extends ActionBarAdvisor
 	
 	public DefaultActionBuilder(IActionBarConfigurer configurer)
 	{
-		this(configurer, Arrays.asList(ActionBarItem.values()), null);
+//		this(configurer, Arrays.asList(ActionBarItem.values()), null);
+		// changed this to make it possible to remove something from the list
+		this(configurer, CollectionUtil.array2ArrayList(ActionBarItem.values()), null);
 	}
 		
 	protected void initRecentFileConfig()
