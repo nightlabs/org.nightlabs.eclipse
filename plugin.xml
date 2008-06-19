@@ -12,6 +12,7 @@
             name="FCKeditor">
       </editor>
    </extension>
+<!--
    <extension
          point="org.eclipse.ui.actionSets">
       <actionSet
@@ -45,6 +46,7 @@
          </action>
       </actionSet>
    </extension>
+-->
    <extension
          point="org.nightlabs.eclipse.ui.fckeditor.contentFileWizard">
       <typeBinding
