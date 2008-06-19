@@ -164,8 +164,8 @@ public class RCPUtil
 
 		Vector xCollect = new Vector();
 		Vector yCollect = new Vector();
-		int minX;
-		int minY;
+		int minX = 0;
+		int minY = 0;
 		int maxX;
 		int maxY;
 		int addwidth = 0;
@@ -178,7 +178,8 @@ public class RCPUtil
 		/*
 		 * find the area rectangle of the screen that contains all the shell
 		 * */
-		
+
+
 		for (Shell shell : display.getShells())
 		{
 			shell.redraw();
@@ -186,26 +187,33 @@ public class RCPUtil
 			yCollect.add(new Integer(shell.getBounds().y));
 		}
 
-		minX  = (Integer)(Collections.min(xCollect));
-		minY  = (Integer)(Collections.min(yCollect));
-		maxX  = (Integer)(Collections.max(xCollect));
-		maxY  = (Integer)(Collections.max(yCollect));
-
-		for (Shell shell : display.getShells())
+		if(!xCollect.isEmpty())
 		{
-			shell.redraw();
-			if(shell.getBounds().x == maxX)
-				if(shell.getBounds().width > addwidth)
-					addwidth = shell.getBounds().width;
+			minX  = (Integer)(Collections.min(xCollect));
+			minY  = (Integer)(Collections.min(yCollect));
+			maxX  = (Integer)(Collections.max(xCollect));
+			maxY  = (Integer)(Collections.max(yCollect));
 
-			if(shell.getBounds().y == maxY)
-				if(shell.getBounds().height > addheight)
-					addheight = shell.getBounds().height;
+			for (Shell shell : display.getShells())
+			{
+				if(shell.getBounds().x == maxX)
+					if(shell.getBounds().width > addwidth)
+						addwidth = shell.getBounds().width;
 
-		}		 
-		addheight = (maxY - minY)  + addheight;
-		addwidth = (maxX - minX) +  addwidth;
-		
+				if(shell.getBounds().y == maxY)
+					if(shell.getBounds().height > addheight)
+						addheight = shell.getBounds().height;
+
+			}		 
+			addheight = (maxY - minY)  + addheight;
+			addwidth = (maxX - minX) +  addwidth;
+		}
+		else
+		{
+			addwidth =Toolkit.getDefaultToolkit().getScreenSize().width;
+			addheight =Toolkit.getDefaultToolkit().getScreenSize().height;
+		}
+
 		display.readAndDispatch();		
 		robot = new Robot();
 		screenShot = robot.createScreenCapture(new java.awt.Rectangle(minX,minY,addwidth,addheight));									

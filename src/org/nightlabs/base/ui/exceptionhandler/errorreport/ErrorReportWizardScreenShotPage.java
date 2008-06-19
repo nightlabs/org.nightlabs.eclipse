@@ -35,13 +35,14 @@ public class ErrorReportWizardScreenShotPage extends DynamicPathWizardPage {
 		// TODO Auto-generated method stub
 
 		XComposite page = new XComposite(parent, SWT.NONE, LayoutMode.TIGHT_WRAPPER);
-		
+
 		Label titleLabel = new Label(page, SWT.WRAP);
 		titleLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		titleLabel.setText("Attach a screenshot of the Error"); 
 
 		screenshotImage = new Label(page, SWT.WRAP);
 		screenshotImage.setLayoutData(new GridData(GridData.FILL_BOTH));
+		screenshotImage.setAlignment(SWT.CENTER);
 
 		Button sendScreenShotCheckBox = new Button(page, SWT.CHECK);
 		sendScreenShotCheckBox.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -67,13 +68,13 @@ public class ErrorReportWizardScreenShotPage extends DynamicPathWizardPage {
 		}		
 
 		setIsSendscreenshotImage(sendScreenShotCheckBox.getSelection());
-		
+
 		parent.addListener(SWT.Resize, new Listener() {
 			public void handleEvent(Event e) {
 				onShow();
 			}
 		});
-		
+
 		return page;
 	}
 
@@ -82,14 +83,23 @@ public class ErrorReportWizardScreenShotPage extends DynamicPathWizardPage {
 	{
 		if(screenshotImage.getSize().x > 0 && screenshotImage.getSize().y > 0 )
 		{
+			double imgRatio;
+
 			ErrorReportWizard wizard = (ErrorReportWizard) getWizard();
 			ErrorReport errorReport = wizard.getErrorReport();
 			ImageData data = RCPUtil.convertToSWT(errorReport.getErrorScreenshot());				
-
 			Image image = new Image(Display.getCurrent(), data);
-			image = RCPUtil.resize(image,screenshotImage.getSize().x,screenshotImage.getSize().y,false);		
-			screenshotImage.setImage(image);
 
+			if(screenshotImage.getSize().x > screenshotImage.getSize().y)							
+				imgRatio = (double)(screenshotImage.getSize().y)  / (double)(image.getBounds().height);
+			else
+				imgRatio = (double)(screenshotImage.getSize().x)  / (double)(image.getBounds().width);
+
+			imgRatio = imgRatio + (imgRatio * 0.1); // increase image size 10%
+
+			image = RCPUtil.resize(image,(int)(screenshotImage.getSize().x * imgRatio),(int)(screenshotImage.getSize().y * imgRatio),false);		
+			screenshotImage.setImage(image);
+			screenshotImage.redraw();
 		}
 
 	}
