@@ -137,9 +137,17 @@ public class RCPUtil
 	}
 
 	/**
-	 * Take a screen shot. If there are shells (= windows) existing, the screen shot is taken for the
-	 * smallest rectangle that contains all of the application's windows. If there is no shell existing,
+	 * Take a screen shot of the application. This method tries to only include windows of the current
+	 * application (and not to include any information from other apps).
+	 * <p> 
+	 * If there are {@link Shell}s (= windows) existing, the screen shot is taken for the
+	 * smallest rectangle that contains all of the application's windows. If there is no {@link Shell} existing,
 	 * the complete screen will be taken.
+	 * </p>
+	 * <p>
+	 * In the future, this method should overwrite areas inbetween different shells (where other applications' windows
+	 * are [partially] visible) with black. At the moment, this information is not yet cut out. 
+	 * </p>
 	 *
 	 * @return image of the current screen.
 	 */
@@ -172,8 +180,8 @@ public class RCPUtil
 			maxY = Math.max(bounds.y + bounds.height, maxY);
 		}
 
+		// if there is no visible shell, take the complete screen
 		if (!hasVisibleShell) {
-			// no shell there => take the complete screen
 			Rectangle bounds = display.getBounds();
 			minX = bounds.x;
 			maxX = minX + bounds.width;
@@ -181,7 +189,7 @@ public class RCPUtil
 			maxY = minY + bounds.height;
 		}
 
-		// ensure everything has been redrawed
+		// ensure everything has been redrawn
 		display.readAndDispatch();		
 
 		// Taking the screen shot with AWT is a bit complicated since AWT manages a multi-screen-environment
@@ -201,7 +209,7 @@ public class RCPUtil
 			} finally {
 				gc.dispose();
 			}
-	
+
 	    return image.getImageData();
 		} finally {
 			if (image != null)
