@@ -200,11 +200,10 @@ public class RCPUtil
 //		}
 //		return new Robot().createScreenCapture(new java.awt.Rectangle(minX, minY, maxX - minX, maxY - minY));
 
-		Image image = null;
+		Image image = new Image(display, new Rectangle(minX, minY, maxX - minX, maxY - minY));
 		try {
 			GC gc = new GC(display);
 			try {
-				image = new Image(display, new Rectangle(minX, minY, maxX - minX, maxY - minY));
 				gc.copyArea(image, minX, minY);
 			} finally {
 				gc.dispose();
@@ -212,8 +211,7 @@ public class RCPUtil
 
 	    return image.getImageData();
 		} finally {
-			if (image != null)
-				image.dispose();
+			image.dispose();
 		}
 	}
 
