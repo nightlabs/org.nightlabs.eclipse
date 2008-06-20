@@ -312,7 +312,7 @@ public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 								IExceptionHandler handler = searchResult.getExceptionHandlerRegistryItem().getExceptionHandler();
 							
 								ExceptionHandlerParam exceptionParam = new ExceptionHandlerParam(thread,exception, searchResult.getTriggerException()); 
-								exceptionParam.setErrorScreenShot(RCPUtil.takeScreenShot());
+								exceptionParam.setErrorScreenShot(RCPUtil.takeApplicationScreenShot());
 								handled = handler.handleException(exceptionParam);
 								if (handled)
 									break;

@@ -26,21 +26,12 @@
 
 package org.nightlabs.base.ui.util;
 
-import java.awt.AWTException;
 import java.awt.Dimension;
-import java.awt.Robot;
 import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
-import java.awt.image.DirectColorModel;
-import java.awt.image.IndexColorModel;
-import java.awt.image.WritableRaster;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Vector;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -59,15 +50,13 @@ import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -87,7 +76,8 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.internal.Workbench;
+import org.nightlabs.base.ui.composite.ChildStatusController;
+import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.form.AbstractBaseFormPage;
 import org.nightlabs.base.ui.layout.WeightedTableLayout;
 import org.nightlabs.base.ui.resource.Messages;
@@ -100,6 +90,8 @@ import org.nightlabs.util.IOUtil;
  */
 public class RCPUtil
 {
+	private static final Logger logger = Logger.getLogger( RCPUtil.class);
+
 	/**
 	 * Recursively sets the enabled flag for the given Composite and all its children.
 	 * <p>
@@ -113,14 +105,6 @@ public class RCPUtil
 	 * @param comp The parent control
 	 * @param enabled The enabled flag to set
 	 */
-
-
-	/**
-	 * LOG4J logger used by this class
-	 */
-	private static final Logger logger = Logger.getLogger( RCPUtil.class);
-
-
 	public static void setControlEnabledRecursive(Composite comp, boolean enabled) {
 		comp.setEnabled(enabled);
 		Control[] children = comp.getChildren();
@@ -152,73 +136,77 @@ public class RCPUtil
 		}
 	}
 
-
 	/**
-	 * @return buffered image of the current screen
+	 * Take a screen shot. If there are shells (= windows) existing, the screen shot is taken for the
+	 * smallest rectangle that contains all of the application's windows. If there is no shell existing,
+	 * the complete screen will be taken.
+	 *
+	 * @return image of the current screen.
 	 */
-	public static BufferedImage takeScreenShot() throws AWTException {
-		BufferedImage screenShot = null;
-//		take a screen shot and save a temp file on disk and then send it by email
-		Robot robot;
-		org.eclipse.swt.graphics.Rectangle rect;
-
-		Vector xCollect = new Vector();
-		Vector yCollect = new Vector();
-		int minX = 0;
-		int minY = 0;
-		int maxX;
-		int maxY;
-		int addwidth = 0;
-		int addheight = 0;
-
+	public static ImageData takeApplicationScreenShot()
+	{
 		Display display = Display.getCurrent();
 		if (display == null)
 			throw new IllegalStateException("This method must be called on the SWT UI thread!");
 
-		/*
-		 * find the area rectangle of the screen that contains all the shell
-		 * */
+		int minX = Integer.MAX_VALUE;
+		int minY = Integer.MAX_VALUE;
+		int maxX = Integer.MIN_VALUE;
+		int maxY = Integer.MIN_VALUE;
 
+		// find the area rectangle of the screen that contains all the shells
+		boolean hasVisibleShell = false;
+		// iterate all shells in order to get the smallest rectangle containing all of them
+		for (Shell shell : display.getShells()) {
+			if (!shell.isVisible())
+				continue;
+			if (shell.isDisposed())
+				continue;
 
-		for (Shell shell : display.getShells())
-		{
+			hasVisibleShell = true;
 			shell.redraw();
-			xCollect.add(new Integer(shell.getBounds().x));
-			yCollect.add(new Integer(shell.getBounds().y));
+			Rectangle bounds = shell.getBounds();
+			minX = Math.min(bounds.x, minX);
+			maxX = Math.max(bounds.x + bounds.width, maxX);
+			minY = Math.min(bounds.y, minY);
+			maxY = Math.max(bounds.y + bounds.height, maxY);
 		}
 
-		if(!xCollect.isEmpty())
-		{
-			minX  = (Integer)(Collections.min(xCollect));
-			minY  = (Integer)(Collections.min(yCollect));
-			maxX  = (Integer)(Collections.max(xCollect));
-			maxY  = (Integer)(Collections.max(yCollect));
-
-			for (Shell shell : display.getShells())
-			{
-				if(shell.getBounds().x == maxX)
-					if(shell.getBounds().width > addwidth)
-						addwidth = shell.getBounds().width;
-
-				if(shell.getBounds().y == maxY)
-					if(shell.getBounds().height > addheight)
-						addheight = shell.getBounds().height;
-
-			}		 
-			addheight = (maxY - minY)  + addheight;
-			addwidth = (maxX - minX) +  addwidth;
-		}
-		else
-		{
-			addwidth =Toolkit.getDefaultToolkit().getScreenSize().width;
-			addheight =Toolkit.getDefaultToolkit().getScreenSize().height;
+		if (!hasVisibleShell) {
+			// no shell there => take the complete screen
+			Rectangle bounds = display.getBounds();
+			minX = bounds.x;
+			maxX = minX + bounds.width;
+			minY = bounds.y;
+			maxY = minY + bounds.height;
 		}
 
+		// ensure everything has been redrawed
 		display.readAndDispatch();		
-		robot = new Robot();
-		screenShot = robot.createScreenCapture(new java.awt.Rectangle(minX,minY,addwidth,addheight));									
 
-		return screenShot;
+		// Taking the screen shot with AWT is a bit complicated since AWT manages a multi-screen-environment
+		// really separated - hence we would need to put our screen shot together ourselves. Thus, we use SWT now.
+//		for (GraphicsDevice gd : GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()) {
+//			java.awt.Rectangle rect = gd.getDefaultConfiguration().getBounds();
+//			rect.getBounds();
+//		}
+//		return new Robot().createScreenCapture(new java.awt.Rectangle(minX, minY, maxX - minX, maxY - minY));
+
+		Image image = null;
+		try {
+			GC gc = new GC(display);
+			try {
+				image = new Image(display, new Rectangle(minX, minY, maxX - minX, maxY - minY));
+				gc.copyArea(image, minX, minY);
+			} finally {
+				gc.dispose();
+			}
+	
+	    return image.getImageData();
+		} finally {
+			if (image != null)
+				image.dispose();
+		}
 	}
 
 	/**

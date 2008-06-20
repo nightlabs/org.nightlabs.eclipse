@@ -26,7 +26,6 @@
 
 package org.nightlabs.base.ui.exceptionhandler.errorreport;
 
-import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -40,6 +39,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.swt.graphics.ImageData;
 import org.nightlabs.io.DataBuffer;
 import org.nightlabs.util.IOUtil;
 
@@ -56,7 +56,7 @@ implements Serializable
 
 	private String userComment;
 	private Properties systemProperties;
-	private BufferedImage errorScreenShot = null;
+	private ImageData errorScreenShot = null;
 	private Boolean IsSendScreenShot = false;
 	private Date time;
 
@@ -183,12 +183,12 @@ implements Serializable
 	/* 
 	 * * @param userComment The userComment to set.
 	 */
-	public void setErrorScreenshot(BufferedImage errorScreenShot)
+	public void setErrorScreenshot(ImageData errorScreenShot)
 	{
 		this.errorScreenShot = errorScreenShot;
 	}
 
-	public BufferedImage  getErrorScreenshot()
+	public ImageData  getErrorScreenshot()
 	{
 		return this.errorScreenShot;
 	}

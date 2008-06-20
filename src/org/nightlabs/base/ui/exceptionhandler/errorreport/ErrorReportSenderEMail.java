@@ -40,15 +40,12 @@ import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import javax.mail.internet.MimeBodyPart;
-
-
-
-
 
 import org.apache.log4j.Logger;
+import org.nightlabs.base.ui.util.ImageUtil;
 import org.nightlabs.config.Config;
 
 //import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeBodyPart;
@@ -70,7 +67,7 @@ public class ErrorReportSenderEMail implements ErrorReportSender
 	 */
 	public void sendErrorReport(ErrorReport errorReport)
 	{
-		File tempscreenshot;
+		File tempscreenshot = null;
 		try {		
 
 			ErrorReportEMailCfMod cfMod = Config.sharedInstance().createConfigModule(ErrorReportEMailCfMod.class);
@@ -97,8 +94,7 @@ public class ErrorReportSenderEMail implements ErrorReportSender
 			if(errorReport.getErrorScreenshot() != null && errorReport.getIsSendScreenShot() == true)
 			{
 				// create the message part 
-				MimeBodyPart messageBodyPart = 
-					new MimeBodyPart();
+				MimeBodyPart messageBodyPart = new MimeBodyPart();
 				//fill message
 				messageBodyPart.setText(errorReport.toString());
 
@@ -108,17 +104,19 @@ public class ErrorReportSenderEMail implements ErrorReportSender
 				//	Create the screenShot on a file and delete on exit
 				try {
 					// Create temp file.
-					tempscreenshot = File.createTempFile("screenShot", ".jpg");    
-					// Delete temp file when program exits.
+					tempscreenshot = File.createTempFile("screenShot", ".jpg");
+					// Delete temp file when program exits (in case deletion below fails for whatever reason).
 					tempscreenshot.deleteOnExit();
-					ImageIO.write(errorReport.getErrorScreenshot(), "JPG",tempscreenshot);
 
-					DataSource source = 
-						new FileDataSource(tempscreenshot.getAbsolutePath());
-					attachBodyPart.setDataHandler(
-							new DataHandler(source));
-					attachBodyPart.setFileName(tempscreenshot.getAbsolutePath());
+					ImageIO.write(
+							ImageUtil.convertToAWT(errorReport.getErrorScreenshot()),
+							"JPG",
+							tempscreenshot
+					);
 
+					DataSource source = new FileDataSource(tempscreenshot.getAbsolutePath());
+					attachBodyPart.setDataHandler(new DataHandler(source));
+					attachBodyPart.setFileName(tempscreenshot.getName());
 				} catch (IOException e) {
 					logger.fatal("Couldnt save the screenshot on disk.", e); //$NON-NLS-1$
 				}
@@ -152,6 +150,9 @@ public class ErrorReportSenderEMail implements ErrorReportSender
 
 		} catch (Exception e) {
 			logger.fatal("Sending error report by eMail failed.", e); //$NON-NLS-1$
+		} finally {
+			if (tempscreenshot != null)
+				tempscreenshot.delete();
 		}
 	}
 

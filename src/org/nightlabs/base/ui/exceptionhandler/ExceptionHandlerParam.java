@@ -1,6 +1,6 @@
 package org.nightlabs.base.ui.exceptionhandler;
 
-import java.awt.image.BufferedImage;
+import org.eclipse.swt.graphics.ImageData;
 
 
 /**
@@ -14,7 +14,7 @@ public class ExceptionHandlerParam {
 	private Thread thread = null;
 	private Throwable thrownException=null;
 	private Throwable triggerException=null;
-	private BufferedImage errorScreenShot = null;
+	private ImageData errorScreenShot = null;
 
 	/**
 	 * Creates an ExceptionHandlerParam.
@@ -97,7 +97,7 @@ public class ExceptionHandlerParam {
 	 * Returns the errorScreenShot.
 	 * @return the errorScreenShot
 	 */
-	public BufferedImage getErrorScreenShot() {
+	public ImageData getErrorScreenShot() {
 		return errorScreenShot;
 	}
 
@@ -105,7 +105,7 @@ public class ExceptionHandlerParam {
 	 * Sets the errorScreenShot.
 	 * @param errorScreenShot the errorScreenShot to set
 	 */
-	public void setErrorScreenShot(BufferedImage errorScreenShot) {
+	public void setErrorScreenShot(ImageData errorScreenShot) {
 		this.errorScreenShot = errorScreenShot;
 	}
 

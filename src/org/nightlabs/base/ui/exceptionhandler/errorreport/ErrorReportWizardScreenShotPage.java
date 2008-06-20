@@ -90,7 +90,8 @@ public class ErrorReportWizardScreenShotPage extends DynamicPathWizardPage {
 
 			ErrorReportWizard wizard = (ErrorReportWizard) getWizard();
 			ErrorReport errorReport = wizard.getErrorReport();
-			ImageData data = ImageUtil.convertToSWT(errorReport.getErrorScreenshot());			
+//			ImageData data = ImageUtil.convertToSWT(errorReport.getErrorScreenshot());
+			ImageData data = errorReport.getErrorScreenshot();
 			Image image = new Image(Display.getCurrent(), data);
 			Image scaledImage = image;
 			
