@@ -19,7 +19,9 @@ import org.nightlabs.base.ui.util.ImageUtil;
 import org.nightlabs.base.ui.wizard.DynamicPathWizardPage;
 import org.nightlabs.config.Config;
 
-
+/**
+ * @author Fitas Amine - fitas at nightlabs dot de
+ */
 public class ErrorReportWizardScreenShotPage extends DynamicPathWizardPage {
 	protected Label screenshotImage;
 	private Boolean IsSendScreenshotImage = false;
