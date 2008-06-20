@@ -30,6 +30,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.action.ContributionItem;
+import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IContributionManager;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
@@ -45,13 +46,13 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.CoolBar;
 import org.eclipse.swt.widgets.CoolItem;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.action.XContributionItem;
 import org.nightlabs.base.ui.resource.SharedImages;
@@ -224,21 +225,47 @@ extends XContributionItem
 
 	@Override
 	public void fill(Menu menu, int index)
-	{ 
+	{
+		if (logger.isDebugEnabled())
+			logger.debug("fill called for menu "+menu);
+		
 		String id = SearchContributionItem.class.getName();
-		getParent().remove(id);
-		IMenuManager menuManager = new MenuManager(Messages.getString("org.nightlabs.base.ui.search.SearchContributionItem.menu.search.title"), id); //$NON-NLS-1$
-		
-		Map<ISearchResultProviderFactory, ISearchResultProvider> factory2Instance = getUseCase().getFactory2Instance();
-		for (Map.Entry<ISearchResultProviderFactory, ISearchResultProvider> entry : factory2Instance.entrySet()) {
-			ISearchResultProviderFactory factory = entry.getKey();
-			MenuContributionItem item = new MenuContributionItem(factory);
-			menuManager.add(item);
+		if (getParent() != null) {
+			IContributionManager parent = getParent();
+			IContributionItem removedItem = parent.remove(id);
+			if (removedItem != null) {
+				if (logger.isDebugEnabled())
+					logger.debug("item "+removedItem+" was removed from contributionManager "+parent);
+			}
+
+			IMenuManager menuManager = new MenuManager(Messages.getString("org.nightlabs.base.ui.search.SearchContributionItem.menu.search.title"), id); //$NON-NLS-1$
+
+			Map<ISearchResultProviderFactory, ISearchResultProvider> factory2Instance = getUseCase().getFactory2Instance();
+			for (Map.Entry<ISearchResultProviderFactory, ISearchResultProvider> entry : factory2Instance.entrySet()) {
+				ISearchResultProviderFactory factory = entry.getKey();
+				MenuContributionItem item = new MenuContributionItem(factory);
+				menuManager.add(item);
+			}
+
+			if (parent != null) {
+				if (parent.find(IWorkbenchActionConstants.M_FILE) != null) {
+					parent.insertAfter(IWorkbenchActionConstants.M_FILE, menuManager);
+					if (logger.isDebugEnabled())
+						logger.debug("added contribution after file menu of contributionManager "+getParent());
+				}
+				else {
+					parent.add(menuManager);
+					if (logger.isDebugEnabled())
+						logger.debug("added contribution to the end of the contributionManager "+getParent());
+				}				
+			}
+			else {
+				if (logger.isDebugEnabled())
+					logger.info("getParent() == null, nothing contributed");
+			}
 		}
-		
-		if (getParent() != null)
-			getParent().add(menuManager);
-		
+		if (logger.isDebugEnabled())
+			logger.info("getParent() == null, nothing contributed");
 //		createMenu(menu);
 	}
 	
