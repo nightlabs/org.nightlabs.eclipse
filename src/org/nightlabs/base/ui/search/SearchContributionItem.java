@@ -55,6 +55,7 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.action.XContributionItem;
+import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.resource.SharedImages;
 import org.nightlabs.base.ui.util.RCPUtil;
 
@@ -227,7 +228,7 @@ extends XContributionItem
 	public void fill(Menu menu, int index)
 	{
 		if (logger.isDebugEnabled())
-			logger.debug("fill called for menu "+menu);
+			logger.debug("fill called for menu "+menu); //$NON-NLS-1$
 		
 		String id = SearchContributionItem.class.getName();
 		if (getParent() != null) {
@@ -235,7 +236,7 @@ extends XContributionItem
 			IContributionItem removedItem = parent.remove(id);
 			if (removedItem != null) {
 				if (logger.isDebugEnabled())
-					logger.debug("item "+removedItem+" was removed from contributionManager "+parent);
+					logger.debug("item "+removedItem+" was removed from contributionManager "+parent); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 
 			IMenuManager menuManager = new MenuManager(Messages.getString("org.nightlabs.base.ui.search.SearchContributionItem.menu.search.title"), id); //$NON-NLS-1$
@@ -251,21 +252,21 @@ extends XContributionItem
 				if (parent.find(IWorkbenchActionConstants.M_FILE) != null) {
 					parent.insertAfter(IWorkbenchActionConstants.M_FILE, menuManager);
 					if (logger.isDebugEnabled())
-						logger.debug("added contribution after file menu of contributionManager "+getParent());
+						logger.debug("added contribution after file menu of contributionManager "+getParent()); //$NON-NLS-1$
 				}
 				else {
 					parent.add(menuManager);
 					if (logger.isDebugEnabled())
-						logger.debug("added contribution to the end of the contributionManager "+getParent());
+						logger.debug("added contribution to the end of the contributionManager "+getParent()); //$NON-NLS-1$
 				}				
 			}
 			else {
 				if (logger.isDebugEnabled())
-					logger.info("getParent() == null, nothing contributed");
+					logger.info("getParent() == null, nothing contributed"); //$NON-NLS-1$
 			}
 		}
 		if (logger.isDebugEnabled())
-			logger.info("getParent() == null, nothing contributed");
+			logger.info("getParent() == null, nothing contributed"); //$NON-NLS-1$
 //		createMenu(menu);
 	}
 	

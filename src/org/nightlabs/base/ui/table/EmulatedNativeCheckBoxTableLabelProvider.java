@@ -9,6 +9,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Shell;
+import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.util.JFaceUtil;
 
 /**
@@ -20,8 +21,8 @@ public abstract class EmulatedNativeCheckBoxTableLabelProvider
 extends TableLabelProvider
 implements ITableLabelProvider
 {
-  private static final String CHECKED_KEY = "CHECKED";
-  private static final String UNCHECK_KEY = "UNCHECKED";
+  private static final String CHECKED_KEY = "CHECKED"; //$NON-NLS-1$
+  private static final String UNCHECK_KEY = "UNCHECKED"; //$NON-NLS-1$
 
   public EmulatedNativeCheckBoxTableLabelProvider(TableViewer viewer) {
     if (JFaceResources.getImageRegistry().getDescriptor(CHECKED_KEY) == null) {

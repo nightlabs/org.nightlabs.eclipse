@@ -155,7 +155,7 @@ public class RCPUtil
 	{
 		Display display = Display.getCurrent();
 		if (display == null)
-			throw new IllegalStateException("This method must be called on the SWT UI thread!");
+			throw new IllegalStateException("This method must be called on the SWT UI thread!"); //$NON-NLS-1$
 
 		int minX = Integer.MAX_VALUE;
 		int minY = Integer.MAX_VALUE;

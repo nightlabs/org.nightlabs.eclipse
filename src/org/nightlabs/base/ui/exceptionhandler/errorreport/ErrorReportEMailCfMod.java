@@ -28,6 +28,7 @@ package org.nightlabs.base.ui.exceptionhandler.errorreport;
 
 import java.util.List;
 
+import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.config.CfModList;
 import org.nightlabs.config.ConfigModule;
 import org.nightlabs.config.InitException;
@@ -74,10 +75,10 @@ public class ErrorReportEMailCfMod extends ConfigModule
 			smtpLocalhost = "www.nightlabs.org"; //$NON-NLS-1$
 
 		if(smtpUsername == null)	
-			smtpUsername = "test";
+			smtpUsername = "test"; //$NON-NLS-1$
 
 		if(smtpPassword == null)	
-			smtpPassword = "test";
+			smtpPassword = "test"; //$NON-NLS-1$
 
 		if(smtpPort == null)
 			smtpPort = 25;

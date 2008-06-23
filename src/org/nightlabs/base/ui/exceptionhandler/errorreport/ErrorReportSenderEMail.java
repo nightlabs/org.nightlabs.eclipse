@@ -45,6 +45,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import org.apache.log4j.Logger;
+import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.util.ImageUtil;
 import org.nightlabs.config.Config;
 
@@ -73,11 +74,11 @@ public class ErrorReportSenderEMail implements ErrorReportSender
 			ErrorReportEMailCfMod cfMod = Config.sharedInstance().createConfigModule(ErrorReportEMailCfMod.class);
 
 			Properties props = new Properties();
-			props.put("mail.smtp.auth", String.valueOf(cfMod.isAuthenticate()));
+			props.put("mail.smtp.auth", String.valueOf(cfMod.isAuthenticate())); //$NON-NLS-1$
 			props.put("mail.host", cfMod.getSmtpHost()); //$NON-NLS-1$
 			props.put("mail.smtp.localhost", cfMod.getSmtpLocalhost()); //$NON-NLS-1$
-			props.put("mail.smtp.port", cfMod.getSmtpPort());
-			props.put("mail.smtp.starttls.enable", String.valueOf(cfMod.isEnableTLS()));
+			props.put("mail.smtp.port", cfMod.getSmtpPort()); //$NON-NLS-1$
+			props.put("mail.smtp.starttls.enable", String.valueOf(cfMod.isEnableTLS())); //$NON-NLS-1$
 			
 			Session mailConnection = Session.getInstance(props, null);		
 
@@ -104,13 +105,13 @@ public class ErrorReportSenderEMail implements ErrorReportSender
 				//	Create the screenShot on a file and delete on exit
 				try {
 					// Create temp file.
-					tempscreenshot = File.createTempFile("screenShot", ".jpg");
+					tempscreenshot = File.createTempFile("screenShot", ".jpg"); //$NON-NLS-1$ //$NON-NLS-2$
 					// Delete temp file when program exits (in case deletion below fails for whatever reason).
 					tempscreenshot.deleteOnExit();
 
 					ImageIO.write(
 							ImageUtil.convertToAWT(errorReport.getErrorScreenshot()),
-							"JPG",
+							"JPG", //$NON-NLS-1$
 							tempscreenshot
 					);
 
@@ -134,7 +135,7 @@ public class ErrorReportSenderEMail implements ErrorReportSender
 
 			if(cfMod.isAuthenticate())
 			{
-				Transport tr = mailConnection.getTransport("smtp");
+				Transport tr = mailConnection.getTransport("smtp"); //$NON-NLS-1$
 				try {
 					tr.connect(cfMod.getSmtpHost(), cfMod.getSmtpUsername(), cfMod.getSmtpPassword());
 					tr.sendMessage(msg, msg.getAllRecipients());

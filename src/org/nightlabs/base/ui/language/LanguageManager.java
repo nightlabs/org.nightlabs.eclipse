@@ -42,6 +42,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.config.LanguageCfMod;
+import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.config.Config;
 import org.nightlabs.config.ConfigException;
 import org.nightlabs.language.LanguageCf;
@@ -163,7 +164,7 @@ implements ILanguageManager
 		if (languageID2LanguageCf.containsKey(langCf.getLanguageID()))
 			return;
 		if (!checkLanguageID(langCf.getLanguageID()))
-			throw new IllegalArgumentException("The languageID " + langCf.getLanguageID() + " is invalid!");
+			throw new IllegalArgumentException("The languageID " + langCf.getLanguageID() + " is invalid!"); //$NON-NLS-1$ //$NON-NLS-2$
 		langCf.init(langCfMod.getLanguageIDs());
 		langCfMod.getLanguages().add(langCf);
 		languageID2LanguageCf.put(langCf.getLanguageID(), langCf);
@@ -184,7 +185,7 @@ implements ILanguageManager
 			return;
 
 		if (!checkLanguageID(languageID))
-			throw new IllegalArgumentException("The languageID " + languageID + " is invalid!");
+			throw new IllegalArgumentException("The languageID " + languageID + " is invalid!"); //$NON-NLS-1$ //$NON-NLS-2$
 		LanguageCf langCf = createLanguage(languageID);
 		addLanguage(langCf);
 	}
@@ -198,7 +199,7 @@ implements ILanguageManager
 			return;
 
 		if (!checkLanguageID(locale.getLanguage()))
-			throw new IllegalArgumentException("The languageID " + locale.getLanguage() + " is invalid!");
+			throw new IllegalArgumentException("The languageID " + locale.getLanguage() + " is invalid!"); //$NON-NLS-1$ //$NON-NLS-2$
 		LanguageCf langCf = createLanguage(getLanguageID(locale));
 		addLanguage(langCf);
 	}

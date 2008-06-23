@@ -47,6 +47,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.l10n.DateFormatProvider;
 import org.nightlabs.l10n.DateFormatter;
 import org.nightlabs.l10n.DateParseException;
@@ -180,7 +181,7 @@ public class DateTimeEdit extends XComposite
 
 //		if ((DateFormatProvider.DATE & flags) != 0) {
 			lookupButton = new Button(this, SWT.NONE);
-			lookupButton.setText("...");
+			lookupButton.setText("..."); //$NON-NLS-1$
 			lookupButton.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e)

@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.internal.SharedImages;
+import org.nightlabs.base.ui.resource.Messages;
 
 /**
  * Composite for displaying messages of a certain type.
@@ -30,7 +31,7 @@ extends XComposite
 		WARNING
 	}
 	
-	private String message = "";
+	private String message = ""; //$NON-NLS-1$
 	private Label label;
 	private Image image;
 	private Label imageLabel; 

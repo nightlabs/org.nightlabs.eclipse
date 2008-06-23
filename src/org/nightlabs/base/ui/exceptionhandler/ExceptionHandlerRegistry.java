@@ -39,6 +39,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.swt.widgets.Display;
 import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
+import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.util.RCPUtil;
 
 /**
@@ -322,11 +323,11 @@ public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 									StringBuilder foundHandlers = new StringBuilder();
 									for (ExceptionHandlerRegistryItem exceptionHandlerRegistryItem : skipItems) {
 										if (foundHandlers.length() != 0)
-											foundHandlers.append(", ");
+											foundHandlers.append(", "); //$NON-NLS-1$
 
 										foundHandlers.append(exceptionHandlerRegistryItem.getExceptionHandler().getClass().getName());
 									}
-									logger.fatal("None of the found ExceptionHandlers (" + foundHandlers + ") handled this Throwable!", exception); //$NON-NLS-1$
+									logger.fatal("None of the found ExceptionHandlers (" + foundHandlers + ") handled this Throwable!", exception); //$NON-NLS-1$ //$NON-NLS-2$
 									return;
 								}
 							}
@@ -382,13 +383,13 @@ public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 
 			int priority = -1; // default => will be changed into 500
 			String priorityString = element.getAttribute("priority"); //$NON-NLS-1$
-			if (priorityString != null && !"".equals(priorityString)) {
+			if (priorityString != null && !"".equals(priorityString)) { //$NON-NLS-1$
 				try {
 					priority = Integer.parseInt(priorityString);
 					if (priority < 0 || priority > 1000)
-						throw new NumberFormatException("Out of range!");
+						throw new NumberFormatException("Out of range!"); //$NON-NLS-1$
 				} catch (NumberFormatException x) {
-					NumberFormatException y = new NumberFormatException("priority=\"" + priorityString + "\" is not a valid integer in the range between 0 and 1000!");
+					NumberFormatException y = new NumberFormatException("priority=\"" + priorityString + "\" is not a valid integer in the range between 0 and 1000!"); //$NON-NLS-1$ //$NON-NLS-2$
 					y.initCause(x);
 					throw y;
 				}

@@ -6,6 +6,7 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.DateTime;
+import org.nightlabs.base.ui.resource.Messages;
 
 /**
  * Utility methods for working with {@link DateTime}s. 
@@ -62,9 +63,9 @@ public class DateTimeUtil
 		Date date = calendar.getTime();
 //		Date date = new Date(year-1900, month, day, hour, minute, second);
 		if (logger.isDebugEnabled()) {
-			logger.debug("year:"+year+",month:"+month+",day:"+day+",hour:"+hour+",minute:"+minute+",second:"+second);
-			logger.debug("date = "+date);
-			logger.debug("");
+			logger.debug("year:"+year+",month:"+month+",day:"+day+",hour:"+hour+",minute:"+minute+",second:"+second); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+			logger.debug("date = "+date); //$NON-NLS-1$
+			logger.debug(""); //$NON-NLS-1$
 		}
 		return date;
 	}
@@ -83,9 +84,9 @@ public class DateTimeUtil
 		dateTime.setSeconds(calendar.get(Calendar.SECOND));
 //		setDate(calendar.getTime(), dateTime);
 		if (logger.isDebugEnabled()) {
-			logger.debug("calendar date = "+calendar.getTime());
-			logger.debug("dateTime date = "+getDate(dateTime));
-			logger.debug("");
+			logger.debug("calendar date = "+calendar.getTime()); //$NON-NLS-1$
+			logger.debug("dateTime date = "+getDate(dateTime)); //$NON-NLS-1$
+			logger.debug(""); //$NON-NLS-1$
 		}
 	}
 	

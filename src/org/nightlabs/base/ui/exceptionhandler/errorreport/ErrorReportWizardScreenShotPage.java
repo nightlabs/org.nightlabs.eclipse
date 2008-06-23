@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.composite.XComposite.LayoutMode;
+import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.util.ImageUtil;
 import org.nightlabs.base.ui.wizard.DynamicPathWizardPage;
 import org.nightlabs.config.Config;
@@ -29,7 +30,7 @@ public class ErrorReportWizardScreenShotPage extends DynamicPathWizardPage {
 
 	public ErrorReportWizardScreenShotPage() {
 
-		super(ErrorReportWizardScreenShotPage.class.getName(), "Send an error report"); 
+		super(ErrorReportWizardScreenShotPage.class.getName(), Messages.getString("org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportWizardScreenShotPage.title"));  //$NON-NLS-1$
 		// TODO Auto-generated constructor stub	
 	}
 
@@ -41,7 +42,7 @@ public class ErrorReportWizardScreenShotPage extends DynamicPathWizardPage {
 
 		Label titleLabel = new Label(page, SWT.WRAP);
 		titleLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		titleLabel.setText("Attach a screenshot of the Error"); 
+		titleLabel.setText(Messages.getString("org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportWizardScreenShotPage.titleLabel"));  //$NON-NLS-1$
 
 		screenshotImage = new Label(page, SWT.WRAP);
 		screenshotImage.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -49,7 +50,7 @@ public class ErrorReportWizardScreenShotPage extends DynamicPathWizardPage {
 
 		Button sendScreenShotCheckBox = new Button(page, SWT.CHECK);
 		sendScreenShotCheckBox.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		sendScreenShotCheckBox.setText("Attach the Above ScreenShot in the Report");
+		sendScreenShotCheckBox.setText(Messages.getString("org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportWizardScreenShotPage.sendScreenShotCheckBox.label")); //$NON-NLS-1$
 		sendScreenShotCheckBox.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent arg0) {
 				setIsSendscreenshotImage(!getIsSendsScreenshotImage());
@@ -62,12 +63,12 @@ public class ErrorReportWizardScreenShotPage extends DynamicPathWizardPage {
 		ErrorReportSenderCfMod cfMod = Config.sharedInstance().createConfigModule(ErrorReportSenderCfMod.class);
 		sendScreenShotCheckBox.setSelection(cfMod.isAttachScreenShotToErrorReport_default());
 
-		sendScreenShotCheckBox.setToolTipText("decides whether to Attach the ScreenShot in the Error Report E-Mail");
+		sendScreenShotCheckBox.setToolTipText(Messages.getString("org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportWizardScreenShotPage.sendScreenShotCheckBox.tooltip")); //$NON-NLS-1$
 		if(!cfMod.isAttachScreenShotToErrorReport_decide())
 		{
 			sendScreenShotCheckBox.setEnabled(false);
 			sendScreenShotCheckBox.setSelection(false);
-			sendScreenShotCheckBox.setToolTipText("you dont have enough access rights to use this feature!");
+			sendScreenShotCheckBox.setToolTipText(Messages.getString("org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportWizardScreenShotPage.sendScreenShotCheckBox.noPermissions.tooltip")); //$NON-NLS-1$
 		}		
 
 		setIsSendscreenshotImage(sendScreenShotCheckBox.getSelection());

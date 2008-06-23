@@ -61,6 +61,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TypedListener;
 import org.eclipse.swt.widgets.Widget;
 import org.nightlabs.base.ui.composite.XComposite;
+import org.nightlabs.base.ui.resource.Messages;
 
 /**
  * A Custom Implementation of a ComboBox which is able not only to show Strings but also
@@ -90,8 +91,8 @@ extends XComposite
 
 	private static boolean isGtk()
 	{
-		String ws = System.getProperty("osgi.ws");
-		return "gtk".equals(ws);
+		String ws = System.getProperty("osgi.ws"); //$NON-NLS-1$
+		return "gtk".equals(ws); //$NON-NLS-1$
 	}
 	
 /**
@@ -455,7 +456,7 @@ public Point computeSize (int wHint, int hHint, boolean changed)
 	// TODO workaround to change the size of the XCombo
 	if (isGtk()) { // added by Marco, because it doesn't look good in GTK.
 		Text t = new Text(this, SWT.BORDER);
-		t.setText("ABCxyz");
+		t.setText("ABCxyz"); //$NON-NLS-1$
 		arrowSize.y = t.getSize().y;
 		t.dispose();
 //		arrowSize.y -= 5;

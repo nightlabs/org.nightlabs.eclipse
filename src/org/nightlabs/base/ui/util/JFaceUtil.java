@@ -11,6 +11,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.nightlabs.base.ui.resource.Messages;
 
 /**
  * Adapted from http://tom-eclipse-dev.blogspot.com/2007/01/tableviewers-and-nativelooking.html
@@ -20,8 +21,8 @@ import org.eclipse.swt.widgets.Shell;
  */
 public final class JFaceUtil
 {
-	private static final String CHECKED_KEY = "CHECKED";
-	private static final String UNCHECK_KEY = "UNCHECKED";
+	private static final String CHECKED_KEY = "CHECKED"; //$NON-NLS-1$
+	private static final String UNCHECK_KEY = "UNCHECKED"; //$NON-NLS-1$
 
 	private static Image makeShot(Control control, boolean type)
 	{

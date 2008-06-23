@@ -60,6 +60,7 @@ import org.eclipse.swt.widgets.Display;
 import org.nightlabs.base.ui.action.IXContributionItem;
 import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
 import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
+import org.nightlabs.base.ui.resource.Messages;
 
 
 /**
@@ -250,15 +251,15 @@ extends AbstractEPProcessor
 				if (anchor != null) {
 					if (anchor instanceof MenuManager) {
 						IContributionItem removedItem = ((MenuManager)anchor).remove(ad.getID());
-						String removed = removedItem != null ? "" : "NOT ";
-						logger.debug("ActionDescriptor with id "+ad.getID()+" was " + removed + "removed from "+kind+" !");
+						String removed = removedItem != null ? "" : "NOT "; //$NON-NLS-1$ //$NON-NLS-2$
+						logger.debug("ActionDescriptor with id "+ad.getID()+" was " + removed + "removed from "+kind+" !"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 					} 
 					else {
 						IContributionManager parent = ((ContributionItem)anchor).getParent(); 
 						if (parent != null) {
 							IContributionItem removedItem = parent.remove(ad.getID());
-							String removed = removedItem != null ? "" : "NOT ";
-							logger.debug("ActionDescriptor with id "+ad.getID()+" was " + removed + "removed from "+kind+" !");
+							String removed = removedItem != null ? "" : "NOT "; //$NON-NLS-1$ //$NON-NLS-2$
+							logger.debug("ActionDescriptor with id "+ad.getID()+ "was" + removed + "removed from "+kind+" !"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 						}
 					}					
 				}
@@ -284,7 +285,7 @@ extends AbstractEPProcessor
 	 */
 	public void removeAllFromCoolBar(ICoolBarManager coolBarManager) {
 		if (Display.getCurrent() == null)
-			throw new IllegalStateException("This method must be called on the UI thread!");
+			throw new IllegalStateException("This method must be called on the UI thread!"); //$NON-NLS-1$
 
 		IContributionManager coolBarContributionManager = coolBarManager;
 		if (coolBarManager instanceof SubCoolBarManager)
@@ -385,9 +386,9 @@ extends AbstractEPProcessor
 		// to the coolbar
 		// TODO this should be somehow cached
 		Set<String> additions_contributionItemIDs = new HashSet<String>();
-		additions_contributionItemIDs.add("additions"); // additions itself must not end up in orphanage menu
+		additions_contributionItemIDs.add("additions"); // additions itself must not end up in orphanage menu //$NON-NLS-1$
 		for (ActionDescriptor actionDescriptor : getActionDescriptors()) {
-			if ("additions".equals(actionDescriptor.getToolbarPath()))
+			if ("additions".equals(actionDescriptor.getToolbarPath())) //$NON-NLS-1$
 				additions_contributionItemIDs.add(actionDescriptor.getID());
 		}
 
@@ -855,7 +856,7 @@ extends AbstractEPProcessor
 		int lastMenuRawSize = 0;
 		if (firstRun) {
 			menuRaw = new LinkedList<ItemDescriptor>(this.menuRaw);
-			menuRaw.add(new SeparatorDescriptor("additions"));
+			menuRaw.add(new SeparatorDescriptor("additions")); //$NON-NLS-1$
 			lastMenuRawSize = menuRaw.size();
 			menuSorted = new LinkedList<ItemDescriptor>();
 		}
@@ -1045,21 +1046,21 @@ extends AbstractEPProcessor
 			Class clazz = entry.getKey();
 			String descriptorKind = null;
 			if (clazz == ActionDescriptor.class) {
-				descriptorKind = "ActionDescriptor";
+				descriptorKind = "ActionDescriptor"; //$NON-NLS-1$
 			}
 			else if (clazz == MenuDescriptor.class) {
-				descriptorKind = "MenuDescriptor";
+				descriptorKind = "MenuDescriptor"; //$NON-NLS-1$
 			}
 			else if (clazz == GroupMarkerDescriptor.class) {
-				descriptorKind = "GroupMarkerDescriptor";
+				descriptorKind = "GroupMarkerDescriptor"; //$NON-NLS-1$
 			}
 			else if (clazz == SeparatorDescriptor.class) {
 				descriptorKind = "SeparatorDescriptor";
 			}
 
-			String contributionKind = addIfTrueRemoveIfFalse ? "added to " : "removed from "; 
+			String contributionKind = addIfTrueRemoveIfFalse ? "added to " : "removed from ";  //$NON-NLS-1$ //$NON-NLS-2$
 			for (ItemDescriptor itemDescriptor : entry.getValue()) {
-				logger.debug(descriptorKind + " " + itemDescriptor.getID() + " has been " + contributionKind + kind);
+				logger.debug(descriptorKind + " " + itemDescriptor.getID() + " has been " + contributionKind + kind); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 	}

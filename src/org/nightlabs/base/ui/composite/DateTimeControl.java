@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
+import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.l10n.DateFormatter;
 import org.nightlabs.l10n.DateParseException;
 
@@ -76,7 +77,7 @@ public class DateTimeControl extends XComposite {
 		this.setDate(date); // text needs to exist
 
 		lookupButton = new Button(this, SWT.NONE);
-		lookupButton.setText("...");
+		lookupButton.setText("..."); //$NON-NLS-1$
 		lookupButton.addSelectionListener(new SelectionAdapter() {
 			/* (non-Javadoc)
 			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
