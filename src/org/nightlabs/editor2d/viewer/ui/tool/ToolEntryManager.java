@@ -102,7 +102,8 @@ public class ToolEntryManager
 		ITool tool = toolEntry2Tool.get(activeEntry);
 		getToolManager().setActiveTool(tool);
 		Button button = toolEntry2ToolButton.get(activeEntry);
-		button.setSelection(true);
+		if (button != null)
+			button.setSelection(true);
 	}
 	public IToolEntry getActiveToolEntry() {
 		return activeEntry;
