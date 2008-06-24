@@ -61,7 +61,7 @@ public class EditorAction implements IWorkbenchWindowActionDelegate {
 	public void run(IAction action) {
 		try {
 			IFCKEditorInput editorInput = new FCKEditorInput(TestUtil.getContent(), "Bla bla "+Math.random());
-			window.getActivePage().openEditor(editorInput, "org.nightlabs.eclipse.ui.fckeditor.FCKEditor");
+			window.getActivePage().openEditor(editorInput, "org.nightlabs.eclipse.ui.fckeditor.FCKEditorEditorPart");
 		} catch (Throwable e) {
 			MessageDialog.openError(window.getShell(), "Error", "Error: "+e.toString());
 			e.printStackTrace();

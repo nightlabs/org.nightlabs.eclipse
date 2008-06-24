@@ -25,6 +25,7 @@ package org.nightlabs.eclipse.ui.fckeditor;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.PartInitException;
 import org.nightlabs.eclipse.ui.fckeditor.file.IImageProvider;
 
@@ -63,4 +64,7 @@ public interface IFCKEditor
 	void commit();
 
 	Shell getShell();
+
+    void addPropertyListener(IPropertyListener l);
+    void removePropertyListener(IPropertyListener l);
 }

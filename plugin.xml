@@ -5,14 +5,14 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="org.nightlabs.eclipse.ui.fckeditor.FCKEditorPart"
+            class="org.nightlabs.eclipse.ui.fckeditor.FCKEditorEditorPart"
             contributorClass="org.nightlabs.eclipse.ui.fckeditor.FCKEditorActionBarContributer"
-            id="org.nightlabs.eclipse.ui.fckeditor.FCKEditorPart"
+            id="org.nightlabs.eclipse.ui.fckeditor.FCKEditorEditorPart"
             icon="icons/document.png"
             name="FCKeditor">
       </editor>
    </extension>
-<!--
+
    <extension
          point="org.eclipse.ui.actionSets">
       <actionSet
@@ -36,6 +36,15 @@
                tooltip="Open Test FCKeditor">
          </action>
          <action
+               class="org.nightlabs.eclipse.ui.fckeditor.test.EditorDialogAction"
+               icon="icons/document.png"
+               id="org.nightlabs.eclipse.ui.fckeditor.test.EditorDialogAction"
+               label="&amp;FCKeditor Dialog"
+               menubarPath="testMenu/testGroup"
+               toolbarPath="testGroup"
+               tooltip="Open Test FCKeditor Dialog">
+         </action>
+         <action
                class="org.nightlabs.eclipse.ui.fckeditor.test.FileListAction"
                icon="icons/document.png"
                id="org.nightlabs.eclipse.ui.fckeditor.test.FileListAction"
@@ -46,7 +55,7 @@
          </action>
       </actionSet>
    </extension>
--->
+
    <extension
          point="org.nightlabs.eclipse.ui.fckeditor.contentFileWizard">
       <typeBinding

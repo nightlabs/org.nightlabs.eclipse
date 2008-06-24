@@ -1,23 +1,25 @@
 package org.nightlabs.eclipse.ui.fckeditor;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  */
-public class FCKEditorPart extends EditorPart
+public class FCKEditorEditorPart extends EditorPart
 {
 	private IFCKEditor editor;
 
 	/**
 	 * Create a new FCKEditorPart instance.
 	 */
-	public FCKEditorPart()
+	public FCKEditorEditorPart()
 	{
 	}
 
@@ -54,6 +56,14 @@ public class FCKEditorPart extends EditorPart
 		setPartName(input.getName());
 
 		editor = new FCKEditor();
+		// listener list is automatically cleared in FCKEditor.dispose()
+		editor.addPropertyListener(new IPropertyListener() {
+			@Override
+			public void propertyChanged(Object object, int propertyId)
+			{
+				firePropertyChange(propertyId);
+			}
+		});
 		editor.init(site.getShell(), (IFCKEditorInput)input);
 	}
 
@@ -81,6 +91,10 @@ public class FCKEditorPart extends EditorPart
 	@Override
 	public void createPartControl(Composite parent)
 	{
+		GridLayout gl = new GridLayout();
+		gl.marginHeight = 0;
+		gl.marginWidth = 0;
+		parent.setLayout(gl);
 		editor.createControl(parent);
 	}
 

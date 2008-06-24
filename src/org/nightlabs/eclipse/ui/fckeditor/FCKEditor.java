@@ -29,7 +29,7 @@ import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IPropertyListener;
@@ -261,20 +261,29 @@ public class FCKEditor extends EventManager implements IFCKEditor
 
 	public void createControl(Composite parent)
 	{
-		FillLayout layout = new FillLayout();
-		parent.setLayout(layout);
 		browser = new Browser(parent, SWT.NONE);
 		browser.setUrl(httpd.getUrl(this)+"/edit.html"); //$NON-NLS-1$
 		browser.addDisposeListener(new DisposeListener() {
 			@Override
 			public void widgetDisposed(DisposeEvent arg0)
 			{
-				httpd.removeEditor(FCKEditor.this);
-				httpd = null;
-				imageProvider.dispose();
-				imageProvider = null;
+				dispose();
 			}
 		});
+		browser.setLayoutData(new GridData(GridData.FILL_BOTH));
+	}
+
+	public void dispose()
+	{
+		if(httpd != null) {
+			httpd.removeEditor(FCKEditor.this);
+			httpd = null;
+		}
+		if(imageProvider != null) {
+			imageProvider.dispose();
+			imageProvider = null;
+		}
+		clearListeners();
 	}
 
 //	/* (non-Javadoc)
