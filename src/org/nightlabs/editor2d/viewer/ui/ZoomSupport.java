@@ -301,8 +301,20 @@ implements IZoomSupport
 		double scaleY = viewBounds.getHeight() / realBounds.getHeight();
 		double scale = Math.min(scaleX, scaleY);
 
-		if (Math.abs(oldScale - scale) > 0.0001)
+		double diff = Math.abs(oldScale - scale);
+		if (diff > 0.0001 && !Double.isInfinite(diff)) 
+		{
+			if (logger.isDebugEnabled()) {
+				logger.debug("realBounds = "+realBounds);
+				logger.debug("viewBounds = "+viewBounds);
+				logger.debug("scaleX = "+scaleX);
+				logger.debug("scaleY = "+scaleY);
+				logger.debug("oldScale = "+oldScale);
+				logger.debug("scale = "+scale);
+				logger.debug("diff = "+diff);				
+			}
 			setZoom(scale);
+		}
 	}
 	
 	protected void doZoomAll() {
