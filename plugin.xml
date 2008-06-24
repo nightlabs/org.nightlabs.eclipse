@@ -5,9 +5,9 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="org.nightlabs.eclipse.ui.fckeditor.FCKEditor"
+            class="org.nightlabs.eclipse.ui.fckeditor.FCKEditorPart"
             contributorClass="org.nightlabs.eclipse.ui.fckeditor.FCKEditorActionBarContributer"
-            id="org.nightlabs.eclipse.ui.fckeditor.FCKEditor"
+            id="org.nightlabs.eclipse.ui.fckeditor.FCKEditorPart"
             icon="icons/document.png"
             name="FCKeditor">
       </editor>

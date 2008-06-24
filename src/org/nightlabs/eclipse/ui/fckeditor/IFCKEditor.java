@@ -23,35 +23,44 @@
  **************************************************************************/
 package org.nightlabs.eclipse.ui.fckeditor;
 
-import org.eclipse.ui.IEditorPart;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PartInitException;
 import org.nightlabs.eclipse.ui.fckeditor.file.IImageProvider;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  * @version $Revision$ - $Date$
  */
-public interface IFCKEditor extends IEditorPart 
+public interface IFCKEditor
 {
+	void createControl(Composite parent);
+	void init(Shell shell, IFCKEditorInput input) throws PartInitException;
 	IFCKEditorInput getEditorInput();
 	String getBaseUrl();
 	String getWidgetBackgroundColor();
 	String getWidgetSelectedColor();
 	String getWidgetHoverColor();
+	boolean isDirty();
 	void setDirty(boolean dirty);
 	String getFCKEditorId();
-	
+
 	void print();
 //	void copy();
 //	void paste();
-	
+
 	void setEnabled(boolean enabled);
-	
+
 	IImageProvider getImageProvider();
-	
+
 	/**
 	 * Save the contents of the editor. This is an extra method because
 	 * org.eclipse.ui.part.EditorPart#doSave(org.eclipse.core.runtime.IProgressMonitor)
 	 * is needed for the two-way browser widget communication.
 	 */
 	void doReallySave();
+
+	void commit();
+
+	Shell getShell();
 }

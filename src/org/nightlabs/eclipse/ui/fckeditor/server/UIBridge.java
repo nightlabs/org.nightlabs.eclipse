@@ -152,7 +152,7 @@ public class UIBridge extends AbstractFileProvider {
 	 */
 	@Override
 	public InputStream getFileContents(String subUri, Properties parms) {
-		final Shell shell = getEditor().getSite().getShell();
+		final Shell shell = getEditor().getShell();
 		if("/uibridge/setdirty.xml".equals(subUri)) { //$NON-NLS-1$
 			getEditor().setDirty(true);
 			String contents = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<dirty>true</dirty>\n"; //$NON-NLS-1$
@@ -200,10 +200,10 @@ public class UIBridge extends AbstractFileProvider {
 		private FileHelper fileHelper;
 		private IFCKEditor editor;
 		private Link topLabel;
-		
+
 		public MySelectFileDialog(IFCKEditor editor, FileHelper fileHelper)
 		{
-			super(editor.getSite().getShell(), fileHelper.getFilteredFiles(), editor.getImageProvider());
+			super(editor.getShell(), fileHelper.getFilteredFiles(), editor.getImageProvider());
 			this.editor = editor;
 			this.fileHelper = fileHelper;
 		}
@@ -246,10 +246,10 @@ public class UIBridge extends AbstractFileProvider {
 			updateTopLabel();
 			super.setFiles(files);
 		}
-		
+
 		/**
 		 * @return <code>null</code> if nothing has changed or the complete list of
-		 * 		files after the wizard has finished. 
+		 * 		files after the wizard has finished.
 		 */
 		private List<IFCKEditorContentFile> openNewFileWizard(Shell shell, FileHelper fileHelper)
 		{
@@ -292,7 +292,7 @@ public class UIBridge extends AbstractFileProvider {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * @return The URL of the selected file or an empty string if nothing was
 	 * 		selected
