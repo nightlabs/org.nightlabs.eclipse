@@ -1,5 +1,6 @@
 package org.nightlabs.base.ui.exceptionhandler.errorreport;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -23,24 +24,25 @@ import org.nightlabs.config.Config;
 /**
  * @author Fitas Amine - fitas at nightlabs dot de
  */
-public class ErrorReportWizardScreenShotPage extends DynamicPathWizardPage {
-	protected Label screenshotImage;
+public class ErrorReportWizardScreenShotPage 
+extends DynamicPathWizardPage 
+{
+	private static final Logger logger = Logger.getLogger(ErrorReportWizardScreenShotPage.class);
+	
+	private Label screenshotImage;
 	private Boolean IsSendScreenshotImage = false;
-
-
+	private Label titleLabel;
+	private Button sendScreenShotCheckBox;
+	
 	public ErrorReportWizardScreenShotPage() {
-
-		super(ErrorReportWizardScreenShotPage.class.getName(), Messages.getString("org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportWizardScreenShotPage.title"));  //$NON-NLS-1$
-		// TODO Auto-generated constructor stub	
+		super(ErrorReportWizardScreenShotPage.class.getName(), Messages.getString("org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportWizardScreenShotPage.title"));  //$NON-NLS-1$	
 	}
 
 	@Override
 	public Control createPageContents(Composite parent) {
-		// TODO Auto-generated method stub
-
 		XComposite page = new XComposite(parent, SWT.NONE, LayoutMode.TIGHT_WRAPPER);
 
-		Label titleLabel = new Label(page, SWT.WRAP);
+		titleLabel = new Label(page, SWT.WRAP);
 		titleLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		titleLabel.setText(Messages.getString("org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportWizardScreenShotPage.titleLabel"));  //$NON-NLS-1$
 
@@ -48,14 +50,13 @@ public class ErrorReportWizardScreenShotPage extends DynamicPathWizardPage {
 		screenshotImage.setLayoutData(new GridData(GridData.FILL_BOTH));
 		screenshotImage.setAlignment(SWT.CENTER);
 
-		Button sendScreenShotCheckBox = new Button(page, SWT.CHECK);
+		sendScreenShotCheckBox = new Button(page, SWT.CHECK);
 		sendScreenShotCheckBox.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		sendScreenShotCheckBox.setText(Messages.getString("org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportWizardScreenShotPage.sendScreenShotCheckBox.label")); //$NON-NLS-1$
 		sendScreenShotCheckBox.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent arg0) {
-				setIsSendscreenshotImage(!getIsSendsScreenshotImage());
+				setIsSendScreenshotImage(!getIsSendsScreenshotImage());
 			}
-
 			public void widgetDefaultSelected(SelectionEvent arg0) {
 			}
 		});		    
@@ -71,7 +72,7 @@ public class ErrorReportWizardScreenShotPage extends DynamicPathWizardPage {
 			sendScreenShotCheckBox.setToolTipText(Messages.getString("org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportWizardScreenShotPage.sendScreenShotCheckBox.noPermissions.tooltip")); //$NON-NLS-1$
 		}		
 
-		setIsSendscreenshotImage(sendScreenShotCheckBox.getSelection());
+		setIsSendScreenshotImage(sendScreenShotCheckBox.getSelection());
 
 		parent.addListener(SWT.Resize, new Listener() {
 			public void handleEvent(Event e) {
@@ -93,32 +94,58 @@ public class ErrorReportWizardScreenShotPage extends DynamicPathWizardPage {
 			ErrorReport errorReport = wizard.getErrorReport();
 //			ImageData data = ImageUtil.convertToSWT(errorReport.getErrorScreenshot());
 			ImageData data = errorReport.getErrorScreenshot();
-			Image image = new Image(Display.getCurrent(), data);
-			Image scaledImage = image;
-			
-			if(screenshotImage.getSize().x > screenshotImage.getSize().y)							
-				imgRatio = (double)(screenshotImage.getSize().y)  / (double)(data.height);
-			else
-				imgRatio = (double)(screenshotImage.getSize().x)  / (double)(data.width);
-
-			imgRatio = imgRatio - (imgRatio * 0.1); // decrease image size 10%
-			if ((data.width * imgRatio) > 0 && (data.height * imgRatio) > 0) {
-				scaledImage = ImageUtil.resize(image,(int)(data.width * imgRatio),(int)(data.height * imgRatio),false);
+			Display display = Display.getCurrent();
+			if (display == null) {
+				display = Display.getDefault();
 			}
-			
-			image.dispose(); 
-			
-			screenshotImage.setImage(scaledImage);
-			screenshotImage.redraw();
-		}
+			if (display != null) 
+			{
+				if (data != null) {
+					Image image = new Image(display, data);
+					Image scaledImage = image;
 
+					if(screenshotImage.getSize().x > screenshotImage.getSize().y)							
+						imgRatio = (double)(screenshotImage.getSize().y)  / (double)(data.height);
+					else
+						imgRatio = (double)(screenshotImage.getSize().x)  / (double)(data.width);
+
+					imgRatio = imgRatio - (imgRatio * 0.1); // decrease image size 10%
+					if ((data.width * imgRatio) > 0 && (data.height * imgRatio) > 0) {
+						scaledImage = ImageUtil.resize(image,(int)(data.width * imgRatio),(int)(data.height * imgRatio),false);
+					}
+
+					image.dispose(); 
+
+					screenshotImage.setImage(scaledImage);
+					screenshotImage.redraw();					
+				}
+				else {
+					logger.error("imageData == null!");
+					errorOccured();
+				}
+			}
+			else {
+				logger.error("display == null!");
+				errorOccured();
+			}
+		}
 	}
+	
 	public Boolean getIsSendsScreenshotImage() {
 		return IsSendScreenshotImage;
 	}
 
-	public void setIsSendscreenshotImage(Boolean sendscreenshotImage) {
+	public void setIsSendScreenshotImage(Boolean sendscreenshotImage) {
 		this.IsSendScreenshotImage = sendscreenshotImage;
 	}
 
+	private void errorOccured() {
+		if (titleLabel != null && !titleLabel.isDisposed()) {
+			titleLabel.setText("There occured an error during taking the screenshot, so it can not be displayed!");
+		}
+		if (sendScreenShotCheckBox != null && !sendScreenShotCheckBox.isDisposed()) {
+			sendScreenShotCheckBox.setSelection(false);
+			sendScreenShotCheckBox.setEnabled(false);
+		}
+	}
 }

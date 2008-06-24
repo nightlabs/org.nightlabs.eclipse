@@ -282,6 +282,16 @@ extends XContributionItem
 		public void fill(Menu menu, int index) {
 			createMenuItem(menu, factory);
 		}
+
+		/* (non-Javadoc)
+		 * @see org.eclipse.jface.action.ContributionItem#dispose()
+		 */
+		@Override
+		public void dispose() {
+			super.dispose();
+			if (logger.isDebugEnabled())
+				logger.debug("dispose called for MenuContributionItem "+this);
+		}
 	}	
 	
 	private SelectionListener menuSelectionListener = new SelectionListener(){
