@@ -25,8 +25,6 @@
  ******************************************************************************/
 package org.nightlabs.base.ui.search;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -37,8 +35,7 @@ import java.util.TreeMap;
  */
 public class SearchResultProviderRegistryUseCase {
 
-	public SearchResultProviderRegistryUseCase() {
-	}
+	public SearchResultProviderRegistryUseCase() {}
  
 	private ISearchResultProviderFactory currentSearchResultProviderFactory = null;
 	/**

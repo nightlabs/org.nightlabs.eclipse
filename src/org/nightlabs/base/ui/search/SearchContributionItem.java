@@ -326,7 +326,7 @@ extends XContributionItem
 		if (useCase == null) {
 			useCase = new SearchResultProviderRegistryUseCase();
 			ISearchResultProviderFactory factory = useCase.getFactory2Instance().keySet().iterator().next();
-			useCase.setCurrentSearchResultProviderFactory(factory);
+			useCase.setCurrentSearchResultProviderFactory(factory);			
 		}
 		return useCase;
 	}
