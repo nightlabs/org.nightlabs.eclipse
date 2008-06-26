@@ -33,4 +33,8 @@ public class FCKEditorComposite extends Composite
 		editor.createControl(this);
 	}
 
+	public IFCKEditor getEditor()
+	{
+		return editor;
+	}
 }

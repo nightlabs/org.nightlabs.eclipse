@@ -26,6 +26,7 @@ package org.nightlabs.eclipse.ui.fckeditor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IPropertyListener;
+import org.eclipse.ui.IWorkbenchPartConstants;
 import org.eclipse.ui.PartInitException;
 import org.nightlabs.eclipse.ui.fckeditor.file.IImageProvider;
 
@@ -35,6 +36,11 @@ import org.nightlabs.eclipse.ui.fckeditor.file.IImageProvider;
  */
 public interface IFCKEditor
 {
+    /**
+     * The property id for <code>isDirty</code>.
+     */
+    public static final int PROP_DIRTY = IWorkbenchPartConstants.PROP_DIRTY;
+    
 	void createControl(Composite parent);
 	void init(Shell shell, IFCKEditorInput input) throws PartInitException;
 	IFCKEditorInput getEditorInput();

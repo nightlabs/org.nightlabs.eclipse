@@ -33,7 +33,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IPropertyListener;
-import org.eclipse.ui.IWorkbenchPartConstants;
 import org.eclipse.ui.forms.FormColors;
 import org.eclipse.ui.forms.IFormColors;
 import org.nightlabs.eclipse.ui.fckeditor.file.IImageProvider;
@@ -55,11 +54,6 @@ import org.nightlabs.eclipse.ui.fckeditor.server.UIBridge;
  */
 public class FCKEditor extends EventManager implements IFCKEditor
 {
-    /**
-     * The property id for <code>isDirty</code>.
-     */
-    public static final int PROP_DIRTY = IWorkbenchPartConstants.PROP_DIRTY;
-
 	private Shell shell;
 	private IFCKEditorInput input;
 
