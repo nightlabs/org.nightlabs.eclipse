@@ -64,6 +64,7 @@ public class FCKEditorSaveDocumentProvider extends FCKEditorEditDocumentProvider
 		String contents = parms.getProperty(getEditor().getFCKEditorId());
 		if(contents == null)
 			throw new RuntimeException("Error saving contents. Content parameter not found.");
+		contents = LinkRewriter.rewriteToPermaLinks(contents, getEditor().getBaseUrl());
 		getEditor().getEditorInput().getEditorContent().setHtml(contents);
 		getEditor().doReallySave();
 		getEditor().setDirty(false);

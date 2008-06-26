@@ -59,7 +59,9 @@ public class FCKEditorEditDocumentProvider extends BundleTemplateFileProvider
 	{
 		Map<String, String> replacements = super.getReplacements();
 		replacements.put("loadingPaneText", getLoadingPaneText()); //$NON-NLS-1$
-		replacements.put("escapedHtml", escapeContents(getEditor().getEditorInput().getEditorContent().getHtml())); //$NON-NLS-1$
+		String content = getEditor().getEditorInput().getEditorContent().getHtml();
+		content = LinkRewriter.rewriteToLocalLinks(content, getEditor().getBaseUrl());
+		replacements.put("escapedHtml", escapeContents(content)); //$NON-NLS-1$
 		return replacements;
 	}
 	
