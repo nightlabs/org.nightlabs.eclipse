@@ -53,6 +53,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
@@ -715,6 +716,20 @@ public class RCPUtil
 		});
 	}
 
+	public static int getFontHeight(Control control) {
+		int fontHeight = 0;
+		// since the standard font can change - we recalculate this every time
+		GC gc = new GC(control.getParent());
+		try {
+			gc.setFont(control.getFont());
+			FontMetrics fontMetrics = gc.getFontMetrics();
+			fontHeight = fontMetrics.getHeight();
+		} finally {
+			gc.dispose();
+		}
+		return fontHeight;		
+	}
+	
 	/**
 	 * clears the workspace folder
 	 * @param ask determines if the user should be asked before
