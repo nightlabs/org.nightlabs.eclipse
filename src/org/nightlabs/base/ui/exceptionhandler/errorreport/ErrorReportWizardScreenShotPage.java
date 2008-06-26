@@ -120,12 +120,12 @@ extends DynamicPathWizardPage
 					screenshotImage.redraw();					
 				}
 				else {
-					logger.error("imageData == null!");
+					logger.error("imageData == null!"); //$NON-NLS-1$
 					errorOccured();
 				}
 			}
 			else {
-				logger.error("display == null!");
+				logger.error("display == null!"); //$NON-NLS-1$
 				errorOccured();
 			}
 		}
@@ -141,7 +141,7 @@ extends DynamicPathWizardPage
 
 	private void errorOccured() {
 		if (titleLabel != null && !titleLabel.isDisposed()) {
-			titleLabel.setText("There occured an error during taking the screenshot, so it can not be displayed!");
+			titleLabel.setText(Messages.getString("org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportWizardScreenShotPage.label.text.errorOccured")); //$NON-NLS-1$
 		}
 		if (sendScreenShotCheckBox != null && !sendScreenShotCheckBox.isDisposed()) {
 			sendScreenShotCheckBox.setSelection(false);

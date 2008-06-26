@@ -38,6 +38,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.nightlabs.base.ui.layout.WeightedTableLayout;
+import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.language.LanguageCf;
 
 /**
@@ -55,11 +56,15 @@ public class LanguageChooserList
 	private LanguageTableLabelProvider labelProvider;
 	private TableViewer viewer;
 	
-	public LanguageChooserList(Composite parent)
-	{
+	public LanguageChooserList(Composite parent) {
 		this(parent, true);
 	}
-	public LanguageChooserList(Composite parent, boolean grabExcessHorizontalSpace)
+	
+	public LanguageChooserList(Composite parent, boolean grabExcessHorizontalSpace) {
+		this(parent, true, false);
+	}
+	
+	public LanguageChooserList(Composite parent, boolean grabExcessHorizontalSpace, boolean showHeader)
 	{
 		super(parent, SWT.NONE, true);
 		((GridData)getLayoutData()).grabExcessHorizontalSpace = grabExcessHorizontalSpace;
@@ -90,8 +95,9 @@ public class LanguageChooserList
 		t.setLayout(new WeightedTableLayout(new int[] {1}));
 
 		// Add the columns to the table
-		new TableColumn(t, SWT.LEFT).setText("language"); //$NON-NLS-1$ // Because the header is not visible, we don't need to localise this String.
-		
+		new TableColumn(t, SWT.LEFT).setText(Messages.getString("org.nightlabs.base.ui.language.LanguageChooserList.column.language")); //$NON-NLS-1$
+		t.setHeaderVisible(showHeader);
+			
 		// must be called AFTER all columns are added
 		viewer.setInput(contentProvider);
 		
@@ -108,6 +114,7 @@ public class LanguageChooserList
 		StructuredSelection selection = (StructuredSelection) viewer.getSelection();
 		return (LanguageCf) selection.getFirstElement();
 	}
+	
 	/**
 	 * @param listener
 	 * @see org.eclipse.jface.viewers.StructuredViewer#addDoubleClickListener(org.eclipse.jface.viewers.IDoubleClickListener)
@@ -115,6 +122,7 @@ public class LanguageChooserList
 	public void addDoubleClickListener(IDoubleClickListener listener) {
 		viewer.addDoubleClickListener(listener);
 	}
+	
 	/**
 	 * @param listener
 	 * @see org.eclipse.jface.viewers.StructuredViewer#removeDoubleClickListener(org.eclipse.jface.viewers.IDoubleClickListener)

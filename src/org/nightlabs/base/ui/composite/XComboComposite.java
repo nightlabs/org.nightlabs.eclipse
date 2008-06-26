@@ -27,6 +27,7 @@
 package org.nightlabs.base.ui.composite;
 
 import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyListener;
@@ -56,6 +57,10 @@ import org.nightlabs.base.ui.custom.XCombo;
 public class XComboComposite<T>
 	extends AbstractListComposite<T>
 {
+	public enum CaptionOrientation {
+		TOP,
+		LEFT
+	}
 	
 	/**
 	 * @see AbstractListComposite#AbstractListComposite(Composite, int, boolean)
@@ -70,7 +75,14 @@ public class XComboComposite<T>
 	public XComboComposite(Composite parent, int comboStyle, String caption) {
 		super(parent, comboStyle, caption, true);
 	}
-
+	
+	/**
+	 * @see AbstractListComposite#AbstractListComposite(Composite, int, String, boolean)
+	 */
+	public XComboComposite(Composite parent, int comboStyle, String caption, CaptionOrientation captionOrientation) {
+		this(parent, comboStyle, caption, new LabelProvider(), captionOrientation);
+	}
+	
 	public XComboComposite(Composite parent, int comboStyle, ILabelProvider labelProvider) {
 		super(parent, comboStyle, (String)null, true, labelProvider);
 	}
@@ -80,6 +92,15 @@ public class XComboComposite<T>
 	 */
 	public XComboComposite(Composite parent, int comboStyle, String caption, ILabelProvider labelProvider) {
 		super(parent, comboStyle, caption, true, labelProvider);
+	}
+	
+	/**
+	 * @see AbstractListComposite#AbstractListComposite(Composite, int, String, boolean, ILabelProvider)
+	 */
+	public XComboComposite(Composite parent, int comboStyle, String caption, ILabelProvider labelProvider, CaptionOrientation captionOrientation) {
+		super(parent, comboStyle, caption, false, labelProvider);
+		this.captionOrientation = captionOrientation;
+		createGuiControl(this, comboStyle, caption);
 	}
 
 	/**
@@ -106,7 +127,7 @@ public class XComboComposite<T>
 	{
 		super(parent, comboStyle, caption, true, labelProvider, layoutMode, layoutDataMode, compositeStyle);
 	}
-	
+//	
 //	/**
 //	 * @return the backend XCombo widget.
 //	 */
@@ -115,12 +136,19 @@ public class XComboComposite<T>
 //		return imageCombo;
 //	}
 
+	private CaptionOrientation captionOrientation = CaptionOrientation.TOP;
+	
+	public CaptionOrientation getCaptionOrientation() {
+		return captionOrientation;
+	}
+	
 	/**
 	 * @param listener
 	 * @see org.nightlabs.base.ui.custom.XCombo#addModifyListener(org.eclipse.swt.events.ModifyListener)
 	 */
 	public void addModifyListener(ModifyListener listener) {
-		imageCombo.addModifyListener(listener);
+		if (imageCombo != null && !imageCombo.isDisposed())
+			imageCombo.addModifyListener(listener);
 	}
 
 	/**
@@ -128,7 +156,8 @@ public class XComboComposite<T>
 	 * @see org.nightlabs.base.ui.custom.XCombo#addSelectionListener(org.eclipse.swt.events.SelectionListener)
 	 */
 	public void addSelectionListener(SelectionListener listener) {
-		imageCombo.addSelectionListener(listener);
+		if (imageCombo != null && !imageCombo.isDisposed())
+			imageCombo.addSelectionListener(listener);
 	}
 
 	/**
@@ -136,7 +165,8 @@ public class XComboComposite<T>
 	 * @see org.nightlabs.base.ui.custom.XCombo#removeModifyListener(org.eclipse.swt.events.ModifyListener)
 	 */
 	public void removeModifyListener(ModifyListener listener) {
-		imageCombo.removeModifyListener(listener);
+		if (imageCombo != null && !imageCombo.isDisposed())
+			imageCombo.removeModifyListener(listener);
 	}
 
 	/**
@@ -144,12 +174,14 @@ public class XComboComposite<T>
 	 * @see org.nightlabs.base.ui.custom.XCombo#removeSelectionListener(org.eclipse.swt.events.SelectionListener)
 	 */
 	public void removeSelectionListener(SelectionListener listener) {
-		imageCombo.removeSelectionListener(listener);
+		if (imageCombo != null && !imageCombo.isDisposed())
+			imageCombo.removeSelectionListener(listener);
 	}
 
 	@Override
 	protected void addElementToGui(int index, T element) {
-		imageCombo.add(labelProvider.getImage(element), labelProvider.getText(element));
+		if (imageCombo != null && !imageCombo.isDisposed())
+			imageCombo.add(labelProvider.getImage(element), labelProvider.getText(element));
 	}
 
 	// Either initialise here, pass false to all superconstructors, create a constructor pyramid for
@@ -167,9 +199,22 @@ public class XComboComposite<T>
 		getGridData().grabExcessVerticalSpace = false;
 		if ( caption != null && ! "".equals(caption) ) { //$NON-NLS-1$
 			XComposite composite = new XComposite(parent, SWT.NONE, LayoutDataMode.GRID_DATA);
+			GridLayout gridLayout = composite.getGridLayout();
+			if (captionOrientation == null)
+				captionOrientation = CaptionOrientation.TOP;
+			
+			switch (captionOrientation) {
+				case TOP:
+					gridLayout.numColumns = 1;
+					break;
+				case LEFT:
+					gridLayout.numColumns = 2;
+					break;					
+			}
+			composite.setLayout(gridLayout);
 			label = new Label(composite, SWT.NONE);
 			label.setText(caption);
-			imageCombo = new XCombo(parent, widgetStyle);
+			imageCombo = new XCombo(composite, widgetStyle);
 			imageCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		} else {
 			imageCombo = new XCombo(parent, widgetStyle);
@@ -209,7 +254,8 @@ public class XComboComposite<T>
 
 	@Override
 	protected void internal_setSelection(int index) {
-		imageCombo.select(index);
+		if (imageCombo != null && !imageCombo.isDisposed())
+			imageCombo.select(index);
 	}
 
 	@Override
@@ -226,17 +272,21 @@ public class XComboComposite<T>
 		if (index < 0)
 			return;
 		
-		imageCombo.setItem(index, labelProvider.getImage(elem), labelProvider.getText(elem));
+		if (imageCombo != null && !imageCombo.isDisposed())
+			imageCombo.setItem(index, labelProvider.getImage(elem), labelProvider.getText(elem));
 	}
 
 	@Override
-	protected void removeAllElementsFromGui() {
-		imageCombo.removeAll();
+	protected void removeAllElementsFromGui() 
+	{
+		if (imageCombo != null && !imageCombo.isDisposed())
+			imageCombo.removeAll();
 	}
 
 	@Override
 	protected void removeElementFromGui(int index) {
-		imageCombo.remove(index);
+		if (imageCombo != null && !imageCombo.isDisposed())
+			imageCombo.remove(index);
 	}
 
 	@Override
@@ -244,7 +294,7 @@ public class XComboComposite<T>
 		return imageCombo;
 	}
 
-	public int getItemCount() {
+	public int getItemCount() {		
 		return imageCombo.getItemCount();
 	}
 }

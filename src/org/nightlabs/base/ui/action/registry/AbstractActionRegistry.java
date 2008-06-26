@@ -1055,7 +1055,7 @@ extends AbstractEPProcessor
 				descriptorKind = "GroupMarkerDescriptor"; //$NON-NLS-1$
 			}
 			else if (clazz == SeparatorDescriptor.class) {
-				descriptorKind = "SeparatorDescriptor";
+				descriptorKind = "SeparatorDescriptor"; //$NON-NLS-1$
 			}
 
 			String contributionKind = addIfTrueRemoveIfFalse ? "added to " : "removed from ";  //$NON-NLS-1$ //$NON-NLS-2$

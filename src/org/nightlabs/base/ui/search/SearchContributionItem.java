@@ -290,7 +290,7 @@ extends XContributionItem
 		public void dispose() {
 			super.dispose();
 			if (logger.isDebugEnabled())
-				logger.debug("dispose called for MenuContributionItem "+this);
+				logger.debug("dispose called for MenuContributionItem "+this); //$NON-NLS-1$
 		}
 	}	
 	
