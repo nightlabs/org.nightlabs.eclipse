@@ -35,7 +35,6 @@ import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -50,6 +49,7 @@ import org.eclipse.swt.widgets.Display;
  * @author Niklas Schiffler <nick@nightlabs.de>
  * @author marco schulze - marco at nightlabs dot de
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
+ * @author Marc Klinger - marc[at]nightlabs[dot]de
  */
 public class FadeableComposite extends XComposite implements Fadeable
 {
@@ -94,40 +94,44 @@ public class FadeableComposite extends XComposite implements Fadeable
 //			this.img = img;
 //		}
 
-		/**
-		 * horizontal distance between dots
-		 */
-		private int gridX = 4;
-		/**
-		 * vertical distance between dots
-		 */
-		private int gridY = 4;
+//		/**
+//		 * horizontal distance between dots
+//		 */
+//		private int gridX = 4;
+//		/**
+//		 * vertical distance between dots
+//		 */
+//		private int gridY = 4;
 
 		public void paintControl(PaintEvent event)
 		{
 			GC gc = event.gc;
-			// NEVER create Color objects on the fly!!! See http://www.eclipse.org/articles/SWT%20Color%20Model/swt-color-model.htm
-			// gc.setForeground(new Color(Display.getCurrent(), 0x99, 0x99, 0x99));
-			gc.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_GRAY));
 			Rectangle rect = gc.getClipping();
 
+			gc.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
+			gc.setAlpha(127);
+			gc.fillRectangle(rect);
+			
 //			for(int i = 0; i < rect.width; i += img.getImageData().width)
 //				for(int j = 0; j < rect.height; j += img.getImageData().height)
 //						gc.drawImage(img, i, j);
 
-			Control control = (Control) event.getSource();
-			Point controlAbsoluteCoordinate = control.toDisplay(0, 0);
-			int shiftX = controlAbsoluteCoordinate.x;
-			int shiftY = controlAbsoluteCoordinate.y;
-
-			for(int x = 0; x < rect.width; x++) {
-				if ((shiftX + x) % gridX == 0) {
-					for(int y = 0; y < rect.height; y++) {
-						if ((shiftY + y) % gridY == 0)
-							gc.drawPoint(x, y);
-					}
-				}
-			}
+//			Control control = (Control) event.getSource();
+//			Point controlAbsoluteCoordinate = control.toDisplay(0, 0);
+//			int shiftX = controlAbsoluteCoordinate.x;
+//			int shiftY = controlAbsoluteCoordinate.y;
+//
+			// NEVER create Color objects on the fly!!! See http://www.eclipse.org/articles/SWT%20Color%20Model/swt-color-model.htm
+			// gc.setForeground(new Color(Display.getCurrent(), 0x99, 0x99, 0x99));
+//			gc.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_GRAY));
+//			for(int x = 0; x < rect.width; x++) {
+//				if ((shiftX + x) % gridX == 0) {
+//					for(int y = 0; y < rect.height; y++) {
+//						if ((shiftY + y) % gridY == 0)
+//							gc.drawPoint(x, y);
+//					}
+//				}
+//			}
 		}
 	}
 
