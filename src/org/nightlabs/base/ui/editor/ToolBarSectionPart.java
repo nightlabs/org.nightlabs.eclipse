@@ -54,21 +54,26 @@ extends MessageSectionPart
 	
 	public ToolBarSectionPart(FormToolkit toolkit, Composite parent, int style, String title) {
 		super(toolkit, parent, style, title);
-		toolBar = new ToolBar(getSection(), SWT.FLAT | SWT.HORIZONTAL);
-		toolBarManager = new ToolBarManager(toolBar);
-		toolBar.setBackground(getSection().getBackground());
-		toolBar.setBackgroundImage(getSection().getBackgroundImage());
-		toolBar.setBackgroundMode(SWT.INHERIT_FORCE);
-		getSection().setTextClient(toolBar);
-//		toolBarManager.update(true);
 	}
 
 	/**
 	 * Returns the {@link ToolBarManager} where all registered {@link IAction}s 
 	 * are contained.
+	 * <p>
+	 * Note, that this method will lazily create a {@link ToolBar} and
+	 * a {@link ToolBarManager} for this section if not already done. 
+	 * </p>
 	 * @return the {@link ToolBarManager}.
 	 */
 	public ToolBarManager getToolBarManager() {
+		if (toolBarManager == null) {
+			toolBar = new ToolBar(getSection(), SWT.FLAT | SWT.HORIZONTAL);
+			toolBarManager = new ToolBarManager(toolBar);
+			toolBar.setBackground(getSection().getBackground());
+			toolBar.setBackgroundImage(getSection().getBackgroundImage());
+			toolBar.setBackgroundMode(SWT.INHERIT_FORCE);
+			getSection().setTextClient(toolBar);
+		}
 		return toolBarManager;
 	}
 	
@@ -120,7 +125,7 @@ extends MessageSectionPart
 				}
 			}
 		}
-		toolBarManager.update(true);
+		getToolBarManager().update(true);
 	}
 	
 }
