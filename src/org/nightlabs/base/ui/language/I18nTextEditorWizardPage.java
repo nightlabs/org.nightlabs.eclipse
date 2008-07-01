@@ -92,6 +92,7 @@ public class I18nTextEditorWizardPage extends WizardHopPage {
 		textEditor = new I18nTextEditor(wrapper, editorCaption);
 		textEditor.setI18nText(buffer);
 		textEditor.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_BEGINNING));
+		textEditor.getText().setFocus();
 		createAdditionalContents(wrapper);
 		return wrapper;
 	}
@@ -106,6 +107,7 @@ public class I18nTextEditorWizardPage extends WizardHopPage {
 	
 	
 	public void setI18nText(I18nText text) {
+		textEditor.setI18nText(null);
 		buffer.copyFrom(text);
 		textEditor.setI18nText(buffer);
 	}
