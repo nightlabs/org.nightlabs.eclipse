@@ -43,11 +43,11 @@ extends ConfigModule
 	public LanguageCfMod() { }
 
 	protected CfModList<LanguageCf> languages = null;
-	
-	/**
-	 * The languageID the application runs with and should run the next time.
-	 */
-	protected String languageID;
+
+//	/**
+//	 * The languageID the application runs with and should run the next time.
+//	 */
+//	protected String languageID;
 
 	public CfModList<LanguageCf> getLanguages() {
 		return languages;
@@ -86,23 +86,23 @@ extends ConfigModule
 		l.add(LanguageManager.createDefaultLanguage());
 		return l;
 	}
-	
-	/**
-	 * @return The languageID the user selected and the application should run with. 
-	 *         Can be <code>null</code> indicating that the system default should be used.
-	 */
-	public String getLanguageID() {
-		return languageID;
-	}
-	/**
-	 * Set the languageID.
-	 * See {@link #getLanguageID()}.
-	 * 
-	 * @param languageID The languageID to set.
-	 */
-	public void setLanguageID(String languageID) {
-		this.languageID = languageID;
-		setChanged();
-	}
+
+//	/**
+//	 * @return The languageID the user selected and the application should run with.
+//	 *         Can be <code>null</code> indicating that the system default should be used.
+//	 */
+//	public String getLanguageID() {
+//		return languageID;
+//	}
+//	/**
+//	 * Set the languageID.
+//	 * See {@link #getLanguageID()}.
+//	 *
+//	 * @param languageID The languageID to set.
+//	 */
+//	public void setLanguageID(String languageID) {
+//		this.languageID = languageID;
+//		setChanged();
+//	}
 
 }
