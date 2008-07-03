@@ -94,7 +94,7 @@ public class DateTimeEdit extends XComposite
 	@Deprecated
 	public DateTimeEdit(Composite parent, long flags, String caption)
 	{
-		this(parent, flags, new Date(), caption);
+		this(parent, flags, new Date(), caption, true);
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class DateTimeEdit extends XComposite
 	@Deprecated
 	public DateTimeEdit(Composite parent, long flags, Date date)
 	{
-		this(parent, flags, date, null);
+		this(parent, flags, date, null, true);
 	}
 
 	public static final long FLAGS_SHOW_ACTIVE_CHECK_BOX = 0x100000000L;
@@ -120,7 +120,7 @@ public class DateTimeEdit extends XComposite
 	 * 		checkbox stuff yourself.
 	 */
 	@Deprecated
-	public DateTimeEdit(Composite parent, long flags, Date date, String caption)
+	public DateTimeEdit(Composite parent, long flags, Date date, String caption, boolean top)
 	{
 		super(parent, SWT.NONE, LayoutMode.TIGHT_WRAPPER);
 		this.flags = flags;
@@ -129,7 +129,10 @@ public class DateTimeEdit extends XComposite
 		this.getGridData().horizontalAlignment = SWT.BEGINNING;
 		this.getGridData().verticalAlignment = SWT.BEGINNING;
 
-		getGridLayout().numColumns = 3;
+		if (top)
+			getGridLayout().numColumns = 3;
+		else
+			getGridLayout().numColumns = 4;
 
 		if (caption != null) {
 			Control control;
@@ -145,7 +148,8 @@ public class DateTimeEdit extends XComposite
 				control = l;
 			}
 			GridData gd = new GridData();
-			gd.horizontalSpan = getGridLayout().numColumns;
+			if (top)
+				gd.horizontalSpan = getGridLayout().numColumns;
 			control.setLayoutData(gd);
 		}
 
