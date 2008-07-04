@@ -3,7 +3,7 @@ Generated-from: 1151591154000;type=2
 Bundle-ManifestVersion: 2
 Bundle-Name: Editor2D Plug-in
 Bundle-SymbolicName: org.nightlabs.editor2d.ui;singleton:=true
-Bundle-Version: 1.0.5
+Bundle-Version: 1.0.6.qualifier
 Bundle-ClassPath: org.nightlabs.editor2d.ui.jar
 Bundle-Activator: org.nightlabs.editor2d.ui.EditorPlugin
 Bundle-Vendor: NightLabs.com
