@@ -23,8 +23,6 @@
     <provides path="org.nightlabs.editor2d.viewer.ui" location="org.nightlabs.editor2d.viewer.ui/lib/jai_core.jar"/>
     <provides path="org.nightlabs.editor2d.viewer.ui" location="org.nightlabs.editor2d.viewer.ui/lib/jai_codec.jar"/>
     <provides path="org.nightlabs.editor2d.viewer.ui" location="org.nightlabs.editor2d.viewer.ui/lib/itext-1.4.8.jar"/>
-    
-    <publishes description="..." location="org.nightlabs.editor2d.viewer.ui/dist/org.nightlabs.editor2d.viewer.ui_1.0.5.jar"/>
     <javadoc path="org.nightlabs.editor2d.viewer.ui/src"/>
   </project>
 
