@@ -8,7 +8,6 @@
     <ant path="org.nightlabs.jseditor.ui" file="build-nightlabs.xml" target="deploy"/>
     <requires/>
     <provides/>
-    <publishes description="..." location="org.nightlabs.jseditor.ui/dist/org.nightlabs.jseditor.ui_0.9.3.jar"/>
     <javadoc path="org.nightlabs.jseditor.ui/src"/>
 	  
 	<ignore-requires path="org.junit"/>
