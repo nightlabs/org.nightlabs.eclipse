@@ -112,10 +112,15 @@ extends IDirtyStateManager
 	 * and write status to the given monitor. This is very likely to be called
 	 * on a non-gui thread. This Method is invoked asynchronously by the abstract EntityEditorPageController,
 	 * so its better to extend the abstract Controller than to write job management yourself.
+	 * <p>
+	 * TODO: @Bieber: document whether this method is intended to be called from the outside or only to be implemented! I assume, this
+	 * method should never be called from an API consumer directly, but I didn't write this framework. I assume, an API consumer
+	 * should instead call a load method, right? Why is this load method not defined in this interface btw? Marco.
+	 * </p>
 	 * @param monitor The monitor to write status to.
 	 */
 	void doLoad(ProgressMonitor monitor);
-	
+
 	boolean isLoaded();
 	
 	/**
