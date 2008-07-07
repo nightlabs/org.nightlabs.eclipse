@@ -99,7 +99,7 @@ extends I18nTextEditor
 	@Override
 	protected Text createText(Composite parent)
 	{
-		Text text = new Text(parent, getBorderStyle() | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+		Text text = new Text(parent, getBorderStyle() | SWT.MULTI | SWT.V_SCROLL | SWT.WRAP);
 		singleLineHeight = text.getLineHeight();
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		int actualLineCount = Math.max(lineCount, DEFAULT_LINECOUNT);
