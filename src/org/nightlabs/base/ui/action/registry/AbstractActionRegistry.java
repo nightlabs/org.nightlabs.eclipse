@@ -361,7 +361,13 @@ extends AbstractEPProcessor
 				}
 			}
 		}
-		coolBarContributionManager.update(true);
+
+		try {
+			coolBarContributionManager.update(true);
+		} catch (Exception x) {
+			// https://bugs.eclipse.org/bugs/show_bug.cgi?id=239945
+			logger.error("CoolBarManager.update failed: " + x.getLocalizedMessage(), x);
+		}
 	}
 
 	/**
