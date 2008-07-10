@@ -256,7 +256,7 @@ implements IApplication
 		// END temporary cleanup
 
 //		org.apache.log4j.PropertyConfigurator.configure(logConfFile.getAbsolutePath());
-		org.apache.log4j.xml.DOMConfigurator.configure(logConfFile.toURL());
+		org.apache.log4j.xml.DOMConfigurator.configure(logConfFile.toURI().toURL());
 		logger.info("Logging for \"" + System.getProperty("eclipse.product") + "\" started."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 //		logger.info(getApplicationName()+" started."); //$NON-NLS-1$
 	}
