@@ -110,8 +110,7 @@ public class TableSortSelectionListener implements SelectionListener {
 	public void widgetSelected(SelectionEvent e) {
 		InvertableSorter newSorter;
 		if (viewer.getTable().getSortColumn() == column) {
-			newSorter = ((InvertableSorter) viewer.getSorter())
-					.getInverseSorter();
+			newSorter = ((InvertableSorter) viewer.getSorter()).getInverseSorter();
 		} else {
 			if (keepDirection) {
 				newSorter = currentSorter;
