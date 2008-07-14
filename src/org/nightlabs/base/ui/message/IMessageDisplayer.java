@@ -7,10 +7,6 @@ package org.nightlabs.base.ui.message;
  */
 public interface IMessageDisplayer
 {
-//	public enum MessageType {
-//		NONE, INFO, WARNING, ERROR
-//	}
-	
 	/**
 	 * sets the message to display
 	 * 
@@ -21,5 +17,4 @@ public interface IMessageDisplayer
 	 * <code>IMessageProvider.ERROR</code>.
 	 */
 	public void setMessage(String message, int type);
-
 }
