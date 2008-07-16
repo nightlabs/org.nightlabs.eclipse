@@ -26,6 +26,8 @@
 
 package org.nightlabs.base.ui.language;
 
+import java.util.Collection;
+
 import org.nightlabs.language.LanguageCf;
 
 /**
@@ -34,29 +36,37 @@ import org.nightlabs.language.LanguageCf;
  * for a local scope - e.g. a view.
  *
  * @author Marco Schulze - marco at nightlabs dot de
- * 
+ * @author Marc Klinger - marc[at]nightlabs[dot]de
+ *
  * @see org.nightlabs.ipanema.language.LanguageChooserCombo
  * @see org.nightlabs.ipanema.language.LanguageChooserList
  */
 public interface LanguageChooser
 {
 	/**
-	 * @return Returns the currently selected language.
+	 * Get the currently selected language.
+	 * @return the currently selected language.
 	 */
 	LanguageCf getLanguage();
-	
+
+	/**
+	 * Get the list of available languages.
+	 * @return all available languages.
+	 */
+	Collection<LanguageCf> getLanguages();
+
 	/**
 	 * Adds a new LanguageChangeListener to react whenever the language is changed.
 	 * @param l The listener to add.
 	 */
 	void addLanguageChangeListener(LanguageChangeListener l);
-	
+
 	/**
 	 * Remove a previously added listener. If it is not registered, this method does nothing.
 	 * @param l The listener to remove.
 	 */
 	void removeLanguageChangeListener(LanguageChangeListener l);
-	
+
 	/**
 	 * This method exists to manually fire a LanguageChangeEvent. This is useful
 	 * to initialize a GUI (e.g. view) after all elements have been created.

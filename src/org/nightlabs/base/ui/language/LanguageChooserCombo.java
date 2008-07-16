@@ -47,12 +47,13 @@ import org.nightlabs.util.NLLocale;
  * in a combo box and automatically selecting the one from NLLocale.getDefault().getLanguage()
  *
  * @author Marco Schulze - marco at nightlabs dot de
+ * @author Marc Klinger - marc[at]nightlabs[dot]de
  */
 public class LanguageChooserCombo
 	extends AbstractLanguageChooser
 {
 	/**
-	 * LOG4J logger used by this class
+	 * LOG4J logger used by this class.
 	 */
 	private static final Logger logger = Logger.getLogger(LanguageChooserCombo.class);
 
@@ -94,8 +95,8 @@ public class LanguageChooserCombo
 
 		  String userLanguageID = NLLocale.getDefault().getLanguage();
 		  int languageIdx = -1;
-		  for (Iterator it = LanguageManager.sharedInstance().getLanguages().iterator(); it.hasNext(); ) {
-		  	LanguageCf language = (LanguageCf) it.next();
+		  for (Iterator<LanguageCf> it = LanguageManager.sharedInstance().getLanguages().iterator(); it.hasNext(); ) {
+		  	LanguageCf language = it.next();
 		  	if (userLanguageID.equals(language.getLanguageID()))
 		  		languageIdx = languages.size();
 		  	languages.add(language);
@@ -129,12 +130,21 @@ public class LanguageChooserCombo
 		}
 	}
 
-	/**
-	 * Get the {@link LanguageCf} of the currently selected language.
+	/* (non-Javadoc)
 	 * @see org.nightlabs.base.ui.language.LanguageChooser#getLanguage()
 	 */
+	@Override
 	public LanguageCf getLanguage()
 	{
 		return languages.get(combo.getSelectionIndex());
+	}
+
+	/* (non-Javadoc)
+	 * @see org.nightlabs.base.ui.language.LanguageChooser#getLanguages()
+	 */
+	@Override
+	public List<LanguageCf> getLanguages()
+	{
+		return languages;
 	}
 }

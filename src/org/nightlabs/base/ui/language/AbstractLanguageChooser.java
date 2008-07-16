@@ -54,7 +54,7 @@ public abstract class AbstractLanguageChooser
 		super(parent, style, LayoutMode.TIGHT_WRAPPER,
 				setLayoutData ? LayoutDataMode.GRID_DATA : LayoutDataMode.NONE);
 	}
-	
+
 	/**
 	 * @see org.nightlabs.ipanema.language.LanguageChooser#addLanguageChangeListener(org.nightlabs.ipanema.language.LanguageChangeListener)
 	 */
@@ -70,7 +70,7 @@ public abstract class AbstractLanguageChooser
 	{
 		languageChangeListeners.remove(l);
 	}
-	
+
 	private LanguageCf oldLanguage = null;
 
 	public void fireLanguageChangeEvent()
@@ -79,8 +79,8 @@ public abstract class AbstractLanguageChooser
 			return;
 
 		LanguageChangeEvent languageChangeEvent = new LanguageChangeEvent(this, oldLanguage, getLanguage());
-		for (Iterator it = languageChangeListeners.iterator(); it.hasNext(); ) {
-			((LanguageChangeListener)it.next()).languageChanged(languageChangeEvent);
+		for (Iterator<LanguageChangeListener> it = languageChangeListeners.iterator(); it.hasNext(); ) {
+			(it.next()).languageChanged(languageChangeEvent);
 		}
 
 		oldLanguage = getLanguage();

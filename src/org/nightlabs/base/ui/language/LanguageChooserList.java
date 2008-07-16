@@ -26,6 +26,8 @@
 
 package org.nightlabs.base.ui.language;
 
+import java.util.Collection;
+
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -43,27 +45,28 @@ import org.nightlabs.language.LanguageCf;
 
 /**
  * @author Marco Schulze - marco at nightlabs dot de
+ * @author Marc Klinger - marc[at]nightlabs[dot]de
  */
 public class LanguageChooserList
 	extends AbstractLanguageChooser
 {
 	/**
-	 * LOG4J logger used by this class
+	 * LOG4J logger used by this class.
 	 */
 	private static final Logger logger = Logger.getLogger(LanguageChooserList.class);
-	
+
 	private LanguageTableContentProvider contentProvider;
 	private LanguageTableLabelProvider labelProvider;
 	private TableViewer viewer;
-	
+
 	public LanguageChooserList(Composite parent) {
 		this(parent, true);
 	}
-	
+
 	public LanguageChooserList(Composite parent, boolean grabExcessHorizontalSpace) {
 		this(parent, true, false);
 	}
-	
+
 	public LanguageChooserList(Composite parent, boolean grabExcessHorizontalSpace, boolean showHeader)
 	{
 		super(parent, SWT.NONE, true);
@@ -74,7 +77,7 @@ public class LanguageChooserList
 		viewer = new TableViewer(this, SWT.BORDER | SWT.H_SCROLL | SWT.FULL_SELECTION);
 		viewer.setContentProvider(contentProvider);
 		viewer.setLabelProvider(labelProvider);
-		
+
 		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event)
 			{
@@ -97,16 +100,16 @@ public class LanguageChooserList
 		// Add the columns to the table
 		new TableColumn(t, SWT.LEFT).setText(Messages.getString("org.nightlabs.base.ui.language.LanguageChooserList.column.language")); //$NON-NLS-1$
 		t.setHeaderVisible(showHeader);
-			
+
 		// must be called AFTER all columns are added
 		viewer.setInput(contentProvider);
-		
+
 		StructuredSelection selection = new StructuredSelection(
 				LanguageManager.sharedInstance().getCurrentLanguage());
 		viewer.setSelection(selection, true);
 	}
 
-	/**
+	/* (non-Javadoc)
 	 * @see org.nightlabs.base.ui.language.LanguageChooser#getLanguage()
 	 */
 	public LanguageCf getLanguage()
@@ -114,7 +117,16 @@ public class LanguageChooserList
 		StructuredSelection selection = (StructuredSelection) viewer.getSelection();
 		return (LanguageCf) selection.getFirstElement();
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see org.nightlabs.base.ui.language.LanguageChooser#getLanguages()
+	 */
+	@Override
+	public Collection<LanguageCf> getLanguages()
+	{
+		return LanguageManager.sharedInstance().getLanguages();
+	}
+
 	/**
 	 * @param listener
 	 * @see org.eclipse.jface.viewers.StructuredViewer#addDoubleClickListener(org.eclipse.jface.viewers.IDoubleClickListener)
@@ -122,7 +134,7 @@ public class LanguageChooserList
 	public void addDoubleClickListener(IDoubleClickListener listener) {
 		viewer.addDoubleClickListener(listener);
 	}
-	
+
 	/**
 	 * @param listener
 	 * @see org.eclipse.jface.viewers.StructuredViewer#removeDoubleClickListener(org.eclipse.jface.viewers.IDoubleClickListener)

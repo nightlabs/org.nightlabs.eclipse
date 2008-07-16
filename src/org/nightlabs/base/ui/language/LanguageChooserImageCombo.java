@@ -54,14 +54,14 @@ extends AbstractLanguageChooser
 	 * LOG4J logger used by this class
 	 */
 	private static final Logger logger = Logger.getLogger(LanguageChooserImageCombo.class);
-	
+
 	protected XCombo combo;
 	protected List<LanguageCf> languages = new ArrayList<LanguageCf>();
-	
+
 	public LanguageChooserImageCombo(Composite parent) {
 		this(parent, true, true);
 	}
-	
+
 	protected SelectionListener comboSelectionListener = new SelectionAdapter()
 	{
 		@Override
@@ -71,13 +71,13 @@ extends AbstractLanguageChooser
 			fireLanguageChangeEvent();
 		}
 	};
- 
+
 	public LanguageChooserImageCombo(Composite parent, boolean showImage, boolean showText)
 	{
 		super(parent, SWT.NONE, true);
 		if (!showImage && !showText)
 			throw new IllegalArgumentException("either showImage or showText must be true!"); //$NON-NLS-1$
-		
+
 		combo = new XCombo(this, SWT.BORDER | SWT.READ_ONLY);
 		combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		combo.addSelectionListener(comboSelectionListener);
@@ -87,8 +87,8 @@ extends AbstractLanguageChooser
 
 		  String userLanguageID = NLLocale.getDefault().getLanguage();
 		  int languageIdx = -1;
-		  for (Iterator it = LanguageManager.sharedInstance().getLanguages().iterator(); it.hasNext(); ) {
-		  	LanguageCf language = (LanguageCf) it.next();
+		  for (Iterator<LanguageCf> it = LanguageManager.sharedInstance().getLanguages().iterator(); it.hasNext(); ) {
+		  	LanguageCf language = it.next();
 		  	if (userLanguageID.equals(language.getLanguageID()))
 		  		languageIdx = languages.size();
 		  	languages.add(language);
@@ -114,9 +114,21 @@ extends AbstractLanguageChooser
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see org.nightlabs.base.ui.language.LanguageChooser#getLanguage()
+	 */
+	@Override
 	public LanguageCf getLanguage()
 	{
 		return languages.get(combo.getSelectionIndex());
 	}
 
+	/* (non-Javadoc)
+	 * @see org.nightlabs.base.ui.language.LanguageChooser#getLanguages()
+	 */
+	@Override
+	public List<LanguageCf> getLanguages()
+	{
+		return languages;
+	}
 }
