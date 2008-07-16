@@ -1,5 +1,6 @@
 <project>
 	<target name="compile.pre">
+		<copy file="../NightLabsHTMLContent/dist/NightLabsHTMLContent.jar" todir="${project.dir}/${lib.dir}" failonerror="false"/>
 		<untar compression="gzip" src="${lib.dir}/FCKeditor_2.6.2.tar.gz" dest="${project.dir}/serverfiles/"/>
 	</target>
 </project>

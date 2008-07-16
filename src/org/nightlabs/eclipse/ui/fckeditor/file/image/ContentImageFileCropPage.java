@@ -50,9 +50,9 @@ import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
 import org.nightlabs.eclipse.ui.fckeditor.Activator;
 import org.nightlabs.eclipse.ui.fckeditor.file.ClippingAreaListener;
-import org.nightlabs.eclipse.ui.fckeditor.file.ContentTypeUtil;
 import org.nightlabs.eclipse.ui.fckeditor.file.ImageClippingArea;
 import org.nightlabs.eclipse.ui.fckeditor.resource.Messages;
+import org.nightlabs.htmlcontent.ContentTypeUtil;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de

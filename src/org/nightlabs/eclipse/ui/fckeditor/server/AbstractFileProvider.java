@@ -24,7 +24,7 @@
 package org.nightlabs.eclipse.ui.fckeditor.server;
 
 import org.nightlabs.eclipse.ui.fckeditor.IFCKEditor;
-import org.nightlabs.eclipse.ui.fckeditor.file.ContentTypeUtil;
+import org.nightlabs.htmlcontent.ContentTypeUtil;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
