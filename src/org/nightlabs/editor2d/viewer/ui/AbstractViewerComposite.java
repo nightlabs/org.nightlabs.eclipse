@@ -348,7 +348,7 @@ extends XComposite
 	public IViewer getViewer() {
 		return canvasComp;
 	}
-		
+
 	private DisposeListener disposeListener = new DisposeListener()
 	{
 		public void widgetDisposed(DisposeEvent e) {
