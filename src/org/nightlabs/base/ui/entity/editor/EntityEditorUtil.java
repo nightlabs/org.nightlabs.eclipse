@@ -51,6 +51,7 @@ public class EntityEditorUtil
 		Composite client = toolkit.createComposite(section);
 //		client.setToolkit(toolkit);
 		GridLayout layout = new GridLayout();
+		// TODO: is the extra space right? It seems not to be needed looking at it in linux. Has something changed concerning toolkit borders? 
 		layout.marginRight = layout.marginLeft = toolkit.getBorderStyle() != SWT.NULL ? 0 : 2;
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
