@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.nightlabs.base.ui.notification;
 
 /**
@@ -8,7 +5,6 @@ package org.nightlabs.base.ui.notification;
  * changes in the lifecycle of some object.
  * 
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
- *
  */
 public interface IDirtyStateManager {
 	

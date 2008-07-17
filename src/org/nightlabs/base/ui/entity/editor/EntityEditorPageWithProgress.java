@@ -25,6 +25,9 @@
  ******************************************************************************/
 package org.nightlabs.base.ui.entity.editor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -46,6 +49,7 @@ import org.nightlabs.base.ui.composite.FadeableComposite;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.editor.IFormPartDirtyStateProxy;
 import org.nightlabs.base.ui.editor.IFormPartDirtyStateProxyListener;
+import org.nightlabs.base.ui.editor.UndirtyBehaviour;
 import org.nightlabs.base.ui.job.Job;
 import org.nightlabs.base.ui.progress.CompoundProgressMonitor;
 import org.nightlabs.base.ui.progress.ProgressMonitorWrapper;
@@ -57,13 +61,13 @@ import org.nightlabs.progress.ProgressMonitor;
 /**
  * <p>An editor page to be used when you need to load data (with the editors controller)
  * in the background and want to provide progress feedback to the user</p>
- * 
+ *
  * <p>The page hooks a Composite with a stack layout into its parent Form.
  * One entry in the stack will be an implementation of {@link IProgressMonitor}
  * the other the page's actual content. You can switch the vision
  * by {@link #switchToContent()} and {@link #switchToProgress()}.</p>
- * 
- * 
+ *
+ *
  * <p>On the creation of its contents ({@link #createFormContent(IManagedForm)})
  * this FormPage will start a job that tries to access the
  * {@link IEntityEditorPageController} associated to this page. It will therefore
@@ -77,7 +81,7 @@ import org.nightlabs.progress.ProgressMonitor;
  * in order to enable subclasses to extend the background job with own tasks.
  * Implementors should also not forget to switch to the content view when
  * the loading is finished.</p>
- * 
+ *
  * <p>Also on creation of its contents this FormPage will call several
  * methods that are intended to override or obliged to implement.
  * These methods let subclasses create the page's actual content and
@@ -86,7 +90,7 @@ import org.nightlabs.progress.ProgressMonitor;
  * that do not access the controller when they are created, but in contrast
  * have the ability to be "filled" with data from the {@link #asyncCallback()}.
  * </p>
- * 
+ *
  *
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  */
@@ -113,25 +117,39 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 	 * The stack layout to switch views.
 	 */
 	private StackLayout stackLayout;
-	
+
 	private IFormPartDirtyStateProxyListener dirtyStateProxyListener = new IFormPartDirtyStateProxyListener() {
+		private Set<IFormPart> dirtyParts = null;
 		@Override
 		public void markDiry(IFormPart formPart) {
+			if(UndirtyBehaviour.ENABLED) {
+				if(dirtyParts == null)
+					dirtyParts = new HashSet<IFormPart>();
+				dirtyParts.add(formPart);
+			}
 			getPageController().markDirty();
 		}
 		@Override
 		public void markUndirty(IFormPart formPart) {
-			// Don't call markUndirty here as this would mark the complete Controller undirty and
-			// this might not be true as only some aspect was set dirty.
-			// Later we could manage the dirty-state in the controller per part also than
-			// we can delegate the markUndirty to the controller as well.
-//			getPageController().markUndirty();
+			if(UndirtyBehaviour.ENABLED) {
+				if(dirtyParts != null) {
+					dirtyParts.remove(formPart);
+					if(dirtyParts.isEmpty())
+						dirtyParts = null;
+				}
+				// Don't call markUndirty here as this would mark the complete Controller undirty and
+				// this might not be true as only some aspect was set dirty.
+				// Later we could manage the dirty-state in the controller per part also than
+				// we can delegate the markUndirty to the controller as well.
+				if(dirtyParts == null)
+					getPageController().markUndirty();
+			}
 		}
 	};
-	
+
 	/**
 	 * Create a new editor page with progress.
-	 * 
+	 *
 	 * @param editor The page's editor.
 	 * @param id The page's id.
 	 * @param name The page's name.
@@ -139,7 +157,7 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 	public EntityEditorPageWithProgress(FormEditor editor, String id, String name) {
 		super(editor, id, name);
 	}
-	
+
 	/**
 	 * The job that loads with the help of this page's controller.
 	 * If the controller is an instance of {@link EntityEditorPageController}
@@ -193,13 +211,13 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 	 * This method is invoked when the {@link IEntityEditorPageController} associated to this page
 	 * notifies that one of its objects has changed. The default implementation will
 	 * invoke {@link #asyncCallback()} on every notification. Subclasses may override this behaviour.
-	 * 
+	 *
 	 * @param modifyEvent The Event thrown by the associated controller.
 	 */
 	protected void handleControllerObjectModified(EntityEditorPageControllerModifyEvent modifyEvent) {
 		asyncCallback();
 	}
-	
+
 	/**
 	 * This method is called <b>on the loading job's thread</b> after
 	 * the loading was done. It is intended to be used in order
@@ -216,31 +234,31 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 	 */
 	protected void asyncCallback() {
 	}
-	
-	
+
+
 	/**
 	 * Get the {@link IEntityEditorPageController} for this page.
 	 * Assumes the editor of this page is an instance of
 	 * {@link EntityEditor}.
-	 * 
+	 *
 	 * Note that page controllers should not be accessed from their associated
 	 * pages in their constructor, as the controller registration
 	 * will be initialized immediately after the page was created.
-	 * 
+	 *
 	 * @return The page controller for this page.
 	 */
 	public IEntityEditorPageController getPageController() {
 		return ((EntityEditor)getEditor()).getController().getPageController(this);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * This implementation will create a stack layout an put a progress monitor
 	 * and the real content wrapped into a new Form on the stack.
 	 * Besides {@link #addSections(Composite)}, where subclasses add their real content,
 	 * several callback methods exist to configure the rest of the page.
-	 * 
+	 *
 	 * @see #addSections(Composite)
 	 * @see #createProgressMonitorPart(Composite)
 	 * @see #configureBody(Composite)
@@ -265,7 +283,7 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 	 * Add the page's sections here. Remember not to
 	 * access the controllers data here, but provide the possibility
 	 * to assign the data to the part created at a later time.
-	 * 
+	 *
 	 * @param parent The parent given here is a new Form created for the page and configured by {@link #configurePageWrapper(Composite)}.
 	 */
 	protected abstract void addSections(Composite parent);
@@ -280,7 +298,7 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 	 * Returns the progress monitor of this page.
 	 * The progress monitor is created by {@link #createProgressMonitorPart(Composite)}
 	 * so this getter is not intended to be overridden.
-	 * 
+	 *
 	 * @return the progress monitor of this page.
 	 */
 	public IProgressMonitor getProgressMonitor() {
@@ -289,19 +307,19 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 
 	/**
 	 * Configure (the layout of) the composite wrapping the progress monitor.
-	 * 
+	 *
 	 * @param pWrapper The composite wrapping the progress monitor.
 	 */
 	protected void configureProgressWrapper(XComposite pWrapper) {
 		pWrapper.getGridLayout().marginWidth = 20;
 		pWrapper.getGridLayout().marginHeight = 20;
 	}
-	
+
 	/**
 	 * Create the gui representation of an {@link IProgressMonitor}
 	 * to the given parent. This method is intended to be overridden,
 	 * the default implementation will use an {@link SaveProgressMonitorPart}.
-	 * 
+	 *
 	 * @param progressWrapper The parent of the progress monitor.
 	 * @return A new gui representation of an {@link IProgressMonitor}.
 	 */
@@ -311,13 +329,13 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 		monitor.setLayoutData(gridData);
 		return monitor;
 	}
-	
+
 	/**
 	 * Configure the (layout of the) Composite wrapping the page's
 	 * real content.
 	 * The default implementation will assign a {@link GridLayout}
 	 * with moderate indenting.
-	 * 
+	 *
 	 * @param pageWrapper The Composite wrapping the page's
 	 * real content.
 	 */
@@ -331,12 +349,12 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 		layout.horizontalSpacing = 10;
 		pageWrapper.setLayout(layout);
 	}
-	
+
 	/**
 	 * Configure (the layout of) this page's body (it's form's body).
 	 * The default implementation will assign a
 	 * {@link GridLayout} with zero margins and spacing.
-	 * 
+	 *
 	 * @param body This page's body.
 	 */
 	protected void configureBody(Composite body) {
@@ -351,15 +369,15 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 		layout.marginBottom = 0;
 		body.setLayout(layout);
 	}
-	
+
 	/**
 	 * Configure the (root) form of this page.
 	 * The default implementation does nothing.
-	 * 
+	 *
 	 * @param form The form to configure
 	 */
 	protected void configureForm(ScrolledForm form) {
-		
+
 	}
 
 	/**
@@ -369,7 +387,7 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 	protected void configureInitialStack() {
 		stackLayout.topControl = progressWrapper;
 	}
-	
+
 	protected void registerToDirtyStateProxies() {
 		if (getManagedForm() != null) {
 			// check for dirty state proxies and register
@@ -385,7 +403,7 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 	/**
 	 * Creates stack layout, progress-stack-item and the page's content
 	 * with the help of the configure and create callbacks.
-	 * 
+	 *
 	 * @param managedForm The managed form
 	 * @param toolkit The tookit to use
 	 */
@@ -394,14 +412,14 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 		Composite body = managedForm.getForm().getBody();
 		configureForm(managedForm.getForm());
 		configureBody(body);
-		
+
 		wrapper = new FadeableComposite(body, SWT.NONE, XComposite.LayoutMode.TIGHT_WRAPPER);
 		wrapper.setToolkit(toolkit);
 		stackLayout = new StackLayout();
 		stackLayout.marginHeight = 0;
 		stackLayout.marginWidth = 0;
 		wrapper.setLayout(stackLayout);
-		
+
 		// WORKAROUND: this is a workaround for growing tables in FromPages.
 		// more information about this can be found at: https://bugs.eclipse.org/bugs/show_bug.cgi?id=215997#c4
 		GridData gd = new GridData(GridData.FILL_BOTH);
@@ -411,18 +429,18 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 			gd.heightHint = 1;
 		}
 		wrapper.setLayoutData(gd);
-		
+
 		progressWrapper = new XComposite(wrapper, SWT.NONE);
 		configureProgressWrapper(progressWrapper);
 		progressMonitorPart = createProgressMonitorPart(progressWrapper);
 		progressWrapper.adaptToToolkit();
-		
+
 		pageWrapper = new Composite(wrapper, SWT.NONE);
-		
+
 		configurePageWrapper(pageWrapper);
-		
+
 		asyncLoadJob.schedule();
-		
+
 		addSections(pageWrapper);
 		registerToDirtyStateProxies();
 		configureInitialStack();
@@ -440,7 +458,7 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 	 * Indicates whether the fix for vertically growing pages should be applied. As a side-effect,
 	 * this fix will prohibit vertical scroll bars and, hence should only be used if really necessary.
 	 * @return <code>true</code> if vertically growing tables shall be prevented (and no vertical
-	 * 	scrollbars shall be shown), <code>false</code> otherwise. 
+	 * 	scrollbars shall be shown), <code>false</code> otherwise.
 	 */
 	protected boolean includeFixForVerticalScrolling()
 	{
@@ -478,7 +496,7 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 
 				if (stackLayout.topControl == pageWrapper)
 					return;
-				
+
 				stackLayout.topControl = pageWrapper;
 				wrapper.layout(true, true);
 //				pageWrapper.reflow(true);
@@ -498,7 +516,7 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 	/**
 	 * {@inheritDoc}
 	 * Will delegate to the fadable wrapper.
-	 * 
+	 *
 	 * @see org.nightlabs.base.ui.composite.Fadeable#setFaded(boolean)
 	 */
 	public void setFaded(boolean faded) {
@@ -509,7 +527,7 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 	{
 		return wrapper.isDisposed();
 	}
-	
+
 	public void setMenu(Menu menu) {
 		wrapper.getParent().setMenu(menu);
 	}

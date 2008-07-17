@@ -99,7 +99,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 			new Label(this, SWT.NONE).setText(title);
 
 		// Initial TableViewer
-		int tableStyle = SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL
+		int tableStyle = getBorderStyle() | SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL
 		| SWT.FULL_SELECTION | SWT.HIDE_SELECTION;
 		table = new Table(this, tableStyle);
 		table.setHeaderVisible(true);

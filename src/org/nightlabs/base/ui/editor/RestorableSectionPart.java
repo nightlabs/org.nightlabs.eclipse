@@ -36,7 +36,7 @@ import org.nightlabs.base.ui.notification.IDirtyStateManager;
 
 /**
  * A section part with the ability to set it undirty.
- * 
+ *
  * @version $Revision$ - $Date$
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  */
@@ -45,12 +45,12 @@ extends SectionPart
 implements IDirtyStateManager, IFormPartDirtyStateProxy
 {
 	/**
-	 * The default section style consists of a title bar, a twistie and the client of the section 
+	 * The default section style consists of a title bar, a twistie and the client of the section
 	 * is indented.
 	 */
-	public static final int DEFAULT_SECTION_STYLE = ExpandableComposite.TITLE_BAR | 
+	public static final int DEFAULT_SECTION_STYLE = ExpandableComposite.TITLE_BAR |
 		ExpandableComposite.TWISTIE | ExpandableComposite.CLIENT_INDENT;
-	
+
 	/**
 	 * Create an instance of this section part and add
 	 * it to a managed form.
@@ -61,7 +61,7 @@ implements IDirtyStateManager, IFormPartDirtyStateProxy
 	public RestorableSectionPart(Composite parent, FormToolkit toolkit, int style)
 	{
 		super(parent, toolkit, style);
-		adaptSection(toolkit);
+//		adaptSection(toolkit);
 	}
 
 	/**
@@ -81,7 +81,7 @@ implements IDirtyStateManager, IFormPartDirtyStateProxy
 			managedForm.addPart(this);
 		}
 	}
-	
+
 	/**
 	 * Mark this section dirty.
 	 * TODO: workaround for ManagedForm.markDirty() not checking the current dirty state and therefore might mark this editor as undirty.
@@ -96,7 +96,7 @@ implements IDirtyStateManager, IFormPartDirtyStateProxy
 //		if (getManagedForm().isDirty())
 //			getManagedForm().dirtyStateChanged();
 	}
-	
+
 	/**
 	 * Mark this section part undirty. Eclipse
 	 * SectionPart lacks this feature, so here is
@@ -104,16 +104,18 @@ implements IDirtyStateManager, IFormPartDirtyStateProxy
 	 */
 	public void markUndirty()
 	{
-		notifyDirtyStateListeners(false);
-		// set dirty = false
-		super.commit(false);
-//
-//		// needs to check if global state was dirty, otherwise this would change the state to dirty,
-//		// which contradicts the method name and declaration! (marius)
-//		if (getManagedForm().isDirty())
-//			getManagedForm().dirtyStateChanged();
+		if(UndirtyBehaviour.ENABLED) {
+			notifyDirtyStateListeners(false);
+			// set dirty = false
+			super.commit(false);
+
+			// needs to check if global state was dirty, otherwise this would change the state to dirty,
+			// which contradicts the method name and declaration! (marius)
+			if (getManagedForm().isDirty())
+				getManagedForm().dirtyStateChanged();
+		}
 	}
-	
+
 //	/**
 //	 * By default this method is overriden and does nothing.
 //	 *
@@ -156,7 +158,7 @@ implements IDirtyStateManager, IFormPartDirtyStateProxy
 	}
 
 	private ListenerList dirtyStateListeners = new ListenerList();
-	
+
 	@Override
 	public void addFormPartDirtyStateProxyListener(
 			IFormPartDirtyStateProxyListener listener) {
@@ -168,7 +170,7 @@ implements IDirtyStateManager, IFormPartDirtyStateProxy
 			IFormPartDirtyStateProxyListener listener) {
 		dirtyStateListeners.add(listener);
 	}
-	
+
 	protected void notifyDirtyStateListeners(boolean dirty) {
 		Object[] listeners = dirtyStateListeners.getListeners();
 		for (Object listener : listeners) {
@@ -180,6 +182,6 @@ implements IDirtyStateManager, IFormPartDirtyStateProxy
 			}
 		}
 	}
-	
-	
+
+
 }
