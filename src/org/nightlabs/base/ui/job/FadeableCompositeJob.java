@@ -39,53 +39,53 @@ import org.nightlabs.progress.ProgressMonitor;
  */
 public abstract class FadeableCompositeJob extends Job
 {
-  private Fadeable composite;
-  private Object source;
-  
-  public FadeableCompositeJob(String label, Fadeable comp, Object source)
-  {
-  	super(label);
-  	this.composite = comp;
-  	this.source = source;
-  }
+	private Fadeable composite;
+	private Object source;
 
-  @Override
+	public FadeableCompositeJob(String label, Fadeable comp, Object source)
+	{
+		super(label);
+		this.composite = comp;
+		this.source = source;
+	}
+
+	@Override
 	protected IStatus run(ProgressMonitor monitor) throws Exception
-  {
-  	IStatus ret = Status.CANCEL_STATUS;
-  	try
-  	{
-  		Display.getDefault().syncExec(
-  				new Runnable()
-  				{
-  					public void run()
-  					{
-  						if (!composite.isDisposed())
-  							composite.setFaded(true);
-  					}
-  				}
-  		);
-  		try {
-  			ret = run(monitor, source);
-  		} catch (Exception e) {
-  			ExceptionHandlerRegistry.asyncHandleException(e);
-  		}
-  	}
-  	finally
-  	{
-  		Display.getDefault().syncExec(
-  				new Runnable()
-  				{
-  					public void run()
-  					{
-  						if (!composite.isDisposed())
-  							composite.setFaded(false);
-  					}
-  				}
-  		);
-  	}
-    return ret;
-  }
+	{
+		IStatus ret = Status.CANCEL_STATUS;
+		try
+		{
+			Display.getDefault().syncExec(
+					new Runnable()
+					{
+						public void run()
+						{
+							if (!composite.isDisposed())
+								composite.setFaded(true);
+						}
+					}
+			);
+			try {
+				ret = run(monitor, source);
+			} catch (Exception e) {
+				ExceptionHandlerRegistry.asyncHandleException(e);
+			}
+		}
+		finally
+		{
+			Display.getDefault().syncExec(
+					new Runnable()
+					{
+						public void run()
+						{
+							if (!composite.isDisposed())
+								composite.setFaded(false);
+						}
+					}
+			);
+		}
+		return ret;
+	}
 
-  protected abstract IStatus run(ProgressMonitor monitor, Object source) throws Exception;
+	protected abstract IStatus run(ProgressMonitor monitor, Object source) throws Exception;
 }
