@@ -33,7 +33,9 @@ import org.eclipse.ui.application.IWorkbenchConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
+import org.eclipse.ui.statushandlers.AbstractStatusHandler;
 import org.nightlabs.base.ui.NLBasePlugin;
+import org.nightlabs.base.ui.exceptionhandler.ErrorStatusHandler;
 import org.nightlabs.base.ui.exceptionhandler.ExceptionHandlerRegistry;
 import org.nightlabs.base.ui.util.RCPUtil;
 import org.nightlabs.config.ConfigException;
@@ -73,6 +75,25 @@ extends WorkbenchAdvisor
 	public void eventLoopException(Throwable exception) {
 		if (!ExceptionHandlerRegistry.syncHandleException(exception))
 			super.eventLoopException(exception);
+	}
+	
+	/**
+	 * The errorStatusHandler is invoked to handle IStatus results 
+	 * for example of Jobs.
+	 */
+	private ErrorStatusHandler errorStatusHandler;
+	
+	/**
+	 * Returns an instance of {@link ErrorStatusHandler} that
+	 * will delegate all exceptions in IStatus to the
+	 * ExceptionHandlerRegistry. 
+	 */
+	@Override
+	public AbstractStatusHandler getWorkbenchErrorHandler() {
+		if (errorStatusHandler == null) {
+			errorStatusHandler = new ErrorStatusHandler();
+		}
+		return errorStatusHandler;
 	}
 
 	/**
