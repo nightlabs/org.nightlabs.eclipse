@@ -126,7 +126,7 @@ implements ILanguageManager
 		if (globalL10nSettings.getLanguage() != null) {
 			if (checkLanguageID(globalL10nSettings.getLanguage())) {
 				haveGoodValue = true;
-				Locale.setDefault(new Locale(globalL10nSettings.getLanguage()));
+				Locale.setDefault(new Locale(globalL10nSettings.getLanguage(), globalL10nSettings.getCountry()));
 			}
 		}
 		if(!haveGoodValue) {
