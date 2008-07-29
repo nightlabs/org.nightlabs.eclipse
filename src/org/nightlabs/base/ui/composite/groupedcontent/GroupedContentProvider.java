@@ -30,11 +30,27 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 /**
+ * {@link GroupedContentProvider}s are the entries shown in a {@link GroupedContentComposite}.
+ * They provide the text and image for the table as well as the actual content of the group.
+ * 
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
- *
  */
 public interface GroupedContentProvider {
-	public Image getGroupIcon();
-	public String getGroupTitle();
-	public Composite createGroupContent(Composite parent);
+	/**
+	 * @return The icon of this provider.
+	 */
+	Image getGroupIcon();
+	/**
+	 * @return The title of this provider.
+	 */
+	String getGroupTitle();
+	/**
+	 * Create the {@link Composite} of this provider that is the actual content
+	 * of the provider. This method will be called only once per {@link GroupedContentComposite}
+	 * and {@link GroupedContentProvider}.
+	 * 
+	 * @param parent The parent to create the {@link Composite} for.
+	 * @return The newly created {@link Composite} that contains the contents to show for this provider.
+	 */
+	Composite createGroupContent(Composite parent);
 }

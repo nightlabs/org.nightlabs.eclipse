@@ -40,10 +40,12 @@ import org.nightlabs.base.ui.table.TableContentProvider;
 import org.nightlabs.base.ui.table.TableLabelProvider;
 
 /**
- * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
- *
+ * Table used in {@link GroupedContentComposite} to show entries
+ * of {@link GroupedContentProvider}.
+ * 
+ * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  */
-public class GroupedContentSwitcherTable extends AbstractTableComposite {
+public class GroupedContentSwitcherTable extends AbstractTableComposite<GroupedContentProvider> {
 	
 	private String groupTitle;
 //	private TableColumn column;
@@ -53,27 +55,6 @@ public class GroupedContentSwitcherTable extends AbstractTableComposite {
 	private static final Color COLOR_SELECTED = new Color(null, 11, 5, 180);
 	private static final Color COLOR_BACKGROUND = new Color(null, 111, 111, 111);
 
-//	private MouseMoveListener mouseMoveListener = new MouseMoveListener() {
-//		public void mouseMove(MouseEvent event) {
-//			TableItem item = getTableItem(event);
-//			highLightItem(item);
-//		}
-//		protected TableItem getTableItem(MouseEvent event)
-//		{
-//			Point pt = new Point(event.x, event.y);
-//			TableItem tableItem = getTable().getItem(pt);
-//			return tableItem;
-//		}
-//	};
-	
-//	private ISelectionChangedListener selectionListener = new ISelectionChangedListener() {
-//		public void selectionChanged(SelectionChangedEvent event) {
-//			int idx = getTable().getSelectionIndex();
-//			if (idx >= 0)
-//				selectItem(getTable().getItem(idx));
-//		}
-//	};
-	
 	private class ContentProvider extends TableContentProvider  {
 		/**
 		 * @see org.nightlabs.base.ui.table.TableContentProvider#getElements(java.lang.Object)
@@ -81,7 +62,7 @@ public class GroupedContentSwitcherTable extends AbstractTableComposite {
 		@Override
 		public Object[] getElements(Object inputElement) {
 			if (inputElement instanceof Collection)
-				return ((Collection)inputElement).toArray();
+				return ((Collection<?>) inputElement).toArray();
 			return super.getElements(inputElement);
 		}
 	}
@@ -104,21 +85,12 @@ public class GroupedContentSwitcherTable extends AbstractTableComposite {
 		super(parent, style, true, getBorderStyle(parent) | SWT.FULL_SELECTION | SWT.V_SCROLL);
 		getGridLayout().marginHeight = 2;
 		getGridLayout().marginWidth = 2;
-//		super(parent, style, true, SWT.FULL_SELECTION | SWT.V_SCROLL);
 		getTable().setLinesVisible(false);
 		getTable().setHeaderVisible(false);
-//		getTable().setBackground(COLOR_BACKGROUND);
-//		getTable().addMouseMoveListener(mouseMoveListener);
-//		getTableViewer().addSelectionChangedListener(selectionListener);
-//		getTable().setForeground(parent.getForeground());
 	}
 
 	@Override
 	protected void createTableColumns(TableViewer tableViewer, Table table) {
-//		column = new TableColumn(table, SWT.LEFT);
-//		if (groupTitle != null)
-//			column.setText(groupTitle);
-//		table.setLayout(new WeightedTableLayout(new int[] {1}));
 	}
 
 	@Override

@@ -41,7 +41,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.nightlabs.base.ui.composite.XComposite;
 
 /**
- * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
+ * A {@link GroupedContentComposite} consists of a table ({@link GroupedContentSwitcherTable}) on the left
+ * that shows an entry for each {@link GroupedContentProvider} added to this Composite and a dynamic area 
+ * on the right that shows the content of the currently selected {@link GroupedContentProvider}. 
+ * 
+ * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  */
 public class GroupedContentComposite extends XComposite {
 	
@@ -51,7 +55,7 @@ public class GroupedContentComposite extends XComposite {
 	private XComposite contentWrapper;
 	private StackLayout contentStackLayout;
 	
-	private List<GroupedContentProvider> groupedContentProvider = new ArrayList<GroupedContentProvider>();
+	private List<GroupedContentProvider> groupedContentProviders = new ArrayList<GroupedContentProvider>();
 	private Map<GroupedContentProvider, Composite> providerComposites = new HashMap<GroupedContentProvider, Composite>();
 	
 	private ISelectionChangedListener switcherListener = new ISelectionChangedListener() {
@@ -64,6 +68,14 @@ public class GroupedContentComposite extends XComposite {
 		}
 	};
 	
+	/**
+	 * Create a new {@link GroupedContentComposite}.
+	 * 
+	 * @param parent The parent for the new {@link GroupedContentComposite}.
+	 * @param style The style to apply to the Composite.
+	 * @param setLayoutData Whether to set a {@link GridData} that will fill in both directions 
+	 *                      for the newly created {@link GroupedContentComposite}. 
+	 */
 	public GroupedContentComposite(Composite parent, int style, boolean setLayoutData) {
 		super(parent, style, LayoutMode.TIGHT_WRAPPER,
 				setLayoutData ? LayoutDataMode.GRID_DATA : LayoutDataMode.NONE);
@@ -83,17 +95,31 @@ public class GroupedContentComposite extends XComposite {
 		contentStackLayout = new StackLayout();
 		contentWrapper.setLayout(contentStackLayout);
 	}
-	
+
+	/**
+	 * Add the given {@link GroupedContentProvider} to the list of providers of this {@link GroupedContentComposite}.
+	 * The provider will be added to the end of the list.
+	 * 
+	 * @param groupedContentProvider The provider to add.
+	 */
 	public void addGroupedContentProvider(GroupedContentProvider groupedContentProvider) {
-		this.groupedContentProvider.add(groupedContentProvider);
-		switcherTable.setInput(this.groupedContentProvider);
+		this.groupedContentProviders.add(groupedContentProvider);
+		switcherTable.setInput(this.groupedContentProviders);
 		preSelect();
 //		layout(true, true);
 	}
-	
+
+	/**
+	 * Add the given {@link GroupedContentProvider} to the list of providers of this {@link GroupedContentComposite}.
+	 * The provider will be added at the given index, but index must be valid for the actual list of providers, otherwise
+	 * an {@link IndexOutOfBoundsException} will be thrown.
+	 * 
+	 * @param groupedContentProvider The provider to add.
+	 * @param index The index at which the given provider should be added.
+	 */
 	public void addGroupedContentProvider(GroupedContentProvider groupedContentProvider, int index) {
-		this.groupedContentProvider.add(index, groupedContentProvider);
-		switcherTable.setInput(this.groupedContentProvider);
+		this.groupedContentProviders.add(index, groupedContentProvider);
+		switcherTable.setInput(this.groupedContentProviders);
 		preSelect();
 		layout(true, true);
 	}
@@ -108,6 +134,10 @@ public class GroupedContentComposite extends XComposite {
 		contentWrapper.layout(true, true); // TODO true, true necessary?
 	}
 	
+	/**
+	 * Sets the title for this {@link GroupedContentComposite}.
+	 * @param title The title to set.
+	 */
 	public void setGroupTitle(String title) {
 		switcherTable.setGroupTitle(title);
 	}
@@ -115,7 +145,7 @@ public class GroupedContentComposite extends XComposite {
 	private void preSelect() {
 		if (switcherTable.getItemCount() > 0 && switcherTable.getSelectionCount() == 0) {
 			switcherTable.select(0);
-			selectContentProvider(groupedContentProvider.get(0));
+			selectContentProvider(groupedContentProviders.get(0));
 		}
 	}
 }
