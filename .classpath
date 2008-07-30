@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry exported="true" kind="lib" path="lib/xstream-1.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/itext-1.4.8.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/batik-css.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/batik-ext.jar"/>
@@ -14,8 +13,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/batik-xml.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jai_codec.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jai_core.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/xpp3-1.1.3.4.jar"/>
-	<classpathentry exported="true" sourcepath="/NightLabsEditor2D/src" kind="lib" path="lib/NightLabsEditor2D.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/NightLabsEditor2D.jar" sourcepath="/NightLabsEditor2D/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/NightLabsEditor2D"/>
