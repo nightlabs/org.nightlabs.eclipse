@@ -9,9 +9,12 @@ import org.eclipse.swt.widgets.Shell;
 
 /**
  * A resizable title area dialog base implementation that stores its size and position.
+ * To define the preferred size (the size on first startup) override {@link #getPreferredSize()}.
+ * 
  * @see ResizableDialogSupport
  * @see TitleAreaDialog
  * @author Marc Klinger - marc[at]nightlabs[dot]de
+ * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  */
 public abstract class ResizableTitleAreaDialog extends TitleAreaDialog
 {
@@ -30,7 +33,27 @@ public abstract class ResizableTitleAreaDialog extends TitleAreaDialog
 		this.resizableDialogSupport = new ResizableDialogSupport(this, resourceBundle);
 	}
 
-	/* (non-Javadoc)
+	/**
+	 * Override this method to set the preferred size for this {@link ResizableTitleAreaDialog}.
+	 * This size will be used the first time the dialog opens and when no sizes could be restored
+	 * using the {@link ResizableDialogSupport}.
+	 * <p>
+	 * This implementation returns <code>null</code>.
+	 * </p>
+	 * @return The preferred size of this dialog or <code>null</code> in order to use the super 
+	 *         implementation of {@link #getInitialSize()} to determine the initial size.
+	 */
+	protected Point getPreferredSize() {
+		return null;
+	}
+	
+	
+	/**
+	 * Do not override this method, use {@link #getPreferredSize()} instead.
+	 * <p>
+	 * This implementation uses the {@link ResizableDialogSupport} 
+	 * to restore the old size.
+	 * </p>
 	 * @see org.eclipse.jface.dialogs.Dialog#getInitialSize()
 	 */
 	@Override
@@ -38,6 +61,9 @@ public abstract class ResizableTitleAreaDialog extends TitleAreaDialog
 	{
 		Point size = resizableDialogSupport.getInitialSize();
 		if(size != null)
+			return size;
+		size = getPreferredSize();
+		if (size != null)
 			return size;
 		return super.getInitialSize();
 	}
