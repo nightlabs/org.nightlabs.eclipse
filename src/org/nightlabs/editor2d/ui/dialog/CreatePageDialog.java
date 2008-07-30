@@ -26,10 +26,11 @@
 package org.nightlabs.editor2d.ui.dialog;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-import org.nightlabs.base.ui.dialog.CenteredDialog;
+import org.nightlabs.eclipse.ui.dialog.ResizableTrayDialog;
 import org.nightlabs.editor2d.ui.composite.PageComposite;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
@@ -37,10 +38,10 @@ import org.nightlabs.editor2d.ui.resource.Messages;
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
 public class CreatePageDialog
-extends CenteredDialog
+extends ResizableTrayDialog
 {
 	public CreatePageDialog(Shell parentShell) {
-		super(parentShell);
+		super(parentShell, null);
 		setShellStyle(getShellStyle() | SWT.RESIZE | SWT.MIN | SWT.MAX);
 	}
 
@@ -56,11 +57,14 @@ extends CenteredDialog
 	}
 
 	@Override
-	public void create()
-	{
-		super.create();
-		getShell().setText(Messages.getString("org.nightlabs.editor2d.ui.dialog.CreatePageDialog.title")); //$NON-NLS-1$
-		getShell().setSize(250, 250);
+	protected void configureShell(Shell newShell) {
+		super.configureShell(newShell);
+		newShell.setText(Messages.getString("org.nightlabs.editor2d.ui.dialog.CreatePageDialog.title")); //$NON-NLS-1$
+	}
+	
+	@Override
+	protected Point getPreferredSize() {
+		return 	new Point(250, 250);
 	}
 		
 }

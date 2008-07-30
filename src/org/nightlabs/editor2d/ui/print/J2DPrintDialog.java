@@ -43,6 +43,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -57,7 +58,7 @@ import org.holongate.j2d.IPaintable;
 import org.holongate.j2d.J2DCanvas;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.composite.XComposite.LayoutMode;
-import org.nightlabs.base.ui.dialog.CenteredDialog;
+import org.nightlabs.eclipse.ui.dialog.ResizableTrayDialog;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.ui.j2dswt.DrawComponentPaintable;
 import org.nightlabs.editor2d.ui.resource.Messages;
@@ -67,7 +68,7 @@ import org.nightlabs.editor2d.util.GeomUtil;
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
 public class J2DPrintDialog
-extends CenteredDialog
+extends ResizableTrayDialog
 {
 	/**
 	 * LOG4J logger used by this class
@@ -76,7 +77,7 @@ extends CenteredDialog
 	
 	public J2DPrintDialog(Shell parentShell, DrawComponent dc, PageFormat pageFormat)
 	{
-		super(parentShell);
+		super(parentShell, null);
 		setShellStyle(getShellStyle() | SWT.RESIZE);
 		this.drawComponent = dc;
 		this.pageFormat = pageFormat;
@@ -88,7 +89,11 @@ extends CenteredDialog
 	{
 		super.configureShell(newShell);
 		newShell.setText(Messages.getString("org.nightlabs.editor2d.ui.print.J2DPrintDialog.title")); //$NON-NLS-1$
-		newShell.setSize(350, 325);
+	}
+
+	@Override
+	protected Point getPreferredSize() {
+		return new Point(350, 325);
 	}
 	
 	private PageFormat pageFormat;

@@ -28,10 +28,11 @@ package org.nightlabs.editor2d.ui.dialog;
 import java.awt.image.BufferedImage;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-import org.nightlabs.base.ui.dialog.CenteredDialog;
+import org.nightlabs.eclipse.ui.dialog.ResizableTrayDialog;
 import org.nightlabs.editor2d.ui.composite.ConvertImageComposite;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
@@ -39,14 +40,14 @@ import org.nightlabs.editor2d.ui.resource.Messages;
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
 public class ConvertImageDialog
-extends CenteredDialog
+extends ResizableTrayDialog
 {
 	/**
 	 * @param parentShell
 	 */
 	public ConvertImageDialog(Shell parentShell, BufferedImage originalImage)
 	{
-		super(parentShell);
+		super(parentShell, null);
 		setShellStyle(getShellStyle() | SWT.RESIZE);
 		this.image = originalImage;
 	}
@@ -56,9 +57,13 @@ extends CenteredDialog
 	{
 		super.create();
 		getShell().setText(Messages.getString("org.nightlabs.editor2d.ui.dialog.ConvertImageDialog.text")); //$NON-NLS-1$
-		getShell().setSize(500, 500);
 	}
-		
+	
+	@Override
+	protected Point getPreferredSize() {
+		return new Point(500, 500);
+	}
+	
 	private BufferedImage image = null;
 	private ConvertImageComposite convertImageComp = null;
 	public ConvertImageComposite getConvertImageComposite() {

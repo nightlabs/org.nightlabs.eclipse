@@ -31,9 +31,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-import org.nightlabs.base.ui.dialog.CenteredDialog;
 import org.nightlabs.base.ui.print.PrinterConfigurationRegistry;
 import org.nightlabs.base.ui.print.PrinterUseCase;
+import org.nightlabs.eclipse.ui.dialog.ResizableTrayDialog;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.print.PrinterConfiguration;
 import org.nightlabs.print.PrinterConfigurationCfMod;
@@ -42,7 +42,7 @@ import org.nightlabs.print.PrinterConfigurationCfMod;
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
  */
 public class EditorPrintPreviewDialog
-extends CenteredDialog
+extends ResizableTrayDialog
 {
 	private PrinterUseCase printerUseCase;
 	private PrinterConfiguration printerConfiguration;
@@ -54,7 +54,7 @@ extends CenteredDialog
 	 */
 	public EditorPrintPreviewDialog(DrawComponent dc, Shell parentShell)
 	{
-		super(parentShell);
+		super(parentShell, null);
 		if (dc == null)
 			throw new IllegalArgumentException("Param dc must not be null!"); //$NON-NLS-1$
 		
