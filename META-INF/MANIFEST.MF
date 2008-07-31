@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Pdfviewer Plug-in
+Bundle-SymbolicName: org.nightlabs.eclipse.ui.pdfviewer
+Bundle-Version: 0.9.5.qualifier
+Bundle-Activator: org.nightlabs.eclipse.ui.pdfviewer.PdfViewerPlugin
+Bundle-Vendor: nightlabs.org
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime
+Eclipse-LazyStart: true
