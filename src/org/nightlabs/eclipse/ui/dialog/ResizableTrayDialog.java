@@ -10,7 +10,9 @@ import org.eclipse.swt.widgets.Shell;
 
 /**
  * A resizable tray dialog base implementation that stores its size and position.
- * To define the preferred size (the size on first startup) override {@link #getPreferredSize()}.
+ * To define the preferred size (the size on first startup) place entries in
+ * the {@link ResourceBundle} you pass to the constructor. See the JavaDoc of {@link ResizableDialogSupport}
+ * for the format of the entries.
  * 
  * @see ResizableDialogSupport
  * @see TrayDialog
@@ -48,22 +50,8 @@ public abstract class ResizableTrayDialog extends TrayDialog
 	}
 
 	/**
-	 * Override this method to set the preferred size for this {@link ResizableTitleAreaDialog}.
-	 * This size will be used the first time the dialog opens and when no sizes could be restored
-	 * using the {@link ResizableDialogSupport}.
-	 * <p>
-	 * This implementation returns <code>null</code>.
-	 * </p>
-	 * @return The preferred size of this dialog or <code>null</code> in order to use the super 
-	 *         implementation of {@link #getInitialSize()} to determine the initial size.
-	 */
-	protected Point getPreferredSize() {
-		return null;
-	}
-	
-	
-	/**
-	 * Do not override this method, use {@link #getPreferredSize()} instead.
+	 * Do not override this method to set the initial size, use entries in the 
+	 * {@link ResourceBundle} passed to the constructor instead.
 	 * <p>
 	 * This implementation uses the {@link ResizableDialogSupport} 
 	 * to restore the old size.
@@ -75,9 +63,6 @@ public abstract class ResizableTrayDialog extends TrayDialog
 	{
 		Point size = resizableDialogSupport.getInitialSize();
 		if(size != null)
-			return size;
-		size = getPreferredSize();
-		if (size != null)
 			return size;
 		return super.getInitialSize();
 	}
