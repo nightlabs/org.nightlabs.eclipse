@@ -26,7 +26,6 @@
 package org.nightlabs.editor2d.ui.dialog;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
@@ -41,7 +40,7 @@ public class CreatePageDialog
 extends ResizableTrayDialog
 {
 	public CreatePageDialog(Shell parentShell) {
-		super(parentShell, null);
+		super(parentShell, Messages.RESOURCE_BUNDLE);
 		setShellStyle(getShellStyle() | SWT.RESIZE | SWT.MIN | SWT.MAX);
 	}
 
@@ -61,10 +60,4 @@ extends ResizableTrayDialog
 		super.configureShell(newShell);
 		newShell.setText(Messages.getString("org.nightlabs.editor2d.ui.dialog.CreatePageDialog.title")); //$NON-NLS-1$
 	}
-	
-	@Override
-	protected Point getPreferredSize() {
-		return 	new Point(250, 250);
-	}
-		
 }

@@ -28,7 +28,6 @@ package org.nightlabs.editor2d.ui.dialog;
 import java.awt.image.BufferedImage;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
@@ -47,7 +46,7 @@ extends ResizableTrayDialog
 	 */
 	public ConvertImageDialog(Shell parentShell, BufferedImage originalImage)
 	{
-		super(parentShell, null);
+		super(parentShell, Messages.RESOURCE_BUNDLE);
 		setShellStyle(getShellStyle() | SWT.RESIZE);
 		this.image = originalImage;
 	}
@@ -57,11 +56,6 @@ extends ResizableTrayDialog
 	{
 		super.create();
 		getShell().setText(Messages.getString("org.nightlabs.editor2d.ui.dialog.ConvertImageDialog.text")); //$NON-NLS-1$
-	}
-	
-	@Override
-	protected Point getPreferredSize() {
-		return new Point(500, 500);
 	}
 	
 	private BufferedImage image = null;

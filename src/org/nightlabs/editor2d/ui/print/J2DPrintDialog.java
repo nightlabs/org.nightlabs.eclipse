@@ -43,7 +43,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -77,7 +76,7 @@ extends ResizableTrayDialog
 	
 	public J2DPrintDialog(Shell parentShell, DrawComponent dc, PageFormat pageFormat)
 	{
-		super(parentShell, null);
+		super(parentShell, Messages.RESOURCE_BUNDLE);
 		setShellStyle(getShellStyle() | SWT.RESIZE);
 		this.drawComponent = dc;
 		this.pageFormat = pageFormat;
@@ -91,11 +90,6 @@ extends ResizableTrayDialog
 		newShell.setText(Messages.getString("org.nightlabs.editor2d.ui.print.J2DPrintDialog.title")); //$NON-NLS-1$
 	}
 
-	@Override
-	protected Point getPreferredSize() {
-		return new Point(350, 325);
-	}
-	
 	private PageFormat pageFormat;
 	public PageFormat getPageFormat() {
 		return pageFormat;
