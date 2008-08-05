@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Shell;
 
 /**
  * Adapted from http://tom-eclipse-dev.blogspot.com/2007/01/tableviewers-and-nativelooking.html
- * 
+ *
  * @author Tom Schindl & Alexander Ljungberg (siehe link)
  * @author Marius Heinzmann - marius[at]nightlabs[dot]com
  */
@@ -22,8 +22,10 @@ public final class JFaceUtil
 {
 	private static final String CHECKED_KEY = "CHECKED"; //$NON-NLS-1$
 	private static final String UNCHECK_KEY = "UNCHECKED"; //$NON-NLS-1$
+	private static final String DISABLED_UNCHECKED_KEY = "DISABLED_UNCHECKED";
+	private static final String DISABLED_CHECKED_KEY = "DISABLED_CHECKED";
 
-	private static Image makeShot(Control control, boolean type)
+	private static Image makeShot(Control control, boolean type, boolean enabled)
 	{
 		// Hopefully no platform uses exactly this color because we'll make
 		// it transparent in the image.
@@ -35,6 +37,7 @@ public final class JFaceUtil
 		shell.setBackground(greenScreen);
 
 		Button button = new Button(shell, SWT.CHECK);
+		button.setEnabled(enabled);
 		button.setBackground(greenScreen);
 		button.setSelection(type);
 
@@ -67,7 +70,7 @@ public final class JFaceUtil
 	 * whether there is already an Image registered in the JFace image registry under the
 	 * {@link #CHECKED_KEY}. If not takes images of the native checkbox and registeres them in the
 	 * JFace image registry.
-	 * 
+	 *
 	 * @param viewer
 	 *          The viewer via which the shell for taking the pictures of the native checkbox are
 	 *          taken.
@@ -77,19 +80,49 @@ public final class JFaceUtil
 	 */
 	public static Image getCheckBoxImage(StructuredViewer viewer, boolean checkState)
 	{
+		return getCheckBoxImage(viewer, checkState, true);
+	}
+
+	/**
+	 * Returns an Image of the native <code>enabled</code> checkbox in the <code>checkState</code>.
+	 * It first checks whether there is already an Image registered in the JFace image registry under
+	 * the {@link #CHECKED_KEY}. If not takes images of the native checkbox and registeres them in the
+	 * JFace image registry.
+	 *
+	 * @param viewer
+	 *          The viewer via which the shell for taking the pictures of the native checkbox are
+	 *          taken.
+	 * @param checkState
+	 *          The state in which the checkbox should be.
+	 * @param enabled
+	 * 					The enable state of the checkbox image to return.
+	 * @return An Image of the native checkbox in the <code>checkState</code>.
+	 */
+	public static Image getCheckBoxImage(StructuredViewer viewer, boolean checkState, boolean enabled)
+	{
 		if (JFaceResources.getImageRegistry().getDescriptor(CHECKED_KEY) == null)
 		{
+			JFaceResources.getImageRegistry().put(DISABLED_UNCHECKED_KEY,
+				makeShot(viewer.getControl(), false, false));
 			JFaceResources.getImageRegistry().put(UNCHECK_KEY,
-				makeShot(viewer.getControl(), false));
+					makeShot(viewer.getControl(), false, true));
+			JFaceResources.getImageRegistry().put(DISABLED_CHECKED_KEY,
+				makeShot(viewer.getControl(), true, false));
 			JFaceResources.getImageRegistry().put(CHECKED_KEY,
-				makeShot(viewer.getControl(), true));
+					makeShot(viewer.getControl(), true, true));
 		}
 
 		if (checkState)
 		{
-			return JFaceResources.getImageRegistry().getDescriptor(CHECKED_KEY).createImage();
+			if (enabled)
+				return JFaceResources.getImageRegistry().getDescriptor(CHECKED_KEY).createImage();
+			else
+				return JFaceResources.getImageRegistry().getDescriptor(DISABLED_CHECKED_KEY).createImage();
 		}
 
-		return JFaceResources.getImageRegistry().getDescriptor(UNCHECK_KEY).createImage();
+		if (enabled)
+			return JFaceResources.getImageRegistry().getDescriptor(UNCHECK_KEY).createImage();
+		else
+			return JFaceResources.getImageRegistry().getDescriptor(DISABLED_UNCHECKED_KEY).createImage();
 	}
 }
