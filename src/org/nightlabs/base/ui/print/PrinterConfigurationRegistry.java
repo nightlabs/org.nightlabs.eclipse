@@ -39,9 +39,10 @@ import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
 import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
 
 /**
+ * This registry processes extensions to the point 'org.nightlabs.base.ui.printerConfiguration'
+ * where {@link PrinterUseCase}s and {@link PrinterConfigurator}s can be registered.
  * 
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
- *
  */
 public class PrinterConfigurationRegistry extends AbstractEPProcessor {
 

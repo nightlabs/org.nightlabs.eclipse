@@ -30,16 +30,13 @@ import org.eclipse.swt.widgets.Display;
 import org.nightlabs.print.PrinterConfiguration;
 
 /**
+ * Implements {@link org.nightlabs.print.PrinterInterfaceManager} and shows an 
+ * {@link EditPrinterConfigurationDialog} to build the {@link PrinterConfiguration}
+ * when asked to {@link #editPrinterConfiguration(String, boolean)}.
+ *  
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
- *
  */
 public class PrinterInterfaceManager extends org.nightlabs.print.PrinterInterfaceManager {
-	
-//	private static final Logger logger = Logger.getLogger(PrinterInterfaceManager.class);
-
-	private static class ConfigHolder {
-		public PrinterConfiguration printerConfiguration;
-	}
 	
 	/**
 	 * 
@@ -49,13 +46,13 @@ public class PrinterInterfaceManager extends org.nightlabs.print.PrinterInterfac
 
 	@Override
 	public PrinterConfiguration editPrinterConfiguration(final String printerUseCaseID, final boolean preSelectionDoStore) {
-		final ConfigHolder holder = new ConfigHolder();
+		final PrinterConfiguration[] config = new PrinterConfiguration[1]; 
 		Display.getDefault().syncExec(new Runnable() {
 			public void run() {
-				holder.printerConfiguration = EditPrinterConfigurationDialog.openDialog(printerUseCaseID, preSelectionDoStore);
+				config[0] = EditPrinterConfigurationDialog.openDialog(printerUseCaseID, preSelectionDoStore);
 			}
 		});
-		return holder.printerConfiguration;
+		return config[0];
 	}
 
 	private static PrinterInterfaceManager sharedInstance;

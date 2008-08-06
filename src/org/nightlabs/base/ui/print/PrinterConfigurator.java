@@ -28,20 +28,35 @@ package org.nightlabs.base.ui.print;
 
 import org.eclipse.swt.widgets.Composite;
 import org.nightlabs.print.PrinterConfiguration;
+import org.nightlabs.print.PrinterInterface;
 
 /**
+ * {@link PrinterConfigurator}s are used to visualize and edit
+ * a {@link PrinterConfiguration} when the {@link PrinterInterfaceManager}
+ * is asked to provide a {@link PrinterInterface} and also to configure
+ * a {@link PrinterUseCase} in the preference page. 
+ * 
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
- *
  */
 public interface PrinterConfigurator {
 	
+	/**
+	 * Initialize the configurator with the given {@link PrinterConfiguration}.
+	 * @param printerConfiguration The printer configuration.
+	 */
 	public void init(PrinterConfiguration printerConfiguration);
 	
+	/**
+	 * Create the UI of this configurator as child of the given parent and show
+	 * the {@link PrinterConfiguration} set in {@link #init(PrinterConfiguration)}.
+	 * 
+	 * @param parent The parent to create the UI for.
+	 * @return The newly created {@link Composite}.
+	 */
 	public Composite showComposite(Composite parent);
-	
+	/**
+	 * Read the current {@link PrinterConfiguration} from the UI. 
+	 * @return The configured {@link PrinterConfiguration}.
+	 */
 	public PrinterConfiguration readPrinterConfiguration();
-	
-	public void discardComposite();
-	
-//	public void assignPrinterConfigurationInterface(PrinterConfiguration printerConfiguration, PrinterInterface printerInterface);
 }

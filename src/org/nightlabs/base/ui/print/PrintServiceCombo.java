@@ -5,14 +5,16 @@ package org.nightlabs.base.ui.print;
 
 import javax.print.PrintService;
 
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.nightlabs.base.ui.composite.XComboComposite;
 import org.nightlabs.base.ui.table.TableLabelProvider;
 import org.nightlabs.print.PrintUtil;
 
 /**
+ * {@link Combo} showing all {@link PrintService}s that can be found in the system. 
+ * 
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
- *
  */
 public class PrintServiceCombo extends XComboComposite<PrintService> {
 
@@ -21,11 +23,11 @@ public class PrintServiceCombo extends XComboComposite<PrintService> {
 			return ((PrintService)arg0).getName();
 		}
 	}
-	
+
 	/**
-	 * @param types
-	 * @param parent
-	 * @param style
+	 * Create a new {@link PrintServiceCombo}.
+	 * @param parent The parent for the new combo.
+	 * @param comboStyle The to use for the combo. 
 	 */
 	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public PrintServiceCombo(Composite parent, int comboStyle) {

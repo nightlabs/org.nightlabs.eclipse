@@ -26,10 +26,17 @@
 
 package org.nightlabs.base.ui.print;
 
+import org.nightlabs.print.PrinterConfiguration;
+
 
 /**
+ * A {@link PrinterUseCase} is used to differently configure the print
+ * for different use-cases. 
+ * {@link PrinterUseCase}s are visually configured by {@link PrinterConfigurator}s
+ * (they read and write {@link PrinterConfiguration}s for a {@link PrinterUseCase}). 
+ * 
+ * 
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
- *
  */
 public class PrinterUseCase {
 

@@ -27,9 +27,16 @@
 package org.nightlabs.base.ui.print;
 
 /**
+ * {@link PrinterConfiguratorFactory}s are registered as
+ * extension to the point <code>org.nightlabs.base.ui.printerConfiguration</code>
+ * and are responsible for creating {@link PrinterConfigurator}s.
+ * 
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  *
  */
 public interface PrinterConfiguratorFactory {
+	/**
+	 * @return A new {@link PrinterConfigurator}.
+	 */
 	public PrinterConfigurator createPrinterConfigurator();
 }

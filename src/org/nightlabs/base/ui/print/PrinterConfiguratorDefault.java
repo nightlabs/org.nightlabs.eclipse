@@ -34,7 +34,6 @@ import org.nightlabs.print.PrinterInterface;
 
 /**
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
- *
  */
 public class PrinterConfiguratorDefault implements PrinterConfigurator {
 

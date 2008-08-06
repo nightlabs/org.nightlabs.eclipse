@@ -42,11 +42,9 @@ import org.nightlabs.print.PrinterConfiguration;
 import org.nightlabs.print.PrinterConfigurationCfMod;
 
 /**
- * Dialog to edit the {@link PrinterConfiguration} of a certain
- * {@link PrinterUseCase}.
+ * Dialog to edit the {@link PrinterConfiguration} of a certain {@link PrinterUseCase}.
  * 
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
- *
  */
 public class EditPrinterConfigurationDialog extends Dialog {
 

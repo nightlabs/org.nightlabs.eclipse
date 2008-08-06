@@ -44,7 +44,6 @@ import org.nightlabs.print.PrinterConfigurationCfMod;
  * {@link PrinterUseCase}.
  * 
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
- *
  */
 public class EditPrinterConfigurationComposite extends XComposite {
 
