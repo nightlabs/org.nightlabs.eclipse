@@ -111,8 +111,10 @@ implements IDirtyStateManager, IFormPartDirtyStateProxy
 
 			// needs to check if global state was dirty, otherwise this would change the state to dirty,
 			// which contradicts the method name and declaration! (marius)
-			if (getManagedForm().isDirty())
-				getManagedForm().dirtyStateChanged();
+			
+			// TODO: I don't know whether the following check is still necessary... Removing it yields better behaviour in most cases. Tobias.
+//			if (getManagedForm().isDirty())
+			getManagedForm().dirtyStateChanged();
 		}
 	}
 

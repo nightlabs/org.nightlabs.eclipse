@@ -139,7 +139,7 @@ implements ISelectionProvider
 		{
 			initTable();
 			
-			// set default minimum size 
+			// set default minimum size
 			tgd.minimumWidth = tableViewer.getTable().getColumnCount() * 30;
 			tgd.minimumHeight = 50;
 		}
@@ -179,7 +179,7 @@ implements ISelectionProvider
 	/**
 	 * Delegating method for {@link TableViewer}
 	 */
-	public void refresh(boolean updateLabels) 
+	public void refresh(boolean updateLabels)
 	{
 		if (!tableViewer.getTable().isDisposed())
 			tableViewer.refresh(updateLabels);
@@ -383,6 +383,25 @@ implements ISelectionProvider
 				checkedElements.add((ElementType) items[i].getData());
 		}
 		return checkedElements;
+	}
+	
+	/**
+	 * If the this table-composite's table was created with
+	 * the {@link SWT#CHECK} flag this method will return a list of all
+	 * unchecked elements.
+	 *
+	 * @return a list of all unchecked Elements.
+	 */
+	public List<ElementType> getUncheckedElements() {
+		if ((table.getStyle() & SWT.CHECK) == 0)
+			throw new IllegalStateException("Table is not of type SWT.CHECK, can't return checked Items!"); //$NON-NLS-1$
+		List<ElementType> uncheckedElements = new LinkedList<ElementType>();
+		TableItem[] items = tableViewer.getTable().getItems();
+		for (int i = 0; i < items.length; i++) {
+			if (!items[i].getChecked())
+				uncheckedElements.add((ElementType) items[i].getData());
+		}
+		return uncheckedElements;
 	}
 
 	/**

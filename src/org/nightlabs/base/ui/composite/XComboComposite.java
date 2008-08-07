@@ -127,7 +127,7 @@ public class XComboComposite<T>
 	{
 		super(parent, comboStyle, caption, true, labelProvider, layoutMode, layoutDataMode, compositeStyle);
 	}
-//	
+//
 //	/**
 //	 * @return the backend XCombo widget.
 //	 */
@@ -181,7 +181,7 @@ public class XComboComposite<T>
 	@Override
 	protected void addElementToGui(int index, T element) {
 		if (imageCombo != null && !imageCombo.isDisposed())
-			imageCombo.add(labelProvider.getImage(element), labelProvider.getText(element));
+			imageCombo.add(labelProvider.getImage(element), labelProvider.getText(element), index);
 	}
 
 	// Either initialise here, pass false to all superconstructors, create a constructor pyramid for
@@ -209,7 +209,7 @@ public class XComboComposite<T>
 					break;
 				case LEFT:
 					gridLayout.numColumns = 2;
-					break;					
+					break;
 			}
 			composite.setLayout(gridLayout);
 			label = new Label(composite, SWT.NONE);
@@ -277,7 +277,7 @@ public class XComboComposite<T>
 	}
 
 	@Override
-	protected void removeAllElementsFromGui() 
+	protected void removeAllElementsFromGui()
 	{
 		if (imageCombo != null && !imageCombo.isDisposed())
 			imageCombo.removeAll();
@@ -294,7 +294,7 @@ public class XComboComposite<T>
 		return imageCombo;
 	}
 
-	public int getItemCount() {		
+	public int getItemCount() {
 		return imageCombo.getItemCount();
 	}
 }

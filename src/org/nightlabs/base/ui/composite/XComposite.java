@@ -291,9 +291,6 @@ public class XComposite extends Composite
 		setLayoutDataMode(layoutDataMode, this);
 	}
 
-	/**
-	 * @see org.eclipse.swt.widgets.Control#setEnabled(boolean)
-	 */
 	@Override
 	public void setEnabled(boolean enabled)
 	{
@@ -439,7 +436,7 @@ public class XComposite extends Composite
 			else if (tmp instanceof ScrolledForm)
 			{
 				final ScrolledForm scrolledForm = (ScrolledForm) tmp;
-				return new NightlabsFormsToolkit(scrolledForm.getDisplay()); 
+				return new NightlabsFormsToolkit(scrolledForm.getDisplay());
 			}
 			else if (tmp instanceof Form)
 			{
