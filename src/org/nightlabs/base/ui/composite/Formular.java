@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Widget;
 public class Formular extends XComposite implements ModifyListener, SelectionListener
 {
 	private Set<FormularChangeListener> listeners = null;
-	
+
 	public Formular(Composite parent, int style, FormularChangeListener formularChangedListener)
 	{
 		super(parent, style, LayoutMode.ORDINARY_WRAPPER, LayoutDataMode.GRID_DATA_HORIZONTAL, 2);
@@ -40,7 +40,7 @@ public class Formular extends XComposite implements ModifyListener, SelectionLis
 			listeners.add(listener);
 		}
 	}
-	
+
 	public void removeFormularChangeListener(FormularChangeListener listener)
 	{
 		if(listener != null && listeners != null)
@@ -51,30 +51,30 @@ public class Formular extends XComposite implements ModifyListener, SelectionLis
 	{
 		this(parent, style, null);
 	}
-	
+
 	public Text addTextInput(String labelText, String value)
 	{
-    Label label = new Label(this, SWT.NULL);
-    if(labelText != null)
-    	label.setText(labelText);
-    else
-    	label.setText(""); //$NON-NLS-1$
-    Text text = new Text(this, SWT.BORDER | SWT.SINGLE);
-    if(value != null)
-    	text.setText(value);
-    text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    text.addModifyListener(this);
-    return text;
+		Label label = new Label(this, SWT.NULL);
+		if(labelText != null)
+			label.setText(labelText);
+		else
+			label.setText(""); //$NON-NLS-1$
+		Text text = new Text(this, SWT.BORDER | SWT.SINGLE);
+		if(value != null)
+			text.setText(value);
+		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		text.addModifyListener(this);
+		return text;
 	}
-	
+
 	public Button addCheckBox(String text, boolean checked)
 	{
-    Button button = new Button(this, SWT.CHECK);
-    GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-    gd.horizontalSpan = 2;
-    button.setLayoutData(gd);
-    if(text != null)
-    	button.setText(text);
+		Button button = new Button(this, SWT.CHECK);
+		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+		gd.horizontalSpan = 2;
+		button.setLayoutData(gd);
+		if(text != null)
+			button.setText(text);
 		button.setSelection(checked);
 		button.addSelectionListener(this);
 		return button;
@@ -99,7 +99,7 @@ public class Formular extends XComposite implements ModifyListener, SelectionLis
 			}
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.swt.events.ModifyListener#modifyText(org.eclipse.swt.events.ModifyEvent)
 	 */
