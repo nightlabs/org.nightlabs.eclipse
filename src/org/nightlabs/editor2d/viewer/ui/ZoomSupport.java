@@ -37,6 +37,7 @@ import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.widgets.Display;
+import org.nightlabs.editor2d.viewer.ui.resource.Messages;
 
 public class ZoomSupport
 implements IZoomSupport
@@ -305,13 +306,13 @@ implements IZoomSupport
 		if (diff > 0.0001 && !Double.isInfinite(diff)) 
 		{
 			if (logger.isDebugEnabled()) {
-				logger.debug("realBounds = "+realBounds);
-				logger.debug("viewBounds = "+viewBounds);
-				logger.debug("scaleX = "+scaleX);
-				logger.debug("scaleY = "+scaleY);
-				logger.debug("oldScale = "+oldScale);
-				logger.debug("scale = "+scale);
-				logger.debug("diff = "+diff);				
+				logger.debug("realBounds = "+realBounds); //$NON-NLS-1$
+				logger.debug("viewBounds = "+viewBounds); //$NON-NLS-1$
+				logger.debug("scaleX = "+scaleX); //$NON-NLS-1$
+				logger.debug("scaleY = "+scaleY); //$NON-NLS-1$
+				logger.debug("oldScale = "+oldScale); //$NON-NLS-1$
+				logger.debug("scale = "+scale); //$NON-NLS-1$
+				logger.debug("diff = "+diff);				 //$NON-NLS-1$
 			}
 			setZoom(scale);
 		}

@@ -55,6 +55,7 @@ import org.nightlabs.editor2d.viewer.ui.IBufferedViewport;
 import org.nightlabs.editor2d.viewer.ui.ICanvas;
 import org.nightlabs.editor2d.viewer.ui.ITempContentManager;
 import org.nightlabs.editor2d.viewer.ui.TempContentManager;
+import org.nightlabs.editor2d.viewer.ui.resource.Messages;
 
 public class DisplayPanel
 extends JPanel
@@ -175,7 +176,7 @@ implements IBufferedViewport
 			g2d.scale(getScale(), getScale());
 			drawTempContent(g2d);
 			if (debugPaint) {
-				logger.debug("Draw Temp Content took "+(System.currentTimeMillis()-begin)+" ms");
+				logger.debug("Draw Temp Content took "+(System.currentTimeMillis()-begin)+" ms"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 				
