@@ -2,17 +2,18 @@ package org.nightlabs.base.ui.composite;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedList;
 
+import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -87,6 +88,28 @@ public class DateTimeControl extends XComposite {
 				lookupButtonClicked();
 			}
 		});
+
+		super.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				fireFocusEvent(e, true);
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				fireFocusEvent(e, false);
+			}
+		});
+
+		text.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				fireFocusEvent(e, true);
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				fireFocusEvent(e, false);
+			}
+		});
 	}
 
 	/**
@@ -95,8 +118,11 @@ public class DateTimeControl extends XComposite {
 	 */
 	private void lookupButtonClicked()
 	{
-		CalendarDateTimeEditLookupDialog dialog = new CalendarDateTimeEditLookupDialog(getShell(), 
-				flags, lookupButton.toDisplay(0, 0));
+		CalendarDateTimeEditLookupDialog dialog = new CalendarDateTimeEditLookupDialog(
+				getShell(),
+				flags,
+				lookupButton.toDisplay(0, 0)
+		);
 		Calendar cal = Calendar.getInstance();
 		if (date == null)
 			date = new Date();
@@ -105,22 +131,90 @@ public class DateTimeControl extends XComposite {
 		if (dialog.open() == Window.OK) {
 			setDate(dialog.getDate().getTime());
 		}
+
+		Object[] listeners = selectionListeners.getListeners();
+		if (listeners.length < 1)
+			return;
+
+		Event event = new Event();
+		event.widget = DateTimeControl.this;
+		event.display = getDisplay();
+//		event.time = e.time;
+//		event.data = e.data;
+		SelectionEvent se = new SelectionEvent(event);
+		for (Object listener : listeners) {
+			SelectionListener l = (SelectionListener) listener;
+			l.widgetSelected(se);
+		}
 	}
 
-	private LinkedList<ModifyListener> modifyListeners = null;
+	private void fireFocusEvent(FocusEvent originalFocusEvent, boolean gained)
+	{
+		Object[] listeners = focusListeners.getListeners();
+		if (listeners.length < 1)
+			return;
+
+		Event event = new Event();
+		event.widget = DateTimeControl.this;
+		event.display = originalFocusEvent.display;
+		event.time = originalFocusEvent.time;
+		event.data = originalFocusEvent.data;
+		FocusEvent fe = new FocusEvent(event);
+		for (Object listener : listeners) {
+			FocusListener l = (FocusListener) listener;
+			if (gained)
+				l.focusGained(fe);
+			else
+				l.focusLost(fe);
+		}
+	}
+
+	private ListenerList focusListeners = new ListenerList();
+
+	@Override
+	public void addFocusListener(FocusListener listener) {
+		focusListeners.add(listener);
+	}
+	@Override
+	public void removeFocusListener(FocusListener listener) {
+		focusListeners.remove(listener);
+	}
+
+	private ListenerList selectionListeners = new ListenerList();
+
+	/**
+	 * Add a listener that is triggered whenever the user selected date and time in a calendar/time dialog.
+	 * <p>
+	 * In contrast to the {@link ModifyListener}s (see {@link #addModifyListener(ModifyListener)}) that are
+	 * triggered whenever the text in the input field is modified (by keyboard or by copy'n'paste), the
+	 * {@link SelectionListener}s are only triggered when the lookup-button was clicked and the dialog
+	 * closed via "OK" (not "Cancel").
+	 * </p>
+	 * @param listener the listener to be added.
+	 */
+	public void addSelectionListener(SelectionListener listener)
+	{
+		selectionListeners.add(listener);
+	}
+	/**
+	 * Remove a listener that has been added by {@link #addSelectionListener(SelectionListener)} before.
+	 * @param listener the listener to be removed.
+	 * @see #addSelectionListener(SelectionListener)
+	 */
+	public void removeSelectionListener(SelectionListener listener)
+	{
+		selectionListeners.remove(listener);
+	}
+
+	private ListenerList modifyListeners = new ListenerList();
 
 	public void addModifyListener(ModifyListener modifyListener)
 	{
-		if (modifyListeners == null)
-			modifyListeners = new LinkedList<ModifyListener>();
 		modifyListeners.add(modifyListener);
 	}
-
-	public boolean removeModifyListener(ModifyListener modifyListener)
+	public void removeModifyListener(ModifyListener modifyListener)
 	{
-		if (modifyListeners == null)
-			return false;
-		return modifyListeners.remove(modifyListener);
+		modifyListeners.remove(modifyListener);
 	}
 
 	/* (non-Javadoc)
@@ -133,6 +227,8 @@ public class DateTimeControl extends XComposite {
 		super.dispose();
 	}
 
+	private boolean suppressModifyEvent = false;
+
 	private ModifyListener textModifyListener = new ModifyListener() {
 		/* (non-Javadoc)
 		 * @see org.eclipse.swt.events.ModifyListener#modifyText(org.eclipse.swt.events.ModifyEvent)
@@ -140,6 +236,9 @@ public class DateTimeControl extends XComposite {
 		@Override
 		public void modifyText(ModifyEvent e)
 		{
+			if (suppressModifyEvent)
+				return;
+
 			try {
 				date = DateFormatter.parseDate(text.getText());
 				dateParseException = null;
@@ -147,7 +246,8 @@ public class DateTimeControl extends XComposite {
 				dateParseException = x;
 			}
 
-			if (modifyListeners == null)
+			Object[] listeners = modifyListeners.getListeners();
+			if (listeners.length < 1)
 				return;
 
 			Event event = new Event();
@@ -156,8 +256,8 @@ public class DateTimeControl extends XComposite {
 			event.time = e.time;
 			event.data = e.data;
 			ModifyEvent me = new ModifyEvent(event);
-			for (Iterator<ModifyListener> it = modifyListeners.iterator(); it.hasNext(); ) {
-				ModifyListener l = it.next();
+			for (Object listener : listeners) {
+				ModifyListener l = (ModifyListener) listener;
 				l.modifyText(me);
 			}
 		}
@@ -183,8 +283,13 @@ public class DateTimeControl extends XComposite {
 			date = new Date(timestamp);
 		else
 			date.setTime(timestamp);
-		
-		text.setText(DateFormatter.formatDate(date, flags));
+
+		suppressModifyEvent = true;
+		try {
+			text.setText(DateFormatter.formatDate(date, flags));
+		} finally {
+			suppressModifyEvent = false;
+		}
 		this.dateParseException = null;
 	}
 	/**
@@ -214,11 +319,17 @@ public class DateTimeControl extends XComposite {
 	public void setDate(Date date)
 	{
 		this.date = date;
-		if (date != null)
-			text.setText(DateFormatter.formatDate(date, flags));
+		if (date != null) {
+			suppressModifyEvent = true;
+			try {
+				text.setText(DateFormatter.formatDate(date, flags));
+			} finally {
+				suppressModifyEvent = false;
+			}
+		}
 		this.dateParseException = null;
 	}
-	
+
 	/**
 	 * @return Returns the date.
 	 */
@@ -226,7 +337,7 @@ public class DateTimeControl extends XComposite {
 	{
 		return date;
 	}
-	
+
 	/**
 	 * @return Returns the flags.
 	 */
@@ -234,7 +345,7 @@ public class DateTimeControl extends XComposite {
 	{
 		return flags;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.nightlabs.base.ui.composite.XComposite#setEnabled(boolean)
 	 */
@@ -245,13 +356,13 @@ public class DateTimeControl extends XComposite {
 		text.setEnabled(enabled);
 		lookupButton.setEnabled(enabled);
 	}
-	
+
 	/**
 	 * Set this control editable.
 	 * @param editable <code>true</code> to make the control editable -
 	 * 		<code>false</code> to make it un-editable.
 	 */
-	public void setEditable(boolean editable) 
+	public void setEditable(boolean editable)
 	{
 		text.setEditable(editable);
 		lookupButton.setEnabled(editable);
