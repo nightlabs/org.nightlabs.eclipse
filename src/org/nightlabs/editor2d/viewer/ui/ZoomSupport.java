@@ -29,85 +29,62 @@ package org.nightlabs.editor2d.viewer.ui;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.swt.widgets.Display;
-import org.nightlabs.editor2d.viewer.ui.resource.Messages;
 
 public class ZoomSupport
 implements IZoomSupport
 {
-	/**
-	 * LOG4J logger used by this class
-	 */
 	private static final Logger logger = Logger.getLogger(ZoomSupport.class);
-	
+
 	public ZoomSupport(IViewport viewport) {
-		super();
 		this.viewport = viewport;
 		viewport.addPropertyChangeListener(viewportListener);
 	}
 
 	private IViewport viewport = null;
+
+	@Override
 	public IViewport getViewport() {
 		return viewport;
 	}
+	@Override
 	public void setViewport(IViewport viewport) {
 		this.viewport = viewport;
 	}
-	
-	private Collection<IZoomListener> zoomListener;
-	public Collection<IZoomListener> getZoomListener()
-	{
-		if (zoomListener == null)
-			zoomListener = new ArrayList<IZoomListener>();
-		
-		return zoomListener;
-	}
 
-	/**
-	 * 
-	 * @see org.nightlabs.editor2d.viewer.ui.IZoomSupport#addZoomListener(org.nightlabs.editor2d.viewer.ui.IZoomListener)
-	 */
+	private ListenerList zoomListeners = new ListenerList();
+
+	@Override
 	public void addZoomListener(IZoomListener zoomListener) {
-		getZoomListener().add(zoomListener);
+		zoomListeners.add(zoomListener);
 	}
 
-	/**
-	 * 
-	 * @see org.nightlabs.editor2d.viewer.ui.IZoomSupport#removeZoomListener(org.nightlabs.editor2d.viewer.ui.IZoomListener)
-	 */
+	@Override
 	public void removeZoomListener(IZoomListener zoomListener) {
-		getZoomListener().remove(zoomListener);
+		zoomListeners.remove(zoomListener);
 	}
 
 	protected void fireZoomChanged()
 	{
-		for (Iterator<IZoomListener> it = getZoomListener().iterator(); it.hasNext(); ) {
-			IZoomListener listener = it.next();
+		for (Object l : zoomListeners.getListeners()) {
+			IZoomListener listener = (IZoomListener) l;
 			listener.zoomChanged(zoom);
 		}
 	}
-	
+
 	private double zoom = 1.0;
-	
-	/**
-	 * 
-	 * @see org.nightlabs.editor2d.viewer.ui.IZoomSupport#getZoom()
-	 */
+
+	@Override
 	public double getZoom() {
 		return zoom;
 	}
 
-	/**
-	 * 
-	 * @see org.nightlabs.editor2d.viewer.ui.IZoomSupport#setZoom(double)
-	 */
+	@Override
 	public void setZoom(double zoomFactor)
 	{
 		if (zoomFactor > getMaxZoom())
@@ -125,79 +102,52 @@ implements IZoomSupport
 	}
 
 	private double maxZoom = 10.0d;
-	
-	/**
-	 * 
-	 * @see org.nightlabs.editor2d.viewer.ui.IZoomSupport#getMaxZoom()
-	 */
+
+	@Override
 	public double getMaxZoom() {
 		return maxZoom;
 	}
 
 	private double minZoom = 0.01d;
-	
-	/**
-	 * 
-	 * @see org.nightlabs.editor2d.viewer.ui.IZoomSupport#getMinZoom()
-	 */
+
+	@Override
 	public double getMinZoom() {
 		return 0;
 	}
 
 	private double zoomStep = 0.25d;
-	
-	/**
-	 * 
-	 * @see org.nightlabs.editor2d.viewer.ui.IZoomSupport#getZoomStep()
-	 */
+
+	@Override
 	public double getZoomStep() {
 		return zoomStep;
 	}
 
-	/**
-	 * 
-	 * @see org.nightlabs.editor2d.viewer.ui.IZoomSupport#setMaxZoom(double)
-	 */
+	@Override
 	public void setMaxZoom(double maxZoom) {
 		this.maxZoom = maxZoom;
 	}
 
-	/**
-	 * 
-	 * @see org.nightlabs.editor2d.viewer.ui.IZoomSupport#setMinZoom(double)
-	 */
+	@Override
 	public void setMinZoom(double minZoom) {
 		this.minZoom = minZoom;
 	}
 
-	/**
-	 * 
-	 * @see org.nightlabs.editor2d.viewer.ui.IZoomSupport#setZoomStep(double)
-	 */
+	@Override
 	public void setZoomStep(double zoomStep) {
 		this.zoomStep = zoomStep;
 	}
 
-	/**
-	 * 
-	 * @see org.nightlabs.editor2d.viewer.ui.IZoomSupport#canZoomIn()
-	 */
+	@Override
 	public boolean canZoomIn() {
 		return (zoom + zoomStep < maxZoom) ? true : false;
 	}
 
-	/**
-	 * 
-	 * @see org.nightlabs.editor2d.viewer.ui.IZoomSupport#canZoomOut()
-	 */
+	@Override
 	public boolean canZoomOut() {
 		return (zoom - zoomStep > minZoom) ? true : false;
 	}
 
-	/**
-	 * 
-	 * @see org.nightlabs.editor2d.viewer.ui.IZoomSupport#zoomIn()
-	 */
+	@Override
 	public void zoomIn()
 	{
 		if (canZoomIn()) {
@@ -205,10 +155,7 @@ implements IZoomSupport
 		}
 	}
 
-	/**
-	 * 
-	 * @see org.nightlabs.editor2d.viewer.ui.IZoomSupport#zoomOut()
-	 */
+	@Override
 	public void zoomOut()
 	{
 		if (canZoomOut()) {
@@ -216,32 +163,22 @@ implements IZoomSupport
 		}
 	}
 
-	/**
-	 * 
-	 * @see org.nightlabs.editor2d.viewer.ui.IZoomSupport#getZoomAsString()
-	 */
+	@Override
 	public String getZoomAsString()
 	{
 		double z = Math.rint(zoom * 100);
 		return ""+z+" %"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
-						
-	/**
-	 * zooms the IViewport of the ZoomSupport to the given Rectangle,
-	 * which must have absolute coordinates
-	 * This means the scale is calculated and set and the ViewLocation of the
-	 * IViewport is adjusted
-	 * 
-	 * @param r the rectangle to zoomTo
-	 */
+
+	@Override
 	public void zoomTo(Rectangle r)
 	{
 		// if once a zoomTo was performed set zoomAll to false
 		zoomAll = false;
-		
+
 		Rectangle absoluteRect = new Rectangle(r);
 		Rectangle absoluteView = new Rectangle(getViewport().getViewBounds());
-				
+
 		double oldZoom = getZoom();
 		double zoomX = oldZoom;
 		double zoomY = oldZoom;
@@ -250,7 +187,7 @@ implements IZoomSupport
 			zoomX = (double)absoluteView.width / (double)absoluteRect.width;
 		if (absoluteView.height != 0 && absoluteRect.height != 0)
 			zoomY = (double)absoluteView.height / (double)absoluteRect.height;
-						
+
 	  double newZoom = Math.min(zoomX, zoomY);
 	  setZoom(newZoom);
 	  // maybe realZoom is beyond minZoom or maxZoom
@@ -258,7 +195,7 @@ implements IZoomSupport
 
 	  double newX = ((absoluteRect.x) * zoom);
 	  double newY = ((absoluteRect.y) * zoom);
-	  	  	  	  	  
+
   	getViewport().setViewLocation((int)newX, (int)newY);
 
   	// FIXME: Workaround to avoid strange redraw bugs when zoom to rectangle
@@ -266,13 +203,14 @@ implements IZoomSupport
 			@Override
 			public void run() {
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						getViewport().notifyChange();
 					}
 				});
 			}
 		});
-  	
+
   	if (logger.isDebugEnabled()) {
   		logger.debug("absoluteRect = "+absoluteRect); //$NON-NLS-1$
   		logger.debug("absoluteView = "+absoluteView); //$NON-NLS-1$
@@ -282,17 +220,21 @@ implements IZoomSupport
   		logger.debug(""); //$NON-NLS-1$
   	}
 	}
-	
+
 	private boolean zoomAll = true;
+
+	@Override
 	public boolean isZoomAll() {
 		return zoomAll;
 	}
-	
+
+	@Override
 	public void setZoomAll(boolean zoomAll) {
 		this.zoomAll = zoomAll;
 		doZoomAll();
 	}
 
+	@Override
 	public void zoomAll()
 	{
 		double oldScale = getZoom();
@@ -303,7 +245,7 @@ implements IZoomSupport
 		double scale = Math.min(scaleX, scaleY);
 
 		double diff = Math.abs(oldScale - scale);
-		if (diff > 0.0001 && !Double.isInfinite(diff)) 
+		if (diff > 0.0001 && !Double.isInfinite(diff))
 		{
 			if (logger.isDebugEnabled()) {
 				logger.debug("realBounds = "+realBounds); //$NON-NLS-1$
@@ -317,13 +259,13 @@ implements IZoomSupport
 			setZoom(scale);
 		}
 	}
-	
+
 	protected void doZoomAll() {
 		if (zoomAll) {
 			zoomAll();
 		}
 	}
-	
+
 //	protected void doZoomAll()
 //	{
 ////		Display.getDefault().asyncExec(new Runnable() {
@@ -335,8 +277,9 @@ implements IZoomSupport
 ////			}
 ////		});
 //	}
-	
-	private PropertyChangeListener viewportListener = new PropertyChangeListener(){
+
+	private PropertyChangeListener viewportListener = new PropertyChangeListener() {
+		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			doZoomAll();
 		}

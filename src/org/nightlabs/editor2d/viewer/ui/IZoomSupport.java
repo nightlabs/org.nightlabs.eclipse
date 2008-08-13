@@ -31,130 +31,134 @@ import java.awt.Rectangle;
 public interface IZoomSupport
 {
 	/**
-	 * 
+	 *
 	 * @param zoomListener the IZoomListener to add
 	 */
 	void addZoomListener(IZoomListener zoomListener);
-	
+
 	/**
-	 * 
+	 *
 	 * @param zoomListener the zoomListener to remove
 	 */
 	void removeZoomListener(IZoomListener zoomListener);
-	
+
 	/**
-	 * 
+	 *
 	 * @param zoomFactor the zoomFactor (100% = 1.0)
 	 */
 	void setZoom(double zoomFactor);
-	
+
 	/**
-	 * 
+	 *
 	 * @return the zoomFactor (100% = 1.0)
 	 */
 	double getZoom();
-	
+
 	/**
-	 * 
+	 *
 	 * @return the minimum zoomFactor
 	 */
 	double getMinZoom();
-	
+
 	/**
-	 * 
+	 *
 	 * @param minZoom the minimum zoomFactor to set
 	 */
 	void setMinZoom(double minZoom);
-	
+
 	/**
-	 * 
+	 *
 	 * @return the maximum zoomFactor
 	 */
 	double getMaxZoom();
-	
+
 	/**
-	 * 
+	 *
 	 * @param maxZoom the maximum zoomFactor to set
 	 */
 	void setMaxZoom(double maxZoom);
-	
+
 	/**
-	 * 
+	 *
 	 * @return the value of each zoomIncrement (e.g. zoomIn/zoomOut)
 	 */
 	double getZoomStep();
-	
+
 	/**
-	 * 
+	 *
 	 * @param zoomStep the value of each zoomIncrement to set
 	 */
 	void setZoomStep(double zoomStep);
-	
+
 	/**
 	 * if the maxZoomFactor is not yet reached, the zoomFactor is incremented
 	 * by one zoomStep
 	 *
 	 */
 	void zoomIn();
-	
+
 	/**
 	 * if the minZoomFactor is not yet reached, the zoomFactor is decremented
 	 * by one zoomStep
 	 *
 	 */
 	void zoomOut();
-	
+
 	/**
-	 * 
+	 *
 	 * @return if the maxZoomFactor is not yet reached returns true,
 	 * otherwise false
 	 */
 	boolean canZoomIn();
-	
+
 	/**
-	 * 
+	 *
 	 * @return if the minZoomFactor is not yet reached returns true,
 	 * otherwise false
 	 */
 	boolean canZoomOut();
-	
+
 	/**
-	 * 
+	 *
 	 * @return the zoomFactor as procentual String
 	 */
 	String getZoomAsString();
-	
+
 	/**
-	 * zooms the Viewport to the given Rectangle
-	 * @param r the Rectangle to zoom to
+	 * Zooms the IViewport of the <code>IZoomSupport</code> to the given <code>Rectangle</code>,
+	 * which must have absolute coordinates.
+	 * This means the scale is calculated and set and the ViewLocation of the
+	 * <code>IViewport</code> is adjusted.
+	 *
+	 * @param r the rectangle to zoomTo
 	 */
 	void zoomTo(Rectangle r);
-	
+
 	/**
-	 * 
+	 *
 	 * @return the viewport for the ZoomSupport
 	 */
 	IViewport getViewport();
-	
+
 	/**
-	 * 
+	 *
 	 * @param viewport the viewport for the ZoomSupport
 	 */
 	void setViewport(IViewport viewport);
-	
+
 	/**
 	 * returns true if the zoomAllState is set and false if not
 	 * @return true if the zoomAllState is set and false if not
 	 */
 	boolean isZoomAll();
-	
+
 	/**
-	 * 
+	 *
 	 * @param zoomAll determines if the content of the viewport should always be zoomed,
 	 * so that everything is visible
 	 */
 	void setZoomAll(boolean zoomAll);
-	
+
 	/**
 	 * zooms all
 	 *
