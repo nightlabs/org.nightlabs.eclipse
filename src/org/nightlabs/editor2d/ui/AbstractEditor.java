@@ -1148,22 +1148,24 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		else
 			return super.getTitle();
 	}
-
+	
 	protected boolean performSaveAs()
 	{
-		FileDialog dialog = new FileDialog(getSite().getWorkbenchWindow().getShell(), SWT.SAVE);
 		String inputFileName = getEditorInput().getName();
 		String defaultFileExtension = "";
 		if (getIOFilterMan().getDefaultWriteIOFilter() != null) {
 			defaultFileExtension = getIOFilterMan().getDefaultWriteIOFilter().getFileExtensions()[0];
 			inputFileName.concat("."+defaultFileExtension);
 		}
+
+		FileDialog dialog = new FileDialog(getSite().getWorkbenchWindow().getShell(), SWT.SAVE);
 		dialog.setFileName(inputFileName);
 
 //		String[] fileExtensions = getIOFilterMan().getWriteFileExtensions(true);
 //		if (fileExtensions != null) {
 //			dialog.setFilterExtensions(fileExtensions);
 //		}
+		
 		List<String> fileExtensions = new ArrayList<String>();
 		List<String> fileExtensionDescriptions = new ArrayList<String>();
 		fileExtensions.add("*.*");
@@ -1179,10 +1181,26 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		}
 		String[] extensions = fileExtensions.toArray(new String[fileExtensions.size()]);
 		String[] descriptions = fileExtensionDescriptions.toArray(new String[fileExtensionDescriptions.size()]);
+		String fullPath = null;
+		
 		dialog.setFilterExtensions(extensions);
 		dialog.setFilterNames(descriptions);
-
-		String fullPath = dialog.open();
+		fullPath = dialog.open();
+		
+//		Frame frame = new Frame();
+//		try {
+//			UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() );
+//			SwingUtilities.updateComponentTreeUI(frame);
+//		}catch ( Exception e ) {
+//			System.err.println( "Could not use Look and Feel:" + e );
+//		}
+//		final JFileChooser fc = new JFileChooser();
+//		fc.setAcceptAllFileFilterUsed(true);
+//		int returnCode = fc.showSaveDialog(frame);
+//		if (returnCode == JFileChooser.APPROVE_OPTION) {
+//			fullPath = fc.getSelectedFile().getAbsolutePath();
+//		}
+		
 		// Cancel pressed
 		if (fullPath == null)
 			return false;
@@ -1191,7 +1209,6 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		// No fileExtension specified, add the default fileExtension
 		if (fileExtension == null) {
 			fullPath = fullPath.concat("."+defaultFileExtension);
-			logger.info(dialog.getFilterExtensions());
 		}
 		else {
 			IOFilter ioFilter = getIOFilterMan().getIOFilter(fileExtension);
