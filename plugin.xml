@@ -165,18 +165,18 @@
       </ioFilter>
       <ioFilter
             class="org.nightlabs.editor2d.iofilter.XStreamTemplateFilter"
-            description="Editor2D Template"
-            name="Editor2D Template Filter">
+            description="%iofilter.e2t.description"
+            name="%iofilter.e2t.name">
          <fileExtension
-               description="Editor2D Template Format"
+               description="%iofilter.e2t.fileextension.e2t.description"
                fileExtension="e2t"/>
       </ioFilter>
       <ioFilter
             class="org.nightlabs.editor2d.iofilter.PCXFilter"
-            description="PCX"
-            name="PCX">
+            description="%iofilter.pcx.description"
+            name="%iofilter.pcx.name">
          <fileExtension
-               description="PCX Bitmap File"
+               description="%iofilter.pcx.fileextension.pcx.description"
                fileExtension="pcx">
          </fileExtension>
       </ioFilter>
