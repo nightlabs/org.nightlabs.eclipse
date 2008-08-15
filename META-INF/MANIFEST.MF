@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: JSEditor Plug-in
 Bundle-SymbolicName: org.nightlabs.jseditor.ui;singleton:=true
 Bundle-Version: 0.9.5.qualifier
-Bundle-ClassPath: org.nightlabs.jseditor.ui.jar
+Bundle-ClassPath: .
 Bundle-Activator: org.nightlabs.jseditor.ui.JSEditorPlugin
 Bundle-Localization: plugin
 Export-Package: org.nightlabs.jseditor.ui,
