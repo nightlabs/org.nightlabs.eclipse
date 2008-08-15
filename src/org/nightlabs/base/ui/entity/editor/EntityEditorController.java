@@ -42,10 +42,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.forms.editor.IFormPage;
 import org.nightlabs.base.ui.entity.editor.EntityEditorPageController.LoadJob;
+import org.nightlabs.base.ui.exceptionhandler.ExceptionHandlerRegistry;
 import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.progress.ProgressMonitor;
 import org.nightlabs.progress.SubProgressMonitor;
@@ -149,7 +148,8 @@ public class EntityEditorController
 	public EntityEditorController(EntityEditor editor)
 	{
 		this.editor = editor;
-		this.editor.addPropertyListener(dirtyStateListener);
+		// Removed the dirtyState listener as it did nothing, Alex.
+//		this.editor.addPropertyListener(dirtyStateListener);
 	}
 
 	/**
@@ -202,28 +202,28 @@ public class EntityEditorController
 		}
 	}
 
-	private IPropertyListener dirtyStateListener = new IPropertyListener(){
-		public void propertyChanged(Object source, int propId) {
-			if (IEditorPart.PROP_DIRTY == propId) {
-				if (EntityEditorController.this.isSaving()) {
-					EntityEditorController.this.unsetSavingState();
-					return;
-				}
-
-				if (source instanceof EntityEditor) {
-					EntityEditor editor = (EntityEditor) source;
-//					if (editor.isDirty()) {
-					IFormPage page = editor.getActivePageInstance();
-					IEntityEditorPageController pageController = pageID2pageController.get(page.getId());
-					if (pageController != null) {
-//						logger.debug("pageControler.markDirty() for page "+page.getId()); //$NON-NLS-1$
-//						pageController.markDirty();
-					}
+//	private IPropertyListener dirtyStateListener = new IPropertyListener(){
+//		public void propertyChanged(Object source, int propId) {
+//			if (IEditorPart.PROP_DIRTY == propId) {
+//				if (EntityEditorController.this.isSaving()) {
+//					EntityEditorController.this.unsetSavingState();
+//					return;
+//				}
+//
+//				if (source instanceof EntityEditor) {
+//					EntityEditor editor = (EntityEditor) source;
+////					if (editor.isDirty()) {
+//					IFormPage page = editor.getActivePageInstance();
+//					IEntityEditorPageController pageController = pageID2pageController.get(page.getId());
+//					if (pageController != null) {
+////						logger.debug("pageControler.markDirty() for page "+page.getId()); //$NON-NLS-1$
+////						pageController.markDirty();
 //					}
-				}
-			}
-		}
-	};
+////					}
+//				}
+//			}
+//		}
+//	};
 
 	/**
 	 * Returns the page controller registered to the given page.
@@ -427,8 +427,15 @@ public class EntityEditorController
 			logger.debug("Calling all page controllers doSave() method."); //$NON-NLS-1$
 			saving = true;
 			for (IEntityEditorPageController dirtyController : dirtyPageControllers) {
-				dirtyController.doSave(new SubProgressMonitor(monitor, 1));
-				dirtyController.markUndirty();
+				boolean markUndirty = false;
+				try {
+					markUndirty = dirtyController.doSave(new SubProgressMonitor(monitor, 1));
+				} catch (Throwable t) {
+					ExceptionHandlerRegistry.asyncHandleException(t);
+					markUndirty = false;
+				}
+				if (markUndirty)
+					dirtyController.markUndirty();
 			}
 		} finally {
 			monitor.done();

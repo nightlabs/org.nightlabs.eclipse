@@ -26,13 +26,11 @@
 
 package org.nightlabs.base.ui.entity.editor;
 
-import java.beans.PropertyChangeSupport;
 import java.util.Set;
 
 import org.eclipse.ui.forms.editor.IFormPage;
 import org.nightlabs.base.ui.notification.IDirtyStateManager;
 import org.nightlabs.progress.ProgressMonitor;
-import org.nightlabs.util.bean.IPropertyChangeSupport;
 
 /**
  * <p>A controller that can be associated to a page that is displayed
@@ -40,16 +38,17 @@ import org.nightlabs.util.bean.IPropertyChangeSupport;
  * {@link IEntityEditorPageFactory}s registered by the "pageFactory" extension point.</p>
  * 
  * <p>The default implementation of {@link EntityEditor} will make use of an
- * {@link EntityEditorController} and delegate all work concerning
+ * {@link EntityEditorController} which delegates all work concerning
  * loading and saving of data to the page controllers (implementations of this interface).</p>
  * 
  * <p>Also some base classes of the entity-editor-framework with extra background-loading
  * functionality use {@link IEntityEditorPageController}s to have a standardised access to
  * the data a page needs</p>
  * 
- * <p>The controller extends {@link IPropertyChangeSupport} hence it accepts listeners to
- * property changes. Pages should use this listeners to reflect the changes in their UI.
- * Implementors should try to subclass {@link PropertyChangeSupport} wherever possible.</p>
+ * <p>The controller accepts {@link IEntityEditorPageControllerModifyListener}s that will 
+ * be added by the framework to listen to changes in the data of the controller.
+ * Implementations should notify these listeners and pages should use this listeners 
+ * to reflect the changes in their UI.</p>EntityEditorController
  * 
  * This interface should not be implemented but instead extend {@link EntityEditorController}
  * 
@@ -58,19 +57,7 @@ import org.nightlabs.util.bean.IPropertyChangeSupport;
  */
 public interface IEntityEditorPageController
 extends IDirtyStateManager
-// extends IPropertyChangeSupport, IDirtyStateManager
 {
-//	/**
-//	 * Set the page this controller is associated with.
-//	 * This will be called immediately after the controller is created.
-//	 * @param page the page this controller is associated with.
-//	 * @deprecated see {@link EntityEditorPageController#getPage()}
-//	 * @see #getPages()
-//	 */
-//	public void setPage(IFormPage page);
-
-// seems not be needed. commented it out. Marco. 2007-08-29
-//	public static final String PROPERTY_CONTROLLER_OBJECT = IEntityEditorPageController.class.getName()+"#controllerObject"; //$NON-NLS-1$
 
 	/**
 	 * Get the identifier of the controller.
@@ -126,11 +113,16 @@ extends IDirtyStateManager
 	/**
 	 * Save the data special to the implementation of a page controller
 	 * and write status to the given monitor. This is very likely to be called
-	 * on a non-gui thread. The Method will be called by EntityEditor after packaging into an
+	 * on a non-gui thread. The method will be called by EntityEditor after packaging into an
 	 * asynchronous callback job.
+	 * 
 	 * @param monitor The monitor to write status to.
+	 * @return Whether the save process succeeded respectively whether the controller actually 
+	 *         did something. In some situations the controller might ask the user whether to
+	 *         really save and if the user decides to cancel the save process this method should
+	 *         return <code>false</code>.
 	 */
-	void doSave(ProgressMonitor monitor);
+	boolean doSave(ProgressMonitor monitor);
 	
 	/**
 	 * Performs cleanups when the editor is closed.

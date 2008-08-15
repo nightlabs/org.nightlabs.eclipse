@@ -33,6 +33,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.text.TableView;
+
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -55,6 +57,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.nightlabs.base.ui.composite.XComposite;
+import org.nightlabs.util.Util;
 
 /**
  * A base class for Composites with a Table that takes care of creating a
@@ -219,6 +222,25 @@ implements ISelectionProvider
 			return Collections.emptyList();
 	}
 
+	private Collection<ElementType> elements;
+	private Object elementsCacheInput;
+	
+	/**
+	 * Returns all elements of this table composite.
+	 * @return All elements of this table composite.
+	 */
+	@SuppressWarnings("unchecked")
+	public synchronized Collection<ElementType> getElements() {
+		if (!Util.equals(elementsCacheInput, getTableViewer().getInput())) {
+			elementsCacheInput = getTableViewer().getInput();
+			elements = new LinkedList<ElementType>();
+			for (TableItem item : getTable().getItems()) {
+				elements.add((ElementType) item.getData());
+			}
+		}
+		return (Collection<ElementType>) (elements != null ? elements : Collections.emptySet());
+	}
+
 	/**
 	 * The first selected element. Or <code>null</code> if none selected.
 	 * <p>
@@ -288,6 +310,10 @@ implements ISelectionProvider
 
 	/**
 	 * Here you can set a string message displayed to notify the user about an asynchronous load process.
+	 * <p>
+	 * Note, that new label and content providers as well as a new input will be set to the {@link TableView}.
+	 * The providers will be restored on the next call to {@link #setInput(Object)}. 
+	 * </p>
 	 * @param message The message to be shown.
 	 */
 	public void setLoadingMessage(String message) {
