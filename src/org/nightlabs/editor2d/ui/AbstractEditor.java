@@ -189,6 +189,7 @@ import org.nightlabs.io.WriteException;
 import org.nightlabs.print.page.IPredefinedPage;
 import org.nightlabs.print.page.PredefinedPageRegistry;
 import org.nightlabs.print.page.PredefinedPageUtil;
+import org.nightlabs.util.IOUtil;
 import org.nightlabs.util.NLLocale;
 
 
@@ -1152,28 +1153,53 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	{
 		FileDialog dialog = new FileDialog(getSite().getWorkbenchWindow().getShell(), SWT.SAVE);
 		String inputFileName = getEditorInput().getName();
+		String defaultFileExtension = "";
 		if (getIOFilterMan().getDefaultWriteIOFilter() != null) {
-			String fileExtension = getIOFilterMan().getDefaultWriteIOFilter().getFileExtensions()[0];
-			inputFileName.concat("."+fileExtension);
+			defaultFileExtension = getIOFilterMan().getDefaultWriteIOFilter().getFileExtensions()[0];
+			inputFileName.concat("."+defaultFileExtension);
 		}
 		dialog.setFileName(inputFileName);
-		
-		String[] fileExtensions = getIOFilterMan().getWriteFileExtensions(true);
-		// TODO: find out how to get the associated fileExtensiosn for editors and only use
-		// those here, general write filter should be implemented as export wizards
-//		IEditorRegistry editorRegistry = PlatformUI.getWorkbench().getEditorRegistry();
-//		IEditorDescriptor[] editors = editorRegistry.getEditors(inputFileName);
-//		for (int i=0; i<editors.length; i++) {
-//			IEditorDescriptor descriptor = editors[i];
+
+//		String[] fileExtensions = getIOFilterMan().getWriteFileExtensions(true);
+//		if (fileExtensions != null) {
+//			dialog.setFilterExtensions(fileExtensions);
 //		}
-		if (fileExtensions != null) {
-			dialog.setFilterExtensions(fileExtensions);
+		List<String> fileExtensions = new ArrayList<String>();
+		List<String> fileExtensionDescriptions = new ArrayList<String>();
+		fileExtensions.add("*.*");
+		fileExtensionDescriptions.add("*.* (All Files)");
+		Collection<IOFilter> writeFilters = getIOFilterMan().getWriteFilter();
+		for (IOFilter writeFilter : writeFilters) {
+			for (String fileExtension : writeFilter.getFileExtensions()) {
+				String fileExt = "*."+fileExtension;
+				fileExtensions.add(fileExt);
+				String description = writeFilter.getFileExtensionDescription(fileExtension).getText();
+				fileExtensionDescriptions.add(fileExt + " (" + description + ")");
+			}
 		}
+		String[] extensions = fileExtensions.toArray(new String[fileExtensions.size()]);
+		String[] descriptions = fileExtensionDescriptions.toArray(new String[fileExtensionDescriptions.size()]);
+		dialog.setFilterExtensions(extensions);
+		dialog.setFilterNames(descriptions);
 
 		String fullPath = dialog.open();
 		// Cancel pressed
 		if (fullPath == null)
 			return false;
+
+		String fileExtension = IOUtil.getFileExtension(fullPath);
+		// No fileExtension specified, add the default fileExtension
+		if (fileExtension == null) {
+			fullPath = fullPath.concat("."+defaultFileExtension);
+			logger.info(dialog.getFilterExtensions());
+		}
+		else {
+			IOFilter ioFilter = getIOFilterMan().getIOFilter(fileExtension);
+			// No ioFilter found for the given fileExtension, add the default fileExtension
+			if (ioFilter == null) {
+				fullPath = fullPath.concat("."+defaultFileExtension);
+			}
+		}
 
 		final File file = new File(fullPath);
 
@@ -1187,7 +1213,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 				return false;
 		}
 		try {
-			// TODO should only be done when saving was sucessful and not aborted
+			// TODO should only be done when saving was successful and not aborted
 			getCommandStack().markSaveLocation();
 		}
 		catch (Exception e) {
