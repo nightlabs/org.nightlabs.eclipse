@@ -18,4 +18,4 @@ Export-Package: org.nightlabs.keyreader.ui,
 XEclipse-BuddyPolicy: registered
 XEclipse-RegisterBuddy: org.nightlabs.base.ui,
  org.nightlabs.jfire.base.j2ee
-Bundle-ClassPath: org.nightlabs.keyreader.ui.jar
+Bundle-ClassPath: .
