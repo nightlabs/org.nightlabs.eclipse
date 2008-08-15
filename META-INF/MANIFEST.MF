@@ -5,7 +5,7 @@ Bundle-Name: Editor2D Viewer Plug-in
 Bundle-SymbolicName: org.nightlabs.editor2d.viewer.ui;singleton:=true
 Bundle-Version: 1.0.7.qualifier
 Bundle-ClassPath: lib/NightLabsEditor2D.jar,
- org.nightlabs.editor2d.viewer.ui.jar,
+ .,
  lib/batik-awt-util.jar,
  lib/batik-dom.jar,
  lib/batik-svggen.jar,
