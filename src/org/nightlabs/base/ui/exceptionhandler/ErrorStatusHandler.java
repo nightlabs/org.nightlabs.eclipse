@@ -3,9 +3,11 @@
  */
 package org.nightlabs.base.ui.exceptionhandler;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.statushandlers.StatusAdapter;
+import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.ui.statushandlers.WorkbenchErrorHandler;
 import org.nightlabs.base.ui.app.AbstractWorkbenchAdvisor;
 
@@ -22,6 +24,8 @@ import org.nightlabs.base.ui.app.AbstractWorkbenchAdvisor;
  */
 public class ErrorStatusHandler extends WorkbenchErrorHandler {
 
+	private static final Logger logger = Logger.getLogger(ErrorStatusHandler.class);
+	
 	/**
 	 * Create a new {@link ErrorStatusHandler} 
 	 */
@@ -37,11 +41,16 @@ public class ErrorStatusHandler extends WorkbenchErrorHandler {
 	@Override
 	public void handle(StatusAdapter statusAdapter, int style) {
 		IStatus status = statusAdapter.getStatus();
-		if (status.getException() != null) {
-			// if the status has an exception set, we let the ExceptionHandlerRegistry handle
-			if (ExceptionHandlerRegistry.syncHandleException(status.getException())) {
-				return;
-			}
+		if ((style & (StatusManager.BLOCK | StatusManager.SHOW)) > 0) {
+			if (status.getException() != null) {
+				// if the status has an exception set, we let the ExceptionHandlerRegistry handle
+				if (ExceptionHandlerRegistry.syncHandleException(status.getException())) {
+					return;
+				}
+			}			
+		}
+		else if ((style & StatusManager.LOG) > 0) {
+			logger.error("Exception with style StatusManager.LOG", status.getException());
 		}
 		super.handle(statusAdapter, style);
 	}
