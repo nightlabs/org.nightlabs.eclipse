@@ -7,6 +7,11 @@
     <ant path="org.nightlabs.eclipse.ui.dialog" file="build-nightlabs.xml" target="deploy"/>
     <requires/>
     <provides/>
+
+<!-- Temporary workaround because nightly build resolving fragments for classpath fails (sometimes?) due to incorrect build order. -->
+    <requires path="org.nightlabs.jfire.base.j2ee"/>
+    <requires path="DelegatingClassLoader"/>
+
     <javadoc path="org.nightlabs.eclipse.ui.dialog/src"/>
   </project>
 </nightlybuild>
