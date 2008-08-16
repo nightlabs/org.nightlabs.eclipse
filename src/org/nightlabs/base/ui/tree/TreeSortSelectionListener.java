@@ -107,8 +107,6 @@ implements SelectionListener
 		viewer.getTree().setSortColumn(column);
 		viewer.getTree().setSortDirection(currentSorter.getSortDirection());
 		viewer.setSorter(currentSorter);
-		
-		System.out.println("sort Column = "+column.getText()); //$NON-NLS-1$
 	}
 	
 	public void widgetDefaultSelected(SelectionEvent e) {

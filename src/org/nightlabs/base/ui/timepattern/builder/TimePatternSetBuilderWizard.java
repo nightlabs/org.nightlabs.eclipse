@@ -50,11 +50,7 @@ public class TimePatternSetBuilderWizard extends DynamicPathWizard {
 		try {
 			entryPage.configureTimePatternSet(timePatternSet);
 		} catch (TimePatternFormatException e) {
-			e.printStackTrace();
-		}
-		for (Iterator iter = timePatternSet.getTimePatterns().iterator(); iter.hasNext();) {
-			TimePattern pattern = (TimePattern) iter.next();
-			System.out.println(pattern);
+			throw new RuntimeException(e);
 		}
 		return true;
 	}

@@ -184,7 +184,7 @@ public class EntityEditorRegistry extends AbstractEPProcessor
 				
 				categories.put(category.getId(), category);
 
-				IConfigurationElement[] children = element.getChildren();System.out.println(extension.getNamespaceIdentifier());
+				IConfigurationElement[] children = element.getChildren();
 				for (IConfigurationElement child : children) {
 					if ("viewBinding".equalsIgnoreCase(child.getName())) { //$NON-NLS-1$
 						processViewBinding(extension, child, category.getId(), category);

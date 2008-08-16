@@ -159,7 +159,7 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 		switch(buttonId) {
 		case IDialogConstants.DETAILS_ID:
 			boolean show = ((GridData)stackTraceText.getLayoutData()).heightHint == 0;
-			System.out.println("showing stack trace: "+show); //$NON-NLS-1$
+			logger.debug("showing stack trace: "+show); //$NON-NLS-1$
 			showStackTrace(show);
 			break;
 		case SEND_ERROR_REPORT_ID:
