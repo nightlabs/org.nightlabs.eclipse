@@ -60,7 +60,7 @@ public class FadeableComposite extends XComposite implements Fadeable
 	 * value: Boolean enabled
 	 */
 	private Map<Control, Boolean> controlEnabled = new HashMap<Control, Boolean>();
-	
+
 	private boolean getControlOriginalEnabled(Control control)
 	{
 		Boolean b = controlEnabled.get(control);
@@ -109,9 +109,11 @@ public class FadeableComposite extends XComposite implements Fadeable
 			Rectangle rect = gc.getClipping();
 
 			gc.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
-			gc.setAlpha(127);
+//			gc.setAlpha(127);
+			// make grey out less opaque in order to make texts more readable.
+			gc.setAlpha(0);
 			gc.fillRectangle(rect);
-			
+
 //			for(int i = 0; i < rect.width; i += img.getImageData().width)
 //				for(int j = 0; j < rect.height; j += img.getImageData().height)
 //						gc.drawImage(img, i, j);
@@ -152,7 +154,7 @@ public class FadeableComposite extends XComposite implements Fadeable
 	{
 		super(parent, style, layoutMode);
 	}
-	
+
 	public FadeableComposite(Composite parent, int style, LayoutDataMode layoutDataMode) {
 		super(parent, style, layoutDataMode);
 	}
@@ -167,7 +169,7 @@ public class FadeableComposite extends XComposite implements Fadeable
 
 	private Control focusControlAfterFade = null;
 	private Control focusControlBeforeFade = null;
-	
+
 	/**
 	 * This method must be called on the SWT GUI thread!
 	 * <p>
@@ -178,28 +180,28 @@ public class FadeableComposite extends XComposite implements Fadeable
 	 *
 	 * @param faded Whether to fade (gray out) this composite.
 	 */
-	public void setFaded(boolean faded) 
+	public void setFaded(boolean faded)
 	{
 		boolean beforeFade = faded && !isFaded();
 		boolean beforeUnfade = !faded && isFaded();
-		
-		if (beforeFade) 
+
+		if (beforeFade)
 		{
 			focusControlBeforeFade = Display.getCurrent().getFocusControl();
 		}
-		
+
 		_setFaded(faded);
-		
-		if (beforeFade) 
+
+		if (beforeFade)
 		{
 			focusControlAfterFade = Display.getCurrent().getFocusControl();
 		}
-		if (beforeUnfade) 
+		if (beforeUnfade)
 		{
-			if (Display.getCurrent().getFocusControl() == focusControlAfterFade) 
+			if (Display.getCurrent().getFocusControl() == focusControlAfterFade)
 			{
-				if (focusControlBeforeFade != null && !focusControlBeforeFade.isDisposed()) 
-				{					
+				if (focusControlBeforeFade != null && !focusControlBeforeFade.isDisposed())
+				{
 					focusControlBeforeFade.setFocus();
 				}
 				focusControlBeforeFade = null;
@@ -207,12 +209,12 @@ public class FadeableComposite extends XComposite implements Fadeable
 			}
 		}
 	}
-	
+
 	/**
 	 * This method does the actual fading/unfading and fadeCounter management.
 	 * It is used for recursions as the top level call to {@link #setFaded(boolean)}
 	 * has to manage focus only once.
-	 * 
+	 *
 	 * @param faded Whether to fade (gray out) this composite.
 	 */
 	private void _setFaded(boolean faded)

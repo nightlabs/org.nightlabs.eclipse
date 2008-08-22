@@ -26,19 +26,32 @@
 
 package org.nightlabs.base.ui.tree;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.core.runtime.ListenerList;
+import org.eclipse.jface.util.SafeRunnable;
+import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
@@ -49,7 +62,7 @@ import org.nightlabs.base.ui.table.GenericInvertViewerSorter;
  * A composite with a {@link TreeViewer} to be used as base for tree-composites.
  * It will create a treeViewer and trigger callback-methods for its configuration
  * (see {@link #setTreeProvider(TreeViewer)}) and {@link #createTreeColumns(Tree)}.
- * 
+ *
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  *
  */
@@ -59,7 +72,7 @@ implements ISelectionProvider
 {
 
 	private TreeViewer treeViewer;
-	
+
 	/**
 	 * Default set of styles to use when constructing a single-selection viewer.
 	 */
@@ -68,35 +81,34 @@ implements ISelectionProvider
 	 * Default set of styles to use when constructing a multi-selection viewer.
 	 */
 	public static int DEFAULT_STYLE_MULTI = SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL  | SWT.FULL_SELECTION;
-	
+
 	/**
-	 * Convenience parameter with
-	 * {@link #DEFAULT_STYLE_SINGLE_BORDER}, a GridData,
-	 * directly inited and visible headers for the tree.
+	 * Convenience parameter with {@link #DEFAULT_STYLE_SINGLE}, a GridData,
+	 * directly initialised and visible headers for the tree.
 	 * @see #AbstractTreeComposite(Composite, int, boolean, boolean, boolean)
-	 * 
+	 *
 	 * @param parent The parent to use.
 	 */
 	public AbstractTreeComposite(Composite parent) {
 		this(parent, DEFAULT_STYLE_SINGLE, true, true, true);
 	}
-	
+
 	/**
 	 * Creates a new tree composite with the given parent.
 	 * The init parameter controls whether or not the tree providers
 	 * and colums should be configured already.
-	 * 
+	 *
 	 * @param parent The parent to use.
 	 * @param init Whether to call {@link #init()}
 	 */
 	public AbstractTreeComposite(Composite parent, boolean init) {
 		this(parent, DEFAULT_STYLE_SINGLE, true, init, true);
 	}
-		
+
 	/**
 	 * See {@link #AbstractTreeComposite(Composite, boolean)}. The other
 	 * parameters are used to control the trees look.
-	 * 
+	 *
 	 * @param parent The parent to use.
 	 * @param style The style to use for treeViewer. The style of the wrapping Composite will be SWT.NONE.
 	 * @param setLayoutData Whether to set a LayoutData (of fill both) for the wrapping Composite.
@@ -107,11 +119,11 @@ implements ISelectionProvider
 	{
 		this(parent, style, setLayoutData, init, headerVisible, true);
 	}
-	
+
 	/**
 	 * See {@link #AbstractTreeComposite(Composite, boolean)}. The other
 	 * parameters are used to control the trees look.
-	 * 
+	 *
 	 * @param parent The parent to use.
 	 * @param style The style to use for treeViewer. The style of the wrapping Composite will be SWT.NONE.
 	 * @param setLayoutData Whether to set a LayoutData (of fill both) for the wrapping Composite.
@@ -130,7 +142,7 @@ implements ISelectionProvider
 		if (init)
 			init();
 	}
-	
+
 //	/**
 //	 * Init calls {@link #setTreeProvider(TreeViewer)} and {@link #createTreeColumns(Tree)}
 //	 * with the appropriate parameters.
@@ -139,7 +151,7 @@ implements ISelectionProvider
 //		setTreeProvider(treeViewer);
 //		createTreeColumns(treeViewer.getTree());
 //	}
-	
+
 	/**
 	 * Init calls {@link #setTreeProvider(TreeViewer)} and {@link #createTreeColumns(Tree)}
 	 * with the appropriate parameters.
@@ -148,7 +160,7 @@ implements ISelectionProvider
 	{
 		setTreeProvider(treeViewer);
 		createTreeColumns(treeViewer.getTree());
-		
+
 //		if (sortColumns)
 //		{
 //			for (int i=0; i<treeViewer.getTree().getColumns().length; i++) {
@@ -158,7 +170,7 @@ implements ISelectionProvider
 //			}
 //			treeViewer.getTree().setSortDirection(SWT.UP);
 //		}
-		
+
 		if (sortColumns)
 		{
 			for (int i=0; i<treeViewer.getTree().getColumns().length; i++) {
@@ -166,13 +178,29 @@ implements ISelectionProvider
 				new TreeSortSelectionListener(treeViewer, treeColumn, new GenericInvertViewerSorter(i), SWT.UP);
 			}
 		}
-		
+
+		// Add selection listener to make the selection of an inactive table (! #isEditable()) impossible.
+		// However the event will be propagated to the rest of the listeners if they were not added via
+		// #addCheckStateChangedListener()!
+		getTree().addSelectionListener(new SelectionAdapter()
+		{
+			@Override
+			public void widgetSelected(SelectionEvent e)
+			{
+				if ((e.detail & SWT.CHECK) == SWT.CHECK && ! isEditable())
+				{
+					final TableItem tableItem = (TableItem) e.item;
+					tableItem.setChecked(! tableItem.getChecked());
+					e.doit = false;
+				}
+			}
+		});
 	}
-	
+
 	protected TreeViewer createTreeViewer(int style) {
 		return new TreeViewer(this, style);
 	}
-	
+
 	private boolean sortColumns = true;
 //	private Listener sortListener = new Listener()
 //	{
@@ -208,7 +236,7 @@ implements ISelectionProvider
 //    	}
 //    }
 //	};
-	
+
 	// Add sort indicator and sort data when column selected
 //	private Listener sortListener = new Listener() {
 //		public void handleEvent(Event e) {
@@ -244,7 +272,7 @@ implements ISelectionProvider
 //			treeViewer.getTree().setSortDirection(dir);
 //		}
 //	};
-	
+
 //	private Listener sortListener = new Listener() {
 //		public void handleEvent(Event e) {
 //			// determine new sort column and direction
@@ -262,21 +290,21 @@ implements ISelectionProvider
 ////			treeViewer.setSorter(new ViewerSorter());
 //		}
 //	};
-	
+
 	public abstract void setTreeProvider(TreeViewer treeViewer);
-	
+
 	public abstract void createTreeColumns(Tree tree);
-	
+
 	public TreeViewer getTreeViewer() {
 		return treeViewer;
 	}
-	
+
 	public Tree getTree() {
 		if (treeViewer != null)
 			return treeViewer.getTree();
 		return null;
 	}
-	
+
 	public void refresh() {
 		treeViewer.refresh();
 	}
@@ -304,7 +332,7 @@ implements ISelectionProvider
 	public ISelection getSelection() {
 		return treeViewer.getSelection();
 	}
-	
+
 	/**
 	 * Selects the given elements in the list if they exist.
 	 * @param elements the elements to be selected.
@@ -315,17 +343,17 @@ implements ISelectionProvider
 			return;
 		getTreeViewer().setSelection(new StructuredSelection(elements), true);
 	}
-	
+
 	/**
 	 * Sets and reveals the selection to the given elements.
-	 * 
+	 *
 	 * @param elements The elements to select.
 	 * @see #setSelection(List, boolean)
 	 */
 	public void setSelection(List elements) {
 		setSelection(elements, true);
 	}
-	
+
 	/**
 	 * Selects the given element in the tree. (Shortcut to #setSelection(List)).
 	 * @param element the element to be selected
@@ -335,26 +363,16 @@ implements ISelectionProvider
 	{
 		getTreeViewer().setSelection(new StructuredSelection(element), true);
 	}
-	
+
 	public void setInput(Object input) {
 		treeViewer.setInput(input);
-	}
-
-	public void addSelectionChangedListener(ISelectionChangedListener listener)
-	{
-		treeViewer.addSelectionChangedListener(listener);
-	}
-
-	public void removeSelectionChangedListener(ISelectionChangedListener listener)
-	{
-		treeViewer.removeSelectionChangedListener(listener);
 	}
 
 	public void setSelection(ISelection selection)
 	{
 		treeViewer.setSelection(selection);
 	}
-	
+
 	/**
 	 * The tree normally holds a special type of node objects that contain the real objects.
 	 * This method is used to intercept when the selection is read in order to return the
@@ -366,10 +384,10 @@ implements ISelectionProvider
 	 * When overriding this method, you should return <code>null</code>, if the passed object <code>obj</code>
 	 * cannot be transformed into an instance of <code>ElementType</code> (for example, if it's a temporary "loading data..." node).
 	 * </p>
-	 * 
+	 *
 	 * @see #getSelectedElements()
 	 * @see #getFirstSelectedElement()
-	 * 
+	 *
 	 * @param obj The viewers selection object.
 	 * @return The selection object that should be passed as selection.
 	 */
@@ -378,13 +396,13 @@ implements ISelectionProvider
 		// TODO maybe we should make this method abstract, since the tree holds almost always nodes and not the managed objects directly. Marco.
 		return (ElementType) obj;
 	}
-	
+
 	/**
 	 * Returns the first selected element.
 	 * Note that the element returned here might not be
 	 * of the (node)type of elements managed by this viewer.
 	 * The result might have been replaced by an element extracted from the selected tree node.
-	 * 
+	 *
 	 * @return The (first) selected element or null.
 	 */
 	public ElementType getFirstSelectedElement() {
@@ -397,13 +415,13 @@ implements ISelectionProvider
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Returns all selected elements in a Set.
 	 * Note that the elements returned here might not be
 	 * of the (node)type of elements managed by this viewer.
 	 * The results might have been replaced by an element extracted from the selected tree nodes.
-	 * 
+	 *
 	 * @return All selected elements in a Set.
 	 */
 	public Set<ElementType> getSelectedElements() {
@@ -416,5 +434,242 @@ implements ISelectionProvider
 		}
 		return result;
 	}
-	
+
+	private boolean editable = true;
+
+	private ListenerList doubleClickListenerBackup;
+	private ListenerList selectionChangedListenerBackup;
+	private ListenerList postSelectionListenerBackup;
+	private CellEditor[] cellEditors;
+	private static final ListenerList emptyList = new ListenerList();
+
+	/**
+	 * Sets the flag whether the table may actively be modified or if it is "read-only".
+	 * @param editable shall table be modifiable?
+	 */
+	public void setEditable(boolean editable)
+	{
+		if (editable == isEditable())
+			return;
+
+		this.editable = editable;
+
+		if (editable)
+		{ // getting active again
+			doubleClickListeners = doubleClickListenerBackup;
+			selectionChangedListeners = selectionChangedListenerBackup;
+			postSelectionChangedListeners = postSelectionListenerBackup;
+			getTreeViewer().setCellEditors(cellEditors);
+			cellEditors = null;
+			doubleClickListenerBackup = null;
+			selectionChangedListenerBackup = null;
+			postSelectionListenerBackup = null;
+		}
+		else
+		{ // becoming inactive
+			doubleClickListenerBackup = doubleClickListeners;
+			selectionChangedListenerBackup = selectionChangedListeners;
+			postSelectionListenerBackup = postSelectionChangedListeners;
+			cellEditors = getTreeViewer().getCellEditors();
+			if (cellEditors != null)
+				getTreeViewer().setCellEditors(new CellEditor[cellEditors.length]);
+
+			doubleClickListeners = emptyList;
+			selectionChangedListeners = emptyList;
+			postSelectionChangedListeners = emptyList;
+		}
+	}
+
+	/**
+	 * Returns whether the table can actively be modified or not.
+	 * @return whether the table can actively be modified or not.
+	 */
+	public boolean isEditable()
+	{
+		return editable;
+	}
+
+	private ListenerList postSelectionChangedListeners = new ListenerList();
+	private ISelectionChangedListener postSelectionChangedListener = new ISelectionChangedListener()
+	{
+		@Override
+		public void selectionChanged(final SelectionChangedEvent event)
+		{
+			Object[] listeners = postSelectionChangedListeners.getListeners();
+			for (int i = 0; i < listeners.length; ++i) {
+				final ISelectionChangedListener l = (ISelectionChangedListener) listeners[i];
+				SafeRunnable.run(new SafeRunnable() {
+					public void run() {
+						l.selectionChanged(event);
+					}
+				});
+			}
+		}
+	};
+
+	/**
+	 * @param listener
+	 * @see org.eclipse.jface.viewers.StructuredViewer#addPostSelectionChangedListener(org.eclipse.jface.viewers.ISelectionChangedListener)
+	 */
+	public void addPostSelectionChangedListener(ISelectionChangedListener listener)
+	{
+		if (postSelectionChangedListeners.isEmpty())
+		{
+			postSelectionChangedListeners.add(postSelectionChangedListener);
+		}
+		postSelectionChangedListeners.add(listener);
+	}
+
+	/**
+	 * @param listener
+	 * @see org.eclipse.jface.viewers.StructuredViewer#removePostSelectionChangedListener(org.eclipse.jface.viewers.ISelectionChangedListener)
+	 */
+	public void removePostSelectionChangedListener(ISelectionChangedListener listener)
+	{
+		postSelectionChangedListeners.remove(listener);
+	}
+
+	/**
+	 * Maps from the actual check state changed listeners to the adapters used.
+	 */
+	private Map<SelectionListener, CheckStateChangeAdapter> checkStateListener2Adapter =
+		new HashMap<SelectionListener, CheckStateChangeAdapter>();
+
+	/**
+	 * Adds a selection listener that is triggered whenever the check state of a
+	 * table item is changed.
+	 *
+	 * @param listener the actual SelectionListener that should handle the check state changed events.
+	 */
+	public void addCheckStateChangedListener(final SelectionListener listener)
+	{
+		assert listener != null;
+
+		 // this listener instance is already registered.
+		if (checkStateListener2Adapter.get(listener) != null)
+			return;
+
+		CheckStateChangeAdapter selectionAdapter = new CheckStateChangeAdapter(listener);
+		getTree().addSelectionListener(selectionAdapter);
+	}
+
+	/**
+	 * Removes the given listener if it was registered before.
+	 * @param listener the check state changed listener that shall be rmeoved.
+	 */
+	public void removeCheckStateChangedListener(SelectionListener listener)
+	{
+		final CheckStateChangeAdapter listenerAdapter = checkStateListener2Adapter.get(listener);
+		if (listenerAdapter == null)
+			return;
+
+		getTree().removeSelectionListener(listenerAdapter);
+	}
+
+	/**
+	 * Small helper class for wrapping normal SelectionListeners in order to only propagate check
+	 * state change events.
+	 *
+	 * @author Marius Heinzmann - marius[at]nightlabs[dot]com
+	 */
+	public class CheckStateChangeAdapter extends SelectionAdapter
+	{
+		private SelectionListener listener;
+
+		public CheckStateChangeAdapter(SelectionListener originalListener)
+		{
+			assert originalListener != null;
+			this.listener = originalListener;
+		}
+
+		@Override
+		public void widgetSelected(SelectionEvent e)
+		{
+			if (e.detail == SWT.CHECK && isEditable())
+			{
+				listener.widgetSelected(e);
+			}
+		}
+	}
+
+  private ListenerList selectionChangedListeners = new ListenerList();
+  private ISelectionChangedListener selectionChangedListener = new ISelectionChangedListener()
+  {
+		@Override
+		public void selectionChanged(final SelectionChangedEvent event)
+		{
+      Object[] listeners = selectionChangedListeners.getListeners();
+      for (int i = 0; i < listeners.length; ++i) {
+          final ISelectionChangedListener l = (ISelectionChangedListener) listeners[i];
+          SafeRunnable.run(new SafeRunnable() {
+              public void run() {
+                  l.selectionChanged(event);
+              }
+          });
+      }
+		}
+  };
+
+	/**
+	 * @see {@link TreeViewer#addSelectionChangedListener(ISelectionChangedListener)}.
+	 */
+	public void addSelectionChangedListener(ISelectionChangedListener listener)
+	{
+		if (selectionChangedListeners.isEmpty() && isEditable())
+		{
+			getTreeViewer().addSelectionChangedListener(selectionChangedListener);
+		}
+
+		selectionChangedListeners.add(listener);
+	}
+
+	/**
+	 * Delegating method for {@link TableViewer}
+	 */
+	public void removeSelectionChangedListener(ISelectionChangedListener listener)
+	{
+		selectionChangedListeners.remove(listener);
+	}
+
+	private ListenerList doubleClickListeners = new ListenerList();
+	private IDoubleClickListener doubleClickListener = new IDoubleClickListener()
+	{
+		@Override
+		public void doubleClick(final DoubleClickEvent event)
+		{
+			for (Object listener : doubleClickListeners.getListeners())
+			{
+				Object[] listeners = doubleClickListeners.getListeners();
+				for (int i = 0; i < listeners.length; ++i) {
+					final IDoubleClickListener l = (IDoubleClickListener) listeners[i];
+					SafeRunnable.run(new SafeRunnable() {
+						public void run() {
+							l.doubleClick(event);
+						}
+					});
+				}
+			}
+		}
+	};
+
+	/**
+	 * Delegating method for {@link TableViewer}
+	 */
+	public void addDoubleClickListener(IDoubleClickListener listener) {
+		if (doubleClickListeners.isEmpty() && isEditable())
+		{
+			getTreeViewer().addDoubleClickListener(listener);
+		}
+
+		doubleClickListeners.add(listener);
+	}
+
+	/**
+	 * Delegating method for {@link TableViewer}
+	 */
+	public void removeDoubleClickListener(IDoubleClickListener listener)
+	{
+		doubleClickListeners.remove(listener);
+	}
+
 }

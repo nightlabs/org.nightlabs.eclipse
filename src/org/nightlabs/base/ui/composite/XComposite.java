@@ -97,15 +97,15 @@ public class XComposite extends Composite
 	{
 		return getLayout(layoutMode, null);
 	}
-	
+
 	public static GridLayout getLayout(LayoutMode layoutMode, GridLayout layout)
 	{
 		return getLayout(layoutMode, layout, 1);
 	}
-	
+
 	/**
 	 * Configures the given GridLayout to the appropriate layout mode.
-	 * 
+	 *
 	 * @param layoutMode The layout mode to apply
 	 * @param layout The layout to configure
 	 */
@@ -151,12 +151,12 @@ public class XComposite extends Composite
 				throw new IllegalArgumentException("layoutMode = " + layoutMode + " is unknown!"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
-	
+
 	/**
 	 * Modifies a GridLayout to the appropriate {@link LayoutMode}.
 	 * If the given layout is <code>null</code> a new one will
 	 * be created.
-	 * 
+	 *
 	 * @param layoutMode the layoutMode to set
 	 * @param layout the GridLayout to modify
 	 * @return the modified GridLayout
@@ -172,7 +172,7 @@ public class XComposite extends Composite
 		configureLayout(layoutMode, layout);
 		return layout;
 	}
-	
+
 	public static void setLayoutDataMode(LayoutDataMode layoutDataMode, Control c)
 	{
 		switch (layoutDataMode)
@@ -192,7 +192,7 @@ public class XComposite extends Composite
 				throw new IllegalArgumentException("layoutDataMode = " + layoutDataMode + " is unknown!"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
-	
+
 	/**
 	 * Calls {@link #XComposite(Composite, int, LayoutMode)} with
 	 * <code>layoutMode = </code> {@link LayoutMode#ORDINARY_WRAPPER}
@@ -205,11 +205,11 @@ public class XComposite extends Composite
 	/**
 	 * Calls {@link #XComposite(Composite, int, LayoutMode, LayoutDataMode)}
 	 * with <code>layoutDataMode = </code> {@link LayoutDataMode#GRID_DATA}
-	 * 
+	 *
 	 * @param parent the parent Composite
 	 * @param style the SWT style flag
 	 * @param layoutMode the layoutMode to set
-	 * 
+	 *
 	 * @see LayoutMode
 	 * @see LayoutDataMode
 	 */
@@ -217,16 +217,16 @@ public class XComposite extends Composite
 	{
 		this(parent, style, layoutMode, LayoutDataMode.GRID_DATA);
 	}
-	
+
 	/**
 	 * Calls {@link #XComposite(Composite, int, LayoutMode, LayoutDataMode)}
 	 * with <code>layoutDataMode = </code> {@link LayoutDataMode#GRID_DATA}
-	 * 
+	 *
 	 * @param parent the parent Composite
 	 * @param style the SWT style flag
 	 * @param layoutMode the layoutMode to set
 	 * @param cols the number of columns this Gridlayout shall have.
-	 * 
+	 *
 	 * @see LayoutMode
 	 * @see LayoutDataMode
 	 */
@@ -237,7 +237,7 @@ public class XComposite extends Composite
 	/**
 	 * Calls {@link #XComposite(Composite, int, LayoutMode, LayoutDataMode)}
 	 * with <code>layoutMode = </code> {@link LayoutMode#ORDINARY_WRAPPER}
-	 * 
+	 *
 	 * @param parent the parent Composite
 	 * @param style the SWT style flag
 	 * @param layoutDataMode the LayoutDataMode to set
@@ -252,12 +252,12 @@ public class XComposite extends Composite
 
 	/**
 	 * creates a Composite with the appropriate layoutMode and layoutDataMode
-	 * 
+	 *
 	 * @param parent the parent Composite
 	 * @param style the SWT style flag
 	 * @param layoutMode the layoutMode to set
 	 * @param layoutDataMode the LayoutDataMode to set
-	 * 
+	 *
 	 * @see LayoutMode
 	 * @see LayoutDataMode
 	 */
@@ -265,16 +265,16 @@ public class XComposite extends Composite
 	{
 		this(parent, style, layoutMode, layoutDataMode, 1);
 	}
-	
+
 	/**
 	 * creates a Composite with the appropriate layoutMode and layoutDataMode and the specified number of columns.
-	 * 
+	 *
 	 * @param parent the parent Composite
 	 * @param style the SWT style flag
 	 * @param layoutMode the layoutMode to set
 	 * @param layoutDataMode the LayoutDataMode to set
 	 * @param cols the number of columns of the grid layout
-	 * 
+	 *
 	 * @see LayoutMode
 	 * @see LayoutDataMode
 	 */
@@ -321,31 +321,31 @@ public class XComposite extends Composite
 	{
 		if (getLayoutData() == null)
 			setLayoutData(new GridData());
-		
+
 		return (GridData) getLayoutData();
 	}
-	
+
 	protected IToolkit toolkit;
-	
+
 	public IToolkit getToolkit() {
 		return getToolkit(false);
 	}
-	
+
 	public IToolkit getToolkit(boolean createIfNotSet)
 	{
 		if (toolkit == null && createIfNotSet)
 			toolkit = new NightlabsFormsToolkit(Display.getDefault());
-		
+
 		return toolkit;
 	}
-	
+
 	/**
 	 * Assigns this composite a toolkit.
 	 */
 	public void setToolkit(IToolkit toolkit) {
 		this.toolkit = toolkit;
 	}
-	
+
 	@Override
 	public void layout(boolean ignoreCachedInformation, boolean recurseDown) {
 		if (toolkit != null) {
@@ -354,15 +354,15 @@ public class XComposite extends Composite
 		super.layout(ignoreCachedInformation, recurseDown);
 		super.redraw();
 	}
-	
+
 	public void adaptToToolkit() {
 		if (toolkit != null)
 			adaptComposite(this, toolkit, true);
 	}
-	
+
 	private void adaptComposite(Composite comp, IToolkit toolkit, boolean checkChildrenForBorders) {
 		toolkit.adapt(comp);
-		
+
 		for (Control child : comp.getChildren()) {
 			boolean paintBorder = false;
 			if (checkChildrenForBorders)
@@ -376,7 +376,7 @@ public class XComposite extends Composite
 //			if (child instanceof XComposite) {
 //				return;
 //			}
-			
+
 			if (child instanceof Composite) {
 //			 if a painter has been added and child is an own widget -> adapt elements beneath child but
 //				don't draw additional borders beneath child
@@ -386,25 +386,25 @@ public class XComposite extends Composite
 				toolkit.adapt(child, false, false);
 		}
 	}
-	
+
 	/**
 	 * Returns the border flag according to the context this composite is used in;
 	 * Forms => toolkit.getBorderStyle(), since the toolkit draws one if needed
 	 * Other => SWT.Border <b>
-	 * 
+	 *
 	 * <p>This method should be called if you want to create a border in any context but don't want to
 	 * have a double border in the Form context.</p>
-	 * 
+	 *
 	 * <p>The check of being in a form or not is done by checking the assigned Toolkit and if
 	 * necessary all the way up to the root of the composite tree.</p>
-	 * 
+	 *
 	 * @return the boarder flag according to the context this composite is used in; Forms => SWT.NONE,
 	 * since the toolkit draws one if needed; Other => SWT.Border
 	 */
 	public int getBorderStyle() {
 		return XComposite.getBorderStyle(this);
 	}
-	
+
 	/**
 	 * @see #getBorderStyle()
 	 * @param comp the composite starting from which we traverse the composite tree upwards.
@@ -416,12 +416,12 @@ public class XComposite extends Composite
 		IToolkit toolkit = retrieveToolkit(comp);
 		if (toolkit != null)
 			return toolkit.getBorderStyle();
-			
+
 		// if no Xcomposite in the tree above this one has a toolkit set
 		// => assume we're in no FormPage context
 		return SWT.BORDER;
 	}
-	
+
 	public static IToolkit retrieveToolkit(Composite comp)
 	{
 		Composite tmp = comp;
@@ -445,8 +445,8 @@ public class XComposite extends Composite
 			}
 			tmp = tmp.getParent();
 		} // walk up the composite tree
-		
+
 		return null;
 	}
-	
+
 }

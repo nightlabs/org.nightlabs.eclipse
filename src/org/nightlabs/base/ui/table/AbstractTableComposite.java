@@ -29,12 +29,18 @@ package org.nightlabs.base.ui.table;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.text.TableView;
 
+import org.eclipse.core.runtime.ListenerList;
+import org.eclipse.jface.util.SafeRunnable;
+import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -42,11 +48,13 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -82,14 +90,14 @@ import org.nightlabs.util.Util;
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
  */
 public abstract class AbstractTableComposite<ElementType>
-extends XComposite
-implements ISelectionProvider
+	extends XComposite
+	implements ISelectionProvider
 {
 	/**
 	 * Default set of styles to use when constructing a single-selection viewer without border.
 	 */
 	public static final int DEFAULT_STYLE_SINGLE = SWT.FULL_SELECTION | SWT.SINGLE;
-	
+
 	/**
 	 * Default set of styles to use when constructing a single-selection viewer with border.
 	 */
@@ -99,7 +107,7 @@ implements ISelectionProvider
 	 * Default set of styles to use when constructing a multi-selection viewer without border.
 	 */
 	public static final int DEFAULT_STYLE_MULTI = SWT.FULL_SELECTION | SWT.MULTI;
-	
+
 	/**
 	 * Default set of styles to use when constructing a multi-selection viewer.
 	 * This is used as default value when constructing an {@link AbstractTableComposite} without viewerStyle
@@ -108,6 +116,8 @@ implements ISelectionProvider
 
 	private TableViewer tableViewer;
 	private Table table;
+
+	private boolean editable = true;
 
 	public AbstractTableComposite(Composite parent, int style) {
 		this(parent, style, true);
@@ -141,7 +151,7 @@ implements ISelectionProvider
 		if (initTable)
 		{
 			initTable();
-			
+
 			// set default minimum size
 			tgd.minimumWidth = tableViewer.getTable().getColumnCount() * 30;
 			tgd.minimumHeight = 50;
@@ -151,13 +161,30 @@ implements ISelectionProvider
 	protected void initTable() {
 		createTableColumns(tableViewer, table);
 		setTableProvider(tableViewer);
-		
+
 		if (sortColumns) {
 			for (int i = 0; i < tableViewer.getTable().getColumnCount(); i++) {
 				TableColumn tableColumn = tableViewer.getTable().getColumn(i);
 				new TableSortSelectionListener(tableViewer, tableColumn, new GenericInvertViewerSorter(i), SWT.UP);
 			}
 		}
+
+		// Add selection listener to make the selection of an inactive table (! #isEditable()) impossible.
+		// However the event will be propagated to the rest of the listeners if they were not added via
+		// #addCheckStateChangedListener()!
+		getTable().addSelectionListener(new SelectionAdapter()
+		{
+			@Override
+			public void widgetSelected(SelectionEvent e)
+			{
+				if ((e.detail & SWT.CHECK) == SWT.CHECK && ! isEditable())
+				{
+					final TableItem tableItem = (TableItem) e.item;
+					tableItem.setChecked(! tableItem.getChecked());
+					e.doit = false;
+				}
+			}
+		});
 	}
 
 	private boolean sortColumns = true;
@@ -224,7 +251,7 @@ implements ISelectionProvider
 
 	private Collection<ElementType> elements;
 	private Object elementsCacheInput;
-	
+
 	/**
 	 * Returns all elements of this table composite.
 	 * @return All elements of this table composite.
@@ -312,7 +339,7 @@ implements ISelectionProvider
 	 * Here you can set a string message displayed to notify the user about an asynchronous load process.
 	 * <p>
 	 * Note, that new label and content providers as well as a new input will be set to the {@link TableView}.
-	 * The providers will be restored on the next call to {@link #setInput(Object)}. 
+	 * The providers will be restored on the next call to {@link #setInput(Object)}.
 	 * </p>
 	 * @param message The message to be shown.
 	 */
@@ -410,7 +437,7 @@ implements ISelectionProvider
 		}
 		return checkedElements;
 	}
-	
+
 	/**
 	 * If the this table-composite's table was created with
 	 * the {@link SWT#CHECK} flag this method will return a list of all
@@ -451,29 +478,82 @@ implements ISelectionProvider
 		tableViewer.setSelection(new StructuredSelection(elements), reveal);
 	}
 
+  private ListenerList selectionChangedListeners = new ListenerList();
+  private ISelectionChangedListener selectionChangedListener = new ISelectionChangedListener()
+  {
+		@Override
+		public void selectionChanged(final SelectionChangedEvent event)
+		{
+      Object[] listeners = selectionChangedListeners.getListeners();
+      for (int i = 0; i < listeners.length; ++i) {
+          final ISelectionChangedListener l = (ISelectionChangedListener) listeners[i];
+          SafeRunnable.run(new SafeRunnable() {
+              public void run() {
+                  l.selectionChanged(event);
+              }
+          });
+      }
+		}
+  };
+
 	/**
-	 * Delegating method for {@link TableViewer}
+	 * @see {@link TableViewer#addSelectionChangedListener(ISelectionChangedListener)}.
 	 */
-	public void addSelectionChangedListener(ISelectionChangedListener listener) {
-		tableViewer.addSelectionChangedListener(listener);
+	public void addSelectionChangedListener(ISelectionChangedListener listener)
+	{
+		if (selectionChangedListeners.isEmpty() && isEditable())
+		{
+			tableViewer.addSelectionChangedListener(selectionChangedListener);
+		}
+
+		selectionChangedListeners.add(listener);
 	}
+
+	private Map<SelectionListener, CheckStateChangeAdapter> checkStateListener2Adapter =
+		new HashMap<SelectionListener, CheckStateChangeAdapter>();
 
 	/**
 	 * Adds a selection listener that is triggered whenever the check state of a
-	 * table item is gets changed.
+	 * table item is changed.
 	 *
-	 * @param listener
+	 * @param listener the actual SelectionListener that should handle the check state changed events.
 	 */
-	public void addCheckStateChangedListener(final SelectionListener listener) {
-		table.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(SelectionEvent e) {
-			}
+	public void addCheckStateChangedListener(final SelectionListener listener)
+	{
+		assert listener != null;
 
-			public void widgetSelected(SelectionEvent e) {
-				if (e.detail == SWT.CHECK)
-					listener.widgetSelected(e);
+		 // this listener instance is already registered.
+		if (checkStateListener2Adapter.get(listener) != null)
+			return;
+
+		CheckStateChangeAdapter selectionAdapter = new CheckStateChangeAdapter(listener);
+		table.addSelectionListener(selectionAdapter);
+	}
+
+	/**
+	 * Small helper class for wrapping normal SelectionListeners in order to only propagate check
+	 * state change events.
+	 *
+	 * @author Marius Heinzmann - marius[at]nightlabs[dot]com
+	 */
+	public class CheckStateChangeAdapter extends SelectionAdapter
+	{
+		private SelectionListener listener;
+
+		public CheckStateChangeAdapter(SelectionListener originalListener)
+		{
+			assert originalListener != null;
+			this.listener = originalListener;
+		}
+
+		@Override
+		public void widgetSelected(SelectionEvent e)
+		{
+			if (e.detail == SWT.CHECK && isEditable())
+			{
+				listener.widgetSelected(e);
 			}
-		});
+		}
 	}
 
 	/**
@@ -486,12 +566,22 @@ implements ISelectionProvider
 	/**
 	 * Delegating method for {@link TableViewer}
 	 */
-	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
-		tableViewer.removeSelectionChangedListener(listener);
+	public void removeSelectionChangedListener(ISelectionChangedListener listener)
+	{
+		selectionChangedListeners.remove(listener);
 	}
 
-	public void removeCheckStateChangedListener(SelectionListener listener) {
-		table.removeSelectionListener(listener);
+	/**
+	 * Removes the given listener if it was registered before.
+	 * @param listener the check state changed listener that shall be rmeoved.
+	 */
+	public void removeCheckStateChangedListener(SelectionListener listener)
+	{
+		final CheckStateChangeAdapter listenerAdapter = checkStateListener2Adapter.get(listener);
+		if (listenerAdapter == null)
+			return;
+
+		table.removeSelectionListener(listenerAdapter);
 	}
 
 	/**
@@ -528,18 +618,45 @@ implements ISelectionProvider
 		return table.setFocus();
 	}
 
+	private ListenerList doubleClickListeners = new ListenerList();
+	private IDoubleClickListener doubleClickListener = new IDoubleClickListener()
+	{
+		@Override
+		public void doubleClick(final DoubleClickEvent event)
+		{
+			for (Object listener : doubleClickListeners.getListeners())
+			{
+				Object[] listeners = doubleClickListeners.getListeners();
+				for (int i = 0; i < listeners.length; ++i) {
+					final IDoubleClickListener l = (IDoubleClickListener) listeners[i];
+					SafeRunnable.run(new SafeRunnable() {
+						public void run() {
+							l.doubleClick(event);
+						}
+					});
+				}
+			}
+		}
+	};
+
 	/**
 	 * Delegating method for {@link TableViewer}
 	 */
 	public void addDoubleClickListener(IDoubleClickListener listener) {
-		tableViewer.addDoubleClickListener(listener);
+		if (doubleClickListeners.isEmpty() && isEditable())
+		{
+			tableViewer.addDoubleClickListener(listener);
+		}
+
+		doubleClickListeners.add(listener);
 	}
 
 	/**
 	 * Delegating method for {@link TableViewer}
 	 */
-	public void removeDoubleClickListener(IDoubleClickListener listener) {
-		tableViewer.removeDoubleClickListener(listener);
+	public void removeDoubleClickListener(IDoubleClickListener listener)
+	{
+		doubleClickListeners.remove(listener);
 	}
 
 	public void setLinesVisible(boolean visible) {
@@ -584,4 +701,95 @@ implements ISelectionProvider
 		tableViewer.remove(element);
 	}
 
+	private ListenerList doubleClickListenerBackup;
+	private ListenerList selectionChangedListenerBackup;
+	private ListenerList postSelectionListenerBackup;
+	private CellEditor[] cellEditors;
+	private static final ListenerList emptyList = new ListenerList();
+
+	/**
+	 * Sets the flag whether the table may actively be modified or if it is "read-only".
+	 * @param editable shall table be modifiable?
+	 */
+	public void setEditable(boolean editable)
+	{
+		if (editable == isEditable())
+			return;
+
+		this.editable = editable;
+
+		if (editable)
+		{ // getting active again
+			doubleClickListeners = doubleClickListenerBackup;
+			selectionChangedListeners = selectionChangedListenerBackup;
+			postSelectionChangedListeners = postSelectionListenerBackup;
+			getTableViewer().setCellEditors(cellEditors);
+			cellEditors = null;
+			doubleClickListenerBackup = null;
+			selectionChangedListenerBackup = null;
+			postSelectionListenerBackup = null;
+		}
+		else
+		{ // becoming inactive
+			doubleClickListenerBackup = doubleClickListeners;
+			selectionChangedListenerBackup = selectionChangedListeners;
+			postSelectionListenerBackup = postSelectionChangedListeners;
+			cellEditors = getTableViewer().getCellEditors();
+			if (cellEditors != null)
+				getTableViewer().setCellEditors(new CellEditor[cellEditors.length]);
+
+			doubleClickListeners = emptyList;
+			selectionChangedListeners = emptyList;
+			postSelectionChangedListeners = emptyList;
+		}
+	}
+
+	/**
+	 * Returns whether the table can actively be modified or not.
+	 * @return whether the table can actively be modified or not.
+	 */
+	public boolean isEditable()
+	{
+		return editable;
+	}
+
+	private ListenerList postSelectionChangedListeners = new ListenerList();
+	private ISelectionChangedListener postSelectionChangedListener = new ISelectionChangedListener()
+	{
+		@Override
+		public void selectionChanged(final SelectionChangedEvent event)
+		{
+			Object[] listeners = postSelectionChangedListeners.getListeners();
+			for (int i = 0; i < listeners.length; ++i) {
+				final ISelectionChangedListener l = (ISelectionChangedListener) listeners[i];
+				SafeRunnable.run(new SafeRunnable() {
+					public void run() {
+						l.selectionChanged(event);
+					}
+				});
+			}
+		}
+	};
+
+	/**
+	 * @param listener
+	 * @see org.eclipse.jface.viewers.StructuredViewer#addPostSelectionChangedListener(org.eclipse.jface.viewers.ISelectionChangedListener)
+	 */
+	public void addPostSelectionChangedListener(ISelectionChangedListener listener)
+	{
+		if (postSelectionChangedListeners.isEmpty())
+		{
+			postSelectionChangedListeners.add(postSelectionChangedListener);
+		}
+		postSelectionChangedListeners.add(listener);
+	}
+
+	/**
+	 * @param listener
+	 * @see org.eclipse.jface.viewers.StructuredViewer#removePostSelectionChangedListener(org.eclipse.jface.viewers.ISelectionChangedListener)
+	 */
+	public void removePostSelectionChangedListener(ISelectionChangedListener listener)
+	{
+		postSelectionChangedListeners.remove(listener);
+	}
 }

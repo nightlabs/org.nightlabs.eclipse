@@ -55,7 +55,7 @@ public class TimeLengthComposite extends XComposite
 		super(parent, SWT.NONE, LayoutMode.TIGHT_WRAPPER);
 		this.getGridData().grabExcessHorizontalSpace = false;
 		this.getGridData().grabExcessVerticalSpace = false;
-		text = new Text(this, SWT.BORDER);
+		text = new Text(this, XComposite.getBorderStyle(parent));
 		text.setLayoutData(new GridData(GridData.FILL_BOTH));
 	}
 
