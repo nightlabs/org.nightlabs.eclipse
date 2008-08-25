@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="org.nightlabs.eclipse.ui.pdfviewer.test"
+            label="Test PDF"
+            visible="true">
+         <action
+               class="org.nightlabs.eclipse.ui.pdfviewer.TestAction"
+               id="org.nightlabs.eclipse.ui.pdfviewer.action1"
+               label="Test PDF viewer"
+               toolbarPath="additions">
+         </action>
+      </actionSet>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.nightlabs.eclipse.ui.pdfviewer.editor.PdfViewerEditor"
+            icon="icons/editor/PdfViewerEditor.16x16.png"
+            id="org.nightlabs.eclipse.ui.pdfviewer.editor.PdfViewerEditor"
+            name="PdfViewer">
+      </editor>
+   </extension>
+
+</plugin>
