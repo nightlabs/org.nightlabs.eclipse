@@ -30,7 +30,7 @@ import org.nightlabs.eclipse.ui.pdfviewer.util.Conversion;
 
 public class PdfViewerComposite extends Composite {
 	
-//	private static final int MARGIN_BETWEEN_PAGES = 20;
+	private static final int MARGIN_BETWEEN_PAGES = 20;
 	private static final int SCROLLING_STEPS_DISTANCE = 10;
 	
 	private Composite renderComposite;
