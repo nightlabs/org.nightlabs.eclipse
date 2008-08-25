@@ -35,7 +35,7 @@ public class PdfViewerComposite extends Composite {
 	
 	private Composite renderComposite;
 	private RenderBuffer renderBuffer;
-	private RenderThread renderThread; 
+	private RenderThread renderThread;
 	private PdfDocument pdfDocument;
 	private ScrollBar scrollBarVertical; 
 	private ScrollBar scrollBarHorizontal;
