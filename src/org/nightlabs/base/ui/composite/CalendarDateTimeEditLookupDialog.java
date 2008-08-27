@@ -24,14 +24,14 @@ import org.nightlabs.l10n.DateFormatProvider;
  */
 public class CalendarDateTimeEditLookupDialog
 extends Dialog
-{	
+{
 	private long flags;
 	private DateTime calendarDateTime;
 	private DateTime timeDateTime;
 	private DateTime dateDateTime;
-	private Calendar date;	
+	private Calendar date;
 	private Point initialLocation;
-	
+
 	/**
 	 * Create a new CalendarDateTimeEditLookupDialog instance.
 	 * @param parentShell The parent shell
@@ -68,7 +68,7 @@ extends Dialog
 	{
 		date = (Calendar)initialDate.clone();
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.dialogs.Dialog#getInitialLocation(org.eclipse.swt.graphics.Point)
 	 */
@@ -112,7 +112,7 @@ extends Dialog
 					dateDateTime.setDay(calendarDateTime.getDay());
 				}
 			});
-			
+
 			if ((DateFormatProvider.TIME & flags) != DateFormatProvider.TIME)
 				createDateDateTime(dateComp);
 		}
@@ -121,28 +121,28 @@ extends Dialog
 			++numColumns;
 			XComposite timeComp = new XComposite(page, SWT.NONE);
 			timeComp.getGridLayout().numColumns = 2;
-			
+
 			new Label(timeComp, SWT.NONE).setText(Messages.getString("CalendarDateTimeEditLookupDialog.label.date")); //$NON-NLS-1$
 			createDateDateTime(timeComp);
-			
+
 			int timeStyle = SWT.TIME;
-			
+
 			if ((DateFormatProvider.TIME_SEC & flags) == DateFormatProvider.TIME_SEC)
 				timeStyle = timeStyle | SWT.MEDIUM;
-			
+
 			if ((DateFormatProvider.TIME_MSEC & flags) == DateFormatProvider.TIME_MSEC)
 				timeStyle = timeStyle | SWT.LONG;
-			
+
 			new Label(timeComp, SWT.NONE).setText(Messages.getString("CalendarDateTimeEditLookupDialog.label.time")); //$NON-NLS-1$
 			timeDateTime = new DateTime(timeComp, timeStyle | SWT.BORDER);
 			timeDateTime.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			DateTimeUtil.setDate(date, timeDateTime);	
+			DateTimeUtil.setDate(date, timeDateTime);
 		}
-		
+
 		page.setLayout(new GridLayout(numColumns, false));
 		return page;
 	}
-		
+
 	private void createDateDateTime(Composite parent) {
 		dateDateTime = new DateTime(parent, SWT.DATE | SWT.BORDER);
 		dateDateTime.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -156,31 +156,28 @@ extends Dialog
 			}
 		});
 	}
-	
+
 	public Calendar getDate() {
 		return date;
 	}
 
 	@Override
-	protected void okPressed() 
+	protected void okPressed()
 	{
-		if (calendarDateTime != null) {
+		if (calendarDateTime != null)
+		{
 			date.set(Calendar.YEAR, calendarDateTime.getYear());
 			date.set(Calendar.MONTH, calendarDateTime.getMonth());
 			date.set(Calendar.DAY_OF_MONTH, calendarDateTime.getDay());
-//			date.setYear(calendarDateTime.getYear());
-//			date.setMonth(calendarDateTime.getMonth());
-//			date.setDate(calendarDateTime.getDay());
 		}
-		if (timeDateTime != null) {
-			date.set(Calendar.HOUR_OF_DAY, calendarDateTime.getHours());
-			date.set(Calendar.MINUTE, calendarDateTime.getMinutes());
-			date.set(Calendar.SECOND, calendarDateTime.getSeconds());
-//			date.setHours(timeDateTime.getHours());
-//			date.setMinutes(timeDateTime.getMinutes());
-//			date.setSeconds(timeDateTime.getSeconds());
+
+		if (timeDateTime != null)
+		{
+			date.set(Calendar.HOUR_OF_DAY, timeDateTime.getHours());
+			date.set(Calendar.MINUTE, timeDateTime.getMinutes());
+			date.set(Calendar.SECOND, timeDateTime.getSeconds());
 		}
 		super.okPressed();
 	}
-	
+
 }
