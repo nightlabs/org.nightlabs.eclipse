@@ -20,45 +20,41 @@ import com.sun.pdfview.PDFPage;
  */
 public class PdfDocument {
 	
-	private static final int MARGIN_BETWEEN_PAGES = 20;
-	private PDFFile pdfFile;	
-	List<Integer> result = new ArrayList<Integer>();
-
 	/**
 	 * The bounds of the complete document, i.e. all pages laid down on a virtual floor. So we need to know the size
 	 * of our floor in order to know the ranges of the scroll bars. This coordinate system starts at (0, 0) at the
-	 * left top corner and the width + height is specified here.
+	 * top left corner and the width + height is specified here.
 	 */
 	private Point2D.Double documentBounds;
+	
+	private static final int MARGIN_BETWEEN_PAGES = 20;
+	private PDFFile pdfFile;	
+	List<Integer> result = new ArrayList<Integer>();
 	private List<Rectangle2D.Double> pageBounds;
 
-	public PdfDocument(PDFFile pdfFile) {
+	
+	public PdfDocument(PDFFile pdfFile) {	
 		
-		setPdfFile(pdfFile);
-		
-		documentBounds = new Point2D.Double();
-		pageBounds = new ArrayList<Rectangle2D.Double>(pdfFile.getNumPages());
-		
-		documentBounds.setLocation(0, 0);
 		double nextPageTop = 0;
+		documentBounds = new Point2D.Double(0,0);
+		pageBounds = new ArrayList<Rectangle2D.Double>(pdfFile.getNumPages());	
+		setPdfFile(pdfFile);	
 
-		for (int j = 0; j < pdfFile.getNumPages(); j++) {					
-			// get the corresponding PDF page and its properties (height and width), beginning with index one, not zero !!!!!
+		for (int j = 0; j < pdfFile.getNumPages(); j++) {				
+			// get all PDF pages and corresponding properties (width and height), starting with index one (not zero!)
 			PDFPage pdfPage = pdfFile.getPage(j + 1);
-			double pdfPageWidth = pdfPage.getBBox().getWidth();		
-//			System.out.println("page width: " + pdfPageWidth);
-			double pdfPageHeight = pdfPage.getBBox().getHeight();   
-//			System.out.println("page height: " + pdfPageHeight);			
-			// maintain maximum width and height of all PDF pages
-			if (documentBounds.x < pdfPageWidth)
-				documentBounds.x = pdfPageWidth;
-			// create a new rectangle for each page and insert it into its place in the virtual floor (dependent on the y-coordinate) 
+			double pdfPageWidth = pdfPage.getBBox().getWidth();	
+			double pdfPageHeight = pdfPage.getBBox().getHeight();   		
+			if (documentBounds.x < pdfPageWidth) {
+				documentBounds.x = pdfPageWidth;	
+			}
+//			Logger.getRootLogger().info("page width: " + pdfPageWidth + "; page height: " + pdfPageHeight);	
+			// create a new rectangle for each page and insert it into its place in the virtual floor
 			pageBounds.add(new Rectangle2D.Double(0, nextPageTop, pdfPageWidth, pdfPageHeight));
-			nextPageTop += pdfPageHeight + MARGIN_BETWEEN_PAGES;			
+			nextPageTop += pdfPageHeight + MARGIN_BETWEEN_PAGES;				
 		}
-
-//		documentBounds.y += Math.max(0, nextPageTop - MARGIN_BETWEEN_PAGES);
 		documentBounds.y += nextPageTop;
+//		documentBounds.y += Math.max(0, nextPageTop - MARGIN_BETWEEN_PAGES);
 
 		// put all pages horizontally in the middle
 		for (Rectangle2D.Double pageBound : pageBounds) {
@@ -67,14 +63,13 @@ public class PdfDocument {
 	}
 
 	/**
-	 * Get the page numbers (1-based) of those pages that are partially or completely visible within the
+	 * Get a list of page numbers (one-based) of those pages that are partially or completely visible within the
 	 * given bounds.
 	 *
-	 * @param bufferBounds the coordinates of the area of interest.
-	 * @return the page numbers.
+	 * @param bufferBounds coordinates of the area of interest.
+	 * @return a list of those page numbers visible in the given buffer bounds.
 	 */
-	public List<Integer> getVisiblePages(Rectangle2D bufferBounds)
-	{		
+	public List<Integer> getVisiblePages(Rectangle2D bufferBounds) {		
 		Rectangle2D.Double pageInTheMiddlePageBound;
 		
 		// (A) Algorithm 1: naive iteration through all pages
@@ -109,6 +104,14 @@ public class PdfDocument {
 		
 	}
 	
+	/**
+	 * Implementation of nested intervals. 
+	 *
+	 * @param beginningOfInterval starting point of the currently considered interval
+	 * @param endOfInterval end point of the currently considered interval
+	 * @param pageNumber page in the middle of the currently considered interval
+	 * @param bufferBounds coordinates of the area of interest
+	 */
 	public void computeNestedIntervals (int beginningOfInterval, int endOfInterval, int pageNumber, Rectangle2D bufferBounds) {
 		
 		Rectangle2D.Double pageInTheMiddlePageBound;
@@ -116,21 +119,24 @@ public class PdfDocument {
 		Rectangle2D.Double pageUpPageBound;		
 		boolean pageUpIsPartOfBuffer = true;
 		boolean pageDownIsPartOfBuffer = true;
-		System.out.println("interval: [" + beginningOfInterval + "," + endOfInterval + "]");
+		Logger.getRootLogger().info("interval: [" + beginningOfInterval + "," + endOfInterval + "]");
 		
 		if (pageNumber >= 1 && pageNumber <= pdfFile.getNumPages()) {
 			pageInTheMiddlePageBound = pageBounds.get(pageNumber - 1);
 		
 			if (bufferBounds.contains(pageInTheMiddlePageBound) || bufferBounds.intersects(pageInTheMiddlePageBound)) {
 				// a) the page in the middle is already lying inside the given buffer bounds => get neighbor pages lying in buffer, too  
-				result.add(pageNumber);System.out.println("adding page " + pageNumber + " to result list");
+				result.add(pageNumber);
+				Logger.getRootLogger().info("adding page " + pageNumber + " to result list");
 				int pageNumberDown = pageNumber;
 				int pageNumberUp = pageNumber;
 				while (pageUpIsPartOfBuffer == true && pageNumberDown - 1 >= 1) {
 					pageNumberDown -= 1;
 					pageDownPageBound = pageBounds.get(pageNumberDown - 1);
 					if (bufferBounds.contains(pageDownPageBound) || bufferBounds.intersects(pageDownPageBound)) {
-						result.add(pageNumberDown);System.out.println("adding page " + pageNumberDown + " to result list");}
+						result.add(pageNumberDown);
+						Logger.getRootLogger().info("adding page " + pageNumberDown + " to result list");
+					}
 					else
 						pageUpIsPartOfBuffer = false;
 				}
@@ -138,13 +144,15 @@ public class PdfDocument {
 					pageNumberUp += 1;
 					pageUpPageBound = pageBounds.get(pageNumberUp - 1);
 					if (bufferBounds.contains(pageUpPageBound) || bufferBounds.intersects(pageUpPageBound)) {
-						result.add(pageNumberUp);System.out.println("adding page " + pageNumberUp + " to result list");}
+						result.add(pageNumberUp);
+						Logger.getRootLogger().info("adding page " + pageNumberUp + " to result list");
+					}
 					else
 						pageDownIsPartOfBuffer = false;
 				}
 			}
 			else {
-				// b) the page in the middle is not lying inside the given buffer bounds => divide interval (down- or upwards)
+				// b) the page in the middle is not lying inside the given buffer bounds => divide interval again (down- or upwards)
 				if (pageInTheMiddlePageBound.y + pageInTheMiddlePageBound.height < bufferBounds.getY()) {
 					// go upwards (page numbers are getting higher)
 					beginningOfInterval = pageNumber;
@@ -187,5 +195,21 @@ public class PdfDocument {
 	
 	public void setPdfFile(PDFFile pdfFile) {
 		this.pdfFile = pdfFile;
+	}
+
+	public List<Integer> getResult() {
+		return result;
+	}
+
+	public void setResult(List<Integer> result) {
+		this.result = result;
+	}
+
+	public static int getMARGIN_BETWEEN_PAGES() {
+		return MARGIN_BETWEEN_PAGES;
+	}
+
+	public List<Rectangle2D.Double> getPageBounds() {
+		return pageBounds;
 	}
 }

@@ -19,9 +19,10 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.FileImageOutputStream;
 
-import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.graphics.Rectangle;
-import org.nightlabs.eclipse.ui.pdfviewer.composite.PdfViewerComposite;
+import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.jobs.Job;
 import org.nightlabs.eclipse.ui.pdfviewer.util.Conversion;
 
 import com.sun.pdfview.PDFPage;
@@ -29,137 +30,216 @@ import com.sun.pdfview.PDFPage;
 
 public class RenderBuffer {
 
-//	private static final int BUFFER_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
-//	private static final int BUFFER_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height * 3;	
-	
 	private PdfDocument pdfDocument;
-	private PdfViewerComposite pdfViewerComposite;
-	private ImageData imageData1, imageData2;
-	private BufferedImage bufferedImageAWTNew1, bufferedImageAWTNew2;
-	private BufferedImage bufferedImage = null; 
-	private Rectangle rectangleBufferedImage;
-	private ImageObserver imageObserver;
-	private Rectangle2D bufferBounds;
+	private BufferedImage bufferedImageMain = null; 
+	private BufferedImage bufferedImageSub = null;
+	private Rectangle2D bufferedImageMainBounds;
+	private Rectangle2D bufferedImageSubBounds;
 	private int bufferWidth;
+	private int bufferHeight;
+	private int round;
 	
 	
-	public RenderBuffer(PdfViewerComposite pdfViewerComposite, PdfDocument pdfDocument) {
-		this.pdfViewerComposite = pdfViewerComposite;
+	public RenderBuffer(PdfDocument pdfDocument) {
 		this.pdfDocument = pdfDocument;
-		bufferWidth = Conversion.convert(pdfDocument.getDocumentBounds().x);
+		this.bufferWidth = Conversion.convert(pdfDocument.getDocumentBounds().x);
+		this.bufferHeight = Toolkit.getDefaultToolkit().getScreenSize().height * 2;
 	}
 
 	/**
-	 * Set the size of the buffer in pixels.
+	 * Creates a new main and a new sub buffer when opening a PDF file.
+	 * In the case the document was already opened a new sub buffer is created if necessary
 	 *
-	 * @param width the width.
-	 * @param height the height.
+	 * @param completeRecreation true if both the main buffer and the sub buffer have to be re-created
 	 */
-	public synchronized void createOrSetBufferDimensions(int posX, int posY)
-	{
-		final int BUFFER_WIDTH = Conversion.convert(pdfDocument.getDocumentBounds().x);
-		final int BUFFER_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height * 3;
+	public void createOrSetBufferDimensions(boolean completeRecreation) {
+		createOrSetBufferDimensions(0, 0, completeRecreation);
+	}
+		
+	/**
+	 * Creates main and sub buffer in the case two new buffers are needed.
+	 *
+	 * @param posX the x-coordinate of the upper left corner of the buffers that have to be created.
+	 * @param posY the y-coordinate of the upper left corner of the main buffer that has to be created (the y-coordinate of the sub buffer depends on this value)
+	 * @param completeRecreation true if both the main buffer and the sub buffer have to be (re-)created, otherwise false
+	 */
+	public synchronized void createOrSetBufferDimensions(int posX, int posY, boolean completeRecreation) {
+
 		GraphicsConfiguration graphicsConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
 		
-		if (bufferBounds != null && bufferedImage != null) {
-			// re-calculate bufferBounds
-			System.out.println("recalculate the bufferBounds");
-			bufferedImage = graphicsConfiguration.createCompatibleImage(BUFFER_WIDTH, BUFFER_HEIGHT);
-//			bufferedImageDrawBackground();
-//			bufferedImage.createGraphics().setColor(Color.RED);
-//			bufferedImage.createGraphics().fillRect(0, 0, BUFFER_WIDTH, BUFFER_HEIGHT);
-//			bufferBounds.setRect(posX, posY, BUFFER_WIDTH, BUFFER_HEIGHT);
-			bufferBounds = new java.awt.Rectangle(posX, posY, BUFFER_WIDTH, BUFFER_HEIGHT);
-			setBufferBounds(bufferBounds);
-		}
-		
+		if (bufferedImageMainBounds != null && bufferedImageMain != null && bufferedImageSubBounds != null && bufferedImageSub != null) {
+			
+			if (completeRecreation == false ) {  
+
+				Logger.getRootLogger().info("re-creating only the sub buffer");
+				
+				bufferedImageMain = graphicsConfiguration.createCompatibleImage(bufferWidth, bufferHeight);	// perhaps to omit					
+//				bufferedImageMain = bufferedImageSub.getSubimage(0, 0, bufferWidth, bufferHeight);	// to much unsteadiness in case B (see below)
+				bufferedImageMain = bufferedImageSub;
+//				bufferedImageMainBounds = new java.awt.Rectangle(Conversion.convert(bufferedImageSubBounds.getX()), Conversion.convert(bufferedImageSubBounds.getY()), bufferWidth, bufferHeight);
+				bufferedImageMainBounds.setRect(bufferedImageSubBounds);
+				
+//				printToImageFile(bufferedImageMain, "bufferedImageMain" + round);				
+				
+				if (Conversion.convert(bufferedImageMainBounds.getY())  + (3 * bufferHeight) / 4 <= pdfDocument.getDocumentBounds().y) {
+					bufferedImageSub = graphicsConfiguration.createCompatibleImage(bufferWidth, bufferHeight);
+					bufferedImageSubBounds = new java.awt.Rectangle(posX, Conversion.convert(bufferedImageMainBounds.getY())  + (3 * bufferHeight) / 4, bufferWidth, bufferHeight);
+					Job job = new Job("rendering buffer") {
+						protected IStatus run (IProgressMonitor monitor) {
+							bufferedImageSub = renderBufferedImage(bufferedImageSub, bufferedImageSubBounds);
+//							printToImageFile(bufferedImageSub, "bufferedImageSub" + round);
+							return org.eclipse.core.runtime.Status.OK_STATUS;
+						}
+					};
+					job.setPriority(Job.SHORT);
+					job.schedule();
+				}
+				else
+					// we do not need a second buffer in this case
+				
+				round++;
+			}
+			
+			else {	
+
+				Logger.getRootLogger().info("re-creating both buffers");
+				
+				bufferedImageMain = graphicsConfiguration.createCompatibleImage(bufferWidth, bufferHeight);	// perhaps to omit
+				bufferedImageMainBounds = new java.awt.Rectangle(posX, posY, bufferWidth, bufferHeight);
+//				bufferedImageMainBounds.setRect(posX, posY, bufferWidth, bufferHeight);
+				bufferedImageMain = renderBufferedImage(bufferedImageMain, bufferedImageMainBounds);
+				
+//				printToImageFile(bufferedImageMain, "bufferedImageMain" + round);
+				
+				if (posY + (3 * bufferHeight) / 4 <= pdfDocument.getDocumentBounds().y) {
+					bufferedImageSub = graphicsConfiguration.createCompatibleImage(bufferWidth, bufferHeight);	 // perhaps to omit
+					bufferedImageSubBounds = new java.awt.Rectangle(posX, posY + (3 * bufferHeight) / 4, bufferWidth, bufferHeight);
+	//				bufferedImageSubBounds.setRect(posX, posY + (3 * bufferHeight) / 4, bufferWidth, bufferHeight);
+					Job job = new Job("rendering buffer") {
+						protected IStatus run (IProgressMonitor monitor) {
+							bufferedImageSub = renderBufferedImage(bufferedImageSub, bufferedImageSubBounds);
+//							printToImageFile(bufferedImageSub, "bufferedImageSub" + round);
+							return org.eclipse.core.runtime.Status.OK_STATUS;
+						}
+					};
+					job.setPriority(Job.SHORT);
+					job.schedule();							
+				}
+				else 
+					// we do not need a second buffer in this case
+				
+				round++;
+			}
+			
+
+		}		
 		else {
-			// calculate bufferBounds the first time
-			bufferedImage = graphicsConfiguration.createCompatibleImage(BUFFER_WIDTH, BUFFER_HEIGHT);
-//			bufferedImageDrawBackground();
-//			System.out.println("pixel color: " + bufferedImage.getRGB(0, 0));
-//			bufferedImage.createGraphics().setColor(Color.RED);
-//			bufferedImage.createGraphics().fillRect(0, 0, BUFFER_WIDTH, BUFFER_HEIGHT);
-			bufferBounds = new java.awt.Rectangle(0, 0, BUFFER_WIDTH, BUFFER_HEIGHT);    // first buffer begins at position (0,0) of the document 
-			setBufferBounds(bufferBounds);
+			
+			Logger.getRootLogger().info("creating both buffers when opening the document");
+			
+			bufferedImageMain = graphicsConfiguration.createCompatibleImage(bufferWidth, bufferHeight);
+			bufferedImageMainBounds = new java.awt.Rectangle(posX, 0, bufferWidth, bufferHeight);    // first buffer begins at position (0,0) of the document 
+			setBufferedImageMainBounds(bufferedImageMainBounds);
+			Logger.getRootLogger().info("rendering normal buffer");
+			bufferedImageMain = renderBufferedImage(bufferedImageMain, bufferedImageMainBounds);
+			
+//			printToImageFile(bufferedImageMain, "bufferedImageMain" + round);
+						
+			// do not put the following three lines into the job as it leads to a null pointer exception
+			// TODO do creation of the sub buffer inside the job
+			bufferedImageSub = graphicsConfiguration.createCompatibleImage(bufferWidth, bufferHeight);
+			bufferedImageSubBounds = new java.awt.Rectangle(posX, 0 + (3 * bufferHeight) / 4 , bufferWidth, bufferHeight);
+			setBufferedImageSubBounds(bufferedImageSubBounds);
+			if (0 + (3 * bufferHeight) / 4 <= pdfDocument.getDocumentBounds().y) {
+				Job job = new Job("rendering buffer") {
+					protected IStatus run (IProgressMonitor monitor) {
+						Logger.getRootLogger().info("rendering down buffer beginning at point " + ((3 * bufferHeight) / 4));
+						bufferedImageSub = renderBufferedImage(bufferedImageSub, bufferedImageSubBounds);
+//						printToImageFile(bufferedImageSub, "bufferedImageSub" + round);
+						return org.eclipse.core.runtime.Status.OK_STATUS;
+					}
+				};
+				job.setPriority(Job.SHORT);
+				job.schedule();
+
+			}
+			else
+				// we do not need a second buffer at all
+			
+			round++;
 		}
 		
-	}
+	}	
 
-	public synchronized void setBufferBounds(Rectangle2D bufferBounds)
-	{
-		this.bufferBounds = bufferBounds;
-		render();
-	}
-
-	protected void render()
-	{
+	/**
+	 * Renders a buffered image by searching those PDF pages of the PDF document that are lying inside the 
+	 * buffer bounds of this buffered image. 
+	 *
+	 * @param bufferedImage the buffered image that has to be rendered
+	 * @param bufferedImageBufferBounds the dimensions of the buffered image that has to be rendered
+	 * @return the rendered image
+	 */
+	protected synchronized BufferedImage renderBufferedImage(BufferedImage bufferedImage, Rectangle2D bufferedImageBufferBounds) {
+		
 		// clear buffer => fill grey
 		boolean endOfPageIsInBuffer;
 		boolean beginningOfPageIsInBuffer;
 		int bufferCoordinateY = 0;
-		List<Integer> pageNumbers = pdfDocument.getVisiblePages(bufferBounds);
-		Collections.sort(pageNumbers);
-//		List<Integer> pageNumbers = new ArrayList<Integer>();
-//		pageNumbers.add(1);
 		
-		for (Integer pageNumber : pageNumbers) {
-			System.out.println("get page " + pageNumber);
+		List<Integer> bufferedImagePageNumbers = pdfDocument.getVisiblePages(bufferedImageBufferBounds);
+		Collections.sort(bufferedImagePageNumbers);
+		
+		for (Integer pageNumber : bufferedImagePageNumbers) {
+//			Logger.getRootLogger().info("get page " + pageNumber);
 			beginningOfPageIsInBuffer = false;
 			endOfPageIsInBuffer = false;
-			// get page bounds 
+
 			Rectangle2D pageBounds = pdfDocument.getPageBounds(pageNumber);
-//			System.out.println("page " + pageNumber + " pageBounds.x: " + pageBounds.getX());
-//			System.out.println("page " + pageNumber + " pageBounds.y: " + pageBounds.getY());
-//			System.out.println("page " + pageNumber + " pageBounds.height: " + pageBounds.getHeight());
-//			System.out.println("page " + pageNumber + " pageBounds.width: " + pageBounds.getWidth());
-			// get PDF page
 			PDFPage pdfPage = pdfDocument.getPdfFile().getPage(pageNumber);			
 
-			if (bufferBounds.getY() <= pageBounds.getY() && pageBounds.getY() < bufferBounds.getY() + bufferBounds.getHeight())
+			if (bufferedImageBufferBounds.getY() <= pageBounds.getY() && pageBounds.getY() < bufferedImageBufferBounds.getY() + bufferedImageBufferBounds.getHeight())
 				beginningOfPageIsInBuffer = true;
-			if (bufferBounds.getY() < pageBounds.getY() + pageBounds.getHeight() && pageBounds.getY() + pageBounds.getHeight() <= bufferBounds.getY() + bufferBounds.getHeight())
+			if (bufferedImageBufferBounds.getY() < pageBounds.getY() + pageBounds.getHeight() && pageBounds.getY() + pageBounds.getHeight() <= bufferedImageBufferBounds.getY() + bufferedImageBufferBounds.getHeight())
 				endOfPageIsInBuffer = true;		
 			
 			// (A) get remaining part of this image as only its remaining part is lying in buffer 
 			if (beginningOfPageIsInBuffer == false && endOfPageIsInBuffer == true) {
-				System.out.println("get remaining part of this image");
+//				Logger.getRootLogger().info("get remaining part of this image");
 				final boolean[] bufferFinished = new boolean[1];
 				bufferFinished[0] = false;
-				Image pdfImage = pdfPage.getImage(Conversion.convert(pageBounds.getWidth()), Conversion.convert(pageBounds.getHeight() - (bufferBounds.getY() - pageBounds.getY())), 
-						new Rectangle2D.Double(	
-												0, 
-												/* is this a bug? Consideration of the image begins from bottom left point upwards, not from top left point downwards */
-												/* old y-coordinate of this image: bufferBounds.getY() - pageBounds.getY() */ 
-												0,
+				Image pdfImage = pdfPage.getImage(
+						Conversion.convert(pageBounds.getWidth()), 
+						Conversion.convert(pageBounds.getHeight() - (bufferedImageBufferBounds.getY() - pageBounds.getY())), 
+						new Rectangle2D.Double(	0, 													
+												0,	// consideration of PDF images begins from bottom left point upwards, not from top left point downwards (old y-coordinate of this image: bufferedImageMainBounds.getY() - pageBounds.getY())
 												pageBounds.getWidth(), 
-												pageBounds.getHeight() - (bufferBounds.getY() - pageBounds.getY())
+												pageBounds.getHeight() - (bufferedImageBufferBounds.getY() - pageBounds.getY())
 												),
 						new ImageObserver() {
 							@Override
-							public boolean imageUpdate(Image img,
-									int infoflags, int x, int y, int width,
-									int height) {
-//								System.out.println("Image observer image update: " + x + ", " + y +", " + width + ", " + height);
-//								System.out.println("infoflags: " + infoflags);
-//								System.out.println(Thread.currentThread());
-								
-								if (infoflags == 32) {
+							public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {								
+								if (infoflags == 32) 
 									bufferFinished[0] = true;
-								}
 								return true;
-							}
-					
+							}					
 				});
+				
 				while (!bufferFinished[0]) {
 					try {
 						Thread.sleep(10);
-					} catch (InterruptedException e) {
+					} 
+					catch (InterruptedException e) {
 					}					
 				}
+				
+//				printToImageFile(pdfImage, "imageRemainingPart");
 								
 				// and draw it into the buffer
-				bufferedImage.getGraphics().drawImage(pdfImage, bufferedImage.getWidth() / 2 - Conversion.convert(pageBounds.getWidth()) / 2, 0, null);    // bufferCoordinateY is zero
+				bufferedImage.getGraphics().drawImage(	pdfImage, 
+														bufferedImage.getWidth() / 2 - Conversion.convert(pageBounds.getWidth()) / 2, 
+														0,	// bufferCoordinateY is zero
+														null
+														);    
 				bufferCoordinateY += pdfImage.getHeight(null);
 				
 				
@@ -167,234 +247,268 @@ public class RenderBuffer {
 			}
 			// (B) get whole part of this image as it is completely lying in buffer 
 			if (beginningOfPageIsInBuffer == true && endOfPageIsInBuffer == true) {
-				System.out.println("get whole part of this image");
-//				System.out.println(Thread.currentThread());
+//				Logger.getRootLogger().info("get whole part of this image");
 				final boolean[] bufferFinished = new boolean[1];
 				bufferFinished[0] = false;				
-				Image pdfImage = pdfPage.getImage(Conversion.convert(pageBounds.getWidth()), Conversion.convert(pageBounds.getHeight()),
-						new Rectangle2D.Double(
-												0,
+				Image pdfImage = pdfPage.getImage(
+						Conversion.convert(pageBounds.getWidth()), 
+						Conversion.convert(pageBounds.getHeight()),
+						new Rectangle2D.Double(	0,
 												0,
 												pageBounds.getWidth(),
 												pageBounds.getHeight()
 												),
 						new ImageObserver() {
 							@Override
-							public boolean imageUpdate(Image img,
-									int infoflags, int x, int y, int width,
-									int height) {
-//								System.out.println("Image observer image update: " + x + ", " + y +", " + width + ", " + height);
-//								System.out.println("infoflags: " + infoflags);
-//								System.out.println(Thread.currentThread());
-								
-								if (infoflags == 32) {
+							public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) { 								
+								if (infoflags == 32) 
 									bufferFinished[0] = true;
-								}
 								return true;
-							}
-					
+							}					
 				});
+				
 				while (!bufferFinished[0]) {
 					try {
 						Thread.sleep(10);
-					} catch (InterruptedException e) {
+					}
+					catch (InterruptedException e) {
 					}					
-				}
+				}	
 				
-		/*		ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
-				try {
-					writer.setOutput(new FileImageOutputStream(new File("/tmp/test-ab.jpg")));
-					writer.write((RenderedImage) pdfImage);
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}*/
+//				printToImageFile(pdfImage, "imageWholePart");
 				
 				// and draw it into the buffer
 				bufferCoordinateY += 20;
-//				System.out.println("Drawing to " + (bufferedImage.getWidth() / 2 - Conversion.convert(pageBounds.getWidth()) / 2) + ", " + bufferCoordinateY);
-				bufferedImage.getGraphics().drawImage(pdfImage, bufferedImage.getWidth() / 2 - Conversion.convert(pageBounds.getWidth()) / 2, bufferCoordinateY, null);
+//				Logger.getRootLogger().info("Drawing to " + (bufferedImageMain.getWidth() / 2 - Conversion.convert(pageBounds.getWidth()) / 2) + ", " + bufferCoordinateY);
+				bufferedImage.getGraphics().drawImage(	pdfImage, 
+														bufferedImage.getWidth() / 2 - Conversion.convert(pageBounds.getWidth()) / 2, 
+														bufferCoordinateY, 
+														null
+														);
 				bufferCoordinateY += pdfImage.getHeight(null);
+				
+				
 				
 			}
 			// (C) get upper part of this image as only its upper part is lying in buffer 
 			if (beginningOfPageIsInBuffer == true && endOfPageIsInBuffer == false) {
-				System.out.println("get upper part of this image");
-				System.out.println("bufferBounds.getY() + bufferBounds.getHeight() - pageBounds.getY(): " + (bufferBounds.getY() + bufferBounds.getHeight() - pageBounds.getY()));
+//				Logger.getRootLogger().info("get upper part of this image");
 				final boolean[] bufferFinished = new boolean[1];
-				bufferFinished[0] = false;	
-				
-				Image pdfImage = pdfPage.getImage(Conversion.convert(pageBounds.getWidth()), Conversion.convert(bufferBounds.getY() + bufferBounds.getHeight() - pageBounds.getY()),
-						new Rectangle2D.Double(     
-												0,
-												/* is this a bug? Consideration of the image begins from bottom left point upwards, not from top left point downwards */
-												/* old y-coordinate of this image: 0 */
-												pageBounds.getHeight() - (bufferBounds.getY() + bufferBounds.getHeight() - pageBounds.getY()),      
+				bufferFinished[0] = false;					
+				Image pdfImage = pdfPage.getImage(
+						Conversion.convert(pageBounds.getWidth()), 
+						Conversion.convert(bufferedImageBufferBounds.getY() + bufferedImageBufferBounds.getHeight() - pageBounds.getY()),
+						new Rectangle2D.Double( 0,		
+												// consideration of PDF images begins from bottom left point upwards, not from top left point downwards (old value: 0)
+												pageBounds.getHeight() - (bufferedImageBufferBounds.getY() + bufferedImageBufferBounds.getHeight() - pageBounds.getY()),	     
 												pageBounds.getWidth(),
-												bufferBounds.getY() + bufferBounds.getHeight() - pageBounds.getY()
+												bufferedImageBufferBounds.getY() + bufferedImageBufferBounds.getHeight() - pageBounds.getY()
 												),
 						new ImageObserver() {
 							@Override
-							public boolean imageUpdate(Image img,
-									int infoflags, int x, int y, int width,
-									int height) {
-//								System.out.println("Image observer image update: " + x + ", " + y +", " + width + ", " + height);
-//								System.out.println("infoflags: " + infoflags);
-//								System.out.println(Thread.currentThread());
-								
-								if (infoflags == 32) {
+							public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
+								if (infoflags == 32) 
 									bufferFinished[0] = true;
-								}
 								return true;
-							}
-					
+							}					
 				});
+				
 				while (!bufferFinished[0]) {
 					try {
 						Thread.sleep(10);
-					} catch (InterruptedException e) {
+					} 
+					catch (InterruptedException e) {
 					}					
-				}
-/*				ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
-				try {
-					writer.setOutput(new FileImageOutputStream(new File("/home/frederik/temp/upper_part.jpg")));
-					writer.write((RenderedImage) pdfImage);
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}*/
+				}			
+				
+//				printToImageFile(pdfImage, "imageUpperPart");
 				
 				// and draw it into the buffer
 				bufferCoordinateY += 20;
-				bufferedImage.getGraphics().drawImage(pdfImage, bufferedImage.getWidth() / 2 - Conversion.convert(pageBounds.getWidth()) / 2, bufferCoordinateY, null);				
+				bufferedImage.getGraphics().drawImage(	pdfImage, 
+														bufferedImage.getWidth() / 2 - Conversion.convert(pageBounds.getWidth()) / 2, 
+														bufferCoordinateY, 
+														null
+														);				
 			}
 			
 			
 			
 			// (D) get part of this image as beginning AND end of it are not lying in buffer
 			if (beginningOfPageIsInBuffer == false && endOfPageIsInBuffer == false) {
-				System.out.println("get part of this image");
+//				Logger.getRootLogger().info("get part of this image");
 				final boolean[] bufferFinished = new boolean[1];
 				bufferFinished[0] = false;	
-				Image pdfImage = pdfPage.getImage(Conversion.convert(pageBounds.getWidth()), Conversion.convert(bufferBounds.getHeight()),
-						new Rectangle2D.Double(
-												0,
-												bufferBounds.getY() - pageBounds.getY(),
+				Image pdfImage = pdfPage.getImage(
+						Conversion.convert(pageBounds.getWidth()), 
+						Conversion.convert(bufferedImageBufferBounds.getHeight()),
+						new Rectangle2D.Double(	0,
+												bufferedImageBufferBounds.getY() - pageBounds.getY(),
 												pageBounds.getWidth(), 
-												bufferBounds.getHeight()
+												bufferedImageBufferBounds.getHeight()
 												),
 						new ImageObserver() {
 							@Override
-							public boolean imageUpdate(Image img,
-									int infoflags, int x, int y, int width,
-									int height) {
-//								System.out.println("Image observer image update: " + x + ", " + y +", " + width + ", " + height);
-//								System.out.println("infoflags: " + infoflags);
-//								System.out.println(Thread.currentThread());
-								
-								if (infoflags == 32) {
+							public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
+								if (infoflags == 32)
 									bufferFinished[0] = true;
-								}
 								return true;
-							}
-					
+							}					
 				});
+				
 				while (!bufferFinished[0]) {
 					try {
 						Thread.sleep(10);
-					} catch (InterruptedException e) {
+					} 
+					catch (InterruptedException e) {
 					}					
 				}	
+				
+//				printToImageFile(pdfImage, "imagePart");
+				
 				// and draw it into the buffer
-				bufferedImage.getGraphics().drawImage(pdfImage, bufferedImage.getWidth() / 2 - Conversion.convert(pageBounds.getWidth()) / 2, 0, null);    // bufferCoordinateY is zero
+				bufferedImage.getGraphics().drawImage(	pdfImage, 
+														bufferedImage.getWidth() / 2 - Conversion.convert(pageBounds.getWidth()) / 2, 
+														0, // bufferCoordinateY is zero
+														null
+														);    
 			}			
 		}
-//		setBufferedImage(bufferedImage);
+//		printToImageFile(bufferedImageMain, "buffer" + round);
+//		round++;
+		return bufferedImage;
 	}
 	
+
+
+	/**
+	 * Draws a certain part (the region of interest) of the main buffer onto the screen.  
+	 *
+	 * @param graphics2D the graphics context of the panel 
+	 * @param region the region of interest of the document that shall be drawn onto the screen
+	 */	
 	public synchronized void drawRegion(Graphics2D graphics2D, Rectangle2D region) {
-		// TODO: Convert the absolutely given region to coordinates relative to the buffer origin 
-		// This might require redraw, if the region is out of the buffer
-		while (!isRendered()) {
-			System.out.println("Waiting for buffer");
+		
+		boolean createTwoNewBuffers = false;
+		boolean createOneNewBufferDownwards = false;
+		boolean createOneNewBufferUpwards = false;		
+		
+		while ((!bufferedImageMainIsRendered()) && (!bufferedImageSubIsRendered())) {
+			Logger.getRootLogger().info("waiting for buffer to be rendered...");
 		}
-		getBufferedImage().flush();
-//		graphics2D.drawImage(getBufferedImage(), /*Conversion.convert((double)(pdfViewerComposite.getScreenSize().width) / 2 - bufferBounds.getWidth() / 2),*/0, 0, null);
-				
-		if ( /*(region.getX() + region.getWidth() > bufferBounds.getX() + bufferBounds.getWidth()) || */ (region.getY() + region.getHeight() > bufferBounds.getY() + bufferBounds.getHeight()) ||
-				/*(region.getX() < bufferBounds.getX()) || */ (region.getY() < bufferBounds.getY())) {
-			// (A) current view (region) doesn't fit in current buffer anymore => a new buffer is needed
-			System.out.println("a new buffer must be created");
-			int posX = 0, posY = 0;
-			if (region.getY() + region.getHeight() > bufferBounds.getY() + bufferBounds.getHeight()) {			
-				// model 1: construct new buffer in a way that region lies vertically in the center of this new buffer
-//				int posY = Conversion.convert(Math.max(0, region.getY() - (bufferBounds.getHeight() / 2 - region.getHeight() / 2)));  
-				// model 2: construct new buffer in a way that region lies nearly at the top of this new buffer
-				posY = Conversion.convert(Math.max(0, region.getY() - region.getHeight() / 2));  
-			}
-			if (region.getY() < bufferBounds.getY()) {
-				// model 3: construct new buffer in a way that region lies nearly at the bottom of this new buffer
-				posY = Conversion.convert(Math.max(0, region.getY() - (bufferBounds.getHeight() - 3/2 * region.getHeight())));			
-			}
-			createOrSetBufferDimensions(posX, posY);						
+		
+		getBufferedImageMain().flush();
+		getBufferedImageSub().flush();
+
+		// TODO buffer width administration
+		if (region.getY() + region.getHeight() > bufferedImageSubBounds.getY() + bufferedImageSubBounds.getHeight())
+			createTwoNewBuffers = true;
+		if (region.getY() + region.getHeight() > bufferedImageMainBounds.getY() + bufferedImageMainBounds.getHeight() && 
+				region.getY() + region.getHeight() <= bufferedImageSubBounds.getY() + bufferedImageSubBounds.getHeight())
+			createOneNewBufferDownwards = true;
+		if (region.getY() < bufferedImageMainBounds.getY())
+			createOneNewBufferUpwards = true;		
+		
+		if (createTwoNewBuffers == true) {	
+			// (A) current view (region) does not fit in both buffers anymore => create two new buffers
+			Logger.getRootLogger().info("(A) current view (region) does not fit in both buffers anymore => create two new buffers");
+			int posX = 0;
+			int posY = Conversion.convert(Math.max(0, region.getY() - region.getHeight() / 2));  // y-position of new normal buffer
+			createOrSetBufferDimensions(posX, posY, true);				
 		}
-		else {
-			// (B) current view (region) does still fit in current buffer
-			// nothing to do but drawing (see below)
-			System.out.println("distance to end of this buffer: " + ((bufferBounds.getY() + bufferBounds.getHeight()) - (region.getY() + region.getHeight())));
-			System.out.println("distance to beginning of this buffer: " + (region.getY() - bufferBounds.getY()));
+		if (createOneNewBufferDownwards == true) {
+			// (B) current view (region) does not fit in normal buffer anymore => use down buffer as normal buffer instead and create new down buffer below the old down buffer
+			Logger.getRootLogger().info("(B) current view (region) does not fit in normal buffer anymore => use down buffer as normal buffer instead and create new down buffer below the old down buffer");
+			createOrSetBufferDimensions(false);	
 		}
+		if (createOneNewBufferUpwards == true) {
+			// (C) current view (region) does not fit in normal buffer anymore => create two new buffers
+			Logger.getRootLogger().info("(C) current view (region) does not fit in normal buffer anymore => create two new buffers");
+			int posX = 0;
+			int posY = Conversion.convert(Math.max(0, region.getY() - (bufferedImageMainBounds.getHeight() - 3/2 * region.getHeight())));  // y-position of new buffer
+			createOrSetBufferDimensions(posX, posY, true);	
+		}		
+		if (createTwoNewBuffers == false && createOneNewBufferDownwards == false && createOneNewBufferUpwards == false) {
+			// (D) current view (region) does still fit in current buffer => nothing to do but drawing
+			Logger.getRootLogger().info("distance to end of normal buffer: " + ((bufferedImageMainBounds.getY() + bufferedImageMainBounds.getHeight()) - (region.getY() + region.getHeight())));
+			Logger.getRootLogger().info("distance to beginning of normal buffer: " + (region.getY() - bufferedImageMainBounds.getY()));					
+		}		
 		
 		// draw current view (region) of buffer onto the screen
-//		System.out.println("region x: " + region.getX() + "; buffer bounds x: " + bufferBounds.getX());
-//		System.out.println("region y: " + region.getY() + "; buffer bounds y: " + bufferBounds.getY());
 		
-		// works, but draws the images to the left side of the screen
+		// works, but draws images to the left side of the screen
 /*		graphics2D.drawImage(getBufferedImage(), 
 				// destination rectangle (screen) given as two points d1 and d2
 				0, 0, 
 				bufferWidth, Conversion.convert(region.getHeight()),
 				// source (certain rectangle in the current buffer) given as two points s1 and s2
-				Conversion.convert(region.getX() - bufferBounds.getX()), Conversion.convert(region.getY() - bufferBounds.getY()),		
-				Conversion.convert(region.getX() - bufferBounds.getX() + bufferWidth), Conversion.convert(region.getY() - bufferBounds.getY() + region.getHeight()),
+				Conversion.convert(region.getX() - bufferedImageMainBounds.getX()), Conversion.convert(region.getY() - bufferedImageMainBounds.getY()),		
+				Conversion.convert(region.getX() - bufferedImageMainBounds.getX() + bufferWidth), Conversion.convert(region.getY() - bufferedImageMainBounds.getY() + region.getHeight()),
 				null
 				);*/
 		
-		graphics2D.drawImage(getBufferedImage(), 
+		graphics2D.drawImage(getBufferedImageMain(), 
 				// destination rectangle (screen) given as TWO POINTS d1 and d2 (not width and height)
 				Math.max(0, Conversion.convert(region.getWidth() / 2 - bufferWidth / 2)),  0, 
 				Conversion.convert(Math.max(0 + bufferWidth, region.getWidth() / 2 - bufferWidth / 2 + bufferWidth)), Conversion.convert(region.getHeight()),
 				// source (certain rectangle in the current buffer) given as TWO POINTS s1 and s2 (not width and height)
-				Conversion.convert(region.getX() - bufferBounds.getX()), Conversion.convert(region.getY() - bufferBounds.getY()),		
-				Conversion.convert(region.getX() - bufferBounds.getX() + bufferWidth), Conversion.convert(region.getY() - bufferBounds.getY() + region.getHeight()),
+				Conversion.convert(region.getX() - bufferedImageMainBounds.getX()), Conversion.convert(region.getY() - bufferedImageMainBounds.getY()),		
+				Conversion.convert(region.getX() - bufferedImageMainBounds.getX() + bufferWidth), Conversion.convert(region.getY() - bufferedImageMainBounds.getY() + region.getHeight()),
 				null
-				);
-			
+				);		
 		
 	}
-
-	public Rectangle2D getBufferBounds() {
-		return bufferBounds;
-	}
-
-	public boolean isRendered() {
-		return bufferBounds != null;
+	
+	/**
+	 * Sets the background of a given buffered image to a certain color by setting every pixel separately (expensive). 
+	 *
+	 */
+	public void bufferedImageDrawBackground () {
+		for (int j = 0; j < Conversion.convert(pdfDocument.getDocumentBounds().x); j++) {
+			for (int i = 0; i < bufferHeight; i++)
+				bufferedImageMain.setRGB(j, i, - 5000000);
+		}
 	}
 	
-	public synchronized BufferedImage getBufferedImage() {
-		if (!isRendered())
-			render();
-		return bufferedImage;
+	/**
+	 * Writes a given image to a file. 
+	 *
+	 * @param pdfImage the image that shall be written to a file
+	 * @param filenamePrefix the prefix of the filename of the file the image is written to dependent on part and round 
+	 */
+	public void printToImageFile (Image pdfImage, String filenamePrefix) {
+		ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
+		try {
+			writer.setOutput(new FileImageOutputStream(new File("/home/frederik/temp/" + filenamePrefix + ".jpg")));
+			writer.write((RenderedImage) pdfImage);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}	
+
+	public boolean bufferedImageMainIsRendered() {
+		return bufferedImageMainBounds != null;	
+	}
+	public boolean bufferedImageSubIsRendered() {
+		return bufferedImageSubBounds != null;	
+	}
+	
+	public synchronized BufferedImage getBufferedImageMain() {
+		if (!bufferedImageMainIsRendered())
+			renderBufferedImage(bufferedImageMain, bufferedImageMainBounds);
+		return bufferedImageMain;
+	}	
+	
+	public synchronized BufferedImage getBufferedImageSub() {
+		if (!bufferedImageSubIsRendered())
+			renderBufferedImage(bufferedImageSub, bufferedImageSubBounds);
+		return bufferedImageSub;
 	}
 
-	public void setBufferedImage(BufferedImage bufferedImage) {
-		this.bufferedImage = bufferedImage;
+	public void setBufferedImageMain(BufferedImage bufferedImageMain) {
+		this.bufferedImageMain = bufferedImageMain;
 	}
 
 	public PdfDocument getPdfDocument() {
@@ -403,17 +517,51 @@ public class RenderBuffer {
 
 	public void setPdfDocument(PdfDocument pdfDocument) {
 		this.pdfDocument = pdfDocument;
+	}	
+	
+	public void setBufferedImageSub(BufferedImage bufferedImageSub) {
+		this.bufferedImageSub = bufferedImageSub;
 	}
-	
-	public void bufferedImageDrawBackground () {
-		for (int j = 0; j < Conversion.convert(pdfDocument.getDocumentBounds().x); j++) {
-			for (int i = 0; i < Toolkit.getDefaultToolkit().getScreenSize().height * 3; i++)
-				bufferedImage.setRGB(j, i, - 5000000);
-		}
+
+	public Rectangle2D getBufferedImageMainBounds() {
+		return bufferedImageMainBounds;
 	}
-	
-	
-	
+
+	public void setBufferedImageMainBounds(Rectangle2D bufferedImageMainBounds) {
+		this.bufferedImageMainBounds = bufferedImageMainBounds;
+	}
+
+	public Rectangle2D getBufferedImageSubBounds() {
+		return bufferedImageSubBounds;
+	}
+
+	public void setBufferedImageSubBounds(Rectangle2D bufferedImageSubBounds) {
+		this.bufferedImageSubBounds = bufferedImageSubBounds;
+	}
+
+	public int getBufferWidth() {
+		return bufferWidth;
+	}
+
+	public void setBufferWidth(int bufferWidth) {
+		this.bufferWidth = bufferWidth;
+	}
+
+	public int getBufferHeight() {
+		return bufferHeight;
+	}
+
+	public void setBufferHeight(int bufferHeight) {
+		this.bufferHeight = bufferHeight;
+	}
+
+	public int getRound() {
+		return round;
+	}
+
+	public void setRound(int round) {
+		this.round = round;
+	}
 	
 	
 }
