@@ -36,8 +36,8 @@ public class RenderThread extends Thread {
 				return;
 
 			// (A) no buffers exist (this is the case the PDF document is loaded at the beginning)
-			if (renderBuffer.getBufferedImageMainBounds() == null) {				
-				renderBuffer.createOrSetBufferDimensions(true); 
+			if (renderBuffer.getBufferedImageMainBounds() == null) {	// old version: getBufferBounds()			
+				renderBuffer.createOrSetBufferDimensions(true); // old version: renderBuffer.createOrSetBufferDimensions(0, 0); 
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
 						pdfViewerComposite.getViewPanel().repaint();

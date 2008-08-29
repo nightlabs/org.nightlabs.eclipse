@@ -27,40 +27,49 @@ public class PdfDocument {
 	 */
 	private Point2D.Double documentBounds;
 	
-	private static final int MARGIN_BETWEEN_PAGES = 20;
+	private static final int MARGIN_BETWEEN_PAGES = 20; // DOT = 1/72 inch
 	private PDFFile pdfFile;	
 	List<Integer> result = new ArrayList<Integer>();
 	private List<Rectangle2D.Double> pageBounds;
+	private double nextPageTop;
 
 	
 	public PdfDocument(PDFFile pdfFile) {	
+		setPdfFile(pdfFile);
+		getPdfDocumentProperties();
+	}
 		
-		double nextPageTop = 0;
+	/**
+	 * Get all PDF pages of the PDF document, scale them if wanted, create a new rectangle for each page and insert it 
+	 * into its place in the virtual floor starting with index one (not zero!)
+	 *
+	 */	
+	public void getPdfDocumentProperties() {
+		nextPageTop = 0;
 		documentBounds = new Point2D.Double(0,0);
 		pageBounds = new ArrayList<Rectangle2D.Double>(pdfFile.getNumPages());	
-		setPdfFile(pdfFile);	
-
-		for (int j = 0; j < pdfFile.getNumPages(); j++) {				
-			// get all PDF pages and corresponding properties (width and height), starting with index one (not zero!)
-			PDFPage pdfPage = pdfFile.getPage(j + 1);
+		
+		for (int j = 0; j < pdfFile.getNumPages(); j++) {	
+			PDFPage pdfPage = pdfFile.getPage(j + 1);			
 			double pdfPageWidth = pdfPage.getBBox().getWidth();	
 			double pdfPageHeight = pdfPage.getBBox().getHeight();   		
 			if (documentBounds.x < pdfPageWidth) {
 				documentBounds.x = pdfPageWidth;	
-			}
-//			Logger.getRootLogger().info("page width: " + pdfPageWidth + "; page height: " + pdfPageHeight);	
-			// create a new rectangle for each page and insert it into its place in the virtual floor
+			}			
+//			Logger.getRootLogger().info("page width: " + pdfPage.getBBox().getWidth() + "; page height: " + pdfPage.getBBox().getHeight());	
+			// 
 			pageBounds.add(new Rectangle2D.Double(0, nextPageTop, pdfPageWidth, pdfPageHeight));
-			nextPageTop += pdfPageHeight + MARGIN_BETWEEN_PAGES;				
+			nextPageTop += pdfPageHeight + MARGIN_BETWEEN_PAGES;			
 		}
+		
 		documentBounds.y += nextPageTop;
 //		documentBounds.y += Math.max(0, nextPageTop - MARGIN_BETWEEN_PAGES);
 
 		// put all pages horizontally in the middle
 		for (Rectangle2D.Double pageBound : pageBounds) {
 			pageBound.x = documentBounds.x / 2 - pageBound.width / 2;
-		}
-	}
+		}		
+	}		
 
 	/**
 	 * Get a list of page numbers (one-based) of those pages that are partially or completely visible within the
@@ -172,6 +181,7 @@ public class PdfDocument {
 		}		
 	}
 	
+
 
 	public Rectangle2D.Double getPageBounds(int pageNumber) {
 		return pageBounds.get(pageNumber - 1);

@@ -17,6 +17,10 @@ public class PdfFileLoader {
 	private File file;
 	PDFFile pdfDocument;
 	
+	public PdfFileLoader() {
+		
+	}
+	
 	public PdfFileLoader(File file) {
 		this.file = file;
 	}
@@ -31,10 +35,15 @@ public class PdfFileLoader {
 	}
 
 	public PDFFile loadPdf(File file) throws IOException {
-		RandomAccessFile randomAccessFile = new RandomAccessFile(file, "r");
-		FileChannel fileChannel = randomAccessFile.getChannel();
-		ByteBuffer byteBuffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, 0, fileChannel.size());
-		PDFFile pdfDocument = new PDFFile(byteBuffer);
+		try {
+			RandomAccessFile randomAccessFile = new RandomAccessFile(file, "r");
+			FileChannel fileChannel = randomAccessFile.getChannel();
+			ByteBuffer byteBuffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, 0, fileChannel.size());
+			pdfDocument = new PDFFile(byteBuffer);
+		}
+		catch (IOException exception) {
+			System.out.println(exception.getStackTrace());
+		}
 		return pdfDocument;
 	}
 	
