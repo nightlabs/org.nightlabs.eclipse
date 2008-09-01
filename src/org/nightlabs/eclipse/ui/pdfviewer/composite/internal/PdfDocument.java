@@ -78,7 +78,7 @@ public class PdfDocument {
 	 * @param bufferBounds coordinates of the area of interest.
 	 * @return a list of those page numbers visible in the given buffer bounds.
 	 */
-	public List<Integer> getVisiblePages(Rectangle2D bufferBounds) {		
+	public List<Integer> getVisiblePages(Rectangle2D bufferBounds, double zoomFactor) {		
 		Rectangle2D.Double pageInTheMiddlePageBound;
 		
 		// (A) Algorithm 1: naive iteration through all pages
@@ -96,19 +96,19 @@ public class PdfDocument {
 		// 	i) initialization
 		int beginningOfInterval = 1;
 		int endOfInterval = pdfFile.getNumPages();
-		int pageNumber = (int)Math.ceil((double)pdfFile.getNumPages() / 2);
-		pageInTheMiddlePageBound = pageBounds.get(pageNumber - 1);
+		int pageInTheMiddlePageNumber = (int)Math.ceil((double)pdfFile.getNumPages() / 2);
+		pageInTheMiddlePageBound = pageBounds.get(pageInTheMiddlePageNumber - 1);
 		
 		// 	ii) special case: the page includes the whole buffer (must be a big page) => almost nothing more to do
 		if (pageInTheMiddlePageBound.contains(bufferBounds)) {
 			List<Integer> result = new ArrayList<Integer>();
-			result.add(pageNumber);
+			result.add(pageInTheMiddlePageNumber);
 			return result;
 		}
 		
 		// 	iii) recursive computation of nested intervals until a page is found that is (also partly) lying inside the given buffer bounds
 		result.clear();
-		computeNestedIntervals(beginningOfInterval, endOfInterval, pageNumber, bufferBounds);
+		computeNestedIntervals(beginningOfInterval, endOfInterval, pageInTheMiddlePageNumber, bufferBounds, zoomFactor);
 		return result;
 		
 	}
@@ -121,43 +121,76 @@ public class PdfDocument {
 	 * @param pageNumber page in the middle of the currently considered interval
 	 * @param bufferBounds coordinates of the area of interest
 	 */
-	public void computeNestedIntervals (int beginningOfInterval, int endOfInterval, int pageNumber, Rectangle2D bufferBounds) {
+	public void computeNestedIntervals (int beginningOfInterval, int endOfInterval, int pageNumber, Rectangle2D bufferBounds, double zoomFactor) {
 		
 		Rectangle2D.Double pageInTheMiddlePageBound;
 		Rectangle2D.Double pageDownPageBound;
-		Rectangle2D.Double pageUpPageBound;		
-		boolean pageUpIsPartOfBuffer = true;
-		boolean pageDownIsPartOfBuffer = true;
+		Rectangle2D.Double pageUpPageBound;
+		Rectangle2D pageInTheMiddlePageBoundTemp = new java.awt.Rectangle(0, 0, 0, 0);		
+		Rectangle2D pageDownPageBoundTemp = new java.awt.Rectangle(0, 0, 0, 0);				
+		Rectangle2D pageUpPageBoundTemp = new java.awt.Rectangle(0, 0, 0, 0);
+		boolean pageAboveIsPartOfBuffer = true;
+		boolean pageBelowIsPartOfBuffer = true;
+		double temp = 0;
 		Logger.getRootLogger().info("interval: [" + beginningOfInterval + "," + endOfInterval + "]");
 		
 		if (pageNumber >= 1 && pageNumber <= pdfFile.getNumPages()) {
 			pageInTheMiddlePageBound = pageBounds.get(pageNumber - 1);
+			
+			Logger.getRootLogger().info(pageInTheMiddlePageBound.getWidth());
+			
+			if (zoomFactor >= 0.2 && zoomFactor <= 0.8)
+				temp = 1;
+			else
+				if (zoomFactor >= 1.2 && zoomFactor <= 2)
+					temp = - 1;
+				
+			pageInTheMiddlePageBoundTemp.setRect(	pageInTheMiddlePageBound.getX() + temp * Math.abs(((zoomFactor - 1) * pageInTheMiddlePageBound.width)) / 2,
+													pageInTheMiddlePageBound.getY() * zoomFactor, 
+													pageInTheMiddlePageBound.getWidth() * zoomFactor, 
+													pageInTheMiddlePageBound.getHeight() * zoomFactor
+													);
+			
 		
-			if (bufferBounds.contains(pageInTheMiddlePageBound) || bufferBounds.intersects(pageInTheMiddlePageBound)) {
+			if (bufferBounds.contains(pageInTheMiddlePageBoundTemp) || bufferBounds.intersects(pageInTheMiddlePageBoundTemp)) {
 				// a) the page in the middle is already lying inside the given buffer bounds => get neighbor pages lying in buffer, too  
 				result.add(pageNumber);
 				Logger.getRootLogger().info("adding page " + pageNumber + " to result list");
 				int pageNumberDown = pageNumber;
 				int pageNumberUp = pageNumber;
-				while (pageUpIsPartOfBuffer == true && pageNumberDown - 1 >= 1) {
+				while (pageAboveIsPartOfBuffer == true && pageNumberDown - 1 >= 1) {
 					pageNumberDown -= 1;
 					pageDownPageBound = pageBounds.get(pageNumberDown - 1);
-					if (bufferBounds.contains(pageDownPageBound) || bufferBounds.intersects(pageDownPageBound)) {
+					
+					pageDownPageBoundTemp.setRect(	pageDownPageBound.getX() + temp * Math.abs(((zoomFactor - 1) * pageDownPageBound.width)) / 2,
+													pageDownPageBound.getY() * zoomFactor, 
+													pageDownPageBound.getWidth() * zoomFactor, 
+													pageDownPageBound.getHeight() * zoomFactor
+													);
+					
+					if (bufferBounds.contains(pageDownPageBoundTemp) || bufferBounds.intersects(pageDownPageBoundTemp)) {
 						result.add(pageNumberDown);
 						Logger.getRootLogger().info("adding page " + pageNumberDown + " to result list");
 					}
 					else
-						pageUpIsPartOfBuffer = false;
+						pageAboveIsPartOfBuffer = false;
 				}
-				while (pageDownIsPartOfBuffer == true && pageNumberUp + 1 <= pdfFile.getNumPages()) {
+				while (pageBelowIsPartOfBuffer == true && pageNumberUp + 1 <= pdfFile.getNumPages()) {
 					pageNumberUp += 1;
 					pageUpPageBound = pageBounds.get(pageNumberUp - 1);
-					if (bufferBounds.contains(pageUpPageBound) || bufferBounds.intersects(pageUpPageBound)) {
+					
+					pageUpPageBoundTemp.setRect(	pageUpPageBound.getX() + temp * Math.abs(((zoomFactor - 1) * pageUpPageBound.width)) / 2,
+													pageUpPageBound.getY() * zoomFactor, 
+													pageUpPageBound.getWidth() * zoomFactor, 
+													pageUpPageBound.getHeight() * zoomFactor
+													);
+					
+					if (bufferBounds.contains(pageUpPageBoundTemp) || bufferBounds.intersects(pageUpPageBoundTemp)) {
 						result.add(pageNumberUp);
 						Logger.getRootLogger().info("adding page " + pageNumberUp + " to result list");
 					}
 					else
-						pageDownIsPartOfBuffer = false;
+						pageBelowIsPartOfBuffer = false;
 				}
 			}
 			else {
@@ -167,7 +200,7 @@ public class PdfDocument {
 					beginningOfInterval = pageNumber;
 					pageNumber = pageNumber + (int)Math.ceil(((double)(endOfInterval - beginningOfInterval)) / 2);				
 					// start again with smaller interval
-					computeNestedIntervals(beginningOfInterval, endOfInterval, pageNumber, bufferBounds);
+					computeNestedIntervals(beginningOfInterval, endOfInterval, pageNumber, bufferBounds, zoomFactor);
 				}
 				else {
 					// bufferBounds.getY() + bufferBounds.getHeight() < pageInTheMiddlePageBound.y // it is not necessary to check this 
@@ -175,7 +208,7 @@ public class PdfDocument {
 					endOfInterval = pageNumber;
 					pageNumber = pageNumber - (int)Math.ceil(((double)(endOfInterval - beginningOfInterval)) / 2);
 					// start again with smaller interval
-					computeNestedIntervals(beginningOfInterval, endOfInterval, pageNumber, bufferBounds);
+					computeNestedIntervals(beginningOfInterval, endOfInterval, pageNumber, bufferBounds, zoomFactor);
 				}
 			}		
 		}		
