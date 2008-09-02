@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.ScrollBar;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.internal.PdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.internal.RenderBuffer;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.internal.RenderThread;
-import org.nightlabs.eclipse.ui.pdfviewer.util.Conversion;
+import org.nightlabs.eclipse.ui.pdfviewer.util.Utilities;
 
 
 public class PdfViewerComposite extends Composite {
@@ -165,7 +165,7 @@ public class PdfViewerComposite extends Composite {
 //		Logger.getRootLogger().info("document bounds y: " + pdfDocument.getDocumentBounds().y + " clip bounds height: " + g.getClipBounds().height + " height difference: " + heightDifference);
 
 		if (heightDifference > 0) {
-			final int scrollBarVerticalNumberOfSteps = Conversion.convert(heightDifference / SCROLLING_STEPS_DISTANCE);	   
+			final int scrollBarVerticalNumberOfSteps = Utilities.doubleToInt(heightDifference / SCROLLING_STEPS_DISTANCE);	   
 //			Logger.getRootLogger().info("vertical scroll bar steps: " + scrollBarVerticalNumberOfSteps );					
 			
 			Display.getDefault().asyncExec(new Runnable() {
@@ -188,7 +188,7 @@ public class PdfViewerComposite extends Composite {
 		}		
 		
 		if (widthDifference > 0) {
-			final int scrollBarHorizontalNumberOfSteps = Conversion.convert(widthDifference / SCROLLING_STEPS_DISTANCE);	   
+			final int scrollBarHorizontalNumberOfSteps = Utilities.doubleToInt(widthDifference / SCROLLING_STEPS_DISTANCE);	   
 //			Logger.getRootLogger().info("horizontal scroll bar steps: " + scrollBarHorizontalNumberOfSteps );					
 			
 			Display.getDefault().asyncExec(new Runnable() {
@@ -302,7 +302,7 @@ public class PdfViewerComposite extends Composite {
 	 */
 	public void zoomPDFDocument (double zoomFactor) {
 //		pdfDocument.getPdfDocumentProperties(zoomFactor);
-//		renderBuffer.setBufferWidth(Conversion.convert(pdfDocument.getDocumentBounds().x));
+//		renderBuffer.setBufferWidth(Utilities.convert(pdfDocument.getDocumentBounds().x));
 		renderBuffer.setZoomFactor(zoomFactor);
 		renderBuffer.createOrSetBufferDimensions(true);
 		viewPanel.repaint();
