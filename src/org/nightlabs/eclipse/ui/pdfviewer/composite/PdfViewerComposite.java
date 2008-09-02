@@ -162,11 +162,12 @@ public class PdfViewerComposite extends Composite {
 //		double widthDifference = renderBuffer.getBufferWidth() - g.getClipBounds().width;
 		double heightDifference = pdfDocument.getDocumentBounds().y * renderBuffer.getZoomFactor() - getViewPanel().getHeight();
 		double widthDifference = renderBuffer.getBufferWidth() - getViewPanel().getWidth();
-//		Logger.getRootLogger().info("document bounds y: " + pdfDocument.getDocumentBounds().y + " clip bounds height: " + g.getClipBounds().height + " height difference: " + heightDifference);
+		Logger.getRootLogger().info("document bounds y: " + pdfDocument.getDocumentBounds().y + " zoom factor: " + renderBuffer.getZoomFactor());
+		Logger.getRootLogger().info("panel height: " + getViewPanel().getHeight());
 
 		if (heightDifference > 0) {
 			final int scrollBarVerticalNumberOfSteps = Utilities.doubleToInt(heightDifference / SCROLLING_STEPS_DISTANCE);	   
-//			Logger.getRootLogger().info("vertical scroll bar steps: " + scrollBarVerticalNumberOfSteps );					
+			Logger.getRootLogger().info("vertical scroll bar steps: " + scrollBarVerticalNumberOfSteps );					
 			
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
@@ -303,6 +304,7 @@ public class PdfViewerComposite extends Composite {
 	public void zoomPDFDocument (double zoomFactor) {
 //		pdfDocument.getPdfDocumentProperties(zoomFactor);
 //		renderBuffer.setBufferWidth(Utilities.convert(pdfDocument.getDocumentBounds().x));
+		
 		renderBuffer.setZoomFactor(zoomFactor);
 		renderBuffer.createOrSetBufferDimensions(true);
 		viewPanel.repaint();
