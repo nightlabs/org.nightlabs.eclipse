@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.nightlabs.eclipse.ui.pdfviewer.util.Utilities;
 
 import com.sun.pdfview.PDFFile;
 import com.sun.pdfview.PDFPage;
@@ -145,7 +144,7 @@ public class PdfDocument {
 		boolean pageBelowIsPartOfBuffer = true;
 		double direction = 0;
 		
-		Logger.getRootLogger().info("interval: [" + beginningOfInterval + "," + endOfInterval + "]");
+//		Logger.getRootLogger().info("interval: [" + beginningOfInterval + "," + endOfInterval + "]");
 		
 		if (intervalCenterPageNumber >= 1 && intervalCenterPageNumber <= pdfFile.getNumPages()) {
 			pageInTheMiddlePageBound = pageBounds.get(intervalCenterPageNumber - 1);
