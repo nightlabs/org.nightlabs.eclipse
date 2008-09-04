@@ -484,7 +484,7 @@ public class RenderBuffer {
 	 * @param filenamePrefix the prefix of the filename of the file the image is written to dependent on part and round 
 	 */
 	public void printToImageFile (Image pdfImage, String filenamePrefix) {
-		if (pdfImage != null) {
+/*		if (pdfImage != null) {
 			ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
 			try {
 				writer.setOutput(new FileImageOutputStream(new File("/home/frederik/images/" + filenamePrefix + ".jpg")));
@@ -494,7 +494,7 @@ public class RenderBuffer {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
 	}	
 
 	public boolean bufferedImageMainIsRendered() {

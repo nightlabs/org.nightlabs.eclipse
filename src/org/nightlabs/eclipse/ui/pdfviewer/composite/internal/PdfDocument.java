@@ -27,6 +27,7 @@ public class PdfDocument {
 	 */
 	private Point2D.Double documentBounds;
 	
+	private double documentHeightConverted;
 	private static final int MARGIN_BETWEEN_PAGES = 20; // DOT = 1/72 inch
 	private PDFFile pdfFile;	
 	List<Integer> result = new ArrayList<Integer>();
@@ -45,7 +46,7 @@ public class PdfDocument {
 	 *
 	 */	
 	public void getPdfDocumentProperties() {
-		nextPageTop = 0;
+		nextPageTop = MARGIN_BETWEEN_PAGES;
 		documentBounds = new Point2D.Double(0,0);
 		pageBounds = new ArrayList<Rectangle2D.Double>(pdfFile.getNumPages());	
 		
@@ -56,10 +57,12 @@ public class PdfDocument {
 			if (documentBounds.x < pdfPageWidth) {
 				documentBounds.x = pdfPageWidth;	
 			}			
-//			Logger.getRootLogger().info("page width: " + pdfPage.getBBox().getWidth() + "; page height: " + pdfPage.getBBox().getHeight());	
+			Logger.getRootLogger().info("page width: " + pdfPage.getBBox().getWidth() + "; page height: " + pdfPage.getBBox().getHeight());	
+//			Logger.getRootLogger().info(pdfPage.getWidth() + " " + pdfPage.getHeight());
 			// 
 			pageBounds.add(new Rectangle2D.Double(0, nextPageTop, pdfPageWidth, pdfPageHeight));
 			nextPageTop += pdfPageHeight + MARGIN_BETWEEN_PAGES;			
+//			documentHeightConverted += (double) 7/6 * pdfPageHeight;
 		}
 		
 		documentBounds.y += nextPageTop;
@@ -81,7 +84,7 @@ public class PdfDocument {
 	 */
 	public List<Integer> getVisiblePages(Rectangle2D bufferBounds, double zoomFactor) {		
 		Rectangle2D.Double pageInTheMiddlePageBound;
-		Rectangle2D bufferBoundsZoomed = null;
+//		Rectangle2D bufferBoundsZoomed = null;
 		
 		// (A) Algorithm 1: naive iteration through all pages
 /* 		{
@@ -204,6 +207,8 @@ public class PdfDocument {
 				}
 			}
 			else {
+				if (intervalCenterPageNumber + 1 > pdfFile.getNumPages())
+					return;
 				// b) the page in the middle is not lying inside the given buffer bounds => divide interval again (down- or upwards)
 				if (pageInTheMiddlePageBoundZoomed.getY() + pageInTheMiddlePageBoundZoomed.getHeight() < bufferBounds.getY()) {
 					// go upwards (page numbers are getting higher)
@@ -264,5 +269,13 @@ public class PdfDocument {
 
 	public List<Rectangle2D.Double> getPageBounds() {
 		return pageBounds;
+	}
+
+	public double getDocumentHeightConverted() {
+		return documentHeightConverted;
+	}
+
+	public void setDocumentHeightConverted(double documentHeightConverted) {
+		this.documentHeightConverted = documentHeightConverted;
 	}
 }
