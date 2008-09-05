@@ -27,12 +27,12 @@ public class PdfDocument {
 	 */
 	private Point2D.Double documentBounds;
 	
-	private double documentHeightConverted;
 	private static final int MARGIN_BETWEEN_PAGES = 20; // DOT = 1/72 inch
 	private PDFFile pdfFile;	
-	List<Integer> result = new ArrayList<Integer>();
+	private List<Integer> result;
 	private List<Rectangle2D.Double> pageBounds;
 	private double nextPageTop;
+	private double documentHeightConverted;
 
 	
 	public PdfDocument(PDFFile pdfFile) {	
@@ -47,6 +47,7 @@ public class PdfDocument {
 	 */	
 	public void getPdfDocumentProperties() {
 		nextPageTop = MARGIN_BETWEEN_PAGES;
+		documentHeightConverted = MARGIN_BETWEEN_PAGES;
 		documentBounds = new Point2D.Double(0,0);
 		pageBounds = new ArrayList<Rectangle2D.Double>(pdfFile.getNumPages());	
 		
@@ -59,10 +60,10 @@ public class PdfDocument {
 			}			
 			Logger.getRootLogger().info("page width: " + pdfPage.getBBox().getWidth() + "; page height: " + pdfPage.getBBox().getHeight());	
 //			Logger.getRootLogger().info(pdfPage.getWidth() + " " + pdfPage.getHeight());
-			// 
+			
 			pageBounds.add(new Rectangle2D.Double(0, nextPageTop, pdfPageWidth, pdfPageHeight));
 			nextPageTop += pdfPageHeight + MARGIN_BETWEEN_PAGES;			
-//			documentHeightConverted += (double) 7/6 * pdfPageHeight;
+			documentHeightConverted += pdfPageHeight + MARGIN_BETWEEN_PAGES;
 		}
 		
 		documentBounds.y += nextPageTop;
@@ -84,6 +85,7 @@ public class PdfDocument {
 	 */
 	public List<Integer> getVisiblePages(Rectangle2D bufferBounds, double zoomFactor) {		
 		Rectangle2D.Double pageInTheMiddlePageBound;
+		result = new ArrayList<Integer>();
 //		Rectangle2D bufferBoundsZoomed = null;
 		
 		// (A) Algorithm 1: naive iteration through all pages
@@ -114,7 +116,6 @@ public class PdfDocument {
 		// TODO zooming of page bounds
 		pageInTheMiddlePageBound = pageBounds.get(intervalCenterPageNumber - 1);
 		if (pageInTheMiddlePageBound.contains(bufferBounds)) {
-			List<Integer> result = new ArrayList<Integer>();
 			result.add(intervalCenterPageNumber);
 			return result;
 		}
