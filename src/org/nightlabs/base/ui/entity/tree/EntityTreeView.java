@@ -146,10 +146,10 @@ implements ControllablePart, ISelectionProvider
 	}
 
 	/**
-	 * Returns the entity tree Composite ceated
+	 * Returns the entity tree Composite created
 	 * for this view.
 	 * 
-	 * @return The entity tree Composite ceated
+	 * @return The entity tree Composite created
 	 * for this view.
 	 */
 	public EntityTree getEntityTree() {
