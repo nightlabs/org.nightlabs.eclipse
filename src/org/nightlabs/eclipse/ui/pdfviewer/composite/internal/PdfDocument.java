@@ -27,7 +27,7 @@ public class PdfDocument {
 	 */
 	private Point2D.Double documentBounds;
 	
-	private static final int MARGIN_BETWEEN_PAGES = 20; // DOT = 1/72 inch
+	private final int MARGIN_BETWEEN_PAGES = 20; // DOT = 1/72 inch
 	private PDFFile pdfFile;	
 	private List<Integer> result;
 	private List<Rectangle2D.Double> pageBounds;
@@ -264,7 +264,7 @@ public class PdfDocument {
 		this.result = result;
 	}
 
-	public static int getMARGIN_BETWEEN_PAGES() {
+	public int getMARGIN_BETWEEN_PAGES() {
 		return MARGIN_BETWEEN_PAGES;
 	}
 

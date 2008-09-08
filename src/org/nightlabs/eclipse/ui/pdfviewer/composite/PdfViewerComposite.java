@@ -13,6 +13,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JScrollPane;
 
@@ -32,27 +34,26 @@ import org.nightlabs.eclipse.ui.pdfviewer.composite.internal.RenderThread;
 import org.nightlabs.eclipse.ui.pdfviewer.util.Utilities;
 
 
-public class PdfViewerComposite extends Composite {
+public class PdfViewerComposite extends Composite {	
 	
-	
-	private int scrollingStepsDistance = 10;	
-	
+	private int scrollingStepsDistance = 10;		
+	private Map<Integer, Double> zoomFactorsDownwards; 
+	private Map<Integer, Double> zoomFactorsUpwards;
 	private Composite renderComposite;
 	private RenderBuffer renderBuffer;
 	private RenderThread renderThread;
 	private PdfDocument pdfDocument;
-	private ScrollBar scrollBarVertical; 
-	private ScrollBar scrollBarHorizontal;
-	private int scrollBarHorizontalSelectionOld;
-	private int scrollBarVerticalSelectionOld;
-	private int scrollBarHorizontalSelectionNew;
-	private int scrollBarVerticalSelectionNew;
+	private ScrollBar scrollBarVertical, scrollBarHorizontal;
+	private int scrollBarHorizontalSelectionOld, scrollBarVerticalSelectionOld;
+	private int scrollBarHorizontalSelectionNew, scrollBarVerticalSelectionNew;
+	private int scrollBarVerticalNumberOfSteps, scrollBarHorizontalNumberOfSteps;
 	private Point rectangleViewOrigin;
 	private Dimension screenSize;
-	private double zoomFactor = 1;
-	private boolean startingPoint;
-	private boolean wasZoomed = false;
+	private int zoomFactor = 10;	// = real zoom factor * 10
+	private boolean startingPoint = true;
+	private boolean documentWasZoomed = false;
 	private boolean wantToZoom = false;
+	private double zoomMultiplier;
 	
 	/**
 	 * The AWT frame for this composite.
@@ -63,6 +64,7 @@ public class PdfViewerComposite extends Composite {
 	 */
 	private Panel viewPanel;
 	private JScrollPane jScrollPane;
+	
 
 	public PdfViewerComposite(Composite parent, PdfDocument pdfDocument) {
 		
@@ -71,12 +73,33 @@ public class PdfViewerComposite extends Composite {
 		this.pdfDocument = pdfDocument;
 		renderBuffer = new RenderBuffer(this, pdfDocument);
 		renderComposite = new Composite(this, SWT.EMBEDDED);
-//		renderBuffer = new RenderBuffer(pdfDocument);
+		
+		zoomFactorsDownwards = new HashMap<Integer, Double>();
+		zoomFactorsDownwards.put(18, (double)9/10);
+		zoomFactorsDownwards.put(16, (double)8/9);
+		zoomFactorsDownwards.put(14, (double)7/8);
+		zoomFactorsDownwards.put(12, (double)6/7);
+		zoomFactorsDownwards.put(10, (double)5/6);
+		zoomFactorsDownwards.put(8, (double)4/5);
+		zoomFactorsDownwards.put(6, (double)3/4);
+		zoomFactorsDownwards.put(4, (double)2/3);
+		zoomFactorsDownwards.put(2, (double)1/2);
+		
+		zoomFactorsUpwards = new HashMap<Integer, Double>();
+		zoomFactorsUpwards.put(4, (double)2);
+		zoomFactorsUpwards.put(6, (double)3/2);
+		zoomFactorsUpwards.put(8, (double)4/3);
+		zoomFactorsUpwards.put(10, (double)5/4);
+		zoomFactorsUpwards.put(12, (double)6/5);
+		zoomFactorsUpwards.put(14, (double)7/6);
+		zoomFactorsUpwards.put(16, (double)8/7);
+		zoomFactorsUpwards.put(18, (double)9/8);
+		zoomFactorsUpwards.put(20, (double)10/9);
+		
 		rectangleViewOrigin = new Point(0,0);
-		startingPoint = true;
 		
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		setScreenSize(toolkit.getScreenSize());					
+		screenSize = toolkit.getScreenSize();					
 		scrollBarVertical = this.getVerticalBar(); 	
 		scrollBarHorizontal = this.getHorizontalBar();	
 		
@@ -166,32 +189,33 @@ public class PdfViewerComposite extends Composite {
 	
 	private void setScrollbars() {
 		
-//		double heightDifference = 	pdfDocument.getDocumentBounds().y * renderBuffer.getZoomFactor() + 
-//									(pdfDocument.getPdfFile().getNumPages() + 1) * pdfDocument.getMARGIN_BETWEEN_PAGES() * (1 - zoomFactor) - 
-//									getViewPanel().getHeight();
-		double heightDifference = 	pdfDocument.getDocumentHeightConverted() * renderBuffer.getZoomFactor() + 
-									(pdfDocument.getPdfFile().getNumPages() + 1) * pdfDocument.getMARGIN_BETWEEN_PAGES() * (1 - zoomFactor)- 
-									getViewPanel().getHeight();
-		double widthDifference = 	renderBuffer.getBufferWidth() - getViewPanel().getWidth();
+		double realZoomFactor = ((double)zoomFactor / 10);
+		int heightDifference = 	Utilities.doubleToInt(	pdfDocument.getDocumentBounds().y * realZoomFactor 
+//														+ (pdfDocument.getPdfFile().getNumPages() + 1) * pdfDocument.getMARGIN_BETWEEN_PAGES() * (1 - realZoomFactor) 
+														- getViewPanel().getHeight()
+														);
+
+		int widthDifference = Utilities.doubleToInt(renderBuffer.getBufferWidth() - getViewPanel().getWidth());
 		
-		Logger.getRootLogger().info("document bounds y: " + pdfDocument.getDocumentBounds().y + " zoom factor: " + renderBuffer.getZoomFactor());
-		Logger.getRootLogger().info("panel height: " + getViewPanel().getHeight());
-		Logger.getRootLogger().info("screen resolution: " + Toolkit.getDefaultToolkit().getScreenResolution());
-		Logger.getRootLogger().info("converted document height: " + pdfDocument.getDocumentHeightConverted());
+//		Logger.getRootLogger().info("document bounds y: " + pdfDocument.getDocumentBounds().y + " zoom zoomMultiplier: " + ((double)zoomFactor / 10));
+//		Logger.getRootLogger().info("panel height: " + getViewPanel().getHeight());
+//		Logger.getRootLogger().info("screen resolution: " + Toolkit.getDefaultToolkit().getScreenResolution());
+//		Logger.getRootLogger().info("converted document height: " + pdfDocument.getDocumentHeightConverted());
 		
 		if (heightDifference > 0) {
-			final int scrollBarVerticalNumberOfSteps = Utilities.doubleToInt(heightDifference / (double)scrollingStepsDistance);	   
-			Logger.getRootLogger().info("vertical scroll bar steps: " + scrollBarVerticalNumberOfSteps);	
-			
+			scrollBarVerticalNumberOfSteps = Utilities.doubleToInt((double)heightDifference / scrollingStepsDistance);	   
+			Logger.getRootLogger().info("vertical scroll bar steps: " + scrollBarVerticalNumberOfSteps);				
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
 					if (isDisposed())
 						return;
 					scrollBarVertical.setVisible(true);
 					scrollBarVertical.setMaximum(scrollBarVerticalNumberOfSteps + 10);
-					if (wasZoomed) {						
-						scrollBarVertical.setSelection(Utilities.doubleToIntRoundedDown(scrollBarVertical.getSelection() * renderBuffer.getZoomFactor()));
-						wasZoomed = false;
+					if (documentWasZoomed) {	
+						int newSelection = Utilities.doubleToIntRoundedDown(scrollBarVertical.getSelection() * zoomMultiplier);
+						scrollBarVertical.setSelection(newSelection);
+						scrollBarVerticalSelectionOld = newSelection;
+						documentWasZoomed = false;
 					}
 				}
 			});				
@@ -207,9 +231,7 @@ public class PdfViewerComposite extends Composite {
 		}		
 		
 		if (widthDifference > 0) {
-			final int scrollBarHorizontalNumberOfSteps = Utilities.doubleToInt(widthDifference / scrollingStepsDistance);	   
-//			Logger.getRootLogger().info("horizontal scroll bar steps: " + scrollBarHorizontalNumberOfSteps);					
-			
+			scrollBarHorizontalNumberOfSteps = Utilities.doubleToInt((double)widthDifference / scrollingStepsDistance);	 			
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
 					if (isDisposed())
@@ -249,16 +271,16 @@ public class PdfViewerComposite extends Composite {
 									getViewPanel().getWidth(),
 									getViewPanel().getHeight()
 									)		
-								);		*/
+								);		*/		
 		
+		Logger.getRootLogger().info("rectangleViewOrigin.y: " + rectangleViewOrigin.y);
 		renderBuffer.drawRegion(g, 
-								new Rectangle(
-									rectangleViewOrigin.x,
-									rectangleViewOrigin.y, 
-									getViewPanel().getWidth(),
-									getViewPanel().getHeight()
-									)		
-								);		
+								new Rectangle(	rectangleViewOrigin.x,
+												rectangleViewOrigin.y, 
+												getViewPanel().getWidth(),
+												getViewPanel().getHeight()
+												)		
+								);
 				
 	}
 
@@ -335,18 +357,25 @@ public class PdfViewerComposite extends Composite {
 	 */
 	public void zoomPDFDocument (int mouseRotationOrientation) {
 		
+		zoomMultiplier = 1.0;
+		
 		if (mouseRotationOrientation == 1) {
-			if (zoomFactor - 0.2 >= 0.2) 
-				zoomFactor -= 0.2;
+			if (zoomFactor - 2 >= 2) { 
+				zoomFactor = zoomFactor - 2;
+				zoomMultiplier = zoomFactorsDownwards.get(zoomFactor);
+			}
 		}
 		else {
-			if (zoomFactor + 0.2 <= 2) 
-				zoomFactor += 0.2;
+			if (zoomFactor + 2 <= 20) {
+				zoomFactor += 2;
+				zoomMultiplier = zoomFactorsUpwards.get(zoomFactor);
+			}
 		}
 				
-		renderBuffer.setZoomFactor(zoomFactor);
-		renderBuffer.createOrSetBufferDimensions(true);		// re-create both main and sub buffer
-		wasZoomed = true;
+		renderBuffer.setZoomFactor(((double)zoomFactor / 10));
+		documentWasZoomed = true;
+		rectangleViewOrigin.y = Utilities.doubleToIntRoundedDown(rectangleViewOrigin.y * zoomMultiplier);
+		renderBuffer.createOrSetBufferDimensions(rectangleViewOrigin.x, rectangleViewOrigin.y, true);		// re-create both main and sub buffer
 		viewPanel.repaint();
 		
 	}	
