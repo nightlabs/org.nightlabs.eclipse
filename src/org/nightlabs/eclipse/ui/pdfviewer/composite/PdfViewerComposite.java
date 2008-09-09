@@ -16,8 +16,6 @@ import java.awt.event.MouseWheelListener;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.JScrollPane;
-
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
@@ -36,7 +34,7 @@ import org.nightlabs.eclipse.ui.pdfviewer.util.Utilities;
 
 public class PdfViewerComposite extends Composite {	
 	
-	private int scrollingStepsDistance = 10;		
+	private int scrollingStepsDistance = 10;
 	private Map<Integer, Double> zoomFactorsDownwards; 
 	private Map<Integer, Double> zoomFactorsUpwards;
 	private Composite renderComposite;
@@ -53,8 +51,7 @@ public class PdfViewerComposite extends Composite {
 	private boolean startingPoint = true;
 	private boolean documentWasZoomed = false;
 	private boolean wantToZoom = false;
-	private double zoomMultiplier;
-	
+	private double zoomMultiplier;	
 	/**
 	 * The AWT frame for this composite.
 	 */
@@ -63,7 +60,6 @@ public class PdfViewerComposite extends Composite {
 	 * The panel within {@link #viewPanelFrame}.
 	 */
 	private Panel viewPanel;
-	private JScrollPane jScrollPane;
 	
 
 	public PdfViewerComposite(Composite parent, PdfDocument pdfDocument) {
@@ -73,7 +69,7 @@ public class PdfViewerComposite extends Composite {
 		this.pdfDocument = pdfDocument;
 		renderBuffer = new RenderBuffer(this, pdfDocument);
 		renderComposite = new Composite(this, SWT.EMBEDDED);
-		
+
 		zoomFactorsDownwards = new HashMap<Integer, Double>();
 		zoomFactorsDownwards.put(18, (double)9/10);
 		zoomFactorsDownwards.put(16, (double)8/9);
@@ -94,12 +90,12 @@ public class PdfViewerComposite extends Composite {
 		zoomFactorsUpwards.put(14, (double)7/6);
 		zoomFactorsUpwards.put(16, (double)8/7);
 		zoomFactorsUpwards.put(18, (double)9/8);
-		zoomFactorsUpwards.put(20, (double)10/9);
+		zoomFactorsUpwards.put(20, (double)10/9);		
 		
 		rectangleViewOrigin = new Point(0,0);
 		
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		screenSize = toolkit.getScreenSize();					
+		setScreenSize(toolkit.getScreenSize());					
 		scrollBarVertical = this.getVerticalBar(); 	
 		scrollBarHorizontal = this.getHorizontalBar();	
 		
@@ -116,6 +112,10 @@ public class PdfViewerComposite extends Composite {
 			@Override
 			public void componentResized(ComponentEvent e) {
 				// TODO set size of RenderBuffer - optimize this not to do it every time, but keep the buffer a bit bigger and check when we exceed ranges
+			}
+			@Override
+			public void componentShown(ComponentEvent e) {
+				
 			}
 		});
 		viewPanelFrame.add(viewPanel);
@@ -152,7 +152,7 @@ public class PdfViewerComposite extends Composite {
 		KeyListener keyListener = new KeyListenerImpl();
 		viewPanelFrame.addKeyListener(keyListener);
 		
-		renderThread = new RenderThread(this, pdfDocument, renderBuffer);
+		renderThread = new RenderThread(this, renderBuffer);
 	}
 	
 	private void scrollVertically (ScrollBar scrollBarVertical) {
@@ -167,8 +167,11 @@ public class PdfViewerComposite extends Composite {
 			scrollBarVerticalSelectionOld = scrollBarVerticalSelectionNew;				
 		}
 		
-//		renderThread.notifyAll();
-		getViewPanel().repaint();
+//		renderThread.needRendering(rectangleViewOrigin, zoomFactor);
+		Logger.getRootLogger().info("distance to beginning of main buffer: " + (rectangleViewOrigin.y - renderBuffer.getBufferedImageMainBounds().getY()));
+		Logger.getRootLogger().info("distance to end of main buffer: " + ((renderBuffer.getBufferedImageMainBounds().getY() + renderBuffer.getBufferedImageMainBounds().getHeight()) - (rectangleViewOrigin.y + viewPanel.getHeight())));
+					
+		viewPanel.repaint();
 	}
 	
 	private void scrollHorizontally(ScrollBar scrollBarHorizontal) {
@@ -183,28 +186,27 @@ public class PdfViewerComposite extends Composite {
 			scrollBarHorizontalSelectionOld = scrollBarHorizontalSelectionNew;			
 		}			
 		
-//		renderThread.notifyAll();	
-		getViewPanel().repaint();
+//		renderThread.needRendering(rectangleViewOrigin, zoomFactor);	
+		viewPanel.repaint();
 	}
 	
 	private void setScrollbars() {
 		
 		double realZoomFactor = ((double)zoomFactor / 10);
-		int heightDifference = 	Utilities.doubleToInt(	pdfDocument.getDocumentBounds().y * realZoomFactor 
+
+		int heightDifference = Utilities.doubleToInt(	pdfDocument.getDocumentBounds().y * realZoomFactor 
 //														+ (pdfDocument.getPdfFile().getNumPages() + 1) * pdfDocument.getMARGIN_BETWEEN_PAGES() * (1 - realZoomFactor) 
 														- getViewPanel().getHeight()
 														);
-
 		int widthDifference = Utilities.doubleToInt(renderBuffer.getBufferWidth() - getViewPanel().getWidth());
 		
-//		Logger.getRootLogger().info("document bounds y: " + pdfDocument.getDocumentBounds().y + " zoom zoomMultiplier: " + ((double)zoomFactor / 10));
-//		Logger.getRootLogger().info("panel height: " + getViewPanel().getHeight());
-//		Logger.getRootLogger().info("screen resolution: " + Toolkit.getDefaultToolkit().getScreenResolution());
-//		Logger.getRootLogger().info("converted document height: " + pdfDocument.getDocumentHeightConverted());
+//		Logger.getRootLogger().info("document bounds y-value: " + pdfDocument.getDocumentBounds().y + "; real zoom factor: " + ((double)zoomFactor / 10));
+//		Logger.getRootLogger().info("panel height: " + viewPanel.getHeight());
+//		Logger.getRootLogger().info("screen resolution in DPI: " + Toolkit.getDefaultToolkit().getScreenResolution());
 		
 		if (heightDifference > 0) {
 			scrollBarVerticalNumberOfSteps = Utilities.doubleToInt((double)heightDifference / scrollingStepsDistance);	   
-			Logger.getRootLogger().info("vertical scroll bar steps: " + scrollBarVerticalNumberOfSteps);				
+			Logger.getRootLogger().info("steps of vertical scroll bar: " + scrollBarVerticalNumberOfSteps);			
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
 					if (isDisposed())
@@ -231,7 +233,8 @@ public class PdfViewerComposite extends Composite {
 		}		
 		
 		if (widthDifference > 0) {
-			scrollBarHorizontalNumberOfSteps = Utilities.doubleToInt((double)widthDifference / scrollingStepsDistance);	 			
+			scrollBarHorizontalNumberOfSteps = Utilities.doubleToInt((double)widthDifference / scrollingStepsDistance);	   
+//			Logger.getRootLogger().info("steps of horizontal scroll bar: " + scrollBarHorizontalNumberOfSteps);				
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
 					if (isDisposed())
@@ -264,23 +267,15 @@ public class PdfViewerComposite extends Composite {
 	 */
 	private void paintViewPanel(Graphics2D g) {		
 		
-/*		renderBuffer.drawRegion(g, 
-								new Rectangle2D.Double(
+		Logger.getRootLogger().info("rectangle view origin y-value: " + rectangleViewOrigin.y);
+		renderBuffer.drawRegion(g, 
+								new Rectangle(
 									rectangleViewOrigin.x,
 									rectangleViewOrigin.y, 
 									getViewPanel().getWidth(),
 									getViewPanel().getHeight()
 									)		
-								);		*/		
-		
-		Logger.getRootLogger().info("rectangleViewOrigin.y: " + rectangleViewOrigin.y);
-		renderBuffer.drawRegion(g, 
-								new Rectangle(	rectangleViewOrigin.x,
-												rectangleViewOrigin.y, 
-												getViewPanel().getWidth(),
-												getViewPanel().getHeight()
-												)		
-								);
+								);		
 				
 	}
 
@@ -353,7 +348,7 @@ public class PdfViewerComposite extends Composite {
 	/**
 	 * Scale all PDF pages of the currently opened PDF document  
 	 *
-	 * @param mouseRotationOrientation the direction the user has scrolled to
+	 * @param mouseRotationOrientation the direction the user has scrolled into
 	 */
 	public void zoomPDFDocument (int mouseRotationOrientation) {
 		
@@ -371,13 +366,32 @@ public class PdfViewerComposite extends Composite {
 				zoomMultiplier = zoomFactorsUpwards.get(zoomFactor);
 			}
 		}
+		Logger.getRootLogger().info("currently used real zoom factor: " + ((double)zoomFactor / 10));
 				
 		renderBuffer.setZoomFactor(((double)zoomFactor / 10));
 		documentWasZoomed = true;
+//		renderThread.stop();
 		rectangleViewOrigin.y = Utilities.doubleToIntRoundedDown(rectangleViewOrigin.y * zoomMultiplier);
 		renderBuffer.createOrSetBufferDimensions(rectangleViewOrigin.x, rectangleViewOrigin.y, true);		// re-create both main and sub buffer
 		viewPanel.repaint();
+//		renderThread.start();
 		
+	}	
+
+	public RenderThread getRenderThread() {
+		return renderThread;
+	}
+
+	public void setRenderThread(RenderThread renderThread) {
+		this.renderThread = renderThread;
+	}
+
+	public Point getRectangleViewOrigin() {
+		return rectangleViewOrigin;
+	}
+
+	public void setRectangleViewOrigin(Point rectangleViewOrigin) {
+		this.rectangleViewOrigin = rectangleViewOrigin;
 	}	
 	
 	
