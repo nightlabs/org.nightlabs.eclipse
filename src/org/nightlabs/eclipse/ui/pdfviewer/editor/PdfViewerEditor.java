@@ -12,7 +12,6 @@ import org.nightlabs.base.ui.io.FileEditorInput;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.PdfViewerComposite;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.internal.PdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.internal.PdfFileLoader;
-import org.nightlabs.eclipse.ui.pdfviewer.composite.internal.RenderBuffer;
 
 import com.sun.pdfview.PDFFile;
 
@@ -21,7 +20,6 @@ public class PdfViewerEditor extends EditorPart {
 	
 	public static final String ID = PdfViewerEditor.class.getName();
 	private PdfDocument pdfDocument;
-	private RenderBuffer renderBuffer;
 	private PdfViewerComposite pdfViewerComposite;	
 	private PdfFileLoader pdfFileLoader;
 	private PDFFile pdfFile;
@@ -63,10 +61,7 @@ public class PdfViewerEditor extends EditorPart {
 			file = ((FileEditorInput)input).getFile();
 			pdfFileLoader = new PdfFileLoader(file);
 			pdfFile = pdfFileLoader.loadPdf();
-//			pdfFileLoader = new PdfFileLoader();
-//			pdfFile = pdfFileLoader.loadPdf(file);
 			pdfDocument = new PdfDocument(pdfFile);	
-//			renderBuffer = new RenderBuffer(pdfDocument);
 			pdfViewerComposite = new PdfViewerComposite(parent, pdfDocument);			
 
 //			pdfViewerComposite = new PdfViewerCompositeOld(parent, SWT.H_SCROLL | SWT.V_SCROLL, file);
