@@ -1,5 +1,6 @@
 package org.nightlabs.eclipse.ui.pdfviewer.composite.internal;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
@@ -246,6 +247,13 @@ public class RenderBuffer
 					(int) ((clipAbsoluteLeftTop.getY() - bufferedImageBufferBounds.getY()) * zoomFactor)
 			);
 
+			graphics.setColor(Color.BLACK);
+			graphics.drawRect(
+					(int) (pageBounds.getX() - bufferedImageBufferBounds.getX() * zoomFactor),
+					(int) (pageBounds.getY() - bufferedImageBufferBounds.getY() * zoomFactor),
+					(int) (pageBounds.getWidth() * zoomFactor),
+					(int) (pageBounds.getHeight() * zoomFactor)
+			);
 		} // for (Integer pageNumber : bufferedImagePageNumbers) {
 
 //		printToImageFile(bufferedImage, "bufferedImage-" + round);
@@ -393,9 +401,23 @@ public class RenderBuffer
 
 		if (!bufferSufficient) {
 			// draw background
-
+			graphics2D.setColor(pdfViewerComposite.getViewPanel().getBackground());
+			graphics2D.fillRect(0, 0, graphics2DWidth, graphics2DHeight);
 
 			// draw empty pages
+			List<Integer> visiblePages = pdfDocument.getVisiblePages(region);
+			for (Integer pageNumber : visiblePages) {
+				Rectangle2D page = pdfDocument.getPageBounds(pageNumber);
+
+				graphics2D.setColor(Color.RED);
+				graphics2D.setBackground(Color.YELLOW);
+				graphics2D.drawRect(
+						(int) ((page.getX() - region.getX()) * zoomFactor),
+						(int) ((page.getY() - region.getY()) * zoomFactor),
+						(int) (page.getWidth() * zoomFactor),
+						(int) (page.getHeight() * zoomFactor)
+				);
+			}
 		}
 
 		if (
