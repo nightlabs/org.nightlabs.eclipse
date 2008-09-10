@@ -155,7 +155,7 @@ public class RenderBuffer
 
 //		Rectangle2D pageBoundsZoomed = new java.awt.Rectangle(0, 0, 0, 0);
 //		Rectangle2D.Double pageBoundsZoomed = new Rectangle2D.Double(0, 0, 0, 0);
-		Rectangle2D.Double pageBounds;
+//		Rectangle2D.Double pageBounds;
 //		boolean endOfPageIsInBuffer;
 //		boolean beginningOfPageIsInBuffer;
 //		int bufferCoordinateY = 0;
@@ -180,7 +180,7 @@ public class RenderBuffer
 //		Collections.sort(bufferedImagePageNumbers);
 
 		for (Integer pageNumber : bufferedImagePageNumbers) {
-			pageBounds = pdfDocument.getPageBounds(pageNumber);
+			Rectangle2D.Double pageBounds = pdfDocument.getPageBounds(pageNumber);
 //			pageBoundsZoomed.setRect(	pageBounds.getX() + direction * Math.abs((zoomFactor - 1) * pageBounds.getWidth()) / 2,
 //										pageBounds.getY() * zoomFactor,
 //										pageBounds.getWidth() * zoomFactor,
@@ -229,7 +229,7 @@ public class RenderBuffer
 					clipLeftBottom
 			);
 
-//			printToImageFile(pdfImage, "pdfImage-" + round);
+			printToImageFile(pdfImage, "pdfImage-" + round + "-" + pageNumber);
 
 			// In contrast to clipLeftBottom the clipAbsoluteLeftTop specifies the left-top-point of the clip relative
 			// to the PdfDocument's complete coordinate system.
