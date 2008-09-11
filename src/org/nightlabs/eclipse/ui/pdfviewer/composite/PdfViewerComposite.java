@@ -62,6 +62,12 @@ public class PdfViewerComposite extends Composite {
 	 */
 	private Panel viewPanel;
 
+	// http://forums.sun.com/thread.jspa?messageID=3369196
+	// http://dev.eclipse.org/newslists/news.eclipse.platform.swt/msg24617.html
+	static {
+		System.setProperty("sun.awt.noerasebackground", "true");
+	}
+
 	public PdfViewerComposite(Composite parent, final PdfDocument pdfDocument)
 	{
 		super(parent, SWT.NONE);

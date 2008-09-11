@@ -97,7 +97,7 @@ public class RenderThread extends Thread
 
 				synchronized (this) {
 					try {
-						this.wait(3000);
+						this.wait(1000); // Unfortunately, we sometimes don't get notified when zooming, so sleeping only one second to ensure early redraws. Marco.
 					} catch (InterruptedException e) {
 						// ignore
 					}

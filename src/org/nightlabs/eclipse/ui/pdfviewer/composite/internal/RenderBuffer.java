@@ -307,11 +307,13 @@ public class RenderBuffer
 					int w = (int) (page.getWidth() * requestedZoomFactor);
 					int h = (int) (page.getHeight() * requestedZoomFactor);
 
-					graphics2D.setColor(Color.RED);
+					graphics2D.setColor(COLOR_DRAFT_PAGE_BORDER);
 					graphics2D.drawRect(x, y, w, h);
 
-					graphics2D.setColor(Color.YELLOW);
+					graphics2D.setColor(COLOR_DRAFT_PAGE_AREA);
 					graphics2D.fillRect(x + 1, y + 1, w - 1, h - 1);
+
+					// TODO draw page numbers in the middle of each page
 				}
 			}
 
@@ -341,6 +343,9 @@ public class RenderBuffer
 			return bufferSufficient;
 		} // synchronized (bufferedImageMutex) {
 	}
+
+	private static final Color COLOR_DRAFT_PAGE_BORDER = Color.RED;
+	private static final Color COLOR_DRAFT_PAGE_AREA = new Color(240, 240, 240);
 
 	private static final boolean DUMP_IMAGE_PAGE = false;
 	private static final boolean DUMP_IMAGE_BUFFER = false;

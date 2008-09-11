@@ -29,7 +29,7 @@ public class PdfDocument
 		vertical
 	}
 
-	private Layout layout = Layout.vertical;
+	private Layout layout = Layout.horizontal;
 
 	/**
 	 * The bounds of the complete document, i.e. all pages laid down on a virtual floor. So we need to know the size
