@@ -42,7 +42,7 @@ public class RenderBuffer
 	private int bufferHeight;
 	// END the above fields require SYNCHRONIZED access via the mutex field!
 
-	public static final double BUFFER_WIDTH_FACTOR = 1.5;
+	public static final double BUFFER_WIDTH_FACTOR = 2;
 	public static final double BUFFER_HEIGHT_FACTOR = 2;
 
 	public RenderBuffer(PdfViewerComposite pdfViewerComposite, PdfDocument pdfDocument) {
@@ -53,8 +53,18 @@ public class RenderBuffer
 	/**
 	 * Renders the buffer's area.
 	 *
-	 * @param posX the x-coordinate in the real coordinate system of the upper left corner of the buffers that have to be created.
-	 * @param posY the y-coordinate in the real coordinate system of the upper left corner of the main buffer that has to be created (the y-coordinate of the sub buffer depends on this value)
+	 * @param bufferWidth
+	 *            the currently used buffer width, i.e. width of viewPanel multiplied with a constant buffer width factor (because the
+	 *            buffer is of course bigger than the panel).
+	 * @param bufferHeight
+	 *            the currently used buffer height, i.e. height of viewPanel multiplied with a constant buffer height factor (because the
+	 *            buffer is of course bigger than the panel).
+	 * @param posX
+	 *            the x-coordinate in the real coordinate system of the upper left corner of the buffer that has to be created.
+	 * @param posY
+	 *            the y-coordinate in the real coordinate system of the upper left corner of the buffer that has to be created
+	 * @param zoomFactor
+	 *            the currently used zoom factor
 	 */
 	public void render(int bufferWidth, int bufferHeight, int posX, int posY, double zoomFactor)
 	{
@@ -68,6 +78,8 @@ public class RenderBuffer
 
 		GraphicsConfiguration graphicsConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
 		BufferedImage bufferedImage = graphicsConfiguration.createCompatibleImage(bufferWidth, bufferHeight);
+
+		// bufferedImageBounds is the position and the size of the buffer in the real coordinate system.
 		Rectangle2D.Double bufferedImageBounds = new Rectangle2D.Double(
 				posX,
 				posY,
@@ -134,8 +146,9 @@ public class RenderBuffer
 			if (DUMP_IMAGE_PAGE)
 				printToImageFile(pdfImage, String.format("%s-pdfImage-%03d", dumpImageRenderID, pageNumber));
 
-			// In contrast to clipLeftBottom the clipAbsoluteLeftTop specifies the left-top-point of the clip relative
+			// In contrast to clipLeftBottom clipAbsoluteLeftTop specifies the left-top-point of the clip relative
 			// to the PdfDocument's complete coordinate system.
+			// PDF coordinate system begins from bottom left point upwards, not from top left point downwards
 			Rectangle2D.Double clipAbsoluteLeftTop = new Rectangle2D.Double();
 			clipAbsoluteLeftTop.x = pageBounds.getX() + clipLeftBottom.x;
 			clipAbsoluteLeftTop.y = pageBounds.getY() + pageBounds.getHeight() - (clipLeftBottom.y + clipLeftBottom.height);
@@ -172,58 +185,104 @@ public class RenderBuffer
 
 	private static void drawImage(Graphics2D graphics2D, Image image, int x, int y)
 	{
-		final boolean[] bufferFinished = new boolean[1];
-		bufferFinished[0] = graphics2D.drawImage(
-				image,
-				x,
-				y,
-				new ImageObserver() {
-					@Override
-					public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
-						if (infoflags == ImageObserver.ALLBITS)
-							bufferFinished[0] = true;
-						return true;
-					}
-				}
-		);
-		while (!bufferFinished[0]) {
+		// TODO WORKAROUND for:
+		// http://dev.eclipse.org/newslists/news.eclipse.platform.swt/msg21170.html
+		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=74095
+		// When this bug is fixed, remove this method and rename _drawImage(...) to drawImage(...)!
+		int tryCount = 0;
+		while (true) {
+			++tryCount;
+
 			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				// ignore
+				_drawImage(graphics2D, image, x, y);
+				return;
+			} catch (StackOverflowError error) {
+				logger.warn("drawImage: WORKAROUND: Caught StackOverflowError with tryCount=" + tryCount, error);
+
+				if (tryCount > 2)
+					throw error;
 			}
 		}
 	}
 
+	private static void _drawImage(Graphics2D graphics2D, Image image, int x, int y)
+	{
+		BlockingImageObserver bio = new BlockingImageObserver();
+
+		boolean renderingComplete = graphics2D.drawImage(image, x, y, bio);
+
+		if (!renderingComplete)
+			bio.waitForRendering();
+	}
+
+	private static class BlockingImageObserver implements ImageObserver {
+		private boolean renderingFinished = false;
+		private boolean renderingAborted = false;
+		private int lastInfoflags = 0;
+
+		public BlockingImageObserver() { }
+
+		private static final long timeoutMSec = 60000;
+
+		@Override
+		public synchronized boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
+			lastInfoflags = infoflags;
+
+			if ((infoflags & ImageObserver.ALLBITS) != 0)
+				renderingFinished = true;
+
+			if ((infoflags & ImageObserver.ABORT) != 0)
+				renderingAborted = true;
+
+			this.notifyAll();
+			return !renderingFinished;
+		}
+
+		public synchronized void waitForRendering()
+		{
+			long start = System.currentTimeMillis();
+			while (!renderingFinished && !renderingAborted) {
+				if (System.currentTimeMillis() - start > timeoutMSec)
+					throw new IllegalStateException("Timeout waiting for rendering to finish or abort!");
+
+				try {
+					this.wait(10000);
+				} catch (InterruptedException e) {
+					// ignore
+				}
+			}
+
+			if (renderingAborted)
+				throw new IllegalStateException("Rendering was aborted! lastInfoflags=" + lastInfoflags);
+		}
+	}
+
+	/**
+	 * Gets the image of the currently considered PDF page taking a given clip into consideration.
+	 *
+	 * @param pdfPage the currently considered page of the PDF document
+	 * @param pdfImageWidth the image width in the image coordinate system
+	 * @param pdfImageHeight the image height in the image coordinate system
+	 * @param clipLeftBottom a rectangle describing the region of interest of the currently considered PDF page
+	 */
 	private static Image getPdfImage(PDFPage pdfPage, int pdfImageWidth, int pdfImageHeight, Rectangle2D clipLeftBottom)
 	{
-		final boolean[] bufferFinished = new boolean[1];
-		bufferFinished[0] = false;
+		BlockingImageObserver bio = new BlockingImageObserver();
+
 		Image pdfImage = pdfPage.getImage(
 				pdfImageWidth,
 				pdfImageHeight,
 				clipLeftBottom,
-				new ImageObserver() {
-					@Override
-					public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
-						if (infoflags == ImageObserver.ALLBITS)
-							bufferFinished[0] = true;
-						return true;
-					}
-				}
+				bio
 		);
-		while (!bufferFinished[0]) {
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				// ignore
-			}
-		}
+
+		bio.waitForRendering();
+
 		return pdfImage;
 	}
 
 	/**
-	 * Draws a certain part (the region of interest) of the main buffer onto the screen - or more precisely the viewPanel
+	 * Draws a certain part (the region of interest) of the buffer onto the screen - or more precisely the viewPanel
 	 * (passed as <code>graphics2D</code>).
 	 *
 	 * @param graphics2D the graphics context of the panel
@@ -326,7 +385,8 @@ public class RenderBuffer
 					sourceY2 > sourceY1
 			)
 			{
-				graphics2D.drawImage(
+				BlockingImageObserver bio = new BlockingImageObserver();
+				boolean renderingComplete = graphics2D.drawImage(
 						bufferedImage,
 						destinationX1,
 						destinationY1,
@@ -336,8 +396,10 @@ public class RenderBuffer
 						sourceY1,
 						sourceX2,
 						sourceY2,
-						null
+						bio
 				);
+				if (!renderingComplete)
+					bio.waitForRendering();
 			}
 
 			return bufferSufficient;

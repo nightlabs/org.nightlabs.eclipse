@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 import com.sun.pdfview.PDFFile;
 import com.sun.pdfview.PDFPage;
@@ -29,7 +30,7 @@ public class PdfDocument
 		vertical
 	}
 
-	private Layout layout = Layout.horizontal;
+	private Layout layout = Layout.vertical;
 
 	/**
 	 * The bounds of the complete document, i.e. all pages laid down on a virtual floor. So we need to know the size
@@ -40,82 +41,93 @@ public class PdfDocument
 	private PDFFile pdfFile;
 	private List<Rectangle2D.Double> pageBounds;
 
-	public PdfDocument(PDFFile pdfFile) {
-		setPdfFile(pdfFile);
+	public PdfDocument(PDFFile pdfFile, IProgressMonitor monitor) {
+		setPdfFile(pdfFile, monitor);
 	}
 
-	public PdfDocument(PDFFile pdfFile, Layout layout) {
+	public PdfDocument(PDFFile pdfFile, Layout layout, IProgressMonitor monitor) {
 		this.layout = layout;
-		setPdfFile(pdfFile);
+		setPdfFile(pdfFile, monitor);
 	}
 
 	/**
 	 * Get all PDF pages of the PDF document, create a new rectangle for each page and insert it
 	 * into its place in the virtual floor starting with index one (not zero!)
 	 */
-	private void readPdfDocumentProperties() {
-		documentBounds = new Point2D.Double(0,0);
-		pageBounds = new ArrayList<Rectangle2D.Double>(pdfFile == null ? 0 : pdfFile.getNumPages());
+	private void readPdf(IProgressMonitor monitor) {
+		monitor.beginTask("Reading PDF file", pdfFile.getNumPages());
+		try {
 
-		if (pdfFile == null)
-			return;
+			documentBounds = new Point2D.Double(0,0);
+			pageBounds = new ArrayList<Rectangle2D.Double>(pdfFile == null ? 0 : pdfFile.getNumPages());
 
-		switch (layout) {
-			case vertical:
-				double nextPageTop = MARGIN;
+			if (pdfFile == null)
+				return;
 
-				for (int j = 0; j < pdfFile.getNumPages(); j++) {
-					PDFPage pdfPage = pdfFile.getPage(j + 1);
-					double pdfPageWidth = pdfPage.getBBox().getWidth();
-					double pdfPageHeight = pdfPage.getBBox().getHeight();
-					if (documentBounds.x < pdfPageWidth) {
-						documentBounds.x = pdfPageWidth;
+			switch (layout) {
+				case vertical:
+					double nextPageTop = MARGIN;
+
+					for (int j = 0; j < pdfFile.getNumPages(); j++) {
+						PDFPage pdfPage = pdfFile.getPage(j + 1);
+						double pdfPageWidth = pdfPage.getBBox().getWidth();
+						double pdfPageHeight = pdfPage.getBBox().getHeight();
+						if (documentBounds.x < pdfPageWidth) {
+							documentBounds.x = pdfPageWidth;
+						}
+						pageBounds.add(new Rectangle2D.Double(0, nextPageTop, pdfPageWidth, pdfPageHeight));
+						nextPageTop += pdfPageHeight + MARGIN;
+
+						monitor.worked(1);
 					}
-					pageBounds.add(new Rectangle2D.Double(0, nextPageTop, pdfPageWidth, pdfPageHeight));
-					nextPageTop += pdfPageHeight + MARGIN;
-				}
 
-				documentBounds.y = nextPageTop;
-				documentBounds.x += MARGIN * 2;
+					documentBounds.y = nextPageTop;
+					documentBounds.x += MARGIN * 2;
 
-				// put all pages horizontally in the middle
-				for (Rectangle2D.Double pageBound : pageBounds) {
-					pageBound.x = documentBounds.x / 2 - pageBound.width / 2;
-				}
-			break;
-
-			case horizontal:
-				double nextPageLeft = MARGIN;
-
-				for (int j = 0; j < pdfFile.getNumPages(); j++) {
-					PDFPage pdfPage = pdfFile.getPage(j + 1);
-					double pdfPageWidth = pdfPage.getBBox().getWidth();
-					double pdfPageHeight = pdfPage.getBBox().getHeight();
-					if (documentBounds.y < pdfPageHeight) {
-						documentBounds.y = pdfPageHeight;
+					// put all pages horizontally in the middle
+					for (Rectangle2D.Double pageBound : pageBounds) {
+						pageBound.x = documentBounds.x / 2 - pageBound.width / 2;
 					}
-					pageBounds.add(new Rectangle2D.Double(nextPageLeft, 0, pdfPageWidth, pdfPageHeight));
-					nextPageLeft += pdfPageWidth + MARGIN;
-				}
+					break;
 
-				documentBounds.x = nextPageLeft;
-				documentBounds.y += MARGIN * 2;
+				case horizontal:
+					double nextPageLeft = MARGIN;
 
-				// put all pages horizontally in the middle
-				for (Rectangle2D.Double pageBound : pageBounds) {
-					pageBound.y = documentBounds.y / 2 - pageBound.height / 2;
-				}
-			break;
+					for (int j = 0; j < pdfFile.getNumPages(); j++) {
+						PDFPage pdfPage = pdfFile.getPage(j + 1);
+						double pdfPageWidth = pdfPage.getBBox().getWidth();
+						double pdfPageHeight = pdfPage.getBBox().getHeight();
+						if (documentBounds.y < pdfPageHeight) {
+							documentBounds.y = pdfPageHeight;
+						}
+						pageBounds.add(new Rectangle2D.Double(nextPageLeft, 0, pdfPageWidth, pdfPageHeight));
+						nextPageLeft += pdfPageWidth + MARGIN;
 
-			default:
-				throw new IllegalStateException("Unknown layout: " + layout);
-		}
+						monitor.worked(1);
+					}
 
-		if (logger.isDebugEnabled()) {
-			int pageNumber = 0;
-			for (Rectangle2D.Double page : pageBounds) {
-				logger.debug("readPdfDocumentProperties: page " + (++pageNumber) + ": x=" + page.getX() + " y=" + page.getY() + " w=" + page.getWidth() + " h=" + page.getHeight());
+					documentBounds.x = nextPageLeft;
+					documentBounds.y += MARGIN * 2;
+
+					// put all pages horizontally in the middle
+					for (Rectangle2D.Double pageBound : pageBounds) {
+						pageBound.y = documentBounds.y / 2 - pageBound.height / 2;
+					}
+					break;
+
+				default:
+					throw new IllegalStateException("Unknown layout: " + layout);
 			}
+
+			if (logger.isDebugEnabled()) {
+				int pageNumber = 0;
+				for (Rectangle2D.Double page : pageBounds) {
+					logger.debug("readPdfDocumentProperties: page " + (++pageNumber) + ": x=" + page.getX() + " y=" + page.getY() + " w=" + page.getWidth() + " h=" + page.getHeight());
+				}
+			}
+
+		} finally {
+			monitor.done();
 		}
 	}
 
@@ -244,9 +256,9 @@ public class PdfDocument
 		return pdfFile;
 	}
 
-	public void setPdfFile(PDFFile pdfFile) {
+	public void setPdfFile(PDFFile pdfFile, IProgressMonitor monitor) {
 		this.pdfFile = pdfFile;
-		readPdfDocumentProperties();
+		readPdf(monitor);
 	}
 
 	public Layout getLayout() {

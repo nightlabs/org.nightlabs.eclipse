@@ -19,7 +19,6 @@ public class TestAction implements IWorkbenchWindowActionDelegate {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stubd
 	}
 
 	private IWorkbenchWindow window;
@@ -30,17 +29,17 @@ public class TestAction implements IWorkbenchWindowActionDelegate {
 	}
 
 	@Override
-	public void run(IAction action) {	
-		
+	public void run(IAction action) {
+
 		FileDialog dialog = new FileDialog(window.getShell());
 		String filePath = dialog.open();
-		
+
 		if (filePath == null)
 			return;
 
 		File file = new File(filePath);
 		FileEditorInput fileEditorInput = new FileEditorInput(file);
-		
+
 		try {
 			System.out.println("opening editor...");
 			RCPUtil.openEditor(fileEditorInput, PdfViewerEditor.ID);
@@ -48,13 +47,11 @@ public class TestAction implements IWorkbenchWindowActionDelegate {
 		catch (PartInitException partInitException) {
 			throw new RuntimeException(partInitException);
 		}
-		
+
 	}
 
 	@Override
 	public void selectionChanged(IAction action, ISelection selection) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public static void main(String[] args) {
