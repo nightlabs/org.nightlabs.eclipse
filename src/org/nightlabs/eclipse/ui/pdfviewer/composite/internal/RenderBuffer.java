@@ -22,7 +22,10 @@ import org.nightlabs.util.IOUtil;
 
 import com.sun.pdfview.PDFPage;
 
-
+/**
+ * @author frederik loeser - frederik at nightlabs dot de
+ * @author marco schulze - marco at nightlabs dot de
+ */
 public class RenderBuffer
 {
 	private static final Logger logger = Logger.getLogger(RenderBuffer.class);
@@ -30,15 +33,14 @@ public class RenderBuffer
 	private PdfViewerComposite pdfViewerComposite;
 	private PdfDocument pdfDocument;
 
-	private Object bufferedImageMutex = new Object();
-	// BEGIN protected by bufferedImageMutex
+	// BEGIN the following fields require SYNCHRONIZED access via the mutex field!
+	private Object mutex = new Object();
 	private BufferedImage bufferedImage = null;
 	private Rectangle2D.Double bufferedImageBounds = null;
 	private double zoomFactor;
-	// END protected by bufferedImageMutex
-
 	private int bufferWidth;
 	private int bufferHeight;
+	// END the above fields require SYNCHRONIZED access via the mutex field!
 
 	public static final double BUFFER_WIDTH_FACTOR = 1.5;
 	public static final double BUFFER_HEIGHT_FACTOR = 2;
@@ -46,8 +48,6 @@ public class RenderBuffer
 	public RenderBuffer(PdfViewerComposite pdfViewerComposite, PdfDocument pdfDocument) {
 		this.pdfViewerComposite = pdfViewerComposite;
 		this.pdfDocument = pdfDocument;
-//		this.bufferWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().width * 1.3);
-//		this.bufferHeight = Toolkit.getDefaultToolkit().getScreenSize().height * 2;
 	}
 
 	/**
@@ -161,7 +161,7 @@ public class RenderBuffer
 		if (DUMP_IMAGE_BUFFER)
 			printToImageFile(bufferedImage, String.format("%s-bufferedImage", dumpImageRenderID));
 
-		synchronized (this.bufferedImageMutex) {
+		synchronized (mutex) {
 			this.bufferWidth = bufferWidth;
 			this.bufferHeight = bufferHeight;
 			this.bufferedImage = bufferedImage;
@@ -244,7 +244,7 @@ public class RenderBuffer
 		if (region == null)
 			throw new IllegalArgumentException("region must not be null!");
 
-		synchronized (bufferedImageMutex) {
+		synchronized (mutex) {
 			boolean zoomMismatch = (int)(requestedZoomFactor * 1000) != (int) (zoomFactor * 1000);
 			boolean bufferSufficient = !zoomMismatch;
 

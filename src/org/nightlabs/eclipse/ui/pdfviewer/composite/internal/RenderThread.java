@@ -7,7 +7,10 @@ import javax.swing.SwingUtilities;
 import org.nightlabs.base.ui.exceptionhandler.ExceptionHandlerRegistry;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.PdfViewerComposite;
 
-
+/**
+ * @author frederik loeser - frederik at nightlabs dot de
+ * @author marco schulze - marco at nightlabs dot de
+ */
 public class RenderThread extends Thread
 {
 	private static long threadId = 0;

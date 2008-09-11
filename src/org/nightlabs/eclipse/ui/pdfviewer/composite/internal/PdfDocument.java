@@ -17,11 +17,19 @@ import com.sun.pdfview.PDFPage;
  * some other meta-data.
  *
  * @author frederik löser - frederik at nightlabs dot de
+ * @author marco schulze - marco at nightlabs dot de
  */
 public class PdfDocument
 {
 	private static final Logger logger = Logger.getLogger(PdfDocument.class);
-	private static final int MARGIN_BETWEEN_PAGES = 20; // DOT = 1/72 inch
+	private static final int MARGIN = 20; // DOT = 1/72 inch
+
+	public enum Layout {
+		horizontal,
+		vertical
+	}
+
+	private Layout layout = Layout.vertical;
 
 	/**
 	 * The bounds of the complete document, i.e. all pages laid down on a virtual floor. So we need to know the size
@@ -31,9 +39,13 @@ public class PdfDocument
 	private Point2D.Double documentBounds;
 	private PDFFile pdfFile;
 	private List<Rectangle2D.Double> pageBounds;
-	private double nextPageTop;
 
 	public PdfDocument(PDFFile pdfFile) {
+		setPdfFile(pdfFile);
+	}
+
+	public PdfDocument(PDFFile pdfFile, Layout layout) {
+		this.layout = layout;
 		setPdfFile(pdfFile);
 	}
 
@@ -48,24 +60,55 @@ public class PdfDocument
 		if (pdfFile == null)
 			return;
 
-		nextPageTop = MARGIN_BETWEEN_PAGES;
+		switch (layout) {
+			case vertical:
+				double nextPageTop = MARGIN;
 
-		for (int j = 0; j < pdfFile.getNumPages(); j++) {
-			PDFPage pdfPage = pdfFile.getPage(j + 1);
-			double pdfPageWidth = pdfPage.getBBox().getWidth();
-			double pdfPageHeight = pdfPage.getBBox().getHeight();
-			if (documentBounds.x < pdfPageWidth) {
-				documentBounds.x = pdfPageWidth;
-			}
-			pageBounds.add(new Rectangle2D.Double(0, nextPageTop, pdfPageWidth, pdfPageHeight));
-			nextPageTop += pdfPageHeight + MARGIN_BETWEEN_PAGES;
-		}
+				for (int j = 0; j < pdfFile.getNumPages(); j++) {
+					PDFPage pdfPage = pdfFile.getPage(j + 1);
+					double pdfPageWidth = pdfPage.getBBox().getWidth();
+					double pdfPageHeight = pdfPage.getBBox().getHeight();
+					if (documentBounds.x < pdfPageWidth) {
+						documentBounds.x = pdfPageWidth;
+					}
+					pageBounds.add(new Rectangle2D.Double(0, nextPageTop, pdfPageWidth, pdfPageHeight));
+					nextPageTop += pdfPageHeight + MARGIN;
+				}
 
-		documentBounds.y = nextPageTop;
+				documentBounds.y = nextPageTop;
+				documentBounds.x += MARGIN * 2;
 
-		// put all pages horizontally in the middle
-		for (Rectangle2D.Double pageBound : pageBounds) {
-			pageBound.x = documentBounds.x / 2 - pageBound.width / 2;
+				// put all pages horizontally in the middle
+				for (Rectangle2D.Double pageBound : pageBounds) {
+					pageBound.x = documentBounds.x / 2 - pageBound.width / 2;
+				}
+			break;
+
+			case horizontal:
+				double nextPageLeft = MARGIN;
+
+				for (int j = 0; j < pdfFile.getNumPages(); j++) {
+					PDFPage pdfPage = pdfFile.getPage(j + 1);
+					double pdfPageWidth = pdfPage.getBBox().getWidth();
+					double pdfPageHeight = pdfPage.getBBox().getHeight();
+					if (documentBounds.y < pdfPageHeight) {
+						documentBounds.y = pdfPageHeight;
+					}
+					pageBounds.add(new Rectangle2D.Double(nextPageLeft, 0, pdfPageWidth, pdfPageHeight));
+					nextPageLeft += pdfPageWidth + MARGIN;
+				}
+
+				documentBounds.x = nextPageLeft;
+				documentBounds.y += MARGIN * 2;
+
+				// put all pages horizontally in the middle
+				for (Rectangle2D.Double pageBound : pageBounds) {
+					pageBound.y = documentBounds.y / 2 - pageBound.height / 2;
+				}
+			break;
+
+			default:
+				throw new IllegalStateException("Unknown layout: " + layout);
 		}
 
 		if (logger.isDebugEnabled()) {
@@ -161,10 +204,24 @@ public class PdfDocument
 			if (isPageVisible(middlePage, bounds))
 				return middleIdx + 1;
 
-			if (middlePage.getMinY() > bounds.getMaxY())
-				endIdx = middleIdx;
-			else
-				beginIdx = middleIdx;
+			switch (layout) {
+				case vertical:
+					if (middlePage.getMinY() > bounds.getMaxY())
+						endIdx = middleIdx;
+					else
+						beginIdx = middleIdx;
+				break;
+
+				case horizontal:
+					if (middlePage.getMinX() > bounds.getMaxX())
+						endIdx = middleIdx;
+					else
+						beginIdx = middleIdx;
+				break;
+
+				default:
+					throw new IllegalStateException("Unknown layout: " + layout);
+			}
 		}
 
 		return -1;
@@ -190,5 +247,9 @@ public class PdfDocument
 	public void setPdfFile(PDFFile pdfFile) {
 		this.pdfFile = pdfFile;
 		readPdfDocumentProperties();
+	}
+
+	public Layout getLayout() {
+		return layout;
 	}
 }

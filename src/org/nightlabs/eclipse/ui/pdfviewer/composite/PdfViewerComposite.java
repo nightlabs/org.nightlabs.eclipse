@@ -1,11 +1,9 @@
 package org.nightlabs.eclipse.ui.pdfviewer.composite;
 
-import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Panel;
-import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
@@ -28,26 +26,27 @@ import org.eclipse.swt.widgets.ScrollBar;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.internal.PdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.internal.RenderBuffer;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.internal.RenderThread;
-import org.nightlabs.eclipse.ui.pdfviewer.util.Utilities;
 
-
+/**
+ * @author frederik loeser - frederik at nightlabs dot de
+ * @author marco schulze - marco at nightlabs dot de
+ */
 public class PdfViewerComposite extends Composite {
 	private static final Logger logger = Logger.getLogger(PdfViewerComposite.class);
 
-	private static final int scrollingStepDistance = 10;
-//	private Map<Integer, Double> zoomFactorsDownwards;
-//	private Map<Integer, Double> zoomFactorsUpwards;
+	/**
+	 * Since the int range of the scroll bars is limited and we don't need to be able to scroll to every single
+	 * coordinate value, we reduce the granularity by this divisor. This means, scrolling the real coordinate system
+	 * by 200 dots will move the scroll bar's selection-value by 20 (200 / scrollBarDivisor).
+	 */
+	private static final int scrollBarDivisor = 10;
+
 	private Composite renderComposite;
 	private RenderBuffer renderBuffer;
 	private RenderThread renderThread;
 	private PdfDocument pdfDocument;
 	private ScrollBar scrollBarVertical, scrollBarHorizontal;
-//	private Scrollbar scrollBarVertical, scrollBarHorizontal;
-//	private int scrollBarHorizontalSelectionOld, scrollBarVerticalSelectionOld;
-	private int scrollBarHorizontalSelectionNew, scrollBarVerticalSelectionNew;
-	private int scrollBarVerticalNumberOfSteps, scrollBarHorizontalNumberOfSteps;
 	private Point rectangleViewOrigin;
-	private Dimension screenSize;
 
 	/**
 	 * The zoom factor in %o (1/1000).
@@ -63,19 +62,36 @@ public class PdfViewerComposite extends Composite {
 	 */
 	private Panel viewPanel;
 
-
 	public PdfViewerComposite(Composite parent, final PdfDocument pdfDocument)
 	{
 		super(parent, SWT.NONE);
 		this.setLayout(new FillLayout());
 		this.pdfDocument = pdfDocument;
+
+		switch (pdfDocument.getLayout()) {
+			case vertical: {
+				centerHorizontally = true;
+				centerVertically = false;
+			}
+			break;
+
+			case horizontal: {
+				centerHorizontally = false;
+				centerVertically = true;
+			}
+			break;
+
+			default: {
+				centerHorizontally = false;
+				centerVertically = false;
+			}
+		}
+
 		renderBuffer = new RenderBuffer(this, pdfDocument);
 		renderComposite = new Composite(this, SWT.EMBEDDED | SWT.V_SCROLL | SWT.H_SCROLL);
 
 		rectangleViewOrigin = new Point(0, 0);
 
-		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		setScreenSize(toolkit.getScreenSize());
 		scrollBarVertical = renderComposite.getVerticalBar();
 		scrollBarHorizontal = renderComposite.getHorizontalBar();
 		viewPanelFrame = SWT_AWT.new_Frame(renderComposite);
@@ -91,10 +107,16 @@ public class PdfViewerComposite extends Composite {
 		viewPanel.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
-				if (horizontallyCentered) {
+				if (centerHorizontally) {
 					double middleX = pdfDocument.getDocumentBounds().getX() / 2;
 					rectangleViewOrigin.x = (int) (middleX - viewPanel.getWidth() / 2 / ((double)zoomFactorPerMill / 1000));
 				}
+
+				if (centerVertically) {
+					double middleY = pdfDocument.getDocumentBounds().getY() / 2;
+					rectangleViewOrigin.y = (int) (middleY - viewPanel.getHeight() / 2 / ((double)zoomFactorPerMill / 1000));
+				}
+
 				setScrollbars();
 				viewPanel.repaint();
 			}
@@ -104,7 +126,6 @@ public class PdfViewerComposite extends Composite {
 			}
 		});
 		viewPanelFrame.add(viewPanel);
-		setViewPanel(viewPanel);
 
 		scrollBarHorizontal.addSelectionListener(new SelectionAdapter() {
 				@Override
@@ -120,161 +141,95 @@ public class PdfViewerComposite extends Composite {
 	    	}
 	    });
 
-/*		scrollBarHorizontal.addMouseWheelListener(new MouseWheelListener() {
-			@Override
-			public void mouseWheelMoved(MouseWheelEvent e) {
-				// TODO Auto-generated method stub
-				scrollHorizontally();
-			}
-		});
-
-		scrollBarVertical.addMouseWheelListener(new MouseWheelListener() {
-			@Override
-			public void mouseWheelMoved(MouseWheelEvent e) {
-				// TODO Auto-generated method stub
-				scrollVertically();
-			}
-		});*/
-
-
-		MouseWheelListener mouseWheelListener = new MouseWheelListenerImpl();
-		viewPanelFrame.addMouseWheelListener(mouseWheelListener);
-
-		KeyListener keyListener = new KeyListenerImpl();
-		viewPanelFrame.addKeyListener(keyListener);
+		viewPanelFrame.addMouseWheelListener(new MouseWheelListenerImpl());
+		viewPanelFrame.addKeyListener(new KeyListenerImpl());
 
 		setScrollbars();
 
 		renderThread = new RenderThread(this, renderBuffer);
 	}
 
-	private boolean horizontallyCentered = true;
+	private boolean centerHorizontally;
+	private boolean centerVertically;
 
 	private void scrollVertically (ScrollBar scrollBarVertical) {
-		scrollBarVerticalSelectionNew = scrollBarVertical.getSelection();
-
-		rectangleViewOrigin.y = (int) (scrollBarVerticalSelectionNew * scrollingStepDistance / ((double)zoomFactorPerMill / 1000));
+		rectangleViewOrigin.y = scrollBarVertical.getSelection() * scrollBarDivisor;
 
 		if (logger.isDebugEnabled()) {
-			logger.debug("scrollVertically: scrollBarVerticalSelectionNew=" + scrollBarVerticalSelectionNew);
+			logger.debug("scrollVertically: scrollBarVerticalSelectionNew=" + scrollBarVertical.getSelection());
 			logger.debug("scrollVertically: new rectangleViewOrigin.y=" + rectangleViewOrigin.y);
 			logger.debug("scrollVertically: bottomRealY=" + (rectangleViewOrigin.y + viewPanel.getHeight() / ((double)zoomFactorPerMill / 1000)));
 		}
 
-//		logger.info("distance to beginning of main buffer: " + (rectangleViewOrigin.y - renderBuffer.getBufferedImageMainBounds().getY()));
-//		logger.info("distance to end of main buffer: " + ((renderBuffer.getBufferedImageMainBounds().getY() + renderBuffer.getBufferedImageMainBounds().getHeight()) - (rectangleViewOrigin.y + viewPanel.getHeight())));
-//		logger.info("scrollbar selection after scrolling: " + scrollBarVertical.getSelection());
+		centerVertically = false;
 
 		viewPanel.repaint();
 	}
 
 	private void scrollHorizontally(ScrollBar scrollBarHorizontal) {
-		scrollBarHorizontalSelectionNew = scrollBarHorizontal.getSelection();
-//		scrollBarHorizontalSelectionNew = scrollBarHorizontal.getValue();
-
-		rectangleViewOrigin.x = (int) (scrollBarHorizontalSelectionNew * scrollingStepDistance / ((double)zoomFactorPerMill / 1000));
-
-//		if (scrollBarHorizontalSelectionNew > scrollBarHorizontalSelectionOld) {
-//			rectangleViewOrigin.x += (scrollBarHorizontalSelectionNew - scrollBarHorizontalSelectionOld) * scrollingStepDistance;
-//			scrollBarHorizontalSelectionOld = scrollBarHorizontalSelectionNew;
-//		}
-//		else {
-//			rectangleViewOrigin.x -= (scrollBarHorizontalSelectionOld - scrollBarHorizontalSelectionNew) * scrollingStepDistance;
-//			scrollBarHorizontalSelectionOld = scrollBarHorizontalSelectionNew;
-//		}
+		rectangleViewOrigin.x = scrollBarHorizontal.getSelection() * scrollBarDivisor;
 
 		if (logger.isDebugEnabled())
 			logger.debug("scrollHorizontally: new rectangleViewOrigin.x=" + rectangleViewOrigin.x);
 
-		horizontallyCentered = false;
+		centerHorizontally = false;
 
 		viewPanel.repaint();
 	}
 
 	private void setScrollbars() {
-		if (logger.isDebugEnabled()) {
-			logger.debug("setScrollbars: document bounds y-value: " + pdfDocument.getDocumentBounds().y + "; real zoom factor: " + (zoomFactorPerMill / 1000));
-			logger.debug("setScrollbars: panel height: " + viewPanel.getHeight());
-		}
+		Display.getDefault().syncExec(new Runnable() {
+			@Override
+			public void run() {
+				double zoomFactor = (zoomFactorPerMill / 1000d);
 
-		double realZoomFactor = (zoomFactorPerMill / 1000);
-		int heightDifference = (int) (pdfDocument.getDocumentBounds().y * realZoomFactor - getViewPanel().getHeight());
-		int widthDifference = (int) (pdfDocument.getDocumentBounds().x * realZoomFactor - getViewPanel().getWidth());
+				int visibleAreaScrollHeight = (int) (getViewPanel().getHeight() / zoomFactor) / scrollBarDivisor;
+				scrollBarVertical.setMinimum(0);
+				scrollBarVertical.setMaximum((int) pdfDocument.getDocumentBounds().getY() / scrollBarDivisor);
+				scrollBarVertical.setSelection(rectangleViewOrigin.y / scrollBarDivisor);
+				boolean verticalBarVisible = visibleAreaScrollHeight < (scrollBarVertical.getMaximum() - scrollBarVertical.getMinimum());
+				scrollBarVertical.setVisible(verticalBarVisible);
 
-		if (heightDifference > 0) {
-			scrollBarVerticalNumberOfSteps = heightDifference / scrollingStepDistance + 2;
+				if (!verticalBarVisible && pdfDocument.getLayout() == PdfDocument.Layout.horizontal)
+					centerVertically = true;
 
-			if (logger.isDebugEnabled())
-				logger.debug("setScrollbars: steps of vertical scroll bar: " + scrollBarVerticalNumberOfSteps);
+				scrollBarVertical.setThumb(visibleAreaScrollHeight);
+				scrollBarVertical.setPageIncrement((int) (visibleAreaScrollHeight * 0.9d));
+				scrollBarVertical.setIncrement((int) (visibleAreaScrollHeight * 0.1d));
 
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					if (isDisposed())
-						return;
-					scrollBarVertical.setVisible(true);
-					scrollBarVertical.setThumb(1);
-					scrollBarVertical.setMaximum(scrollBarVerticalNumberOfSteps);
-					scrollBarVertical.setSelection((int) (rectangleViewOrigin.y * ((double)zoomFactorPerMill / 1000) / scrollingStepDistance));
+				int visibleAreaScrollWidth = (int) (getViewPanel().getWidth() / zoomFactor) / scrollBarDivisor;
+				scrollBarHorizontal.setMinimum(0);
+				scrollBarHorizontal.setMaximum((int) pdfDocument.getDocumentBounds().getX() / scrollBarDivisor);
+				scrollBarHorizontal.setSelection(rectangleViewOrigin.x / scrollBarDivisor);
+				boolean horizontalBarVisible = visibleAreaScrollWidth < (scrollBarHorizontal.getMaximum() - scrollBarHorizontal.getMinimum());
+				scrollBarHorizontal.setVisible(horizontalBarVisible);
 
-					if (logger.isDebugEnabled()) {
-						logger.debug("setScrollbars: scrollBarVertical.maximum=" + scrollBarVertical.getMaximum());
-						logger.debug("setScrollbars: scrollBarVertical.selection=" + scrollBarVertical.getSelection());
-					}
+				if (!horizontalBarVisible && pdfDocument.getLayout() == PdfDocument.Layout.vertical)
+					centerHorizontally = true;
 
-//					if (documentWasZoomed) {
-//						int newSelection = Utilities.doubleToIntRoundedDown(scrollBarVertical.getSelection() * zoomMultiplier);
-////						int newSelection = Utilities.doubleToIntRoundedDown(scrollBarVertical.getValue() * zoomMultiplier);
-//						Logger.getRootLogger().info("new scrollbar selection after zooming: " + newSelection);
-//						scrollBarVertical.setSelection(newSelection);
-////						scrollBarVertical.setValue(newSelection);
-////						scrollBarVerticalSelectionOld = newSelection;
-//						documentWasZoomed = false;
-//					}
+				scrollBarHorizontal.setThumb(visibleAreaScrollWidth);
+				scrollBarHorizontal.setPageIncrement((int) (visibleAreaScrollWidth * 0.9d));
+				scrollBarHorizontal.setIncrement((int) (visibleAreaScrollWidth * 0.1d));
+
+				if (logger.isDebugEnabled()) {
+					logger.debug("setScrollbars: scrollBarVertical.minimum=" + scrollBarVertical.getMinimum());
+					logger.debug("setScrollbars: scrollBarVertical.maximum=" + scrollBarVertical.getMaximum());
+					logger.debug("setScrollbars: scrollBarVertical.thumb=" + scrollBarVertical.getThumb());
+					logger.debug("setScrollbars: scrollBarVertical.size.x=" + scrollBarVertical.getSize().x);
+					logger.debug("setScrollbars: scrollBarVertical.size.y=" + scrollBarVertical.getSize().y);
+					logger.debug("setScrollbars: scrollBarVertical.selection=" + scrollBarVertical.getSelection());
+					logger.debug("setScrollbars: centerHorizontally=" + centerHorizontally);
+
+					logger.debug("setScrollbars: scrollBarHorizontal.minimum=" + scrollBarHorizontal.getMinimum());
+					logger.debug("setScrollbars: scrollBarHorizontal.maximum=" + scrollBarHorizontal.getMaximum());
+					logger.debug("setScrollbars: scrollBarHorizontal.thumb=" + scrollBarHorizontal.getThumb());
+					logger.debug("setScrollbars: scrollBarHorizontal.size.x=" + scrollBarHorizontal.getSize().x);
+					logger.debug("setScrollbars: scrollBarHorizontal.size.y=" + scrollBarHorizontal.getSize().y);
+					logger.debug("setScrollbars: scrollBarHorizontal.selection=" + scrollBarHorizontal.getSelection());
+					logger.debug("setScrollbars: centerVertically=" + centerVertically);
 				}
-			});
-		}
-		else {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					if (isDisposed())
-						return;
-					scrollBarVertical.setVisible(false);
-				}
-			});
-		}
-
-		if (widthDifference > 0) {
-			scrollBarHorizontalNumberOfSteps = Utilities.doubleToInt((double)widthDifference / scrollingStepDistance);
-//			Logger.getRootLogger().info("steps of horizontal scroll bar: " + scrollBarHorizontalNumberOfSteps);
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					if (isDisposed())
-						return;
-					scrollBarHorizontal.setVisible(true);
-					scrollBarHorizontal.setThumb(1);
-					scrollBarHorizontal.setMaximum(scrollBarHorizontalNumberOfSteps + 10);
-					scrollBarHorizontal.setSelection((int) (rectangleViewOrigin.x * ((double)zoomFactorPerMill / 1000) / scrollingStepDistance));
-//					if (startingPoint == true) {
-//						scrollBarHorizontal.setSelection((scrollBarHorizontalNumberOfSteps + 10) / 2 - 5);
-////						scrollBarHorizontal.setValue((scrollBarHorizontalNumberOfSteps + 10) / 2 - 5);
-//						startingPoint = false;
-//						scrollHorizontally(scrollBarHorizontal);
-////						scrollHorizontally();
-//					}
-				}
-			});
-		}
-		else {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					if (isDisposed())
-						return;
-
-					scrollBarHorizontal.setVisible(false);
-					horizontallyCentered = true;
-				}
-			});
-		}
+			}
+		});
 	}
 
 	/**
@@ -293,8 +248,6 @@ public class PdfViewerComposite extends Composite {
 		);
 
 		if (logger.isDebugEnabled()) {
-//			logger.debug("paintViewPanel: rectangleViewOrigin.x = " + rectangleViewOrigin.x);
-//			logger.debug("paintViewPanel: rectangleViewOrigin.y = " + rectangleViewOrigin.y);
 			logger.debug("paintViewPanel: zoomFactor=" + zoomFactor + " rectangleViewOrigin.x=" + rectangleViewOrigin.x + " rectangleViewOrigin.y=" + rectangleViewOrigin.y);
 			logger.debug("paintViewPanel: viewPanel.width = " + viewPanel.getWidth());
 			logger.debug("paintViewPanel: viewPanel.height = " + viewPanel.getHeight());
@@ -316,23 +269,11 @@ public class PdfViewerComposite extends Composite {
 		}
 	}
 
-	public Dimension getScreenSize() {
-		return screenSize;
-	}
-
-	public void setScreenSize(Dimension screenSize) {
-		this.screenSize = screenSize;
-	}
-
 	public Panel getViewPanel() {
 		return viewPanel;
 	}
 
-	public void setViewPanel(Panel viewPanel) {
-		this.viewPanel = viewPanel;
-	}
-
-	public class MouseWheelListenerImpl implements MouseWheelListener {
+	private class MouseWheelListenerImpl implements MouseWheelListener {
 		int mouseRotationOrientation;
 		public void mouseWheelMoved(MouseWheelEvent e) {
 			if (e.getWheelRotation() < 0)
@@ -346,21 +287,13 @@ public class PdfViewerComposite extends Composite {
 				Display.getDefault().asyncExec(new Runnable() {
 					public void run() {
 						if (scrollBarVertical.isVisible() == true) {	// vertical scroll bar has priority if visible
-							scrollBarVertical.setSelection(scrollBarVertical.getSelection() + mouseRotationOrientation * 10);
-//							scrollBarVertical.setValue(scrollBarVertical.getValue() + mouseRotationOrientation * 10);
-							if (scrollBarVertical.getSelection() >= scrollBarVertical.getMinimum() && scrollBarVertical.getSelection() <= scrollBarVertical.getMaximum())
-//							if (scrollBarVertical.getValue() >= scrollBarVertical.getMinimum() && scrollBarVertical.getValue() <= scrollBarVertical.getMaximum())
-								scrollVertically(scrollBarVertical);
-//								scrollVertically();
+							scrollBarVertical.setSelection(scrollBarVertical.getSelection() + mouseRotationOrientation * scrollBarVertical.getIncrement());
+							scrollVertically(scrollBarVertical);
 						}
 						else {
 							if (scrollBarHorizontal.isVisible() == true) {
-								scrollBarHorizontal.setSelection(scrollBarHorizontal.getSelection() + mouseRotationOrientation * 10);
-//								scrollBarHorizontal.setValue(scrollBarHorizontal.getValue() + mouseRotationOrientation * 10);
-								if (scrollBarHorizontal.getSelection() >= scrollBarHorizontal.getMinimum() && scrollBarHorizontal.getSelection() <= scrollBarHorizontal.getMaximum())
-//								if (scrollBarHorizontal.getValue() >= scrollBarHorizontal.getMinimum() && scrollBarHorizontal.getValue() <= scrollBarHorizontal.getMaximum())
-									scrollHorizontally(scrollBarHorizontal);
-//									scrollHorizontally();
+								scrollBarHorizontal.setSelection(scrollBarHorizontal.getSelection() + mouseRotationOrientation * scrollBarHorizontal.getIncrement());
+								scrollHorizontally(scrollBarHorizontal);
 							}
 						}
 					}
@@ -369,7 +302,7 @@ public class PdfViewerComposite extends Composite {
 		}
 	}
 
-	public class KeyListenerImpl implements KeyListener {
+	private class KeyListenerImpl implements KeyListener {
 
 		@Override
 		public void keyPressed(KeyEvent e) {
@@ -393,7 +326,7 @@ public class PdfViewerComposite extends Composite {
 	 *
 	 * @param mouseRotationOrientation the direction the user has scrolled into
 	 */
-	public void zoomPDFDocument(int mouseRotationOrientation) {
+	private void zoomPDFDocument(int mouseRotationOrientation) {
 		int zoomBefore = zoomFactorPerMill;
 		int zoomAfter = zoomFactorPerMill;
 
@@ -432,7 +365,8 @@ public class PdfViewerComposite extends Composite {
 		rectangleViewOrigin.x = (int) (middle.x - viewPanelBoundsReal.x / 2);
 		rectangleViewOrigin.y = (int) (middle.y - viewPanelBoundsReal.y / 2);
 
-		logger.debug("zoomPDFDocument: zoomFactor=" + zoomFactor + " rectangleViewOrigin.x=" + rectangleViewOrigin.x + " rectangleViewOrigin.y=" + rectangleViewOrigin.y);
+		if (logger.isDebugEnabled())
+			logger.debug("zoomPDFDocument: zoomFactor=" + zoomFactor + " rectangleViewOrigin.x=" + rectangleViewOrigin.x + " rectangleViewOrigin.y=" + rectangleViewOrigin.y);
 
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
@@ -441,14 +375,6 @@ public class PdfViewerComposite extends Composite {
 		});
 
 		viewPanel.repaint();
-	}
-
-	public RenderThread getRenderThread() {
-		return renderThread;
-	}
-
-	public void setRenderThread(RenderThread renderThread) {
-		this.renderThread = renderThread;
 	}
 
 	public Point getRectangleViewOrigin() {
@@ -462,5 +388,4 @@ public class PdfViewerComposite extends Composite {
 	public int getZoomFactorPerMill() {
 		return zoomFactorPerMill;
 	}
-
 }
