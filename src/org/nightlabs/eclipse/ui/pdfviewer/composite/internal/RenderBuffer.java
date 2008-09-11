@@ -5,14 +5,11 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.awt.image.RenderedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -21,6 +18,7 @@ import javax.imageio.stream.FileImageOutputStream;
 
 import org.apache.log4j.Logger;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.PdfViewerComposite;
+import org.nightlabs.util.IOUtil;
 
 import com.sun.pdfview.PDFPage;
 
@@ -42,11 +40,14 @@ public class RenderBuffer
 	private int bufferWidth;
 	private int bufferHeight;
 
+	public static final double BUFFER_WIDTH_FACTOR = 1.5;
+	public static final double BUFFER_HEIGHT_FACTOR = 2;
+
 	public RenderBuffer(PdfViewerComposite pdfViewerComposite, PdfDocument pdfDocument) {
 		this.pdfViewerComposite = pdfViewerComposite;
 		this.pdfDocument = pdfDocument;
-		this.bufferWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().width * 1.3);
-		this.bufferHeight = Toolkit.getDefaultToolkit().getScreenSize().height * 2;
+//		this.bufferWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().width * 1.3);
+//		this.bufferHeight = Toolkit.getDefaultToolkit().getScreenSize().height * 2;
 	}
 
 	/**
@@ -55,8 +56,16 @@ public class RenderBuffer
 	 * @param posX the x-coordinate in the real coordinate system of the upper left corner of the buffers that have to be created.
 	 * @param posY the y-coordinate in the real coordinate system of the upper left corner of the main buffer that has to be created (the y-coordinate of the sub buffer depends on this value)
 	 */
-	public void render(int posX, int posY, double zoomFactor)
+	public void render(int bufferWidth, int bufferHeight, int posX, int posY, double zoomFactor)
 	{
+		if (bufferWidth < 1)
+			throw new IllegalArgumentException("bufferWidth < 1");
+
+		if (bufferHeight < 1)
+			throw new IllegalArgumentException("bufferHeight < 1");
+
+		String dumpImageRenderID = DUMP_IMAGE_BUFFER || DUMP_IMAGE_PAGE ? Long.toString(System.currentTimeMillis(), 36) : null;
+
 		GraphicsConfiguration graphicsConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
 		BufferedImage bufferedImage = graphicsConfiguration.createCompatibleImage(bufferWidth, bufferHeight);
 		Rectangle2D.Double bufferedImageBounds = new Rectangle2D.Double(
@@ -122,8 +131,8 @@ public class RenderBuffer
 					clipLeftBottom
 			);
 
-//			String renderID = Long.toString(System.currentTimeMillis(), 36);
-//			printToImageFile(pdfImage, String.format("pdfImage-%s-%03d", renderID , pageNumber));
+			if (DUMP_IMAGE_PAGE)
+				printToImageFile(pdfImage, String.format("%s-pdfImage-%03d", dumpImageRenderID, pageNumber));
 
 			// In contrast to clipLeftBottom the clipAbsoluteLeftTop specifies the left-top-point of the clip relative
 			// to the PdfDocument's complete coordinate system.
@@ -149,9 +158,12 @@ public class RenderBuffer
 			);
 		} // for (Integer pageNumber : bufferedImagePageNumbers) {
 
-//		printToImageFile(bufferedImage, "bufferedImage-" + round);
+		if (DUMP_IMAGE_BUFFER)
+			printToImageFile(bufferedImage, String.format("%s-bufferedImage", dumpImageRenderID));
 
 		synchronized (this.bufferedImageMutex) {
+			this.bufferWidth = bufferWidth;
+			this.bufferHeight = bufferHeight;
 			this.bufferedImage = bufferedImage;
 			this.bufferedImageBounds = bufferedImageBounds;
 			this.zoomFactor = zoomFactor;
@@ -330,25 +342,37 @@ public class RenderBuffer
 		} // synchronized (bufferedImageMutex) {
 	}
 
+	private static final boolean DUMP_IMAGE_PAGE = false;
+	private static final boolean DUMP_IMAGE_BUFFER = false;
+
 	/**
 	 * Writes a given image to a file (very time-consuming - ONLY FOR DEBUGGING!).
 	 *
-	 * @param pdfImage the image that shall be written to a file
+	 * @param image the image that shall be written to a file
 	 * @param filenamePrefix the prefix of the filename of the file the image is written to dependent on part and round
 	 */
-	@SuppressWarnings("unused")
-	private void printToImageFile(Image pdfImage, String filenamePrefix) {
-		if (pdfImage != null) {
-			ImageWriter writer = ImageIO.getImageWritersByFormatName("png").next();
+	private static void printToImageFile(Image image, String filenamePrefix) {
+		if (image == null)
+			throw new IllegalArgumentException("image must not be null!");
+
+		File dumpDir = IOUtil.getUserTempDir("pdfviewer_images", null);
+		if (!dumpDir.exists())
+			dumpDir.mkdirs();
+
+		String fileFormat = "png";
+		ImageWriter writer = ImageIO.getImageWritersByFormatName(fileFormat).next();
+		try {
+			FileImageOutputStream out = new FileImageOutputStream(new File(dumpDir, filenamePrefix + '.' + fileFormat));
 			try {
-				writer.setOutput(new FileImageOutputStream(new File("/home/marco/temp/images/" + filenamePrefix + ".png")));
-				writer.write((RenderedImage) pdfImage);
-				writer.dispose();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+				writer.setOutput(out);
+				writer.write((RenderedImage) image);
+			} finally {
+				out.close();
 			}
+		} catch (Exception e) {
+			logger.warn("printToImageFile: writing image failed!", e);
+		} finally {
+			writer.dispose();
 		}
 	}
 

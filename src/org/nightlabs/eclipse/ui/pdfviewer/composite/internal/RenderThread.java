@@ -46,34 +46,50 @@ public class RenderThread extends Thread
 						pdfViewerComposite.getViewPanel().getHeight() / zoomFactor
 				);
 
-				if (!doRender) {
-					// rendering necessary, if the view area (= pdfViewerComposite.viewPanel) is (at least partially) outside of the buffer
-					Rectangle2D bufferedImageBounds = renderBuffer.getBufferedImageBounds();
-					if (bufferedImageBounds == null)
-						doRender = true;
-					else {
-						if (bufferedImageBounds.getMinX() > viewRegion.getMinX())
+				int bufferWidth = (int) (pdfViewerComposite.getViewPanel().getWidth() * RenderBuffer.BUFFER_WIDTH_FACTOR);
+				int bufferHeight = (int) (pdfViewerComposite.getViewPanel().getHeight() * RenderBuffer.BUFFER_HEIGHT_FACTOR);
+
+				if (bufferWidth >= 1 && bufferHeight >= 1) {
+
+					if (!doRender) {
+						if (bufferWidth != renderBuffer.getBufferWidth())
 							doRender = true;
-						else if (bufferedImageBounds.getMinY() > viewRegion.getMinY())
-							doRender = true;
-						else if (bufferedImageBounds.getMaxX() < viewRegion.getMaxX())
-							doRender = true;
-						else if (bufferedImageBounds.getMaxY() < viewRegion.getMaxY())
+						else if (bufferHeight != renderBuffer.getBufferHeight())
 							doRender = true;
 					}
-				}
 
-				if (doRender) {
-					renderBuffer.render(
-							(int) (viewRegion.getCenterX() - renderBuffer.getBufferWidth() / 2.0d / zoomFactor),
-							(int) (viewRegion.getCenterY() - renderBuffer.getBufferHeight() / 2.0d / zoomFactor),
-							zoomFactor
-					);
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							pdfViewerComposite.getViewPanel().repaint();
+					if (!doRender) {
+						// rendering necessary, if the view area (= pdfViewerComposite.viewPanel) is (at least partially) outside of the buffer
+						Rectangle2D bufferedImageBounds = renderBuffer.getBufferedImageBounds();
+						if (bufferedImageBounds == null)
+							doRender = true;
+						else {
+							if (bufferedImageBounds.getMinX() > viewRegion.getMinX())
+								doRender = true;
+							else if (bufferedImageBounds.getMinY() > viewRegion.getMinY())
+								doRender = true;
+							else if (bufferedImageBounds.getMaxX() < viewRegion.getMaxX())
+								doRender = true;
+							else if (bufferedImageBounds.getMaxY() < viewRegion.getMaxY())
+								doRender = true;
 						}
-					});
+					}
+
+					if (doRender) {
+						renderBuffer.render(
+								bufferWidth,
+								bufferHeight,
+								(int) (viewRegion.getCenterX() - bufferWidth / 2.0d / zoomFactor),
+								(int) (viewRegion.getCenterY() - bufferHeight / 2.0d / zoomFactor),
+								zoomFactor
+						);
+						SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								pdfViewerComposite.getViewPanel().repaint();
+							}
+						});
+					}
+
 				}
 
 				synchronized (this) {
