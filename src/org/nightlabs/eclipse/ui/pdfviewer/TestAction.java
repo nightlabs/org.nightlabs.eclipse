@@ -5,12 +5,13 @@ import java.io.File;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PartInitException;
-import org.nightlabs.base.ui.io.FileEditorInput;
 import org.nightlabs.base.ui.util.RCPUtil;
 import org.nightlabs.eclipse.ui.pdfviewer.editor.PdfViewerEditor;
+import org.nightlabs.eclipse.ui.pdfviewer.editor.PdfViewerEditorInput;
 
 import com.sun.pdfview.PDFViewer;
 
@@ -29,8 +30,8 @@ public class TestAction implements IWorkbenchWindowActionDelegate {
 	}
 
 	@Override
-	public void run(IAction action) {
-
+	public void run(IAction action)
+	{
 		FileDialog dialog = new FileDialog(window.getShell());
 		String filePath = dialog.open();
 
@@ -38,16 +39,16 @@ public class TestAction implements IWorkbenchWindowActionDelegate {
 			return;
 
 		File file = new File(filePath);
-		FileEditorInput fileEditorInput = new FileEditorInput(file);
+//		FileEditorInput editorInput = new FileEditorInput(file);
+		IEditorInput editorInput = new PdfViewerEditorInput(file);
 
 		try {
 			System.out.println("opening editor...");
-			RCPUtil.openEditor(fileEditorInput, PdfViewerEditor.ID);
+			RCPUtil.openEditor(editorInput, PdfViewerEditor.ID);
 		}
 		catch (PartInitException partInitException) {
 			throw new RuntimeException(partInitException);
 		}
-
 	}
 
 	@Override

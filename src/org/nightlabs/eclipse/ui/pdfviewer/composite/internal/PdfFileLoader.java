@@ -1,7 +1,7 @@
 package org.nightlabs.eclipse.ui.pdfviewer.composite.internal;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
@@ -12,54 +12,58 @@ import org.nightlabs.util.IOUtil;
 
 import com.sun.pdfview.PDFFile;
 
+/**
+ * Utility class to make reading a {@link PDFFile} from various sources easier.
+ * It allows to load a PDF from a byte array, an input stream and a file - other
+ * util methods might follow later.
+ *
+ * @author marco schulze - marco at nightlabs dot de
+ */
 public class PdfFileLoader {
-	
-	private File file;
-	PDFFile pdfDocument;
-	
-	public PdfFileLoader() {
-		
-	}
-	
-	public PdfFileLoader(File file) {
-		this.file = file;
+
+	private PdfFileLoader() { }
+
+	/**
+	 * Create a {@link PDFFile} from a byte array.
+	 *
+	 * @param byteArray the byte array containing the PDF.
+	 * @return a {@link PDFFile} with the contents from the given <code>byteArray</code>.
+	 * @throws IOException if the {@link PDFFile} failed to read the data.
+	 */
+	public static PDFFile loadPdf(byte[] byteArray) throws IOException {
+		ByteBuffer byteBuffer = ByteBuffer.wrap(byteArray);
+		return new PDFFile(byteBuffer);
 	}
 
-	public void loadPdf(InputStream in) throws IOException {
-		File f = File.createTempFile("pdfviewer", null);
-		f.deleteOnExit();
-		FileOutputStream out = new FileOutputStream(f);
+	/**
+	 * Create a {@link PDFFile} from an {@link InputStream}.
+	 *
+	 * @param in the {@link InputStream} containing the PDF. The InputStream is read completely, but <b>not</b> closed!
+	 * @return a {@link PDFFile} with the contents from the given input stream.
+	 * @throws IOException if the {@link PDFFile} failed to read the data.
+	 */
+	public static PDFFile loadPdf(InputStream in) throws IOException {
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		IOUtil.transferStreamData(in, out);
 		out.close();
-		loadPdf(f);
+
+		ByteBuffer byteBuffer = ByteBuffer.wrap(out.toByteArray());
+		return new PDFFile(byteBuffer);
 	}
 
-	public PDFFile loadPdf(File file) throws IOException {
+	public static PDFFile loadPdf(File file) throws IOException
+	{
+		RandomAccessFile randomAccessFile = new RandomAccessFile(file, "r");
 		try {
-			RandomAccessFile randomAccessFile = new RandomAccessFile(file, "r");
 			FileChannel fileChannel = randomAccessFile.getChannel();
-			ByteBuffer byteBuffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, 0, fileChannel.size());
-			pdfDocument = new PDFFile(byteBuffer);
+			try {
+				ByteBuffer byteBuffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, 0, fileChannel.size());
+				return new PDFFile(byteBuffer);
+			} finally {
+				fileChannel.close();
+			}
+		} finally {
+			randomAccessFile.close();
 		}
-		catch (IOException exception) {
-			System.out.println(exception.getStackTrace());
-		}
-		return pdfDocument;
 	}
-	
-	public PDFFile loadPdf() {
-		try {
-			RandomAccessFile randomAccessFile = new RandomAccessFile(file, "r");
-			FileChannel fileChannel = randomAccessFile.getChannel();
-			ByteBuffer byteBuffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, 0, fileChannel.size());
-			pdfDocument = new PDFFile(byteBuffer);
-		}
-		catch (IOException exception) {
-			System.out.println(exception.getStackTrace());
-		}
-		return pdfDocument;
-		
-	}
-	
-	
 }

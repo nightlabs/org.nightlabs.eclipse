@@ -21,7 +21,7 @@
             class="org.nightlabs.eclipse.ui.pdfviewer.editor.PdfViewerEditor"
             icon="icons/editor/PdfViewerEditor.16x16.png"
             id="org.nightlabs.eclipse.ui.pdfviewer.editor.PdfViewerEditor"
-            name="PdfViewer">
+            name="PDF viewer">
       </editor>
    </extension>
 
