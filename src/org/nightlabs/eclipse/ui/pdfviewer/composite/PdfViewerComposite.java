@@ -283,16 +283,19 @@ public class PdfViewerComposite extends Composite {
 	 * @param g the graphics to draw into.
 	 */
 	private void paintViewPanel(Graphics2D g) {
+		double zoomFactor = (double)zoomFactorPerMill / 1000;
+
 		Rectangle2D.Double region = new Rectangle2D.Double(
 				rectangleViewOrigin.x,
 				rectangleViewOrigin.y,
-				viewPanel.getWidth() / ((double)zoomFactorPerMill / 1000),
-				viewPanel.getHeight() / ((double)zoomFactorPerMill / 1000)
+				viewPanel.getWidth() / zoomFactor,
+				viewPanel.getHeight() / zoomFactor
 		);
 
 		if (logger.isDebugEnabled()) {
 //			logger.debug("paintViewPanel: rectangleViewOrigin.x = " + rectangleViewOrigin.x);
 //			logger.debug("paintViewPanel: rectangleViewOrigin.y = " + rectangleViewOrigin.y);
+			logger.debug("paintViewPanel: zoomFactor=" + zoomFactor + " rectangleViewOrigin.x=" + rectangleViewOrigin.x + " rectangleViewOrigin.y=" + rectangleViewOrigin.y);
 			logger.debug("paintViewPanel: viewPanel.width = " + viewPanel.getWidth());
 			logger.debug("paintViewPanel: viewPanel.height = " + viewPanel.getHeight());
 			logger.debug("paintViewPanel: region = " + region);
@@ -390,7 +393,7 @@ public class PdfViewerComposite extends Composite {
 	 *
 	 * @param mouseRotationOrientation the direction the user has scrolled into
 	 */
-	public void zoomPDFDocument (int mouseRotationOrientation) {
+	public void zoomPDFDocument(int mouseRotationOrientation) {
 		int zoomBefore = zoomFactorPerMill;
 		int zoomAfter = zoomFactorPerMill;
 
@@ -410,42 +413,26 @@ public class PdfViewerComposite extends Composite {
 
 		zoomFactorPerMill = zoomAfter;
 
-//		zoomMultiplier = 1.0;
-//
-//		if (mouseRotationOrientation == 1) {
-//			if (zoomFactorPerMill - 2 >= 2) {
-//				zoomFactorPerMill = zoomFactorPerMill - 2;
-//				zoomMultiplier = zoomFactorsDownwards.get(zoomFactorPerMill);
-//			}
-//		}
-//		else {
-//			if (zoomFactorPerMill + 2 <= 20) {
-//				zoomFactorPerMill += 2;
-//				zoomMultiplier = zoomFactorsUpwards.get(zoomFactorPerMill);
-//			}
-//		}
-		Logger.getRootLogger().info("currently used real zoom factor: " + ((double)zoomFactorPerMill / 1000));
-
-//		renderBuffer.setZoomFactor((zoomFactorPerMill / 1000));
-
 		// get the middle point BEFORE zooming
 		Point2D.Double middle = new Point2D.Double();
 
 		middle.x = (
-				rectangleViewOrigin.x + rectangleViewOrigin.x + viewPanel.getWidth() / ((double)zoomBefore / 1000) // the right side (x) of the view panel in real coordinates
+				rectangleViewOrigin.x + rectangleViewOrigin.x + viewPanel.getWidth() / ((double)zoomBefore / 1000)
 		) / 2;
 
 		middle.y = (
-				rectangleViewOrigin.y + rectangleViewOrigin.y + viewPanel.getHeight() / ((double)zoomBefore / 1000) // the bottom side (y) of the view panel in real coordinates
+				rectangleViewOrigin.y + rectangleViewOrigin.y + viewPanel.getHeight() / ((double)zoomBefore / 1000)
 		) / 2;
 
 		// calculate the new view origin AFTER zooming
-
 		Point2D.Double viewPanelBoundsReal = new Point2D.Double();
-		viewPanelBoundsReal.x = viewPanel.getWidth() / ((double)zoomFactorPerMill / 1000);
-		viewPanelBoundsReal.y = viewPanel.getHeight() / ((double)zoomFactorPerMill / 1000);
+		double zoomFactor = (double)zoomFactorPerMill / 1000;
+		viewPanelBoundsReal.x = viewPanel.getWidth() / zoomFactor;
+		viewPanelBoundsReal.y = viewPanel.getHeight() / zoomFactor;
 		rectangleViewOrigin.x = (int) (middle.x - viewPanelBoundsReal.x / 2);
 		rectangleViewOrigin.y = (int) (middle.y - viewPanelBoundsReal.y / 2);
+
+		logger.debug("zoomPDFDocument: zoomFactor=" + zoomFactor + " rectangleViewOrigin.x=" + rectangleViewOrigin.x + " rectangleViewOrigin.y=" + rectangleViewOrigin.y);
 
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
@@ -453,16 +440,6 @@ public class PdfViewerComposite extends Composite {
 			}
 		});
 
-//		// we put the new buffer centralized around the view panel (i.e. the view panel lies in the middle [horizontally + vertically] within the buffer)
-//		Point2D.Double bufferOrigin = new Point2D.Double();
-//		bufferOrigin.x = rectangleViewOrigin.x - (renderBuffer.getBufferedImageMainBounds().width - viewPanelBoundsReal.x) / 2;
-//		bufferOrigin.y = rectangleViewOrigin.y - (renderBuffer.getBufferedImageMainBounds().height - viewPanelBoundsReal.y) / 2;
-//		renderBuffer.createOrSetBufferDimensions(rectangleViewOrigin.x, Utilities.doubleToIntRoundedDown(renderBuffer.getBufferedImageMainBounds().y * zoomMultiplier), true);
-//
-//		documentWasZoomed = true;
-////		rectangleViewOrigin.y = Utilities.doubleToIntRoundedDown(rectangleViewOrigin.y * zoomMultiplier);
-//		// re-create both main and sub buffer
-////		renderBuffer.createOrSetBufferDimensions(rectangleViewOrigin.x, Utilities.doubleToIntRoundedDown(renderBuffer.getBufferedImageMainBounds().y * zoomMultiplier), true);
 		viewPanel.repaint();
 	}
 

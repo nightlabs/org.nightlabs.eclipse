@@ -45,7 +45,7 @@ public class RenderBuffer
 	public RenderBuffer(PdfViewerComposite pdfViewerComposite, PdfDocument pdfDocument) {
 		this.pdfViewerComposite = pdfViewerComposite;
 		this.pdfDocument = pdfDocument;
-		this.bufferWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().width * 1.5);
+		this.bufferWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().width * 1.3);
 		this.bufferHeight = Toolkit.getDefaultToolkit().getScreenSize().height * 2;
 	}
 
@@ -55,9 +55,8 @@ public class RenderBuffer
 	 * @param posX the x-coordinate in the real coordinate system of the upper left corner of the buffers that have to be created.
 	 * @param posY the y-coordinate in the real coordinate system of the upper left corner of the main buffer that has to be created (the y-coordinate of the sub buffer depends on this value)
 	 */
-	public void render(int posX, int posY, double zoomFactor) {
-		String renderID = Long.toString(System.currentTimeMillis(), 36);
-
+	public void render(int posX, int posY, double zoomFactor)
+	{
 		GraphicsConfiguration graphicsConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
 		BufferedImage bufferedImage = graphicsConfiguration.createCompatibleImage(bufferWidth, bufferHeight);
 		Rectangle2D.Double bufferedImageBounds = new Rectangle2D.Double(
@@ -110,7 +109,7 @@ public class RenderBuffer
 				double d = pageBounds.getMaxY() - bufferedImageBounds.getMaxY();
 				pdfImageHeight -= d * zoomFactor;
 				clipLeftBottom.height -= d;
-				clipLeftBottom.y = pdfPage.getHeight() - d;
+				clipLeftBottom.y = d;
 			}
 
 			if (pdfImageWidth < 1 || pdfImageHeight < 1) // skip a 0-height/width image
@@ -123,7 +122,8 @@ public class RenderBuffer
 					clipLeftBottom
 			);
 
-			printToImageFile(pdfImage, String.format("pdfImage-%s-%03d", renderID , pageNumber));
+//			String renderID = Long.toString(System.currentTimeMillis(), 36);
+//			printToImageFile(pdfImage, String.format("pdfImage-%s-%03d", renderID , pageNumber));
 
 			// In contrast to clipLeftBottom the clipAbsoluteLeftTop specifies the left-top-point of the clip relative
 			// to the PdfDocument's complete coordinate system.
@@ -232,20 +232,20 @@ public class RenderBuffer
 		if (region == null)
 			throw new IllegalArgumentException("region must not be null!");
 
-		boolean zoomMismatch = (int)(requestedZoomFactor * 1000) != (int) (zoomFactor * 1000);
-		boolean bufferSufficient = !zoomMismatch;
-
-		int destinationX1 = 0;
-		int destinationY1 = 0;
-		int destinationX2 = graphics2DWidth;
-		int destinationY2 = graphics2DHeight;
-
-		int sourceX1 = 0;
-		int sourceY1 = 0;
-		int sourceX2 = 0;
-		int sourceY2 = 0;
-
 		synchronized (bufferedImageMutex) {
+			boolean zoomMismatch = (int)(requestedZoomFactor * 1000) != (int) (zoomFactor * 1000);
+			boolean bufferSufficient = !zoomMismatch;
+
+			int destinationX1 = 0;
+			int destinationY1 = 0;
+			int destinationX2 = graphics2DWidth;
+			int destinationY2 = graphics2DHeight;
+
+			int sourceX1 = 0;
+			int sourceY1 = 0;
+			int sourceX2 = 0;
+			int sourceY2 = 0;
+
 			if (bufferedImageBounds == null)
 				bufferSufficient = false;
 			else {
@@ -290,10 +290,10 @@ public class RenderBuffer
 				for (Integer pageNumber : visiblePages) {
 					Rectangle2D page = pdfDocument.getPageBounds(pageNumber);
 
-					int x = (int) ((page.getX() - region.getX()) * zoomFactor);
-					int y = (int) ((page.getY() - region.getY()) * zoomFactor);
-					int w = (int) (page.getWidth() * zoomFactor);
-					int h = (int) (page.getHeight() * zoomFactor);
+					int x = (int) ((page.getX() - region.getX()) * requestedZoomFactor);
+					int y = (int) ((page.getY() - region.getY()) * requestedZoomFactor);
+					int w = (int) (page.getWidth() * requestedZoomFactor);
+					int h = (int) (page.getHeight() * requestedZoomFactor);
 
 					graphics2D.setColor(Color.RED);
 					graphics2D.drawRect(x, y, w, h);
@@ -325,18 +325,19 @@ public class RenderBuffer
 						null
 				);
 			}
-		} // synchronized (bufferedImageMutex) {
 
-		return bufferSufficient;
+			return bufferSufficient;
+		} // synchronized (bufferedImageMutex) {
 	}
 
 	/**
-	 * Writes a given image to a file (very time-consuming).
+	 * Writes a given image to a file (very time-consuming - ONLY FOR DEBUGGING!).
 	 *
 	 * @param pdfImage the image that shall be written to a file
 	 * @param filenamePrefix the prefix of the filename of the file the image is written to dependent on part and round
 	 */
-	private void printToImageFile (Image pdfImage, String filenamePrefix) {
+	@SuppressWarnings("unused")
+	private void printToImageFile(Image pdfImage, String filenamePrefix) {
 		if (pdfImage != null) {
 			ImageWriter writer = ImageIO.getImageWritersByFormatName("png").next();
 			try {
