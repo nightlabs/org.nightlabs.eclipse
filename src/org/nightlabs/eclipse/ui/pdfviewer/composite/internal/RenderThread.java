@@ -104,7 +104,7 @@ public class RenderThread extends Thread
 				}
 			} catch (Throwable t) {
 				ExceptionHandlerRegistry.asyncHandleException(t);
-				try { Thread.sleep(5000); } catch (InterruptedException x) { } // prevent too quick respawns, if the error occurs every time
+				try { Thread.sleep(5000); } catch (InterruptedException x) { } // prevent too quick re-spawns, if the error occurs every time
 			}
 		}
 	}

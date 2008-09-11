@@ -102,7 +102,7 @@ public class RenderBuffer
 			int pdfImageWidth = (int) (pageBounds.getWidth() * zoomFactor);
 			int pdfImageHeight = (int) (pageBounds.getHeight() * zoomFactor);
 
-			// PDF coordinate system begins from bottom left point upwards, not from top left point downwards
+			// PDF coordinate system begins from bottom-left point upwards, not from top-left point downwards
 			Rectangle2D.Double clipLeftBottom = new Rectangle2D.Double(0, 0, 0, 0);
 			clipLeftBottom.width = pdfPage.getWidth();
 			clipLeftBottom.height = pdfPage.getHeight();
@@ -146,9 +146,9 @@ public class RenderBuffer
 			if (DUMP_IMAGE_PAGE)
 				printToImageFile(pdfImage, String.format("%s-pdfImage-%03d", dumpImageRenderID, pageNumber));
 
-			// In contrast to clipLeftBottom clipAbsoluteLeftTop specifies the left-top-point of the clip relative
+			// In contrast to clipLeftBottom clipAbsoluteLeftTop specifies the top-left point of the clip relative
 			// to the PdfDocument's complete coordinate system.
-			// PDF coordinate system begins from bottom left point upwards, not from top left point downwards
+			// PDF coordinate system begins from bottom-left point upwards, not from top-left point downwards
 			Rectangle2D.Double clipAbsoluteLeftTop = new Rectangle2D.Double();
 			clipAbsoluteLeftTop.x = pageBounds.getX() + clipLeftBottom.x;
 			clipAbsoluteLeftTop.y = pageBounds.getY() + pageBounds.getHeight() - (clipLeftBottom.y + clipLeftBottom.height);
@@ -205,6 +205,16 @@ public class RenderBuffer
 		}
 	}
 
+	/**
+	 * Draws the given image into the currently considered buffer.
+	 *
+	 * @param graphics2D the graphics context of the current buffer
+	 * @param image the image to draw into the current buffer
+	 * @param x the x coordinate of that point in the current buffer where the top-left corner of the given
+	 * image that shall be drawn will be lying
+	 * @param y	the y coordinate of that point in the current buffer where the top-left corner of the given
+	 * image that shall be drawn will be lying
+	 */
 	private static void _drawImage(Graphics2D graphics2D, Image image, int x, int y)
 	{
 		BlockingImageObserver bio = new BlockingImageObserver();
@@ -286,6 +296,9 @@ public class RenderBuffer
 	 * (passed as <code>graphics2D</code>).
 	 *
 	 * @param graphics2D the graphics context of the panel
+	 * @param graphics2DWidth the panel width
+	 * @param graphics2DHeight the panel height
+	 * @param requestedZoomFactor the zoom factor to use
 	 * @param region the region of interest of the document that shall be drawn onto the screen in real coordinates
 	 * @return <code>true</code>, if the region could be completely copied from the buffer. <code>false</code>, if the requested region
 	 *		exceeds the buffer and therefore could only copy partially or not at all. Empty pages will be drawn instead.
@@ -320,8 +333,7 @@ public class RenderBuffer
 			if (bufferedImageBounds == null)
 				bufferSufficient = false;
 			else {
-				// destination rectangle (screen coordinates relative to the panel! i.e. usually the complete panel)
-				// given as TWO POINTS d1 and d2 (not width and height)
+
 				sourceX1 = (int) ((region.getMinX() - bufferedImageBounds.getMinX()) * zoomFactor);
 				sourceY1 = (int) ((region.getMinY() - bufferedImageBounds.getMinY()) * zoomFactor);
 
@@ -373,6 +385,9 @@ public class RenderBuffer
 					graphics2D.fillRect(x + 1, y + 1, w - 1, h - 1);
 
 					// TODO draw page numbers in the middle of each page
+					graphics2D.setColor(COLOR_DRAFT_PAGE_BORDER);
+					graphics2D.drawString(Integer.toString(pageNumber), (int)(x + (double)w / 2), (int)(y + (double)h / 2));
+
 				}
 			}
 
