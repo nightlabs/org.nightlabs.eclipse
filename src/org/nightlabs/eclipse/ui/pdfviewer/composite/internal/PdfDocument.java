@@ -152,7 +152,7 @@ public class PdfDocument
 			return beginIdx + 1;
 
 		if (isPageVisible(pageBounds.get(endIdx), bounds))
-			return beginIdx + 1;
+			return endIdx + 1;
 
 		while (endIdx - beginIdx > 1) {
 			int middleIdx = (beginIdx + endIdx) / 2;
