@@ -100,18 +100,26 @@ public final class JFaceUtil
 	 */
 	public static Image getCheckBoxImage(StructuredViewer viewer, boolean checkState, boolean enabled)
 	{
-		if (JFaceResources.getImageRegistry().getDescriptor(CHECKED_KEY) == null)
-		{
-			JFaceResources.getImageRegistry().put(DISABLED_UNCHECKED_KEY,
-				makeShot(viewer.getControl(), false, false));
-			JFaceResources.getImageRegistry().put(UNCHECK_KEY,
-					makeShot(viewer.getControl(), false, true));
-			JFaceResources.getImageRegistry().put(DISABLED_CHECKED_KEY,
-				makeShot(viewer.getControl(), true, false));
+		if (JFaceResources.getImageRegistry().getDescriptor(CHECKED_KEY) == null) {
 			JFaceResources.getImageRegistry().put(CHECKED_KEY,
 					makeShot(viewer.getControl(), true, true));
 		}
+		
+		if (JFaceResources.getImageRegistry().getDescriptor(DISABLED_UNCHECKED_KEY) == null) {
+			JFaceResources.getImageRegistry().put(DISABLED_UNCHECKED_KEY,
+					makeShot(viewer.getControl(), false, false));
+		}
 
+		if (JFaceResources.getImageRegistry().getDescriptor(DISABLED_CHECKED_KEY) == null) {
+			JFaceResources.getImageRegistry().put(DISABLED_CHECKED_KEY,
+					makeShot(viewer.getControl(), true, false));
+		}
+
+		if (JFaceResources.getImageRegistry().getDescriptor(UNCHECK_KEY) == null) {
+			JFaceResources.getImageRegistry().put(UNCHECK_KEY,
+					makeShot(viewer.getControl(), false, true));
+		}
+		
 		if (checkState)
 		{
 			if (enabled)
