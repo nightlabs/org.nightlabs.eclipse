@@ -208,12 +208,12 @@ public class RenderBuffer
 	/**
 	 * Draws the given image into the currently considered buffer.
 	 *
-	 * @param graphics2D the graphics context of the current buffer
-	 * @param image the image to draw into the current buffer
+	 * @param graphics2D the graphics context of the current buffer.
+	 * @param image the image to draw into the current buffer.
 	 * @param x the x coordinate of that point in the current buffer where the top-left corner of the given
-	 * image that shall be drawn will be lying
+	 * image that shall be drawn will be lying.
 	 * @param y	the y coordinate of that point in the current buffer where the top-left corner of the given
-	 * image that shall be drawn will be lying
+	 * image that shall be drawn will be lying.
 	 */
 	private static void _drawImage(Graphics2D graphics2D, Image image, int x, int y)
 	{
@@ -270,10 +270,11 @@ public class RenderBuffer
 	/**
 	 * Gets the image of the currently considered PDF page taking a given clip into consideration.
 	 *
-	 * @param pdfPage the currently considered page of the PDF document
-	 * @param pdfImageWidth the image width in the image coordinate system
-	 * @param pdfImageHeight the image height in the image coordinate system
-	 * @param clipLeftBottom a rectangle describing the region of interest of the currently considered PDF page
+	 * @param pdfPage the currently considered page of the PDF document.
+	 * @param pdfImageWidth the image width in the image coordinate system.
+	 * @param pdfImageHeight the image height in the image coordinate system.
+	 * @param clipLeftBottom a rectangle describing the region of interest of the currently considered PDF page.
+	 * @return the image of the given PDF page, clipped as pretended by clipLeftBottom.
 	 */
 	private static Image getPdfImage(PDFPage pdfPage, int pdfImageWidth, int pdfImageHeight, Rectangle2D clipLeftBottom)
 	{
@@ -295,11 +296,11 @@ public class RenderBuffer
 	 * Draws a certain part (the region of interest) of the buffer onto the screen - or more precisely the viewPanel
 	 * (passed as <code>graphics2D</code>).
 	 *
-	 * @param graphics2D the graphics context of the panel
-	 * @param graphics2DWidth the panel width
-	 * @param graphics2DHeight the panel height
-	 * @param requestedZoomFactor the zoom factor to use
-	 * @param region the region of interest of the document that shall be drawn onto the screen in real coordinates
+	 * @param graphics2D the graphics context of the panel.
+	 * @param graphics2DWidth the panel width.
+	 * @param graphics2DHeight the panel height.
+	 * @param requestedZoomFactor the zoom factor to use.
+	 * @param region the region of interest of the document that shall be drawn onto the screen in real coordinates.
 	 * @return <code>true</code>, if the region could be completely copied from the buffer. <code>false</code>, if the requested region
 	 *		exceeds the buffer and therefore could only copy partially or not at all. Empty pages will be drawn instead.
 	 */
@@ -430,8 +431,8 @@ public class RenderBuffer
 	/**
 	 * Writes a given image to a file (very time-consuming - ONLY FOR DEBUGGING!).
 	 *
-	 * @param image the image that shall be written to a file
-	 * @param filenamePrefix the prefix of the filename of the file the image is written to dependent on part and round
+	 * @param image the image that shall be written to a file.
+	 * @param filenamePrefix the prefix of the filename of the file the image is written to dependent on part and round.
 	 */
 	private static void printToImageFile(Image image, String filenamePrefix) {
 		if (image == null)

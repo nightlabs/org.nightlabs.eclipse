@@ -52,7 +52,9 @@ public class PdfDocument
 
 	/**
 	 * Get all PDF pages of the PDF document, create a new rectangle for each page and insert it
-	 * into its place in the virtual floor starting with index one (not zero!)
+	 * into its place in the virtual floor starting with index one (not zero!).
+	 *
+	 * @param monitor a progress monitor showing the progress when loading the PDF document
 	 */
 	private void readPdf(IProgressMonitor monitor) {
 		monitor.beginTask("Reading PDF file", pdfFile.getNumPages());

@@ -51,6 +51,13 @@ public class PdfFileLoader {
 		return new PDFFile(byteBuffer);
 	}
 
+	/**
+	 * Create a {@link PDFFile} from a {@link File}.
+	 *
+	 * @param file the {@link File} containing the PDF.
+	 * @return a {@link PDFFile} with the contents from the given file.
+	 * @throws IOException if the {@link PDFFile} failed to read the data.
+	 */
 	public static PDFFile loadPdf(File file) throws IOException
 	{
 		RandomAccessFile randomAccessFile = new RandomAccessFile(file, "r");
