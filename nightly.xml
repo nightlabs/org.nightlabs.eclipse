@@ -9,7 +9,9 @@
     <provides/>
 
 <!-- Temporary workaround because nightly build resolving fragments for classpath fails (sometimes?) due to incorrect build order. -->
+<!-- This bug should be fixed. Marco.
     <requires path="DelegatingClassLoader"/>
+-->
 
     <javadoc path="org.nightlabs.eclipse.ui.dialog/src"/>
   </project>
