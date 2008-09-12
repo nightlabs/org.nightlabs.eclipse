@@ -199,7 +199,7 @@ public class RenderBuffer
 			} catch (StackOverflowError error) {
 				logger.warn("drawImage: WORKAROUND: Caught StackOverflowError with tryCount=" + tryCount, error);
 
-				if (tryCount > 2)
+				if (tryCount > 5)
 					throw error;
 			}
 		}
@@ -355,7 +355,7 @@ public class RenderBuffer
 				}
 
 				if (bufferedImageBounds.getMaxY() < region.getMaxY()) {
-					destinationY2 = graphics2DWidth - (int) ((region.getMaxY() - bufferedImageBounds.getMaxY()) * zoomFactor);
+					destinationY2 = graphics2DHeight - (int) ((region.getMaxY() - bufferedImageBounds.getMaxY()) * zoomFactor);
 					bufferSufficient = false;
 				}
 

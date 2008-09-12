@@ -1,7 +1,6 @@
 package org.nightlabs.eclipse.ui.pdfviewer.editor;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -11,6 +10,7 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
@@ -18,6 +18,7 @@ import org.eclipse.ui.IPathEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 import org.nightlabs.base.ui.io.FileEditorInput;
+import org.nightlabs.base.ui.util.RCPUtil;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.PdfViewerComposite;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.internal.PdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.internal.PdfFileLoader;
@@ -82,6 +83,7 @@ public class PdfViewerEditor extends EditorPart
 	public void createPartControl(final Composite parent) {
 		loadingMessageLabel = new Label(parent, SWT.NONE);
 		loadingMessageLabel.setText("Loading PDF file...");
+		final Display display = loadingMessageLabel.getDisplay();
 
 		final IEditorInput input = getEditorInput();
 		Job job = new Job("Loading PDF file") {
@@ -118,15 +120,28 @@ public class PdfViewerEditor extends EditorPart
 					monitor.worked(20);
 
 					pdfDocument = new PdfDocument(pdfFile, new SubProgressMonitor(monitor, 80));
-				} catch (IOException x) {
+				} catch (final Exception x) {
 					logger.error("Error while reading PDF file!", x);
+
+					display.asyncExec(new Runnable() {
+						public void run() {
+							if (parent.isDisposed())
+								return;
+
+							RCPUtil.closeEditor(input, false);
+						}
+					});
+
 					throw new RuntimeException(x);
 				} finally {
 					monitor.done();
 				}
 
-				loadingMessageLabel.getDisplay().asyncExec(new Runnable() {
+				display.asyncExec(new Runnable() {
 					public void run() {
+						if (parent.isDisposed())
+							return;
+
 						loadingMessageLabel.dispose();
 						pdfViewerComposite = new PdfViewerComposite(parent, pdfDocument);
 						parent.layout(true, true);

@@ -2,11 +2,13 @@ package org.nightlabs.eclipse.ui.pdfviewer.editor;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.internal.PdfFileLoader;
+import org.nightlabs.util.Util;
 
 import com.sun.pdfview.PDFFile;
 
@@ -106,4 +108,17 @@ implements IEditorInput
 		return null;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) return true;
+		if (obj == null) return false;
+		if (obj.getClass() != this.getClass()) return false;
+		PdfViewerEditorInput o = (PdfViewerEditorInput) obj;
+		return Util.equals(file, o.file) && Util.equals(byteArray, o.byteArray);
+	}
+
+	@Override
+	public int hashCode() {
+		return Util.hashCode(file) + (byteArray == null ? 0 : Arrays.hashCode(byteArray));
+	}
 }
