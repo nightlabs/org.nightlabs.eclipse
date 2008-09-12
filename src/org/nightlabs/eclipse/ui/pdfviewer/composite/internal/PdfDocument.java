@@ -17,7 +17,7 @@ import com.sun.pdfview.PDFPage;
  * real coordinate system of the complete viewing area including each page's position and bounds and
  * some other meta-data.
  *
- * @author frederik löser - frederik at nightlabs dot de
+ * @author frederik loeser - frederik at nightlabs dot de
  * @author marco schulze - marco at nightlabs dot de
  */
 public class PdfDocument
@@ -54,7 +54,7 @@ public class PdfDocument
 	 * Get all PDF pages of the PDF document, create a new rectangle for each page and insert it
 	 * into its place in the virtual floor starting with index one (not zero!).
 	 *
-	 * @param monitor a progress monitor showing the progress when loading the PDF document
+	 * @param monitor a sub progress monitor showing the progress of getting all PDF pages of the given PDF file.
 	 */
 	private void readPdf(IProgressMonitor monitor) {
 		monitor.beginTask("Reading PDF file", pdfFile.getNumPages());
@@ -137,8 +137,8 @@ public class PdfDocument
 	 * Get a sorted list of page numbers (one-based) of those pages that are partially or completely visible within the
 	 * given bounds.
 	 *
-	 * @param bounds coordinates of the area of interest.
-	 * @return a sorted list (smallest page number first) of those page numbers visible in the given buffer bounds.
+	 * @param bounds coordinates of the area of interest in the real coordinate system.
+	 * @return a list of page numbers of those pages visible in the given bounds.
 	 */
 	public List<Integer> getVisiblePages(Rectangle2D bounds) {
 		List<Integer> result = new ArrayList<Integer>();

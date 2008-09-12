@@ -35,7 +35,7 @@ public class RenderThread extends Thread
 				if (pdfViewerComposite.isDisposed())
 					return;
 
-				// rendering necessary, if the zoom changed
+				// rendering necessary, if zoom has been changed
 				boolean doRender = pdfViewerComposite.getZoomFactorPerMill() != (int) (renderBuffer.getZoomFactor() * 1000);
 
 				// the new zoom factor (if unchanged, it's already the same as renderBuffer.getZoomFactor())
@@ -55,6 +55,7 @@ public class RenderThread extends Thread
 				if (bufferWidth >= 1 && bufferHeight >= 1) {
 
 					if (!doRender) {
+						// rendering necessary, if buffer width or buffer height has been changed (induced by panel in- or decrease)
 						if (bufferWidth != renderBuffer.getBufferWidth())
 							doRender = true;
 						else if (bufferHeight != renderBuffer.getBufferHeight())
