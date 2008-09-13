@@ -366,7 +366,7 @@ public class XComposite extends Composite
 		for (Control child : comp.getChildren()) {
 			boolean paintBorder = false;
 			if (checkChildrenForBorders)
-			 paintBorder = toolkit.checkForBorders(child);
+				paintBorder = toolkit.checkForBorders(child);
 
 			// stop at XComposite children, since they
 			// will adapt everything beneath themselves through the call to child.layout(bool, bool)

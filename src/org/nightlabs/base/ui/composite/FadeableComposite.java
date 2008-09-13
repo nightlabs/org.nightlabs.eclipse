@@ -182,6 +182,8 @@ public class FadeableComposite extends XComposite implements Fadeable
 	 */
 	public void setFaded(boolean faded)
 	{
+		if (isDisposed())
+			return;
 		boolean beforeFade = faded && !isFaded();
 		boolean beforeUnfade = !faded && isFaded();
 
@@ -247,6 +249,8 @@ public class FadeableComposite extends XComposite implements Fadeable
 
 	private void fade(Control c)
 	{
+		if (c.isDisposed())
+			return;
 		setControlOriginalEnabled(c, c.isEnabled());
 
 		if(c instanceof Composite)
@@ -268,6 +272,8 @@ public class FadeableComposite extends XComposite implements Fadeable
 
 	private void unfade(Control c)
 	{
+		if (c.isDisposed())
+			return;
 		c.setEnabled(getControlOriginalEnabled(c));
 
 		if(c instanceof Composite)

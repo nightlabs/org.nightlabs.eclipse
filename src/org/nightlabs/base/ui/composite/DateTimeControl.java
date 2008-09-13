@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
+import org.nightlabs.base.ui.form.NightlabsFormsToolkit;
 import org.nightlabs.l10n.DateFormatter;
 import org.nightlabs.l10n.DateParseException;
 
@@ -73,7 +74,10 @@ public class DateTimeControl extends XComposite {
 					setTimestamp(DateTimeControl.this.date.getTime());
 			}
 		});
-
+		// This needs to be done, somehow as the layout is tight wrapping and the borders
+		// are otherwise not shown in a Form environment (at least for gtk)
+		NightlabsFormsToolkit.adjustLayoutForBorderPainting(text);
+		
 		this.setDate(date); // text needs to exist
 
 		lookupButton = new Button(this, SWT.NONE);

@@ -96,7 +96,7 @@ public class EntityEditor extends CommitableFormEditor
 	protected void addPages()
 	{
 		try {
-			List<EntityEditorPageSettings> pageSettings = EntityEditorRegistry.sharedInstance().getPageSettingsOrdered(getEditorID());
+			List<EntityEditorPageSettings> pageSettings = getOrderedPageSettings();
 			for (EntityEditorPageSettings pageSetting : pageSettings) {
 				IEntityEditorPageFactory factory = pageSetting.getPageFactory();
 				IFormPage page = factory.createPage(this);
@@ -106,6 +106,22 @@ public class EntityEditor extends CommitableFormEditor
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * This method is called when the editor creates its pages.
+	 * It should return all {@link EntityEditorPageSettings} for the pages to 
+	 * be displayed in this editor.
+	 * <p>
+	 * This method uses the {@link EntityEditorRegistry} and the id of the editor
+	 * to build the settings but it might be overridden in order to customise
+	 * this behaviour. 
+	 * </p>
+	 * @return An ordered list of the {@link EntityEditorPageSettings} 
+	 *         for the pages to be displayed in this editor.
+	 */
+	protected List<EntityEditorPageSettings> getOrderedPageSettings() {
+		return EntityEditorRegistry.sharedInstance().getPageSettingsOrdered(getEditorID());
 	}
 	
 	/**

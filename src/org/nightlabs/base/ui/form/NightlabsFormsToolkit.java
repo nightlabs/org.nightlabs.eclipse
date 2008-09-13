@@ -22,6 +22,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
+import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.toolkit.AbstractToolkit;
 
 /**
@@ -125,13 +126,21 @@ public class NightlabsFormsToolkit extends AbstractToolkit
 	protected static final int minBorderSpace = 3;
 	
 	/**
-	 * This method ensures that there is a big enough inset to draw the border around.
+	 * This method checks prerequisites by calling {@link #adjustLayoutForBorderPainting(Control, boolean)}. 
 	 * @param child the Control which is getting a border and the insets are checked / enforced for.
 	 */
 	@Override
 	protected void checkPrerequisites(Control child) {
+		adjustLayoutForBorderPainting(child, false);
+	}
+	
+	private static void adjustLayoutForBorderPainting(Control child, boolean checkForToolkit) {
+		if (checkForToolkit) {			
+			if (XComposite.retrieveToolkit(child.getParent()) == null)
+				return;
+		}
 		Composite parent = child.getParent();
-		Layout layout = parent.getLayout();
+		Layout layout = parent.getLayout();		
 		if (layout instanceof GridLayout) {
 			GridLayout gridLayout = (GridLayout) layout;
 			if (gridLayout.marginHeight < minBorderSpace)				gridLayout.marginHeight = minBorderSpace;
@@ -170,8 +179,19 @@ public class NightlabsFormsToolkit extends AbstractToolkit
 			if (wrapLayout.bottomMargin < minBorderSpace)				wrapLayout.bottomMargin = minBorderSpace;
 		}
 		else {
-			logger.warn("The encountered layout is unkown, the margins can therefore not be set correctly"+ //$NON-NLS-1$
-					" to be able to draw a flat looking border around the given Control:"+child); //$NON-NLS-1$
+			logger.warn("The encountered layout is unkown " + layout + ", the margins can therefore not be set correctly"+ //$NON-NLS-1$
+					" to be able to draw a flat looking border around the given Control: " + child); //$NON-NLS-1$
 		}
+	}
+	
+	/**
+	 * This method ensures that the given controls parent has big enough insets to so that a
+	 * border can be drawn around the given control. Note, that this method will check first
+	 * if the adjustment is needed at all, i.e. if the given control in in a Form environment.
+	 * 
+	 * @param child the Control which should get a border.
+	 */
+	public static void adjustLayoutForBorderPainting(Control child) {
+		adjustLayoutForBorderPainting(child, true);
 	}
 }
