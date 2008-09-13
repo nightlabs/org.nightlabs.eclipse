@@ -1,8 +1,9 @@
-package org.nightlabs.eclipse.ui.pdfviewer.composite.internal;
+package org.nightlabs.eclipse.ui.pdfviewer.model;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -134,13 +135,15 @@ public class PdfDocument
 	}
 
 	/**
-	 * Get a sorted list of page numbers (one-based) of those pages that are partially or completely visible within the
-	 * given bounds.
+	 * Get the page numbers (1-based) of those pages that are partially or completely visible within the
+	 * given bounds. The pages are rendered in the order the resulting <code>Collection</code> iterates.
+	 * This is only relevant, if pages are overlapping (then the last page is top, i.e. every page is above
+	 * the previous one).
 	 *
 	 * @param bounds coordinates of the area of interest in the real coordinate system.
 	 * @return a list of page numbers of those pages visible in the given bounds.
 	 */
-	public List<Integer> getVisiblePages(Rectangle2D bounds) {
+	public Collection<Integer> getVisiblePages(Rectangle2D bounds) {
 		List<Integer> result = new ArrayList<Integer>();
 
 		int firstVisibleIdx = -1; // the page index (0-based) of the first page (i.e. smallest page number) that is visible.
@@ -248,16 +251,16 @@ public class PdfDocument
 		return -1;
 	}
 
-	private boolean isPageVisible(Rectangle2D.Double page, Rectangle2D bounds)
+	private boolean isPageVisible(Rectangle2D page, Rectangle2D bounds)
 	{
 		return page.contains(bounds) || bounds.contains(page) || bounds.intersects(page);
 	}
 
-	public Rectangle2D.Double getPageBounds(int pageNumber) {
+	public Rectangle2D getPageBounds(int pageNumber) {
 		return pageBounds.get(pageNumber - 1);
 	}
 
-	public Point2D.Double getDocumentBounds() {
+	public Point2D getDocumentBounds() {
 		return documentBounds;
 	}
 
@@ -270,7 +273,7 @@ public class PdfDocument
 		readPdf(monitor);
 	}
 
-	public Layout getLayout() {
-		return layout;
-	}
+//	public Layout getLayout() {
+//		return layout;
+//	}
 }

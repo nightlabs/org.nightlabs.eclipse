@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.awt.image.RenderedImage;
 import java.io.File;
-import java.util.List;
+import java.util.Collection;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
@@ -18,6 +18,7 @@ import javax.imageio.stream.FileImageOutputStream;
 
 import org.apache.log4j.Logger;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.PdfViewerComposite;
+import org.nightlabs.eclipse.ui.pdfviewer.model.PdfDocument;
 import org.nightlabs.util.IOUtil;
 
 import com.sun.pdfview.PDFPage;
@@ -93,10 +94,10 @@ public class RenderBuffer
 		graphics.fillRect(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight());
 
 		// get page numbers of those pages that are lying in buffer bounds of currently considered buffer
-		List<Integer> bufferedImagePageNumbers = pdfDocument.getVisiblePages(bufferedImageBounds);
+		Collection<Integer> bufferedImagePageNumbers = pdfDocument.getVisiblePages(bufferedImageBounds);
 
 		for (Integer pageNumber : bufferedImagePageNumbers) {
-			Rectangle2D.Double pageBounds = pdfDocument.getPageBounds(pageNumber);
+			Rectangle2D pageBounds = pdfDocument.getPageBounds(pageNumber);
 			PDFPage pdfPage = pdfDocument.getPdfFile().getPage(pageNumber);
 
 			int pdfImageWidth = (int) (pageBounds.getWidth() * zoomFactor);
@@ -370,7 +371,7 @@ public class RenderBuffer
 				graphics2D.fillRect(0, 0, graphics2DWidth, graphics2DHeight);
 
 				// draw empty pages
-				List<Integer> visiblePages = pdfDocument.getVisiblePages(region);
+				Collection<Integer> visiblePages = pdfDocument.getVisiblePages(region);
 				for (Integer pageNumber : visiblePages) {
 					Rectangle2D page = pdfDocument.getPageBounds(pageNumber);
 

@@ -20,8 +20,8 @@ import org.eclipse.ui.part.EditorPart;
 import org.nightlabs.base.ui.io.FileEditorInput;
 import org.nightlabs.base.ui.util.RCPUtil;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.PdfViewerComposite;
-import org.nightlabs.eclipse.ui.pdfviewer.composite.internal.PdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.internal.PdfFileLoader;
+import org.nightlabs.eclipse.ui.pdfviewer.model.PdfDocument;
 
 import com.sun.pdfview.PDFFile;
 

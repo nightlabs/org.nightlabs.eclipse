@@ -23,9 +23,9 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ScrollBar;
-import org.nightlabs.eclipse.ui.pdfviewer.composite.internal.PdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.internal.RenderBuffer;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.internal.RenderThread;
+import org.nightlabs.eclipse.ui.pdfviewer.model.PdfDocument;
 
 /**
  * @author frederik loeser - frederik at nightlabs dot de
@@ -68,30 +68,46 @@ public class PdfViewerComposite extends Composite {
 		System.setProperty("sun.awt.noerasebackground", "true");
 	}
 
+	/**
+	 * The document should be centered in a certain direction, when it is smaller in the current view (i.e. zoomed)
+	 * than the view-panel.
+	 */
+	private void enableCenteringIfNecessary()
+	{
+		double documentVisibleWidth = pdfDocument.getDocumentBounds().getX() * ((double)zoomFactorPerMill / 1000);
+		double documentVisibleHeight = pdfDocument.getDocumentBounds().getY() * ((double)zoomFactorPerMill / 1000);
+
+		if (documentVisibleWidth < viewPanel.getWidth())
+			centerHorizontally = true;
+
+		if (documentVisibleHeight < viewPanel.getHeight())
+			centerVertically = true;
+	}
+
 	public PdfViewerComposite(Composite parent, final PdfDocument pdfDocument)
 	{
 		super(parent, SWT.NONE);
 		this.setLayout(new FillLayout());
 		this.pdfDocument = pdfDocument;
 
-		switch (pdfDocument.getLayout()) {
-			case vertical: {
-				centerHorizontally = true;
-				centerVertically = false;
-			}
-			break;
-
-			case horizontal: {
-				centerHorizontally = false;
-				centerVertically = true;
-			}
-			break;
-
-			default: {
-				centerHorizontally = false;
-				centerVertically = false;
-			}
-		}
+//		switch (pdfDocument.getLayout()) {
+//			case vertical: {
+//				centerHorizontally = true;
+//				centerVertically = false;
+//			}
+//			break;
+//
+//			case horizontal: {
+//				centerHorizontally = false;
+//				centerVertically = true;
+//			}
+//			break;
+//
+//			default: {
+//				centerHorizontally = false;
+//				centerVertically = false;
+//			}
+//		}
 
 		renderBuffer = new RenderBuffer(this, pdfDocument);
 		renderComposite = new Composite(this, SWT.EMBEDDED | SWT.V_SCROLL | SWT.H_SCROLL);
@@ -196,8 +212,8 @@ public class PdfViewerComposite extends Composite {
 				boolean verticalBarVisible = visibleAreaScrollHeight < (scrollBarVertical.getMaximum() - scrollBarVertical.getMinimum());
 				scrollBarVertical.setVisible(verticalBarVisible);
 
-				if (!verticalBarVisible && pdfDocument.getLayout() == PdfDocument.Layout.horizontal)
-					centerVertically = true;
+//				if (!verticalBarVisible && pdfDocument.getLayout() == PdfDocument.Layout.horizontal)
+//					centerVertically = true;
 
 				scrollBarVertical.setThumb(visibleAreaScrollHeight);
 				scrollBarVertical.setPageIncrement((int) (visibleAreaScrollHeight * 0.9d));
@@ -210,12 +226,14 @@ public class PdfViewerComposite extends Composite {
 				boolean horizontalBarVisible = visibleAreaScrollWidth < (scrollBarHorizontal.getMaximum() - scrollBarHorizontal.getMinimum());
 				scrollBarHorizontal.setVisible(horizontalBarVisible);
 
-				if (!horizontalBarVisible && pdfDocument.getLayout() == PdfDocument.Layout.vertical)
-					centerHorizontally = true;
+//				if (!horizontalBarVisible && pdfDocument.getLayout() == PdfDocument.Layout.vertical)
+//					centerHorizontally = true;
 
 				scrollBarHorizontal.setThumb(visibleAreaScrollWidth);
 				scrollBarHorizontal.setPageIncrement((int) (visibleAreaScrollWidth * 0.9d));
 				scrollBarHorizontal.setIncrement((int) (visibleAreaScrollWidth * 0.1d));
+
+				enableCenteringIfNecessary();
 
 				if (logger.isDebugEnabled()) {
 					logger.debug("setScrollbars: scrollBarVertical.minimum=" + scrollBarVertical.getMinimum());
