@@ -8,5 +8,6 @@
     <requires/>
     <provides/>
     <javadoc path="org.nightlabs.eclipse.ui.pdfviewer/src"/>
+    <javadoc href="https://pdf-renderer.dev.java.net/nonav/demos/latest/javadoc/"/>
   </project>
 </nightlybuild>
