@@ -180,7 +180,7 @@ public class PdfViewerComposite extends Composite {
 				scrollBarVertical.setMinimum(0);
 				scrollBarVertical.setMaximum((int) pdfDocument.getDocumentDimension().getHeight() / scrollBarDivisor);
 				scrollBarVertical.setSelection(viewOrigin.y / scrollBarDivisor);
-				boolean verticalBarVisible = visibleAreaScrollHeight < (scrollBarVertical.getMaximum() - scrollBarVertical.getMinimum());
+				boolean verticalBarVisible = visibleAreaScrollHeight <= (scrollBarVertical.getMaximum() - scrollBarVertical.getMinimum());
 				scrollBarVertical.setVisible(verticalBarVisible);
 				if (!verticalBarVisible)
 					centerVertically = true;
@@ -193,7 +193,7 @@ public class PdfViewerComposite extends Composite {
 				scrollBarHorizontal.setMinimum(0);
 				scrollBarHorizontal.setMaximum((int) pdfDocument.getDocumentDimension().getWidth() / scrollBarDivisor);
 				scrollBarHorizontal.setSelection(viewOrigin.x / scrollBarDivisor);
-				boolean horizontalBarVisible = visibleAreaScrollWidth < (scrollBarHorizontal.getMaximum() - scrollBarHorizontal.getMinimum());
+				boolean horizontalBarVisible = visibleAreaScrollWidth <= (scrollBarHorizontal.getMaximum() - scrollBarHorizontal.getMinimum());
 				scrollBarHorizontal.setVisible(horizontalBarVisible);
 				if (!horizontalBarVisible)
 					centerHorizontally = true;
