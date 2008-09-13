@@ -72,22 +72,6 @@ public class PdfViewerComposite extends Composite {
 		System.setProperty("sun.awt.noerasebackground", "true");
 	}
 
-	/**
-	 * The document should be centered in a certain direction, when it is smaller in the current view (i.e. zoomed)
-	 * than the view-panel.
-	 */
-	private void enableCenteringIfNecessary()
-	{
-		double documentVisibleWidth = pdfDocument.getDocumentDimension().getWidth() * ((double)zoomFactorPerMill / 1000);
-		double documentVisibleHeight = pdfDocument.getDocumentDimension().getHeight() * ((double)zoomFactorPerMill / 1000);
-
-		if (documentVisibleWidth < viewPanel.getWidth())
-			centerHorizontally = true;
-
-		if (documentVisibleHeight < viewPanel.getHeight())
-			centerVertically = true;
-	}
-
 	public PdfViewerComposite(Composite parent, final PdfDocument pdfDocument)
 	{
 		super(parent, SWT.NONE);
@@ -198,6 +182,8 @@ public class PdfViewerComposite extends Composite {
 				scrollBarVertical.setSelection(viewOrigin.y / scrollBarDivisor);
 				boolean verticalBarVisible = visibleAreaScrollHeight < (scrollBarVertical.getMaximum() - scrollBarVertical.getMinimum());
 				scrollBarVertical.setVisible(verticalBarVisible);
+				if (!verticalBarVisible)
+					centerVertically = true;
 
 				scrollBarVertical.setThumb(visibleAreaScrollHeight);
 				scrollBarVertical.setPageIncrement((int) (visibleAreaScrollHeight * 0.9d));
@@ -209,12 +195,12 @@ public class PdfViewerComposite extends Composite {
 				scrollBarHorizontal.setSelection(viewOrigin.x / scrollBarDivisor);
 				boolean horizontalBarVisible = visibleAreaScrollWidth < (scrollBarHorizontal.getMaximum() - scrollBarHorizontal.getMinimum());
 				scrollBarHorizontal.setVisible(horizontalBarVisible);
+				if (!horizontalBarVisible)
+					centerHorizontally = true;
 
 				scrollBarHorizontal.setThumb(visibleAreaScrollWidth);
 				scrollBarHorizontal.setPageIncrement((int) (visibleAreaScrollWidth * 0.9d));
 				scrollBarHorizontal.setIncrement((int) (visibleAreaScrollWidth * 0.1d));
-
-				enableCenteringIfNecessary();
 
 				if (logger.isDebugEnabled()) {
 					logger.debug("setScrollbars: scrollBarVertical.minimum=" + scrollBarVertical.getMinimum());
