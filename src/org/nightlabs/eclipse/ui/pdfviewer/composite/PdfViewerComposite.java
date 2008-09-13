@@ -90,25 +90,6 @@ public class PdfViewerComposite extends Composite {
 		this.setLayout(new FillLayout());
 		this.pdfDocument = pdfDocument;
 
-//		switch (pdfDocument.getLayout()) {
-//			case vertical: {
-//				centerHorizontally = true;
-//				centerVertically = false;
-//			}
-//			break;
-//
-//			case horizontal: {
-//				centerHorizontally = false;
-//				centerVertically = true;
-//			}
-//			break;
-//
-//			default: {
-//				centerHorizontally = false;
-//				centerVertically = false;
-//			}
-//		}
-
 		renderBuffer = new RenderBuffer(this, pdfDocument);
 		renderComposite = new Composite(this, SWT.EMBEDDED | SWT.V_SCROLL | SWT.H_SCROLL);
 
@@ -150,15 +131,17 @@ public class PdfViewerComposite extends Composite {
 		viewPanelFrame.add(viewPanel);
 
 		scrollBarHorizontal.addSelectionListener(new SelectionAdapter() {
-				@Override
-		    	public void widgetSelected(SelectionEvent event) {
-					scrollHorizontally((ScrollBar)event.widget);
-		    	}
-	    });
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+				wantToZoom = false;
+				scrollHorizontally((ScrollBar)event.widget);
+			}
+		});
 
 		scrollBarVertical.addSelectionListener(new SelectionAdapter() {
 			@Override
 	    	public void widgetSelected(SelectionEvent event) {
+				wantToZoom = false;
 	    		scrollVertically((ScrollBar)event.widget);
 	    	}
 	    });
@@ -212,9 +195,6 @@ public class PdfViewerComposite extends Composite {
 				boolean verticalBarVisible = visibleAreaScrollHeight < (scrollBarVertical.getMaximum() - scrollBarVertical.getMinimum());
 				scrollBarVertical.setVisible(verticalBarVisible);
 
-//				if (!verticalBarVisible && pdfDocument.getLayout() == PdfDocument.Layout.horizontal)
-//					centerVertically = true;
-
 				scrollBarVertical.setThumb(visibleAreaScrollHeight);
 				scrollBarVertical.setPageIncrement((int) (visibleAreaScrollHeight * 0.9d));
 				scrollBarVertical.setIncrement((int) (visibleAreaScrollHeight * 0.1d));
@@ -225,9 +205,6 @@ public class PdfViewerComposite extends Composite {
 				scrollBarHorizontal.setSelection(rectangleViewOrigin.x / scrollBarDivisor);
 				boolean horizontalBarVisible = visibleAreaScrollWidth < (scrollBarHorizontal.getMaximum() - scrollBarHorizontal.getMinimum());
 				scrollBarHorizontal.setVisible(horizontalBarVisible);
-
-//				if (!horizontalBarVisible && pdfDocument.getLayout() == PdfDocument.Layout.vertical)
-//					centerHorizontally = true;
 
 				scrollBarHorizontal.setThumb(visibleAreaScrollWidth);
 				scrollBarHorizontal.setPageIncrement((int) (visibleAreaScrollWidth * 0.9d));

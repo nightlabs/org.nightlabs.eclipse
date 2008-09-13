@@ -41,13 +41,15 @@ public class OneDimensionalPdfDocument implements PdfDocument
 	private PDFFile pdfFile;
 	private List<Rectangle2D.Double> pageBounds;
 
+	public OneDimensionalPdfDocument() { }
+
 	public OneDimensionalPdfDocument(PDFFile pdfFile, IProgressMonitor monitor) {
-		setPdfFile(pdfFile, monitor);
+		initPdfFile(pdfFile, monitor);
 	}
 
 	public OneDimensionalPdfDocument(PDFFile pdfFile, Layout layout, IProgressMonitor monitor) {
 		this.layout = layout;
-		setPdfFile(pdfFile, monitor);
+		initPdfFile(pdfFile, monitor);
 	}
 
 	/**
@@ -278,7 +280,10 @@ public class OneDimensionalPdfDocument implements PdfDocument
 	 * @see org.nightlabs.eclipse.ui.pdfviewer.model.PdfDocument#setPdfFile(com.sun.pdfview.PDFFile, org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	@Override
-	public void setPdfFile(PDFFile pdfFile, IProgressMonitor monitor) {
+	public void initPdfFile(PDFFile pdfFile, IProgressMonitor monitor) {
+		if (this.pdfFile != null)
+			throw new IllegalStateException("A PDF file has already been assigned! This method cannot be called again!");
+
 		this.pdfFile = pdfFile;
 		readPdf(monitor);
 	}

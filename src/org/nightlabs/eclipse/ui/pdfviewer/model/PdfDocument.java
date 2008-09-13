@@ -38,7 +38,7 @@ public interface PdfDocument
 	 * <p>
 	 * This method is called very often and should be optimized to be fast! It should therefore use an index
 	 * or a fast search algorithm like nested intervals or similar. When using an index, build it already
-	 * in the {@link #setPdfFile(PDFFile, IProgressMonitor)} method - not lazily here!
+	 * in the {@link #initPdfFile(PDFFile, IProgressMonitor)} method - not lazily here!
 	 * </p>
 	 *
 	 * @param bounds coordinates of the area of interest in the real coordinate system.
@@ -70,7 +70,7 @@ public interface PdfDocument
 	Dimension2D getDocumentDimension();
 
 	/**
-	 * Get the {@link PDFFile} that was previously set by {@link #setPdfFile(PDFFile, IProgressMonitor)}
+	 * Get the {@link PDFFile} that was previously set by {@link #initPdfFile(PDFFile, IProgressMonitor)}
 	 * or <code>null</code> if that method was not yet called (and a {@link PDFFile} hasn't been passed
 	 * to the constructor, either).
 	 *
@@ -83,13 +83,14 @@ public interface PdfDocument
 	 * and should indicate its progress via the given <code>monitor</code>. The method should
 	 * return only after the complete file has been read and the document-layout is done.
 	 * <p>
-	 * This method can be called multiple times with different PDF files. Each time it is called,
-	 * it should dispose of all its contents and replace them by the new data.
+	 * This method can <b>not</b> be called multiple times! It is invoked only once to set the
+	 * {@link PDFFile}. After this initial call, the {@link PdfDocument} is immutable!
+	 * You should assert in your implementation of {@link PdfDocument} that this method is
+	 * not called multiple times (and throw an exception if it is).
 	 * </p>
 	 * <p>
 	 * This method is usually called on a {@link Job}'s thread. It does not need to be synchronized,
-	 * because it is guaranteed that no other method of the <code>PdfDocument</code> is called
-	 * while this method is running.
+	 * because no other method of the <code>PdfDocument</code> is called before this method finished.
 	 * </p>
 	 * <p>
 	 * When you need a second <code>PdfDocument</code> instance (e.g. for a small thumbnail-navigator),
@@ -101,5 +102,5 @@ public interface PdfDocument
 	 * @param pdfFile the {@link PDFFile} to be displayed.
 	 * @param monitor the progress monitor for progress status feedback.
 	 */
-	void setPdfFile(PDFFile pdfFile, IProgressMonitor monitor);
+	void initPdfFile(PDFFile pdfFile, IProgressMonitor monitor);
 }
