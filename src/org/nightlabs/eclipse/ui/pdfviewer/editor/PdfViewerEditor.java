@@ -21,6 +21,7 @@ import org.nightlabs.base.ui.io.FileEditorInput;
 import org.nightlabs.base.ui.util.RCPUtil;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.PdfViewerComposite;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.internal.PdfFileLoader;
+import org.nightlabs.eclipse.ui.pdfviewer.model.IPdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.model.PdfDocument;
 
 import com.sun.pdfview.PDFFile;
@@ -42,7 +43,7 @@ public class PdfViewerEditor extends EditorPart
 	private static final Logger logger = Logger.getLogger(PdfViewerEditor.class);
 
 	public static final String ID = PdfViewerEditor.class.getName();
-	private volatile PdfDocument pdfDocument;
+	private volatile IPdfDocument pdfDocument;
 	private PdfViewerComposite pdfViewerComposite;
 	private PDFFile pdfFile;
 

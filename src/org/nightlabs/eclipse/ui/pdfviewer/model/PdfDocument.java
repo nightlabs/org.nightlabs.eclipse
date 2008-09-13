@@ -21,7 +21,7 @@ import com.sun.pdfview.PDFPage;
  * @author frederik loeser - frederik at nightlabs dot de
  * @author marco schulze - marco at nightlabs dot de
  */
-public class PdfDocument
+public class PdfDocument implements IPdfDocument
 {
 	private static final Logger logger = Logger.getLogger(PdfDocument.class);
 	private static final int MARGIN = 20; // DOT = 1/72 inch
@@ -134,15 +134,10 @@ public class PdfDocument
 		}
 	}
 
-	/**
-	 * Get the page numbers (1-based) of those pages that are partially or completely visible within the
-	 * given bounds. The pages are rendered in the order the resulting <code>Collection</code> iterates.
-	 * This is only relevant, if pages are overlapping (then the last page is top, i.e. every page is above
-	 * the previous one).
-	 *
-	 * @param bounds coordinates of the area of interest in the real coordinate system.
-	 * @return a list of page numbers of those pages visible in the given bounds.
+	/* (non-Javadoc)
+	 * @see org.nightlabs.eclipse.ui.pdfviewer.model.IPdfDocument#getVisiblePages(java.awt.geom.Rectangle2D)
 	 */
+	@Override
 	public Collection<Integer> getVisiblePages(Rectangle2D bounds) {
 		List<Integer> result = new ArrayList<Integer>();
 
@@ -256,24 +251,40 @@ public class PdfDocument
 		return page.contains(bounds) || bounds.contains(page) || bounds.intersects(page);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.nightlabs.eclipse.ui.pdfviewer.model.IPdfDocument#getPageBounds(int)
+	 */
+	@Override
 	public Rectangle2D getPageBounds(int pageNumber) {
 		return pageBounds.get(pageNumber - 1);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.nightlabs.eclipse.ui.pdfviewer.model.IPdfDocument#getDocumentBounds()
+	 */
+	@Override
 	public Point2D getDocumentBounds() {
 		return documentBounds;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.nightlabs.eclipse.ui.pdfviewer.model.IPdfDocument#getPdfFile()
+	 */
+	@Override
 	public PDFFile getPdfFile() {
 		return pdfFile;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.nightlabs.eclipse.ui.pdfviewer.model.IPdfDocument#setPdfFile(com.sun.pdfview.PDFFile, org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	@Override
 	public void setPdfFile(PDFFile pdfFile, IProgressMonitor monitor) {
 		this.pdfFile = pdfFile;
 		readPdf(monitor);
 	}
 
-//	public Layout getLayout() {
-//		return layout;
-//	}
+	public Layout getLayout() {
+		return layout;
+	}
 }

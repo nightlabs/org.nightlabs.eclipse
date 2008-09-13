@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.internal.RenderBuffer;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.internal.RenderThread;
-import org.nightlabs.eclipse.ui.pdfviewer.model.PdfDocument;
+import org.nightlabs.eclipse.ui.pdfviewer.model.IPdfDocument;
 
 /**
  * @author frederik loeser - frederik at nightlabs dot de
@@ -44,7 +44,7 @@ public class PdfViewerComposite extends Composite {
 	private Composite renderComposite;
 	private RenderBuffer renderBuffer;
 	private RenderThread renderThread;
-	private PdfDocument pdfDocument;
+	private IPdfDocument pdfDocument;
 	private ScrollBar scrollBarVertical, scrollBarHorizontal;
 	private Point rectangleViewOrigin;
 
@@ -84,7 +84,7 @@ public class PdfViewerComposite extends Composite {
 			centerVertically = true;
 	}
 
-	public PdfViewerComposite(Composite parent, final PdfDocument pdfDocument)
+	public PdfViewerComposite(Composite parent, final IPdfDocument pdfDocument)
 	{
 		super(parent, SWT.NONE);
 		this.setLayout(new FillLayout());
