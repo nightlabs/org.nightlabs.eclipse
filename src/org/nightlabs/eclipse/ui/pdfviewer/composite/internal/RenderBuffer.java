@@ -7,7 +7,6 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.util.Collection;
@@ -186,10 +185,13 @@ public class RenderBuffer
 
 	private static void drawImage(Graphics2D graphics2D, Image image, int x, int y)
 	{
-		// TODO WORKAROUND for:
+		// TODO WORKAROUND for StackOverflowError documented here:
 		// http://dev.eclipse.org/newslists/news.eclipse.platform.swt/msg21170.html
 		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=74095
-		// When this bug is fixed, remove this method and rename _drawImage(...) to drawImage(...)!
+		// When this bug is fixed, remove this method and rename _getPdfImage(...) to getPdfImage(...)!
+		//
+		// Additionally, sometimes the rendering of the pdf image fails with a timeout. Therefore, I added
+		// catching WaitForRenderingException. So maybe we keep this method?
 		int tryCount = 0;
 		while (true) {
 			++tryCount;
@@ -202,6 +204,11 @@ public class RenderBuffer
 
 				if (tryCount > 5)
 					throw error;
+			} catch (WaitForRenderingException exception) {
+				logger.warn("drawImage: WORKAROUND: Caught WaitForRenderingException with tryCount=" + tryCount, exception);
+
+				if (tryCount > 5)
+					throw exception;
 			}
 		}
 	}
@@ -226,48 +233,6 @@ public class RenderBuffer
 			bio.waitForRendering();
 	}
 
-	private static class BlockingImageObserver implements ImageObserver {
-		private boolean renderingFinished = false;
-		private boolean renderingAborted = false;
-		private int lastInfoflags = 0;
-
-		public BlockingImageObserver() { }
-
-		private static final long timeoutMSec = 60000;
-
-		@Override
-		public synchronized boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
-			lastInfoflags = infoflags;
-
-			if ((infoflags & ImageObserver.ALLBITS) != 0)
-				renderingFinished = true;
-
-			if ((infoflags & ImageObserver.ABORT) != 0)
-				renderingAborted = true;
-
-			this.notifyAll();
-			return !renderingFinished;
-		}
-
-		public synchronized void waitForRendering()
-		{
-			long start = System.currentTimeMillis();
-			while (!renderingFinished && !renderingAborted) {
-				if (System.currentTimeMillis() - start > timeoutMSec)
-					throw new IllegalStateException("Timeout waiting for rendering to finish or abort!");
-
-				try {
-					this.wait(10000);
-				} catch (InterruptedException e) {
-					// ignore
-				}
-			}
-
-			if (renderingAborted)
-				throw new IllegalStateException("Rendering was aborted! lastInfoflags=" + lastInfoflags);
-		}
-	}
-
 	/**
 	 * Gets the image of the currently considered PDF page taking a given clip into consideration.
 	 *
@@ -277,7 +242,7 @@ public class RenderBuffer
 	 * @param clipLeftBottom a rectangle describing the region of interest of the currently considered PDF page.
 	 * @return the image of the given PDF page, clipped as pretended by clipLeftBottom.
 	 */
-	private static Image getPdfImage(PDFPage pdfPage, int pdfImageWidth, int pdfImageHeight, Rectangle2D clipLeftBottom)
+	private static Image _getPdfImage(PDFPage pdfPage, int pdfImageWidth, int pdfImageHeight, Rectangle2D clipLeftBottom)
 	{
 		BlockingImageObserver bio = new BlockingImageObserver();
 
@@ -291,6 +256,35 @@ public class RenderBuffer
 		bio.waitForRendering();
 
 		return pdfImage;
+	}
+
+	private static Image getPdfImage(PDFPage pdfPage, int pdfImageWidth, int pdfImageHeight, Rectangle2D clipLeftBottom)
+	{
+		// TODO WORKAROUND for StackOverflowError documented here:
+		// http://dev.eclipse.org/newslists/news.eclipse.platform.swt/msg21170.html
+		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=74095
+		// When this bug is fixed, remove this method and rename _getPdfImage(...) to getPdfImage(...)!
+		//
+		// Additionally, sometimes the rendering of the pdf image fails with a timeout. Therefore, I added
+		// catching WaitForRenderingException. So maybe we keep this method?
+		int tryCount = 0;
+		while (true) {
+			++tryCount;
+
+			try {
+				return _getPdfImage(pdfPage, pdfImageWidth, pdfImageHeight, clipLeftBottom);
+			} catch (StackOverflowError error) {
+				logger.warn("getPdfImage: WORKAROUND: Caught StackOverflowError with tryCount=" + tryCount, error);
+
+				if (tryCount > 5)
+					throw error;
+			} catch (WaitForRenderingException exception) {
+				logger.warn("getPdfImage: WORKAROUND: Caught WaitForRenderingException with tryCount=" + tryCount, exception);
+
+				if (tryCount > 5)
+					throw exception;
+			}
+		}
 	}
 
 	/**

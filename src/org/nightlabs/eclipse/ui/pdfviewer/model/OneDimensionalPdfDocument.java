@@ -30,7 +30,7 @@ public class OneDimensionalPdfDocument implements PdfDocument
 		vertical
 	}
 
-	private Layout layout = Layout.horizontal;
+	private Layout layout = Layout.vertical;
 
 	/**
 	 * The bounds of the complete document, i.e. all pages laid down on a virtual floor. So we need to know the size
