@@ -125,19 +125,14 @@ public abstract class AbstractToolkit extends FormToolkit
 		if (textBorder || element instanceof Text || element instanceof CCombo) { // element instanceof Spinner ||
 			parent.addPaintListener( new TextBorderPainter(element) );
 //		 if textBorder is set -> return false -> continue drawing borders for children
-//			listenerAdded = ! textBorder;
-			// TODO: What is correct here? Why was listenerAdded set to false when
-			// just a line above the listener was added? Alex.
-			listenerAdded = textBorder;
+			listenerAdded = ! textBorder;
 		}
 		else if (tableBorder || element instanceof Table || element instanceof Tree
 							|| element instanceof Spinner || element instanceof List)
 		{
 			parent.addPaintListener( new TableBorderPainter(element) );
 //		 if tableBorder is set -> return false -> continue drawing borders for children
-//			listenerAdded = ! tableBorder;
-			// TODO: see above
-			listenerAdded = tableBorder;
+			listenerAdded = ! tableBorder;
 		}
 		else if (element instanceof XCombo) { // element instanceof CComboComposite ||
 			parent.addPaintListener( new TableBorderPainter(element) );
