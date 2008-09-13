@@ -43,8 +43,8 @@ public class RenderThread extends Thread
 
 				// viewRegion is the real coordinates of the visible area (i.e. the viewPanel's location and size in the real coordinate system)
 				Rectangle2D viewRegion = new Rectangle2D.Double(
-						pdfViewerComposite.getRectangleViewOrigin().x,
-						pdfViewerComposite.getRectangleViewOrigin().y,
+						pdfViewerComposite.getViewOrigin().x,
+						pdfViewerComposite.getViewOrigin().y,
 						pdfViewerComposite.getViewPanel().getWidth() / zoomFactor,
 						pdfViewerComposite.getViewPanel().getHeight() / zoomFactor
 				);

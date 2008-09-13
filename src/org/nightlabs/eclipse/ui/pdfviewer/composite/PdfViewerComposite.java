@@ -46,7 +46,11 @@ public class PdfViewerComposite extends Composite {
 	private RenderThread renderThread;
 	private PdfDocument pdfDocument;
 	private ScrollBar scrollBarVertical, scrollBarHorizontal;
-	private Point rectangleViewOrigin;
+
+	/**
+	 * The real coordinates of the view area's left, top corner.
+	 */
+	private Point viewOrigin;
 
 	/**
 	 * The zoom factor in %o (1/1000).
@@ -93,7 +97,7 @@ public class PdfViewerComposite extends Composite {
 		renderBuffer = new RenderBuffer(this, pdfDocument);
 		renderComposite = new Composite(this, SWT.EMBEDDED | SWT.V_SCROLL | SWT.H_SCROLL);
 
-		rectangleViewOrigin = new Point(0, 0);
+		viewOrigin = new Point(0, 0);
 
 		scrollBarVertical = renderComposite.getVerticalBar();
 		scrollBarHorizontal = renderComposite.getHorizontalBar();
@@ -112,12 +116,12 @@ public class PdfViewerComposite extends Composite {
 			public void componentResized(ComponentEvent e) {
 				if (centerHorizontally) {
 					double middleX = pdfDocument.getDocumentDimension().getWidth() / 2;
-					rectangleViewOrigin.x = (int) (middleX - viewPanel.getWidth() / 2 / ((double)zoomFactorPerMill / 1000));
+					viewOrigin.x = (int) (middleX - viewPanel.getWidth() / 2 / ((double)zoomFactorPerMill / 1000));
 				}
 
 				if (centerVertically) {
 					double middleY = pdfDocument.getDocumentDimension().getHeight() / 2;
-					rectangleViewOrigin.y = (int) (middleY - viewPanel.getHeight() / 2 / ((double)zoomFactorPerMill / 1000));
+					viewOrigin.y = (int) (middleY - viewPanel.getHeight() / 2 / ((double)zoomFactorPerMill / 1000));
 				}
 
 				setScrollbars();
@@ -158,12 +162,12 @@ public class PdfViewerComposite extends Composite {
 	private boolean centerVertically;
 
 	private void scrollVertically (ScrollBar scrollBarVertical) {
-		rectangleViewOrigin.y = scrollBarVertical.getSelection() * scrollBarDivisor;
+		viewOrigin.y = scrollBarVertical.getSelection() * scrollBarDivisor;
 
 		if (logger.isDebugEnabled()) {
 			logger.debug("scrollVertically: scrollBarVerticalSelectionNew=" + scrollBarVertical.getSelection());
-			logger.debug("scrollVertically: new rectangleViewOrigin.y=" + rectangleViewOrigin.y);
-			logger.debug("scrollVertically: bottomRealY=" + (rectangleViewOrigin.y + viewPanel.getHeight() / ((double)zoomFactorPerMill / 1000)));
+			logger.debug("scrollVertically: new viewOrigin.y=" + viewOrigin.y);
+			logger.debug("scrollVertically: bottomRealY=" + (viewOrigin.y + viewPanel.getHeight() / ((double)zoomFactorPerMill / 1000)));
 		}
 
 		centerVertically = false;
@@ -172,10 +176,10 @@ public class PdfViewerComposite extends Composite {
 	}
 
 	private void scrollHorizontally(ScrollBar scrollBarHorizontal) {
-		rectangleViewOrigin.x = scrollBarHorizontal.getSelection() * scrollBarDivisor;
+		viewOrigin.x = scrollBarHorizontal.getSelection() * scrollBarDivisor;
 
 		if (logger.isDebugEnabled())
-			logger.debug("scrollHorizontally: new rectangleViewOrigin.x=" + rectangleViewOrigin.x);
+			logger.debug("scrollHorizontally: new viewOrigin.x=" + viewOrigin.x);
 
 		centerHorizontally = false;
 
@@ -191,7 +195,7 @@ public class PdfViewerComposite extends Composite {
 				int visibleAreaScrollHeight = (int) (getViewPanel().getHeight() / zoomFactor) / scrollBarDivisor;
 				scrollBarVertical.setMinimum(0);
 				scrollBarVertical.setMaximum((int) pdfDocument.getDocumentDimension().getHeight() / scrollBarDivisor);
-				scrollBarVertical.setSelection(rectangleViewOrigin.y / scrollBarDivisor);
+				scrollBarVertical.setSelection(viewOrigin.y / scrollBarDivisor);
 				boolean verticalBarVisible = visibleAreaScrollHeight < (scrollBarVertical.getMaximum() - scrollBarVertical.getMinimum());
 				scrollBarVertical.setVisible(verticalBarVisible);
 
@@ -202,7 +206,7 @@ public class PdfViewerComposite extends Composite {
 				int visibleAreaScrollWidth = (int) (getViewPanel().getWidth() / zoomFactor) / scrollBarDivisor;
 				scrollBarHorizontal.setMinimum(0);
 				scrollBarHorizontal.setMaximum((int) pdfDocument.getDocumentDimension().getWidth() / scrollBarDivisor);
-				scrollBarHorizontal.setSelection(rectangleViewOrigin.x / scrollBarDivisor);
+				scrollBarHorizontal.setSelection(viewOrigin.x / scrollBarDivisor);
 				boolean horizontalBarVisible = visibleAreaScrollWidth < (scrollBarHorizontal.getMaximum() - scrollBarHorizontal.getMinimum());
 				scrollBarHorizontal.setVisible(horizontalBarVisible);
 
@@ -242,14 +246,14 @@ public class PdfViewerComposite extends Composite {
 		double zoomFactor = (double)zoomFactorPerMill / 1000;
 
 		Rectangle2D.Double region = new Rectangle2D.Double(
-				rectangleViewOrigin.x,
-				rectangleViewOrigin.y,
+				viewOrigin.x,
+				viewOrigin.y,
 				viewPanel.getWidth() / zoomFactor,
 				viewPanel.getHeight() / zoomFactor
 		);
 
 		if (logger.isDebugEnabled()) {
-			logger.debug("paintViewPanel: zoomFactor=" + zoomFactor + " rectangleViewOrigin.x=" + rectangleViewOrigin.x + " rectangleViewOrigin.y=" + rectangleViewOrigin.y);
+			logger.debug("paintViewPanel: zoomFactor=" + zoomFactor + " viewOrigin.x=" + viewOrigin.x + " viewOrigin.y=" + viewOrigin.y);
 			logger.debug("paintViewPanel: viewPanel.width = " + viewPanel.getWidth());
 			logger.debug("paintViewPanel: viewPanel.height = " + viewPanel.getHeight());
 			logger.debug("paintViewPanel: region = " + region);
@@ -351,11 +355,11 @@ public class PdfViewerComposite extends Composite {
 		Point2D.Double middle = new Point2D.Double();
 
 		middle.x = (
-				rectangleViewOrigin.x + rectangleViewOrigin.x + viewPanel.getWidth() / ((double)zoomBefore / 1000)
+				viewOrigin.x + viewOrigin.x + viewPanel.getWidth() / ((double)zoomBefore / 1000)
 		) / 2;
 
 		middle.y = (
-				rectangleViewOrigin.y + rectangleViewOrigin.y + viewPanel.getHeight() / ((double)zoomBefore / 1000)
+				viewOrigin.y + viewOrigin.y + viewPanel.getHeight() / ((double)zoomBefore / 1000)
 		) / 2;
 
 		// calculate the new view origin AFTER zooming
@@ -363,11 +367,11 @@ public class PdfViewerComposite extends Composite {
 		double zoomFactor = (double)zoomFactorPerMill / 1000;
 		viewPanelBoundsReal.x = viewPanel.getWidth() / zoomFactor;
 		viewPanelBoundsReal.y = viewPanel.getHeight() / zoomFactor;
-		rectangleViewOrigin.x = (int) (middle.x - viewPanelBoundsReal.x / 2);
-		rectangleViewOrigin.y = (int) (middle.y - viewPanelBoundsReal.y / 2);
+		viewOrigin.x = (int) (middle.x - viewPanelBoundsReal.x / 2);
+		viewOrigin.y = (int) (middle.y - viewPanelBoundsReal.y / 2);
 
 		if (logger.isDebugEnabled())
-			logger.debug("zoomPDFDocument: zoomFactor=" + zoomFactor + " rectangleViewOrigin.x=" + rectangleViewOrigin.x + " rectangleViewOrigin.y=" + rectangleViewOrigin.y);
+			logger.debug("zoomPDFDocument: zoomFactor=" + zoomFactor + " viewOrigin.x=" + viewOrigin.x + " viewOrigin.y=" + viewOrigin.y);
 
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
@@ -378,12 +382,12 @@ public class PdfViewerComposite extends Composite {
 		viewPanel.repaint();
 	}
 
-	public Point getRectangleViewOrigin() {
-		return rectangleViewOrigin;
+	public Point getViewOrigin() {
+		return viewOrigin;
 	}
 
-	public void setRectangleViewOrigin(Point rectangleViewOrigin) {
-		this.rectangleViewOrigin = rectangleViewOrigin;
+	public void setViewOrigin(Point rectangleViewOrigin) {
+		this.viewOrigin = rectangleViewOrigin;
 	}
 
 	public int getZoomFactorPerMill() {
