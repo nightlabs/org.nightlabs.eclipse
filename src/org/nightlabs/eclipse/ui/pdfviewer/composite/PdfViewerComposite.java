@@ -138,7 +138,7 @@ public class PdfViewerComposite extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
 				wantToZoom = false;
-				scrollHorizontally((ScrollBar)event.widget);
+				scrollHorizontally();
 			}
 		});
 
@@ -146,7 +146,7 @@ public class PdfViewerComposite extends Composite {
 			@Override
 	    	public void widgetSelected(SelectionEvent event) {
 				wantToZoom = false;
-	    		scrollVertically((ScrollBar)event.widget);
+	    		scrollVertically();
 	    	}
 	    });
 
@@ -161,7 +161,7 @@ public class PdfViewerComposite extends Composite {
 	private boolean centerHorizontally;
 	private boolean centerVertically;
 
-	private void scrollVertically (ScrollBar scrollBarVertical) {
+	private void scrollVertically() {
 		viewOrigin.y = scrollBarVertical.getSelection() * scrollBarDivisor;
 
 		if (logger.isDebugEnabled()) {
@@ -175,7 +175,7 @@ public class PdfViewerComposite extends Composite {
 		viewPanel.repaint();
 	}
 
-	private void scrollHorizontally(ScrollBar scrollBarHorizontal) {
+	private void scrollHorizontally() {
 		viewOrigin.x = scrollBarHorizontal.getSelection() * scrollBarDivisor;
 
 		if (logger.isDebugEnabled())
@@ -293,12 +293,12 @@ public class PdfViewerComposite extends Composite {
 					public void run() {
 						if (scrollBarVertical.isVisible() == true) {	// vertical scroll bar has priority if visible
 							scrollBarVertical.setSelection(scrollBarVertical.getSelection() + mouseRotationOrientation * scrollBarVertical.getIncrement());
-							scrollVertically(scrollBarVertical);
+							scrollVertically();
 						}
 						else {
 							if (scrollBarHorizontal.isVisible() == true) {
 								scrollBarHorizontal.setSelection(scrollBarHorizontal.getSelection() + mouseRotationOrientation * scrollBarHorizontal.getIncrement());
-								scrollHorizontally(scrollBarHorizontal);
+								scrollHorizontally();
 							}
 						}
 					}
