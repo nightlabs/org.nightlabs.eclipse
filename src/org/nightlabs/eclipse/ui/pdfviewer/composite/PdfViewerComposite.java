@@ -74,8 +74,8 @@ public class PdfViewerComposite extends Composite {
 	 */
 	private void enableCenteringIfNecessary()
 	{
-		double documentVisibleWidth = pdfDocument.getDocumentBounds().getX() * ((double)zoomFactorPerMill / 1000);
-		double documentVisibleHeight = pdfDocument.getDocumentBounds().getY() * ((double)zoomFactorPerMill / 1000);
+		double documentVisibleWidth = pdfDocument.getDocumentDimension().getWidth() * ((double)zoomFactorPerMill / 1000);
+		double documentVisibleHeight = pdfDocument.getDocumentDimension().getHeight() * ((double)zoomFactorPerMill / 1000);
 
 		if (documentVisibleWidth < viewPanel.getWidth())
 			centerHorizontally = true;
@@ -130,12 +130,12 @@ public class PdfViewerComposite extends Composite {
 			@Override
 			public void componentResized(ComponentEvent e) {
 				if (centerHorizontally) {
-					double middleX = pdfDocument.getDocumentBounds().getX() / 2;
+					double middleX = pdfDocument.getDocumentDimension().getWidth() / 2;
 					rectangleViewOrigin.x = (int) (middleX - viewPanel.getWidth() / 2 / ((double)zoomFactorPerMill / 1000));
 				}
 
 				if (centerVertically) {
-					double middleY = pdfDocument.getDocumentBounds().getY() / 2;
+					double middleY = pdfDocument.getDocumentDimension().getHeight() / 2;
 					rectangleViewOrigin.y = (int) (middleY - viewPanel.getHeight() / 2 / ((double)zoomFactorPerMill / 1000));
 				}
 
@@ -207,7 +207,7 @@ public class PdfViewerComposite extends Composite {
 
 				int visibleAreaScrollHeight = (int) (getViewPanel().getHeight() / zoomFactor) / scrollBarDivisor;
 				scrollBarVertical.setMinimum(0);
-				scrollBarVertical.setMaximum((int) pdfDocument.getDocumentBounds().getY() / scrollBarDivisor);
+				scrollBarVertical.setMaximum((int) pdfDocument.getDocumentDimension().getHeight() / scrollBarDivisor);
 				scrollBarVertical.setSelection(rectangleViewOrigin.y / scrollBarDivisor);
 				boolean verticalBarVisible = visibleAreaScrollHeight < (scrollBarVertical.getMaximum() - scrollBarVertical.getMinimum());
 				scrollBarVertical.setVisible(verticalBarVisible);
@@ -221,7 +221,7 @@ public class PdfViewerComposite extends Composite {
 
 				int visibleAreaScrollWidth = (int) (getViewPanel().getWidth() / zoomFactor) / scrollBarDivisor;
 				scrollBarHorizontal.setMinimum(0);
-				scrollBarHorizontal.setMaximum((int) pdfDocument.getDocumentBounds().getX() / scrollBarDivisor);
+				scrollBarHorizontal.setMaximum((int) pdfDocument.getDocumentDimension().getWidth() / scrollBarDivisor);
 				scrollBarHorizontal.setSelection(rectangleViewOrigin.x / scrollBarDivisor);
 				boolean horizontalBarVisible = visibleAreaScrollWidth < (scrollBarHorizontal.getMaximum() - scrollBarHorizontal.getMinimum());
 				scrollBarHorizontal.setVisible(horizontalBarVisible);

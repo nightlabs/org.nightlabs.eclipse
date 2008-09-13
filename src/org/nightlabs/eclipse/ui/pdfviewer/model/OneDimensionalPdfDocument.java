@@ -1,6 +1,6 @@
 package org.nightlabs.eclipse.ui.pdfviewer.model;
 
-import java.awt.geom.Point2D;
+import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,13 +8,14 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 
 import com.sun.pdfview.PDFFile;
 import com.sun.pdfview.PDFPage;
 
 
 /**
- * One-dimensional implementation of {@link PdfDocument}. All pages are either aligned horizontally
+ * One-dimensional implementation of {@link PdfDocument}. All pages are arranged either horizontally
  * or vertically (in a single row or a single column).
  *
  * @author frederik loeser - frederik at nightlabs dot de
@@ -30,14 +31,14 @@ public class OneDimensionalPdfDocument implements PdfDocument
 		vertical
 	}
 
-	private Layout layout = Layout.vertical;
+	private Layout layout = Layout.horizontal;
 
 	/**
 	 * The bounds of the complete document, i.e. all pages laid down on a virtual floor. So we need to know the size
 	 * of our floor in order to know the ranges of the scroll bars. This coordinate system starts at (0, 0) at the
 	 * top left corner and the width + height is specified here.
 	 */
-	private Point2D.Double documentBounds;
+	private Dimension2DDouble documentDimension;
 	private PDFFile pdfFile;
 	private List<Rectangle2D.Double> pageBounds;
 
@@ -56,11 +57,11 @@ public class OneDimensionalPdfDocument implements PdfDocument
 	 *
 	 * @param monitor a sub progress monitor showing the progress of getting all PDF pages of the given PDF file.
 	 */
-	private void readPdf(IProgressMonitor monitor) {
+	private void readPdf(IProgressMonitor monitor)
+	{
 		monitor.beginTask("Reading PDF file", pdfFile.getNumPages());
 		try {
-
-			documentBounds = new Point2D.Double(0,0);
+			documentDimension = new Dimension2DDouble(0, 0);
 			pageBounds = new ArrayList<Rectangle2D.Double>(pdfFile == null ? 0 : pdfFile.getNumPages());
 
 			if (pdfFile == null)
@@ -74,8 +75,8 @@ public class OneDimensionalPdfDocument implements PdfDocument
 						PDFPage pdfPage = pdfFile.getPage(j + 1);
 						double pdfPageWidth = pdfPage.getBBox().getWidth();
 						double pdfPageHeight = pdfPage.getBBox().getHeight();
-						if (documentBounds.x < pdfPageWidth) {
-							documentBounds.x = pdfPageWidth;
+						if (documentDimension.getWidth() < pdfPageWidth) {
+							documentDimension.setWidth(pdfPageWidth);
 						}
 						pageBounds.add(new Rectangle2D.Double(0, nextPageTop, pdfPageWidth, pdfPageHeight));
 						nextPageTop += pdfPageHeight + MARGIN;
@@ -83,12 +84,12 @@ public class OneDimensionalPdfDocument implements PdfDocument
 						monitor.worked(1);
 					}
 
-					documentBounds.y = nextPageTop;
-					documentBounds.x += MARGIN * 2;
+					documentDimension.setHeight(nextPageTop);
+					documentDimension.setWidth(documentDimension.getWidth() + MARGIN * 2);
 
 					// put all pages horizontally in the middle
 					for (Rectangle2D.Double pageBound : pageBounds) {
-						pageBound.x = documentBounds.x / 2 - pageBound.width / 2;
+						pageBound.x = documentDimension.getWidth() / 2 - pageBound.width / 2;
 					}
 					break;
 
@@ -99,8 +100,8 @@ public class OneDimensionalPdfDocument implements PdfDocument
 						PDFPage pdfPage = pdfFile.getPage(j + 1);
 						double pdfPageWidth = pdfPage.getBBox().getWidth();
 						double pdfPageHeight = pdfPage.getBBox().getHeight();
-						if (documentBounds.y < pdfPageHeight) {
-							documentBounds.y = pdfPageHeight;
+						if (documentDimension.getHeight() < pdfPageHeight) {
+							documentDimension.setHeight(pdfPageHeight);
 						}
 						pageBounds.add(new Rectangle2D.Double(nextPageLeft, 0, pdfPageWidth, pdfPageHeight));
 						nextPageLeft += pdfPageWidth + MARGIN;
@@ -108,12 +109,12 @@ public class OneDimensionalPdfDocument implements PdfDocument
 						monitor.worked(1);
 					}
 
-					documentBounds.x = nextPageLeft;
-					documentBounds.y += MARGIN * 2;
+					documentDimension.setWidth(nextPageLeft);
+					documentDimension.setHeight(documentDimension.getHeight() + MARGIN * 2);
 
 					// put all pages horizontally in the middle
 					for (Rectangle2D.Double pageBound : pageBounds) {
-						pageBound.y = documentBounds.y / 2 - pageBound.height / 2;
+						pageBound.y = documentDimension.getHeight() / 2 - pageBound.height / 2;
 					}
 					break;
 
@@ -262,8 +263,8 @@ public class OneDimensionalPdfDocument implements PdfDocument
 	 * @see org.nightlabs.eclipse.ui.pdfviewer.model.PdfDocument#getDocumentBounds()
 	 */
 	@Override
-	public Point2D getDocumentBounds() {
-		return documentBounds;
+	public Dimension2D getDocumentDimension() {
+		return documentDimension;
 	}
 
 	/* (non-Javadoc)
