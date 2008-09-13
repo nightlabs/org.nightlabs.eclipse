@@ -211,8 +211,9 @@ public class PdfDocument
 		if (isPageVisible(pageBounds.get(endIdx), bounds))
 			return endIdx + 1;
 
+		int middleIdx = -1;
 		while (endIdx - beginIdx > 1) {
-			int middleIdx = (beginIdx + endIdx) / 2;
+			middleIdx = (beginIdx + endIdx) / 2;
 			Rectangle2D.Double middlePage = pageBounds.get(middleIdx);
 
 			if (isPageVisible(middlePage, bounds))
@@ -237,6 +238,12 @@ public class PdfDocument
 					throw new IllegalStateException("Unknown layout: " + layout);
 			}
 		}
+
+		if (middleIdx != beginIdx && isPageVisible(pageBounds.get(beginIdx), bounds))
+			return beginIdx + 1;
+
+		if (middleIdx != endIdx && isPageVisible(pageBounds.get(endIdx), bounds))
+			return endIdx + 1;
 
 		return -1;
 	}
