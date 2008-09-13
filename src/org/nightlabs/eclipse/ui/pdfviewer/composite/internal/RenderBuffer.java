@@ -18,7 +18,7 @@ import javax.imageio.stream.FileImageOutputStream;
 
 import org.apache.log4j.Logger;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.PdfViewerComposite;
-import org.nightlabs.eclipse.ui.pdfviewer.model.IPdfDocument;
+import org.nightlabs.eclipse.ui.pdfviewer.model.PdfDocument;
 import org.nightlabs.util.IOUtil;
 
 import com.sun.pdfview.PDFPage;
@@ -32,7 +32,7 @@ public class RenderBuffer
 	private static final Logger logger = Logger.getLogger(RenderBuffer.class);
 
 	private PdfViewerComposite pdfViewerComposite;
-	private IPdfDocument pdfDocument;
+	private PdfDocument pdfDocument;
 
 	// BEGIN the following fields require SYNCHRONIZED access via the mutex field!
 	private Object mutex = new Object();
@@ -46,7 +46,7 @@ public class RenderBuffer
 	public static final double BUFFER_WIDTH_FACTOR = 2;
 	public static final double BUFFER_HEIGHT_FACTOR = 2;
 
-	public RenderBuffer(PdfViewerComposite pdfViewerComposite, IPdfDocument pdfDocument) {
+	public RenderBuffer(PdfViewerComposite pdfViewerComposite, PdfDocument pdfDocument) {
 		this.pdfViewerComposite = pdfViewerComposite;
 		this.pdfDocument = pdfDocument;
 	}
@@ -460,11 +460,11 @@ public class RenderBuffer
 		}
 	}
 
-	public IPdfDocument getPdfDocument() {
+	public PdfDocument getPdfDocument() {
 		return pdfDocument;
 	}
 
-	public void setPdfDocument(IPdfDocument pdfDocument) {
+	public void setPdfDocument(PdfDocument pdfDocument) {
 		this.pdfDocument = pdfDocument;
 	}
 

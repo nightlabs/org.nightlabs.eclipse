@@ -21,8 +21,8 @@ import org.nightlabs.base.ui.io.FileEditorInput;
 import org.nightlabs.base.ui.util.RCPUtil;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.PdfViewerComposite;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.internal.PdfFileLoader;
-import org.nightlabs.eclipse.ui.pdfviewer.model.IPdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.model.PdfDocument;
+import org.nightlabs.eclipse.ui.pdfviewer.model.OneDimensionalPdfDocument;
 
 import com.sun.pdfview.PDFFile;
 
@@ -43,7 +43,7 @@ public class PdfViewerEditor extends EditorPart
 	private static final Logger logger = Logger.getLogger(PdfViewerEditor.class);
 
 	public static final String ID = PdfViewerEditor.class.getName();
-	private volatile IPdfDocument pdfDocument;
+	private volatile PdfDocument pdfDocument;
 	private PdfViewerComposite pdfViewerComposite;
 	private PDFFile pdfFile;
 
@@ -120,7 +120,7 @@ public class PdfViewerEditor extends EditorPart
 
 					monitor.worked(20);
 
-					pdfDocument = new PdfDocument(pdfFile, new SubProgressMonitor(monitor, 80));
+					pdfDocument = new OneDimensionalPdfDocument(pdfFile, new SubProgressMonitor(monitor, 80));
 				} catch (final Exception x) {
 					logger.error("Error while reading PDF file!", x);
 
