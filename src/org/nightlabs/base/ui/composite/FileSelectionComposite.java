@@ -30,6 +30,7 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -50,7 +51,7 @@ import org.nightlabs.base.ui.util.RCPUtil;
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
  *
  */
-public abstract class FileSelectionComposite
+public class FileSelectionComposite
 	extends XComposite
 {
 	public static final int OPEN_FILE = 1;
@@ -63,7 +64,7 @@ public abstract class FileSelectionComposite
 	public FileSelectionComposite(Composite parent, int compositeStyle, int dialogStyle,
 			String fileDialogCaption, String dirDialogCaption)
 	{
-		this(parent, compositeStyle, LayoutMode.TIGHT_WRAPPER, LayoutDataMode.GRID_DATA, dialogStyle,
+		this(parent, compositeStyle, LayoutMode.TIGHT_WRAPPER, LayoutDataMode.GRID_DATA_HORIZONTAL, dialogStyle,
 				fileDialogCaption, dirDialogCaption);
 	}
 	
@@ -86,6 +87,8 @@ public abstract class FileSelectionComposite
 	
 	private boolean updating = false;
 	
+	private ListenerList modifyListeners = new ListenerList();
+	
 	private void createContents(int dialogStyle, String fileSelectionCaption,
 			String dirSelectionCaption)
 	{
@@ -103,7 +106,7 @@ public abstract class FileSelectionComposite
 					if (updating)
 						return;
 					fileText = fileTextForFolders.getText();
-					FileSelectionComposite.this.modifyText(e);
+					FileSelectionComposite.this.notifyModifyListeners(e);
 				}
 			});
 
@@ -143,7 +146,7 @@ public abstract class FileSelectionComposite
 					if (updating)
 						return;
 					fileText = fileTextForFiles.getText();
-					FileSelectionComposite.this.modifyText(e);
+					FileSelectionComposite.this.notifyModifyListeners(e);
 				}
 			});
 
@@ -243,9 +246,35 @@ public abstract class FileSelectionComposite
 		}
 	}
 	
-	protected abstract void modifyText(ModifyEvent e);
-
+	public void setFolderText(String fileText) {
+		updating = true;
+		try {
+			this.fileText = fileText;
+			if (fileTextForFolders != null && (!fileTextForFolders.isDisposed()))
+				if (fileText != null)
+					fileTextForFolders.setText(fileText);
+		}
+		finally {
+			updating = false;
+		}
+	}
+	
 	public Text getFileTextControl() {
 		return fileTextForFiles;
+	}
+	
+	public void addModifyListener(ModifyListener modifyListener) {
+		modifyListeners.add(modifyListener);
+	}
+	
+	public void removeModifyListener(ModifyListener modifyListener) {
+		modifyListeners.remove(modifyListener);
+	}
+	
+	protected void notifyModifyListeners(ModifyEvent evt) {
+		Object[] listeners = modifyListeners.getListeners();
+		for (Object listener : listeners) {
+			((ModifyListener) listener).modifyText(evt);
+		}
 	}
 }
