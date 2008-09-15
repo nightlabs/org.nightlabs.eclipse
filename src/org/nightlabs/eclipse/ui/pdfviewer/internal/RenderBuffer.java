@@ -1,4 +1,4 @@
-package org.nightlabs.eclipse.ui.pdfviewer.composite.internal;
+package org.nightlabs.eclipse.ui.pdfviewer.internal;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -16,7 +16,6 @@ import javax.imageio.ImageWriter;
 import javax.imageio.stream.FileImageOutputStream;
 
 import org.apache.log4j.Logger;
-import org.nightlabs.eclipse.ui.pdfviewer.Util;
 import org.nightlabs.eclipse.ui.pdfviewer.model.PdfDocument;
 
 import com.sun.pdfview.PDFPage;

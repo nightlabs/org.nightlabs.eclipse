@@ -1,4 +1,4 @@
-package org.nightlabs.eclipse.ui.pdfviewer.composite.internal;
+package org.nightlabs.eclipse.ui.pdfviewer.internal;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -8,7 +8,6 @@ import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
-import org.nightlabs.eclipse.ui.pdfviewer.Util;
 
 import com.sun.pdfview.PDFFile;
 

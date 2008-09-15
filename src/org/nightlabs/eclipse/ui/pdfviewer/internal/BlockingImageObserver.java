@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.nightlabs.eclipse.ui.pdfviewer.composite.internal;
+package org.nightlabs.eclipse.ui.pdfviewer.internal;
 
 import java.awt.Image;
 import java.awt.image.ImageObserver;

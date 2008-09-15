@@ -1,4 +1,4 @@
-package org.nightlabs.eclipse.ui.pdfviewer.composite;
+package org.nightlabs.eclipse.ui.pdfviewer.internal;
 
 import org.eclipse.swt.widgets.Composite;
 

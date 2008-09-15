@@ -1,4 +1,4 @@
-package org.nightlabs.eclipse.ui.pdfviewer;
+package org.nightlabs.eclipse.ui.pdfviewer.internal;
 
 import java.io.File;
 import java.io.IOException;

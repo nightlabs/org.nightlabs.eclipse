@@ -1,4 +1,4 @@
-package org.nightlabs.eclipse.ui.pdfviewer.composite.internal;
+package org.nightlabs.eclipse.ui.pdfviewer.internal;
 
 public class WaitForRenderingException extends RuntimeException
 {
