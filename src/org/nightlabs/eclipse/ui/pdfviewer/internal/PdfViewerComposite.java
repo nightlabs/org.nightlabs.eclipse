@@ -194,9 +194,8 @@ public class PdfViewerComposite extends Composite
 
 		centerVertically = false;
 
-		propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_ORIGIN, oldViewOrigin, viewOrigin);
-
 		viewPanel.repaint();
+		propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_ORIGIN, oldViewOrigin, viewOrigin);
 	}
 
 	private void scrollHorizontally()
@@ -211,9 +210,8 @@ public class PdfViewerComposite extends Composite
 
 		centerHorizontally = false;
 
-		propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_ORIGIN, oldViewOrigin, viewOrigin);
-
 		viewPanel.repaint();
+		propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_ORIGIN, oldViewOrigin, viewOrigin);
 	}
 
 	private void setScrollbars() {
