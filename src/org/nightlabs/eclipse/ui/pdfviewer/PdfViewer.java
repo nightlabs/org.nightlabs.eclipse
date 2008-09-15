@@ -92,10 +92,10 @@ public class PdfViewer
 	 * Get all {@link ContextElement}s that are registered for the given <code>contextElementType</code>.
 	 *
 	 * @param contextElementType
-	 *          the type of the <code>contextElement</code> as passed to
-	 *          {@link #registerContextElement(ContextElement)} before.
+	 *          the type of the <code>contextElement</code> as passed to {@link #registerContextElement(ContextElement)} before.
 	 * @return a <code>Collection</code> containing the previously registered context-elements; never <code>null</code> (instead, an empty
-	 *         <code>Collection</code> is returned).
+	 *         <code>Collection</code> is returned). This <code>Collection</code> is not backed by the registry and can be safely iterated
+	 *         while the registry is modified.
 	 */
 	public <T extends ContextElement<T>> Collection<T> getContextElements(ContextElementType<T> contextElementType) {
 		Collection<T> result = contextElementRegistry.getContextElements(contextElementType);
@@ -105,7 +105,8 @@ public class PdfViewer
 	/**
 	 * Get all {@link ContextElement}s that are registered.
 	 *
-	 * @return an immutable <code>Collection</code> containing all {@link ContextElement}s.
+	 * @return an immutable <code>Collection</code> containing all {@link ContextElement}s. This <code>Collection</code> is not backed by
+	 *         the registry and can be safely iterated while the registry is modified.
 	 */
 	public Collection<? extends ContextElement<?>> getContextElements() {
 		Collection<? extends ContextElement<?>> result = contextElementRegistry.getContextElements();

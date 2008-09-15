@@ -20,6 +20,7 @@ import org.nightlabs.eclipse.ui.pdfviewer.PdfSimpleNavigator;
 public class ContextElementRegistry
 {
 	private Map<ContextElementType<?>, Map<String, ContextElement<?>>> contextElementType2id2contextElement = new HashMap<ContextElementType<?>, Map<String,ContextElement<?>>>();
+	private Map<ContextElementType<?>, Map<String, ContextElement<?>>> contextElementType2id2contextElementCache = new HashMap<ContextElementType<?>, Map<String,ContextElement<?>>>();
 
 	private static void assertValidThread()
 	{
@@ -81,6 +82,7 @@ public class ContextElementRegistry
 		if (id2contextElement != null && id2contextElement.isEmpty())
 			contextElementType2id2contextElement.remove(contextElementType);
 
+		contextElementType2id2contextElementCache.remove(contextElementType);
 		allContextElementsCache = null;
 	}
 
@@ -107,8 +109,12 @@ public class ContextElementRegistry
 	}
 
 	/**
-	 * @param contextElementType the type of the <code>contextElement</code> as passed to {@link #setContextElement(ContextElementType, String, ContextElement)} before.
-	 * @return an immutable <code>Collection</code> containing the previously registered context-elements; never <code>null</code> (instead, an empty <code>Collection</code> is returned).
+	 * @param contextElementType
+	 *          the type of the <code>contextElement</code> as passed to
+	 *          {@link #setContextElement(ContextElementType, String, ContextElement)} before.
+	 * @return an immutable <code>Collection</code> containing the previously registered context-elements; never <code>null</code>
+	 *         (instead, an empty <code>Collection</code> is returned). This <code>Collection</code> is not backed by the registry and can
+	 *         be safely iterated while the registry is modified.
 	 */
 	@SuppressWarnings("unchecked")
 	public <T extends ContextElement<T>> Collection<T> getContextElements(ContextElementType<T> contextElementType)
@@ -118,11 +124,19 @@ public class ContextElementRegistry
 		if (contextElementType == null)
 			throw new IllegalArgumentException("contextElementType must not be null!");
 
-		Map<String, ContextElement<?>> id2contextElement = contextElementType2id2contextElement.get(contextElementType);
-		if (id2contextElement == null)
-			return Collections.emptySet();
+		Map<String, ContextElement<?>> id2contextElement = contextElementType2id2contextElementCache.get(contextElementType);
+		if (id2contextElement != null)
+			return (Collection<T>) id2contextElement;
 
-		return (Collection<T>) Collections.unmodifiableCollection(id2contextElement.values());
+		id2contextElement = contextElementType2id2contextElement.get(contextElementType);
+		if (id2contextElement == null)
+			id2contextElement = Collections.emptyMap();
+		else
+			id2contextElement = Collections.unmodifiableMap(new HashMap<String, ContextElement<?>>(id2contextElement));
+
+		contextElementType2id2contextElementCache.put(contextElementType, id2contextElement);
+
+		return (Collection<T>) id2contextElement;
 	}
 
 	private Collection<ContextElement<?>> allContextElementsCache = null;
@@ -130,7 +144,8 @@ public class ContextElementRegistry
 	/**
 	 * Get all {@link ContextElement}s that are registered.
 	 *
-	 * @return an immutable <code>Collection</code> containing all {@link ContextElement}s.
+	 * @return an immutable <code>Collection</code> containing all {@link ContextElement}s. This <code>Collection</code> is not backed by
+	 *         the registry and can be safely iterated while the registry is modified.
 	 */
 	public Collection<? extends ContextElement<?>> getContextElements()
 	{
