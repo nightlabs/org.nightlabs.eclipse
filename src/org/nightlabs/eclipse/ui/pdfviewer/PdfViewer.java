@@ -17,31 +17,35 @@ public class PdfViewer
 			throw new IllegalStateException("Wrong thread! This method must be called on the SWT UI thread!");
 	}
 
-	public PdfViewer(final PdfDocument pdfDocument) {
-		if (pdfDocument == null)
-			throw new IllegalArgumentException("pdfDocument must not be null!");
-
-		this.pdfDocument = pdfDocument;
-	}
+	public PdfViewer() { }
 
 	public Control createControl(Composite parent)
 	{
 		assertValidThread();
+		if (this.pdfViewerComposite != null)
+			this.pdfViewerComposite.dispose();
 
-		pdfViewerComposite = new PdfViewerComposite(parent, pdfDocument);
-		return pdfViewerComposite;
+		this.pdfViewerComposite = new PdfViewerComposite(parent);
+		this.pdfViewerComposite.setPdfDocument(pdfDocument); // just in case, the document was set before this method.
+		return this.pdfViewerComposite;
 	}
 
-	public Control getPdfViewerComposite() {
+	public Control getControl() {
 		assertValidThread();
 
-		return pdfViewerComposite;
+		return this.pdfViewerComposite;
 	}
 
 	public PdfDocument getPdfDocument() {
 		assertValidThread();
 
 		return pdfDocument;
+	}
+
+	public void setPdfDocument(PdfDocument pdfDocument) {
+		this.pdfDocument = pdfDocument;
+		if (pdfViewerComposite != null)
+			pdfViewerComposite.setPdfDocument(pdfDocument);
 	}
 
 	public Point getViewOrigin() {
@@ -57,4 +61,8 @@ public class PdfViewer
 	}
 
 	// TODO more API, like:
+	// - get the zoom (in per mill)
+
+	// - set the zoom
+	// - get visible dimension (i.e. width + height) of the view panel in real coordinates
 }

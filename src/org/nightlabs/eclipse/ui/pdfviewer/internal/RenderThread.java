@@ -31,6 +31,19 @@ public class RenderThread extends Thread
 		start();
 	}
 
+	private volatile boolean forceInterrupt = false;
+
+	@Override
+	public void interrupt() {
+	    forceInterrupt = true;
+	    super.interrupt();
+	}
+
+	@Override
+	public boolean isInterrupted() {
+	    return forceInterrupt || super.isInterrupted();
+	}
+
 	@Override
 	public void run() {
 		while (!isInterrupted()) {
@@ -123,7 +136,6 @@ public class RenderThread extends Thread
 			}
 		}
 	}
-
 }
 
 

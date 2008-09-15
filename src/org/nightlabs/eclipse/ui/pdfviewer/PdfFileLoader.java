@@ -5,9 +5,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.nightlabs.eclipse.ui.pdfviewer.internal.Util;
 
 
@@ -31,7 +33,7 @@ public class PdfFileLoader
 	 * @return a {@link PDFFile} with the contents from the given <code>byteArray</code>.
 	 * @throws IOException if the {@link PDFFile} failed to read the data.
 	 */
-	public static PDFFile loadPdf(byte[] byteArray) throws IOException {
+	public static PDFFile loadPdf(byte[] byteArray, IProgressMonitor monitor) throws IOException {
 		ByteBuffer byteBuffer = ByteBuffer.wrap(byteArray);
 		return new PDFFile(byteBuffer);
 	}
@@ -43,13 +45,25 @@ public class PdfFileLoader
 	 * @return a {@link PDFFile} with the contents from the given input stream.
 	 * @throws IOException if the {@link PDFFile} failed to read the data.
 	 */
-	public static PDFFile loadPdf(InputStream in) throws IOException {
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		Util.transferStreamData(in, out);
-		out.close();
+	public static PDFFile loadPdf(InputStream in, IProgressMonitor monitor) throws IOException
+	{
+		monitor.beginTask("Loading PDF file", 100);
+		try {
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			Util.transferStreamData(in, out);
+			out.close();
 
-		ByteBuffer byteBuffer = ByteBuffer.wrap(out.toByteArray());
-		return new PDFFile(byteBuffer);
+			monitor.worked(50);
+
+			ByteBuffer byteBuffer = ByteBuffer.wrap(out.toByteArray());
+			PDFFile pdfFile = new PDFFile(byteBuffer);
+
+			monitor.worked(50);
+
+			return pdfFile;
+		} finally {
+			monitor.done();
+		}
 	}
 
 	/**
@@ -59,19 +73,38 @@ public class PdfFileLoader
 	 * @return a {@link PDFFile} with the contents from the given file.
 	 * @throws IOException if the {@link PDFFile} failed to read the data.
 	 */
-	public static PDFFile loadPdf(File file) throws IOException
+	public static PDFFile loadPdf(File file, IProgressMonitor monitor) throws IOException
 	{
-		RandomAccessFile randomAccessFile = new RandomAccessFile(file, "r");
+		monitor.beginTask("Loading PDF file", 100);
 		try {
-			FileChannel fileChannel = randomAccessFile.getChannel();
+			RandomAccessFile randomAccessFile = new RandomAccessFile(file, "r");
 			try {
-				ByteBuffer byteBuffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, 0, fileChannel.size());
-				return new PDFFile(byteBuffer);
+				FileChannel fileChannel = randomAccessFile.getChannel();
+				try {
+					ByteBuffer byteBuffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, 0, fileChannel.size());
+					monitor.worked(50);
+					PDFFile pdfFile = new PDFFile(byteBuffer);
+					monitor.worked(50);
+					return pdfFile;
+				} finally {
+					fileChannel.close();
+				}
 			} finally {
-				fileChannel.close();
+				randomAccessFile.close();
 			}
 		} finally {
-			randomAccessFile.close();
+			monitor.done();
 		}
 	}
+
+	public static PDFFile loadPdf(URL url, IProgressMonitor monitor) throws IOException
+	{
+		InputStream in = url.openStream();
+		try {
+			return loadPdf(in, monitor);
+		} finally {
+			in.close();
+		}
+	}
+
 }

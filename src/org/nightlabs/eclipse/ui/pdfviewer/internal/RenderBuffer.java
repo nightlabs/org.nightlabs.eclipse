@@ -451,10 +451,6 @@ public class RenderBuffer
 		return pdfDocument;
 	}
 
-	public void setPdfDocument(PdfDocument pdfDocument) {
-		this.pdfDocument = pdfDocument;
-	}
-
 	public Rectangle2D.Double getBufferedImageBounds() {
 		return bufferedImageBounds;
 	}

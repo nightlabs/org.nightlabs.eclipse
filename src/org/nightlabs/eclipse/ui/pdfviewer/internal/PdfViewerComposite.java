@@ -70,13 +70,44 @@ public class PdfViewerComposite extends Composite {
 		System.setProperty("sun.awt.noerasebackground", "true");
 	}
 
-	public PdfViewerComposite(Composite parent, final PdfDocument pdfDocument)
+	public void setPdfDocument(PdfDocument pdfDocument)
+	{
+		if (renderThread != null) {
+			long start = System.currentTimeMillis();
+			while (renderThread.isAlive()) {
+				if (System.currentTimeMillis() - start > 60000)
+					throw new IllegalStateException("Timeout waiting for RenderThread to finish!");
+
+				renderThread.interrupt();
+				try {
+					renderThread.join(10000);
+				} catch (InterruptedException e) {
+					// ignore
+				}
+			}
+			renderThread = null;
+		}
+
+		if (renderBuffer != null) {
+			renderBuffer = null;
+		}
+
+	    this.pdfDocument = pdfDocument;
+
+	    if (pdfDocument != null) {
+		    renderBuffer = new RenderBuffer(this, pdfDocument);
+		    renderThread = new RenderThread(this, renderBuffer);
+	    }
+	    setScrollbars();
+    }
+
+
+	public PdfViewerComposite(Composite parent)
 	{
 		super(parent, SWT.NONE);
 		this.setLayout(new FillLayout());
-		this.pdfDocument = pdfDocument;
 
-		renderBuffer = new RenderBuffer(this, pdfDocument);
+//		renderBuffer = new RenderBuffer(this, pdfDocument);
 		renderComposite = new Composite(this, SWT.EMBEDDED | SWT.V_SCROLL | SWT.H_SCROLL);
 
 		viewOrigin = new Point(0, 0);
@@ -96,6 +127,9 @@ public class PdfViewerComposite extends Composite {
 		viewPanel.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
+				if (pdfDocument == null)
+					return;
+
 				if (centerHorizontally) {
 					double middleX = pdfDocument.getDocumentDimension().getWidth() / 2;
 					viewOrigin.x = (int) (middleX - viewPanel.getWidth() / 2 / ((double)zoomFactorPerMill / 1000));
@@ -135,9 +169,7 @@ public class PdfViewerComposite extends Composite {
 		viewPanelFrame.addMouseWheelListener(new MouseWheelListenerImpl());
 		viewPanelFrame.addKeyListener(new KeyListenerImpl());
 
-		setScrollbars();
-
-		renderThread = new RenderThread(this, renderBuffer);
+//		renderThread = new RenderThread(this, renderBuffer);
 	}
 
 	private boolean centerHorizontally;
@@ -172,6 +204,12 @@ public class PdfViewerComposite extends Composite {
 		Display.getDefault().syncExec(new Runnable() {
 			@Override
 			public void run() {
+				if (pdfDocument == null) {
+					scrollBarVertical.setVisible(false);
+					scrollBarHorizontal.setVisible(false);
+					return;
+				}
+
 				double zoomFactor = (zoomFactorPerMill / 1000d);
 
 				int visibleAreaScrollHeight = (int) (getViewPanel().getHeight() / zoomFactor) / scrollBarDivisor;
@@ -226,7 +264,14 @@ public class PdfViewerComposite extends Composite {
 	 *
 	 * @param g the graphics to draw into.
 	 */
-	private void paintViewPanel(Graphics2D g) {
+	private void paintViewPanel(Graphics2D g)
+	{
+		if (renderBuffer == null || renderThread == null) {
+			g.setColor(getViewPanel().getBackground());
+			g.fillRect(0, 0, getViewPanel().getWidth(), getViewPanel().getHeight());
+			return;
+		}
+
 		double zoomFactor = (double)zoomFactorPerMill / 1000;
 
 		Rectangle2D.Double region = new Rectangle2D.Double(
