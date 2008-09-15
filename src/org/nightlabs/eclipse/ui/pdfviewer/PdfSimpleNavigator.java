@@ -3,9 +3,9 @@ package org.nightlabs.eclipse.ui.pdfviewer;
 import java.util.Collection;
 
 public class PdfSimpleNavigator
-implements ContextElement
+implements ContextElement<PdfSimpleNavigator>
 {
-	public static final ContextElementType CONTEXT_ELEMENT_TYPE = new ContextElementType(PdfSimpleNavigator.class);
+	public static final ContextElementType<PdfSimpleNavigator> CONTEXT_ELEMENT_TYPE = new ContextElementType<PdfSimpleNavigator>(PdfSimpleNavigator.class);
 
 	private PdfViewer pdfViewer;
 
@@ -21,16 +21,15 @@ implements ContextElement
 		if (pdfViewer == null)
 			throw new IllegalArgumentException("pdfViewer must not be null!");
 
-		return (PdfSimpleNavigator) pdfViewer.getContextElement(CONTEXT_ELEMENT_TYPE, id);
+		return pdfViewer.getContextElement(CONTEXT_ELEMENT_TYPE, id);
 	}
 
-	@SuppressWarnings("unchecked")
 	public static Collection<? extends PdfSimpleNavigator> getPdfSimpleNavigators(PdfViewer pdfViewer)
 	{
 		if (pdfViewer == null)
 			throw new IllegalArgumentException("pdfViewer must not be null!");
 
-		return (Collection<? extends PdfSimpleNavigator>) pdfViewer.getContextElements(CONTEXT_ELEMENT_TYPE);
+		return pdfViewer.getContextElements(CONTEXT_ELEMENT_TYPE);
 	}
 
 	/**
@@ -62,7 +61,7 @@ implements ContextElement
 	}
 
 	@Override
-	public ContextElementType getContextElementType() {
+	public ContextElementType<PdfSimpleNavigator> getContextElementType() {
 		return CONTEXT_ELEMENT_TYPE;
 	}
 }

@@ -5,15 +5,11 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.nightlabs.eclipse.ui.pdfviewer.internal.ContextElementRegistry;
 import org.nightlabs.eclipse.ui.pdfviewer.internal.PdfViewerComposite;
 
 /**
@@ -56,40 +52,24 @@ public class PdfViewer
 	private PdfDocument pdfDocument;
 	private PdfViewerComposite pdfViewerComposite;
 
-	private Map<ContextElementType, Map<String, ContextElement>> contextElementType2id2contextElement = new HashMap<ContextElementType, Map<String, ContextElement>>();
+	private ContextElementRegistry contextElementRegistry = new ContextElementRegistry();
 
 	/**
-	 * Assign a context-element. This method should be called by the context-element itself
-	 * when it is created/assigned a <code>PdfViewer</code>.
+	 * Assign a context-element. This method should be called by the context-element itself when it is created/assigned a
+	 * <code>PdfViewer</code>.
 	 *
-	 * @param contextElementType the type of the <code>contextElement</code>. This should be the base class - e.g. when subclassing {@link PdfSimpleNavigator}, you should still pass <code>PdfSimpleNavigator.class</code> and not the subclass' type. Must <b>not</b> be <code>null</code>!
-	 * @param id the identifier of the context-element. Can be <code>null</code>.
-	 * @param contextElement the context-element. Can be <code>null</code> to remove a previous entry.
+	 * @param contextElementType
+	 *          the type of the <code>contextElement</code>. Must <b>not</b> be <code>null</code>! This should be declared by the base
+	 *          class - e.g. when subclassing {@link PdfSimpleNavigator}, you should still pass the value declared by
+	 *          <code>PdfSimpleNavigator.class</code> and only redeclare it for the subclass, if the subclass is really something completely
+	 *          different.
+	 * @param id
+	 *          the identifier of the context-element. Can be <code>null</code>.
+	 * @param contextElement
+	 *          the context-element. Can be <code>null</code> to remove a previous entry.
 	 */
-	public void setContextElement(ContextElementType contextElementType, String id, ContextElement contextElement)
-	{
-		assertValidThread();
-
-		if (contextElementType == null)
-			throw new IllegalArgumentException("contextElementType must not be null!");
-
-		Map<String, ContextElement> id2contextElement = contextElementType2id2contextElement.get(contextElementType);
-		if (id2contextElement == null && contextElement != null) {
-			id2contextElement = new HashMap<String, ContextElement>();
-			contextElementType2id2contextElement.put(contextElementType, id2contextElement);
-		}
-
-		if (contextElement == null) {
-			if (id2contextElement != null)
-				id2contextElement.remove(id);
-		}
-		else
-			id2contextElement.put(id, contextElement);
-
-		if (id2contextElement != null && id2contextElement.isEmpty())
-			contextElementType2id2contextElement.remove(contextElementType);
-
-		allContextElementsCache = null;
+	public void setContextElement(ContextElementType<?> contextElementType, String id, ContextElement<?> contextElement) {
+		contextElementRegistry.setContextElement(contextElementType, id, contextElement);
 	}
 
 	/**
@@ -100,45 +80,32 @@ public class PdfViewer
 	 * @param id the identifier of the context-element as specified in {@link #setContextElement(ContextElementType, String, ContextElement)} - can be <code>null</code>.
 	 * @return the appropriate context-element or <code>null</code>.
 	 */
-	public ContextElement getContextElement(ContextElementType contextElementType, String id) {
-		assertValidThread();
-
-		Map<String, ContextElement> id2contextElement = contextElementType2id2contextElement.get(contextElementType);
-		if (id2contextElement == null)
-			return null;
-
-		return id2contextElement.get(id);
+	public <T extends ContextElement<T>> T getContextElement(ContextElementType<T> contextElementType, String id) {
+		return contextElementRegistry.getContextElement(contextElementType, id);
 	}
 
 	/**
-	 * @param contextElementType the type of the <code>contextElement</code> as passed to {@link #setContextElement(ContextElementType, String, ContextElement)} before.
-	 * @return a <code>Collection</code> containing the previously registered context-elements; never <code>null</code> (instead, an empty <code>Collection</code> is returned).
+	 * Get all {@link ContextElement}s that are registered for the given <code>contextElementType</code>.
+	 *
+	 * @param contextElementType
+	 *          the type of the <code>contextElement</code> as passed to
+	 *          {@link #setContextElement(ContextElementType, String, ContextElement)} before.
+	 * @return a <code>Collection</code> containing the previously registered context-elements; never <code>null</code> (instead, an empty
+	 *         <code>Collection</code> is returned).
 	 */
-	public Collection<? extends ContextElement> getContextElements(ContextElementType contextElementType)
-	{
-		assertValidThread();
-
-		Map<String, ContextElement> id2contextElement = contextElementType2id2contextElement.get(contextElementType);
-		if (id2contextElement == null)
-			return Collections.emptySet();
-
-		return Collections.unmodifiableCollection(id2contextElement.values());
+	public <T extends ContextElement<T>> Collection<T> getContextElements(ContextElementType<T> contextElementType) {
+		Collection<T> result = contextElementRegistry.getContextElements(contextElementType);
+		return result;
 	}
 
-	private Collection<? extends ContextElement> allContextElementsCache = null;
-
-	public Collection<? extends ContextElement> getContextElements()
-	{
-		assertValidThread();
-
-		if (allContextElementsCache == null) {
-			Set<ContextElement> result = new HashSet<ContextElement>();
-			for (Map<String, ContextElement> id2contextElement : contextElementType2id2contextElement.values()) {
-				result.addAll(id2contextElement.values());
-			}
-			allContextElementsCache = Collections.unmodifiableCollection(result);
-		}
-		return allContextElementsCache;
+	/**
+	 * Get all {@link ContextElement}s that are registered.
+	 *
+	 * @return an immutable <code>Collection</code> containing all {@link ContextElement}s.
+	 */
+	public Collection<? extends ContextElement<?>> getContextElements() {
+		Collection<? extends ContextElement<?>> result = contextElementRegistry.getContextElements();
+		return result;
 	}
 
 	private static void assertValidThread()

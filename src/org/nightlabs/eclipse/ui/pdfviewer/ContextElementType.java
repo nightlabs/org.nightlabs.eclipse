@@ -2,18 +2,14 @@ package org.nightlabs.eclipse.ui.pdfviewer;
 
 import org.nightlabs.eclipse.ui.pdfviewer.internal.Util;
 
-public class ContextElementType {
-	private String contextElementTypeID;
+public class ContextElementType<T extends ContextElement> {
+	private Class<T> contextElementBaseClass;
 
-	public ContextElementType(Class<?> contextElementTypeBaseClass) {
-		this(contextElementTypeBaseClass.getName());
-	}
+	public ContextElementType(Class<T> contextElementBaseClass) {
+		if (contextElementBaseClass == null)
+			throw new IllegalArgumentException("contextElementBaseClass must not be null!");
 
-	public ContextElementType(String contextElementTypeID) {
-		if (contextElementTypeID == null)
-			throw new IllegalArgumentException("contextElementTypeID must not be null!");
-
-		this.contextElementTypeID = contextElementTypeID;
+		this.contextElementBaseClass = contextElementBaseClass;
 	}
 
 	private int _hashCode = 0;
@@ -27,7 +23,7 @@ public class ContextElementType {
 		int result = 1;
 		result = prime
 				* result
-				+ ((contextElementTypeID == null) ? 0 : contextElementTypeID.hashCode());
+				+ ((contextElementBaseClass == null) ? 0 : contextElementBaseClass.hashCode());
 
 		_hashCode = result;
 		return result;
@@ -38,12 +34,22 @@ public class ContextElementType {
 		if (this == obj) return true;
 		if (obj == null) return false;
 		if (getClass() != obj.getClass()) return false;
-		final ContextElementType other = (ContextElementType) obj;
-		return Util.equals(this.contextElementTypeID, other.contextElementTypeID);
+		final ContextElementType<?> other = (ContextElementType<?>) obj;
+		return Util.equals(this.contextElementBaseClass, other.contextElementBaseClass);
 	}
 
 	@Override
 	public String toString() {
-		return this.getClass().getName() + '@' + Integer.toHexString(System.identityHashCode(this)) + '[' + contextElementTypeID +']';
+		return this.getClass().getName() + '@' + Integer.toHexString(System.identityHashCode(this)) + '[' + contextElementBaseClass.getName() +']';
+	}
+
+	public boolean isValidContextElementImplementation(ContextElement contextElement)
+	{
+		return contextElementBaseClass.isInstance(contextElement);
+	}
+	public void assertValidContextElementImplementation(ContextElement contextElement)
+	{
+		if (!isValidContextElementImplementation(contextElement))
+			throw new IllegalArgumentException("contextElement is not a valid implementation: " + contextElement);
 	}
 }

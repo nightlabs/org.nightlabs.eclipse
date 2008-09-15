@@ -5,7 +5,7 @@ package org.nightlabs.eclipse.ui.pdfviewer;
  *
  * @author marco schulze - marco at nightlabs dot de
  */
-public interface ContextElement {
-	ContextElementType getContextElementType();
+public interface ContextElement<T extends ContextElement<T>> {
+	ContextElementType<T> getContextElementType();
 	PdfViewer getPdfViewer();
 }

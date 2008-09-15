@@ -3,9 +3,9 @@ package org.nightlabs.eclipse.ui.pdfviewer;
 import java.util.Collection;
 
 public class PdfThumbnailNavigator
-implements ContextElement
+implements ContextElement<PdfThumbnailNavigator>
 {
-	public static final ContextElementType CONTEXT_ELEMENT_TYPE = new ContextElementType(PdfThumbnailNavigator.class);
+	public static final ContextElementType<PdfThumbnailNavigator> CONTEXT_ELEMENT_TYPE = new ContextElementType<PdfThumbnailNavigator>(PdfThumbnailNavigator.class);
 
 	private PdfViewer pdfViewer;
 
@@ -20,16 +20,15 @@ implements ContextElement
 		if (pdfViewer == null)
 			throw new IllegalArgumentException("pdfViewer must not be null!");
 
-		return (PdfThumbnailNavigator) pdfViewer.getContextElement(CONTEXT_ELEMENT_TYPE, id);
+		return pdfViewer.getContextElement(CONTEXT_ELEMENT_TYPE, id);
 	}
 
-	@SuppressWarnings("unchecked")
 	public static Collection<? extends PdfThumbnailNavigator> getPdfThumbnailNavigators(PdfViewer pdfViewer)
 	{
 		if (pdfViewer == null)
 			throw new IllegalArgumentException("pdfViewer must not be null!");
 
-		return (Collection<? extends PdfThumbnailNavigator>) pdfViewer.getContextElements(CONTEXT_ELEMENT_TYPE);
+		return pdfViewer.getContextElements(CONTEXT_ELEMENT_TYPE);
 	}
 
 	public PdfThumbnailNavigator(PdfViewer pdfViewer) {
@@ -50,7 +49,7 @@ implements ContextElement
 	}
 
 	@Override
-	public ContextElementType getContextElementType() {
+	public ContextElementType<PdfThumbnailNavigator> getContextElementType() {
 		return CONTEXT_ELEMENT_TYPE;
 	}
 }
