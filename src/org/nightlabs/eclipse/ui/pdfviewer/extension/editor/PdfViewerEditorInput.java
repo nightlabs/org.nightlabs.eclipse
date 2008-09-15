@@ -28,7 +28,7 @@ implements IEditorInput
 	private File file;
 	private byte[] byteArray;
 
-	private PDFFile pdfFile;
+	private volatile PDFFile pdfFile;
 
 	public PdfViewerEditorInput(File file)
 	{
@@ -56,23 +56,36 @@ implements IEditorInput
 		this.byteArray = byteArray;
 	}
 
+	/**
+	 * Get the {@link PDFFile} or <code>null</code>, if none has been created before (i.e. {@link #createPDFFile(IProgressMonitor)} was
+	 * not yet called).
+	 *
+	 * @return the <code>PDFFile</code> which has been created by a previous call to {@link #createPDFFile(IProgressMonitor)} or <code>null</code>.
+	 */
 	public PDFFile getPDFFile()
 	{
-//		if (pdfFile == null)
-//			pdfFile = createPDFFile();
 		return pdfFile;
 	}
 
+	/**
+	 * Create a new <code>PDFFile</code> instance. Each call to this method creates a new instance. You should therefore
+	 * use {@link #getPDFFile()} instead, after it was created once.
+	 *
+	 * @param monitor the monitor for progress feedback.
+	 * @return a new instance of <code>PDFFile</code>. This
+	 * @throws IOException
+	 */
 	public PDFFile createPDFFile(IProgressMonitor monitor)
 	throws IOException
 	{
 		if (byteArray != null)
-			return PdfFileLoader.loadPdf(byteArray, monitor);
+			pdfFile = PdfFileLoader.loadPdf(byteArray, monitor);
+		else if (file != null)
+			pdfFile = PdfFileLoader.loadPdf(file, monitor);
+		else
+			throw new IllegalStateException("Have no data!");
 
-		if (file != null)
-			return PdfFileLoader.loadPdf(file, monitor);
-
-		throw new IllegalStateException("Have no data!");
+		return pdfFile;
 	}
 
 	@Override
@@ -101,6 +114,7 @@ implements IEditorInput
 		return toolTipText;
 	}
 
+	@SuppressWarnings("unchecked") // seems, IAdaptable does not have a class type set (not even <?>).
 	@Override
 	public Object getAdapter(Class arg0) {
 		// no adapter supported, at the moment

@@ -99,10 +99,10 @@ public class PdfViewerEditor extends EditorPart
 						if (pdfFile == null)
 							pdfFile = ((PdfViewerEditorInput)input).createPDFFile(new SubProgressMonitor(monitor, 20));
 					}
-//					else if (input instanceof FileEditorInput) {
-//						File file = ((FileEditorInput)input).getFile();
-//						pdfFile = PdfFileLoader.loadPdf(file);
-//					}
+					else if (input instanceof FileEditorInput) {
+						File file = ((FileEditorInput)input).getFile();
+						pdfFile = PdfFileLoader.loadPdf(file, new SubProgressMonitor(monitor, 20));
+					}
 					else if (input instanceof IPathEditorInput) {
 						File file = ((IPathEditorInput)input).getPath().toFile();
 						pdfFile = PdfFileLoader.loadPdf(file, new SubProgressMonitor(monitor, 20));
