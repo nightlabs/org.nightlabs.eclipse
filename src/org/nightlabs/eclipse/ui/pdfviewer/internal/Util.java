@@ -6,13 +6,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
-
 /**
  * Utility methods used throughout the PDF viewer plug-in. All these methods have
  * been copied from the classes <code>org.nightlabs.util.Util</code>,
@@ -122,43 +115,43 @@ public final class Util {
 	}
 
 
-	/**
-	 * Returns the active WorkbenchWindow's active page.
-	 * @return The active WorkbenchWindow's active page.
-	 */
-	public static IWorkbenchWindow getActiveWorkbenchWindow() {
-		return PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-	}
+//	/**
+//	 * Returns the active WorkbenchWindow's active page.
+//	 * @return The active WorkbenchWindow's active page.
+//	 */
+//	public static IWorkbenchWindow getActiveWorkbenchWindow() {
+//		return PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+//	}
+//
+//	/**
+//	 * Returns the active WorkbenchWindow's active page.
+//	 * @return The active WorkbenchWindow's active page.
+//	 */
+//	public static IWorkbenchPage getActiveWorkbenchPage() {
+//		IWorkbenchWindow window = getActiveWorkbenchWindow();
+//		return window == null ? null : window.getActivePage();
+//	}
 
-	/**
-	 * Returns the active WorkbenchWindow's active page.
-	 * @return The active WorkbenchWindow's active page.
-	 */
-	public static IWorkbenchPage getActiveWorkbenchPage() {
-		IWorkbenchWindow window = getActiveWorkbenchWindow();
-		return window == null ? null : window.getActivePage();
-	}
 
-
-	/**
-	 * If there is an open editor for the given <code>input</code>,
-	 * it will be closed. If no editor can be found, this
-	 * method is a no-op.
-	 *
-	 * @param input The input specifying the editor to close.
-	 * @param save Whether or not to save - this is passed to {@link IWorkbenchPage#closeEditor(IEditorPart, boolean)}.
-	 * @return <code>true</code>, if no open editor was found or if it has been successfully closed.
-	 *		<code>false</code>, if the open editor for the given <code>input</code> was not closed (e.g. because
-	 *		the user cancelled closing in case <code>save == true</code>).
-	 */
-	public static boolean closeEditor(IEditorInput input, boolean save) {
-		IWorkbenchPage page = getActiveWorkbenchPage();
-		IEditorPart editor = page.findEditor(input);
-		if (editor == null)
-			return true;
-
-		return page.closeEditor(editor, save);
-	}
+//	/**
+//	 * If there is an open editor for the given <code>input</code>,
+//	 * it will be closed. If no editor can be found, this
+//	 * method is a no-op.
+//	 *
+//	 * @param input The input specifying the editor to close.
+//	 * @param save Whether or not to save - this is passed to {@link IWorkbenchPage#closeEditor(IEditorPart, boolean)}.
+//	 * @return <code>true</code>, if no open editor was found or if it has been successfully closed.
+//	 *		<code>false</code>, if the open editor for the given <code>input</code> was not closed (e.g. because
+//	 *		the user cancelled closing in case <code>save == true</code>).
+//	 */
+//	public static boolean closeEditor(IEditorInput input, boolean save) {
+//		IWorkbenchPage page = getActiveWorkbenchPage();
+//		IEditorPart editor = page.findEditor(input);
+//		if (editor == null)
+//			return true;
+//
+//		return page.closeEditor(editor, save);
+//	}
 
 	private static File tempDir = null;
 
@@ -237,31 +230,31 @@ public final class Util {
 		return transferStreamData(in, out, 0, -1);
 	}
 
-	/**
-	 * Opens an editor with the given input and editorID and returns it.
-	 *
-	 * @param input The editors input
-	 * @param editorID The editors id
-	 * @return The editor opened
-	 * @throws PartInitException
-	 */
-	public static IEditorPart openEditor(IEditorInput input, String editorID)
-	throws PartInitException
-	{
-		return getActiveWorkbenchPage().openEditor(input, editorID);
-	}
-
-	/**
-	 * Opens an editor with the given input and editorID and returns it.
-	 *
-	 * @param input The editors input
-	 * @param editorID The editors id
-	 * @return The editor opened
-	 * @throws PartInitException
-	 */
-	public static IEditorPart openEditor(IEditorInput input, String editorID, boolean activate)
-	throws PartInitException
-	{
-		return getActiveWorkbenchPage().openEditor(input, editorID, activate);
-	}
+//	/**
+//	 * Opens an editor with the given input and editorID and returns it.
+//	 *
+//	 * @param input The editors input
+//	 * @param editorID The editors id
+//	 * @return The editor opened
+//	 * @throws PartInitException
+//	 */
+//	public static IEditorPart openEditor(IEditorInput input, String editorID)
+//	throws PartInitException
+//	{
+//		return getActiveWorkbenchPage().openEditor(input, editorID);
+//	}
+//
+//	/**
+//	 * Opens an editor with the given input and editorID and returns it.
+//	 *
+//	 * @param input The editors input
+//	 * @param editorID The editors id
+//	 * @return The editor opened
+//	 * @throws PartInitException
+//	 */
+//	public static IEditorPart openEditor(IEditorInput input, String editorID, boolean activate)
+//	throws PartInitException
+//	{
+//		return getActiveWorkbenchPage().openEditor(input, editorID, activate);
+//	}
 }
