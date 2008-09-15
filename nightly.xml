@@ -7,6 +7,7 @@
     <ant path="org.nightlabs.eclipse.ui.pdfviewer" file="build-nightlabs.xml" target="deploy"/>
     <requires/>
     <provides/>
+    <provides path="org.nightlabs.eclipse.ui.pdfviewer" location="org.nightlabs.eclipse.ui.pdfviewer/lib/PDFRenderer.jar"/>
     <javadoc path="org.nightlabs.eclipse.ui.pdfviewer/src"/>
     <javadoc href="https://pdf-renderer.dev.java.net/nonav/demos/latest/javadoc/"/>
   </project>
