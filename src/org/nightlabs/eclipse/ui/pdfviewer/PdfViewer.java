@@ -71,7 +71,7 @@ public class PdfViewer
 	 * @param contextElementType the type of the <code>contextElement</code> as specified by {@link ContextElement#getContextElementType()} when it was added.
 	 * @param contextElementId the identifier or <code>null</code> as specified by {@link ContextElement#getContextElementId()} when it was added.
 	 */
-	public void unregisterContextElement(ContextElementType<?>contextElementType, String contextElementId)
+	public void unregisterContextElement(ContextElementType<?> contextElementType, String contextElementId)
 	{
 		contextElementRegistry.unregisterContextElement(contextElementType, contextElementId);
 	}

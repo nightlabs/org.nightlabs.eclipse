@@ -28,8 +28,7 @@ public class ContextElementRegistry
 	}
 
 	/**
-	 * Assign a context-element. This method should be called by the context-element itself
-	 * when it is created/assigned a <code>PdfViewer</code>.
+	 * Assign a context-element.
 	 *
 	 * @param contextElement the context-element. Must not be <code>null</code>.
 	 */
@@ -44,20 +43,19 @@ public class ContextElementRegistry
 	 * @param contextElementType the type of the <code>contextElement</code> as specified by {@link ContextElement#getContextElementType()} when it was added.
 	 * @param contextElementId the identifier or <code>null</code> as specified by {@link ContextElement#getContextElementId()} when it was added.
 	 */
-	public void unregisterContextElement(ContextElementType<?>contextElementType, String contextElementId)
+	public void unregisterContextElement(ContextElementType<?> contextElementType, String contextElementId)
 	{
 		setContextElement(contextElementType, contextElementId, null);
 	}
 
 	/**
-	 * Assign a context-element. This method should be called by the context-element itself
-	 * when it is created/assigned a <code>PdfViewer</code>.
+	 * Add or remove a context-element from this registry.
 	 *
 	 * @param contextElementType the type of the <code>contextElement</code>. This should be the base class - e.g. when subclassing {@link PdfSimpleNavigator}, you should still pass <code>PdfSimpleNavigator.class</code> and not the subclass' type. Must <b>not</b> be <code>null</code>!
 	 * @param contextElementId the identifier of the context-element. Can be <code>null</code>.
-	 * @param contextElement the context-element. Can be <code>null</code> to remove a previous entry.
+	 * @param contextElement the context-element. Can be <code>null</code> to remove a previously added entry.
 	 */
-	protected void setContextElement(ContextElementType<?>contextElementType, String contextElementId, ContextElement<?> contextElement)
+	protected void setContextElement(ContextElementType<?> contextElementType, String contextElementId, ContextElement<?> contextElement)
 	{
 		assertValidThread();
 
@@ -95,7 +93,7 @@ public class ContextElementRegistry
 	 * @return the appropriate context-element or <code>null</code>.
 	 */
 	@SuppressWarnings("unchecked")
-	public <T extends ContextElement<T>> T  getContextElement(ContextElementType<T> contextElementType, String id) {
+	public <T extends ContextElement<T>> T getContextElement(ContextElementType<T> contextElementType, String id) {
 		assertValidThread();
 
 		if (contextElementType == null)

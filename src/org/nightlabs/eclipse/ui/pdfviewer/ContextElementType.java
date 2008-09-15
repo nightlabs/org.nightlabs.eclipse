@@ -2,7 +2,8 @@ package org.nightlabs.eclipse.ui.pdfviewer;
 
 import org.nightlabs.eclipse.ui.pdfviewer.internal.Util;
 
-public class ContextElementType<T extends ContextElement> {
+public class ContextElementType<T extends ContextElement<?>>
+{
 	private Class<T> contextElementBaseClass;
 
 	public ContextElementType(Class<T> contextElementBaseClass) {
@@ -43,11 +44,11 @@ public class ContextElementType<T extends ContextElement> {
 		return this.getClass().getName() + '@' + Integer.toHexString(System.identityHashCode(this)) + '[' + contextElementBaseClass.getName() +']';
 	}
 
-	public boolean isValidContextElementImplementation(ContextElement contextElement)
+	public boolean isValidContextElementImplementation(ContextElement<?> contextElement)
 	{
 		return contextElementBaseClass.isInstance(contextElement);
 	}
-	public void assertValidContextElementImplementation(ContextElement contextElement)
+	public void assertValidContextElementImplementation(ContextElement<?> contextElement)
 	{
 		if (!isValidContextElementImplementation(contextElement))
 			throw new IllegalArgumentException("contextElement is not a valid implementation: " + contextElement);
