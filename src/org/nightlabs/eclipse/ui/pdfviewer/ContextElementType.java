@@ -41,4 +41,9 @@ public class ContextElementType {
 		final ContextElementType other = (ContextElementType) obj;
 		return Util.equals(this.contextElementTypeID, other.contextElementTypeID);
 	}
+
+	@Override
+	public String toString() {
+		return this.getClass().getName() + '@' + Integer.toHexString(System.identityHashCode(this)) + '[' + contextElementTypeID +']';
+	}
 }
