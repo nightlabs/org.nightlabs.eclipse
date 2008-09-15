@@ -7,7 +7,9 @@ import java.beans.PropertyChangeSupport;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -86,6 +88,8 @@ public class PdfViewer
 
 		if (id2contextElement != null && id2contextElement.isEmpty())
 			contextElementType2id2contextElement.remove(contextElementType);
+
+		allContextElementsCache = null;
 	}
 
 	/**
@@ -110,7 +114,7 @@ public class PdfViewer
 	 * @param contextElementType the type of the <code>contextElement</code> as passed to {@link #setContextElement(ContextElementType, String, ContextElement)} before.
 	 * @return a <code>Collection</code> containing the previously registered context-elements; never <code>null</code> (instead, an empty <code>Collection</code> is returned).
 	 */
-	public Collection<?> getContextElements(ContextElementType contextElementType)
+	public Collection<? extends ContextElement> getContextElements(ContextElementType contextElementType)
 	{
 		assertValidThread();
 
@@ -119,6 +123,22 @@ public class PdfViewer
 			return Collections.emptySet();
 
 		return Collections.unmodifiableCollection(id2contextElement.values());
+	}
+
+	private Collection<? extends ContextElement> allContextElementsCache = null;
+
+	public Collection<? extends ContextElement> getContextElements()
+	{
+		assertValidThread();
+
+		if (allContextElementsCache == null) {
+			Set<ContextElement> result = new HashSet<ContextElement>();
+			for (Map<String, ContextElement> id2contextElement : contextElementType2id2contextElement.values()) {
+				result.addAll(id2contextElement.values());
+			}
+			allContextElementsCache = Collections.unmodifiableCollection(result);
+		}
+		return allContextElementsCache;
 	}
 
 	private static void assertValidThread()
