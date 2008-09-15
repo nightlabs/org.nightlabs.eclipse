@@ -29,13 +29,16 @@ package org.nightlabs.base.ui.entity.editor;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
+import org.nightlabs.util.Util;
 
 /**
  * Extension point settings for an entity page extension.
+ * 
  * @version $Revision: 4430 $ - $Date: 2006-08-20 17:18:07 +0000 (Sun, 20 Aug 2006) $
  * @author Marc Klinger - marc[at]nightlabs[dot]de
+ * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  */
-public class EntityEditorPageSettings
+public class EntityEditorPageSettings implements Comparable<EntityEditorPageSettings>
 {
 
 	/**
@@ -157,5 +160,29 @@ public class EntityEditorPageSettings
 	 */
 	public void setPageFactory(IEntityEditorPageFactory pageFactory) {
 		this.pageFactory = pageFactory;
+	}
+	
+	@Override
+	public String toString() {
+		return 
+			this.getClass().getName() + '@' + Integer.toHexString(System.identityHashCode(this)) + 
+			"[" + (pageFactory != null ? pageFactory.getClass().getName() : "no-page-factory") + "," + 
+			editorID + ", " + indexHint + "]";
+	}
+
+	/**
+	 * Sorts using first the editorID (alphabetically) then the  indexHint 
+	 * and finally the class-name of the pageFactory. 
+	 */
+	@Override
+	public int compareTo(EntityEditorPageSettings o) {
+		if (o == null)
+			return -1;
+		// null-checks of members is in constructor.
+		if (!Util.equals(editorID, o.editorID))
+			this.editorID.compareTo(o.editorID);
+		if (indexHint == o.indexHint)
+			return pageFactory.getClass().getName().compareTo(o.pageFactory.getClass().getName());
+		return indexHint - o.indexHint;
 	}
 }

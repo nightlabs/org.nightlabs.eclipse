@@ -26,7 +26,6 @@ package org.nightlabs.base.ui.entity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -51,6 +50,7 @@ import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
  * 
  * @version $Revision: 4430 $ - $Date: 2006-08-20 17:18:07 +0000 (Sun, 20 Aug 2006) $
  * @author Marc Klinger - marc[at]nightlabs[dot]de
+ * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  */
 public class EntityEditorRegistry extends AbstractEPProcessor
 {
@@ -150,12 +150,7 @@ public class EntityEditorRegistry extends AbstractEPProcessor
 		if(pagesUnordered == null)
 			return new ArrayList<EntityEditorPageSettings>(0);
 		List<EntityEditorPageSettings> pagesOrdered = new ArrayList<EntityEditorPageSettings>(pagesUnordered);
-		Collections.sort(pagesOrdered, new Comparator<EntityEditorPageSettings>() {
-			public int compare(EntityEditorPageSettings o1, EntityEditorPageSettings o2)
-			{
-				return o1.getIndexHint() - o2.getIndexHint();
-			}
-		});
+		Collections.sort(pagesOrdered); // EntityEditorPageSettings implements Comparable 
 		return pagesOrdered;
 	}
 

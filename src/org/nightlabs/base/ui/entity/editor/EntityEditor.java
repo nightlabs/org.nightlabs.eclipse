@@ -96,7 +96,7 @@ public class EntityEditor extends CommitableFormEditor
 	protected void addPages()
 	{
 		try {
-			List<EntityEditorPageSettings> pageSettings = getOrderedPageSettings();
+			List<EntityEditorPageSettings> pageSettings = getPageSettingsOrdered();
 			for (EntityEditorPageSettings pageSetting : pageSettings) {
 				IEntityEditorPageFactory factory = pageSetting.getPageFactory();
 				IFormPage page = factory.createPage(this);
@@ -120,7 +120,7 @@ public class EntityEditor extends CommitableFormEditor
 	 * @return An ordered list of the {@link EntityEditorPageSettings} 
 	 *         for the pages to be displayed in this editor.
 	 */
-	protected List<EntityEditorPageSettings> getOrderedPageSettings() {
+	protected List<EntityEditorPageSettings> getPageSettingsOrdered() {
 		return EntityEditorRegistry.sharedInstance().getPageSettingsOrdered(getEditorID());
 	}
 	
