@@ -1,6 +1,7 @@
 package org.nightlabs.eclipse.ui.pdfviewer;
 
-import org.eclipse.swt.graphics.Point;
+import java.awt.geom.Point2D;
+
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -48,13 +49,13 @@ public class PdfViewer
 			pdfViewerComposite.setPdfDocument(pdfDocument);
 	}
 
-	public Point getViewOrigin() {
+	public Point2D getViewOrigin() {
 		assertValidThread();
 
 		return pdfViewerComposite.getViewOrigin();
 	}
 
-	public void setViewOrigin(Point viewOrigin) {
+	public void setViewOrigin(Point2D viewOrigin) {
 		assertValidThread();
 
 		pdfViewerComposite.setViewOrigin(viewOrigin);

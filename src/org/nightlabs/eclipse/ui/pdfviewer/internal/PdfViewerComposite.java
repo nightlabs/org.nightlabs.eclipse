@@ -18,7 +18,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -48,7 +47,7 @@ public class PdfViewerComposite extends Composite {
 	/**
 	 * The real coordinates of the view area's left, top corner.
 	 */
-	private Point viewOrigin;
+	private Point2D.Double viewOrigin;
 
 	/**
 	 * The zoom factor in %o (1/1000).
@@ -110,7 +109,7 @@ public class PdfViewerComposite extends Composite {
 //		renderBuffer = new RenderBuffer(this, pdfDocument);
 		renderComposite = new Composite(this, SWT.EMBEDDED | SWT.V_SCROLL | SWT.H_SCROLL);
 
-		viewOrigin = new Point(0, 0);
+		viewOrigin = new Point2D.Double();
 
 		scrollBarVertical = renderComposite.getVerticalBar();
 		scrollBarHorizontal = renderComposite.getHorizontalBar();
@@ -132,12 +131,12 @@ public class PdfViewerComposite extends Composite {
 
 				if (centerHorizontally) {
 					double middleX = pdfDocument.getDocumentDimension().getWidth() / 2;
-					viewOrigin.x = (int) (middleX - viewPanel.getWidth() / 2 / ((double)zoomFactorPerMill / 1000));
+					viewOrigin.x = middleX - viewPanel.getWidth() / 2 / ((double)zoomFactorPerMill / 1000);
 				}
 
 				if (centerVertically) {
 					double middleY = pdfDocument.getDocumentDimension().getHeight() / 2;
-					viewOrigin.y = (int) (middleY - viewPanel.getHeight() / 2 / ((double)zoomFactorPerMill / 1000));
+					viewOrigin.y = middleY - viewPanel.getHeight() / 2 / ((double)zoomFactorPerMill / 1000);
 				}
 
 				setScrollbars();
@@ -215,7 +214,7 @@ public class PdfViewerComposite extends Composite {
 				int visibleAreaScrollHeight = (int) (getViewPanel().getHeight() / zoomFactor) / scrollBarDivisor;
 				scrollBarVertical.setMinimum(0);
 				scrollBarVertical.setMaximum((int) pdfDocument.getDocumentDimension().getHeight() / scrollBarDivisor);
-				scrollBarVertical.setSelection(viewOrigin.y / scrollBarDivisor);
+				scrollBarVertical.setSelection((int) (viewOrigin.y / scrollBarDivisor));
 				boolean verticalBarVisible = visibleAreaScrollHeight <= (scrollBarVertical.getMaximum() - scrollBarVertical.getMinimum());
 				scrollBarVertical.setVisible(verticalBarVisible);
 				if (!verticalBarVisible)
@@ -228,7 +227,7 @@ public class PdfViewerComposite extends Composite {
 				int visibleAreaScrollWidth = (int) (getViewPanel().getWidth() / zoomFactor) / scrollBarDivisor;
 				scrollBarHorizontal.setMinimum(0);
 				scrollBarHorizontal.setMaximum((int) pdfDocument.getDocumentDimension().getWidth() / scrollBarDivisor);
-				scrollBarHorizontal.setSelection(viewOrigin.x / scrollBarDivisor);
+				scrollBarHorizontal.setSelection((int) (viewOrigin.x / scrollBarDivisor));
 				boolean horizontalBarVisible = visibleAreaScrollWidth <= (scrollBarHorizontal.getMaximum() - scrollBarHorizontal.getMinimum());
 				scrollBarHorizontal.setVisible(horizontalBarVisible);
 				if (!horizontalBarVisible)
@@ -411,12 +410,12 @@ public class PdfViewerComposite extends Composite {
 		viewPanel.repaint();
 	}
 
-	public Point getViewOrigin() {
+	public Point2D getViewOrigin() {
 		return viewOrigin;
 	}
 
-	public void setViewOrigin(Point rectangleViewOrigin) {
-		this.viewOrigin = rectangleViewOrigin;
+	public void setViewOrigin(Point2D rectangleViewOrigin) {
+		this.viewOrigin.setLocation(rectangleViewOrigin);
 		this.setScrollbars();
 		viewPanel.repaint();
 		// TODO test this method! and modify if necessary.
