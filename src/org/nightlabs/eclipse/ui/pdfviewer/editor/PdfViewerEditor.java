@@ -17,12 +17,11 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IPathEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
-import org.nightlabs.base.ui.io.FileEditorInput;
-import org.nightlabs.base.ui.util.RCPUtil;
+import org.nightlabs.eclipse.ui.pdfviewer.Util;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.PdfViewerComposite;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.internal.PdfFileLoader;
-import org.nightlabs.eclipse.ui.pdfviewer.model.PdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.model.OneDimensionalPdfDocument;
+import org.nightlabs.eclipse.ui.pdfviewer.model.PdfDocument;
 
 import com.sun.pdfview.PDFFile;
 
@@ -95,10 +94,10 @@ public class PdfViewerEditor extends EditorPart
 					if (input instanceof PdfViewerEditorInput) {
 						pdfFile = ((PdfViewerEditorInput)input).getPDFFile();
 					}
-					else if (input instanceof FileEditorInput) {
-						File file = ((FileEditorInput)input).getFile();
-						pdfFile = PdfFileLoader.loadPdf(file);
-					}
+//					else if (input instanceof FileEditorInput) {
+//						File file = ((FileEditorInput)input).getFile();
+//						pdfFile = PdfFileLoader.loadPdf(file);
+//					}
 					else if (input instanceof IPathEditorInput) {
 						File file = ((IPathEditorInput)input).getPath().toFile();
 						pdfFile = PdfFileLoader.loadPdf(file);
@@ -129,7 +128,7 @@ public class PdfViewerEditor extends EditorPart
 							if (parent.isDisposed())
 								return;
 
-							RCPUtil.closeEditor(input, false);
+							Util.closeEditor(input, false);
 						}
 					});
 

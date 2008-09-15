@@ -4,7 +4,8 @@ import java.awt.geom.Rectangle2D;
 
 import javax.swing.SwingUtilities;
 
-import org.nightlabs.base.ui.exceptionhandler.ExceptionHandlerRegistry;
+import org.apache.log4j.Logger;
+import org.eclipse.swt.widgets.Display;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.PdfViewerComposite;
 
 /**
@@ -13,11 +14,13 @@ import org.nightlabs.eclipse.ui.pdfviewer.composite.PdfViewerComposite;
  */
 public class RenderThread extends Thread
 {
+	private static final Logger logger = Logger.getLogger(RenderThread.class);
 	private static long threadId = 0;
 	private static synchronized long nextThreadId() {
 		return threadId++;
 	}
 
+	private Display display;
 	private PdfViewerComposite pdfViewerComposite;
 	private RenderBuffer renderBuffer;
 
@@ -25,6 +28,7 @@ public class RenderThread extends Thread
 		super("render-" + Long.toHexString(nextThreadId()));
 		this.renderBuffer = renderBuffer;
 		this.pdfViewerComposite = pdfViewerComposite;
+		this.display = pdfViewerComposite.getDisplay();
 		start();
 	}
 
@@ -103,8 +107,19 @@ public class RenderThread extends Thread
 						// ignore
 					}
 				}
-			} catch (Throwable t) {
-				ExceptionHandlerRegistry.asyncHandleException(t);
+			} catch (final Throwable t) {
+				logger.error("run: " + t.getClass().getName() + ": " + t.getLocalizedMessage(), t);
+//				ExceptionHandlerRegistry.asyncHandleException(t);
+
+				// We don't want a dependency on org.nightlabs.base.ui, but want our exception handler to handle it
+				// (or to be more precise the exception handler of the current application). Therefore, we throw
+				// it on the UI thread, which has (hopefully) the correct exception handler registered.
+				display.asyncExec(new Runnable() {
+	                public void run() {
+	                	throw new RuntimeException(t);
+	                }
+                });
+
 				try { Thread.sleep(5000); } catch (InterruptedException x) { } // prevent too quick re-spawns, if the error occurs every time
 			}
 		}

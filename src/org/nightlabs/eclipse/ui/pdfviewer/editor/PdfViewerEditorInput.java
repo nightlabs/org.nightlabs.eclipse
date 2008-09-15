@@ -7,8 +7,8 @@ import java.util.Arrays;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
+import org.nightlabs.eclipse.ui.pdfviewer.Util;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.internal.PdfFileLoader;
-import org.nightlabs.util.Util;
 
 import com.sun.pdfview.PDFFile;
 

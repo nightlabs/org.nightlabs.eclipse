@@ -8,7 +8,7 @@ import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
-import org.nightlabs.util.IOUtil;
+import org.nightlabs.eclipse.ui.pdfviewer.Util;
 
 import com.sun.pdfview.PDFFile;
 
@@ -44,7 +44,7 @@ public class PdfFileLoader {
 	 */
 	public static PDFFile loadPdf(InputStream in) throws IOException {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		IOUtil.transferStreamData(in, out);
+		Util.transferStreamData(in, out);
 		out.close();
 
 		ByteBuffer byteBuffer = ByteBuffer.wrap(out.toByteArray());

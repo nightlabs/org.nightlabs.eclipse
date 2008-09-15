@@ -9,7 +9,6 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PartInitException;
-import org.nightlabs.base.ui.util.RCPUtil;
 import org.nightlabs.eclipse.ui.pdfviewer.editor.PdfViewerEditor;
 import org.nightlabs.eclipse.ui.pdfviewer.editor.PdfViewerEditorInput;
 
@@ -44,7 +43,7 @@ public class TestAction implements IWorkbenchWindowActionDelegate {
 
 		try {
 			System.out.println("opening editor...");
-			RCPUtil.openEditor(editorInput, PdfViewerEditor.ID);
+			Util.openEditor(editorInput, PdfViewerEditor.ID);
 		}
 		catch (PartInitException partInitException) {
 			throw new RuntimeException(partInitException);

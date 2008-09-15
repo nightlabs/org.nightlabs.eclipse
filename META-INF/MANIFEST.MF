@@ -8,7 +8,7 @@ Bundle-Localization: plugin
 Bundle-Vendor: nightlabs.org
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.nightlabs.base.ui;visibility:=reexport
+ org.apache.log4j;visibility:=reexport
 Eclipse-LazyStart: true
 Bundle-ClassPath: .,
  lib/PDFRenderer.jar

@@ -16,9 +16,9 @@ import javax.imageio.ImageWriter;
 import javax.imageio.stream.FileImageOutputStream;
 
 import org.apache.log4j.Logger;
+import org.nightlabs.eclipse.ui.pdfviewer.Util;
 import org.nightlabs.eclipse.ui.pdfviewer.composite.PdfViewerComposite;
 import org.nightlabs.eclipse.ui.pdfviewer.model.PdfDocument;
-import org.nightlabs.util.IOUtil;
 
 import com.sun.pdfview.PDFPage;
 
@@ -53,18 +53,13 @@ public class RenderBuffer
 	/**
 	 * Renders the buffer's area.
 	 *
-	 * @param bufferWidth
-	 *            the currently used buffer width, i.e. width of viewPanel multiplied with a constant buffer width factor (because the
-	 *            buffer is of course bigger than the panel).
-	 * @param bufferHeight
-	 *            the currently used buffer height, i.e. height of viewPanel multiplied with a constant buffer height factor (because the
-	 *            buffer is of course bigger than the panel).
-	 * @param posX
-	 *            the x-coordinate in the real coordinate system of the upper left corner of the buffer that has to be created.
-	 * @param posY
-	 *            the y-coordinate in the real coordinate system of the upper left corner of the buffer that has to be created
-	 * @param zoomFactor
-	 *            the currently used zoom factor
+	 * @param bufferWidth the currently used buffer width, i.e. width of viewPanel multiplied with a constant buffer width factor
+	 * (because the buffer is of course bigger than the panel).
+	 * @param bufferHeight the currently used buffer height, i.e. height of viewPanel multiplied with a constant buffer height factor
+	 * (because the buffer is of course bigger than the panel).
+	 * @param posX the x-coordinate in the real coordinate system of the upper left corner of the buffer that has to be created.
+	 * @param posY the y-coordinate in the real coordinate system of the upper left corner of the buffer that has to be created
+	 * @param zoomFactor the currently used zoom factor
 	 */
 	public void render(int bufferWidth, int bufferHeight, int posX, int posY, double zoomFactor)
 	{
@@ -433,7 +428,7 @@ public class RenderBuffer
 		if (image == null)
 			throw new IllegalArgumentException("image must not be null!");
 
-		File dumpDir = IOUtil.getUserTempDir("pdfviewer_images", null);
+		File dumpDir = new File(Util.getTempDir(), "pdfviewer_images");
 		if (!dumpDir.exists())
 			dumpDir.mkdirs();
 
