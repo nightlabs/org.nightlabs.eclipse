@@ -67,6 +67,7 @@ public class PdfViewer
 	public void setContextElement(ContextElementType contextElementType, String id, ContextElement contextElement)
 	{
 		assertValidThread();
+
 		if (contextElementType == null)
 			throw new IllegalArgumentException("contextElementType must not be null!");
 
@@ -96,6 +97,8 @@ public class PdfViewer
 	 * @return the appropriate context-element or <code>null</code>.
 	 */
 	public ContextElement getContextElement(ContextElementType contextElementType, String id) {
+		assertValidThread();
+
 		Map<String, ContextElement> id2contextElement = contextElementType2id2contextElement.get(contextElementType);
 		if (id2contextElement == null)
 			return null;
@@ -109,6 +112,8 @@ public class PdfViewer
 	 */
 	public Collection<?> getContextElements(ContextElementType contextElementType)
 	{
+		assertValidThread();
+
 		Map<String, ContextElement> id2contextElement = contextElementType2id2contextElement.get(contextElementType);
 		if (id2contextElement == null)
 			return Collections.emptySet();
