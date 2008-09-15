@@ -5,7 +5,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.nightlabs.eclipse.ui.pdfviewer.internal.PdfViewerComposite;
-import org.nightlabs.eclipse.ui.pdfviewer.model.PdfDocument;
 
 public class PdfViewer
 {

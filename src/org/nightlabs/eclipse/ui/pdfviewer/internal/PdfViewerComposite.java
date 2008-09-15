@@ -23,7 +23,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ScrollBar;
-import org.nightlabs.eclipse.ui.pdfviewer.model.PdfDocument;
+import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
 
 /**
  * @author frederik loeser - frederik at nightlabs dot de

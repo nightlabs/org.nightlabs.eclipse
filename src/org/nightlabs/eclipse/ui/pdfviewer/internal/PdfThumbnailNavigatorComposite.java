@@ -8,9 +8,9 @@ import org.eclipse.swt.widgets.Composite;
  * 
  * @author frederik löser - frederik at nightlabs dot de
  */
-public class PdfThumbnailComposite extends Composite {
+public class PdfThumbnailNavigatorComposite extends Composite {
 
-	public PdfThumbnailComposite(Composite parent, int style) {
+	public PdfThumbnailNavigatorComposite(Composite parent, int style) {
 		super(parent, style);
 		// TODO Auto-generated constructor stub
 	}

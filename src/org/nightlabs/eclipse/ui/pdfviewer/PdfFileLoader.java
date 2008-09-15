@@ -1,4 +1,4 @@
-package org.nightlabs.eclipse.ui.pdfviewer.internal;
+package org.nightlabs.eclipse.ui.pdfviewer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+
+import org.nightlabs.eclipse.ui.pdfviewer.internal.Util;
 
 
 import com.sun.pdfview.PDFFile;
@@ -18,8 +20,8 @@ import com.sun.pdfview.PDFFile;
  *
  * @author marco schulze - marco at nightlabs dot de
  */
-public class PdfFileLoader {
-
+public class PdfFileLoader
+{
 	private PdfFileLoader() { }
 
 	/**

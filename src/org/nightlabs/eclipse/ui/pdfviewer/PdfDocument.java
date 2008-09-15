@@ -1,4 +1,4 @@
-package org.nightlabs.eclipse.ui.pdfviewer.model;
+package org.nightlabs.eclipse.ui.pdfviewer;
 
 import java.awt.Dimension;
 import java.awt.geom.Dimension2D;
