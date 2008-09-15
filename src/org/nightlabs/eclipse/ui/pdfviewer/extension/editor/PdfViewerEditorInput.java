@@ -1,0 +1,123 @@
+package org.nightlabs.eclipse.ui.pdfviewer.extension.editor;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IPersistableElement;
+import org.nightlabs.eclipse.ui.pdfviewer.PdfFileLoader;
+import org.nightlabs.util.Util;
+
+import com.sun.pdfview.PDFFile;
+
+/**
+ * An editor input that can be used to open a {@link PdfViewerEditor}.
+ *
+ * @author marco schulze - marco at nightlabs dot de
+ */
+public class PdfViewerEditorInput
+implements IEditorInput
+{
+	private String name;
+	private String toolTipText;
+	private ImageDescriptor imageDescriptor;
+
+	private File file;
+	private byte[] byteArray;
+
+	private PDFFile pdfFile;
+
+	public PdfViewerEditorInput(File file)
+	{
+		this(file.getName(), file.getAbsolutePath(), null, file);
+	}
+
+	public PdfViewerEditorInput(String name, String toolTipText, ImageDescriptor imageDescriptor, File file)
+	{
+		if (file == null)
+			throw new IllegalArgumentException("file must not be null!");
+
+		this.name = name;
+		this.toolTipText = toolTipText;
+		this.imageDescriptor = imageDescriptor;
+		this.file = file;
+	}
+
+	public PdfViewerEditorInput(String name, String toolTipText, ImageDescriptor imageDescriptor, byte[] byteArray) {
+		if (byteArray == null)
+			throw new IllegalArgumentException("byteArray must not be null!");
+
+		this.name = name;
+		this.toolTipText = toolTipText;
+		this.imageDescriptor = imageDescriptor;
+		this.byteArray = byteArray;
+	}
+
+	public PDFFile getPDFFile()
+	{
+//		if (pdfFile == null)
+//			pdfFile = createPDFFile();
+		return pdfFile;
+	}
+
+	public PDFFile createPDFFile(IProgressMonitor monitor)
+	throws IOException
+	{
+		if (byteArray != null)
+			return PdfFileLoader.loadPdf(byteArray, monitor);
+
+		if (file != null)
+			return PdfFileLoader.loadPdf(file, monitor);
+
+		throw new IllegalStateException("Have no data!");
+	}
+
+	@Override
+	public boolean exists() {
+		return true;
+	}
+
+	@Override
+	public ImageDescriptor getImageDescriptor() {
+		return imageDescriptor;
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public IPersistableElement getPersistable() {
+		// not restorable => return null
+		return null;
+	}
+
+	@Override
+	public String getToolTipText() {
+		return toolTipText;
+	}
+
+	@Override
+	public Object getAdapter(Class arg0) {
+		// no adapter supported, at the moment
+		return null;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) return true;
+		if (obj == null) return false;
+		if (obj.getClass() != this.getClass()) return false;
+		PdfViewerEditorInput o = (PdfViewerEditorInput) obj;
+		return Util.equals(file, o.file) && Util.equals(byteArray, o.byteArray);
+	}
+
+	@Override
+	public int hashCode() {
+		return Util.hashCode(file) + (byteArray == null ? 0 : Arrays.hashCode(byteArray));
+	}
+}

@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Extension Plug-in
-Bundle-SymbolicName: org.nightlabs.eclipse.ui.pdfviewer.extension
+Bundle-SymbolicName: org.nightlabs.eclipse.ui.pdfviewer.extension;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.nightlabs.eclipse.ui.pdfviewer.extension.PdfViewerExtensionPlugin
 Bundle-Vendor: nightlabs.org
