@@ -31,11 +31,33 @@ public class ContextElementRegistry
 	 * Assign a context-element. This method should be called by the context-element itself
 	 * when it is created/assigned a <code>PdfViewer</code>.
 	 *
+	 * @param contextElement the context-element. Must not be <code>null</code>.
+	 */
+	public void registerContextElement(ContextElement<?> contextElement)
+	{
+		setContextElement(contextElement.getContextElementType(), contextElement.getContextElementId(), contextElement);
+	}
+
+	/**
+	 * Remove a context-element's registration.
+	 *
+	 * @param contextElementType the type of the <code>contextElement</code> as specified by {@link ContextElement#getContextElementType()} when it was added.
+	 * @param contextElementId the identifier or <code>null</code> as specified by {@link ContextElement#getContextElementId()} when it was added.
+	 */
+	public void unregisterContextElement(ContextElementType<?>contextElementType, String contextElementId)
+	{
+		setContextElement(contextElementType, contextElementId, null);
+	}
+
+	/**
+	 * Assign a context-element. This method should be called by the context-element itself
+	 * when it is created/assigned a <code>PdfViewer</code>.
+	 *
 	 * @param contextElementType the type of the <code>contextElement</code>. This should be the base class - e.g. when subclassing {@link PdfSimpleNavigator}, you should still pass <code>PdfSimpleNavigator.class</code> and not the subclass' type. Must <b>not</b> be <code>null</code>!
-	 * @param id the identifier of the context-element. Can be <code>null</code>.
+	 * @param contextElementId the identifier of the context-element. Can be <code>null</code>.
 	 * @param contextElement the context-element. Can be <code>null</code> to remove a previous entry.
 	 */
-	public void setContextElement(ContextElementType<?>contextElementType, String id, ContextElement<?> contextElement)
+	private void setContextElement(ContextElementType<?>contextElementType, String contextElementId, ContextElement<?> contextElement)
 	{
 		assertValidThread();
 
@@ -53,10 +75,10 @@ public class ContextElementRegistry
 
 		if (contextElement == null) {
 			if (id2contextElement != null)
-				id2contextElement.remove(id);
+				id2contextElement.remove(contextElementId);
 		}
 		else
-			id2contextElement.put(id, contextElement);
+			id2contextElement.put(contextElementId, contextElement);
 
 		if (id2contextElement != null && id2contextElement.isEmpty())
 			contextElementType2id2contextElement.remove(contextElementType);

@@ -55,21 +55,25 @@ public class PdfViewer
 	private ContextElementRegistry contextElementRegistry = new ContextElementRegistry();
 
 	/**
-	 * Assign a context-element. This method should be called by the context-element itself when it is created/assigned a
-	 * <code>PdfViewer</code>.
+	 * Assign a context-element. This method should be called by the context-element itself
+	 * when it is created/assigned a <code>PdfViewer</code>.
 	 *
-	 * @param contextElementType
-	 *          the type of the <code>contextElement</code>. Must <b>not</b> be <code>null</code>! This should be declared by the base
-	 *          class - e.g. when subclassing {@link PdfSimpleNavigator}, you should still pass the value declared by
-	 *          <code>PdfSimpleNavigator.class</code> and only redeclare it for the subclass, if the subclass is really something completely
-	 *          different.
-	 * @param id
-	 *          the identifier of the context-element. Can be <code>null</code>.
-	 * @param contextElement
-	 *          the context-element. Can be <code>null</code> to remove a previous entry.
+	 * @param contextElement the context-element. Must not be <code>null</code>.
 	 */
-	public void setContextElement(ContextElementType<?> contextElementType, String id, ContextElement<?> contextElement) {
-		contextElementRegistry.setContextElement(contextElementType, id, contextElement);
+	public void registerContextElement(ContextElement<?> contextElement)
+	{
+		contextElementRegistry.registerContextElement(contextElement);
+	}
+
+	/**
+	 * Remove a context-element's registration.
+	 *
+	 * @param contextElementType the type of the <code>contextElement</code> as specified by {@link ContextElement#getContextElementType()} when it was added.
+	 * @param contextElementId the identifier or <code>null</code> as specified by {@link ContextElement#getContextElementId()} when it was added.
+	 */
+	public void unregisterContextElement(ContextElementType<?>contextElementType, String contextElementId)
+	{
+		contextElementRegistry.unregisterContextElement(contextElementType, contextElementId);
 	}
 
 	/**
