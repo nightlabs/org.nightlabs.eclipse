@@ -12,6 +12,8 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
@@ -23,12 +25,14 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
+import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
 
 /**
  * @author frederik loeser - frederik at nightlabs dot de
  * @author marco schulze - marco at nightlabs dot de
  */
-public class PdfViewerComposite extends Composite {
+public class PdfViewerComposite extends Composite
+{
 	private static final Logger logger = Logger.getLogger(PdfViewerComposite.class);
 
 	/**
@@ -38,6 +42,7 @@ public class PdfViewerComposite extends Composite {
 	 */
 	private static final int scrollBarDivisor = 10;
 
+	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 	private Composite renderComposite;
 	private RenderBuffer renderBuffer;
 	private RenderThread renderThread;
@@ -174,7 +179,11 @@ public class PdfViewerComposite extends Composite {
 	private boolean centerHorizontally;
 	private boolean centerVertically;
 
-	private void scrollVertically() {
+	private void scrollVertically()
+	{
+		Point2D.Double oldViewOrigin = new Point2D.Double();
+		oldViewOrigin.setLocation(this.viewOrigin);
+
 		viewOrigin.y = scrollBarVertical.getSelection() * scrollBarDivisor;
 
 		if (logger.isDebugEnabled()) {
@@ -185,16 +194,24 @@ public class PdfViewerComposite extends Composite {
 
 		centerVertically = false;
 
+		propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_ORIGIN, oldViewOrigin, viewOrigin);
+
 		viewPanel.repaint();
 	}
 
-	private void scrollHorizontally() {
+	private void scrollHorizontally()
+	{
+		Point2D.Double oldViewOrigin = new Point2D.Double();
+		oldViewOrigin.setLocation(this.viewOrigin);
+
 		viewOrigin.x = scrollBarHorizontal.getSelection() * scrollBarDivisor;
 
 		if (logger.isDebugEnabled())
 			logger.debug("scrollHorizontally: new viewOrigin.x=" + viewOrigin.x);
 
 		centerHorizontally = false;
+
+		propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_ORIGIN, oldViewOrigin, viewOrigin);
 
 		viewPanel.repaint();
 	}
@@ -353,6 +370,8 @@ public class PdfViewerComposite extends Composite {
 
 	}
 
+	private static final int ZOOM_MIN = 100;
+	private static final int ZOOM_MAX = 10000;
 
 	/**
 	 * Scale all PDF pages of the currently opened PDF document
@@ -360,24 +379,65 @@ public class PdfViewerComposite extends Composite {
 	 * @param mouseRotationOrientation the direction the user has scrolled into
 	 */
 	private void zoomPDFDocument(int mouseRotationOrientation) {
-		int zoomBefore = zoomFactorPerMill;
-		int zoomAfter = zoomFactorPerMill;
+		int _zoomAfter = zoomFactorPerMill;
 
 		if (mouseRotationOrientation == 1)
-			zoomAfter -= 100;
+			_zoomAfter -= 100;
 		else
-			zoomAfter += 100;
+			_zoomAfter += 100;
 
-		if (zoomAfter < 100)
-			zoomAfter = 100;
+		if (_zoomAfter < ZOOM_MIN)
+			_zoomAfter = ZOOM_MIN;
 
-		if (zoomAfter > 10000)
-			zoomAfter = 10000;
+		if (_zoomAfter > ZOOM_MAX)
+			_zoomAfter = ZOOM_MAX;
 
-		if (zoomBefore == zoomAfter)
+		if (zoomFactorPerMill == _zoomAfter)
 			return;
 
-		zoomFactorPerMill = zoomAfter;
+		final int zoomAfter = _zoomAfter;
+
+		Display.getDefault().asyncExec(new Runnable() {
+			public void run() {
+				setZoomFactorPerMill(zoomAfter);
+			}
+		});
+	}
+
+	public Point2D getViewOrigin() {
+		return viewOrigin;
+	}
+
+	public void setViewOrigin(Point2D newViewOrigin) {
+		Point2D.Double oldViewOrigin = new Point2D.Double();
+		oldViewOrigin.setLocation(this.viewOrigin);
+
+		this.viewOrigin.setLocation(newViewOrigin);
+		this.setScrollbars();
+		viewPanel.repaint();
+		// TODO test this method! and modify if necessary.
+
+		propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_ORIGIN, oldViewOrigin, this.viewOrigin);
+	}
+
+	public int getZoomFactorPerMill() {
+		return zoomFactorPerMill;
+	}
+
+	public void setZoomFactorPerMill(int zoomFactorPerMill)
+	{
+		int zoomBefore = this.zoomFactorPerMill;
+
+		if (zoomFactorPerMill < ZOOM_MIN)
+			zoomFactorPerMill = ZOOM_MIN;
+
+		if (zoomFactorPerMill > ZOOM_MAX)
+			zoomFactorPerMill = ZOOM_MAX;
+
+		if (this.zoomFactorPerMill == zoomFactorPerMill)
+			return;
+
+		this.zoomFactorPerMill = zoomFactorPerMill;
 
 		// get the middle point BEFORE zooming
 		Point2D.Double middle = new Point2D.Double();
@@ -395,33 +455,28 @@ public class PdfViewerComposite extends Composite {
 		double zoomFactor = (double)zoomFactorPerMill / 1000;
 		viewPanelBoundsReal.x = viewPanel.getWidth() / zoomFactor;
 		viewPanelBoundsReal.y = viewPanel.getHeight() / zoomFactor;
-		viewOrigin.x = (int) (middle.x - viewPanelBoundsReal.x / 2);
-		viewOrigin.y = (int) (middle.y - viewPanelBoundsReal.y / 2);
+
+		setViewOrigin(new Point2D.Double((int) (middle.x - viewPanelBoundsReal.x / 2), (int) (middle.y - viewPanelBoundsReal.y / 2)));
 
 		if (logger.isDebugEnabled())
 			logger.debug("zoomPDFDocument: zoomFactor=" + zoomFactor + " viewOrigin.x=" + viewOrigin.x + " viewOrigin.y=" + viewOrigin.y);
 
-		Display.getDefault().asyncExec(new Runnable() {
-			public void run() {
-				setScrollbars();
-			}
-		});
-
-		viewPanel.repaint();
+		propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_ZOOM_FACTOR, zoomBefore, this.zoomFactorPerMill);
 	}
 
-	public Point2D getViewOrigin() {
-		return viewOrigin;
+	public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+		propertyChangeSupport.addPropertyChangeListener(propertyName, listener);
 	}
 
-	public void setViewOrigin(Point2D rectangleViewOrigin) {
-		this.viewOrigin.setLocation(rectangleViewOrigin);
-		this.setScrollbars();
-		viewPanel.repaint();
-		// TODO test this method! and modify if necessary.
+	public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+		propertyChangeSupport.removePropertyChangeListener(propertyName, listener);
 	}
 
-	public int getZoomFactorPerMill() {
-		return zoomFactorPerMill;
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		propertyChangeSupport.addPropertyChangeListener(listener);
+	}
+
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		propertyChangeSupport.removePropertyChangeListener(listener);
 	}
 }
