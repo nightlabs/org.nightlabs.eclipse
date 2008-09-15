@@ -54,7 +54,7 @@ public class PdfViewer
 	private PdfDocument pdfDocument;
 	private PdfViewerComposite pdfViewerComposite;
 
-	private Map<ContextElementType, Map<String, Object>> contextElementType2id2contextElement = new HashMap<ContextElementType, Map<String,Object>>();
+	private Map<ContextElementType, Map<String, ContextElement>> contextElementType2id2contextElement = new HashMap<ContextElementType, Map<String, ContextElement>>();
 
 	/**
 	 * Assign a context-element. This method should be called by the context-element itself
@@ -64,15 +64,15 @@ public class PdfViewer
 	 * @param id the identifier of the context-element. Can be <code>null</code>.
 	 * @param contextElement the context-element. Can be <code>null</code> to remove a previous entry.
 	 */
-	public void setContextElement(ContextElementType contextElementType, String id, Object contextElement)
+	public void setContextElement(ContextElementType contextElementType, String id, ContextElement contextElement)
 	{
 		assertValidThread();
 		if (contextElementType == null)
 			throw new IllegalArgumentException("contextElementType must not be null!");
 
-		Map<String, Object> id2contextElement = contextElementType2id2contextElement.get(contextElementType);
+		Map<String, ContextElement> id2contextElement = contextElementType2id2contextElement.get(contextElementType);
 		if (id2contextElement == null && contextElement != null) {
-			id2contextElement = new HashMap<String, Object>();
+			id2contextElement = new HashMap<String, ContextElement>();
 			contextElementType2id2contextElement.put(contextElementType, id2contextElement);
 		}
 
@@ -88,15 +88,15 @@ public class PdfViewer
 	}
 
 	/**
-	 * Get a context-element that was registered before via {@link #setContextElement(ContextElementType, String, Object)}
+	 * Get a context-element that was registered before via {@link #setContextElement(ContextElementType, String, ContextElement)}
 	 * or <code>null</code> if none is known for the given <code>contextElementType</code> and <code>id</code>.
 	 *
-	 * @param contextElementType the type of the <code>contextElement</code> as passed to {@link #setContextElement(ContextElementType, String, Object)} before.
-	 * @param id the identifier of the context-element as specified in {@link #setContextElement(ContextElementType, String, Object)} - can be <code>null</code>.
+	 * @param contextElementType the type of the <code>contextElement</code> as passed to {@link #setContextElement(ContextElementType, String, ContextElement)} before.
+	 * @param id the identifier of the context-element as specified in {@link #setContextElement(ContextElementType, String, ContextElement)} - can be <code>null</code>.
 	 * @return the appropriate context-element or <code>null</code>.
 	 */
-	public Object getContextElement(ContextElementType contextElementType, String id) {
-		Map<String, Object> id2contextElement = contextElementType2id2contextElement.get(contextElementType);
+	public ContextElement getContextElement(ContextElementType contextElementType, String id) {
+		Map<String, ContextElement> id2contextElement = contextElementType2id2contextElement.get(contextElementType);
 		if (id2contextElement == null)
 			return null;
 
@@ -104,12 +104,12 @@ public class PdfViewer
 	}
 
 	/**
-	 * @param contextElementType the type of the <code>contextElement</code> as passed to {@link #setContextElement(ContextElementType, String, Object)} before.
+	 * @param contextElementType the type of the <code>contextElement</code> as passed to {@link #setContextElement(ContextElementType, String, ContextElement)} before.
 	 * @return a <code>Collection</code> containing the previously registered context-elements; never <code>null</code> (instead, an empty <code>Collection</code> is returned).
 	 */
 	public Collection<?> getContextElements(ContextElementType contextElementType)
 	{
-		Map<String, Object> id2contextElement = contextElementType2id2contextElement.get(contextElementType);
+		Map<String, ContextElement> id2contextElement = contextElementType2id2contextElement.get(contextElementType);
 		if (id2contextElement == null)
 			return Collections.emptySet();
 

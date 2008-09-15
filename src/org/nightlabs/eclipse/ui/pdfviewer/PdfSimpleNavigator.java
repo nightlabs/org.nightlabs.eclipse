@@ -3,6 +3,7 @@ package org.nightlabs.eclipse.ui.pdfviewer;
 import java.util.Collection;
 
 public class PdfSimpleNavigator
+implements ContextElement
 {
 	public static final ContextElementType CONTEXT_ELEMENT_TYPE = new ContextElementType(PdfSimpleNavigator.class);
 
@@ -55,7 +56,13 @@ public class PdfSimpleNavigator
 		pdfViewer.setContextElement(CONTEXT_ELEMENT_TYPE, id, this);
 	}
 
+	@Override
 	public PdfViewer getPdfViewer() {
 		return pdfViewer;
+	}
+
+	@Override
+	public ContextElementType getContextElementType() {
+		return CONTEXT_ELEMENT_TYPE;
 	}
 }
