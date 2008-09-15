@@ -107,6 +107,8 @@ public class PdfViewer
 		this.pdfViewerComposite.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent event) {
+				assertValidThread(); // just to make sure the PdfViewerComposite is implemented correctly.
+
 				// We handle some values BEFORE the event is propagated to the outside (the API clients) in order to
 				// ensure that the local copies of these values are already updated.
 				if (PROPERTY_VIEW_ORIGIN.equals(event.getPropertyName()))
@@ -134,6 +136,8 @@ public class PdfViewer
 	}
 
 	public void setPdfDocument(PdfDocument pdfDocument) {
+		assertValidThread();
+
 		this.pdfDocument = pdfDocument;
 		if (pdfViewerComposite != null)
 			pdfViewerComposite.setPdfDocument(pdfDocument);
@@ -200,6 +204,8 @@ public class PdfViewer
 	}
 
 	public int getZoomFactorPerMill() {
+		assertValidThread();
+
 		return zoomFactorPerMill;
 	}
 
