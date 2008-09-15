@@ -35,13 +35,13 @@ public class RenderThread extends Thread
 
 	@Override
 	public void interrupt() {
-	    forceInterrupt = true;
-	    super.interrupt();
+		forceInterrupt = true;
+		super.interrupt();
 	}
 
 	@Override
 	public boolean isInterrupted() {
-	    return forceInterrupt || super.isInterrupted();
+		return forceInterrupt || super.isInterrupted();
 	}
 
 	@Override
@@ -127,10 +127,10 @@ public class RenderThread extends Thread
 				// (or to be more precise the exception handler of the current application). Therefore, we throw
 				// it on the UI thread, which has (hopefully) the correct exception handler registered.
 				display.asyncExec(new Runnable() {
-	                public void run() {
-	                	throw new RuntimeException(t);
-	                }
-                });
+					public void run() {
+						throw new RuntimeException(t);
+					}
+				});
 
 				try { Thread.sleep(5000); } catch (InterruptedException x) { } // prevent too quick re-spawns, if the error occurs every time
 			}

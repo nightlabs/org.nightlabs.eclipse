@@ -96,14 +96,14 @@ public class PdfViewerComposite extends Composite
 			renderBuffer = null;
 		}
 
-	    this.pdfDocument = pdfDocument;
+		this.pdfDocument = pdfDocument;
 
-	    if (pdfDocument != null) {
-		    renderBuffer = new RenderBuffer(this, pdfDocument);
-		    renderThread = new RenderThread(this, renderBuffer);
-	    }
-	    setScrollbars();
-    }
+		if (pdfDocument != null) {
+			renderBuffer = new RenderBuffer(this, pdfDocument);
+			renderThread = new RenderThread(this, renderBuffer);
+		}
+		setScrollbars();
+	}
 
 
 	public PdfViewerComposite(Composite parent)
@@ -164,11 +164,11 @@ public class PdfViewerComposite extends Composite
 
 		scrollBarVertical.addSelectionListener(new SelectionAdapter() {
 			@Override
-	    	public void widgetSelected(SelectionEvent event) {
+			public void widgetSelected(SelectionEvent event) {
 				wantToZoom = false;
-	    		scrollVertically();
-	    	}
-	    });
+				scrollVertically();
+			}
+		});
 
 		viewPanelFrame.addMouseWheelListener(new MouseWheelListenerImpl());
 		viewPanelFrame.addKeyListener(new KeyListenerImpl());
