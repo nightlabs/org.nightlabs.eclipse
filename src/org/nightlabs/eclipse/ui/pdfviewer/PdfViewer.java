@@ -4,6 +4,8 @@ import java.awt.geom.Point2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,36 +54,66 @@ public class PdfViewer
 	private PdfDocument pdfDocument;
 	private PdfViewerComposite pdfViewerComposite;
 
-	private Map<String, Object> id2contextElement = new HashMap<String, Object>();
+	private Map<ContextElementType, Map<String, Object>> contextElementType2id2contextElement = new HashMap<ContextElementType, Map<String,Object>>();
 
 	/**
 	 * Assign a context-element. This method should be called by the context-element itself
 	 * when it is created/assigned a <code>PdfViewer</code>.
 	 *
-	 * @param id the identifier of the context-element. Must <b>not</b> be <code>null</code>!
+	 * @param contextElementType the type of the <code>contextElement</code>. This should be the base class - e.g. when subclassing {@link PdfSimpleNavigator}, you should still pass <code>PdfSimpleNavigator.class</code> and not the subclass' type. Must <b>not</b> be <code>null</code>!
+	 * @param id the identifier of the context-element. Can be <code>null</code>.
 	 * @param contextElement the context-element. Can be <code>null</code> to remove a previous entry.
 	 */
-	public void setContextElement(String id, Object contextElement)
+	public void setContextElement(ContextElementType contextElementType, String id, Object contextElement)
 	{
 		assertValidThread();
-		if (id == null)
-			throw new IllegalArgumentException("id must not be null!");
+		if (contextElementType == null)
+			throw new IllegalArgumentException("contextElementType must not be null!");
 
-		if (contextElement == null)
-			id2contextElement.remove(id);
+		Map<String, Object> id2contextElement = contextElementType2id2contextElement.get(contextElementType);
+		if (id2contextElement == null && contextElement != null) {
+			id2contextElement = new HashMap<String, Object>();
+			contextElementType2id2contextElement.put(contextElementType, id2contextElement);
+		}
+
+		if (contextElement == null) {
+			if (id2contextElement != null)
+				id2contextElement.remove(id);
+		}
 		else
 			id2contextElement.put(id, contextElement);
+
+		if (id2contextElement != null && id2contextElement.isEmpty())
+			contextElementType2id2contextElement.remove(contextElementType);
 	}
 
 	/**
-	 * Get a context-element that was registered before via {@link #setContextElement(String, Object)}
-	 * or <code>null</code> if none is known for the given <code>id</code>.
+	 * Get a context-element that was registered before via {@link #setContextElement(ContextElementType, String, Object)}
+	 * or <code>null</code> if none is known for the given <code>contextElementType</code> and <code>id</code>.
 	 *
-	 * @param id the identifier of the context-element.
+	 * @param contextElementType the type of the <code>contextElement</code> as passed to {@link #setContextElement(ContextElementType, String, Object)} before.
+	 * @param id the identifier of the context-element as specified in {@link #setContextElement(ContextElementType, String, Object)} - can be <code>null</code>.
 	 * @return the appropriate context-element or <code>null</code>.
 	 */
-	public Object getContextElement(String id) {
+	public Object getContextElement(ContextElementType contextElementType, String id) {
+		Map<String, Object> id2contextElement = contextElementType2id2contextElement.get(contextElementType);
+		if (id2contextElement == null)
+			return null;
+
 		return id2contextElement.get(id);
+	}
+
+	/**
+	 * @param contextElementType the type of the <code>contextElement</code> as passed to {@link #setContextElement(ContextElementType, String, Object)} before.
+	 * @return a <code>Collection</code> containing the previously registered context-elements; never <code>null</code> (instead, an empty <code>Collection</code> is returned).
+	 */
+	public Collection<?> getContextElements(ContextElementType contextElementType)
+	{
+		Map<String, Object> id2contextElement = contextElementType2id2contextElement.get(contextElementType);
+		if (id2contextElement == null)
+			return Collections.emptySet();
+
+		return Collections.unmodifiableCollection(id2contextElement.values());
 	}
 
 	private static void assertValidThread()
