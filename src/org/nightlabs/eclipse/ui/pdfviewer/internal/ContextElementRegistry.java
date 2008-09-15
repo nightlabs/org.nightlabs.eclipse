@@ -57,7 +57,7 @@ public class ContextElementRegistry
 	 * @param contextElementId the identifier of the context-element. Can be <code>null</code>.
 	 * @param contextElement the context-element. Can be <code>null</code> to remove a previous entry.
 	 */
-	private void setContextElement(ContextElementType<?>contextElementType, String contextElementId, ContextElement<?> contextElement)
+	protected void setContextElement(ContextElementType<?>contextElementType, String contextElementId, ContextElement<?> contextElement)
 	{
 		assertValidThread();
 

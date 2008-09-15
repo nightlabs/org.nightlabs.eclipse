@@ -77,11 +77,11 @@ public class PdfViewer
 	}
 
 	/**
-	 * Get a context-element that was registered before via {@link #setContextElement(ContextElementType, String, ContextElement)}
+	 * Get a context-element that was registered before via {@link #registerContextElement(ContextElement)}
 	 * or <code>null</code> if none is known for the given <code>contextElementType</code> and <code>id</code>.
 	 *
-	 * @param contextElementType the type of the <code>contextElement</code> as passed to {@link #setContextElement(ContextElementType, String, ContextElement)} before.
-	 * @param id the identifier of the context-element as specified in {@link #setContextElement(ContextElementType, String, ContextElement)} - can be <code>null</code>.
+	 * @param contextElementType the type of the <code>contextElement</code> as passed to {@link #registerContextElement(ContextElement)} before.
+	 * @param id the identifier of the context-element as specified in {@link #registerContextElement(ContextElement)} - can be <code>null</code>.
 	 * @return the appropriate context-element or <code>null</code>.
 	 */
 	public <T extends ContextElement<T>> T getContextElement(ContextElementType<T> contextElementType, String id) {
@@ -93,7 +93,7 @@ public class PdfViewer
 	 *
 	 * @param contextElementType
 	 *          the type of the <code>contextElement</code> as passed to
-	 *          {@link #setContextElement(ContextElementType, String, ContextElement)} before.
+	 *          {@link #registerContextElement(ContextElement)} before.
 	 * @return a <code>Collection</code> containing the previously registered context-elements; never <code>null</code> (instead, an empty
 	 *         <code>Collection</code> is returned).
 	 */
