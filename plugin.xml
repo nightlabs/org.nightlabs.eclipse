@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-   <extension
-         point="org.eclipse.ui.editors">
-      <editor
-            class="org.nightlabs.eclipse.ui.pdfviewer.editor.PdfViewerEditor"
-            extensions="pdf"
-            icon="icons/editor/PdfViewerEditor.16x16.png"
-            id="org.nightlabs.eclipse.ui.pdfviewer.editor.PdfViewerEditor"
-            name="PDF viewer">
-      </editor>
-   </extension>
+   
 
 </plugin>

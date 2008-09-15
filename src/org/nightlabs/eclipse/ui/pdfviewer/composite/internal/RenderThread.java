@@ -6,7 +6,6 @@ import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.widgets.Display;
-import org.nightlabs.eclipse.ui.pdfviewer.composite.PdfViewerComposite;
 
 /**
  * @author frederik loeser - frederik at nightlabs dot de

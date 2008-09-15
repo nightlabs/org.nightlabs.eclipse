@@ -17,7 +17,6 @@ import javax.imageio.stream.FileImageOutputStream;
 
 import org.apache.log4j.Logger;
 import org.nightlabs.eclipse.ui.pdfviewer.Util;
-import org.nightlabs.eclipse.ui.pdfviewer.composite.PdfViewerComposite;
 import org.nightlabs.eclipse.ui.pdfviewer.model.PdfDocument;
 
 import com.sun.pdfview.PDFPage;

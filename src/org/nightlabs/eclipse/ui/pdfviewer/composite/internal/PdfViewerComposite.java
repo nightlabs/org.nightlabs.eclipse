@@ -1,4 +1,4 @@
-package org.nightlabs.eclipse.ui.pdfviewer.composite;
+package org.nightlabs.eclipse.ui.pdfviewer.composite.internal;
 
 import java.awt.Frame;
 import java.awt.Graphics;
@@ -23,8 +23,6 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ScrollBar;
-import org.nightlabs.eclipse.ui.pdfviewer.composite.internal.RenderBuffer;
-import org.nightlabs.eclipse.ui.pdfviewer.composite.internal.RenderThread;
 import org.nightlabs.eclipse.ui.pdfviewer.model.PdfDocument;
 
 /**
@@ -374,6 +372,9 @@ public class PdfViewerComposite extends Composite {
 
 	public void setViewOrigin(Point rectangleViewOrigin) {
 		this.viewOrigin = rectangleViewOrigin;
+		this.setScrollbars();
+		viewPanel.repaint();
+		// TODO test this method! and modify if necessary.
 	}
 
 	public int getZoomFactorPerMill() {

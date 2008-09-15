@@ -12,3 +12,17 @@ Require-Bundle: org.eclipse.ui,
 Eclipse-LazyStart: true
 Bundle-ClassPath: .,
  lib/PDFRenderer.jar
+Export-Package: com.sun.pdfview,
+ com.sun.pdfview.action,
+ com.sun.pdfview.colorspace,
+ com.sun.pdfview.decode,
+ com.sun.pdfview.font,
+ com.sun.pdfview.font.res,
+ com.sun.pdfview.font.ttf,
+ com.sun.pdfview.function,
+ com.sun.pdfview.gfx,
+ com.sun.pdfview.pattern,
+ org.nightlabs.eclipse.ui.pdfviewer,
+ org.nightlabs.eclipse.ui.pdfviewer.composite,
+ org.nightlabs.eclipse.ui.pdfviewer.composite.internal,
+ org.nightlabs.eclipse.ui.pdfviewer.model
