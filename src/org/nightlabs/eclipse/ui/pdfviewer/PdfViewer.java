@@ -21,8 +21,8 @@ public class PdfViewer
 		if (pdfDocument == null)
 			throw new IllegalArgumentException("pdfDocument must not be null!");
 
-	    this.pdfDocument = pdfDocument;
-    }
+		this.pdfDocument = pdfDocument;
+	}
 
 	public Control createControl(Composite parent)
 	{
@@ -35,26 +35,26 @@ public class PdfViewer
 	public Control getPdfViewerComposite() {
 		assertValidThread();
 
-	    return pdfViewerComposite;
-    }
+		return pdfViewerComposite;
+	}
 
 	public PdfDocument getPdfDocument() {
 		assertValidThread();
 
-	    return pdfDocument;
-    }
+		return pdfDocument;
+	}
 
 	public Point getViewOrigin() {
 		assertValidThread();
 
-	    return pdfViewerComposite.getViewOrigin();
-    }
+		return pdfViewerComposite.getViewOrigin();
+	}
 
 	public void setViewOrigin(Point viewOrigin) {
 		assertValidThread();
 
-	    pdfViewerComposite.setViewOrigin(viewOrigin);
-    }
+		pdfViewerComposite.setViewOrigin(viewOrigin);
+	}
 
 	// TODO more API, like:
 }
