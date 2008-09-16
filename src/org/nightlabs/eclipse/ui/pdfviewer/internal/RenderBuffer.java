@@ -1,10 +1,13 @@
 package org.nightlabs.eclipse.ui.pdfviewer.internal;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.font.TextLayout;
+import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
@@ -16,6 +19,7 @@ import javax.imageio.ImageWriter;
 import javax.imageio.stream.FileImageOutputStream;
 
 import org.apache.log4j.Logger;
+import org.nightlabs.eclipse.ui.pdfviewer.Dimension2DDouble;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
 
 import com.sun.pdfview.PDFPage;
@@ -42,6 +46,7 @@ public class RenderBuffer
 
 	public static final double BUFFER_WIDTH_FACTOR = 2;
 	public static final double BUFFER_HEIGHT_FACTOR = 2;
+	public static final double FONT_WIDTH_FACTOR = (double)1200/759;
 
 	public RenderBuffer(PdfViewerComposite pdfViewerComposite, PdfDocument pdfDocument) {
 		this.pdfViewerComposite = pdfViewerComposite;
@@ -357,26 +362,60 @@ public class RenderBuffer
 				graphics2D.setColor(pdfViewerComposite.getViewPanel().getBackground());
 				graphics2D.fillRect(0, 0, graphics2DWidth, graphics2DHeight);
 
-				// draw empty pages
+				float referenceFontSize = 1000f;
+				Font referenceFont = graphics2D.getFont().deriveFont(referenceFontSize);
+
+				// draw empty pages and page numbers
 				Collection<Integer> visiblePages = pdfDocument.getVisiblePages(region);
 				for (Integer pageNumber : visiblePages) {
 					Rectangle2D page = pdfDocument.getPageBounds(pageNumber);
+					System.out.println(page.getWidth() + " " + page.getHeight());
 
 					int x = (int) ((page.getX() - region.getX()) * requestedZoomFactor);
 					int y = (int) ((page.getY() - region.getY()) * requestedZoomFactor);
 					int w = (int) (page.getWidth() * requestedZoomFactor);
 					int h = (int) (page.getHeight() * requestedZoomFactor);
 
+					// draw empty page (border)
 					graphics2D.setColor(COLOR_DRAFT_PAGE_BORDER);
 					graphics2D.drawRect(x, y, w, h);
 
+					// draw empty page (area)
 					graphics2D.setColor(COLOR_DRAFT_PAGE_AREA);
 					graphics2D.fillRect(x + 1, y + 1, w - 1, h - 1);
 
-					// TODO draw page numbers in the middle of each page
-					graphics2D.setColor(COLOR_DRAFT_PAGE_BORDER);
-					graphics2D.drawString(Integer.toString(pageNumber), (int)(x + (double)w / 2), (int)(y + (double)h / 2));
+					// draw page number in the middle of each page
+					graphics2D.setColor(COLOR_DRAFT_PAGE_NUMBER);
+					String pageNumberString = Integer.toString(pageNumber);
 
+					graphics2D.setFont(referenceFont);
+					TextLayout layout = new TextLayout(pageNumberString, graphics2D.getFont(), graphics2D.getFontRenderContext());
+					Rectangle2D referenceBounds = layout.getPixelBounds(null, 0, 0);
+
+					Dimension2D desiredBounds = new Dimension2DDouble(0.9d * w, 0.9d * h);
+					double factorX = desiredBounds.getWidth() / referenceBounds.getWidth();
+					double factorY = desiredBounds.getHeight() / referenceBounds.getHeight();
+					double factor = Math.min(factorX, factorY);
+
+					graphics2D.setFont(
+							graphics2D.getFont().deriveFont((float) (factor * referenceFontSize))
+					);
+					layout = new TextLayout(pageNumberString, graphics2D.getFont(), graphics2D.getFontRenderContext());
+					Rectangle2D pageNumberBounds = layout.getPixelBounds(null, 0, 0);
+
+// debug: draw bounds of the page-number
+//					graphics2D.drawRect(
+//							(int) (x + (double)w / 2 - pageNumberBounds.getWidth() / 2),
+//							(int) (y + (double)h / 2 - pageNumberBounds.getHeight() / 2),
+//							(int) pageNumberBounds.getWidth(),
+//							(int) pageNumberBounds.getHeight()
+//					);
+
+					layout.draw(
+							graphics2D,
+							(float) (x + (double)w / 2 - pageNumberBounds.getWidth() / 2 - pageNumberBounds.getX()),
+							(float) (y + (double)h / 2 - pageNumberBounds.getHeight() / 2 - pageNumberBounds.getY())
+					);
 				}
 			}
 
@@ -410,6 +449,7 @@ public class RenderBuffer
 		} // synchronized (bufferedImageMutex) {
 	}
 
+	private static final Color COLOR_DRAFT_PAGE_NUMBER = Color.GRAY;
 	private static final Color COLOR_DRAFT_PAGE_BORDER = Color.RED;
 	private static final Color COLOR_DRAFT_PAGE_AREA = new Color(240, 240, 240);
 

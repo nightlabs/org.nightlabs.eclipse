@@ -77,6 +77,16 @@ public class PdfViewer
 	}
 
 	/**
+	 * Remove a context-element's registration.
+	 *
+	 * @param contextElement the element to be removed.
+	 */
+	public void unregisterContextElement(ContextElement<?> contextElement)
+	{
+		contextElementRegistry.unregisterContextElement(contextElement.getContextElementType(), contextElement.getContextElementId());
+	}
+
+	/**
 	 * Get a context-element that was registered before via {@link #registerContextElement(ContextElement)}
 	 * or <code>null</code> if none is known for the given <code>contextElementType</code> and <code>id</code>.
 	 *
