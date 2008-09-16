@@ -2,6 +2,7 @@ package org.nightlabs.eclipse.ui.pdfviewer;
 
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -9,7 +10,9 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import com.sun.pdfview.OutlineNode;
 import com.sun.pdfview.PDFFile;
+import com.sun.pdfview.PDFObject;
 import com.sun.pdfview.PDFPage;
 
 
@@ -126,7 +129,28 @@ public class OneDimensionalPdfDocument implements PdfDocument
 			if (logger.isDebugEnabled()) {
 				int pageNumber = 0;
 				for (Rectangle2D.Double page : pageBounds) {
-					logger.debug("readPdfDocumentProperties: page " + (++pageNumber) + ": x=" + page.getX() + " y=" + page.getY() + " w=" + page.getWidth() + " h=" + page.getHeight());
+					logger.debug("readPdf: page " + (++pageNumber) + ": x=" + page.getX() + " y=" + page.getY() + " w=" + page.getWidth() + " h=" + page.getHeight());
+				}
+
+				try {
+					OutlineNode outlineNode = pdfFile.getOutline();
+					logOutline(0, outlineNode);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				try {
+					PDFObject pdfObject = pdfFile.getRoot().getDictRef("Pages");
+					logger.debug("readPdf: pagesPDFObject=" + pdfObject);
+					PDFObject[] pageArray = pdfObject.getArray();
+//					logger.debug("readPdfDocumentProperties: pageArray=" + pageArray);
+
+					for (PDFObject page : pageArray) {
+						logger.debug("readPdf:   * page=" + page.dereference());
+						logPDFObject(1, page);
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
 			}
 
@@ -134,6 +158,69 @@ public class OneDimensionalPdfDocument implements PdfDocument
 			monitor.done();
 		}
 	}
+
+	private static void logPDFObject(int level, PDFObject pdfObject) throws IOException
+	{
+		StringBuilder indent = new StringBuilder();
+		for (int i = 0; i < level; ++i)
+			indent.append("  ");
+
+		PDFObject pdfObjectResources = pdfObject.getDictRef("Resources");
+		if (pdfObjectResources != null) {
+			logger.debug("readPdf: " + indent + "* resources=" + pdfObjectResources.dereference());
+			PDFObject procSet = pdfObjectResources.getDictRef("ProcSet");
+			if (procSet != null) {
+				logger.debug("readPdf: " + indent + "  * procSet=" + procSet.dereference());
+			}
+
+			PDFObject font = pdfObjectResources.getDictRef("Font");
+			if (font != null) {
+				logger.debug("readPdf: " + indent + "  * font=" + font.dereference());
+			}
+		}
+
+		PDFObject pdfObjectContents = pdfObject.getDictRef("Contents");
+		if (pdfObjectContents != null) {
+			logger.debug("readPdf: " + indent + "* contents=" + pdfObjectContents.dereference());
+			PDFObject[] contentKids = pdfObjectContents.getArray();
+			if (contentKids != null) {
+				for (PDFObject contentKid : contentKids) {
+					logger.debug("readPdf: " + indent + "  * contentKid=" + contentKid.dereference());
+					logPDFObject(level + 2, contentKid);
+				}
+			}
+		}
+
+		PDFObject pdfObjectKids = pdfObject.getDictRef("Kids");
+		if (pdfObjectKids == null)
+			return;
+
+		PDFObject[] kidsArray = pdfObjectKids.getArray();
+		for (PDFObject kid : kidsArray) {
+			logger.debug("readPdf: " + indent + "* kid=" + kid.dereference());
+			logPDFObject(level + 1, kid);
+		}
+	}
+
+	private static void logOutline(int level, OutlineNode outlineNode)
+	{
+		if (outlineNode == null) {
+			logger.debug("logOutline: OutlineNode is null!!!");
+			return;
+		}
+
+		StringBuilder indent = new StringBuilder();
+		for (int i = 0; i < level; ++i)
+			indent.append(' ');
+
+		logger.debug("logOutline: " + indent.toString() + '*' + outlineNode);
+
+		for (int i = 0; i < outlineNode.getChildCount(); ++i) {
+			OutlineNode child = (OutlineNode) outlineNode.getChildAt(i);
+			logOutline(level + 1, child);
+		}
+	}
+
 
 	/* (non-Javadoc)
 	 * @see org.nightlabs.eclipse.ui.pdfviewer.model.PdfDocument#getVisiblePages(java.awt.geom.Rectangle2D)
