@@ -46,7 +46,6 @@ public class RenderBuffer
 
 	public static final double BUFFER_WIDTH_FACTOR = 2;
 	public static final double BUFFER_HEIGHT_FACTOR = 2;
-	public static final double FONT_WIDTH_FACTOR = (double)1200/759;
 
 	public RenderBuffer(PdfViewerComposite pdfViewerComposite, PdfDocument pdfDocument) {
 		this.pdfViewerComposite = pdfViewerComposite;
