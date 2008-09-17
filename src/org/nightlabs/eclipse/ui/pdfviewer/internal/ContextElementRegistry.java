@@ -73,8 +73,11 @@ public class ContextElementRegistry
 		}
 
 		if (contextElement == null) {
-			if (id2contextElement != null)
-				id2contextElement.remove(contextElementId);
+			if (id2contextElement != null) {
+				ContextElement<?> oldContextElement = id2contextElement.remove(contextElementId);
+				if (oldContextElement != null)
+					oldContextElement.onUnregisterContextElement();
+			}
 		}
 		else
 			id2contextElement.put(contextElementId, contextElement);

@@ -34,4 +34,9 @@ implements ContextElement<PdfThumbnailNavigator>
 	public String getContextElementId() {
 		return contextElementId;
 	}
+
+	@Override
+	public void onUnregisterContextElement() {
+		// nothing to do
+	}
 }

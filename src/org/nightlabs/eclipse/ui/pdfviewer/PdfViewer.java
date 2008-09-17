@@ -17,6 +17,7 @@ import org.nightlabs.eclipse.ui.pdfviewer.internal.PdfViewerComposite;
  * compose a custom viewer. You can add additional elements - if desired -
  * (e.g. a {@link PdfSimpleNavigator}) to your custom viewer wherever you want.
  *
+ * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
  */
 public class PdfViewer
@@ -48,6 +49,17 @@ public class PdfViewer
 	 * </p>
 	 */
 	public static final String PROPERTY_ZOOM_FACTOR = "zoomFactor";
+
+	/**
+	 * Constant used by the {@link PropertyChangeListener}s when a {@link PdfDocument} has been assigned to this
+	 * <code>PdfViewer</code>.
+	 * <p>
+	 * {@link PropertyChangeEvent#getNewValue()} returns the new {@link PdfDocument} (or <code>null</code>, since this is a valid
+	 * value for {@link #setPdfDocument(PdfDocument)}); {@link PropertyChangeEvent#getOldValue()} returns the {@link PdfDocument}
+	 * that was assigned before (or <code>null</code>, if there was none).
+	 * </p>
+	 */
+	public static final String PROPERTY_PDF_DOCUMENT = "pdfDocument";
 
 	private PdfDocument pdfDocument;
 	private PdfViewerComposite pdfViewerComposite;
@@ -177,9 +189,12 @@ public class PdfViewer
 	public void setPdfDocument(PdfDocument pdfDocument) {
 		assertValidThread();
 
+		PdfDocument oldPdfDocument = this.pdfDocument;
 		this.pdfDocument = pdfDocument;
 		if (pdfViewerComposite != null)
 			pdfViewerComposite.setPdfDocument(pdfDocument);
+
+		propertyChangeSupport.firePropertyChange(PROPERTY_PDF_DOCUMENT, oldPdfDocument, this.pdfDocument);
 	}
 
 	private Point2D viewOrigin = new Point2D.Double();

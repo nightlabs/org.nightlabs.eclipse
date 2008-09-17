@@ -368,7 +368,6 @@ public class RenderBuffer
 				Collection<Integer> visiblePages = pdfDocument.getVisiblePages(region);
 				for (Integer pageNumber : visiblePages) {
 					Rectangle2D page = pdfDocument.getPageBounds(pageNumber);
-					System.out.println(page.getWidth() + " " + page.getHeight());
 
 					int x = (int) ((page.getX() - region.getX()) * requestedZoomFactor);
 					int y = (int) ((page.getY() - region.getY()) * requestedZoomFactor);
