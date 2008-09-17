@@ -6,8 +6,12 @@ import java.awt.Graphics2D;
 import java.awt.Panel;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.Point2D;
@@ -15,14 +19,20 @@ import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+import javax.swing.SwingUtilities;
+
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
@@ -58,7 +68,15 @@ public class PdfViewerComposite extends Composite
 	 * The zoom factor in %o (1/1000).
 	 */
 	private int zoomFactorPerMill = 1000;
-	private boolean wantToZoom = false;
+
+// We don't need this, because the mouse wheel listener event tells us whether CTRL is down or not.
+// and that seems to work pretty reliably. Marco.
+//	/**
+//	 * If <code>true</code>, turning the mouse wheel zooms (forward = zoom in, backward = zoom out).
+//	 * If <code>false</code>, turning the mouse wheel scrolls.
+//	 */
+//	private boolean mouseWheelModeZoom = false;
+
 	/**
 	 * The AWT frame for this composite.
 	 */
@@ -112,13 +130,25 @@ public class PdfViewerComposite extends Composite
 		this.setLayout(new FillLayout());
 
 //		renderBuffer = new RenderBuffer(this, pdfDocument);
-		renderComposite = new Composite(this, SWT.EMBEDDED | SWT.V_SCROLL | SWT.H_SCROLL);
+		renderComposite = new Composite(this, SWT.EMBEDDED | SWT.V_SCROLL | SWT.H_SCROLL) {
+			@Override
+			public boolean setFocus() {
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						viewPanel.requestFocus();
+					}
+				});
+				return true;
+			}
+		};
 
 		viewOrigin = new Point2D.Double();
 
 		scrollBarVertical = renderComposite.getVerticalBar();
 		scrollBarHorizontal = renderComposite.getHorizontalBar();
 		viewPanelFrame = SWT_AWT.new_Frame(renderComposite);
+		viewPanelFrame.setFocusableWindowState(true);
+		viewPanelFrame.setFocusable(true);
 
 		viewPanel = new Panel() {
 			private static final long serialVersionUID = 1L;
@@ -127,7 +157,64 @@ public class PdfViewerComposite extends Composite
 				paintViewPanel((Graphics2D) g);
 			}
 		};
+//		viewPanel.enableInputMethods(true);
+		viewPanel.setFocusable(true);
 
+		viewPanel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if (logger.isDebugEnabled())
+					logger.debug("mousePressed: " + e);
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				if (logger.isDebugEnabled())
+					logger.debug("mouseReleased: " + e);
+			}
+		});
+		viewPanel.addMouseMotionListener(new MouseMotionListener() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				if (logger.isDebugEnabled())
+					logger.debug("mouseDragged: " + e);
+			}
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				if (logger.isDebugEnabled())
+					logger.debug("mouseMoved: " + e);
+			}
+		});
+		viewPanel.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(java.awt.event.KeyEvent e) {
+				if (logger.isDebugEnabled())
+					logger.debug("keyPressed: " + e);
+
+//				if (e.getKeyCode() == 17)
+//					mouseWheelModeZoom = true;
+			}
+			@Override
+			public void keyReleased(java.awt.event.KeyEvent e) {
+				if (logger.isDebugEnabled())
+					logger.debug("keyReleased: " + e);
+
+//				if (e.getKeyCode() == 17)
+//					mouseWheelModeZoom = false;
+			}
+		});
+
+		viewPanel.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (logger.isDebugEnabled())
+					logger.debug("viewPanel.FocusListener.focusGained: entered");
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (logger.isDebugEnabled())
+					logger.debug("viewPanel.FocusListener.focusLost: entered");
+			}
+		});
 		viewPanel.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
@@ -157,7 +244,7 @@ public class PdfViewerComposite extends Composite
 		scrollBarHorizontal.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
-				wantToZoom = false;
+//				mouseWheelModeZoom = false;
 				scrollHorizontally();
 			}
 		});
@@ -165,16 +252,54 @@ public class PdfViewerComposite extends Composite
 		scrollBarVertical.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
-				wantToZoom = false;
+//				mouseWheelModeZoom = false;
 				scrollVertically();
 			}
 		});
 
 		viewPanelFrame.addMouseWheelListener(new MouseWheelListenerImpl());
-		viewPanelFrame.addKeyListener(new KeyListenerImpl());
 
-//		renderThread = new RenderThread(this, renderBuffer);
+		getDisplay().addFilter(SWT.KeyDown, keyDownListener);
+		getDisplay().addFilter(SWT.KeyUp, keyUpListener);
+
+		addDisposeListener(new DisposeListener() {
+			@Override
+			public void widgetDisposed(DisposeEvent arg0) {
+				getDisplay().removeFilter(SWT.KeyDown, keyDownListener);
+				getDisplay().removeFilter(SWT.KeyUp, keyUpListener);
+			}
+		});
+
+		viewPanel.requestFocus();
 	}
+
+	private Listener keyDownListener = new Listener() {
+		public void handleEvent(Event event)
+		{
+			if (logger.isDebugEnabled())
+				logger.debug("keyDownListener.handleEvent: " + event.keyCode);
+
+//			switch (event.keyCode) {
+//				case SWT.CTRL:
+//					mouseWheelModeZoom = true;
+//					break;
+//			}
+		}
+	};
+
+	private Listener keyUpListener = new Listener() {
+		public void handleEvent(Event event)
+		{
+			if (logger.isDebugEnabled())
+				logger.debug("keyUpListener.handleEvent: " + event.keyCode);
+
+//			switch (event.keyCode) {
+//				case SWT.CTRL:
+//					mouseWheelModeZoom = false;
+//					break;
+//			}
+		}
+	};
 
 	private boolean centerHorizontally;
 	private boolean centerVertically;
@@ -324,12 +449,16 @@ public class PdfViewerComposite extends Composite
 	private class MouseWheelListenerImpl implements MouseWheelListener {
 		int mouseRotationOrientation;
 		public void mouseWheelMoved(MouseWheelEvent e) {
+			boolean mouseWheelModeZoom = e.isControlDown();
+
+			viewPanel.requestFocus();
+
 			if (e.getWheelRotation() < 0)
 				mouseRotationOrientation = - 1;
 			else
 				mouseRotationOrientation = 1;
 
-			if (wantToZoom == true)
+			if (mouseWheelModeZoom == true)
 				zoomPDFDocument(mouseRotationOrientation);
 			else {
 				Display.getDefault().asyncExec(new Runnable() {
@@ -350,23 +479,23 @@ public class PdfViewerComposite extends Composite
 		}
 	}
 
-	private class KeyListenerImpl implements KeyListener {
-
-		@Override
-		public void keyPressed(KeyEvent e) {
-			if (e.isControlDown()) {
-				wantToZoom = true;
-			}
-		}
-		@Override
-		public void keyReleased(KeyEvent e) {
-			wantToZoom = false;
-		}
-		@Override
-		public void keyTyped(KeyEvent e) {
-		}
-
-	}
+//	private class KeyListenerImpl implements KeyListener {
+//
+//		@Override
+//		public void keyPressed(KeyEvent e) {
+//			if (e.isControlDown()) {
+//				mouseWheelModeZoom = true;
+//			}
+//		}
+//		@Override
+//		public void keyReleased(KeyEvent e) {
+//			mouseWheelModeZoom = false;
+//		}
+//		@Override
+//		public void keyTyped(KeyEvent e) {
+//		}
+//
+//	}
 
 	private static final int ZOOM_MIN = 100;
 	private static final int ZOOM_MAX = 10000;
@@ -476,5 +605,15 @@ public class PdfViewerComposite extends Composite
 
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		propertyChangeSupport.removePropertyChangeListener(listener);
+	}
+
+	@Override
+	public boolean setFocus() {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				viewPanel.requestFocus();
+			}
+		});
+		return true;
 	}
 }
