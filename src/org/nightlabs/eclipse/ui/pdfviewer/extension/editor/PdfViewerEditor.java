@@ -9,6 +9,9 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -23,6 +26,7 @@ import org.nightlabs.base.ui.util.RCPUtil;
 import org.nightlabs.eclipse.ui.pdfviewer.OneDimensionalPdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfFileLoader;
+import org.nightlabs.eclipse.ui.pdfviewer.PdfSimpleNavigator;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
 
 import com.sun.pdfview.PDFFile;
@@ -47,6 +51,8 @@ public class PdfViewerEditor extends EditorPart
 	private volatile PdfDocument pdfDocument;
 	private PdfViewer pdfViewer;
 	private Control pdfViewerControl;
+	private PdfSimpleNavigator pdfSimpleNavigator;
+	private Control pdfSimpleNavigatorControl;
 	private PDFFile pdfFile;
 
 	@Override
@@ -84,8 +90,16 @@ public class PdfViewerEditor extends EditorPart
 
 	@Override
 	public void createPartControl(final Composite parent) {
-		loadingMessageLabel = new Label(parent, SWT.NONE);
+		final SashForm page = new SashForm(parent, SWT.VERTICAL);  //new Composite(parent, SWT.NONE);
+		page.setLayout(new GridLayout());
+
+		loadingMessageLabel = new Label(page, SWT.NONE);
+		GridData gdLoadingMessageLabel = new GridData(GridData.FILL_HORIZONTAL);
+		gdLoadingMessageLabel.verticalIndent = 16;
+		gdLoadingMessageLabel.horizontalIndent = 16;
+		loadingMessageLabel.setLayoutData(gdLoadingMessageLabel);
 		loadingMessageLabel.setText("Loading PDF file...");
+
 		final Display display = loadingMessageLabel.getDisplay();
 
 		final IEditorInput input = getEditorInput();
@@ -146,9 +160,27 @@ public class PdfViewerEditor extends EditorPart
 							return;
 
 						loadingMessageLabel.dispose();
+
 						pdfViewer = new PdfViewer();
+						pdfSimpleNavigator = new PdfSimpleNavigator(pdfViewer);
+
+						pdfViewerControl = pdfViewer.createControl(page);
+						pdfViewerControl.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+						pdfSimpleNavigatorControl = pdfSimpleNavigator.createControl(page);
+						pdfSimpleNavigatorControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
 						pdfViewer.setPdfDocument(pdfDocument);
-						pdfViewerControl = pdfViewer.createControl(parent);
+
+//						pdfThumbnailNavigator.setPdfDocumentFactory(new PdfThumbnailNavigator.PdfDocumentFactory() {
+//							public PdfDocument createPdfDocument(PdfDocument pdfDocument)
+//							{
+//								return new OneDimensionalPdfDocument(pdfDocument.getPdfFile(), OneDimensionalPdfDocument.Layout.vertical, new NullProgressMonitor());
+//							}
+//						});
+
+						int[] weights = new int[]{95, 5};
+						page.setWeights(weights);
+
 						parent.layout(true, true);
 					}
 				});

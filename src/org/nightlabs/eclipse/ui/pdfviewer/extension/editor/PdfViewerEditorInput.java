@@ -24,11 +24,10 @@ implements IEditorInput
 	private String name;
 	private String toolTipText;
 	private ImageDescriptor imageDescriptor;
-
 	private File file;
 	private byte[] byteArray;
-
 	private volatile PDFFile pdfFile;
+
 
 	public PdfViewerEditorInput(File file)
 	{
