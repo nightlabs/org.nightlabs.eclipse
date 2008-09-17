@@ -1,5 +1,6 @@
 package org.nightlabs.eclipse.ui.pdfviewer;
 
+import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -35,18 +36,37 @@ public class PdfViewer
 	 * (an instance of {@link Point2D}, too).
 	 * </p>
 	 *
+	 * @see #getViewOrigin()
 	 * @see #addPropertyChangeListener(String, PropertyChangeListener)
 	 */
 	public static final String PROPERTY_VIEW_ORIGIN = "viewOrigin";
+
+	/**
+	 * Constant used by the {@link PropertyChangeListener}s for modifications of the view-dimension,
+	 * i.e. the view size in the real coordinate system. This is triggered on zooming or when the
+	 * view area is resized.
+	 * <p>
+	 * {@link PropertyChangeEvent#getNewValue()} returns the new view dimension (an instance of {@link Dimension2D})
+	 * and {@link PropertyChangeEvent#getOldValue()} returns the view dimension before the change happened
+	 * (an instance of {@link Dimension2D}, too).
+	 * </p>
+	 *
+	 * @see #getViewDimension()
+	 * @see #addPropertyChangeListener(String, PropertyChangeListener)
+	 */
+	public static final String PROPERTY_VIEW_DIMENSION = "viewDimension";
 
 	/**
 	 * Constant used by the {@link PropertyChangeListener}s for modifications of the zoom factor.
 	 * <p>
 	 * {@link PropertyChangeEvent#getNewValue()} returns the new zoom factor (an instance of {@link Integer})
 	 * and {@link PropertyChangeEvent#getOldValue()} returns the view origin before the change happened
-	 * (an instance of {@link Integer}, too). The zoom factor returned is the value in per mill (e.g. a value of 1000 means
+	 * (an instance of {@link Integer}, too). The zoom factor returned is the value in ‰ [per mill] (e.g. a value of 1000 means
 	 * 100% = 1.0).
 	 * </p>
+	 *
+	 * @see #getZoomFactorPerMill()
+	 * @see #addPropertyChangeListener(String, PropertyChangeListener)
 	 */
 	public static final String PROPERTY_ZOOM_FACTOR = "zoomFactor";
 
@@ -58,6 +78,10 @@ public class PdfViewer
 	 * value for {@link #setPdfDocument(PdfDocument)}); {@link PropertyChangeEvent#getOldValue()} returns the {@link PdfDocument}
 	 * that was assigned before (or <code>null</code>, if there was none).
 	 * </p>
+	 *
+	 * @see #getPdfDocument()
+	 * @see #setPdfDocument(PdfDocument)
+	 * @see #addPropertyChangeListener(String, PropertyChangeListener)
 	 */
 	public static final String PROPERTY_PDF_DOCUMENT = "pdfDocument";
 
@@ -180,12 +204,27 @@ public class PdfViewer
 		return this.pdfViewerComposite;
 	}
 
+	/**
+	 * Get the current {@link PdfDocument}, which can be <code>null</code>.
+	 *
+	 * @return the current {@link PdfDocument} or <code>null</code>.
+	 * @see #setPdfDocument(PdfDocument)
+	 */
 	public PdfDocument getPdfDocument() {
 		assertValidThread();
 
 		return pdfDocument;
 	}
 
+	/**
+	 * Set the current {@link PdfDocument} or <code>null</code>. This will cause
+	 * a {@link PropertyChangeEvent} to be propagated for the property
+	 * {@link #PROPERTY_PDF_DOCUMENT}.
+	 *
+	 * @param pdfDocument the new {@link PdfDocument}.
+	 * @see #getPdfDocument()
+	 * @see #PROPERTY_PDF_DOCUMENT
+	 */
 	public void setPdfDocument(PdfDocument pdfDocument) {
 		assertValidThread();
 
@@ -200,12 +239,58 @@ public class PdfViewer
 	private Point2D viewOrigin = new Point2D.Double();
 	private int zoomFactorPerMill = 1000;
 
+	/**
+	 * Get the view origin, i.e. the left top position of the view area in the
+	 * {@link PdfDocument} (in real coordinates).
+	 *
+	 * @return the current view origin.
+	 * @see #setViewOrigin(Point2D)
+	 */
 	public Point2D getViewOrigin() {
 		assertValidThread();
 
 		return viewOrigin;
 	}
 
+	/**
+	 * Get the size of the view area in real coordinates (i.e. what is visible
+	 * in the {@link PdfDocument}). Together with {@link #getViewOrigin()},
+	 * this information tells you what area is currently visible.
+	 * <p>
+	 * This value changes whenever the zoom is modified
+	 * (see {@link #getZoomFactorPerMill()}) or when the view area is resized,
+	 * but stays the same during scrolling.
+	 * </p>
+	 * <p>
+	 * If you want to get notified about changes, you should register a
+	 * {@link PropertyChangeListener} for {@link #PROPERTY_VIEW_DIMENSION}.
+	 * </p>
+	 *
+	 * @return the size of the view area in real coordinates.
+	 * @see #getViewOrigin()
+	 * @see #getZoomFactorPerMill()
+	 * @see #PROPERTY_VIEW_DIMENSION
+	 */
+	public Dimension2D getViewDimension()
+	{
+		assertValidThread();
+
+		if (pdfViewerComposite == null)
+			return null;
+
+		return pdfViewerComposite.getViewDimension();
+	}
+
+	/**
+	 * Set the new view origin, i.e. the left top position of the view area in the
+	 * {@link PdfDocument} (in real coordinates). This will cause
+	 * a {@link PropertyChangeEvent} to be propagated for the property
+	 * {@link #PROPERTY_VIEW_ORIGIN}.
+	 *
+	 * @param viewOrigin the new view origin.
+	 * @see #getViewOrigin()
+	 * @see #PROPERTY_VIEW_ORIGIN
+	 */
 	public void setViewOrigin(Point2D viewOrigin) {
 		assertValidThread();
 
@@ -257,12 +342,27 @@ public class PdfViewer
 		propertyChangeSupport.removePropertyChangeListener(listener);
 	}
 
+	/**
+	 * Get the zoom factor in ‰ (1/1000).
+	 *
+	 * @return the zoom factor in ‰.
+	 * @see #setZoomFactorPerMill(int)
+	 */
 	public int getZoomFactorPerMill() {
 		assertValidThread();
 
 		return zoomFactorPerMill;
 	}
 
+	/**
+	 * Set the zoom factor in ‰ (1/1000).  This will cause
+	 * a {@link PropertyChangeEvent} to be propagated for the property
+	 * {@link #PROPERTY_ZOOM_FACTOR}.
+	 *
+	 * @param zoomFactorPerMill the zoom factor in ‰.
+	 * @see #getZoomFactorPerMill()
+	 * @see #PROPERTY_ZOOM_FACTOR
+	 */
 	public void setZoomFactorPerMill(int zoomFactorPerMill) {
 		assertValidThread();
 
@@ -271,10 +371,4 @@ public class PdfViewer
 		if (pdfViewerComposite != null)
 			pdfViewerComposite.setZoomFactorPerMill(zoomFactorPerMill);
 	}
-
-	// TODO more API, like:
-	// - get the zoom (in per mill)
-
-	// - set the zoom
-	// - get visible dimension (i.e. width + height) of the view panel in real coordinates
 }

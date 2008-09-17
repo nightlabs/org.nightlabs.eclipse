@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeListener;
@@ -34,6 +35,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
+import org.nightlabs.eclipse.ui.pdfviewer.Dimension2DDouble;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
 
@@ -53,7 +55,12 @@ public class PdfViewerComposite extends Composite
 	private static final int scrollBarDivisor = 10;
 
 	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
-	private Composite renderComposite;
+
+	/**
+	 * The container of the AWT {@link Frame}. It is created with {@link SWT#EMBEDDED}
+	 * and does therefore contain nothing but the {@link #viewPanelFrame}.
+	 */
+	private Composite viewPanelComposite;
 	private RenderBuffer renderBuffer;
 	private RenderThread renderThread;
 	private PdfDocument pdfDocument;
@@ -65,7 +72,7 @@ public class PdfViewerComposite extends Composite
 	private Point2D.Double viewOrigin;
 
 	/**
-	 * The zoom factor in %o (1/1000).
+	 * The zoom factor in ‰ (1/1000).
 	 */
 	private int zoomFactorPerMill = 1000;
 
@@ -78,7 +85,7 @@ public class PdfViewerComposite extends Composite
 //	private boolean mouseWheelModeZoom = false;
 
 	/**
-	 * The AWT frame for this composite.
+	 * The AWT frame for this composite. It holds the {@link #viewPanel} and is embedded in the {@link #viewPanelComposite}.
 	 */
 	private Frame viewPanelFrame;
 	/**
@@ -130,7 +137,7 @@ public class PdfViewerComposite extends Composite
 		this.setLayout(new FillLayout());
 
 //		renderBuffer = new RenderBuffer(this, pdfDocument);
-		renderComposite = new Composite(this, SWT.EMBEDDED | SWT.V_SCROLL | SWT.H_SCROLL) {
+		viewPanelComposite = new Composite(this, SWT.EMBEDDED | SWT.V_SCROLL | SWT.H_SCROLL) {
 			@Override
 			public boolean setFocus() {
 				SwingUtilities.invokeLater(new Runnable() {
@@ -144,9 +151,9 @@ public class PdfViewerComposite extends Composite
 
 		viewOrigin = new Point2D.Double();
 
-		scrollBarVertical = renderComposite.getVerticalBar();
-		scrollBarHorizontal = renderComposite.getHorizontalBar();
-		viewPanelFrame = SWT_AWT.new_Frame(renderComposite);
+		scrollBarVertical = viewPanelComposite.getVerticalBar();
+		scrollBarHorizontal = viewPanelComposite.getHorizontalBar();
+		viewPanelFrame = SWT_AWT.new_Frame(viewPanelComposite);
 		viewPanelFrame.setFocusableWindowState(true);
 		viewPanelFrame.setFocusable(true);
 
@@ -221,6 +228,8 @@ public class PdfViewerComposite extends Composite
 				if (pdfDocument == null)
 					return;
 
+				Dimension2D viewDimensionBefore = getViewDimension();
+
 				if (centerHorizontally) {
 					double middleX = pdfDocument.getDocumentDimension().getWidth() / 2;
 					viewOrigin.x = middleX - viewPanel.getWidth() / 2 / ((double)zoomFactorPerMill / 1000);
@@ -231,8 +240,12 @@ public class PdfViewerComposite extends Composite
 					viewOrigin.y = middleY - viewPanel.getHeight() / 2 / ((double)zoomFactorPerMill / 1000);
 				}
 
+				viewDimensionCached = null;
+
 				setScrollbars();
 				viewPanel.repaint();
+
+				propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_DIMENSION, viewDimensionBefore, getViewDimension());
 			}
 			@Override
 			public void componentShown(ComponentEvent e) {
@@ -547,6 +560,32 @@ public class PdfViewerComposite extends Composite
 		propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_ORIGIN, oldViewOrigin, this.viewOrigin);
 	}
 
+	private Dimension2D viewDimensionCached = null;
+
+	/**
+	 * Get the size of the view area in real coordinates (i.e. what is visible
+	 * in the {@link PdfDocument}). Together with {@link #getViewOrigin()},
+	 * this information tells you what area is currently visible.
+	 *
+	 * @return the size of the view area in real coordinates.
+	 */
+	public Dimension2D getViewDimension()
+	{
+		if (viewDimensionCached == null) {
+			double zoomFactor = (double)zoomFactorPerMill / 1000;
+			viewDimensionCached = new Dimension2DDouble(
+					viewPanel.getWidth() / zoomFactor,
+					viewPanel.getHeight() / zoomFactor
+			);
+		}
+		return viewDimensionCached;
+	}
+
+	/**
+	 * Get the zoom factor in ‰ (1/1000).
+	 *
+	 * @return the zoom factor in ‰.
+	 */
 	public int getZoomFactorPerMill() {
 		return zoomFactorPerMill;
 	}
@@ -554,6 +593,7 @@ public class PdfViewerComposite extends Composite
 	public void setZoomFactorPerMill(int zoomFactorPerMill)
 	{
 		int zoomBefore = this.zoomFactorPerMill;
+		Dimension2D viewDimensionBefore = getViewDimension();
 
 		if (zoomFactorPerMill < ZOOM_MIN)
 			zoomFactorPerMill = ZOOM_MIN;
@@ -588,7 +628,9 @@ public class PdfViewerComposite extends Composite
 		if (logger.isDebugEnabled())
 			logger.debug("zoomPDFDocument: zoomFactor=" + zoomFactor + " viewOrigin.x=" + viewOrigin.x + " viewOrigin.y=" + viewOrigin.y);
 
+		viewDimensionCached = null;
 		propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_ZOOM_FACTOR, zoomBefore, this.zoomFactorPerMill);
+		propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_DIMENSION, viewDimensionBefore, getViewDimension());
 	}
 
 	public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
