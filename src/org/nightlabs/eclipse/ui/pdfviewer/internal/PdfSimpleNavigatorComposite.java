@@ -43,8 +43,12 @@ public class PdfSimpleNavigatorComposite extends Composite {
 		GridLayout gridLayout = new GridLayout(6, false);
 		this.setLayout(gridLayout);
 
-		Image arrowLeftDisabled = new Image(this.getDisplay(), "/home/frederik/workspace/jfire.1/org.nightlabs.eclipse.ui.pdfviewer/icons/editor/ArrowLeftDisabled.16x16.png");
-		Image arrowLeftEnabled = new Image(this.getDisplay(), "/home/frederik/workspace/jfire.1/org.nightlabs.eclipse.ui.pdfviewer/icons/editor/ArrowLeftEnabled.16x16.png");
+//		First: I don't have this path on my computer! Therefore, I can't use the PDF Viewer right now!!!
+//		Second: When creating an Image, you have to dispose it! Read Eclipse docs about images!
+//		Third: You might want to use the ImageRegistry of your Plugin (the "bundle activator")
+//		Finally: It's currently not used anyway, hence I comment it out. Marco.
+//		Image arrowLeftDisabled = new Image(this.getDisplay(), "/home/frederik/workspace/jfire.1/org.nightlabs.eclipse.ui.pdfviewer/icons/editor/ArrowLeftDisabled.16x16.png");
+//		Image arrowLeftEnabled = new Image(this.getDisplay(), "/home/frederik/workspace/jfire.1/org.nightlabs.eclipse.ui.pdfviewer/icons/editor/ArrowLeftEnabled.16x16.png");
 
 		gotoFirstPageButton = new Button(this, SWT.ARROW | SWT.UP);
 		decreasePageNumberButton = new Button(this, SWT.ARROW | SWT.LEFT);

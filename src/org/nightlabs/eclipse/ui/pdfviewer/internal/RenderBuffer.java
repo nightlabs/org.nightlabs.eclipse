@@ -84,8 +84,17 @@ public class RenderBuffer
 				bufferHeight / zoomFactor
 		);
 
-		// clear buffer => fill grey
 		Graphics2D graphics = (Graphics2D) bufferedImage.getGraphics();
+// We should enable anti-aliasing, if we switch to direct rendering (if we really ever do this):
+//		https://pdf-renderer.dev.java.net/examples.html
+//		(see "How do I draw a PDF directly to my own Graphics2D object?")
+//
+// With the current intermediate image, however, it doesn't make a difference (at least I saw none)
+// and it's not mentioned in the example.
+// Therefore, we leave the following line commented out for now. Marco.
+//		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+		// clear buffer => fill grey
 		graphics.setColor(pdfViewerComposite.getViewPanel().getBackground());
 		graphics.fillRect(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight());
 
@@ -133,31 +142,50 @@ public class RenderBuffer
 			if (pdfImageWidth < 1 || pdfImageHeight < 1) // skip a 0-height/width image
 				continue;
 
-			Image pdfImage = getPdfImage(
-					pdfPage,
-					pdfImageWidth,
-					pdfImageHeight,
-					clipLeftBottom
-			);
 
-			if (DUMP_IMAGE_PAGE)
-				printToImageFile(pdfImage, String.format("%s-pdfImage-%03d", dumpImageRenderID, pageNumber));
+			{ // render the PDF into an image and draw the image. this works fine except for occasional bugs like ImageObserver timeouts
+				Image pdfImage = getPdfImage(
+						pdfPage,
+						pdfImageWidth,
+						pdfImageHeight,
+						clipLeftBottom
+				);
 
-			// In contrast to clipLeftBottom clipAbsoluteLeftTop specifies the top-left point of the clip relative
-			// to the PdfDocument's complete coordinate system.
-			// PDF coordinate system begins from bottom-left point upwards, not from top-left point downwards
-			Rectangle2D.Double clipAbsoluteLeftTop = new Rectangle2D.Double();
-			clipAbsoluteLeftTop.x = pageBounds.getX() + clipLeftBottom.x;
-			clipAbsoluteLeftTop.y = pageBounds.getY() + pageBounds.getHeight() - (clipLeftBottom.y + clipLeftBottom.height);
-			clipAbsoluteLeftTop.width = clipLeftBottom.width;
-			clipAbsoluteLeftTop.height = clipLeftBottom.height;
+				if (DUMP_IMAGE_PAGE)
+					printToImageFile(pdfImage, String.format("%s-pdfImage-%03d", dumpImageRenderID, pageNumber));
 
-			drawImage(
-					graphics,
-					pdfImage,
-					(int) ((clipAbsoluteLeftTop.getX() - bufferedImageBounds.getX()) * zoomFactor),
-					(int) ((clipAbsoluteLeftTop.getY() - bufferedImageBounds.getY()) * zoomFactor)
-			);
+				// In contrast to clipLeftBottom clipAbsoluteLeftTop specifies the top-left point of the clip relative
+				// to the PdfDocument's complete coordinate system.
+				// PDF coordinate system begins from bottom-left point upwards, not from top-left point downwards
+				Rectangle2D.Double clipAbsoluteLeftTop = new Rectangle2D.Double();
+				clipAbsoluteLeftTop.x = pageBounds.getX() + clipLeftBottom.x;
+				clipAbsoluteLeftTop.y = pageBounds.getY() + pageBounds.getHeight() - (clipLeftBottom.y + clipLeftBottom.height);
+				clipAbsoluteLeftTop.width = clipLeftBottom.width;
+				clipAbsoluteLeftTop.height = clipLeftBottom.height;
+
+				drawImage(
+						graphics,
+						pdfImage,
+						(int) ((clipAbsoluteLeftTop.getX() - bufferedImageBounds.getX()) * zoomFactor),
+						(int) ((clipAbsoluteLeftTop.getY() - bufferedImageBounds.getY()) * zoomFactor)
+				);
+			}
+
+//			{ // render the PDF directly into the buffer - doesn't work, because I've no clue about the arguments necessary - and I'm too lazy now to find out what clip etc. I need (and how I can calculate it). Marco. 
+//				PDFRenderer pdfRenderer = new PDFRenderer(
+//						pdfPage,
+//						graphics,
+//						new Rectangle(pdfImageWidth, pdfImageHeight), // WHAT NEEDS TO BE HERE?
+//						clipLeftBottom, // WHAT NEEDS TO BE HERE?
+//						pdfViewerComposite.getViewPanel().getBackground()
+//				);
+//				try {
+//					pdfPage.waitForFinish();
+//				} catch (InterruptedException e) {
+//					throw new RuntimeException(e); // TODO what the hell should we do? does this ever happen in normal operation?
+//				}
+//				pdfRenderer.run();
+//			}
 
 			graphics.setColor(Color.BLACK);
 			graphics.drawRect(
