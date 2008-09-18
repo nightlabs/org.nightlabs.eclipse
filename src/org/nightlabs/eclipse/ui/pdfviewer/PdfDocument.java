@@ -47,6 +47,18 @@ public interface PdfDocument
 	Collection<Integer> getVisiblePages(Rectangle2D bounds);
 
 	/**
+	 * Get the page number (1-based) of that page that fills out the largest part of the given bounds (in percentage)
+	 * in comparison to all other pages that are also partly or wholly visible within the given bounds.
+	 * <p>
+	 * If two or more pages have the same percentage, the page with the lowest page number is chosen as most visible page.
+	 * </p>
+	 *
+	 * @param bounds coordinates of the area of interest in the real coordinate system.
+	 * @return the page that is the most visible (i.e. has the highest percentage of visible area) or -1, if there is no page visible in the given area at all.
+	 */
+	int getMostVisiblePage(Rectangle2D bounds);
+
+	/**
 	 * Get the page bounds (i.e. location and size) in real coordinates (absolute in the coordinate
 	 * system of the <code>PdfDocument</code> implementation) of the specified page.
 	 *
@@ -54,8 +66,10 @@ public interface PdfDocument
 	 * @return the bounds of the specified page. {@link Rectangle2D#getX()} and {@link Rectangle2D#getY()}
 	 * specify the top left corner of the page; {@link Rectangle2D#getWidth()} and {@link Rectangle2D#getHeight()}
 	 * specify the page's size.
+	 * @throws IndexOutOfBoundsException if there is no page with the specified <code>pageNumber</code> (i.e. the <code>pageNumber</code> is out of range).
 	 */
-	Rectangle2D getPageBounds(int pageNumber);
+	Rectangle2D getPageBounds(int pageNumber)
+	throws IndexOutOfBoundsException;
 
 	/**
 	 * Get the size of the complete document. Since the document always starts with (0, 0) being

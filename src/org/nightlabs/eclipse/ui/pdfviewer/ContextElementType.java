@@ -2,6 +2,11 @@ package org.nightlabs.eclipse.ui.pdfviewer;
 
 import org.nightlabs.eclipse.ui.pdfviewer.internal.Util;
 
+
+/**
+ *
+ */
+
 public class ContextElementType<T extends ContextElement<?>>
 {
 	private Class<T> contextElementBaseClass;

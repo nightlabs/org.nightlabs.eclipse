@@ -85,6 +85,8 @@ public class PdfViewer
 	 */
 	public static final String PROPERTY_PDF_DOCUMENT = "pdfDocument";
 
+	public static final String PROPERTY_CURRENT_PAGE = "currentPage";
+
 	private PdfDocument pdfDocument;
 	private PdfViewerComposite pdfViewerComposite;
 
@@ -167,17 +169,14 @@ public class PdfViewer
 
 	public PdfViewer() { }
 
-	public Control createControl(Composite parent)
-	{
+	public Control createControl(Composite parent) {
 		assertValidThread();
-		if (this.pdfViewerComposite != null)
-			this.pdfViewerComposite.dispose();
 
-		this.pdfViewerComposite = new PdfViewerComposite(parent);
-		this.pdfViewerComposite.setViewOrigin(viewOrigin);
-		this.pdfViewerComposite.setZoomFactorPerMill(zoomFactorPerMill);
-		this.pdfViewerComposite.setPdfDocument(pdfDocument); // just in case, the document was set before this method.
-//		viewOrigin.setLocation(this.pdfViewerComposite.getViewOrigin());
+		if (this.pdfViewerComposite != null) {
+			this.pdfViewerComposite.dispose();
+		}
+
+		this.pdfViewerComposite = new PdfViewerComposite(parent, this);
 
 		this.pdfViewerComposite.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
@@ -186,14 +185,23 @@ public class PdfViewer
 
 				// We handle some values BEFORE the event is propagated to the outside (the API clients) in order to
 				// ensure that the local copies of these values are already updated.
-				if (PROPERTY_VIEW_ORIGIN.equals(event.getPropertyName()))
-					viewOrigin.setLocation((Point2D) event.getNewValue());
-				else if (PROPERTY_ZOOM_FACTOR.equals(event.getPropertyName()))
+				if (PROPERTY_VIEW_ORIGIN.equals(event.getPropertyName())) {
+					viewOrigin = (Point2DDouble) event.getNewValue();
+					if (!viewOrigin.isReadOnly()) {
+						throw new IllegalStateException("Why the hell is this viewOrigin not immutable???!!!");
+					}
+				}
+				else if (PROPERTY_ZOOM_FACTOR.equals(event.getPropertyName())) {
 					zoomFactorPerMill = ((Integer) event.getNewValue()).intValue();
+				}
 
 				propertyChangeSupport.firePropertyChange(event.getPropertyName(), event.getOldValue(), event.getNewValue());
 			}
 		});
+
+		this.pdfViewerComposite.setViewOrigin(viewOrigin);
+		this.pdfViewerComposite.setZoomFactorPerMill(zoomFactorPerMill);
+		this.pdfViewerComposite.setPdfDocument(pdfDocument); // just in case the document was set before this method.
 
 		return this.pdfViewerComposite;
 	}
@@ -236,7 +244,12 @@ public class PdfViewer
 		propertyChangeSupport.firePropertyChange(PROPERTY_PDF_DOCUMENT, oldPdfDocument, this.pdfDocument);
 	}
 
-	private Point2D viewOrigin = new Point2D.Double();
+	private Point2DDouble viewOrigin;
+	{
+		viewOrigin = new Point2DDouble();
+		viewOrigin.setReadOnly();
+	}
+
 	private int zoomFactorPerMill = 1000;
 
 	/**
@@ -294,10 +307,13 @@ public class PdfViewer
 	public void setViewOrigin(Point2D viewOrigin) {
 		assertValidThread();
 
-		this.viewOrigin.setLocation(viewOrigin);
-
 		if (pdfViewerComposite != null)
 			pdfViewerComposite.setViewOrigin(viewOrigin);
+		else {
+			Point2DDouble newViewOrigin = new Point2DDouble(viewOrigin);
+			newViewOrigin.setReadOnly();
+			this.viewOrigin = newViewOrigin;
+		}
 	}
 
 	/**
@@ -366,9 +382,22 @@ public class PdfViewer
 	public void setZoomFactorPerMill(int zoomFactorPerMill) {
 		assertValidThread();
 
-		this.zoomFactorPerMill = zoomFactorPerMill;
-
 		if (pdfViewerComposite != null)
 			pdfViewerComposite.setZoomFactorPerMill(zoomFactorPerMill);
+		else
+			this.zoomFactorPerMill = zoomFactorPerMill;
 	}
+
+	public int getCurrentPage() {
+		if (pdfViewerComposite == null)
+			return -1; // TODO use local mirror variable
+	    return pdfViewerComposite.getCurrentPage();
+    }
+
+	public void setCurrentPage(int currentPage) {
+		if (pdfViewerComposite != null)
+			pdfViewerComposite.setCurrentPage(currentPage);
+		else
+			; // TODO use local mirror variable
+    }
 }

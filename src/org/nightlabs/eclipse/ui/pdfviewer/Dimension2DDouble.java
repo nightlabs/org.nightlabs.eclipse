@@ -16,6 +16,7 @@ import java.awt.geom.Point2D;
  */
 public class Dimension2DDouble extends Dimension2D
 {
+	private volatile boolean readOnly;
 	private double width;
 	private double height;
 
@@ -31,7 +32,16 @@ public class Dimension2DDouble extends Dimension2D
 		return width;
 	}
 
-	public void setWidth(double width) {
+	private void assertNotReadOnly()
+	{
+		if (readOnly)
+			throw new UnsupportedOperationException("This instance of Dimension2DDouble is read-only!");
+	}
+
+	public void setWidth(double width)
+	{
+		assertNotReadOnly();
+
 		this.width = width;
 	}
 
@@ -41,11 +51,16 @@ public class Dimension2DDouble extends Dimension2D
 	}
 
 	public void setHeight(double height) {
+		assertNotReadOnly();
+
 		this.height = height;
 	}
-	
+
 	@Override
-	public void setSize(double width, double height) {
+	public void setSize(double width, double height)
+	{
+		assertNotReadOnly();
+
 		this.width = width;
 		this.height = height;
 	}
@@ -65,4 +80,16 @@ public class Dimension2DDouble extends Dimension2D
 		long hbits = Double.doubleToLongBits(height);
 		return (int)(wbits ^ (wbits >>> 32)) * 31 ^ (int)(hbits ^ (hbits >>> 32));
 	}
+
+	@Override
+	public String toString() {
+	    return getClass().getName() + '@' + Integer.toHexString(System.identityHashCode(this)) + '[' + width + ',' + height + ']';
+	}
+
+	public void setReadOnly() {
+	    this.readOnly = true;
+    }
+	public boolean isReadOnly() {
+	    return readOnly;
+    }
 }

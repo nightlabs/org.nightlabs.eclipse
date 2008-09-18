@@ -23,7 +23,7 @@ import com.sun.pdfview.PDFPage;
  * @author frederik loeser - frederik at nightlabs dot de
  * @author marco schulze - marco at nightlabs dot de
  */
-public class OneDimensionalPdfDocument implements PdfDocument
+public class OneDimensionalPdfDocument extends AbstractPdfDocument
 {
 	private static final Logger logger = Logger.getLogger(OneDimensionalPdfDocument.class);
 	private static final int MARGIN = 20; // DOT = 1/72 inch
@@ -378,4 +378,5 @@ public class OneDimensionalPdfDocument implements PdfDocument
 	public Layout getLayout() {
 		return layout;
 	}
+
 }

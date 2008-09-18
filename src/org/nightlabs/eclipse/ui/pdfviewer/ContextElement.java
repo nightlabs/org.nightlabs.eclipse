@@ -1,7 +1,7 @@
 package org.nightlabs.eclipse.ui.pdfviewer;
 
 /**
- * A context-element is an UI element that interacts with a {@link PdfViewer}.
+ * A context-element is a UI element that interacts with a {@link PdfViewer}.
  * <p>
  * When implementing a <code>ContextElement</code>, you should register in the {@link PdfViewer}
  * via {@link PdfViewer#registerContextElement(ContextElement)} as soon
@@ -20,6 +20,7 @@ package org.nightlabs.eclipse.ui.pdfviewer;
  * {@link PdfViewer#getContextElements(ContextElementType)}.
  * </p>
  *
+ * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
  */
 public interface ContextElement<T extends ContextElement<T>> {
@@ -28,7 +29,7 @@ public interface ContextElement<T extends ContextElement<T>> {
 	PdfViewer getPdfViewer();
 
 	/**
-	 * Callback method that is triggered when a {@link ContextElement} is unregistered from its {@link PdfViewer}.
+	 * Call-back method that is triggered when a {@link ContextElement} is unregistered from its {@link PdfViewer}.
 	 * In your implementation of <code>ContextElement</code> you should perform clean-up operations, for example
 	 * remove all listeners that you registered in the <code>PdfViewer</code> before.
 	 */

@@ -9,14 +9,11 @@ import org.eclipse.swt.widgets.Display;
 import org.nightlabs.eclipse.ui.pdfviewer.internal.PdfSimpleNavigatorComposite;
 
 
-public class PdfSimpleNavigator
-implements ContextElement<PdfSimpleNavigator>
-{
-	public static final ContextElementType<PdfSimpleNavigator> CONTEXT_ELEMENT_TYPE = new ContextElementType<PdfSimpleNavigator>(PdfSimpleNavigator.class);
+public class PdfSimpleNavigator implements ContextElement<PdfSimpleNavigator> {
 
+	public static final ContextElementType<PdfSimpleNavigator> CONTEXT_ELEMENT_TYPE = new ContextElementType<PdfSimpleNavigator>(PdfSimpleNavigator.class);
 	private PdfViewer pdfViewer;
 	private PdfDocument pdfDocument;
-//	private PDFFile pdfFile;
 	private String contextElementId;
 	private PdfSimpleNavigatorComposite pdfSimpleNavigatorComposite;
 
@@ -35,19 +32,29 @@ implements ContextElement<PdfSimpleNavigator>
 	 * @param pdfViewer the {@link PdfViewer} for which to create a <code>PdfSimpleNavigator</code>.
 	 * @param contextElementId the identifier, if multiple instances shall be used, or <code>null</code>.
 	 */
-	public PdfSimpleNavigator(PdfViewer pdfViewer, String contextElementId)
-	{
+	public PdfSimpleNavigator(PdfViewer pdfViewer, String contextElementId) {
 		assertValidThread();
 
-		if (pdfViewer == null)
+		if (pdfViewer == null) {
 			throw new IllegalArgumentException("pdfViewer must not be null!");
+		}
 
 		this.pdfViewer = pdfViewer;
 		this.contextElementId = contextElementId;
 		pdfViewer.registerContextElement(this);
 		this.setPdfDocument(pdfViewer.getPdfDocument()); // pdfViewer.getPdfDocument() can return null!
 		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_PDF_DOCUMENT, propertyChangeListenerPdfDocument);
+		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_CURRENT_PAGE, propertyChangeListenerCurrentPage);
+
 	}
+
+	private PropertyChangeListener propertyChangeListenerCurrentPage = new PropertyChangeListener() {
+		@Override
+        public void propertyChange(PropertyChangeEvent event) {
+			pdfSimpleNavigatorComposite.getCurrentPageNumberText().setText(String.valueOf(event.getNewValue()));
+        }
+	};
+
 
 	private PropertyChangeListener propertyChangeListenerPdfDocument = new PropertyChangeListener() {
 		@Override
@@ -59,22 +66,23 @@ implements ContextElement<PdfSimpleNavigator>
 	@Override
 	public void onUnregisterContextElement() {
 	    pdfViewer.removePropertyChangeListener(PdfViewer.PROPERTY_PDF_DOCUMENT, propertyChangeListenerPdfDocument);
+	    pdfViewer.removePropertyChangeListener(PdfViewer.PROPERTY_CURRENT_PAGE, propertyChangeListenerCurrentPage);
 	    pdfViewer = null; // ensure we can't do anything with it anymore - the pdfViewer forgot this instance already - so we forget it, too.
 	}
 
 	private static void assertValidThread()
 	{
-		if (Display.getCurrent() == null)
+		if (Display.getCurrent() == null) {
 			throw new IllegalStateException("Wrong thread! This method must be called on the SWT UI thread!");
+		}
 	}
 
-	public Control createControl(Composite parent)
-	{
+	public Control createControl(Composite parent) {
 		assertValidThread();
-		if (this.pdfSimpleNavigatorComposite != null)
-			this.pdfSimpleNavigatorComposite.dispose();
 
-//		this.pdfSimpleNavigatorComposite = new PdfSimpleNavigatorComposite(parent);
+		if (this.pdfSimpleNavigatorComposite != null) {
+			this.pdfSimpleNavigatorComposite.dispose();
+		}
 		this.pdfSimpleNavigatorComposite = new PdfSimpleNavigatorComposite(parent, this);
 		pdfSimpleNavigatorComposite.setPdfDocument(pdfDocument);
 
@@ -83,17 +91,15 @@ implements ContextElement<PdfSimpleNavigator>
 
 	public PdfDocument getPdfDocument() {
 		assertValidThread();
-
 		return pdfDocument;
 	}
 
 	protected void setPdfDocument(PdfDocument pdfDocument) {
 		assertValidThread();
-
 		this.pdfDocument = pdfDocument;
-//		this.pdfFile = pdfDocument == null ? null : pdfDocument.getPdfFile();
-		if (pdfSimpleNavigatorComposite != null)
+		if (pdfSimpleNavigatorComposite != null) {
 			pdfSimpleNavigatorComposite.setPdfDocument(pdfDocument);
+		}
 	}
 
 //	public PDFFile getPdfFile() {

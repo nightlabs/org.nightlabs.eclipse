@@ -1,8 +1,5 @@
 package org.nightlabs.eclipse.ui.pdfviewer.internal;
 
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -10,7 +7,8 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -34,27 +32,32 @@ public class PdfSimpleNavigatorComposite extends Composite {
 	private int numberOfPages;
 	private ModifyListenerImpl modifyListenerImpl;
 
+
 //	public PdfSimpleNavigatorComposite(Composite parent, int style, PDFFile pdfFile, PdfDocument pdfDocument) {
 	public PdfSimpleNavigatorComposite(Composite parent, PdfSimpleNavigator pdfSimpleNavigator) {
 		super(parent, SWT.NONE);
 		this.pdfSimpleNavigator = pdfSimpleNavigator;
 
 		numberOfPages = 0;
-		// TODO Auto-generated constructor stub
 
-		RowLayout rowLayout = new RowLayout();
-		this.setLayout(rowLayout);
+		GridLayout gridLayout = new GridLayout(6, false);
+		this.setLayout(gridLayout);
+
+		Image arrowLeftDisabled = new Image(this.getDisplay(), "/home/frederik/workspace/jfire.1/org.nightlabs.eclipse.ui.pdfviewer/icons/editor/ArrowLeftDisabled.16x16.png");
+		Image arrowLeftEnabled = new Image(this.getDisplay(), "/home/frederik/workspace/jfire.1/org.nightlabs.eclipse.ui.pdfviewer/icons/editor/ArrowLeftEnabled.16x16.png");
 
 		gotoFirstPageButton = new Button(this, SWT.ARROW | SWT.UP);
 		decreasePageNumberButton = new Button(this, SWT.ARROW | SWT.LEFT);
 		currentPageNumberText = new Text(this, SWT.BORDER);
-		modifyListenerImpl = new ModifyListenerImpl();
-		currentPageNumberText.addModifyListener(modifyListenerImpl);
 		label = new Label(this, SWT.NONE);
 		increasePageNumberButton = new Button(this, SWT.ARROW | SWT.RIGHT);
 		gotoLastPageButton = new Button(this, SWT.ARROW | SWT.DOWN);
 
 		setInitialControlValues();
+
+		modifyListenerImpl = new ModifyListenerImpl();
+		currentPageNumberText.addModifyListener(modifyListenerImpl);
+
 
 		gotoFirstPageButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -137,9 +140,7 @@ public class PdfSimpleNavigatorComposite extends Composite {
 					increasePageNumberButton.setEnabled(true);
 				}
 			}
-
 			scrollToPage(chosenPageNumber);
-
 		}
 		else {
 			currentPageNumberText.setText(String.valueOf(oldPageNumber));
@@ -148,18 +149,17 @@ public class PdfSimpleNavigatorComposite extends Composite {
 		currentPageNumberText.addModifyListener(modifyListenerImpl);
 	}
 
-	private void scrollToPage(int chosenPageNumber) {
+	private void scrollToPage(int pageNumber) {
 		// TODO test page number for validity
-		if (chosenPageNumber > 0) {
-			Rectangle2D chosenPageBounds = pdfDocument.getPageBounds(chosenPageNumber);
-			pdfSimpleNavigator.getPdfViewer().setViewOrigin(new Point2D.Double(chosenPageBounds.getMinX(), chosenPageBounds.getMinY()));
-		}
+//		if (pageNumber > 0) {
+			pdfSimpleNavigator.getPdfViewer().setCurrentPage(pageNumber);
+//		}
 	}
 
 	private void setInitialControlValues() {
 		decreasePageNumberButton.setEnabled(false);
-		currentPageNumberText.setText(String.valueOf(0));
-		label.setText(" / 0");
+		currentPageNumberText.setText(String.valueOf(1));
+		label.setText(" / 1");
 		increasePageNumberButton.setEnabled(false);
 	}
 
@@ -202,7 +202,15 @@ public class PdfSimpleNavigatorComposite extends Composite {
 				gotoPage(numberOfPages, chosenPageNumber);
 			}
         }
-	};
+	}
+
+	public Text getCurrentPageNumberText() {
+    	return currentPageNumberText;
+    }
+
+	public void setCurrentPageNumberText(Text currentPageNumberText) {
+    	this.currentPageNumberText = currentPageNumberText;
+    };
 
 
 }
