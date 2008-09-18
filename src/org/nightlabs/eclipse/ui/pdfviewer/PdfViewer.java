@@ -61,7 +61,7 @@ public class PdfViewer
 	 * <p>
 	 * {@link PropertyChangeEvent#getNewValue()} returns the new zoom factor (an instance of {@link Integer})
 	 * and {@link PropertyChangeEvent#getOldValue()} returns the view origin before the change happened
-	 * (an instance of {@link Integer}, too). The zoom factor returned is the value in ‰ [per mill] (e.g. a value of 1000 means
+	 * (an instance of {@link Integer}, too). The zoom factor returned is the value in &permil; [per mill] (e.g. a value of 1000 means
 	 * 100% = 1.0).
 	 * </p>
 	 *
@@ -359,14 +359,14 @@ public class PdfViewer
 	}
 
 	/**
-	 * Get the zoom factor in ‰ (1/1000). A zoom of 1000 ‰ (= 1.0) means that
+	 * Get the zoom factor in &permil; (1/1000). A zoom of 1000 &permil; (= 1.0) means that
 	 * a document is shown in the same size as it is in real life (e.g. when printed).
 	 * This is done by taking the screen resolution into account and calculating a
 	 * zoom-correction-factor (see {@link #getZoomScreenResolutionFactorX()}
 	 * and {@link #getZoomScreenResolutionFactorY()}) that's multiplied with the zoom factor
 	 * whenever a calculation containing the zoom is done.
 	 *
-	 * @return the zoom factor in ‰.
+	 * @return the zoom factor in &permil;.
 	 * @see #setZoomFactorPerMill(int)
 	 */
 	public int getZoomFactorPerMill() {
@@ -376,11 +376,11 @@ public class PdfViewer
 	}
 
 	/**
-	 * Set the zoom factor in ‰ (1/1000). This will cause
+	 * Set the zoom factor in &permil; (1/1000). This will cause
 	 * a {@link PropertyChangeEvent} to be propagated for the property
 	 * {@link #PROPERTY_ZOOM_FACTOR}.
 	 *
-	 * @param zoomFactorPerMill the zoom factor in ‰.
+	 * @param zoomFactorPerMill the zoom factor in &permil;.
 	 * @see #getZoomFactorPerMill()
 	 * @see #PROPERTY_ZOOM_FACTOR
 	 */

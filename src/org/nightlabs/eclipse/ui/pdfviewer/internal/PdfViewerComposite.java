@@ -76,7 +76,7 @@ public class PdfViewerComposite extends Composite
 	private Point2DDouble viewOrigin;
 
 	/**
-	 * The zoom factor in ‰ (1/1000).PdfDocument
+	 * The zoom factor in &permil; (1/1000).
 	 */
 	private int zoomFactorPerMill = 1000;
 
@@ -639,9 +639,9 @@ public class PdfViewerComposite extends Composite
 	}
 
 	/**
-	 * Get the zoom factor in ‰ (1/1000).
+	 * Get the zoom factor in &permil; (1/1000).
 	 *
-	 * @return the zoom factor in ‰.
+	 * @return the zoom factor in &permil;.
 	 */
 	public int getZoomFactorPerMill() {
 		return zoomFactorPerMill;
