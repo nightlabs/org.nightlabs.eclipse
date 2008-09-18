@@ -61,8 +61,8 @@ public class RenderThread extends Thread
 				Rectangle2D viewRegion = new Rectangle2D.Double(
 						pdfViewerComposite.getViewOrigin().getX(),
 						pdfViewerComposite.getViewOrigin().getY(),
-						pdfViewerComposite.getViewPanel().getWidth() / zoomFactor,
-						pdfViewerComposite.getViewPanel().getHeight() / zoomFactor
+						pdfViewerComposite.getViewPanel().getWidth() / (zoomFactor * getZoomScreenResolutionFactorX()),
+						pdfViewerComposite.getViewPanel().getHeight() / (zoomFactor * getZoomScreenResolutionFactorY())
 				);
 
 				int bufferWidth = (int) (pdfViewerComposite.getViewPanel().getWidth() * RenderBuffer.BUFFER_WIDTH_FACTOR);
@@ -99,8 +99,8 @@ public class RenderThread extends Thread
 						renderBuffer.render(
 								bufferWidth,
 								bufferHeight,
-								(int) (viewRegion.getCenterX() - bufferWidth / 2.0d / zoomFactor),
-								(int) (viewRegion.getCenterY() - bufferHeight / 2.0d / zoomFactor),
+								(int) (viewRegion.getCenterX() - bufferWidth / 2.0d / (zoomFactor * getZoomScreenResolutionFactorX())),
+								(int) (viewRegion.getCenterY() - bufferHeight / 2.0d / (zoomFactor * getZoomScreenResolutionFactorY())),
 								zoomFactor
 						);
 						SwingUtilities.invokeLater(new Runnable() {
@@ -136,8 +136,14 @@ public class RenderThread extends Thread
 			}
 		}
 	}
+	
+	public double getZoomScreenResolutionFactorX()
+	{
+		return pdfViewerComposite.getZoomScreenResolutionFactorX();
+	}
+
+	public double getZoomScreenResolutionFactorY()
+	{
+		return pdfViewerComposite.getZoomScreenResolutionFactorY();
+	}
 }
-
-
-
-

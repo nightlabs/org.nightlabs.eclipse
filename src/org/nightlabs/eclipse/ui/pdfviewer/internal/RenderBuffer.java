@@ -80,8 +80,8 @@ public class RenderBuffer
 		Rectangle2D.Double bufferedImageBounds = new Rectangle2D.Double(
 				posX,
 				posY,
-				bufferWidth / zoomFactor,
-				bufferHeight / zoomFactor
+				bufferWidth / (zoomFactor * getZoomScreenResolutionFactorX()),
+				bufferHeight / (zoomFactor * getZoomScreenResolutionFactorY())
 		);
 
 		Graphics2D graphics = (Graphics2D) bufferedImage.getGraphics();
@@ -105,8 +105,8 @@ public class RenderBuffer
 			Rectangle2D pageBounds = pdfDocument.getPageBounds(pageNumber);
 			PDFPage pdfPage = pdfDocument.getPdfFile().getPage(pageNumber);
 
-			int pdfImageWidth = (int) (pageBounds.getWidth() * zoomFactor);
-			int pdfImageHeight = (int) (pageBounds.getHeight() * zoomFactor);
+			int pdfImageWidth = (int) (pageBounds.getWidth() * zoomFactor * getZoomScreenResolutionFactorX());
+			int pdfImageHeight = (int) (pageBounds.getHeight() * zoomFactor * getZoomScreenResolutionFactorY());
 
 			// PDF coordinate system begins from bottom-left point upwards, not from top-left point downwards
 			Rectangle2D.Double clipLeftBottom = new Rectangle2D.Double(0, 0, 0, 0);
@@ -115,26 +115,26 @@ public class RenderBuffer
 
 			if (pageBounds.getMinX() < bufferedImageBounds.getMinX()) {
 				double d = bufferedImageBounds.getMinX() - pageBounds.getMinX();
-				pdfImageWidth -= d * zoomFactor;
+				pdfImageWidth -= d * zoomFactor * getZoomScreenResolutionFactorX();
 				clipLeftBottom.x = d;
 				clipLeftBottom.width -= d;
 			}
 
 			if (pageBounds.getMinY() < bufferedImageBounds.getMinY()) {
 				double d = bufferedImageBounds.getMinY() - pageBounds.getMinY();
-				pdfImageHeight -= d * zoomFactor;
+				pdfImageHeight -= d * zoomFactor * getZoomScreenResolutionFactorY();
 				clipLeftBottom.height -= d;
 			}
 
 			if (pageBounds.getMaxX() > bufferedImageBounds.getMaxX()) {
 				double d = pageBounds.getMaxX() - bufferedImageBounds.getMaxX();
-				pdfImageWidth -= d * zoomFactor;
+				pdfImageWidth -= d * zoomFactor * getZoomScreenResolutionFactorX();
 				clipLeftBottom.width -= d;
 			}
 
 			if (pageBounds.getMaxY() > bufferedImageBounds.getMaxY()) {
 				double d = pageBounds.getMaxY() - bufferedImageBounds.getMaxY();
-				pdfImageHeight -= d * zoomFactor;
+				pdfImageHeight -= d * zoomFactor * getZoomScreenResolutionFactorY();
 				clipLeftBottom.height -= d;
 				clipLeftBottom.y = d;
 			}
@@ -166,8 +166,8 @@ public class RenderBuffer
 				drawImage(
 						graphics,
 						pdfImage,
-						(int) ((clipAbsoluteLeftTop.getX() - bufferedImageBounds.getX()) * zoomFactor),
-						(int) ((clipAbsoluteLeftTop.getY() - bufferedImageBounds.getY()) * zoomFactor)
+						(int) ((clipAbsoluteLeftTop.getX() - bufferedImageBounds.getX()) * zoomFactor * getZoomScreenResolutionFactorX()),
+						(int) ((clipAbsoluteLeftTop.getY() - bufferedImageBounds.getY()) * zoomFactor * getZoomScreenResolutionFactorY())
 				);
 			}
 
@@ -189,10 +189,10 @@ public class RenderBuffer
 
 			graphics.setColor(Color.BLACK);
 			graphics.drawRect(
-					(int) ((pageBounds.getX() - bufferedImageBounds.getX()) * zoomFactor),
-					(int) ((pageBounds.getY() - bufferedImageBounds.getY()) * zoomFactor),
-					(int) (pageBounds.getWidth() * zoomFactor),
-					(int) (pageBounds.getHeight() * zoomFactor)
+					(int) ((pageBounds.getX() - bufferedImageBounds.getX()) * zoomFactor * getZoomScreenResolutionFactorX()),
+					(int) ((pageBounds.getY() - bufferedImageBounds.getY()) * zoomFactor * getZoomScreenResolutionFactorY()),
+					(int) (pageBounds.getWidth() * zoomFactor * getZoomScreenResolutionFactorX()),
+					(int) (pageBounds.getHeight() * zoomFactor * getZoomScreenResolutionFactorY())
 			);
 		} // for (Integer pageNumber : bufferedImagePageNumbers) {
 
@@ -355,28 +355,28 @@ public class RenderBuffer
 				bufferSufficient = false;
 			else {
 
-				sourceX1 = (int) ((region.getMinX() - bufferedImageBounds.getMinX()) * zoomFactor);
-				sourceY1 = (int) ((region.getMinY() - bufferedImageBounds.getMinY()) * zoomFactor);
+				sourceX1 = (int) ((region.getMinX() - bufferedImageBounds.getMinX()) * zoomFactor * getZoomScreenResolutionFactorX());
+				sourceY1 = (int) ((region.getMinY() - bufferedImageBounds.getMinY()) * zoomFactor * getZoomScreenResolutionFactorY());
 
 				if (bufferedImageBounds.getMinX() > region.getMinX()) {
 					sourceX1 = 0;
-					destinationX1 = (int) ((bufferedImageBounds.getMinX() - region.getMinX()) * zoomFactor);
+					destinationX1 = (int) ((bufferedImageBounds.getMinX() - region.getMinX()) * zoomFactor * getZoomScreenResolutionFactorX());
 					bufferSufficient = false;
 				}
 
 				if (bufferedImageBounds.getMinY() > region.getMinY()) {
 					sourceY1 = 0;
-					destinationY1 = (int) ((bufferedImageBounds.getMinY() - region.getMinY()) * zoomFactor);
+					destinationY1 = (int) ((bufferedImageBounds.getMinY() - region.getMinY()) * zoomFactor * getZoomScreenResolutionFactorY());
 					bufferSufficient = false;
 				}
 
 				if (bufferedImageBounds.getMaxX() < region.getMaxX()) {
-					destinationX2 = graphics2DWidth - (int) ((region.getMaxX() - bufferedImageBounds.getMaxX()) * zoomFactor);
+					destinationX2 = graphics2DWidth - (int) ((region.getMaxX() - bufferedImageBounds.getMaxX()) * zoomFactor * getZoomScreenResolutionFactorX());
 					bufferSufficient = false;
 				}
 
 				if (bufferedImageBounds.getMaxY() < region.getMaxY()) {
-					destinationY2 = graphics2DHeight - (int) ((region.getMaxY() - bufferedImageBounds.getMaxY()) * zoomFactor);
+					destinationY2 = graphics2DHeight - (int) ((region.getMaxY() - bufferedImageBounds.getMaxY()) * zoomFactor * getZoomScreenResolutionFactorY());
 					bufferSufficient = false;
 				}
 
@@ -397,10 +397,10 @@ public class RenderBuffer
 				for (Integer pageNumber : visiblePages) {
 					Rectangle2D page = pdfDocument.getPageBounds(pageNumber);
 
-					int x = (int) ((page.getX() - region.getX()) * requestedZoomFactor);
-					int y = (int) ((page.getY() - region.getY()) * requestedZoomFactor);
-					int w = (int) (page.getWidth() * requestedZoomFactor);
-					int h = (int) (page.getHeight() * requestedZoomFactor);
+					int x = (int) ((page.getX() - region.getX()) * requestedZoomFactor * getZoomScreenResolutionFactorX());
+					int y = (int) ((page.getY() - region.getY()) * requestedZoomFactor * getZoomScreenResolutionFactorY());
+					int w = (int) (page.getWidth() * requestedZoomFactor * getZoomScreenResolutionFactorX());
+					int h = (int) (page.getHeight() * requestedZoomFactor * getZoomScreenResolutionFactorY());
 
 					// draw empty page (border)
 					graphics2D.setColor(COLOR_DRAFT_PAGE_BORDER);
@@ -541,4 +541,13 @@ public class RenderBuffer
 		return zoomFactor;
 	}
 
+	public double getZoomScreenResolutionFactorX()
+	{
+		return pdfViewerComposite.getZoomScreenResolutionFactorX();
+	}
+
+	public double getZoomScreenResolutionFactorY()
+	{
+		return pdfViewerComposite.getZoomScreenResolutionFactorY();
+	}
 }

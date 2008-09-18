@@ -29,6 +29,7 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -142,18 +143,25 @@ public class PdfViewerComposite extends Composite
 
 		rectangleView = new Rectangle2D.Double();
 
-//		renderBuffer = new RenderBuffer(this, pdfDocument);
 		viewPanelComposite = new Composite(this, SWT.EMBEDDED | SWT.V_SCROLL | SWT.H_SCROLL) {
 			@Override
 			public boolean setFocus() {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						viewPanel.requestFocus();
+						if (viewPanel != null)
+							viewPanel.requestFocus();
 					}
 				});
 				return true;
 			}
 		};
+		
+		// Initialize the zoom-screen-resolution factors already here (not lazily in the get methods)
+		// so that the getters can be called on every thread (e.g. by the RenderBuffer which is
+		// partially used on the RenderThread).
+		Point screenDPI = getDisplay().getDPI();
+		zoomScreenResolutionFactorX = (double)screenDPI.x / 72;
+		zoomScreenResolutionFactorY = (double)screenDPI.y / 72;
 
 		viewOrigin = new Point2DDouble();
 		viewOrigin.setReadOnly();
@@ -245,7 +253,7 @@ public class PdfViewerComposite extends Composite
 					if (newViewOrigin == null)
 						newViewOrigin = new Point2DDouble(viewOriginBefore);
 
-					newViewOrigin.setX(middleX - viewPanel.getWidth() / 2 / ((double)zoomFactorPerMill / 1000));
+					newViewOrigin.setX(middleX - viewPanel.getWidth() / 2 / ((double)zoomFactorPerMill * getZoomScreenResolutionFactorX() / 1000));
 				}
 
 				if (centerVertically) {
@@ -254,7 +262,7 @@ public class PdfViewerComposite extends Composite
 					if (newViewOrigin == null)
 						newViewOrigin = new Point2DDouble(viewOriginBefore);
 
-					newViewOrigin.setY(middleY - viewPanel.getHeight() / 2 / ((double)zoomFactorPerMill / 1000));
+					newViewOrigin.setY(middleY - viewPanel.getHeight() / 2 / ((double)zoomFactorPerMill * getZoomScreenResolutionFactorY() / 1000));
 				}
 
 				viewDimensionCached = null;
@@ -363,7 +371,7 @@ public class PdfViewerComposite extends Composite
 		if (logger.isDebugEnabled()) {
 			logger.debug("scrollVertically: scrollBarVerticalSelectionNew=" + scrollBarVertical.getSelection());
 			logger.debug("scrollVertically: newViewOrigin.y=" + newViewOrigin.getY());
-			logger.debug("scrollVertically: bottomRealY=" + (newViewOrigin.getY() + viewPanel.getHeight() / ((double)zoomFactorPerMill / 1000)));
+			logger.debug("scrollVertically: bottomRealY=" + (newViewOrigin.getY() + viewPanel.getHeight() / ((double)zoomFactorPerMill * getZoomScreenResolutionFactorY() / 1000)));
 		}
 
 		centerVertically = false;
@@ -430,7 +438,7 @@ public class PdfViewerComposite extends Composite
 
 				double zoomFactor = (zoomFactorPerMill / 1000d);
 
-				int visibleAreaScrollHeight = (int) (getViewPanel().getHeight() / zoomFactor) / scrollBarDivisor;
+				int visibleAreaScrollHeight = (int) (getViewPanel().getHeight() / (zoomFactor * getZoomScreenResolutionFactorY())) / scrollBarDivisor;
 				scrollBarVertical.setMinimum(0);
 				scrollBarVertical.setMaximum((int) pdfDocument.getDocumentDimension().getHeight() / scrollBarDivisor);
 				scrollBarVertical.setSelection((int) (viewOrigin.getY() / scrollBarDivisor));
@@ -443,7 +451,7 @@ public class PdfViewerComposite extends Composite
 				scrollBarVertical.setPageIncrement((int) (visibleAreaScrollHeight * 0.9d));
 				scrollBarVertical.setIncrement((int) (visibleAreaScrollHeight * 0.1d));
 
-				int visibleAreaScrollWidth = (int) (getViewPanel().getWidth() / zoomFactor) / scrollBarDivisor;
+				int visibleAreaScrollWidth = (int) (getViewPanel().getWidth() / (zoomFactor * getZoomScreenResolutionFactorX())) / scrollBarDivisor;
 				scrollBarHorizontal.setMinimum(0);
 				scrollBarHorizontal.setMaximum((int) pdfDocument.getDocumentDimension().getWidth() / scrollBarDivisor);
 				scrollBarHorizontal.setSelection((int) (viewOrigin.getX() / scrollBarDivisor));
@@ -495,8 +503,8 @@ public class PdfViewerComposite extends Composite
 		Rectangle2D.Double region = new Rectangle2D.Double(
 				viewOrigin.getX(),
 				viewOrigin.getY(),
-				viewPanel.getWidth() / zoomFactor,
-				viewPanel.getHeight() / zoomFactor
+				viewPanel.getWidth() / (zoomFactor * getZoomScreenResolutionFactorX()),
+				viewPanel.getHeight() / (zoomFactor * getZoomScreenResolutionFactorY())
 		);
 
 		if (logger.isDebugEnabled()) {
@@ -557,24 +565,6 @@ public class PdfViewerComposite extends Composite
 			}
 		}
 	}
-
-//	private class KeyListenerImpl implements KeyListener {
-//
-//		@Override
-//		public void keyPressed(KeyEvent e) {
-//			if (e.isControlDown()) {
-//				mouseWheelModeZoom = true;
-//			}
-//		}
-//		@Override
-//		public void keyReleased(KeyEvent e) {
-//			mouseWheelModeZoom = false;
-//		}
-//		@Override
-//		public void keyTyped(KeyEvent e) {
-//		}
-//
-//	}
 
 	private static final int ZOOM_MIN = 100;
 	private static final int ZOOM_MAX = 10000;
@@ -641,8 +631,8 @@ public class PdfViewerComposite extends Composite
 		if (viewDimensionCached == null) {
 			double zoomFactor = (double)zoomFactorPerMill / 1000;
 			viewDimensionCached = new Dimension2DDouble(
-					viewPanel.getWidth() / zoomFactor,
-					viewPanel.getHeight() / zoomFactor
+					viewPanel.getWidth() / (zoomFactor * getZoomScreenResolutionFactorX()),
+					viewPanel.getHeight() / (zoomFactor * getZoomScreenResolutionFactorY())
 			);
 		}
 		return viewDimensionCached;
@@ -677,18 +667,18 @@ public class PdfViewerComposite extends Composite
 		Point2D.Double middle = new Point2D.Double();
 
 		middle.x = (
-				viewOrigin.getX() * 2 + viewPanel.getWidth() / ((double)zoomBefore / 1000)
+				viewOrigin.getX() * 2 + viewPanel.getWidth() / ((double)zoomBefore * getZoomScreenResolutionFactorX() / 1000)
 		) / 2;
 
 		middle.y = (
-				viewOrigin.getY() * 2 + viewPanel.getHeight() / ((double)zoomBefore / 1000)
+				viewOrigin.getY() * 2 + viewPanel.getHeight() / ((double)zoomBefore * getZoomScreenResolutionFactorY() / 1000)
 		) / 2;
 
 		// calculate the new view origin AFTER zooming
 		Point2D.Double viewPanelBoundsReal = new Point2D.Double();
 		double zoomFactor = (double)zoomFactorPerMill / 1000;
-		viewPanelBoundsReal.x = viewPanel.getWidth() / zoomFactor;
-		viewPanelBoundsReal.y = viewPanel.getHeight() / zoomFactor;
+		viewPanelBoundsReal.x = viewPanel.getWidth() / (zoomFactor * getZoomScreenResolutionFactorX());
+		viewPanelBoundsReal.y = viewPanel.getHeight() / (zoomFactor * getZoomScreenResolutionFactorY());
 
 		setViewOrigin(new Point2D.Double((int) (middle.x - viewPanelBoundsReal.x / 2), (int) (middle.y - viewPanelBoundsReal.y / 2)));
 
@@ -797,4 +787,16 @@ public class PdfViewerComposite extends Composite
 		return viewBounds.contains(pageBounds) || pageBounds.contains(viewBounds) || viewBounds.intersects(pageBounds);
 	}
 
+	private double zoomScreenResolutionFactorX = -1;
+	private double zoomScreenResolutionFactorY = -1;
+
+	public double getZoomScreenResolutionFactorX()
+	{
+		return zoomScreenResolutionFactorX;
+	}
+
+	public double getZoomScreenResolutionFactorY()
+	{
+		return zoomScreenResolutionFactorY;
+	}
 }
