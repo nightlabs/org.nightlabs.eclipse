@@ -3,8 +3,6 @@ package org.nightlabs.eclipse.ui.pdfviewer.internal;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.font.TextLayout;
 import java.awt.geom.Dimension2D;
