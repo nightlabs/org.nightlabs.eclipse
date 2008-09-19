@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.nightlabs.base.ui.composite;
 
@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.Display;
 
 /**
  * A LabledText that is {@link SWT#READ_ONLY}, but still with a white background.
- * 
+ *
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  *
  */
@@ -49,7 +49,7 @@ public class ReadOnlyLabeledText extends LabeledText {
 		super(parent, caption, SWT.BORDER | SWT.READ_ONLY);
 		initComposite();
 	}
-	
+
 	/**
 	 * @param parent
 	 * @param caption
@@ -59,7 +59,7 @@ public class ReadOnlyLabeledText extends LabeledText {
 		super(parent, caption, textStyle | SWT.READ_ONLY);
 		initComposite();
 	}
-	
+
 	private void initComposite() {
 		getTextControl().setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 	}
