@@ -435,7 +435,7 @@ public class PdfViewerComposite extends Composite
 
 		viewPanel.repaint();
 		propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_ORIGIN, oldViewOrigin, viewOrigin);
-		// TODO insert real old value, not 1 (although probably not needed)
+		// TODO insert real old value, not 0 (although probably not needed)
 		rectangleView.setRect(
 				this.viewOrigin.getX(),
 				this.viewOrigin.getY(),
@@ -443,7 +443,7 @@ public class PdfViewerComposite extends Composite
 				getViewDimension().getHeight()
 		);
 		propertyChangeSupport.firePropertyChange(	PdfViewer.PROPERTY_CURRENT_PAGE,
-													1,
+													0,
 													pdfDocument.getMostVisiblePage(
 														rectangleView
 													)
@@ -467,7 +467,7 @@ public class PdfViewerComposite extends Composite
 
 		viewPanel.repaint();
 		propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_ORIGIN, oldViewOrigin, viewOrigin);
-		// TODO insert real old value, not 1 (although probably not needed)
+		// TODO insert real old value, not 0 (although probably not needed)
 		rectangleView.setRect(
 				this.viewOrigin.getX(),
 				this.viewOrigin.getY(),
@@ -475,7 +475,7 @@ public class PdfViewerComposite extends Composite
 				getViewDimension().getHeight()
 		);
 		propertyChangeSupport.firePropertyChange(	PdfViewer.PROPERTY_CURRENT_PAGE,
-													1,
+													0,
 													pdfDocument.getMostVisiblePage(
 														rectangleView
 													)
@@ -744,7 +744,7 @@ public class PdfViewerComposite extends Composite
 		viewDimensionCached = null;
 		propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_ZOOM_FACTOR, zoomBefore, this.zoomFactorPerMill);
 		propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_DIMENSION, viewDimensionBefore, getViewDimension());
-		// TODO insert real old value, not 1 (although probably not needed)
+		// TODO insert real old value, not 0 (although probably not needed)
 		rectangleView.setRect(
 				(int) (middle.x - viewPanelBoundsReal.x / 2),
 				(int) (middle.y - viewPanelBoundsReal.y / 2),
@@ -752,7 +752,7 @@ public class PdfViewerComposite extends Composite
 				getViewDimension().getHeight()
 		);
 		propertyChangeSupport.firePropertyChange(	PdfViewer.PROPERTY_CURRENT_PAGE,
-													1,
+													0,
 													pdfDocument.getMostVisiblePage(
 														rectangleView
 													)

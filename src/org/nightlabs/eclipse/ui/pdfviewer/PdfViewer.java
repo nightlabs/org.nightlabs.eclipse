@@ -194,7 +194,6 @@ public class PdfViewer
 				else if (PROPERTY_ZOOM_FACTOR.equals(event.getPropertyName())) {
 					zoomFactorPerMill = ((Integer) event.getNewValue()).intValue();
 				}
-
 				propertyChangeSupport.firePropertyChange(event.getPropertyName(), event.getOldValue(), event.getNewValue());
 			}
 		});

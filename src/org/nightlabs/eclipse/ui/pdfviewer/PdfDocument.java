@@ -54,7 +54,7 @@ public interface PdfDocument
 	 * </p>
 	 *
 	 * @param bounds coordinates of the area of interest in the real coordinate system.
-	 * @return the page that is the most visible (i.e. has the highest percentage of visible area) or -1, if there is no page visible in the given area at all.
+	 * @return the page number of that page that is the most visible (i.e. has the highest percentage of visible area) or -1, if there is no page visible in the given area at all.
 	 */
 	int getMostVisiblePage(Rectangle2D bounds);
 

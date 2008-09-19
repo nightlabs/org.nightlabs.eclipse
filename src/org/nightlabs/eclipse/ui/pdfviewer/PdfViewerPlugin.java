@@ -1,6 +1,9 @@
 package org.nightlabs.eclipse.ui.pdfviewer;
 
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.nightlabs.eclipse.ui.pdfviewer.internal.PdfSimpleNavigatorComposite;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -53,4 +56,36 @@ public class PdfViewerPlugin extends AbstractUIPlugin {
 		return plugin;
 	}
 
+	@Override
+	protected void initializeImageRegistry(ImageRegistry reg) {
+	    super.initializeImageRegistry(reg);
+
+	    reg.put(
+	    		PdfSimpleNavigatorComposite.ImageKey.gotoFirstPageButton_enabled.name(),
+	    		ImageDescriptor.createFromURL(
+	    				plugin.getBundle().getEntry("icons/internal/PdfSimpleNavigatorComposite-gotoFirstPageButton-enabled.16x16.png")
+	    		)
+	    );
+
+	    reg.put(
+	    		PdfSimpleNavigatorComposite.ImageKey.gotoPreviousPageButton_enabled.name(),
+	    		ImageDescriptor.createFromURL(
+	    				plugin.getBundle().getEntry("icons/internal/PdfSimpleNavigatorComposite-gotoPreviousPageButton-enabled.16x16.png")
+	    		)
+	    );
+
+	    reg.put(
+	    		PdfSimpleNavigatorComposite.ImageKey.gotoNextPageButton_enabled.name(),
+	    		ImageDescriptor.createFromURL(
+	    				plugin.getBundle().getEntry("icons/internal/PdfSimpleNavigatorComposite-gotoNextPageButton-enabled.16x16.png")
+	    		)
+	    );
+
+	    reg.put(
+	    		PdfSimpleNavigatorComposite.ImageKey.gotoLastPageButton_enabled.name(),
+	    		ImageDescriptor.createFromURL(
+	    				plugin.getBundle().getEntry("icons/internal/PdfSimpleNavigatorComposite-gotoLastPageButton-enabled.16x16.png")
+	    		)
+	    );
+	}
 }
