@@ -1,11 +1,13 @@
 package org.nightlabs.eclipse.ui.pdfviewer.internal;
 
+import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Panel;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
@@ -20,6 +22,7 @@ import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
@@ -89,19 +92,23 @@ public class PdfViewerComposite extends Composite
 //	private boolean mouseWheelModeZoom = false;
 
 	/**
-	 * The AWT frame for this composite. It holds the {@link #viewPanel} and is embedded in the {@link #viewPanelComposite}.
+	 * The AWT frame for this composite. It holds the {@link #intermediatePanel} and is embedded in the {@link #viewPanelComposite}.
 	 */
 	private Frame viewPanelFrame;
 	/**
-	 * The panel within {@link #viewPanelFrame}.
+	 * This <code>Panel</code> is necessary, because otherwise the JPanel is not focusable.
 	 */
-	private Panel viewPanel;
+	private Panel intermediatePanel;
+	/**
+	 * The panel within {@link #intermediatePanel}.
+	 */
+	private JPanel viewPanel;
 
-	// http://forums.sun.com/thread.jspa?messageID=3369196
-	// http://dev.eclipse.org/newslists/news.eclipse.platform.swt/msg24617.html
-	static {
-		System.setProperty("sun.awt.noerasebackground", "true");
-	}
+//	// http://forums.sun.com/thread.jspa?messageID=3369196
+//	// http://dev.eclipse.org/newslists/news.eclipse.platform.swt/msg24617.html
+//	static {
+//		System.setProperty("sun.awt.noerasebackground", "true");
+//	}
 
 	public void setPdfDocument(PdfDocument pdfDocument)
 	{
@@ -173,23 +180,31 @@ public class PdfViewerComposite extends Composite
 		scrollBarHorizontal = viewPanelComposite.getHorizontalBar();
 		viewPanelFrame = SWT_AWT.new_Frame(viewPanelComposite);
 		viewPanelFrame.setFocusableWindowState(true);
-		viewPanelFrame.setFocusable(true);
-
-		viewPanel = new Panel() {
+//		viewPanelFrame.setFocusable(true);
+		
+		viewPanel = new JPanel(true) {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public void paint(Graphics g) {
 				paintViewPanel((Graphics2D) g);
 			}
 		};
-//		viewPanel.enableInputMethods(true);
+		viewPanel.enableInputMethods(true);
 		viewPanel.setFocusable(true);
 
 		viewPanel.addMouseListener(new MouseAdapter() {
 			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (logger.isDebugEnabled())
+					logger.debug("mouseClicked: " + e);
+			}
+			@Override
 			public void mousePressed(MouseEvent e) {
 				if (logger.isDebugEnabled())
 					logger.debug("mousePressed: " + e);
+
+				intermediatePanel.requestFocus();
+				viewPanel.requestFocus();
 			}
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -240,6 +255,20 @@ public class PdfViewerComposite extends Composite
 					logger.debug("viewPanel.FocusListener.focusLost: entered");
 			}
 		});
+		
+		viewPanelFrame.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (logger.isDebugEnabled())
+					logger.debug("viewPanelFrame.FocusListener.focusGained: entered");
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (logger.isDebugEnabled())
+					logger.debug("viewPanelFrame.FocusListener.focusLost: entered");
+			}
+		});
+		
 		viewPanel.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
@@ -298,7 +327,31 @@ public class PdfViewerComposite extends Composite
 
 			}
 		});
-		viewPanelFrame.add(viewPanel);
+
+//		viewPanelFrame.add(viewPanel);
+		intermediatePanel = new Panel(new BorderLayout());
+		intermediatePanel.setFocusable(true);
+		intermediatePanel.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				viewPanel.requestFocus();
+			}
+		});
+		viewPanelFrame.add(intermediatePanel);
+		intermediatePanel.add(viewPanel, BorderLayout.CENTER);
+
+		viewPanelComposite.addFocusListener(new org.eclipse.swt.events.FocusListener() {
+			@Override
+			public void focusGained(org.eclipse.swt.events.FocusEvent event) {
+				if (logger.isDebugEnabled())
+					logger.debug("viewPanelComposite.FocusListener.focusGained: entered");
+			}
+			@Override
+			public void focusLost(org.eclipse.swt.events.FocusEvent event) {
+				if (logger.isDebugEnabled())
+					logger.debug("viewPanelComposite.FocusListener.focusLost: entered");
+			}
+		});
 
 		scrollBarHorizontal.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -316,7 +369,7 @@ public class PdfViewerComposite extends Composite
 			}
 		});
 
-		viewPanelFrame.addMouseWheelListener(new MouseWheelListenerImpl());
+		viewPanel.addMouseWheelListener(new MouseWheelListenerImpl());
 
 		getDisplay().addFilter(SWT.KeyDown, keyDownListener);
 		getDisplay().addFilter(SWT.KeyUp, keyUpListener);
@@ -532,7 +585,7 @@ public class PdfViewerComposite extends Composite
 		}
 	}
 
-	public Panel getViewPanel() {
+	public JPanel getViewPanel() {
 		return viewPanel;
 	}
 
@@ -541,7 +594,7 @@ public class PdfViewerComposite extends Composite
 		public void mouseWheelMoved(MouseWheelEvent e) {
 			boolean mouseWheelModeZoom = e.isControlDown();
 
-			viewPanel.requestFocus();
+//			viewPanel.requestFocus();
 
 			if (e.getWheelRotation() < 0)
 				mouseRotationOrientation = - 1;

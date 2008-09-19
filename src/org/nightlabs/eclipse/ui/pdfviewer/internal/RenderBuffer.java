@@ -73,9 +73,10 @@ public class RenderBuffer
 
 		String dumpImageRenderID = DUMP_IMAGE_BUFFER || DUMP_IMAGE_PAGE ? Long.toString(System.currentTimeMillis(), 36) : null;
 
-		GraphicsConfiguration graphicsConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
-		BufferedImage bufferedImage = graphicsConfiguration.createCompatibleImage(bufferWidth, bufferHeight);
-
+//		GraphicsConfiguration graphicsConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
+//		BufferedImage bufferedImage = graphicsConfiguration.createCompatibleImage(bufferWidth, bufferHeight);
+		BufferedImage bufferedImage = new BufferedImage(bufferWidth, bufferHeight, BufferedImage.TYPE_INT_ARGB); 
+			
 		// bufferedImageBounds is the position and the size of the buffer in the real coordinate system.
 		Rectangle2D.Double bufferedImageBounds = new Rectangle2D.Double(
 				posX,
