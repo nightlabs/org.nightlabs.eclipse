@@ -362,8 +362,8 @@ public class PdfViewer
 	 * Get the zoom factor in &permil; (1/1000). A zoom of 1000 &permil; (= 1.0) means that
 	 * a document is shown in the same size as it is in real life (e.g. when printed).
 	 * This is done by taking the screen resolution into account and calculating a
-	 * zoom-correction-factor (see {@link #getZoomScreenResolutionFactorX()}
-	 * and {@link #getZoomScreenResolutionFactorY()}) that's multiplied with the zoom factor
+	 * zoom-correction-factor (see {@link #getZoomScreenResolutionFactor()}
+	 * and {@link #getZoomScreenResolutionFactor()}) that's multiplied with the zoom factor
 	 * whenever a calculation containing the zoom is done.
 	 *
 	 * @return the zoom factor in &permil;.
@@ -407,7 +407,7 @@ public class PdfViewer
     }
 
 	/**
-	 * Get the horizontal zoom correction factor to make <code>zoomFactor=100%</code> mean real-life size.
+	 * Get the zoom correction factor (horizontal and vertical) to make <code>zoomFactor=100%</code> mean real-life size.
 	 * This, of course, works only, if your operating system indicates the correct screen resolution.
 	 * In other words, with GNU/Linux, it works very well; with Windows, it probably doesn't.
 	 * <p>
@@ -415,35 +415,13 @@ public class PdfViewer
 	 * it uses the control's {@link Display} to find out the screen resolution).
 	 * </p>
 	 *
-	 * @return the horizontal zoom correction factor based on the horizontal screen resolution.
-	 * @see #getZoomScreenResolutionFactorY()
+	 * @return the zoom correction factor based on the screen resolution.
 	 * @see #getZoomFactorPerMill()
 	 */
-	public double getZoomScreenResolutionFactorX()
+	public Point2D getZoomScreenResolutionFactor()
 	{
 		if (pdfViewerComposite != null)
-			return pdfViewerComposite.getZoomScreenResolutionFactorX();
-		else
-			throw new IllegalStateException("Currently, this method can only be called when a control has already been created (i.e. after PdfViewer.createControl() has been called)!");
-	}
-
-	/**
-	 * Get the vertical zoom correction factor to make <code>zoomFactor=100%</code> mean real-life size.
-	 * This, of course, works only, if your operating system indicates the correct screen resolution.
-	 * In other words, with GNU/Linux, it works very well; with Windows, it probably doesn't.
-	 * <p>
-	 * Currently, this method can only be called after {@link #createControl(Composite)} was called (because
-	 * it uses the control's {@link Display} to find out the screen resolution).
-	 * </p>
-	 *
-	 * @return the vertical zoom correction factor based on the vertical screen resolution.
-	 * @see #getZoomScreenResolutionFactorX()
-	 * @see #getZoomFactorPerMill()
-	 */
-	public double getZoomScreenResolutionFactorY()
-	{
-		if (pdfViewerComposite != null)
-			return pdfViewerComposite.getZoomScreenResolutionFactorY();
+			return pdfViewerComposite.getZoomScreenResolutionFactor();
 		else
 			throw new IllegalStateException("Currently, this method can only be called when a control has already been created (i.e. after PdfViewer.createControl() has been called)!");
 	}

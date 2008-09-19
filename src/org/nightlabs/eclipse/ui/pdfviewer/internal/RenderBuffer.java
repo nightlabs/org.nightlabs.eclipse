@@ -171,7 +171,7 @@ public class RenderBuffer
 				);
 			}
 
-//			{ // render the PDF directly into the buffer - doesn't work, because I've no clue about the arguments necessary - and I'm too lazy now to find out what clip etc. I need (and how I can calculate it). Marco. 
+//			{ // render the PDF directly into the buffer - doesn't work, because I've no clue about the arguments necessary - and I'm too lazy now to find out what clip etc. I need (and how I can calculate it). Marco.
 //				PDFRenderer pdfRenderer = new PDFRenderer(
 //						pdfPage,
 //						graphics,
@@ -541,13 +541,13 @@ public class RenderBuffer
 		return zoomFactor;
 	}
 
-	public double getZoomScreenResolutionFactorX()
+	protected double getZoomScreenResolutionFactorX()
 	{
-		return pdfViewerComposite.getZoomScreenResolutionFactorX();
+		return pdfViewerComposite.getZoomScreenResolutionFactor().getX();
 	}
 
-	public double getZoomScreenResolutionFactorY()
+	protected double getZoomScreenResolutionFactorY()
 	{
-		return pdfViewerComposite.getZoomScreenResolutionFactorY();
+		return pdfViewerComposite.getZoomScreenResolutionFactor().getY();
 	}
 }

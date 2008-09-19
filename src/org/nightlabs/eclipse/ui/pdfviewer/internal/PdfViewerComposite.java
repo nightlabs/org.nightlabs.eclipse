@@ -155,13 +155,16 @@ public class PdfViewerComposite extends Composite
 				return true;
 			}
 		};
-		
+
 		// Initialize the zoom-screen-resolution factors already here (not lazily in the get methods)
 		// so that the getters can be called on every thread (e.g. by the RenderBuffer which is
 		// partially used on the RenderThread).
 		Point screenDPI = getDisplay().getDPI();
-		zoomScreenResolutionFactorX = (double)screenDPI.x / 72;
-		zoomScreenResolutionFactorY = (double)screenDPI.y / 72;
+		zoomScreenResolutionFactor = new Point2DDouble(
+				(double)screenDPI.x / 72,
+				(double)screenDPI.y / 72
+		);
+		zoomScreenResolutionFactor.setReadOnly();
 
 		viewOrigin = new Point2DDouble();
 		viewOrigin.setReadOnly();
@@ -253,7 +256,7 @@ public class PdfViewerComposite extends Composite
 					if (newViewOrigin == null)
 						newViewOrigin = new Point2DDouble(viewOriginBefore);
 
-					newViewOrigin.setX(middleX - viewPanel.getWidth() / 2 / ((double)zoomFactorPerMill * getZoomScreenResolutionFactorX() / 1000));
+					newViewOrigin.setX(middleX - viewPanel.getWidth() / 2 / (zoomFactorPerMill * getZoomScreenResolutionFactor().getX() / 1000));
 				}
 
 				if (centerVertically) {
@@ -262,7 +265,7 @@ public class PdfViewerComposite extends Composite
 					if (newViewOrigin == null)
 						newViewOrigin = new Point2DDouble(viewOriginBefore);
 
-					newViewOrigin.setY(middleY - viewPanel.getHeight() / 2 / ((double)zoomFactorPerMill * getZoomScreenResolutionFactorY() / 1000));
+					newViewOrigin.setY(middleY - viewPanel.getHeight() / 2 / (zoomFactorPerMill * getZoomScreenResolutionFactor().getY() / 1000));
 				}
 
 				viewDimensionCached = null;
@@ -371,7 +374,7 @@ public class PdfViewerComposite extends Composite
 		if (logger.isDebugEnabled()) {
 			logger.debug("scrollVertically: scrollBarVerticalSelectionNew=" + scrollBarVertical.getSelection());
 			logger.debug("scrollVertically: newViewOrigin.y=" + newViewOrigin.getY());
-			logger.debug("scrollVertically: bottomRealY=" + (newViewOrigin.getY() + viewPanel.getHeight() / ((double)zoomFactorPerMill * getZoomScreenResolutionFactorY() / 1000)));
+			logger.debug("scrollVertically: bottomRealY=" + (newViewOrigin.getY() + viewPanel.getHeight() / (zoomFactorPerMill * getZoomScreenResolutionFactor().getY() / 1000)));
 		}
 
 		centerVertically = false;
@@ -438,7 +441,7 @@ public class PdfViewerComposite extends Composite
 
 				double zoomFactor = (zoomFactorPerMill / 1000d);
 
-				int visibleAreaScrollHeight = (int) (getViewPanel().getHeight() / (zoomFactor * getZoomScreenResolutionFactorY())) / scrollBarDivisor;
+				int visibleAreaScrollHeight = (int) (getViewPanel().getHeight() / (zoomFactor * getZoomScreenResolutionFactor().getY())) / scrollBarDivisor;
 				scrollBarVertical.setMinimum(0);
 				scrollBarVertical.setMaximum((int) pdfDocument.getDocumentDimension().getHeight() / scrollBarDivisor);
 				scrollBarVertical.setSelection((int) (viewOrigin.getY() / scrollBarDivisor));
@@ -451,7 +454,7 @@ public class PdfViewerComposite extends Composite
 				scrollBarVertical.setPageIncrement((int) (visibleAreaScrollHeight * 0.9d));
 				scrollBarVertical.setIncrement((int) (visibleAreaScrollHeight * 0.1d));
 
-				int visibleAreaScrollWidth = (int) (getViewPanel().getWidth() / (zoomFactor * getZoomScreenResolutionFactorX())) / scrollBarDivisor;
+				int visibleAreaScrollWidth = (int) (getViewPanel().getWidth() / (zoomFactor * getZoomScreenResolutionFactor().getX())) / scrollBarDivisor;
 				scrollBarHorizontal.setMinimum(0);
 				scrollBarHorizontal.setMaximum((int) pdfDocument.getDocumentDimension().getWidth() / scrollBarDivisor);
 				scrollBarHorizontal.setSelection((int) (viewOrigin.getX() / scrollBarDivisor));
@@ -503,8 +506,8 @@ public class PdfViewerComposite extends Composite
 		Rectangle2D.Double region = new Rectangle2D.Double(
 				viewOrigin.getX(),
 				viewOrigin.getY(),
-				viewPanel.getWidth() / (zoomFactor * getZoomScreenResolutionFactorX()),
-				viewPanel.getHeight() / (zoomFactor * getZoomScreenResolutionFactorY())
+				viewPanel.getWidth() / (zoomFactor * getZoomScreenResolutionFactor().getX()),
+				viewPanel.getHeight() / (zoomFactor * getZoomScreenResolutionFactor().getY())
 		);
 
 		if (logger.isDebugEnabled()) {
@@ -631,8 +634,8 @@ public class PdfViewerComposite extends Composite
 		if (viewDimensionCached == null) {
 			double zoomFactor = (double)zoomFactorPerMill / 1000;
 			viewDimensionCached = new Dimension2DDouble(
-					viewPanel.getWidth() / (zoomFactor * getZoomScreenResolutionFactorX()),
-					viewPanel.getHeight() / (zoomFactor * getZoomScreenResolutionFactorY())
+					viewPanel.getWidth() / (zoomFactor * getZoomScreenResolutionFactor().getX()),
+					viewPanel.getHeight() / (zoomFactor * getZoomScreenResolutionFactor().getY())
 			);
 		}
 		return viewDimensionCached;
@@ -667,18 +670,18 @@ public class PdfViewerComposite extends Composite
 		Point2D.Double middle = new Point2D.Double();
 
 		middle.x = (
-				viewOrigin.getX() * 2 + viewPanel.getWidth() / ((double)zoomBefore * getZoomScreenResolutionFactorX() / 1000)
+				viewOrigin.getX() * 2 + viewPanel.getWidth() / (zoomBefore * getZoomScreenResolutionFactor().getX() / 1000)
 		) / 2;
 
 		middle.y = (
-				viewOrigin.getY() * 2 + viewPanel.getHeight() / ((double)zoomBefore * getZoomScreenResolutionFactorY() / 1000)
+				viewOrigin.getY() * 2 + viewPanel.getHeight() / (zoomBefore * getZoomScreenResolutionFactor().getY() / 1000)
 		) / 2;
 
 		// calculate the new view origin AFTER zooming
 		Point2D.Double viewPanelBoundsReal = new Point2D.Double();
 		double zoomFactor = (double)zoomFactorPerMill / 1000;
-		viewPanelBoundsReal.x = viewPanel.getWidth() / (zoomFactor * getZoomScreenResolutionFactorX());
-		viewPanelBoundsReal.y = viewPanel.getHeight() / (zoomFactor * getZoomScreenResolutionFactorY());
+		viewPanelBoundsReal.x = viewPanel.getWidth() / (zoomFactor * getZoomScreenResolutionFactor().getX());
+		viewPanelBoundsReal.y = viewPanel.getHeight() / (zoomFactor * getZoomScreenResolutionFactor().getY());
 
 		setViewOrigin(new Point2D.Double((int) (middle.x - viewPanelBoundsReal.x / 2), (int) (middle.y - viewPanelBoundsReal.y / 2)));
 
@@ -787,16 +790,10 @@ public class PdfViewerComposite extends Composite
 		return viewBounds.contains(pageBounds) || pageBounds.contains(viewBounds) || viewBounds.intersects(pageBounds);
 	}
 
-	private double zoomScreenResolutionFactorX = -1;
-	private double zoomScreenResolutionFactorY = -1;
+	private Point2DDouble zoomScreenResolutionFactor;
 
-	public double getZoomScreenResolutionFactorX()
+	public Point2D getZoomScreenResolutionFactor()
 	{
-		return zoomScreenResolutionFactorX;
-	}
-
-	public double getZoomScreenResolutionFactorY()
-	{
-		return zoomScreenResolutionFactorY;
+		return zoomScreenResolutionFactor;
 	}
 }

@@ -136,14 +136,14 @@ public class RenderThread extends Thread
 			}
 		}
 	}
-	
+
 	public double getZoomScreenResolutionFactorX()
 	{
-		return pdfViewerComposite.getZoomScreenResolutionFactorX();
+		return pdfViewerComposite.getZoomScreenResolutionFactor().getX();
 	}
 
 	public double getZoomScreenResolutionFactorY()
 	{
-		return pdfViewerComposite.getZoomScreenResolutionFactorY();
+		return pdfViewerComposite.getZoomScreenResolutionFactor().getY();
 	}
 }
