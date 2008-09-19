@@ -9,7 +9,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -90,7 +89,8 @@ public class PdfViewerEditor extends EditorPart
 
 	@Override
 	public void createPartControl(final Composite parent) {
-		final SashForm page = new SashForm(parent, SWT.VERTICAL);  //new Composite(parent, SWT.NONE);
+//		final SashForm page = new SashForm(parent, SWT.VERTICAL);  //new Composite(parent, SWT.NONE);
+		final Composite page = new Composite(parent, SWT.NONE);
 		page.setLayout(new GridLayout());
 
 		loadingMessageLabel = new Label(page, SWT.NONE);
@@ -165,7 +165,7 @@ public class PdfViewerEditor extends EditorPart
 						pdfSimpleNavigator = new PdfSimpleNavigator(pdfViewer);
 
 						pdfViewerControl = pdfViewer.createControl(page);
-						pdfViewerControl.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+						pdfViewerControl.setLayoutData(new GridData(GridData.FILL_BOTH));
 						pdfSimpleNavigatorControl = pdfSimpleNavigator.createControl(page);
 						pdfSimpleNavigatorControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
@@ -178,8 +178,8 @@ public class PdfViewerEditor extends EditorPart
 //							}
 //						});
 
-						int[] weights = new int[]{95, 5};
-						page.setWeights(weights);
+//						int[] weights = new int[]{95, 5};
+//						page.setWeights(weights);
 
 						parent.layout(true, true);
 					}
