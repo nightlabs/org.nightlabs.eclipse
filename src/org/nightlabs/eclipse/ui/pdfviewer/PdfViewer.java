@@ -60,7 +60,7 @@ public class PdfViewer
 	 * Constant used by the {@link PropertyChangeListener}s for modifications of the zoom factor.
 	 * <p>
 	 * {@link PropertyChangeEvent#getNewValue()} returns the new zoom factor (an instance of {@link Integer})
-	 * and {@link PropertyChangeEvent#getOldValue()} returns the view origin before the change happened
+	 * and {@link PropertyChangeEvent#getOldValue()} returns the zoom factor before the change happened
 	 * (an instance of {@link Integer}, too). The zoom factor returned is the value in &permil; [per mill] (e.g. a value of 1000 means
 	 * 100% = 1.0).
 	 * </p>
