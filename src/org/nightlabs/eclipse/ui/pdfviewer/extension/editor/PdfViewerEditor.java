@@ -164,9 +164,9 @@ public class PdfViewerEditor extends EditorPart
 						pdfViewer = new PdfViewer();
 						pdfSimpleNavigator = new PdfSimpleNavigator(pdfViewer);
 
-						pdfViewerControl = pdfViewer.createControl(page);
+						pdfViewerControl = pdfViewer.createControl(page, SWT.BORDER);
 						pdfViewerControl.setLayoutData(new GridData(GridData.FILL_BOTH));
-						pdfSimpleNavigatorControl = pdfSimpleNavigator.createControl(page);
+						pdfSimpleNavigatorControl = pdfSimpleNavigator.createControl(page, SWT.NONE);
 						pdfSimpleNavigatorControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 						pdfViewer.setPdfDocument(pdfDocument);
