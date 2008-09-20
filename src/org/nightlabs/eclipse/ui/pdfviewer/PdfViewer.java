@@ -169,14 +169,14 @@ public class PdfViewer
 
 	public PdfViewer() { }
 
-	public Control createControl(Composite parent) {
+	public Control createControl(Composite parent, int style) {
 		assertValidThread();
 
 		if (this.pdfViewerComposite != null) {
 			this.pdfViewerComposite.dispose();
 		}
 
-		this.pdfViewerComposite = new PdfViewerComposite(parent, this);
+		this.pdfViewerComposite = new PdfViewerComposite(parent, style, this);
 
 		this.pdfViewerComposite.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
@@ -410,7 +410,7 @@ public class PdfViewer
 	 * This, of course, works only, if your operating system indicates the correct screen resolution.
 	 * In other words, with GNU/Linux, it works very well; with Windows, it probably doesn't.
 	 * <p>
-	 * Currently, this method can only be called after {@link #createControl(Composite)} was called (because
+	 * Currently, this method can only be called after {@link #createControl(Composite, int)} was called (because
 	 * it uses the control's {@link Display} to find out the screen resolution).
 	 * </p>
 	 *

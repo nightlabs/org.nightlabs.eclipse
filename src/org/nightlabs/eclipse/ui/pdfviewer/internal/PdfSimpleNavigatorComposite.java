@@ -47,9 +47,8 @@ public class PdfSimpleNavigatorComposite extends Composite {
 		gotoLastPageButton_enabled
 	}
 
-//	public PdfSimpleNavigatorComposite(Composite parent, int style, PDFFile pdfFile, PdfDocument pdfDocument) {
-	public PdfSimpleNavigatorComposite(Composite parent, PdfSimpleNavigator pdfSimpleNavigator) {
-		super(parent, SWT.BORDER);
+	public PdfSimpleNavigatorComposite(Composite parent, int style, PdfSimpleNavigator pdfSimpleNavigator) {
+		super(parent, style);
 		this.pdfSimpleNavigator = pdfSimpleNavigator;
 
 		GridLayout gridLayout = new GridLayout(6, false);

@@ -77,13 +77,13 @@ public class PdfSimpleNavigator implements ContextElement<PdfSimpleNavigator> {
 		}
 	}
 
-	public Control createControl(Composite parent) {
+	public Control createControl(Composite parent, int style) {
 		assertValidThread();
 
 		if (this.pdfSimpleNavigatorComposite != null) {
 			this.pdfSimpleNavigatorComposite.dispose();
 		}
-		this.pdfSimpleNavigatorComposite = new PdfSimpleNavigatorComposite(parent, this);
+		this.pdfSimpleNavigatorComposite = new PdfSimpleNavigatorComposite(parent, style, this);
 		pdfSimpleNavigatorComposite.setPdfDocument(pdfDocument);
 
 		return this.pdfSimpleNavigatorComposite;

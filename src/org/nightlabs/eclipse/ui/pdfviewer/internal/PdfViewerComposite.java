@@ -142,9 +142,9 @@ public class PdfViewerComposite extends Composite
 	}
 
 
-	public PdfViewerComposite(Composite parent, PdfViewer pdfViewer)
+	public PdfViewerComposite(Composite parent, int style, PdfViewer pdfViewer)
 	{
-		super(parent, SWT.NONE);
+		super(parent, style);
 		this.pdfViewer = pdfViewer;
 		this.setLayout(new FillLayout());
 
@@ -848,5 +848,9 @@ public class PdfViewerComposite extends Composite
 	public Point2D getZoomScreenResolutionFactor()
 	{
 		return zoomScreenResolutionFactor;
+	}
+
+	public PdfDocument getPdfDocument() {
+		return pdfDocument;
 	}
 }

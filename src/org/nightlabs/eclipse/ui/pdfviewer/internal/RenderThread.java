@@ -1,5 +1,6 @@
 package org.nightlabs.eclipse.ui.pdfviewer.internal;
 
+import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.SwingUtilities;
@@ -65,9 +66,24 @@ public class RenderThread extends Thread
 						pdfViewerComposite.getViewPanel().getHeight() / (zoomFactor * getZoomScreenResolutionFactorY())
 				);
 
-				int bufferWidth = (int) (pdfViewerComposite.getViewPanel().getWidth() * RenderBuffer.BUFFER_WIDTH_FACTOR);
-				int bufferHeight = (int) (pdfViewerComposite.getViewPanel().getHeight() * RenderBuffer.BUFFER_HEIGHT_FACTOR);
+//				int bufferWidth = (int) (pdfViewerComposite.getViewPanel().getWidth() * RenderBuffer.BUFFER_WIDTH_FACTOR);
+//				int bufferHeight = (int) (pdfViewerComposite.getViewPanel().getHeight() * RenderBuffer.BUFFER_HEIGHT_FACTOR);
 
+				double bufferWidthFactor;
+				double bufferHeightFactor;
+				Dimension2D documentDimension = pdfViewerComposite.getPdfDocument().getDocumentDimension();
+				if (documentDimension.getWidth() > documentDimension.getHeight()) {
+					bufferWidthFactor = RenderBuffer.BUFFER_SIZE_FACTOR_LARGE;
+					bufferHeightFactor = RenderBuffer.BUFFER_SIZE_FACTOR_SMALL;
+				}
+				else {
+					bufferWidthFactor = RenderBuffer.BUFFER_SIZE_FACTOR_SMALL;
+					bufferHeightFactor = RenderBuffer.BUFFER_SIZE_FACTOR_LARGE;
+				}
+				
+				int bufferWidth = (int) (pdfViewerComposite.getViewPanel().getWidth() * bufferWidthFactor);
+				int bufferHeight = (int) (pdfViewerComposite.getViewPanel().getHeight() * bufferHeightFactor);
+				
 				if (bufferWidth >= 1 && bufferHeight >= 1) {
 
 					if (!doRender) {

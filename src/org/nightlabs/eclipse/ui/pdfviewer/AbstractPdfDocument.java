@@ -10,16 +10,11 @@ import org.apache.log4j.Logger;
 public abstract class AbstractPdfDocument implements PdfDocument {
 
 	private static final Logger logger = Logger.getLogger(AbstractPdfDocument.class);
-	private int visiblePageArea;
-	private int visiblePageAreaMax;
-	private int mostVisiblePage;
-
 
 	@Override
-    public int getMostVisiblePage(Rectangle2D viewBounds) {
-
+    public int getMostVisiblePage(Rectangle2D viewBounds)
+	{
 		Collection<Integer> visiblePages = getVisiblePages(viewBounds);
-		visiblePageAreaMax = 0;
 
 		if (logger.isDebugEnabled()) {
 			for (Iterator<Integer> pageIterator = visiblePages.iterator(); pageIterator.hasNext();) {
@@ -40,6 +35,8 @@ public abstract class AbstractPdfDocument implements PdfDocument {
 		if (visiblePages.isEmpty())
 			return -1;
 
+		int mostVisiblePage = -1;
+		int visiblePageAreaMax = 0;
 		for (Iterator<Integer> pageIterator = visiblePages.iterator(); pageIterator.hasNext();) {
 			int pageNumber = pageIterator.next();
 
@@ -47,19 +44,20 @@ public abstract class AbstractPdfDocument implements PdfDocument {
 				return pageNumber;
 
 			Rectangle2D pageBounds = getPageBounds(pageNumber);
+			int visiblePageArea;
 
-			for (int situation = 0; situation < 2; ++situation)
-			{
-				switch (situation) {
-	                case 0:
+//			for (int situation = 0; situation < 2; ++situation)
+//			{
+//				switch (situation) {
+//	                case 0:
 	                	if (viewBounds.contains(pageBounds)) {
 	                		visiblePageArea = (int) (pageBounds.getWidth() * pageBounds.getHeight());
 	                		if (logger.isDebugEnabled())
 	                			logger.debug("Page number: " + pageNumber + "; visible page area: " + visiblePageArea);
 	                	}
-		            break;
-	                case 1:
-	                	if (viewBounds.intersects(pageBounds)) {
+//		            break;
+//	                case 1:
+	                	else if (viewBounds.intersects(pageBounds)) {
 
 	                		double x = Math.max(pageBounds.getX(), viewBounds.getX());
 	                		double y = Math.max(pageBounds.getY(), viewBounds.getY());
@@ -70,12 +68,14 @@ public abstract class AbstractPdfDocument implements PdfDocument {
 	                		if (logger.isDebugEnabled())
 	                			logger.debug("Page number: " + pageNumber + "; visible page area: " + visiblePageArea);
 	                	}
-		            break;
-	                default:
-		                throw new IllegalStateException("situation unknown: " + situation);
-
-	            }
-			}
+	                	else
+	                		throw new IllegalStateException("Inconsistent implementation of PdfDocument! getVisiblePages(...) returned page " + pageNumber + " but this page is neither contained in the bounds, nor does it intersect them!");
+//		            break;
+//	                default:
+//		                throw new IllegalStateException("situation unknown: " + situation);
+//
+//	            }
+//			}
 
 			if (visiblePageArea >= visiblePageAreaMax) {
 

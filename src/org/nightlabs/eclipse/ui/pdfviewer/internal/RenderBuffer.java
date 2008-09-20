@@ -42,9 +42,12 @@ public class RenderBuffer
 	private int bufferHeight;
 	// END the above fields require SYNCHRONIZED access via the mutex field!
 
-	public static final double BUFFER_WIDTH_FACTOR = 2;
-	public static final double BUFFER_HEIGHT_FACTOR = 2;
+//	public static final double BUFFER_WIDTH_FACTOR = 2;
+//	public static final double BUFFER_HEIGHT_FACTOR = 2;
 
+	public static final double BUFFER_SIZE_FACTOR_SMALL = 2;
+	public static final double BUFFER_SIZE_FACTOR_LARGE = 3;
+	
 	public RenderBuffer(PdfViewerComposite pdfViewerComposite, PdfDocument pdfDocument) {
 		this.pdfViewerComposite = pdfViewerComposite;
 		this.pdfDocument = pdfDocument;
@@ -524,16 +527,8 @@ public class RenderBuffer
 		return bufferWidth;
 	}
 
-	public void setBufferWidth(int bufferWidth) {
-		this.bufferWidth = bufferWidth;
-	}
-
 	public int getBufferHeight() {
 		return bufferHeight;
-	}
-
-	public void setBufferHeight(int bufferHeight) {
-		this.bufferHeight = bufferHeight;
 	}
 
 	public double getZoomFactor() {
