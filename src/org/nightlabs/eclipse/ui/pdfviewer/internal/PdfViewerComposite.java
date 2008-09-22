@@ -181,7 +181,7 @@ public class PdfViewerComposite extends Composite
 		viewPanelFrame = SWT_AWT.new_Frame(viewPanelComposite);
 		viewPanelFrame.setFocusableWindowState(true);
 //		viewPanelFrame.setFocusable(true);
-		
+
 		viewPanel = new JPanel(true) {
 			private static final long serialVersionUID = 1L;
 			@Override
@@ -255,7 +255,7 @@ public class PdfViewerComposite extends Composite
 					logger.debug("viewPanel.FocusListener.focusLost: entered");
 			}
 		});
-		
+
 		viewPanelFrame.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -268,7 +268,7 @@ public class PdfViewerComposite extends Composite
 					logger.debug("viewPanelFrame.FocusListener.focusLost: entered");
 			}
 		});
-		
+
 		viewPanel.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
@@ -383,7 +383,16 @@ public class PdfViewerComposite extends Composite
 		});
 
 		viewPanel.requestFocus();
+
+//		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_MOUSE_CLICKED, propertyChangeListenerMouseClicked);
+
 	}
+
+
+
+
+
+
 
 	private Listener keyDownListener = new Listener() {
 		public void handleEvent(Event event)
@@ -793,6 +802,11 @@ public class PdfViewerComposite extends Composite
 
 	public void setCurrentPage(int currentPage) {
 	    this.currentPage = currentPage;
+
+	    propertyChangeSupport.firePropertyChange(	PdfViewer.PROPERTY_CURRENT_PAGE,
+													0,
+													currentPage
+												);
 
 		Rectangle2D pageBounds = pdfDocument.getPageBounds(currentPage);
 

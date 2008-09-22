@@ -1,5 +1,6 @@
 package org.nightlabs.eclipse.ui.pdfviewer.internal;
 
+import java.beans.PropertyChangeSupport;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,6 +29,7 @@ import com.sun.pdfview.PDFFile;
 
 public class PdfSimpleNavigatorComposite extends Composite {
 
+	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 	private PdfSimpleNavigator pdfSimpleNavigator;
 	private Button gotoFirstPageButton;
 	private Button gotoPreviousPageButton;
@@ -168,7 +170,6 @@ public class PdfSimpleNavigatorComposite extends Composite {
 
 	public void setControlEnabledStatus(int currentPageNumber)
 	{
-
 		gotoFirstPageButton.setEnabled(currentPageNumber > 1);
 		gotoPreviousPageButton.setEnabled(currentPageNumber > 1);
 
@@ -188,7 +189,14 @@ public class PdfSimpleNavigatorComposite extends Composite {
 		currentPageNumberText.setText(String.valueOf(pageNumber));
 		setControlEnabledStatus(pageNumber);
 
+		// TODO use listener
 		pdfSimpleNavigator.getPdfViewer().setCurrentPage(pageNumber);
+
+//		propertyChangeSupport.firePropertyChange(	PdfViewer.PROPERTY_CURRENT_PAGE,
+//													0,
+//													pageNumber
+//												);
+
 
 //		if (chosenPageNumber >= 1 && chosenPageNumber <= numberOfPages) {
 //			currentPageNumberText.setText(String.valueOf(chosenPageNumber));
@@ -217,14 +225,13 @@ public class PdfSimpleNavigatorComposite extends Composite {
 //			gotoFirstPageButton.setEnabled(chosenPageNumber > 1);
 //			gotoNextPageButton.setEnabled(numberOfPages > 1 && chosenPageNumber < numberOfPages);
 //
-//
 //			scrollToPage(chosenPageNumber);
 //		}
 //		else {
 //			currentPageNumberText.setText(String.valueOf(pdfSimpleNavigator.getPdfViewer().getCurrentPage()));
 //			scrollToPage(numberOfPages);
 //		}
-		// TODO add verifylistener
+
 //		currentPageNumberText.addModifyListener(modifyListenerImpl);
 	}
 

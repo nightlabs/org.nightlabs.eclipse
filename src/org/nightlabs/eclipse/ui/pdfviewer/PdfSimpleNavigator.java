@@ -45,6 +45,7 @@ public class PdfSimpleNavigator implements ContextElement<PdfSimpleNavigator> {
 		this.setPdfDocument(pdfViewer.getPdfDocument()); // pdfViewer.getPdfDocument() can return null!
 		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_PDF_DOCUMENT, propertyChangeListenerPdfDocument);
 		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_CURRENT_PAGE, propertyChangeListenerCurrentPage);
+//		pdfViewer.getContextElements();
 
 	}
 
@@ -55,7 +56,6 @@ public class PdfSimpleNavigator implements ContextElement<PdfSimpleNavigator> {
 			pdfSimpleNavigatorComposite.setControlEnabledStatus((Integer)event.getNewValue());
         }
 	};
-
 
 	private PropertyChangeListener propertyChangeListenerPdfDocument = new PropertyChangeListener() {
 		@Override

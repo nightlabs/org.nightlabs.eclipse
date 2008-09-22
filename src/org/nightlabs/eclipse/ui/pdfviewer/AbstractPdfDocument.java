@@ -46,36 +46,27 @@ public abstract class AbstractPdfDocument implements PdfDocument {
 			Rectangle2D pageBounds = getPageBounds(pageNumber);
 			int visiblePageArea;
 
-//			for (int situation = 0; situation < 2; ++situation)
-//			{
-//				switch (situation) {
-//	                case 0:
-	                	if (viewBounds.contains(pageBounds)) {
-	                		visiblePageArea = (int) (pageBounds.getWidth() * pageBounds.getHeight());
-	                		if (logger.isDebugEnabled())
-	                			logger.debug("Page number: " + pageNumber + "; visible page area: " + visiblePageArea);
-	                	}
-//		            break;
-//	                case 1:
-	                	else if (viewBounds.intersects(pageBounds)) {
+        	if (viewBounds.contains(pageBounds)) {
+        		visiblePageArea = (int) (pageBounds.getWidth() * pageBounds.getHeight());
+        		if (logger.isDebugEnabled())
+        			logger.debug("Page number: " + pageNumber + "; visible page area: " + visiblePageArea);
+        	}
+        	else if (viewBounds.intersects(pageBounds)) {
 
-	                		double x = Math.max(pageBounds.getX(), viewBounds.getX());
-	                		double y = Math.max(pageBounds.getY(), viewBounds.getY());
-	                		double width = Math.min(pageBounds.getMaxX() - x, viewBounds.getMaxX() - x);
-	                		double height = Math.min(pageBounds.getMaxY() - y, viewBounds.getMaxY() - y);
+        		double x = Math.max(pageBounds.getX(), viewBounds.getX());
+        		double y = Math.max(pageBounds.getY(), viewBounds.getY());
+        		double width = Math.min(pageBounds.getMaxX() - x, viewBounds.getMaxX() - x);
+        		double height = Math.min(pageBounds.getMaxY() - y, viewBounds.getMaxY() - y);
 
-	                		visiblePageArea = (int) (width * height);
-	                		if (logger.isDebugEnabled())
-	                			logger.debug("Page number: " + pageNumber + "; visible page area: " + visiblePageArea);
-	                	}
-	                	else
-	                		throw new IllegalStateException("Inconsistent implementation of PdfDocument! getVisiblePages(...) returned page " + pageNumber + " but this page is neither contained in the bounds, nor does it intersect them!");
-//		            break;
-//	                default:
-//		                throw new IllegalStateException("situation unknown: " + situation);
-//
-//	            }
-//			}
+        		visiblePageArea = (int) (width * height);
+
+        		if (logger.isDebugEnabled()) {
+        			logger.debug("Page number: " + pageNumber + "; visible page area: " + visiblePageArea);
+        		}
+        	}
+        	else
+        		throw new IllegalStateException("Inconsistent implementation of PdfDocument! getVisiblePages(...) returned page " + pageNumber + " but this page is neither contained in the bounds, nor does it intersect them!");
+
 
 			if (visiblePageArea >= visiblePageAreaMax) {
 
