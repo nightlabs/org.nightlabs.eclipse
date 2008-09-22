@@ -60,10 +60,8 @@ public class PdfSimpleNavigatorComposite extends Composite {
 		Image gotoNextPageButtonImage = imageRegistry.get(ImageKey.gotoNextPageButton_enabled.name());
 		Image gotoLastPageButtonImage = imageRegistry.get(ImageKey.gotoLastPageButton_enabled.name());
 
-//		gotoFirstPageButton = new Button(this, SWT.ARROW | SWT.UP);
 		gotoFirstPageButton = new Button(this, SWT.NONE);
 		gotoFirstPageButton.setImage(gotoFirstPageButtonImage);
-//		gotoPreviousPageButton = new Button(this, SWT.ARROW | SWT.LEFT);
 		gotoPreviousPageButton = new Button(this, SWT.NONE);
 		gotoPreviousPageButton.setImage(gotoPreviousPageButtonImage);
 		currentPageNumberText = new Text(this, SWT.BORDER);
@@ -81,10 +79,8 @@ public class PdfSimpleNavigatorComposite extends Composite {
 			}
 		});
 		label = new Label(this, SWT.NONE);
-//		gotoNextPageButton = new Button(this, SWT.ARROW | SWT.RIGHT);
 		gotoNextPageButton = new Button(this, SWT.NONE);
 		gotoNextPageButton.setImage(gotoNextPageButtonImage);
-//		gotoLastPageButton = new Button(this, SWT.ARROW | SWT.DOWN);
 		gotoLastPageButton = new Button(this, SWT.NONE);
 		gotoLastPageButton.setImage(gotoLastPageButtonImage);
 
@@ -170,8 +166,9 @@ public class PdfSimpleNavigatorComposite extends Composite {
 		validChars = Collections.unmodifiableSet(chars);
 	}
 
-	private void setControlEnabledStatus(int currentPageNumber)
+	public void setControlEnabledStatus(int currentPageNumber)
 	{
+
 		gotoFirstPageButton.setEnabled(currentPageNumber > 1);
 		gotoPreviousPageButton.setEnabled(currentPageNumber > 1);
 

@@ -52,6 +52,7 @@ public class PdfSimpleNavigator implements ContextElement<PdfSimpleNavigator> {
 		@Override
         public void propertyChange(PropertyChangeEvent event) {
 			pdfSimpleNavigatorComposite.getCurrentPageNumberText().setText(String.valueOf(event.getNewValue()));
+			pdfSimpleNavigatorComposite.setControlEnabledStatus((Integer)event.getNewValue());
         }
 	};
 
