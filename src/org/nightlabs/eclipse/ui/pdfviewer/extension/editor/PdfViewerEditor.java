@@ -9,6 +9,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -26,6 +27,7 @@ import org.nightlabs.eclipse.ui.pdfviewer.OneDimensionalPdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfFileLoader;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfSimpleNavigator;
+import org.nightlabs.eclipse.ui.pdfviewer.PdfThumbnailNavigator;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
 
 import com.sun.pdfview.PDFFile;
@@ -45,14 +47,16 @@ import com.sun.pdfview.PDFFile;
 public class PdfViewerEditor extends EditorPart
 {
 	private static final Logger logger = Logger.getLogger(PdfViewerEditor.class);
-
 	public static final String ID = PdfViewerEditor.class.getName();
 	private volatile PdfDocument pdfDocument;
 	private PdfViewer pdfViewer;
 	private Control pdfViewerControl;
 	private PdfSimpleNavigator pdfSimpleNavigator;
 	private Control pdfSimpleNavigatorControl;
+	private PdfThumbnailNavigator pdfThumbnailNavigator;
+	private Control pdfThumbnailNavigatorControl;
 	private PDFFile pdfFile;
+//	private SashForm page;
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
@@ -90,10 +94,12 @@ public class PdfViewerEditor extends EditorPart
 	@Override
 	public void createPartControl(final Composite parent) {
 //		final SashForm page = new SashForm(parent, SWT.VERTICAL);  //new Composite(parent, SWT.NONE);
-		final Composite page = new Composite(parent, SWT.NONE);
-		page.setLayout(new GridLayout());
+//		final Composite page = new Composite(parent, SWT.NONE);
+//		page.setLayout(new GridLayout(2, false));
 
-		loadingMessageLabel = new Label(page, SWT.NONE);
+		final Composite loadingMessagePage = new Composite(parent, SWT.NONE);
+		loadingMessagePage.setLayout(new GridLayout());
+		loadingMessageLabel = new Label(loadingMessagePage, SWT.NONE);
 		GridData gdLoadingMessageLabel = new GridData(GridData.FILL_HORIZONTAL);
 		gdLoadingMessageLabel.verticalIndent = 16;
 		gdLoadingMessageLabel.horizontalIndent = 16;
@@ -159,17 +165,27 @@ public class PdfViewerEditor extends EditorPart
 						if (parent.isDisposed())
 							return;
 
-						loadingMessageLabel.dispose();
+						loadingMessagePage.dispose();
+//						loadingMessageLabel.dispose();
+						SashForm page = new SashForm(parent, SWT.HORIZONTAL);
 
 						pdfViewer = new PdfViewer();
+						pdfViewer.setPdfDocument(pdfDocument);
+						pdfThumbnailNavigator = new PdfThumbnailNavigator(pdfViewer);
 						pdfSimpleNavigator = new PdfSimpleNavigator(pdfViewer);
+
+						Composite leftComp = new Composite(page, SWT.NONE);
+						leftComp.setLayout(new GridLayout());
+						pdfThumbnailNavigatorControl = pdfThumbnailNavigator.createControl(leftComp, SWT.BORDER);
+						pdfThumbnailNavigatorControl.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 						pdfViewerControl = pdfViewer.createControl(page, SWT.BORDER);
 						pdfViewerControl.setLayoutData(new GridData(GridData.FILL_BOTH));
-						pdfSimpleNavigatorControl = pdfSimpleNavigator.createControl(page, SWT.NONE);
-						pdfSimpleNavigatorControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-						pdfViewer.setPdfDocument(pdfDocument);
+						pdfSimpleNavigatorControl = pdfSimpleNavigator.createControl(leftComp, SWT.NONE);
+						GridData gdPdfSNControl = new GridData();
+						gdPdfSNControl.verticalAlignment = SWT.BOTTOM;
+						pdfSimpleNavigatorControl.setLayoutData(gdPdfSNControl);
 
 //						pdfThumbnailNavigator.setPdfDocumentFactory(new PdfThumbnailNavigator.PdfDocumentFactory() {
 //							public PdfDocument createPdfDocument(PdfDocument pdfDocument)
@@ -178,8 +194,7 @@ public class PdfViewerEditor extends EditorPart
 //							}
 //						});
 
-//						int[] weights = new int[]{95, 5};
-//						page.setWeights(weights);
+						page.setWeights(new int[]{5, 95});
 
 						parent.layout(true, true);
 					}
