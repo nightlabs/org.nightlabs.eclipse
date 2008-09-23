@@ -215,16 +215,22 @@ public class PdfViewerComposite extends Composite
 
 				final org.nightlabs.eclipse.ui.pdfviewer.MouseEvent pdfMouseEvent = createMouseEvent(e);
 
-				// TODO calculate current page from pdfMouseEvent.getPointInRealCoordinate() and set it
+				// calculate current page from pdfMouseEvent.getPointInRealCoordinate() and set it
 				Collection<Integer> visiblePages = pdfDocument.getVisiblePages(
 						new Rectangle2D.Double(pdfMouseEvent.getPointInRealCoordinate().getX(), pdfMouseEvent.getPointInRealCoordinate().getY(), 0, 0)
 				);
-				Integer newCurrentPage = null;
-				if (!visiblePages.isEmpty())
+
+				final Integer newCurrentPage;
+				if (visiblePages.isEmpty())
+					newCurrentPage = null;
+				else
 					newCurrentPage = visiblePages.iterator().next();
 
 				getDisplay().asyncExec(new Runnable() {
 					public void run() {
+						if (newCurrentPage != null)
+							setCurrentPage(newCurrentPage, true);
+
 						propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_MOUSE_CLICKED, null, pdfMouseEvent);
 					}
 				});
