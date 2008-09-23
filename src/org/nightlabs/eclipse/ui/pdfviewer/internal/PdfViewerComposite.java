@@ -21,6 +21,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.Collection;
 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -141,6 +142,20 @@ public class PdfViewerComposite extends Composite
 		setScrollbars();
 	}
 
+	private org.nightlabs.eclipse.ui.pdfviewer.MouseEvent createMouseEvent(MouseEvent event)
+	{
+		java.awt.Point pointRelative = event.getPoint();
+		Point2DDouble pointAbsolute = new Point2DDouble();
+		pointAbsolute.setX(
+				viewOrigin.getX() + (pointRelative.getX() / (zoomScreenResolutionFactor.getX() * zoomFactorPerMill / 1000))
+		);
+		pointAbsolute.setY(
+				viewOrigin.getY() + (pointRelative.getY() / (zoomScreenResolutionFactor.getY() * zoomFactorPerMill / 1000))
+		);
+		pointAbsolute.setReadOnly();
+		return new org.nightlabs.eclipse.ui.pdfviewer.MouseEvent(pointRelative, pointAbsolute);
+	}
+
 
 	public PdfViewerComposite(Composite parent, int style, PdfViewer pdfViewer)
 	{
@@ -197,31 +212,72 @@ public class PdfViewerComposite extends Composite
 			public void mouseClicked(MouseEvent e) {
 				if (logger.isDebugEnabled())
 					logger.debug("mouseClicked: " + e);
+
+				final org.nightlabs.eclipse.ui.pdfviewer.MouseEvent pdfMouseEvent = createMouseEvent(e);
+
+				// TODO calculate current page from pdfMouseEvent.getPointInRealCoordinate() and set it
+				Collection<Integer> visiblePages = pdfDocument.getVisiblePages(
+						new Rectangle2D.Double(pdfMouseEvent.getPointInRealCoordinate().getX(), pdfMouseEvent.getPointInRealCoordinate().getY(), 0, 0)
+				);
+				Integer newCurrentPage = null;
+				if (!visiblePages.isEmpty())
+					newCurrentPage = visiblePages.iterator().next();
+
+				getDisplay().asyncExec(new Runnable() {
+					public void run() {
+						propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_MOUSE_CLICKED, null, pdfMouseEvent);
+					}
+				});
 			}
+
 			@Override
-			public void mousePressed(MouseEvent e) {
+			public void mousePressed(final MouseEvent e) {
 				if (logger.isDebugEnabled())
 					logger.debug("mousePressed: " + e);
 
 				intermediatePanel.requestFocus();
 				viewPanel.requestFocus();
+
+				getDisplay().asyncExec(new Runnable() {
+					public void run() {
+						propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_MOUSE_PRESSED, null, createMouseEvent(e));
+					}
+				});
 			}
 			@Override
-			public void mouseReleased(MouseEvent e) {
+			public void mouseReleased(final MouseEvent e) {
 				if (logger.isDebugEnabled())
 					logger.debug("mouseReleased: " + e);
+
+				getDisplay().asyncExec(new Runnable() {
+					public void run() {
+						propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_MOUSE_RELEASED, null, createMouseEvent(e));
+					}
+				});
 			}
 		});
 		viewPanel.addMouseMotionListener(new MouseMotionListener() {
 			@Override
-			public void mouseDragged(MouseEvent e) {
+			public void mouseDragged(final MouseEvent e) {
 				if (logger.isDebugEnabled())
 					logger.debug("mouseDragged: " + e);
+
+				getDisplay().asyncExec(new Runnable() {
+					public void run() {
+						propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_MOUSE_DRAGGED, null, createMouseEvent(e));
+					}
+				});
 			}
 			@Override
-			public void mouseMoved(MouseEvent e) {
+			public void mouseMoved(final MouseEvent e) {
 				if (logger.isDebugEnabled())
 					logger.debug("mouseMoved: " + e);
+
+				getDisplay().asyncExec(new Runnable() {
+					public void run() {
+						propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_MOUSE_MOVED, null, createMouseEvent(e));
+					}
+				});
 			}
 		});
 		viewPanel.addKeyListener(new KeyAdapter() {

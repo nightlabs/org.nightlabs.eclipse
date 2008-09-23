@@ -100,6 +100,10 @@ public class PdfViewer
 	 */
 	public static final String PROPERTY_MOUSE_CLICKED = "mouseClicked";
 
+	public static final String PROPERTY_MOUSE_PRESSED = "mousePressed";
+
+	public static final String PROPERTY_MOUSE_MOVED = "mouseMoved";
+
 	public static final String PROPERTY_MOUSE_RELEASED = "mouseReleased";
 
 	public static final String PROPERTY_MOUSE_DRAGGED = "mouseDragged";
