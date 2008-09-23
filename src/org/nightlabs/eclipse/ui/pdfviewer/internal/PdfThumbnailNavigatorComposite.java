@@ -33,7 +33,7 @@ public class PdfThumbnailNavigatorComposite extends Composite {
 		pdfViewerControl = pdfViewer.createControl(this, SWT.NONE);
 
 		// TODO NOT IN CONSTRUCTOR! Use listeners!
-		setPdfDocument(pdfThumbnailNavigator.getPdfViewer().getPdfDocument());
+		setPdfDocument(pdfThumbnailNavigator.getMainPdfViewer().getPdfDocument());
 	}
 
 	public void setPdfDocument(PdfDocument pdfDocument)

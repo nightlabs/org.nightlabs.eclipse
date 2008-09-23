@@ -415,9 +415,9 @@ public class PdfViewer
 	    return pdfViewerComposite.getCurrentPage();
     }
 
-	public void setCurrentPage(int currentPage) {
+	public void setCurrentPage(int currentPage, boolean doFire) {
 		if (pdfViewerComposite != null)
-			pdfViewerComposite.setCurrentPage(currentPage);
+			pdfViewerComposite.setCurrentPage(currentPage, doFire);
 		else
 			throw new IllegalStateException("Currently, this method can only be called when a control has already been created (i.e. after PdfViewer.createControl() has been called)!"); // TODO use local mirror variable
     }

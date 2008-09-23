@@ -2,6 +2,9 @@ package org.nightlabs.eclipse.ui.pdfviewer;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.util.Collection;
+import java.util.Iterator;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -12,6 +15,7 @@ import org.nightlabs.eclipse.ui.pdfviewer.internal.PdfSimpleNavigatorComposite;
 public class PdfSimpleNavigator implements ContextElement<PdfSimpleNavigator> {
 
 	public static final ContextElementType<PdfSimpleNavigator> CONTEXT_ELEMENT_TYPE = new ContextElementType<PdfSimpleNavigator>(PdfSimpleNavigator.class);
+	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 	private PdfViewer pdfViewer;
 	private PdfDocument pdfDocument;
 	private String contextElementId;
@@ -43,17 +47,44 @@ public class PdfSimpleNavigator implements ContextElement<PdfSimpleNavigator> {
 		this.contextElementId = contextElementId;
 		pdfViewer.registerContextElement(this);
 		this.setPdfDocument(pdfViewer.getPdfDocument()); // pdfViewer.getPdfDocument() can return null!
-		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_PDF_DOCUMENT, propertyChangeListenerPdfDocument);
-		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_CURRENT_PAGE, propertyChangeListenerCurrentPage);
-//		pdfViewer.getContextElements();
 
+		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_PDF_DOCUMENT, propertyChangeListenerPdfDocument);
+		// this navigator will be notified here in the case PDF viewer has changed current page
+		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_CURRENT_PAGE, propertyChangeListenerCurrentPage);
+
+		// is this the best way?
+		// TODO find and consider only context elements that are of type PDF thumb-nail navigator
+		// TODO do not use PDF simple navigator as hop for firing between PDF thumb-nail navigator and PDF viewer
+		Collection<? extends ContextElement<?>> result = pdfViewer.getContextElements();
+		for (Iterator<? extends ContextElement<?>> iterator = result.iterator(); iterator.hasNext();) {
+			ContextElement<?> registeredContextElement = iterator.next();
+			if (registeredContextElement.getPdfViewer() != null) {
+				// this navigator will be notified here in the case PDF thumb-nail navigator has changed current page
+				registeredContextElement.getPdfViewer().addPropertyChangeListener(
+//						registeredContextElement.getPdfViewer().PROPERTY_CURRENT_PAGE,
+						PdfViewer.PROPERTY_CURRENT_PAGE,
+						propertyChangeListenerCurrentPageModifiedByTN
+						);
+			}
+		}
 	}
 
 	private PropertyChangeListener propertyChangeListenerCurrentPage = new PropertyChangeListener() {
 		@Override
         public void propertyChange(PropertyChangeEvent event) {
 			pdfSimpleNavigatorComposite.getCurrentPageNumberText().setText(String.valueOf(event.getNewValue()));
+			// check if one or more buttons in PDF simple navigator have to be en-/disabled
 			pdfSimpleNavigatorComposite.setControlEnabledStatus((Integer)event.getNewValue());
+        }
+	};
+
+	private PropertyChangeListener propertyChangeListenerCurrentPageModifiedByTN = new PropertyChangeListener() {
+		@Override
+        public void propertyChange(PropertyChangeEvent event) {
+			pdfSimpleNavigatorComposite.getCurrentPageNumberText().setText(String.valueOf(event.getNewValue()));
+			// check if one or more buttons in PDF simple navigator have to be en-/disabled
+			pdfSimpleNavigatorComposite.setControlEnabledStatus((Integer)event.getNewValue());
+			getPdfViewer().setCurrentPage((Integer)event.getNewValue(), false);		// only set the new page in PDF viewer, do not fire again
         }
 	};
 
@@ -87,6 +118,13 @@ public class PdfSimpleNavigator implements ContextElement<PdfSimpleNavigator> {
 		this.pdfSimpleNavigatorComposite = new PdfSimpleNavigatorComposite(parent, style, this);
 		pdfSimpleNavigatorComposite.setPdfDocument(pdfDocument);
 
+		this.pdfSimpleNavigatorComposite.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent event) {
+				getPdfViewer().setCurrentPage((Integer)event.getNewValue(), true);		// do fire, so that PDF thumb-nail navigator will be notified
+			}
+		});
+
 		return this.pdfSimpleNavigatorComposite;
 	}
 
@@ -97,6 +135,7 @@ public class PdfSimpleNavigator implements ContextElement<PdfSimpleNavigator> {
 
 	protected void setPdfDocument(PdfDocument pdfDocument) {
 		assertValidThread();
+
 		this.pdfDocument = pdfDocument;
 		if (pdfSimpleNavigatorComposite != null) {
 			pdfSimpleNavigatorComposite.setPdfDocument(pdfDocument);

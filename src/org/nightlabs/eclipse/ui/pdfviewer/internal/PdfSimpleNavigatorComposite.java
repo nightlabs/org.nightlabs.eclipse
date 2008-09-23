@@ -1,5 +1,6 @@
 package org.nightlabs.eclipse.ui.pdfviewer.internal;
 
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Collections;
 import java.util.HashSet;
@@ -23,6 +24,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfSimpleNavigator;
+import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfViewerPlugin;
 
 import com.sun.pdfview.PDFFile;
@@ -189,14 +191,10 @@ public class PdfSimpleNavigatorComposite extends Composite {
 		currentPageNumberText.setText(String.valueOf(pageNumber));
 		setControlEnabledStatus(pageNumber);
 
-		// TODO use listener
-		pdfSimpleNavigator.getPdfViewer().setCurrentPage(pageNumber);
-
-//		propertyChangeSupport.firePropertyChange(	PdfViewer.PROPERTY_CURRENT_PAGE,
-//													0,
-//													pageNumber
-//												);
-
+		propertyChangeSupport.firePropertyChange(	PdfViewer.PROPERTY_CURRENT_PAGE,
+													0,
+													pageNumber
+												);
 
 //		if (chosenPageNumber >= 1 && chosenPageNumber <= numberOfPages) {
 //			currentPageNumberText.setText(String.valueOf(chosenPageNumber));
@@ -290,7 +288,11 @@ public class PdfSimpleNavigatorComposite extends Composite {
 
 	public void setCurrentPageNumberText(Text currentPageNumberText) {
     	this.currentPageNumberText = currentPageNumberText;
-    };
+    }
+
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		propertyChangeSupport.addPropertyChangeListener(listener);
+	}
 
 
 }

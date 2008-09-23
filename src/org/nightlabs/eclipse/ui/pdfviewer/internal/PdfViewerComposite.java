@@ -800,13 +800,14 @@ public class PdfViewerComposite extends Composite
 	    return currentPage;
     }
 
-	public void setCurrentPage(int currentPage) {
+	public void setCurrentPage(int currentPage, boolean doFire) {
 	    this.currentPage = currentPage;
 
-	    propertyChangeSupport.firePropertyChange(	PdfViewer.PROPERTY_CURRENT_PAGE,
-													0,
-													currentPage
-												);
+	    if (doFire)
+	    	propertyChangeSupport.firePropertyChange(	PdfViewer.PROPERTY_CURRENT_PAGE,
+														0,
+														currentPage
+													);
 
 		Rectangle2D pageBounds = pdfDocument.getPageBounds(currentPage);
 
