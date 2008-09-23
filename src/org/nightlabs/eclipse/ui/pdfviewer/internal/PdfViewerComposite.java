@@ -217,7 +217,7 @@ public class PdfViewerComposite extends Composite
 
 				// calculate current page from pdfMouseEvent.getPointInRealCoordinate() and set it
 				Collection<Integer> visiblePages = pdfDocument.getVisiblePages(
-						new Rectangle2D.Double(pdfMouseEvent.getPointInRealCoordinate().getX(), pdfMouseEvent.getPointInRealCoordinate().getY(), 0, 0)
+						new Rectangle2D.Double(pdfMouseEvent.getPointInRealCoordinate().getX(), pdfMouseEvent.getPointInRealCoordinate().getY(), 1, 1)
 				);
 
 				final Integer newCurrentPage;

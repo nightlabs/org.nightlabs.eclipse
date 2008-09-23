@@ -20,7 +20,7 @@ public class PdfThumbnailNavigatorComposite extends Composite {
 
 	private PdfThumbnailNavigator pdfThumbnailNavigator;
 	private Composite viewPanelComposite;
-	private PdfViewer pdfViewer;
+	private PdfViewer thumbnailPdfViewer;
 	private Control pdfViewerControl;
 
 
@@ -29,17 +29,17 @@ public class PdfThumbnailNavigatorComposite extends Composite {
 		this.pdfThumbnailNavigator = pdfThumbnailNavigator;
 		this.setLayout(new FillLayout());
 
-		pdfViewer = new PdfViewer();
-		pdfViewerControl = pdfViewer.createControl(this, SWT.NONE);
+		thumbnailPdfViewer = new PdfViewer();
+		pdfViewerControl = thumbnailPdfViewer.createControl(this, SWT.NONE);
 
 		// TODO NOT IN CONSTRUCTOR! Use listeners!
-		setPdfDocument(pdfThumbnailNavigator.getMainPdfViewer().getPdfDocument());
+		setPdfDocument(pdfThumbnailNavigator.getPdfViewer().getPdfDocument());
 	}
 
 	public void setPdfDocument(PdfDocument pdfDocument)
 	{
 		if (pdfDocument == null) {
-			pdfViewer.setPdfDocument(null);
+			thumbnailPdfViewer.setPdfDocument(null);
 			return;
 		}
 
@@ -49,17 +49,21 @@ public class PdfThumbnailNavigatorComposite extends Composite {
 				OneDimensionalPdfDocument.Layout.vertical,
 				new NullProgressMonitor()
 		);
-		pdfViewer.setPdfDocument(oneDimensionalPdfDocument);
+		thumbnailPdfViewer.setPdfDocument(oneDimensionalPdfDocument);
 
 		// TODO do NOT hard-code zoom factor, but extend PdfViewer API to have flags like "zoom to page width"
-		pdfViewer.setZoomFactorPerMill(200);
+		thumbnailPdfViewer.setZoomFactorPerMill(200);
 	}
 
-	public PdfViewer getPdfViewer() {
-    	return pdfViewer;
-    }
+	public PdfViewer getThumbnailPdfViewer() {
+		return thumbnailPdfViewer;
+	}
 
-	public void setPdfViewer(PdfViewer pdfViewer) {
-    	this.pdfViewer = pdfViewer;
-    }
+	public void setThumbnailPdfViewer(PdfViewer pdfViewer) {
+		this.thumbnailPdfViewer = pdfViewer;
+	}
+
+	public void setCurrentPage(int pageNumber, boolean doFire) {
+		thumbnailPdfViewer.setCurrentPage(pageNumber, doFire);
+	}
 }
