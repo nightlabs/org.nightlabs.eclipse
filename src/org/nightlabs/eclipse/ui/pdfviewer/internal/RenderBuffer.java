@@ -47,11 +47,13 @@ public class RenderBuffer
 
 	public static final double BUFFER_SIZE_FACTOR_SMALL = 2;
 	public static final double BUFFER_SIZE_FACTOR_LARGE = 3;
-	
+
 	public RenderBuffer(PdfViewerComposite pdfViewerComposite, PdfDocument pdfDocument) {
 		this.pdfViewerComposite = pdfViewerComposite;
 		this.pdfDocument = pdfDocument;
 	}
+
+	private BufferedImagePool bufferedImagePool = new BufferedImagePool();
 
 	/**
 	 * Renders the buffer's area.
@@ -76,8 +78,9 @@ public class RenderBuffer
 
 //		GraphicsConfiguration graphicsConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
 //		BufferedImage bufferedImage = graphicsConfiguration.createCompatibleImage(bufferWidth, bufferHeight);
-		BufferedImage bufferedImage = new BufferedImage(bufferWidth, bufferHeight, BufferedImage.TYPE_INT_ARGB); 
-			
+//		BufferedImage bufferedImage = new BufferedImage(bufferWidth, bufferHeight, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage bufferedImage = bufferedImagePool.acquire(bufferWidth, bufferHeight);
+
 		// bufferedImageBounds is the position and the size of the buffer in the real coordinate system.
 		Rectangle2D.Double bufferedImageBounds = new Rectangle2D.Double(
 				posX,
@@ -202,6 +205,9 @@ public class RenderBuffer
 			printToImageFile(bufferedImage, String.format("%s-bufferedImage", dumpImageRenderID));
 
 		synchronized (mutex) {
+			if (this.bufferedImage != null)
+				bufferedImagePool.release(this.bufferedImage);
+
 			this.bufferWidth = bufferWidth;
 			this.bufferHeight = bufferHeight;
 			this.bufferedImage = bufferedImage;

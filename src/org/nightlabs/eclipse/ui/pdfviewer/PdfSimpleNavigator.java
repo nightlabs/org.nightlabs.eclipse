@@ -3,8 +3,6 @@ package org.nightlabs.eclipse.ui.pdfviewer;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.Collection;
-import java.util.Iterator;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -55,7 +53,7 @@ public class PdfSimpleNavigator implements ContextElement<PdfSimpleNavigator> {
 		// is this the best way?
 		// TODO find and consider only context elements that are of type PDF thumb-nail navigator
 		// TODO do not use PDF simple navigator as hop for firing between PDF thumb-nail navigator and PDF viewer
-		Collection<? extends ContextElement<?>> result = pdfViewer.getContextElements();
+/*		Collection<? extends ContextElement<?>> result = pdfViewer.getContextElements();
 		for (Iterator<? extends ContextElement<?>> iterator = result.iterator(); iterator.hasNext();) {
 			ContextElement<?> registeredContextElement = iterator.next();
 			if (registeredContextElement.getPdfViewer() != null) {
@@ -66,7 +64,7 @@ public class PdfSimpleNavigator implements ContextElement<PdfSimpleNavigator> {
 						propertyChangeListenerCurrentPageModifiedByTN
 						);
 			}
-		}
+		}*/
 	}
 
 	private PropertyChangeListener propertyChangeListenerCurrentPage = new PropertyChangeListener() {
