@@ -26,6 +26,12 @@ package org.nightlabs.eclipse.ui.pdfviewer;
 public interface ContextElement<T extends ContextElement<T>> {
 	ContextElementType<T> getContextElementType();
 	String getContextElementId();
+
+	/**
+	 * Get the {@link PdfViewer}.
+	 *
+	 * @return the {@link PdfViewer} which is assigned to this <code>ContextElement</code>.
+	 */
 	PdfViewer getPdfViewer();
 
 	/**
