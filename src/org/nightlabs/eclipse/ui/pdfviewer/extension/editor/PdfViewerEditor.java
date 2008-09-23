@@ -172,20 +172,22 @@ public class PdfViewerEditor extends EditorPart
 						pdfViewer = new PdfViewer();
 						pdfViewer.setPdfDocument(pdfDocument);
 						pdfThumbnailNavigator = new PdfThumbnailNavigator(pdfViewer);
-						pdfSimpleNavigator = new PdfSimpleNavigator(pdfViewer);
 
 						Composite leftComp = new Composite(page, SWT.NONE);
 						leftComp.setLayout(new GridLayout());
+
+						// creating the control of PDF thumb-nail navigator (the composite of this control creates a new instance of PDF viewer!)
 						pdfThumbnailNavigatorControl = pdfThumbnailNavigator.createControl(leftComp, SWT.BORDER);
 						pdfThumbnailNavigatorControl.setLayoutData(new GridData(GridData.FILL_BOTH));
 
+						// creating the control of PDF viewer (a new PDF viewer composite will be created)
 						pdfViewerControl = pdfViewer.createControl(page, SWT.BORDER);
 						pdfViewerControl.setLayoutData(new GridData(GridData.FILL_BOTH));
 
+						// creating the control of PDF simple navigator (a new PDF simple navigator composite will be created)
+						pdfSimpleNavigator = new PdfSimpleNavigator(pdfViewer);
 						pdfSimpleNavigatorControl = pdfSimpleNavigator.createControl(leftComp, SWT.NONE);
-						GridData gdPdfSNControl = new GridData();
-						gdPdfSNControl.verticalAlignment = SWT.BOTTOM;
-						pdfSimpleNavigatorControl.setLayoutData(gdPdfSNControl);
+						pdfSimpleNavigatorControl.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_END));
 
 //						pdfThumbnailNavigator.setPdfDocumentFactory(new PdfThumbnailNavigator.PdfDocumentFactory() {
 //							public PdfDocument createPdfDocument(PdfDocument pdfDocument)
@@ -194,7 +196,7 @@ public class PdfViewerEditor extends EditorPart
 //							}
 //						});
 
-						page.setWeights(new int[]{5, 95});
+						page.setWeights(new int[]{20, 80});
 
 						parent.layout(true, true);
 					}
