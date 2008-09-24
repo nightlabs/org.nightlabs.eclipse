@@ -188,6 +188,12 @@ public class PdfViewerEditor extends EditorPart
 						pdfSimpleNavigator = new PdfSimpleNavigator(pdfViewer);
 						pdfSimpleNavigatorControl = pdfSimpleNavigator.createControl(leftComp, SWT.NONE);
 						pdfSimpleNavigatorControl.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_END));
+						System.out.println("simple navigator control width " + pdfSimpleNavigatorControl.getBounds().width);
+						System.out.println("thumbnail navigator control width " + pdfThumbnailNavigatorControl.getBounds().width);
+						System.out.println("thumbnail navigator control border width " + pdfThumbnailNavigatorControl.getBorderWidth());
+						System.out.println("pdf viewer control border width " + pdfViewerControl.getBorderWidth());
+						System.out.println("parent width " + parent.getBounds().width);
+
 
 //						pdfThumbnailNavigator.setPdfDocumentFactory(new PdfThumbnailNavigator.PdfDocumentFactory() {
 //							public PdfDocument createPdfDocument(PdfDocument pdfDocument)
@@ -196,8 +202,14 @@ public class PdfViewerEditor extends EditorPart
 //							}
 //						});
 
-						page.setWeights(new int[]{20, 80});
+						int pdfSimpleNavigatorWidthAbsolute = pdfSimpleNavigatorControl.getBounds().width + 2 * pdfThumbnailNavigatorControl.getBorderWidth() + pdfViewerControl.getBorderWidth();
+						System.out.println("pdfSimpleNavigatorWidthAbsolute " + pdfSimpleNavigatorWidthAbsolute);
+						int pdfSimpleNavigatorWidthRelative = (int) Math.ceil(100f * pdfSimpleNavigatorWidthAbsolute / parent.getBounds().width);
+						System.out.println("pdfSimpleNavigatorWidthRelative " + pdfSimpleNavigatorWidthRelative);
 
+						page.setWeights(new int[]{pdfSimpleNavigatorWidthRelative, 100 - pdfSimpleNavigatorWidthRelative});
+
+//						page.setWeights(new int[]{20, 80});
 						parent.layout(true, true);
 					}
 				});
