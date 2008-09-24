@@ -450,12 +450,6 @@ public class PdfViewerComposite extends Composite
 
 	}
 
-
-
-
-
-
-
 	private Listener keyDownListener = new Listener() {
 		public void handleEvent(Event event)
 		{
@@ -815,15 +809,17 @@ public class PdfViewerComposite extends Composite
 		viewDimensionCached = null;
 		propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_ZOOM_FACTOR, zoomBefore, this.zoomFactorPerMill);
 		propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_DIMENSION, viewDimensionBefore, getViewDimension());
-		// TODO insert real old value, not 0 (although probably not needed)
+
 		rectangleView.setRect(
 				(int) (middle.x - viewPanelBoundsReal.x / 2),
 				(int) (middle.y - viewPanelBoundsReal.y / 2),
 				getViewDimension().getWidth(),
 				getViewDimension().getHeight()
 		);
+
+		// TODO insert real old value, not 0 (although probably not needed)
 		propertyChangeSupport.firePropertyChange(	PdfViewer.PROPERTY_CURRENT_PAGE,
-													0,
+													0,	/*null?*/
 													pdfDocument.getMostVisiblePage(
 														rectangleView
 													)
@@ -894,7 +890,7 @@ public class PdfViewerComposite extends Composite
 
 			switch (situation) {
                 case 0: // scrolling X is sufficient
-                	newViewBounds.x = pageBounds.getX();	// what does happen with newViewBounds.x if the if-condition below is not fulfilled ?
+                	newViewBounds.x = pageBounds.getX();
 	            break;
                 case 1: // scrolling Y is sufficient
                 	newViewBounds.y = pageBounds.getY();
