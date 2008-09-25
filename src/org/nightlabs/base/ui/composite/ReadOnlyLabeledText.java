@@ -25,7 +25,7 @@ public class ReadOnlyLabeledText extends LabeledText {
 	 */
 	public ReadOnlyLabeledText(Composite parent, String caption,
 			int labelStyle, int wrapperStyle, boolean setLayoutData) {
-		super(parent, caption, labelStyle, wrapperStyle, SWT.BORDER | SWT.READ_ONLY, setLayoutData);
+		super(parent, caption, labelStyle, wrapperStyle, XComposite.getBorderStyle(parent) | SWT.READ_ONLY, setLayoutData);
 		initComposite();
 	}
 
@@ -36,7 +36,7 @@ public class ReadOnlyLabeledText extends LabeledText {
 	 * @param setLayoutData
 	 */
 	public ReadOnlyLabeledText(Composite parent, String caption, boolean setLayoutData) {
-		super(parent, caption, SWT.BORDER | SWT.READ_ONLY, setLayoutData);
+		super(parent, caption, XComposite.getBorderStyle(parent) | SWT.READ_ONLY, setLayoutData);
 		initComposite();
 	}
 
@@ -46,7 +46,7 @@ public class ReadOnlyLabeledText extends LabeledText {
 	 * @param textStyle
 	 */
 	public ReadOnlyLabeledText(Composite parent, String caption) {
-		super(parent, caption, SWT.BORDER | SWT.READ_ONLY);
+		super(parent, caption, XComposite.getBorderStyle(parent) | SWT.READ_ONLY);
 		initComposite();
 	}
 
@@ -56,7 +56,7 @@ public class ReadOnlyLabeledText extends LabeledText {
 	 * @param textStyle
 	 */
 	public ReadOnlyLabeledText(Composite parent, String caption, int textStyle) {
-		super(parent, caption, textStyle | SWT.READ_ONLY);
+		super(parent, caption, XComposite.getBorderStyle(parent) | SWT.READ_ONLY);
 		initComposite();
 	}
 
