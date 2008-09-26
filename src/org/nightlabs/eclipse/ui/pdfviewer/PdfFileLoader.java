@@ -76,6 +76,7 @@ public class PdfFileLoader
 	public static PDFFile loadPdf(File file, IProgressMonitor monitor) throws IOException
 	{
 		monitor.beginTask("Loading PDF file", 100);
+
 		try {
 			RandomAccessFile randomAccessFile = new RandomAccessFile(file, "r");
 			try {

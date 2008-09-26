@@ -160,6 +160,10 @@ public class PdfSimpleNavigatorComposite extends Composite {
 		setPdfDocument(null);
 	}
 
+	protected PdfSimpleNavigator getPdfSimpleNavigator() {
+	    return pdfSimpleNavigator;
+    }
+
 	private static final Set<Character> validChars;
 	static {
 		Set<Character> chars = new HashSet<Character>();

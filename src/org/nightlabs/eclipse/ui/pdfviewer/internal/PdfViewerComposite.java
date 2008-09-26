@@ -58,6 +58,15 @@ import org.nightlabs.eclipse.ui.pdfviewer.Point2DDouble;
 public class PdfViewerComposite extends Composite
 {
 	private static final Logger logger = Logger.getLogger(PdfViewerComposite.class);
+	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+	private RenderBuffer renderBuffer;
+	private RenderThread renderThread;
+	private PdfDocument pdfDocument;
+	private PdfViewer pdfViewer;
+	private ScrollBar scrollBarVertical, scrollBarHorizontal;
+	private Rectangle2D rectangleView;
+	private Point2DDouble zoomScreenResolutionFactor;
+	private int currentPage;
 
 	/**
 	 * Since the int range of the scroll bars is limited and we don't need to be able to scroll to every single
@@ -66,19 +75,11 @@ public class PdfViewerComposite extends Composite
 	 */
 	private static final int scrollBarDivisor = 10;
 
-	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
-
 	/**
 	 * The container of the AWT {@link Frame}. It is created with {@link SWT#EMBEDDED}
 	 * and does therefore contain nothing but the {@link #viewPanelFrame}.
 	 */
 	private Composite viewPanelComposite;
-	private RenderBuffer renderBuffer;
-	private RenderThread renderThread;
-	private PdfDocument pdfDocument;
-	private PdfViewer pdfViewer;
-	private ScrollBar scrollBarVertical, scrollBarHorizontal;
-	private Rectangle2D rectangleView;
 
 	/**
 	 * The real coordinates of the view area's left, top corner.
@@ -162,7 +163,6 @@ public class PdfViewerComposite extends Composite
 		return new org.nightlabs.eclipse.ui.pdfviewer.MouseEvent(pointRelative, pointAbsolute);
 	}
 
-
 	public PdfViewerComposite(Composite parent, int style, PdfViewer pdfViewer)
 	{
 		super(parent, style);
@@ -201,7 +201,7 @@ public class PdfViewerComposite extends Composite
 		scrollBarHorizontal = viewPanelComposite.getHorizontalBar();
 		viewPanelFrame = SWT_AWT.new_Frame(viewPanelComposite);
 
-		// see https://bugs.eclipse.org/bugs/show_bug.cgi?id=171432
+		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=171432
 		// TODO perhaps not the right place to call this as the bug still occurs sometimes
 		boolean x11ErrorHandlerFixInstalled = false;
 		if(!x11ErrorHandlerFixInstalled && "gtk".equals( SWT.getPlatform())) {
@@ -519,7 +519,7 @@ public class PdfViewerComposite extends Composite
 
 		viewPanel.repaint();
 		propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_ORIGIN, oldViewOrigin, viewOrigin);
-		// TODO insert real old value, not 0 (although probably not needed)
+
 		rectangleView.setRect(
 				this.viewOrigin.getX(),
 				this.viewOrigin.getY(),
@@ -551,7 +551,7 @@ public class PdfViewerComposite extends Composite
 
 		viewPanel.repaint();
 		propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_ORIGIN, oldViewOrigin, viewOrigin);
-		// TODO insert real old value, not 0 (although probably not needed)
+
 		rectangleView.setRect(
 				this.viewOrigin.getX(),
 				this.viewOrigin.getY(),
@@ -826,23 +826,26 @@ public class PdfViewerComposite extends Composite
 			logger.debug("zoomPDFDocument: zoomFactor=" + zoomFactor + " viewOrigin.x=" + viewOrigin.getX() + " viewOrigin.y=" + viewOrigin.getY());
 
 		viewDimensionCached = null;
-		propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_ZOOM_FACTOR, zoomBefore, this.zoomFactorPerMill);
-		propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_DIMENSION, viewDimensionBefore, getViewDimension());
+		if (!pdfViewer.isZoomToControlWidth()) {
+			propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_ZOOM_FACTOR, zoomBefore, this.zoomFactorPerMill);
+			propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_DIMENSION, viewDimensionBefore, getViewDimension());
+		}
 
-		rectangleView.setRect(
-				(int) (middle.x - viewPanelBoundsReal.x / 2),
-				(int) (middle.y - viewPanelBoundsReal.y / 2),
-				getViewDimension().getWidth(),
-				getViewDimension().getHeight()
-		);
+		if (!pdfViewer.isZoomToControlWidth()) {
+			rectangleView.setRect(
+					(int) (middle.x - viewPanelBoundsReal.x / 2),
+					(int) (middle.y - viewPanelBoundsReal.y / 2),
+					getViewDimension().getWidth(),
+					getViewDimension().getHeight()
+			);
 
-		// TODO insert real old value, not 0 (although probably not needed)
-		propertyChangeSupport.firePropertyChange(	PdfViewer.PROPERTY_CURRENT_PAGE,
-													0,	/*null?*/
-													pdfDocument.getMostVisiblePage(
-														rectangleView
-													)
-												);
+			propertyChangeSupport.firePropertyChange(	PdfViewer.PROPERTY_CURRENT_PAGE,
+														0,
+														pdfDocument.getMostVisiblePage(
+															rectangleView
+														)
+													);
+		}
 	}
 
 	public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
@@ -870,8 +873,6 @@ public class PdfViewerComposite extends Composite
 		});
 		return true;
 	}
-
-	private int currentPage;
 
 	public int getCurrentPage() {
 	    return currentPage;
@@ -934,8 +935,6 @@ public class PdfViewerComposite extends Composite
 		return viewBounds.contains(pageBounds) || pageBounds.contains(viewBounds) || viewBounds.intersects(pageBounds);
 	}
 
-	private Point2DDouble zoomScreenResolutionFactor;
-
 	public Point2D getZoomScreenResolutionFactor() {
 		return zoomScreenResolutionFactor;
 	}
@@ -949,22 +948,22 @@ public class PdfViewerComposite extends Composite
 
 		try {
 			// get XlibWrapper.SetToolkitErrorHandler() and XSetErrorHandler() methods
-			Class xlibwrapperClass = Class.forName( "sun.awt.X11.XlibWrapper" );
-			final Method setToolkitErrorHandlerMethod = xlibwrapperClass.getDeclaredMethod( "SetToolkitErrorHandler", null );
+			Class<?> xlibwrapperClass = Class.forName( "sun.awt.X11.XlibWrapper" );
+			final Method setToolkitErrorHandlerMethod = xlibwrapperClass.getDeclaredMethod( "SetToolkitErrorHandler", (Class[])null);
 			final Method setErrorHandlerMethod = xlibwrapperClass.getDeclaredMethod( "XSetErrorHandler", new Class[] { Long.TYPE } );
 			setToolkitErrorHandlerMethod.setAccessible( true );
 			setErrorHandlerMethod.setAccessible( true );
 
 			// get XToolkit.saved_error_handler field
-			Class xtoolkitClass = Class.forName( "sun.awt.X11.XToolkit" );
+			Class<?> xtoolkitClass = Class.forName( "sun.awt.X11.XToolkit" );
 			final Field savedErrorHandlerField = xtoolkitClass.getDeclaredField( "saved_error_handler" );
 			savedErrorHandlerField.setAccessible( true );
 
 			// determine the current error handler and the value of XLibWrapper.ToolkitErrorHandler
 			// (XlibWrapper.SetToolkitErrorHandler() sets the X11 error handler to
 			// XLibWrapper.ToolkitErrorHandler and returns the old error handler)
-			final Object defaultErrorHandler = setToolkitErrorHandlerMethod.invoke( null, null );
-			final Object toolkitErrorHandler = setToolkitErrorHandlerMethod.invoke( null, null );
+			final Object defaultErrorHandler = setToolkitErrorHandlerMethod.invoke( null, (Object[]) null);
+			final Object toolkitErrorHandler = setToolkitErrorHandlerMethod.invoke( null, (Object[]) null);
 			setErrorHandlerMethod.invoke( null, new Object[] { defaultErrorHandler } );
 
 			// create timer that watches XToolkit.saved_error_handler whether its value is equal
@@ -994,6 +993,5 @@ public class PdfViewerComposite extends Composite
 			// ignore
 		}
 	}
-
 
 }

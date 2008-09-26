@@ -23,6 +23,15 @@ import org.nightlabs.eclipse.ui.pdfviewer.internal.PdfViewerComposite;
  */
 public class PdfViewer
 {
+	private PdfDocument pdfDocument;
+	private PdfViewerComposite pdfViewerComposite;
+	private ContextElementRegistry contextElementRegistry = new ContextElementRegistry();
+	private boolean zoomToPageWidth;
+	private boolean zoomToPageHeight;
+	// TODO do not use and replace this (also in PDF viewer composite)
+	private boolean zoomToControlWidth;
+	private int zoomFactorPerMill = 1000;
+
 	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
 	/**
@@ -109,9 +118,7 @@ public class PdfViewer
 	public static final String PROPERTY_MOUSE_DRAGGED = "mouseDragged";
 
 
-	private PdfDocument pdfDocument;
-	private PdfViewerComposite pdfViewerComposite;
-	private ContextElementRegistry contextElementRegistry = new ContextElementRegistry();
+	public PdfViewer() { }
 
 	/**
 	 * Assign a context-element. This method should be called by the context-element itself
@@ -188,8 +195,6 @@ public class PdfViewer
 			throw new IllegalStateException("Wrong thread! This method must be called on the SWT UI thread!");
 	}
 
-	public PdfViewer() { }
-
 	public Control createControl(Composite parent, int style) {
 		assertValidThread();
 
@@ -216,6 +221,7 @@ public class PdfViewer
 					zoomFactorPerMill = ((Integer) event.getNewValue()).intValue();
 				}
 				propertyChangeSupport.firePropertyChange(event.getPropertyName(), event.getOldValue(), event.getNewValue());
+
 			}
 		});
 
@@ -269,8 +275,6 @@ public class PdfViewer
 		viewOrigin = new Point2DDouble();
 		viewOrigin.setReadOnly();
 	}
-
-	private int zoomFactorPerMill = 1000;
 
 	/**
 	 * Get the view origin, i.e. the left top position of the view area in the
@@ -416,7 +420,8 @@ public class PdfViewer
 	public int getCurrentPage() {
 		if (pdfViewerComposite == null)
 			throw new IllegalStateException("Currently, this method can only be called when a control has already been created (i.e. after PdfViewer.createControl() has been called)!"); // TODO use local mirror variable
-	    return pdfViewerComposite.getCurrentPage();
+
+		return pdfViewerComposite.getCurrentPage();
     }
 
 	public void setCurrentPage(int currentPage, boolean doFire) {
@@ -445,4 +450,30 @@ public class PdfViewer
 		else
 			throw new IllegalStateException("Currently, this method can only be called when a control has already been created (i.e. after PdfViewer.createControl() has been called)!");
 	}
+
+	public boolean isZoomToPageWidth() {
+    	return zoomToPageWidth;
+    }
+
+	public void setZoomToPageWidth(boolean zoomToPageWidth) {
+    	this.zoomToPageWidth = zoomToPageWidth;
+    }
+
+	public boolean isZoomToPageHeight() {
+    	return zoomToPageHeight;
+    }
+
+	public void setZoomToPageHeight(boolean zoomToPageHeight) {
+    	this.zoomToPageHeight = zoomToPageHeight;
+    }
+
+	public boolean isZoomToControlWidth() {
+    	return zoomToControlWidth;
+    }
+
+	public void setZoomToControlWidth(boolean zoomToControlWidth) {
+    	this.zoomToControlWidth = zoomToControlWidth;
+    }
+
+
 }

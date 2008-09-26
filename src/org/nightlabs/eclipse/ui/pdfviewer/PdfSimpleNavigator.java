@@ -2,7 +2,6 @@ package org.nightlabs.eclipse.ui.pdfviewer;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -13,7 +12,7 @@ import org.nightlabs.eclipse.ui.pdfviewer.internal.PdfSimpleNavigatorComposite;
 public class PdfSimpleNavigator implements ContextElement<PdfSimpleNavigator> {
 
 	public static final ContextElementType<PdfSimpleNavigator> CONTEXT_ELEMENT_TYPE = new ContextElementType<PdfSimpleNavigator>(PdfSimpleNavigator.class);
-	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+//	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 	private PdfViewer pdfViewer;
 	private PdfDocument pdfDocument;
 	private String contextElementId;
@@ -76,15 +75,15 @@ public class PdfSimpleNavigator implements ContextElement<PdfSimpleNavigator> {
         }
 	};
 
-	private PropertyChangeListener propertyChangeListenerCurrentPageModifiedByTN = new PropertyChangeListener() {
-		@Override
-        public void propertyChange(PropertyChangeEvent event) {
-			pdfSimpleNavigatorComposite.getCurrentPageNumberText().setText(String.valueOf(event.getNewValue()));
-			// check if one or more buttons in PDF simple navigator have to be en-/disabled
-			pdfSimpleNavigatorComposite.setControlEnabledStatus((Integer)event.getNewValue());
-			getPdfViewer().setCurrentPage((Integer)event.getNewValue(), false);		// only set the new page in PDF viewer, do not fire again
-        }
-	};
+//	private PropertyChangeListener propertyChangeListenerCurrentPageModifiedByTN = new PropertyChangeListener() {
+//		@Override
+//        public void propertyChange(PropertyChangeEvent event) {
+//			pdfSimpleNavigatorComposite.getCurrentPageNumberText().setText(String.valueOf(event.getNewValue()));
+//			// check if one or more buttons in PDF simple navigator have to be en-/disabled
+//			pdfSimpleNavigatorComposite.setControlEnabledStatus((Integer)event.getNewValue());
+//			getPdfViewer().setCurrentPage((Integer)event.getNewValue(), false);		// only set the new page in PDF viewer, do not fire again
+//        }
+//	};
 
 	private PropertyChangeListener propertyChangeListenerPdfDocument = new PropertyChangeListener() {
 		@Override
