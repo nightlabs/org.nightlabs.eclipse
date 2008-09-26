@@ -61,28 +61,28 @@ public class XComboComposite<T>
 		TOP,
 		LEFT
 	}
-	
+
 	/**
 	 * @see AbstractListComposite#AbstractListComposite(Composite, int, boolean)
 	 */
 	public XComboComposite(Composite parent, int comboStyle) {
 		super(parent, comboStyle, true);
 	}
-	
+
 	/**
 	 * @see AbstractListComposite#AbstractListComposite(Composite, int, String, boolean)
 	 */
 	public XComboComposite(Composite parent, int comboStyle, String caption) {
 		super(parent, comboStyle, caption, true);
 	}
-	
+
 	/**
 	 * @see AbstractListComposite#AbstractListComposite(Composite, int, String, boolean)
 	 */
 	public XComboComposite(Composite parent, int comboStyle, String caption, CaptionOrientation captionOrientation) {
 		this(parent, comboStyle, caption, new LabelProvider(), captionOrientation);
 	}
-	
+
 	public XComboComposite(Composite parent, int comboStyle, ILabelProvider labelProvider) {
 		super(parent, comboStyle, (String)null, true, labelProvider);
 	}
@@ -93,7 +93,7 @@ public class XComboComposite<T>
 	public XComboComposite(Composite parent, int comboStyle, String caption, ILabelProvider labelProvider) {
 		super(parent, comboStyle, caption, true, labelProvider);
 	}
-	
+
 	/**
 	 * @see AbstractListComposite#AbstractListComposite(Composite, int, String, boolean, ILabelProvider)
 	 */
@@ -137,11 +137,11 @@ public class XComboComposite<T>
 //	}
 
 	private CaptionOrientation captionOrientation = CaptionOrientation.TOP;
-	
+
 	public CaptionOrientation getCaptionOrientation() {
 		return captionOrientation;
 	}
-	
+
 	/**
 	 * @param listener
 	 * @see org.nightlabs.base.ui.custom.XCombo#addModifyListener(org.eclipse.swt.events.ModifyListener)
@@ -198,11 +198,11 @@ public class XComboComposite<T>
 	{
 		getGridData().grabExcessVerticalSpace = false;
 		if ( caption != null && ! "".equals(caption) ) { //$NON-NLS-1$
-			XComposite composite = new XComposite(parent, SWT.NONE, LayoutDataMode.GRID_DATA);
+			XComposite composite = new XComposite(parent, SWT.NONE, LayoutMode.TIGHT_WRAPPER, LayoutDataMode.GRID_DATA);
 			GridLayout gridLayout = composite.getGridLayout();
 			if (captionOrientation == null)
 				captionOrientation = CaptionOrientation.TOP;
-			
+
 			switch (captionOrientation) {
 				case TOP:
 					gridLayout.numColumns = 1;
@@ -223,14 +223,14 @@ public class XComboComposite<T>
 		}
 
 		imageCombo.addSelectionListener(new SelectionAdapter() {
-			
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				StructuredSelection selection = new StructuredSelection(
 						imageCombo.getItem(imageCombo.getSelectionIndex()) );
 				fireSelectionChangedEvent(selection);
 			}
-		
+
 		});
 	}
 
@@ -262,7 +262,7 @@ public class XComboComposite<T>
 	protected void internal_setSelection(int[] indices) {
 		if (indices.length > 1 )
 			throw new IllegalArgumentException("Multiple selections are not supported by Combos!"); //$NON-NLS-1$
-		
+
 		internal_setSelection(indices[0]);
 	}
 
@@ -271,7 +271,7 @@ public class XComboComposite<T>
 		int index = getElementIndex(elem);
 		if (index < 0)
 			return;
-		
+
 		if (imageCombo != null && !imageCombo.isDisposed())
 			imageCombo.setItem(index, labelProvider.getImage(elem), labelProvider.getText(elem));
 	}

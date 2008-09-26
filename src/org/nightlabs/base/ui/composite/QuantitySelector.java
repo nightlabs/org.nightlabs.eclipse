@@ -33,6 +33,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 
 public abstract class QuantitySelector extends XComposite
@@ -42,23 +43,31 @@ public abstract class QuantitySelector extends XComposite
 	private Spinner varQtySpinner;
 	private Button varQtyButton;
 
-	public QuantitySelector(Composite parent)
+	public QuantitySelector(Composite parent) {
+		this(parent, SWT.NONE);
+	}
+
+	public QuantitySelector(Composite parent, int style)
 	{
-		super(parent, SWT.NONE, LayoutMode.TIGHT_WRAPPER);
+		super(parent, style, LayoutMode.TIGHT_WRAPPER);
 		getGridData().grabExcessHorizontalSpace = false;
 		getGridData().grabExcessVerticalSpace = false;
 		getGridLayout().verticalSpacing = 0;
 		getGridLayout().horizontalSpacing = 0;
+//		getGridLayout().marginTop = 0;
+//		getGridLayout().marginBottom = 0;
 
 		for (int i = 0; i < quickQtyButtons.length; ++i) {
 			quickQtyButtons[i] = new Button(this, SWT.FLAT);
 			quickQtyButtons[i].setText(Integer.toString(i + 1));
 			quickQtyButtons[i].setData(new Integer(i + 1));
 			quickQtyButtons[i].addSelectionListener(buttonSelectionListener);
+			quickQtyButtons[i].setLayoutData(createGridData());
 		}
-		spacer = new XComposite(this, SWT.NONE, LayoutMode.TIGHT_WRAPPER);
-		spacer.setLayoutData(new GridData(4, 1));
-		varQtySpinner = new Spinner(this, SWT.BORDER);
+		Label spacer = new Label(this, SWT.NONE);
+		spacer.setLayoutData(createGridData());
+
+		varQtySpinner = new Spinner(this, getBorderStyle());
 		varQtySpinner.setMinimum(1);
 		varQtySpinner.setMaximum(Integer.MAX_VALUE);
 		varQtySpinner.setSelection(10);
@@ -71,12 +80,25 @@ public abstract class QuantitySelector extends XComposite
 				relayout();
 			}
 		});
+		varQtySpinner.setLayoutData(createGridData());
+
+		Label spacer2 = new Label(this, SWT.NONE);
+		spacer2.setLayoutData(createGridData());
+
 		varQtyButton = new Button(this, SWT.FLAT);
 		varQtyButton.setData(new Integer(varQtySpinner.getSelection()));
 		varQtyButton.setText(Integer.toString(varQtySpinner.getSelection()));
 		varQtyButton.addSelectionListener(buttonSelectionListener);
+		varQtyButton.setLayoutData(createGridData());
 
 		this.getGridLayout().numColumns = this.getChildren().length;
+	}
+
+	private GridData createGridData() {
+		GridData gd = new GridData();
+//		gd.verticalIndent = 0;
+//		gd.grabExcessVerticalSpace = false;
+		return gd;
 	}
 
 	private SelectionListener buttonSelectionListener = new SelectionAdapter() {
