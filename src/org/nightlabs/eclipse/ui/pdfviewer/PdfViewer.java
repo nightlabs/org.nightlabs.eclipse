@@ -26,12 +26,9 @@ public class PdfViewer
 	private PdfDocument pdfDocument;
 	private PdfViewerComposite pdfViewerComposite;
 	private ContextElementRegistry contextElementRegistry = new ContextElementRegistry();
-	private boolean zoomToPageWidth;
-	private boolean zoomToPageHeight;
-	// TODO do not use and replace this (also in PDF viewer composite)
-	private boolean zoomToControlWidth;
 	private int zoomFactorPerMill = 1000;
 
+	private AutoZoom autoZoom = AutoZoom.none;
 	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
 	/**
@@ -451,29 +448,13 @@ public class PdfViewer
 			throw new IllegalStateException("Currently, this method can only be called when a control has already been created (i.e. after PdfViewer.createControl() has been called)!");
 	}
 
-	public boolean isZoomToPageWidth() {
-    	return zoomToPageWidth;
-    }
+	public AutoZoom getAutoZoom() {
+		return autoZoom;
+	}
 
-	public void setZoomToPageWidth(boolean zoomToPageWidth) {
-    	this.zoomToPageWidth = zoomToPageWidth;
-    }
-
-	public boolean isZoomToPageHeight() {
-    	return zoomToPageHeight;
-    }
-
-	public void setZoomToPageHeight(boolean zoomToPageHeight) {
-    	this.zoomToPageHeight = zoomToPageHeight;
-    }
-
-	public boolean isZoomToControlWidth() {
-    	return zoomToControlWidth;
-    }
-
-	public void setZoomToControlWidth(boolean zoomToControlWidth) {
-    	this.zoomToControlWidth = zoomToControlWidth;
-    }
+	public void setAutoZoom(AutoZoom autoZoom) {
+		this.autoZoom = autoZoom;
+	}
 
 
 }

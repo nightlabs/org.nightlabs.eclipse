@@ -1,12 +1,8 @@
 package org.nightlabs.eclipse.ui.pdfviewer.internal;
 
-import javax.swing.UIDefaults;
-import javax.swing.UIManager;
-
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.nightlabs.eclipse.ui.pdfviewer.OneDimensionalPdfDocument;
@@ -57,8 +53,11 @@ public class PdfThumbnailNavigatorComposite extends Composite {
 
 	}
 
-    public void zoomToControlWidth() {
+    public void zoomToPageWidth() {
 
+    	// not needed at the moment => delete later
+
+/*
 		Point screenDPI = getDisplay().getDPI();
 		zoomScreenResolutionFactor = new Point2DDouble(
 				(double)screenDPI.x / 72,
@@ -83,11 +82,10 @@ public class PdfThumbnailNavigatorComposite extends Composite {
 			logger.info("zoomFactorPerMill " + zoomFactorPerMill);
 		}
 
-		pdfThumbnailNavigator.getThumbnailPdfViewer().setZoomToControlWidth(true);
+		thumbnailPdfViewer.setAutozoom(AutoZoom.pageWidth);
 		thumbnailPdfViewer.setZoomFactorPerMill(zoomFactorPerMill);
-
+*/
     }
-
 
 	public PdfViewer getThumbnailPdfViewer() {
 		return thumbnailPdfViewer;

@@ -31,6 +31,8 @@ import java.util.Collection;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
@@ -46,6 +48,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
+import org.nightlabs.eclipse.ui.pdfviewer.AutoZoom;
 import org.nightlabs.eclipse.ui.pdfviewer.Dimension2DDouble;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
@@ -163,7 +166,7 @@ public class PdfViewerComposite extends Composite
 		return new org.nightlabs.eclipse.ui.pdfviewer.MouseEvent(pointRelative, pointAbsolute);
 	}
 
-	public PdfViewerComposite(Composite parent, int style, PdfViewer pdfViewer)
+	public PdfViewerComposite(Composite parent, int style, final PdfViewer pdfViewer)
 	{
 		super(parent, style);
 		this.pdfViewer = pdfViewer;
@@ -394,6 +397,15 @@ public class PdfViewerComposite extends Composite
 					}
 				}
 
+				AutoZoom autoZoom = pdfViewer.getAutoZoom();
+				if (autoZoom == AutoZoom.pageWidth) {
+					Display.getDefault().asyncExec(new Runnable() {
+						public void run() {
+							zoomToPageWidth();
+						}
+					});
+				}
+
 				setScrollbars();
 				viewPanel.repaint();
 
@@ -576,6 +588,11 @@ public class PdfViewerComposite extends Composite
 					return;
 				}
 
+				boolean showScrollBarHorizontal = true;
+				if (pdfViewer.getAutoZoom() == AutoZoom.pageWidth) {
+					showScrollBarHorizontal = false;
+				}
+
 				double zoomFactor = (zoomFactorPerMill / 1000d);
 
 				int visibleAreaScrollHeight = (int) (getViewPanel().getHeight() / (zoomFactor * getZoomScreenResolutionFactor().getY())) / scrollBarDivisor;
@@ -591,18 +608,24 @@ public class PdfViewerComposite extends Composite
 				scrollBarVertical.setPageIncrement((int) (visibleAreaScrollHeight * 0.9d));
 				scrollBarVertical.setIncrement((int) (visibleAreaScrollHeight * 0.1d));
 
-				int visibleAreaScrollWidth = (int) (getViewPanel().getWidth() / (zoomFactor * getZoomScreenResolutionFactor().getX())) / scrollBarDivisor;
-				scrollBarHorizontal.setMinimum(0);
-				scrollBarHorizontal.setMaximum((int) pdfDocument.getDocumentDimension().getWidth() / scrollBarDivisor);
-				scrollBarHorizontal.setSelection((int) (viewOrigin.getX() / scrollBarDivisor));
-				boolean horizontalBarVisible = visibleAreaScrollWidth <= (scrollBarHorizontal.getMaximum() - scrollBarHorizontal.getMinimum());
-				scrollBarHorizontal.setVisible(horizontalBarVisible);
-				if (!horizontalBarVisible)
-					centerHorizontally = true;
+				if (showScrollBarHorizontal == true) {
+					int visibleAreaScrollWidth = (int) (getViewPanel().getWidth() / (zoomFactor * getZoomScreenResolutionFactor().getX())) / scrollBarDivisor;
+					scrollBarHorizontal.setMinimum(0);
+					scrollBarHorizontal.setMaximum((int) pdfDocument.getDocumentDimension().getWidth() / scrollBarDivisor);
+					scrollBarHorizontal.setSelection((int) (viewOrigin.getX() / scrollBarDivisor));
+					boolean horizontalBarVisible = visibleAreaScrollWidth <= (scrollBarHorizontal.getMaximum() - scrollBarHorizontal.getMinimum());
+					scrollBarHorizontal.setVisible(horizontalBarVisible);
+					if (!horizontalBarVisible)
+						centerHorizontally = true;
 
-				scrollBarHorizontal.setThumb(visibleAreaScrollWidth);
-				scrollBarHorizontal.setPageIncrement((int) (visibleAreaScrollWidth * 0.9d));
-				scrollBarHorizontal.setIncrement((int) (visibleAreaScrollWidth * 0.1d));
+					scrollBarHorizontal.setThumb(visibleAreaScrollWidth);
+					scrollBarHorizontal.setPageIncrement((int) (visibleAreaScrollWidth * 0.9d));
+					scrollBarHorizontal.setIncrement((int) (visibleAreaScrollWidth * 0.1d));
+				}
+				else {
+					scrollBarHorizontal.setVisible(false);
+					centerHorizontally = true;
+				}
 
 				if (logger.isDebugEnabled()) {
 					logger.debug("setScrollbars: scrollBarVertical.minimum=" + scrollBarVertical.getMinimum());
@@ -778,6 +801,35 @@ public class PdfViewerComposite extends Composite
 		return viewDimensionCached;
 	}
 
+	public void zoomToPageWidth() {
+
+		Point screenDPI = getDisplay().getDPI();
+		zoomScreenResolutionFactor = new Point2DDouble(
+				(double)screenDPI.x / 72,
+				(double)screenDPI.y / 72
+		);
+
+		UIDefaults uidef = UIManager.getDefaults();
+		int swidth = Integer.parseInt(uidef.get("ScrollBar.width").toString());		// here it has a value of 17
+
+		// Compute an adequate zoom factor for fitting the given document into thumb-nail navigator composite (considering the width).
+		// The horizontal scroll-bar of PDF thumb-nail navigator composite will be set invisible as it is not needed
+		// in this navigator.
+		int pdfViewerCompositeWidth = getBounds().width - swidth;
+		double documentWidth = pdfDocument.getDocumentDimension().getWidth();
+		double pdfViewerCompositeWidthReal = pdfViewerCompositeWidth / (zoomScreenResolutionFactor.getX());
+
+		int zoomFactorPerMill = (int) (pdfViewerCompositeWidthReal / documentWidth * 1000);
+
+		if (logger.isDebugEnabled()) {
+			logger.info("pdfThumbnailNavigatorCompositeWidth " + pdfViewerCompositeWidth);
+			logger.info("pdfThumbnailNavigatorCompositeWidthReal " + pdfViewerCompositeWidthReal);
+			logger.info("documentWidth " + documentWidth);
+			logger.info("zoomFactorPerMill " + zoomFactorPerMill);
+		}
+		pdfViewer.setZoomFactorPerMill(zoomFactorPerMill);
+	}
+
 	/**
 	 * Get the zoom factor in &permil; (1/1000).
 	 *
@@ -789,6 +841,12 @@ public class PdfViewerComposite extends Composite
 
 	public void setZoomFactorPerMill(int zoomFactorPerMill)
 	{
+		boolean doFire = true;
+		AutoZoom autoZoom = pdfViewer.getAutoZoom();
+		if (autoZoom == AutoZoom.pageHeight || autoZoom == AutoZoom.pageWidth) {
+			doFire = false;
+		}
+
 		int zoomBefore = this.zoomFactorPerMill;
 		Dimension2D viewDimensionBefore = getViewDimension();
 
@@ -826,12 +884,11 @@ public class PdfViewerComposite extends Composite
 			logger.debug("zoomPDFDocument: zoomFactor=" + zoomFactor + " viewOrigin.x=" + viewOrigin.getX() + " viewOrigin.y=" + viewOrigin.getY());
 
 		viewDimensionCached = null;
-		if (!pdfViewer.isZoomToControlWidth()) {
-			propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_ZOOM_FACTOR, zoomBefore, this.zoomFactorPerMill);
-			propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_DIMENSION, viewDimensionBefore, getViewDimension());
-		}
 
-		if (!pdfViewer.isZoomToControlWidth()) {
+		propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_ZOOM_FACTOR, zoomBefore, this.zoomFactorPerMill);
+		propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_DIMENSION, viewDimensionBefore, getViewDimension());
+
+		if (doFire) {
 			rectangleView.setRect(
 					(int) (middle.x - viewPanelBoundsReal.x / 2),
 					(int) (middle.y - viewPanelBoundsReal.y / 2),

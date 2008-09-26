@@ -116,8 +116,8 @@ public class PdfThumbnailNavigator implements ContextElement<PdfThumbnailNavigat
     	this.pdfThumbnailNavigatorComposite = pdfThumbnailNavigatorComposite;
     }
 
-	public void zoomToControlWidth () {
-		this.pdfThumbnailNavigatorComposite.zoomToControlWidth();
+	public void zoomToPageWidth () {
+		this.pdfThumbnailNavigatorComposite.zoomToPageWidth();
 	}
 
 	protected void setPdfDocument(PdfDocument pdfDocument) {
