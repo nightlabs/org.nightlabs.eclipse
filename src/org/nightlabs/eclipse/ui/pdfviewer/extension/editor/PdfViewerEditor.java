@@ -65,7 +65,14 @@ public class PdfViewerEditor extends EditorPart
 
 	@Override
 	public void doSaveAs() {
-		// TODO implement later
+/*		IProgressMonitor monitor = new NullProgressMonitor();
+		String pathName = "abc.pdf";
+		try {
+			PdfFileSaver.savePdfAs(pathName, monitor);
+		}
+		catch (final Exception x) {
+			logger.error("Error while saving PDF file!", x);
+		}*/
 	}
 
 	@Override
@@ -166,11 +173,16 @@ public class PdfViewerEditor extends EditorPart
 							return;
 
 						loadingMessagePage.dispose();
-//						loadingMessageLabel.dispose();
 						SashForm page = new SashForm(parent, SWT.HORIZONTAL);
 
 						pdfViewer = new PdfViewer();
+
+						// PDF viewer fires a property change event concerning the property "PROPERTY_PDF_DOCUMENT"
+						// when setting the given PDF document here. PDF thumb-nail navigator will receive this event and will
+						// call setDocument for its corresponding composite to load the given PDF document in its composite.
 						pdfViewer.setPdfDocument(pdfDocument);
+
+//						pdfViewer.setPdfDocument(pdfDocument);	// => see below
 						pdfThumbnailNavigator = new PdfThumbnailNavigator(pdfViewer);
 
 						Composite leftComp = new Composite(page, SWT.NONE);
@@ -184,10 +196,12 @@ public class PdfViewerEditor extends EditorPart
 						pdfViewerControl = pdfViewer.createControl(page, SWT.BORDER);
 						pdfViewerControl.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-						// creating the control of PDF simple navigator (a new PDF simple navigator composite will be created)
+						// creating PDF simple navigator and its corresponding control (a new PDF simple navigator composite will be created)
 						pdfSimpleNavigator = new PdfSimpleNavigator(pdfViewer);
 						pdfSimpleNavigatorControl = pdfSimpleNavigator.createControl(leftComp, SWT.NONE);
 						pdfSimpleNavigatorControl.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_END));
+
+						pdfThumbnailNavigator.zoomToControlWidth();		// must be called after previous line
 
 						if (logger.isDebugEnabled()) {
 							logger.info("simple navigator control width " + pdfSimpleNavigatorControl.getBounds().width);
@@ -197,13 +211,7 @@ public class PdfViewerEditor extends EditorPart
 							logger.info("parent width " + parent.getBounds().width);
 						}
 
-//						pdfThumbnailNavigator.setPdfDocumentFactory(new PdfThumbnailNavigator.PdfDocumentFactory() {
-//							public PdfDocument createPdfDocument(PdfDocument pdfDocument)
-//							{
-//								return new OneDimensionalPdfDocument(pdfDocument.getPdfFile(), OneDimensionalPdfDocument.Layout.vertical, new NullProgressMonitor());
-//							}
-//						});
-
+						// TODO in the case the PDF viewer component has been resized weights have to be computed again (not optimal yet)
 						int absoluteWidth = pdfSimpleNavigatorControl.getBounds().width +
 											pdfThumbnailNavigatorControl.getBorderWidth() * 2 +
 											pdfViewerControl.getBorderWidth();
@@ -212,6 +220,14 @@ public class PdfViewerEditor extends EditorPart
 						page.setWeights(new int[]{relativeWidth, 100 - relativeWidth});
 
 						parent.layout(true, true);
+
+
+//						pdfThumbnailNavigator.setPdfDocumentFactory(new PdfThumbnailNavigator.PdfDocumentFactory() {
+//							public PdfDocument createPdfDocument(PdfDocument pdfDocument)
+//							{
+//								return new OneDimensionalPdfDocument(pdfDocument.getPdfFile(), OneDimensionalPdfDocument.Layout.vertical, new NullProgressMonitor());
+//							}
+//						});
 					}
 				});
 
