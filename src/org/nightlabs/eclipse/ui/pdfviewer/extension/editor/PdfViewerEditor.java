@@ -23,6 +23,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 import org.nightlabs.base.ui.io.FileEditorInput;
 import org.nightlabs.base.ui.util.RCPUtil;
+import org.nightlabs.eclipse.ui.pdfviewer.AutoZoom;
 import org.nightlabs.eclipse.ui.pdfviewer.OneDimensionalPdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfFileLoader;
@@ -178,11 +179,10 @@ public class PdfViewerEditor extends EditorPart
 						pdfViewer = new PdfViewer();
 
 						// PDF viewer fires a property change event concerning the property "PROPERTY_PDF_DOCUMENT"
-						// when setting the given PDF document here. PDF thumb-nail navigator will receive this event and will
-						// call setDocument for its corresponding composite to load the given PDF document in its composite.
+						// when setting the given PDF document here. PDF thumb-nail navigator will receive this event (when created)
+						// and will call setDocument for its corresponding composite to load the given PDF document in its composite.
 						pdfViewer.setPdfDocument(pdfDocument);
 
-//						pdfViewer.setPdfDocument(pdfDocument);	// => see below
 						pdfThumbnailNavigator = new PdfThumbnailNavigator(pdfViewer);
 
 						Composite leftComp = new Composite(page, SWT.NONE);
@@ -201,7 +201,7 @@ public class PdfViewerEditor extends EditorPart
 						pdfSimpleNavigatorControl = pdfSimpleNavigator.createControl(leftComp, SWT.NONE);
 						pdfSimpleNavigatorControl.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_END));
 
-						pdfThumbnailNavigator.zoomToControlWidth();		// must be called after previous line
+						pdfThumbnailNavigator.getThumbnailPdfViewer().setAutoZoom(AutoZoom.pageWidth);
 
 						if (logger.isDebugEnabled()) {
 							logger.info("simple navigator control width " + pdfSimpleNavigatorControl.getBounds().width);
@@ -215,12 +215,11 @@ public class PdfViewerEditor extends EditorPart
 						int absoluteWidth = pdfSimpleNavigatorControl.getBounds().width +
 											pdfThumbnailNavigatorControl.getBorderWidth() * 2 +
 											pdfViewerControl.getBorderWidth();
-						int relativeWidth = (int) Math.ceil(100f * absoluteWidth / parent.getBounds().width);
 
+						int relativeWidth = (int) Math.ceil(100f * absoluteWidth / parent.getBounds().width);
 						page.setWeights(new int[]{relativeWidth, 100 - relativeWidth});
 
 						parent.layout(true, true);
-
 
 //						pdfThumbnailNavigator.setPdfDocumentFactory(new PdfThumbnailNavigator.PdfDocumentFactory() {
 //							public PdfDocument createPdfDocument(PdfDocument pdfDocument)
