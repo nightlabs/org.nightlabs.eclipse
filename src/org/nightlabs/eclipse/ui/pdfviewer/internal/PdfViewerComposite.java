@@ -70,7 +70,6 @@ public class PdfViewerComposite extends Composite
 	private Rectangle2D rectangleView;
 	private Point2DDouble zoomScreenResolutionFactor;
 	private int currentPage;
-	private boolean verticalBarIsVisible;
 
 	/**
 	 * Since the int range of the scroll bars is limited and we don't need to be able to scroll to every single
@@ -409,19 +408,14 @@ public class PdfViewerComposite extends Composite
 
 				setScrollbars();
 
-				Display.getDefault().asyncExec(new Runnable() {
-					public void run() {
-						if (scrollBarVertical.isVisible())
-							verticalBarIsVisible = true;
-					}
-				});
-
 				// positioning the first page of the given document to the top of PDF thumb-nail navigator
-				if (autoZoom == AutoZoom.pageWidth && verticalBarIsVisible) {
+				if (autoZoom == AutoZoom.pageWidth) {
 					Display.getDefault().asyncExec(new Runnable() {
 						public void run() {
-							scrollBarVertical.setSelection(1);
-							scrollVertically();		// already invokes repainting
+							if (scrollBarVertical.isVisible()) {
+								scrollBarVertical.setSelection(1);
+								scrollVertically();		// already invokes repainting
+							}
 						}
 					});
 				}
