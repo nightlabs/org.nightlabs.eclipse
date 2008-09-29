@@ -71,6 +71,7 @@ public class PdfViewerComposite extends Composite
 	private Point2DDouble zoomScreenResolutionFactor;
 	private int currentPage;
 	private boolean startingPoint = true;
+	private boolean zoomIsAllowed = true;
 
 	/**
 	 * Since the int range of the scroll bars is limited and we don't need to be able to scroll to every single
@@ -728,7 +729,7 @@ public class PdfViewerComposite extends Composite
 			else
 				mouseRotationOrientation = 1;
 
-			if (mouseWheelModeZoom == true)
+			if (mouseWheelModeZoom == true && zoomIsAllowed)
 				zoomPDFDocument(mouseRotationOrientation);
 			else {
 				Display.getDefault().asyncExec(new Runnable() {
@@ -1075,5 +1076,9 @@ public class PdfViewerComposite extends Composite
 			// ignore
 		}
 	}
+
+	public void setZoomIsAllowed(boolean zoomIsAllowed) {
+    	this.zoomIsAllowed = zoomIsAllowed;
+    }
 
 }

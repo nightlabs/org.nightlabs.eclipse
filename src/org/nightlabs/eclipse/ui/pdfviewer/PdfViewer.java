@@ -456,5 +456,16 @@ public class PdfViewer
 		this.autoZoom = autoZoom;
 	}
 
+	public PdfViewerComposite getPdfViewerComposite() {
+		assertValidThread();
+
+    	return this.pdfViewerComposite;
+    }
+
+	public void setZoomIsAllowed(boolean zoomIsAllowed) {
+    	this.pdfViewerComposite.setZoomIsAllowed(zoomIsAllowed);
+    }
+
+
 
 }
