@@ -202,6 +202,8 @@ public class PdfViewerEditor extends EditorPart
 						pdfSimpleNavigatorControl.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_END));
 
 						pdfThumbnailNavigator.getThumbnailPdfViewer().setAutoZoom(AutoZoom.pageWidth);
+						pdfThumbnailNavigator.getThumbnailPdfViewer().setZoomIsAllowed(false);
+						pdfThumbnailNavigator.getThumbnailPdfViewer().setDrawShadowAroundChosenPageOnMouseClick(true);
 
 						if (logger.isDebugEnabled()) {
 							logger.info("simple navigator control width " + pdfSimpleNavigatorControl.getBounds().width);
