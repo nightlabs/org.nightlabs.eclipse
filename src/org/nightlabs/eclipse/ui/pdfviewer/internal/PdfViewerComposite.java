@@ -205,7 +205,7 @@ public class PdfViewerComposite extends Composite
 		viewPanelFrame = SWT_AWT.new_Frame(viewPanelComposite);
 
 		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=171432
-		// TODO perhaps not the right place to call this as the bug still occurs sometimes
+		// TODO perhaps not the right place to call this as the error still occurs sometimes
 		boolean x11ErrorHandlerFixInstalled = false;
 		if(!x11ErrorHandlerFixInstalled && "gtk".equals( SWT.getPlatform())) {
 			x11ErrorHandlerFixInstalled = true;
@@ -538,13 +538,14 @@ public class PdfViewerComposite extends Composite
 				getViewDimension().getWidth(),
 				getViewDimension().getHeight()
 		);
+		// TODO this property change shouldn't (!?) be forwarded to the main PDF viewer in the case PDF thumb-nail
+		// navigator has changed it
 		propertyChangeSupport.firePropertyChange(	PdfViewer.PROPERTY_CURRENT_PAGE,
 													0,
 													pdfDocument.getMostVisiblePage(
 														rectangleView
 													)
 												);
-
 	}
 
 	private void scrollHorizontally()
@@ -609,6 +610,7 @@ public class PdfViewerComposite extends Composite
 				scrollBarVertical.setIncrement((int) (visibleAreaScrollHeight * 0.1d));
 
 				if (showScrollBarHorizontal == true) {
+					// PDF viewer composite does probably need a horizontal scroll-bar
 					int visibleAreaScrollWidth = (int) (getViewPanel().getWidth() / (zoomFactor * getZoomScreenResolutionFactor().getX())) / scrollBarDivisor;
 					scrollBarHorizontal.setMinimum(0);
 					scrollBarHorizontal.setMaximum((int) pdfDocument.getDocumentDimension().getWidth() / scrollBarDivisor);
@@ -623,6 +625,7 @@ public class PdfViewerComposite extends Composite
 					scrollBarHorizontal.setIncrement((int) (visibleAreaScrollWidth * 0.1d));
 				}
 				else {
+					// PDF thumb-nail navigator composite doesn't need a horizontal scroll-bar at all
 					scrollBarHorizontal.setVisible(false);
 					centerHorizontally = true;
 				}
@@ -803,30 +806,24 @@ public class PdfViewerComposite extends Composite
 
 	public void zoomToPageWidth() {
 
-		Point screenDPI = getDisplay().getDPI();
-		zoomScreenResolutionFactor = new Point2DDouble(
-				(double)screenDPI.x / 72,
-				(double)screenDPI.y / 72
-		);
-
-		UIDefaults uidef = UIManager.getDefaults();
-		int swidth = Integer.parseInt(uidef.get("ScrollBar.width").toString());		// here it has a value of 17
-
-		// Compute an adequate zoom factor for fitting the given document into thumb-nail navigator composite (considering the width).
+		// An adequate zoom factor for fitting the given document into PDF thumb-nail navigator composite is computed
+		// considering the different widths of document and PDF viewer composite.
 		// The horizontal scroll-bar of PDF thumb-nail navigator composite will be set invisible as it is not needed
 		// in this navigator.
-		int pdfViewerCompositeWidth = getBounds().width - swidth;
-		double documentWidth = pdfDocument.getDocumentDimension().getWidth();
-		double pdfViewerCompositeWidthReal = pdfViewerCompositeWidth / (zoomScreenResolutionFactor.getX());
+		Point screenDPI = getDisplay().getDPI();
+		zoomScreenResolutionFactor = new Point2DDouble(	(double)screenDPI.x / 72,
+														(double)screenDPI.y / 72
+														);
+		// get the scroll-bar width
+		UIDefaults uidef = UIManager.getDefaults();
+		int swidth = Integer.parseInt(uidef.get("ScrollBar.width").toString());
 
+		// now compute the adequate zoom factor
+		double documentWidth = pdfDocument.getDocumentDimension().getWidth();
+		int pdfViewerCompositeWidth = getBounds().width - swidth;
+		double pdfViewerCompositeWidthReal = pdfViewerCompositeWidth / (zoomScreenResolutionFactor.getX());
 		int zoomFactorPerMill = (int) (pdfViewerCompositeWidthReal / documentWidth * 1000);
 
-		if (logger.isDebugEnabled()) {
-			logger.info("pdfThumbnailNavigatorCompositeWidth " + pdfViewerCompositeWidth);
-			logger.info("pdfThumbnailNavigatorCompositeWidthReal " + pdfViewerCompositeWidthReal);
-			logger.info("documentWidth " + documentWidth);
-			logger.info("zoomFactorPerMill " + zoomFactorPerMill);
-		}
 		pdfViewer.setZoomFactorPerMill(zoomFactorPerMill);
 	}
 
@@ -841,6 +838,7 @@ public class PdfViewerComposite extends Composite
 
 	public void setZoomFactorPerMill(int zoomFactorPerMill)
 	{
+		// TODO if PROPERTY_CURRENT_PAGE is fired again below, an error occurs
 		boolean doFire = true;
 		AutoZoom autoZoom = pdfViewer.getAutoZoom();
 		if (autoZoom == AutoZoom.pageHeight || autoZoom == AutoZoom.pageWidth) {
