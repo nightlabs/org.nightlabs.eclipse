@@ -72,6 +72,7 @@ public class PdfViewerComposite extends Composite
 	private int currentPage;
 	private boolean startingPoint = true;
 	private boolean zoomIsAllowed = true;
+	private boolean drawShadowAroundChosenPageOnMouseClick = false;
 
 	/**
 	 * Since the int range of the scroll bars is limited and we don't need to be able to scroll to every single
@@ -165,7 +166,8 @@ public class PdfViewerComposite extends Composite
 				viewOrigin.getY() + (pointRelative.getY() / (zoomScreenResolutionFactor.getY() * zoomFactorPerMill / 1000))
 		);
 		pointAbsolute.setReadOnly();
-		return new org.nightlabs.eclipse.ui.pdfviewer.MouseEvent(pointRelative, pointAbsolute);
+//		System.out.println(pointAbsolute.getX() + " " + pointAbsolute.getY());
+		return new org.nightlabs.eclipse.ui.pdfviewer.MouseEvent(pointRelative, pointAbsolute, zoomFactorPerMill);
 	}
 
 	public PdfViewerComposite(Composite parent, int style, final PdfViewer pdfViewer)
@@ -255,7 +257,8 @@ public class PdfViewerComposite extends Composite
 						if (newCurrentPage != null)
 							setCurrentPage(newCurrentPage, true);
 
-						propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_MOUSE_CLICKED, null, pdfMouseEvent);
+						if (drawShadowAroundChosenPageOnMouseClick)
+							propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_MOUSE_CLICKED, null, pdfMouseEvent);
 					}
 				});
 			}
@@ -729,7 +732,7 @@ public class PdfViewerComposite extends Composite
 			else
 				mouseRotationOrientation = 1;
 
-			if (mouseWheelModeZoom == true && zoomIsAllowed)
+			if (mouseWheelModeZoom == true && zoomIsAllowed)	// do not allow zooming in PDF thumb-nail viewer
 				zoomPDFDocument(mouseRotationOrientation);
 			else {
 				Display.getDefault().asyncExec(new Runnable() {
@@ -1079,6 +1082,14 @@ public class PdfViewerComposite extends Composite
 
 	public void setZoomIsAllowed(boolean zoomIsAllowed) {
     	this.zoomIsAllowed = zoomIsAllowed;
+    }
+
+	public void setDrawShadowAroundChosenPageOnMouseClick(boolean drawShadowOnMouseClick) {
+    	this.drawShadowAroundChosenPageOnMouseClick = drawShadowOnMouseClick;
+    }
+
+	public PdfViewer getPdfViewer() {
+    	return pdfViewer;
     }
 
 }

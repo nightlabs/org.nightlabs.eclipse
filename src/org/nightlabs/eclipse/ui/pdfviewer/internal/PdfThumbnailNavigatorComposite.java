@@ -31,7 +31,6 @@ public class PdfThumbnailNavigatorComposite extends Composite {
 
 		thumbnailPdfViewer = new PdfViewer();
 		thumbnailPdfViewer.createControl(this, SWT.NONE);
-		thumbnailPdfViewer.setZoomIsAllowed(false);
 		setPdfDocument(pdfThumbnailNavigator.getPdfDocument());
 	}
 

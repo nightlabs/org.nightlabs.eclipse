@@ -466,6 +466,10 @@ public class PdfViewer
     	this.pdfViewerComposite.setZoomIsAllowed(zoomIsAllowed);
     }
 
+	public void setDrawShadowAroundChosenPageOnMouseClick(boolean drawShadowAroundChosenPageOnMouseClick) {
+    	this.pdfViewerComposite.setDrawShadowAroundChosenPageOnMouseClick(drawShadowAroundChosenPageOnMouseClick);
+    }
+
 
 
 }
