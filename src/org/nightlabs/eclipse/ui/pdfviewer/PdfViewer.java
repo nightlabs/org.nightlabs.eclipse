@@ -7,6 +7,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Collection;
 
+import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -28,6 +29,7 @@ public class PdfViewer
 	private ContextElementRegistry contextElementRegistry = new ContextElementRegistry();
 	private int zoomFactorPerMill = 1000;
 
+	private boolean updateCurrentPageOnScrolling = true;
 	private AutoZoom autoZoom = AutoZoom.none;
 	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
@@ -226,6 +228,12 @@ public class PdfViewer
 		this.pdfViewerComposite.setZoomFactorPerMill(zoomFactorPerMill);
 		this.pdfViewerComposite.setPdfDocument(pdfDocument); // just in case the document was set before this method.
 
+		for (Object listener : paintToBufferListeners.getListeners())
+			this.pdfViewerComposite.addPaintToBufferListener((PaintListener) listener);
+
+		for (Object listener : paintToViewListeners.getListeners())
+			this.pdfViewerComposite.addPaintToViewListener((PaintListener) listener);
+
 		return this.pdfViewerComposite;
 	}
 
@@ -265,6 +273,9 @@ public class PdfViewer
 			pdfViewerComposite.setPdfDocument(pdfDocument);
 
 		propertyChangeSupport.firePropertyChange(PROPERTY_PDF_DOCUMENT, oldPdfDocument, this.pdfDocument);
+
+		if (pdfDocument != null && pdfDocument.getPdfFile().getNumPages() > 0 && pdfViewerComposite != null)
+			setCurrentPage(1);
 	}
 
 	private Point2DDouble viewOrigin;
@@ -421,9 +432,9 @@ public class PdfViewer
 		return pdfViewerComposite.getCurrentPage();
     }
 
-	public void setCurrentPage(int currentPage, boolean doFire) {
+	public void setCurrentPage(int currentPage) {
 		if (pdfViewerComposite != null)
-			pdfViewerComposite.setCurrentPage(currentPage, doFire);
+			pdfViewerComposite.setCurrentPage(currentPage);
 		else
 			throw new IllegalStateException("Currently, this method can only be called when a control has already been created (i.e. after PdfViewer.createControl() has been called)!"); // TODO use local mirror variable
     }
@@ -456,20 +467,55 @@ public class PdfViewer
 		this.autoZoom = autoZoom;
 	}
 
+	private boolean mouseWheelZoomEnabled = true;
+
+	public void setMouseWheelZoomEnabled(boolean zoomIsAllowed) {
+    	this.mouseWheelZoomEnabled = zoomIsAllowed;
+    }
+
+	public boolean isMouseWheelZoomEnabled() {
+	    return mouseWheelZoomEnabled;
+    }
+
 	public PdfViewerComposite getPdfViewerComposite() {
 		assertValidThread();
 
     	return this.pdfViewerComposite;
     }
 
-	public void setZoomIsAllowed(boolean zoomIsAllowed) {
-    	this.pdfViewerComposite.setZoomIsAllowed(zoomIsAllowed);
+	private ListenerList paintToBufferListeners = new ListenerList();
+	private ListenerList paintToViewListeners = new ListenerList();
+
+	public void addPaintToBufferListener(PaintListener listener)
+	{
+		paintToBufferListeners.add(listener);
+		if (pdfViewerComposite != null)
+			pdfViewerComposite.addPaintToBufferListener(listener);
+	}
+	public void removePaintToBufferListener(PaintListener listener)
+	{
+		paintToBufferListeners.remove(listener);
+		if (pdfViewerComposite != null)
+			pdfViewerComposite.removePaintToBufferListener(listener);
+	}
+
+	public void addPaintToViewListener(PaintListener listener)
+	{
+		paintToViewListeners.add(listener);
+		if (pdfViewerComposite != null)
+			pdfViewerComposite.addPaintToViewListener(listener);
+	}
+	public void removePaintToViewListener(PaintListener listener)
+	{
+		paintToViewListeners.remove(listener);
+		if (pdfViewerComposite != null)
+			pdfViewerComposite.removePaintToViewListener(listener);
+	}
+
+	public void setUpdateCurrentPageOnScrolling(boolean updateCurrentPageOnScrolling) {
+	    this.updateCurrentPageOnScrolling = updateCurrentPageOnScrolling;
     }
-
-	public void setDrawShadowAroundChosenPageOnMouseClick(boolean drawShadowAroundChosenPageOnMouseClick) {
-    	this.pdfViewerComposite.setDrawShadowAroundChosenPageOnMouseClick(drawShadowAroundChosenPageOnMouseClick);
+	public boolean isUpdateCurrentPageOnScrolling() {
+	    return updateCurrentPageOnScrolling;
     }
-
-
-
 }

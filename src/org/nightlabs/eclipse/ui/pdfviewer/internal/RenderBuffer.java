@@ -6,12 +6,9 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.font.TextLayout;
 import java.awt.geom.Dimension2D;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.Collection;
 
@@ -21,10 +18,7 @@ import javax.imageio.stream.FileImageOutputStream;
 
 import org.apache.log4j.Logger;
 import org.nightlabs.eclipse.ui.pdfviewer.Dimension2DDouble;
-import org.nightlabs.eclipse.ui.pdfviewer.MouseEvent;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
-import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
-import org.nightlabs.eclipse.ui.pdfviewer.Point2DDouble;
 
 import com.sun.pdfview.PDFPage;
 
@@ -38,10 +32,9 @@ public class RenderBuffer
 
 	private PdfViewerComposite pdfViewerComposite;
 	private PdfDocument pdfDocument;
-	private boolean shadowsHaveToBeDrawn;
-	private Rectangle2D shadowBounds1, shadowBounds2, shadowBounds3, shadowBounds4;
-	// TODO find another way to get this variable in drawRegion(...)
-	private int zoomFactorPerMill;
+//	private boolean shadowsHaveToBeDrawn;
+//	private Rectangle2D shadowBounds1, shadowBounds2, shadowBounds3, shadowBounds4;
+//	private int zoomFactorPerMill;
 
 	// BEGIN the following fields require SYNCHRONIZED access via the mutex field!
 	private Object mutex = new Object();
@@ -61,7 +54,7 @@ public class RenderBuffer
 	public RenderBuffer(PdfViewerComposite pdfViewerComposite, PdfDocument pdfDocument) {
 		this.pdfViewerComposite = pdfViewerComposite;
 		this.pdfDocument = pdfDocument;
-		pdfViewerComposite.getPdfViewer().addPropertyChangeListener(PdfViewer.PROPERTY_MOUSE_CLICKED, propertyChangeListenerMouseClicked);
+//		pdfViewerComposite.addPropertyChangeListener(PdfViewer.PROPERTY_MOUSE_CLICKED, propertyChangeListenerMouseClicked);
 	}
 
 	private BufferedImagePool bufferedImagePool = new BufferedImagePool();
@@ -77,7 +70,7 @@ public class RenderBuffer
 	 * @param posY the y-coordinate in the real coordinate system of the upper left corner of the buffer that has to be created
 	 * @param zoomFactor the currently used zoom factor
 	 */
-	public void render(int bufferWidth, int bufferHeight, int posX, int posY, double zoomFactor)
+	public void paintToBuffer(int bufferWidth, int bufferHeight, int posX, int posY, double zoomFactor)
 	{
 		if (bufferWidth < 1)
 			throw new IllegalArgumentException("bufferWidth < 1");
@@ -116,6 +109,8 @@ public class RenderBuffer
 
 		// get page numbers of those pages that are lying in buffer bounds of currently considered buffer
 		Collection<Integer> bufferedImagePageNumbers = pdfDocument.getVisiblePages(bufferedImageBounds);
+
+		pdfViewerComposite.firePaintToBufferListeners(graphics, false);
 
 		for (Integer pageNumber : bufferedImagePageNumbers) {
 			Rectangle2D pageBounds = pdfDocument.getPageBounds(pageNumber);
@@ -211,6 +206,8 @@ public class RenderBuffer
 					(int) (pageBounds.getHeight() * zoomFactor * getZoomScreenResolutionFactorY())
 			);
 		} // for (Integer pageNumber : bufferedImagePageNumbers) {
+
+		pdfViewerComposite.firePaintToBufferListeners(graphics, true);
 
 		if (DUMP_IMAGE_BUFFER)
 			printToImageFile(bufferedImage, String.format("%s-bufferedImage", dumpImageRenderID));
@@ -343,7 +340,7 @@ public class RenderBuffer
 	 * @return <code>true</code>, if the region could be completely copied from the buffer. <code>false</code>, if the requested region
 	 *		exceeds the buffer and therefore could only copy partially or not at all. Empty pages will be drawn instead.
 	 */
-	public boolean drawRegion(
+	public boolean paintToView(
 			Graphics2D graphics2D,
 			int graphics2DWidth, int graphics2DHeight,
 			double requestedZoomFactor,
@@ -403,6 +400,8 @@ public class RenderBuffer
 				sourceY2 = sourceY1 + destinationY2 - destinationY1;
 			}
 
+			pdfViewerComposite.firePaintToViewListeners(graphics2D, false);
+
 			if (!bufferSufficient) {
 				// draw background
 				graphics2D.setColor(pdfViewerComposite.getViewPanel().getBackground());
@@ -420,6 +419,11 @@ public class RenderBuffer
 					int y = (int) ((page.getY() - region.getY()) * requestedZoomFactor * getZoomScreenResolutionFactorY());
 					int w = (int) (page.getWidth() * requestedZoomFactor * getZoomScreenResolutionFactorX());
 					int h = (int) (page.getHeight() * requestedZoomFactor * getZoomScreenResolutionFactorY());
+
+//					int x = (int)Math.round((page.getX() - region.getX()) * requestedZoomFactor * getZoomScreenResolutionFactorX());
+//					int y = (int)Math.round((page.getY() - region.getY()) * requestedZoomFactor * getZoomScreenResolutionFactorY());
+//					int w = (int)Math.round(page.getWidth() * requestedZoomFactor * getZoomScreenResolutionFactorX());
+//					int h = (int)Math.round(page.getHeight() * requestedZoomFactor * getZoomScreenResolutionFactorY());
 
 					// draw empty page (border)
 					graphics2D.setColor(COLOR_DRAFT_PAGE_BORDER);
@@ -490,37 +494,39 @@ public class RenderBuffer
 					bio.waitForRendering();
 			}
 
-			if (shadowsHaveToBeDrawn) {
-				Point2DDouble zoomScreenResolutionFactor = new Point2DDouble(pdfViewerComposite.getZoomScreenResolutionFactor());
-				Point2D viewOrigin = pdfViewerComposite.getViewOrigin();
-				double x = viewOrigin.getX();
-				double y = viewOrigin.getY();
+			pdfViewerComposite.firePaintToViewListeners(graphics2D, true);
 
-				graphics2D.setColor(Color.BLUE);
-				if (shadowBounds1 != null && shadowBounds2 != null && shadowBounds3 != null && shadowBounds4 != null) {
-					graphics2D.fillRect(	(int) (shadowBounds1.getX() - x * zoomScreenResolutionFactor.getX() * zoomFactorPerMill / 1000),
-											(int) (shadowBounds1.getY() - y * zoomScreenResolutionFactor.getY() * zoomFactorPerMill / 1000),
-											(int) shadowBounds1.getWidth(),
-											(int) shadowBounds1.getHeight()
-										);
-					graphics2D.fillRect(	(int) (shadowBounds2.getX() - x * zoomScreenResolutionFactor.getX() * zoomFactorPerMill / 1000),
-											(int) (shadowBounds2.getY() - y * zoomScreenResolutionFactor.getY() * zoomFactorPerMill / 1000),
-											(int) shadowBounds2.getWidth(),
-											(int) shadowBounds2.getHeight()
-										);
-					graphics2D.fillRect(	(int) (shadowBounds3.getX() - x * zoomScreenResolutionFactor.getX() * zoomFactorPerMill / 1000),
-											(int) (shadowBounds3.getY() - y * zoomScreenResolutionFactor.getY() * zoomFactorPerMill / 1000),
-											(int) shadowBounds3.getWidth(),
-											(int) shadowBounds3.getHeight()
-										);
-					graphics2D.fillRect(	(int) (shadowBounds4.getX() - x * zoomScreenResolutionFactor.getX() * zoomFactorPerMill / 1000),
-											(int) (shadowBounds4.getY() - y * zoomScreenResolutionFactor.getY() * zoomFactorPerMill / 1000),
-											(int) shadowBounds4.getWidth(),
-											(int) shadowBounds4.getHeight()
-										);
-//					shadowsHaveToBeDrawn = false;
-				}
-			}
+//			if (shadowsHaveToBeDrawn) {
+//				Point2DDouble zoomScreenResolutionFactor = new Point2DDouble(pdfViewerComposite.getZoomScreenResolutionFactor());
+//				Point2D viewOrigin = pdfViewerComposite.getViewOrigin();
+//				double x = viewOrigin.getX();
+//				double y = viewOrigin.getY();
+//
+//				graphics2D.setColor(Color.BLUE);
+//				if (shadowBounds1 != null && shadowBounds2 != null && shadowBounds3 != null && shadowBounds4 != null) {
+//					graphics2D.fillRect(	(int) (shadowBounds1.getX() - x * zoomScreenResolutionFactor.getX() * zoomFactorPerMill / 1000),
+//											(int) (shadowBounds1.getY() - y * zoomScreenResolutionFactor.getY() * zoomFactorPerMill / 1000),
+//											(int) shadowBounds1.getWidth(),
+//											(int) shadowBounds1.getHeight()
+//										);
+//					graphics2D.fillRect(	(int) (shadowBounds2.getX() - x * zoomScreenResolutionFactor.getX() * zoomFactorPerMill / 1000),
+//											(int) (shadowBounds2.getY() - y * zoomScreenResolutionFactor.getY() * zoomFactorPerMill / 1000),
+//											(int) shadowBounds2.getWidth(),
+//											(int) shadowBounds2.getHeight()
+//										);
+//					graphics2D.fillRect(	(int) (shadowBounds3.getX() - x * zoomScreenResolutionFactor.getX() * zoomFactorPerMill / 1000),
+//											(int) (shadowBounds3.getY() - y * zoomScreenResolutionFactor.getY() * zoomFactorPerMill / 1000),
+//											(int) shadowBounds3.getWidth(),
+//											(int) shadowBounds3.getHeight()
+//										);
+//					graphics2D.fillRect(	(int) (shadowBounds4.getX() - x * zoomScreenResolutionFactor.getX() * zoomFactorPerMill / 1000),
+//											(int) (shadowBounds4.getY() - y * zoomScreenResolutionFactor.getY() * zoomFactorPerMill / 1000),
+//											(int) shadowBounds4.getWidth(),
+//											(int) shadowBounds4.getHeight()
+//										);
+////					shadowsHaveToBeDrawn = false;
+//				}
+//			}
 
 			return bufferSufficient;
 		} // synchronized (bufferedImageMutex) {
@@ -564,81 +570,81 @@ public class RenderBuffer
 		}
 	}
 
-	private PropertyChangeListener propertyChangeListenerMouseClicked = new PropertyChangeListener() {
-		@Override
-		public void propertyChange(PropertyChangeEvent event) {
-
-			final Integer newCurrentPage;
-
-			// calculate chosen page from pdfMouseEvent.getPointInRealCoordinate()
-			MouseEvent pdfMouseEvent = (MouseEvent) event.getNewValue();
-			Collection<Integer> visiblePages = pdfDocument.getVisiblePages(
-								new Rectangle2D.Double(	pdfMouseEvent.getPointInRealCoordinate().getX(),
-														pdfMouseEvent.getPointInRealCoordinate().getY(),
-														1,
-														1
-														)
-			);
-
-			if (visiblePages.isEmpty()) {
-				newCurrentPage = null;
-			}
-			else {
-				newCurrentPage = visiblePages.iterator().next();
-
-				// get the page bounds of the chosen page in real coordinates
-				Rectangle2D pageBoundsReal = pdfDocument.getPageBounds(newCurrentPage);
-
-				Point2DDouble zoomScreenResolutionFactor = new Point2DDouble(pdfViewerComposite.getZoomScreenResolutionFactor());
-				zoomFactorPerMill = pdfMouseEvent.getZoomFactorPerMill();
-				double zoomFactor = (double)zoomFactorPerMill / 1000;
-
-				// get the page bounds of the chosen page in image coordinates
-				Rectangle2D pageBoundsImage = new Rectangle2D.Double();
-				pageBoundsImage.setRect	(	pageBoundsReal.getMinX() * zoomScreenResolutionFactor.getX() * zoomFactor,
-											pageBoundsReal.getMinY() * zoomScreenResolutionFactor.getY() * zoomFactor,
-											pageBoundsReal.getWidth() * zoomScreenResolutionFactor.getX() * zoomFactor,
-											pageBoundsReal.getHeight() * zoomScreenResolutionFactor.getY() * zoomFactor
-										);
-
-				shadowBounds1 = new Rectangle2D.Double();
-				shadowBounds2 = new Rectangle2D.Double();
-				shadowBounds3 = new Rectangle2D.Double();
-				shadowBounds4 = new Rectangle2D.Double();
-				shadowBounds1.setRect(	pageBoundsImage.getX() - 5,
-										pageBoundsImage.getY() - 5,
-										pageBoundsImage.getWidth() + 10,
-										5
-										);
-				shadowBounds2.setRect(	pageBoundsImage.getX() - 5,
-										pageBoundsImage.getY() - 5,
-										5,
-										pageBoundsImage.getHeight() + 10
-										);
-				shadowBounds3.setRect(	pageBoundsImage.getX() - 5,
-										pageBoundsImage.getMaxY(),
-										pageBoundsImage.getWidth() + 10,
-										5
-										);
-				shadowBounds4.setRect(	pageBoundsImage.getMaxX(),
-										pageBoundsImage.getY() - 5,
-										5,
-										pageBoundsImage.getHeight() + 10
-										);
-
-				shadowsHaveToBeDrawn = true;
-				pdfViewerComposite.getViewPanel().repaint();
-
-				if (logger.isDebugEnabled()) {
-					logger.debug(pageBoundsImage.getMinX() + " " + pageBoundsImage.getMinY() + " " + pageBoundsImage.getMaxX() + " " + pageBoundsImage.getMaxY());
-					logger.debug(shadowBounds1.getMinX() + " " + shadowBounds1.getMinY() + " " + shadowBounds1.getMaxX() + " " + shadowBounds1.getMaxY());
-					logger.debug(shadowBounds2.getMinX() + " " + shadowBounds2.getMinY() + " " + shadowBounds2.getMaxX() + " " + shadowBounds2.getMaxY());
-					logger.debug(shadowBounds3.getMinX() + " " + shadowBounds3.getMinY() + " " + shadowBounds3.getMaxX() + " " + shadowBounds3.getMaxY());
-					logger.debug(shadowBounds4.getMinX() + " " + shadowBounds4.getMinY() + " " + shadowBounds4.getMaxX() + " " + shadowBounds4.getMaxY());
-				}
-			}
-		}
-	};
+//	private PropertyChangeListener propertyChangeListenerMouseClicked = new PropertyChangeListener() {
+//		@Override
+//		public void propertyChange(PropertyChangeEvent event) {
+//
+//			final Integer newCurrentPage;
+//
+//			// calculate chosen page from pdfMouseEvent.getPointInRealCoordinate()
+//			MouseEvent pdfMouseEvent = (MouseEvent) event.getNewValue();
+//			Collection<Integer> visiblePages = pdfDocument.getVisiblePages(
+//								new Rectangle2D.Double(	pdfMouseEvent.getPointInRealCoordinate().getX(),
+//														pdfMouseEvent.getPointInRealCoordinate().getY(),
+//														1,
+//														1
+//														)
+//			);
+//
+//			if (visiblePages.isEmpty()) {
+//				newCurrentPage = null;
+//			}
+//			else {
+//				newCurrentPage = visiblePages.iterator().next();
+//
+//				// get the page bounds of the chosen page in real coordinates
+//				Rectangle2D pageBoundsReal = pdfDocument.getPageBounds(newCurrentPage);
+//
+//				Point2DDouble zoomScreenResolutionFactor = new Point2DDouble(pdfViewerComposite.getZoomScreenResolutionFactor());
+//				zoomFactorPerMill = pdfViewerComposite.getZoomFactorPerMill();
+//				double zoomFactor = (double)zoomFactorPerMill / 1000;
+//
+//				// get the page bounds of the chosen page in image coordinates
+//				Rectangle2D pageBoundsImage = new Rectangle2D.Double();
+//				pageBoundsImage.setRect	(	pageBoundsReal.getMinX() * zoomScreenResolutionFactor.getX() * zoomFactor,
+//											pageBoundsReal.getMinY() * zoomScreenResolutionFactor.getY() * zoomFactor,
+//											pageBoundsReal.getWidth() * zoomScreenResolutionFactor.getX() * zoomFactor,
+//											pageBoundsReal.getHeight() * zoomScreenResolutionFactor.getY() * zoomFactor
+//										);
+//
+//				shadowBounds1 = new Rectangle2D.Double();
+//				shadowBounds2 = new Rectangle2D.Double();
+//				shadowBounds3 = new Rectangle2D.Double();
+//				shadowBounds4 = new Rectangle2D.Double();
+//				shadowBounds1.setRect(	pageBoundsImage.getX() - 5,
+//										pageBoundsImage.getY() - 5,
+//										pageBoundsImage.getWidth() + 10,
+//										5
+//										);
+//				shadowBounds2.setRect(	pageBoundsImage.getX() - 5,
+//										pageBoundsImage.getY() - 5,
+//										5,
+//										pageBoundsImage.getHeight() + 10
+//										);
+//				shadowBounds3.setRect(	pageBoundsImage.getX() - 5,
+//										pageBoundsImage.getMaxY(),
+//										pageBoundsImage.getWidth() + 10,
+//										5
+//										);
+//				shadowBounds4.setRect(	pageBoundsImage.getMaxX(),
+//										pageBoundsImage.getY() - 5,
+//										5,
+//										pageBoundsImage.getHeight() + 10
+//										);
+//
+//				shadowsHaveToBeDrawn = true;
+//				pdfViewerComposite.getViewPanel().repaint();
+//
+//				if (logger.isDebugEnabled()) {
+//					logger.debug(pageBoundsImage.getMinX() + " " + pageBoundsImage.getMinY() + " " + pageBoundsImage.getMaxX() + " " + pageBoundsImage.getMaxY());
+//					logger.debug(shadowBounds1.getMinX() + " " + shadowBounds1.getMinY() + " " + shadowBounds1.getMaxX() + " " + shadowBounds1.getMaxY());
+//					logger.debug(shadowBounds2.getMinX() + " " + shadowBounds2.getMinY() + " " + shadowBounds2.getMaxX() + " " + shadowBounds2.getMaxY());
+//					logger.debug(shadowBounds3.getMinX() + " " + shadowBounds3.getMinY() + " " + shadowBounds3.getMaxX() + " " + shadowBounds3.getMaxY());
+//					logger.debug(shadowBounds4.getMinX() + " " + shadowBounds4.getMinY() + " " + shadowBounds4.getMaxX() + " " + shadowBounds4.getMaxY());
+//				}
+//			}
+//		}
+//	};
 
 	public PdfDocument getPdfDocument() {
 		return pdfDocument;

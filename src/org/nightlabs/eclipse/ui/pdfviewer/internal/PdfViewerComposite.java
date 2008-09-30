@@ -35,6 +35,7 @@ import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.events.DisposeEvent;
@@ -50,6 +51,8 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.nightlabs.eclipse.ui.pdfviewer.AutoZoom;
 import org.nightlabs.eclipse.ui.pdfviewer.Dimension2DDouble;
+import org.nightlabs.eclipse.ui.pdfviewer.PaintEvent;
+import org.nightlabs.eclipse.ui.pdfviewer.PaintListener;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
 import org.nightlabs.eclipse.ui.pdfviewer.Point2DDouble;
@@ -67,12 +70,12 @@ public class PdfViewerComposite extends Composite
 	private PdfDocument pdfDocument;
 	private PdfViewer pdfViewer;
 	private ScrollBar scrollBarVertical, scrollBarHorizontal;
-	private Rectangle2D rectangleView;
+//	private Rectangle2D rectangleView;
 	private Point2DDouble zoomScreenResolutionFactor;
 	private int currentPage;
+
+	@Deprecated // FIXME remove this workaround!
 	private boolean startingPoint = true;
-	private boolean zoomIsAllowed = true;
-	private boolean drawShadowAroundChosenPageOnMouseClick = false;
 
 	/**
 	 * Since the int range of the scroll bars is limited and we don't need to be able to scroll to every single
@@ -167,7 +170,7 @@ public class PdfViewerComposite extends Composite
 		);
 		pointAbsolute.setReadOnly();
 //		System.out.println(pointAbsolute.getX() + " " + pointAbsolute.getY());
-		return new org.nightlabs.eclipse.ui.pdfviewer.MouseEvent(pointRelative, pointAbsolute, zoomFactorPerMill);
+		return new org.nightlabs.eclipse.ui.pdfviewer.MouseEvent(pointRelative, pointAbsolute);
 	}
 
 	public PdfViewerComposite(Composite parent, int style, final PdfViewer pdfViewer)
@@ -175,8 +178,6 @@ public class PdfViewerComposite extends Composite
 		super(parent, style);
 		this.pdfViewer = pdfViewer;
 		this.setLayout(new FillLayout());
-
-		rectangleView = new Rectangle2D.Double();
 
 		viewPanelComposite = new Composite(this, SWT.EMBEDDED | SWT.V_SCROLL | SWT.H_SCROLL) {
 			@Override
@@ -255,10 +256,9 @@ public class PdfViewerComposite extends Composite
 				getDisplay().asyncExec(new Runnable() {
 					public void run() {
 						if (newCurrentPage != null)
-							setCurrentPage(newCurrentPage, true);
+							setCurrentPage(newCurrentPage);
 
-						if (drawShadowAroundChosenPageOnMouseClick)
-							propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_MOUSE_CLICKED, null, pdfMouseEvent);
+						propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_MOUSE_CLICKED, null, pdfMouseEvent);
 					}
 				});
 			}
@@ -418,7 +418,7 @@ public class PdfViewerComposite extends Composite
 					Display.getDefault().asyncExec(new Runnable() {
 						public void run() {
 							if (scrollBarVertical.isVisible()) {
-								scrollBarVertical.setSelection(1);
+//								scrollBarVertical.setSelection(1);
 								scrollVertically();		// already invokes repainting
 							}
 							startingPoint = false;
@@ -550,22 +550,30 @@ public class PdfViewerComposite extends Composite
 		this.viewOrigin = newViewOrigin;
 
 		viewPanel.repaint();
-		propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_ORIGIN, oldViewOrigin, viewOrigin);
 
+		Rectangle2D rectangleView = new Rectangle2D.Double();
 		rectangleView.setRect(
 				this.viewOrigin.getX(),
 				this.viewOrigin.getY(),
 				getViewDimension().getWidth(),
 				getViewDimension().getHeight()
 		);
-		// TODO this property change shouldn't (!?) be forwarded to the main PDF viewer in the case PDF thumb-nail
-		// navigator has changed it
-		propertyChangeSupport.firePropertyChange(	PdfViewer.PROPERTY_CURRENT_PAGE,
-													0,
-													pdfDocument.getMostVisiblePage(
-														rectangleView
-													)
-												);
+
+		propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_ORIGIN, oldViewOrigin, viewOrigin);
+
+		if (pdfViewer.isUpdateCurrentPageOnScrolling()) {
+			int newCurrentPage = pdfDocument.getMostVisiblePage(rectangleView);
+			if (newCurrentPage > 0) {
+				int oldCurrentPage = this.currentPage;
+				this.currentPage = newCurrentPage;
+
+				propertyChangeSupport.firePropertyChange(
+						PdfViewer.PROPERTY_CURRENT_PAGE,
+						oldCurrentPage,
+						newCurrentPage
+				);
+			}
+		}
 	}
 
 	private void scrollHorizontally()
@@ -583,20 +591,30 @@ public class PdfViewerComposite extends Composite
 		this.viewOrigin = newViewOrigin;
 
 		viewPanel.repaint();
-		propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_ORIGIN, oldViewOrigin, viewOrigin);
 
+		Rectangle2D rectangleView = new Rectangle2D.Double();
 		rectangleView.setRect(
 				this.viewOrigin.getX(),
 				this.viewOrigin.getY(),
 				getViewDimension().getWidth(),
 				getViewDimension().getHeight()
 		);
-		propertyChangeSupport.firePropertyChange(	PdfViewer.PROPERTY_CURRENT_PAGE,
-													0,
-													pdfDocument.getMostVisiblePage(
-														rectangleView
-													)
-												);
+
+		propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_ORIGIN, oldViewOrigin, viewOrigin);
+
+		if (pdfViewer.isUpdateCurrentPageOnScrolling()) {
+			int newCurrentPage = pdfDocument.getMostVisiblePage(rectangleView);
+			if (newCurrentPage > 0) {
+				int oldCurrentPage = this.currentPage;
+				this.currentPage = newCurrentPage;
+
+				propertyChangeSupport.firePropertyChange(
+						PdfViewer.PROPERTY_CURRENT_PAGE,
+						oldCurrentPage,
+						newCurrentPage
+				);
+			}
+		}
 	}
 
 	private void setScrollbars() {
@@ -701,7 +719,7 @@ public class PdfViewerComposite extends Composite
 			logger.debug("paintViewPanel: region = " + region);
 		}
 
-		boolean bufferSufficient = renderBuffer.drawRegion(
+		boolean bufferSufficient = renderBuffer.paintToView(
 				g,
 				viewPanel.getWidth(),
 				viewPanel.getHeight(),
@@ -732,7 +750,7 @@ public class PdfViewerComposite extends Composite
 			else
 				mouseRotationOrientation = 1;
 
-			if (mouseWheelModeZoom == true && zoomIsAllowed)	// do not allow zooming in PDF thumb-nail viewer
+			if (mouseWheelModeZoom == true && pdfViewer.isMouseWheelZoomEnabled())	// do not allow zooming in PDF thumb-nail viewer
 				zoomPDFDocument(mouseRotationOrientation);
 			else {
 				Display.getDefault().asyncExec(new Runnable() {
@@ -870,11 +888,11 @@ public class PdfViewerComposite extends Composite
 	public void setZoomFactorPerMill(int zoomFactorPerMill)
 	{
 		// TODO if PROPERTY_CURRENT_PAGE is fired again below, an error occurs
-		boolean doFire = true;
-		AutoZoom autoZoom = pdfViewer.getAutoZoom();
-		if (autoZoom == AutoZoom.pageHeight || autoZoom == AutoZoom.pageWidth) {
-			doFire = false;
-		}
+//		boolean doFire = true;
+//		AutoZoom autoZoom = pdfViewer.getAutoZoom();
+//		if (autoZoom == AutoZoom.pageHeight || autoZoom == AutoZoom.pageWidth) {
+//			doFire = false;
+//		}
 
 		int zoomBefore = this.zoomFactorPerMill;
 		Dimension2D viewDimensionBefore = getViewDimension();
@@ -917,7 +935,8 @@ public class PdfViewerComposite extends Composite
 		propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_ZOOM_FACTOR, zoomBefore, this.zoomFactorPerMill);
 		propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_DIMENSION, viewDimensionBefore, getViewDimension());
 
-		if (doFire) {
+//		if (doFire) {
+			Rectangle2D.Double rectangleView = new Rectangle2D.Double();
 			rectangleView.setRect(
 					(int) (middle.x - viewPanelBoundsReal.x / 2),
 					(int) (middle.y - viewPanelBoundsReal.y / 2),
@@ -925,13 +944,17 @@ public class PdfViewerComposite extends Composite
 					getViewDimension().getHeight()
 			);
 
-			propertyChangeSupport.firePropertyChange(	PdfViewer.PROPERTY_CURRENT_PAGE,
-														0,
-														pdfDocument.getMostVisiblePage(
-															rectangleView
-														)
-													);
-		}
+//			propertyChangeSupport.firePropertyChange(	PdfViewer.PROPERTY_CURRENT_PAGE,
+//														0,
+//														pdfDocument.getMostVisiblePage(
+//															rectangleView
+//														)
+//													);
+
+			int mostVisiblePage = pdfDocument.getMostVisiblePage(rectangleView);
+			if (mostVisiblePage > 0)
+				setCurrentPage(mostVisiblePage);
+//		}
 	}
 
 	public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
@@ -964,57 +987,65 @@ public class PdfViewerComposite extends Composite
 	    return currentPage;
     }
 
-	public void setCurrentPage(int currentPage, boolean doFire) {
+	public void setCurrentPage(int currentPage) {
+		if (currentPage < 1)
+			currentPage = 0; // make sure, we have only numbers >= 0 with 0 having the meaning that NO page is "current".
+
+		int oldPageNumber = this.currentPage;
 	    this.currentPage = currentPage;
 
-	    if (doFire)
-	    	propertyChangeSupport.firePropertyChange(	PdfViewer.PROPERTY_CURRENT_PAGE,
-														0,
-														currentPage
-													);
+	    if (currentPage >= 1) {
+	    	Rectangle2D pageBounds = pdfDocument.getPageBounds(currentPage);
 
-		Rectangle2D pageBounds = pdfDocument.getPageBounds(currentPage);
+	    	// viewOrigin changes while choosing another page
+	    	Point2D oldViewOrigin = pdfViewer.getViewOrigin();
 
-		// viewOrigin changes while choosing another page
-		Point2D oldViewOrigin = pdfViewer.getViewOrigin();
+	    	// viewDimension remains the same while choosing another page
+	    	Dimension2D viewDimension = pdfViewer.getViewDimension();
 
-		// viewDimension remains the same while choosing another page
-		Dimension2D viewDimension = pdfViewer.getViewDimension();
+	    	Rectangle2D.Double oldViewBounds = new Rectangle2D.Double();
+	    	oldViewBounds.setFrame(oldViewOrigin, viewDimension);
 
-		Rectangle2D.Double oldViewBounds = new Rectangle2D.Double();
-		oldViewBounds.setFrame(oldViewOrigin, viewDimension);
-		if (isPageVisible(oldViewBounds, pageBounds)) {
-			// page is already visible => don't do anything
-			// maybe optimize and still scroll, but without minimum scrolling (only X / only Y, if possible)
-			return;
-		}
+	    	// page is already visible => don't do anything
+	    	// maybe optimize and still scroll, but without minimum scrolling (only X / only Y, if possible)
+	    	if (!isPageVisible(oldViewBounds, pageBounds)) {
+	    		boolean handled = false;
+	    		for (int situation = 0; situation < 3; ++situation)
+	    		{
+	    			Rectangle2D.Double newViewBounds = new Rectangle2D.Double();
+	    			newViewBounds.setFrame(oldViewOrigin, viewDimension);
 
-		for (int situation = 0; situation < 3; ++situation)
-		{
-			Rectangle2D.Double newViewBounds = new Rectangle2D.Double();
-			newViewBounds.setFrame(oldViewOrigin, viewDimension);
+	    			switch (situation) {
+	    				case 0: // scrolling X is sufficient
+	    					newViewBounds.x = pageBounds.getX();
+	    					break;
+	    				case 1: // scrolling Y is sufficient
+	    					newViewBounds.y = pageBounds.getY();
+	    					break;
+	    				case 2: // need to scroll both, X and Y
+	    					newViewBounds.x = pageBounds.getX();
+	    					newViewBounds.y = pageBounds.getY();
+	    					break;
+	    				default:
+	    					throw new IllegalStateException("situation unknown: " + situation);
+	    			}
 
-			switch (situation) {
-                case 0: // scrolling X is sufficient
-                	newViewBounds.x = pageBounds.getX();
-	            break;
-                case 1: // scrolling Y is sufficient
-                	newViewBounds.y = pageBounds.getY();
-	            break;
-                case 2: // need to scroll both, X and Y
-                	newViewBounds.x = pageBounds.getX();
-                	newViewBounds.y = pageBounds.getY();
-	            break;
-                default:
-	                throw new IllegalStateException("situation unknown: " + situation);
-            }
+	    			if (situation == 2 || isPageVisible(newViewBounds, pageBounds)) {
+	    				pdfViewer.setViewOrigin(new Point2D.Double(newViewBounds.getX(), newViewBounds.getY()));
+	    				handled = true;
+	    				break;
+	    			}
+	    		}
+	    		if (!handled)
+	    			throw new IllegalStateException("What the fucking shit?!");
+	    	}
+	    }
 
-			if (situation == 2 || isPageVisible(newViewBounds, pageBounds)) {
-				pdfViewer.setViewOrigin(new Point2D.Double(newViewBounds.getX(), newViewBounds.getY()));
-				return;
-			}
-		}
-		throw new IllegalStateException("What the fucking shit?!");
+		propertyChangeSupport.firePropertyChange(
+				PdfViewer.PROPERTY_CURRENT_PAGE,
+				oldPageNumber,
+				currentPage
+		);
     }
 
 	private boolean isPageVisible(Rectangle2D viewBounds, Rectangle2D pageBounds) {
@@ -1080,16 +1111,70 @@ public class PdfViewerComposite extends Composite
 		}
 	}
 
-	public void setZoomIsAllowed(boolean zoomIsAllowed) {
-    	this.zoomIsAllowed = zoomIsAllowed;
-    }
-
-	public void setDrawShadowAroundChosenPageOnMouseClick(boolean drawShadowOnMouseClick) {
-    	this.drawShadowAroundChosenPageOnMouseClick = drawShadowOnMouseClick;
-    }
-
 	public PdfViewer getPdfViewer() {
     	return pdfViewer;
     }
 
+	private ListenerList paintToBufferListeners = new ListenerList();
+	private ListenerList paintToViewListeners = new ListenerList();
+
+	protected void firePaintToBufferListeners(Graphics2D graphics2D, boolean post)
+	{
+		Object[] listeners = paintToBufferListeners.getListeners();
+		if (listeners.length < 1)
+			return;
+
+		PaintEvent event = new PaintEvent(pdfViewer, graphics2D);
+		for (Object listener : listeners) {
+			if (post)
+				((PaintListener)listener).postPaint(event);
+			else
+				((PaintListener)listener).prePaint(event);
+		}
+	}
+
+	protected void firePaintToViewListeners(Graphics2D graphics2D, boolean post)
+	{
+		Object[] listeners = paintToViewListeners.getListeners();
+		if (listeners.length < 1)
+			return;
+
+		PaintEvent event = new PaintEvent(pdfViewer, graphics2D);
+		for (Object listener : listeners) {
+			if (post)
+				((PaintListener)listener).postPaint(event);
+			else
+				((PaintListener)listener).prePaint(event);
+		}
+	}
+
+	public void addPaintToBufferListener(PaintListener listener)
+	{
+		paintToBufferListeners.add(listener);
+	}
+	public void removePaintToBufferListener(PaintListener listener)
+	{
+		paintToBufferListeners.remove(listener);
+	}
+
+	public void addPaintToViewListener(PaintListener listener)
+	{
+		paintToViewListeners.add(listener);
+	}
+	public void removePaintToViewListener(PaintListener listener)
+	{
+		paintToViewListeners.remove(listener);
+	}
+
+	@Override
+	public void redraw() {
+	    super.redraw();
+	    viewPanel.repaint();
+	}
+
+	@Override
+	public void redraw(int x, int y, int width, int height, boolean all) {
+	    super.redraw(x, y, width, height, all);
+	    viewPanel.repaint();
+	}
 }

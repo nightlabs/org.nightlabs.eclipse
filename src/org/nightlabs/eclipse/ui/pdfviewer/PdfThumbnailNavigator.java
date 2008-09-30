@@ -52,7 +52,7 @@ public class PdfThumbnailNavigator implements ContextElement<PdfThumbnailNavigat
 		this.pdfThumbnailNavigatorComposite.getThumbnailPdfViewer().addPropertyChangeListener(PdfViewer.PROPERTY_CURRENT_PAGE, new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				PdfThumbnailNavigator.this.pdfViewer.setCurrentPage((Integer) evt.getNewValue(), true);
+				PdfThumbnailNavigator.this.pdfViewer.setCurrentPage((Integer) evt.getNewValue());
 			}
 		});
 
@@ -62,9 +62,9 @@ public class PdfThumbnailNavigator implements ContextElement<PdfThumbnailNavigat
 	private PropertyChangeListener propertyChangeListenerCurrentPage = new PropertyChangeListener() {
 		@Override
 		public void propertyChange(PropertyChangeEvent event) {
-			// TODO draw some kind of shadow around the page with page number "event.getNewValue()".
+			int newCurrentPage = (Integer)event.getNewValue();
 			if (pdfThumbnailNavigatorComposite != null && !pdfThumbnailNavigatorComposite.isDisposed())
-				pdfThumbnailNavigatorComposite.setCurrentPage((Integer)event.getNewValue(), false);	// do not fire again
+				pdfThumbnailNavigatorComposite.setCurrentPage(newCurrentPage);
 		}
 	};
 
@@ -80,12 +80,12 @@ public class PdfThumbnailNavigator implements ContextElement<PdfThumbnailNavigat
 			throw new IllegalStateException("Wrong thread! This method must be called on the SWT UI thread!");
 	}
 
-	public PdfViewer getThumbnailPdfViewer() {
-		if (pdfThumbnailNavigatorComposite != null)
-			return pdfThumbnailNavigatorComposite.getThumbnailPdfViewer();
-		else
-			return null;
-	}
+//	public PdfViewer getThumbnailPdfViewer() {
+//		if (pdfThumbnailNavigatorComposite != null)
+//			return pdfThumbnailNavigatorComposite.getThumbnailPdfViewer();
+//		else
+//			return null;
+//	}
 
 	@Override
 	public PdfViewer getPdfViewer() {

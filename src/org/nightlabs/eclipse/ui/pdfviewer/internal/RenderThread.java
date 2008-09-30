@@ -112,7 +112,7 @@ public class RenderThread extends Thread
 					}
 
 					if (doRender) {
-						renderBuffer.render(
+						renderBuffer.paintToBuffer(
 								bufferWidth,
 								bufferHeight,
 								(int) (viewRegion.getCenterX() - bufferWidth / 2.0d / (zoomFactor * getZoomScreenResolutionFactorX())),

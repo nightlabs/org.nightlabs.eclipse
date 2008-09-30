@@ -118,7 +118,7 @@ public class PdfSimpleNavigator implements ContextElement<PdfSimpleNavigator> {
 		this.pdfSimpleNavigatorComposite.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent event) {
-				getPdfViewer().setCurrentPage((Integer)event.getNewValue(), true);		// do fire, so that PDF thumb-nail navigator will be notified
+				getPdfViewer().setCurrentPage((Integer)event.getNewValue());
 			}
 		});
 
