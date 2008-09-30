@@ -23,7 +23,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 import org.nightlabs.base.ui.io.FileEditorInput;
 import org.nightlabs.base.ui.util.RCPUtil;
-import org.nightlabs.eclipse.ui.pdfviewer.AutoZoom;
 import org.nightlabs.eclipse.ui.pdfviewer.OneDimensionalPdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfFileLoader;
@@ -200,10 +199,6 @@ public class PdfViewerEditor extends EditorPart
 						pdfSimpleNavigator = new PdfSimpleNavigator(pdfViewer);
 						pdfSimpleNavigatorControl = pdfSimpleNavigator.createControl(leftComp, SWT.NONE);
 						pdfSimpleNavigatorControl.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_END));
-
-						pdfThumbnailNavigator.getThumbnailPdfViewer().setAutoZoom(AutoZoom.pageWidth);
-						pdfThumbnailNavigator.getThumbnailPdfViewer().setZoomIsAllowed(false);
-						pdfThumbnailNavigator.getThumbnailPdfViewer().setDrawShadowAroundChosenPageOnMouseClick(true);
 
 						if (logger.isDebugEnabled()) {
 							logger.info("simple navigator control width " + pdfSimpleNavigatorControl.getBounds().width);
