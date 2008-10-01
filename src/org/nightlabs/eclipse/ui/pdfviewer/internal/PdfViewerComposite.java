@@ -70,7 +70,6 @@ public class PdfViewerComposite extends Composite
 	private PdfDocument pdfDocument;
 	private PdfViewer pdfViewer;
 	private ScrollBar scrollBarVertical, scrollBarHorizontal;
-//	private Rectangle2D rectangleView;
 	private Point2DDouble zoomScreenResolutionFactor;
 	private int currentPage;
 
@@ -169,7 +168,6 @@ public class PdfViewerComposite extends Composite
 				viewOrigin.getY() + (pointRelative.getY() / (zoomScreenResolutionFactor.getY() * zoomFactorPerMill / 1000))
 		);
 		pointAbsolute.setReadOnly();
-//		System.out.println(pointAbsolute.getX() + " " + pointAbsolute.getY());
 		return new org.nightlabs.eclipse.ui.pdfviewer.MouseEvent(pointRelative, pointAbsolute);
 	}
 
@@ -361,6 +359,7 @@ public class PdfViewerComposite extends Composite
 		viewPanel.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
+				logger.info("componentResized");
 				if (pdfDocument == null)
 					return;
 
@@ -403,17 +402,24 @@ public class PdfViewerComposite extends Composite
 				}
 
 				AutoZoom autoZoom = pdfViewer.getAutoZoom();
-				if (autoZoom == AutoZoom.pageWidth) {
+				logger.info(autoZoom);
+				getDisplay().asyncExec(new Runnable() {
+	                public void run() {
+	                	propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_COMPONENT_RESIZED, null, null);
+	                }
+                });
+/*				if (autoZoom == AutoZoom.pageWidth) {
 					Display.getDefault().asyncExec(new Runnable() {
 						public void run() {
+							logger.info("zooming to page width");
 							zoomToPageWidth();
 						}
 					});
-				}
+				}*/
 
 				setScrollbars();
 
-				// positioning the first page of the given document at the top of PDF thumb-nail navigator
+				// positioning the first page of the given document at the top of PDF thumbnail navigator
 				if (autoZoom == AutoZoom.pageWidth && startingPoint) {
 					Display.getDefault().asyncExec(new Runnable() {
 						public void run() {
@@ -437,7 +443,6 @@ public class PdfViewerComposite extends Composite
 			}
 			@Override
 			public void componentShown(ComponentEvent e) {
-
 			}
 		});
 
@@ -663,7 +668,7 @@ public class PdfViewerComposite extends Composite
 					scrollBarHorizontal.setIncrement((int) (visibleAreaScrollWidth * 0.1d));
 				}
 				else {
-					// PDF thumb-nail navigator composite doesn't need a horizontal scroll-bar at all
+					// PDF thumbnail navigator composite doesn't need a horizontal scroll-bar at all
 					scrollBarHorizontal.setVisible(false);
 					centerHorizontally = true;
 
@@ -750,7 +755,7 @@ public class PdfViewerComposite extends Composite
 			else
 				mouseRotationOrientation = 1;
 
-			if (mouseWheelModeZoom == true && pdfViewer.isMouseWheelZoomEnabled())	// do not allow zooming in PDF thumb-nail viewer
+			if (mouseWheelModeZoom == true && pdfViewer.isMouseWheelZoomEnabled())	// do not allow zooming in PDF thumbnail viewer
 				zoomPDFDocument(mouseRotationOrientation);
 			else {
 				Display.getDefault().asyncExec(new Runnable() {
@@ -845,9 +850,9 @@ public class PdfViewerComposite extends Composite
 
 	public void zoomToPageWidth() {
 
-		// An adequate zoom factor for fitting the given document into PDF thumb-nail navigator composite is computed
+		// An adequate zoom factor for fitting the given document into PDF thumbnail navigator composite is computed
 		// considering the different widths of document and PDF viewer composite.
-		// The horizontal scroll-bar of PDF thumb-nail navigator composite will be set invisible as it is not needed
+		// The horizontal scroll-bar of PDF thumbnail navigator composite will be set invisible as it is not needed
 		// in this navigator.
 		Point screenDPI = getDisplay().getDPI();
 		zoomScreenResolutionFactor = new Point2DDouble(	(double)screenDPI.x / 72,
@@ -1177,4 +1182,5 @@ public class PdfViewerComposite extends Composite
 	    super.redraw(x, y, width, height, all);
 	    viewPanel.repaint();
 	}
+
 }

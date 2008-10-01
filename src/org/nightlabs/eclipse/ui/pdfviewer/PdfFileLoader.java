@@ -11,6 +11,7 @@ import java.nio.channels.FileChannel;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.nightlabs.eclipse.ui.pdfviewer.internal.Util;
+import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
 
 
 import com.sun.pdfview.PDFFile;
@@ -47,7 +48,7 @@ public class PdfFileLoader
 	 */
 	public static PDFFile loadPdf(InputStream in, IProgressMonitor monitor) throws IOException
 	{
-		monitor.beginTask("Loading PDF file", 100);
+		monitor.beginTask(Messages.getString("org.nightlabs.eclipse.ui.pdfviewer.PdfFileLoader.loadPdf.monitor.task.name"), 100); //$NON-NLS-1$
 		try {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			Util.transferStreamData(in, out);
@@ -75,10 +76,10 @@ public class PdfFileLoader
 	 */
 	public static PDFFile loadPdf(File file, IProgressMonitor monitor) throws IOException
 	{
-		monitor.beginTask("Loading PDF file", 100);
+		monitor.beginTask(Messages.getString("org.nightlabs.eclipse.ui.pdfviewer.PdfFileLoader.loadPdf.monitor.task.name"), 100); //$NON-NLS-1$
 
 		try {
-			RandomAccessFile randomAccessFile = new RandomAccessFile(file, "r");
+			RandomAccessFile randomAccessFile = new RandomAccessFile(file, "r"); //$NON-NLS-1$
 			try {
 				FileChannel fileChannel = randomAccessFile.getChannel();
 				try {

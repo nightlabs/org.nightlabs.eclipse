@@ -70,7 +70,6 @@ public class PdfSimpleNavigatorComposite extends Composite {
 		gotoPreviousPageButton.setImage(gotoPreviousPageButtonImage);
 		currentPageNumberText = new Text(this, SWT.BORDER);
 		GridData gd1 = new GridData();
-		gd1.widthHint = 200;
 		currentPageNumberText.setLayoutData(gd1);
 		currentPageNumberText.addKeyListener(new KeyAdapter() {
 			@Override

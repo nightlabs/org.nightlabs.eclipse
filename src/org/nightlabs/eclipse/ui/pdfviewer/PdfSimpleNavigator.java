@@ -50,13 +50,13 @@ public class PdfSimpleNavigator implements ContextElement<PdfSimpleNavigator> {
 		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_CURRENT_PAGE, propertyChangeListenerCurrentPage);
 
 		// is this the best way?
-		// TODO find and consider only context elements that are of type PDF thumb-nail navigator
-		// TODO do not use PDF simple navigator as hop for firing between PDF thumb-nail navigator and PDF viewer
+		// TODO find and consider only context elements that are of type PDF thumbnail navigator
+		// TODO do not use PDF simple navigator as hop for firing between PDF thumbnail navigator and PDF viewer
 /*		Collection<? extends ContextElement<?>> result = pdfViewer.getContextElements();
 		for (Iterator<? extends ContextElement<?>> iterator = result.iterator(); iterator.hasNext();) {
 			ContextElement<?> registeredContextElement = iterator.next();
 			if (registeredContextElement.getPdfViewer() != null) {
-				// this navigator will be notified here in the case PDF thumb-nail navigator has changed current page
+				// this navigator will be notified here in the case PDF thumbnail navigator has changed current page
 				registeredContextElement.getPdfViewer().addPropertyChangeListener(
 //						registeredContextElement.getPdfViewer().PROPERTY_CURRENT_PAGE,
 						PdfViewer.PROPERTY_CURRENT_PAGE,

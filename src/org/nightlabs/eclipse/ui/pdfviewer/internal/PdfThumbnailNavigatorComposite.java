@@ -35,7 +35,7 @@ public class PdfThumbnailNavigatorComposite extends Composite
 	private PdfThumbnailNavigator pdfThumbnailNavigator;
 	private PdfViewer thumbnailPdfViewer;
 	private Control thumbnailPdfViewerControl;
-	private OneDimensionalPdfDocument oneDimensionalPdfDocument;
+	private PdfDocument thumbnailPdfDocument;
 
 	public PdfThumbnailNavigatorComposite(Composite parent, int style, PdfThumbnailNavigator pdfThumbnailNavigator) {
 		super(parent, style);
@@ -170,12 +170,12 @@ public class PdfThumbnailNavigatorComposite extends Composite
 		}
 
 		// we force a OneDimensionalPdfDocument, because we have no idea, how the PdfDocument of the main viewer looks like.
-		oneDimensionalPdfDocument = new OneDimensionalPdfDocument(
+		thumbnailPdfDocument = new OneDimensionalPdfDocument(
 				pdfDocument.getPdfFile(),
 				OneDimensionalPdfDocument.Layout.vertical,
 				new NullProgressMonitor()
 		);
-		thumbnailPdfViewer.setPdfDocument(oneDimensionalPdfDocument);
+		thumbnailPdfViewer.setPdfDocument(thumbnailPdfDocument);
 
 	}
 
@@ -190,4 +190,9 @@ public class PdfThumbnailNavigatorComposite extends Composite
 	public void setCurrentPage(int pageNumber) {
 		thumbnailPdfViewer.setCurrentPage(pageNumber);
 	}
+
+	public void zoomToPageWidth() {
+		thumbnailPdfViewer.getPdfViewerComposite().zoomToPageWidth();
+	}
+
 }

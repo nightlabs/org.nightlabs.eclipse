@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
 
 import com.sun.pdfview.OutlineNode;
 import com.sun.pdfview.PDFFile;
@@ -63,7 +64,7 @@ public class OneDimensionalPdfDocument extends AbstractPdfDocument
 	 */
 	private void readPdf(IProgressMonitor monitor)
 	{
-		monitor.beginTask("Reading PDF file", pdfFile.getNumPages());
+		monitor.beginTask(Messages.getString("org.nightlabs.eclipse.ui.pdfviewer.OneDimensionalPdfDocument.readPdf.monitor.task.name"), pdfFile.getNumPages()); //$NON-NLS-1$
 		try {
 			documentDimension = new Dimension2DDouble(0, 0);
 			pageBounds = new ArrayList<Rectangle2D.Double>(pdfFile == null ? 0 : pdfFile.getNumPages());
@@ -123,13 +124,13 @@ public class OneDimensionalPdfDocument extends AbstractPdfDocument
 					break;
 
 				default:
-					throw new IllegalStateException("Unknown layout: " + layout);
+					throw new IllegalStateException("Unknown layout: " + layout); //$NON-NLS-1$
 			}
 
 			if (logger.isDebugEnabled()) {
 				int pageNumber = 0;
 				for (Rectangle2D.Double page : pageBounds) {
-					logger.debug("readPdf: page " + (++pageNumber) + ": x=" + page.getX() + " y=" + page.getY() + " w=" + page.getWidth() + " h=" + page.getHeight());
+					logger.debug("readPdf: page " + (++pageNumber) + ": x=" + page.getX() + " y=" + page.getY() + " w=" + page.getWidth() + " h=" + page.getHeight()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 				}
 
 				try {
@@ -140,13 +141,13 @@ public class OneDimensionalPdfDocument extends AbstractPdfDocument
 				}
 
 				try {
-					PDFObject pdfObject = pdfFile.getRoot().getDictRef("Pages");
-					logger.debug("readPdf: pagesPDFObject=" + pdfObject);
+					PDFObject pdfObject = pdfFile.getRoot().getDictRef("Pages"); //$NON-NLS-1$
+					logger.debug("readPdf: pagesPDFObject=" + pdfObject); //$NON-NLS-1$
 					PDFObject[] pageArray = pdfObject.getArray();
 //					logger.debug("readPdfDocumentProperties: pageArray=" + pageArray);
 
 					for (PDFObject page : pageArray) {
-						logger.debug("readPdf:   * page=" + page.dereference());
+						logger.debug("readPdf:   * page=" + page.dereference()); //$NON-NLS-1$
 						logPDFObject(1, page);
 					}
 				} catch (IOException e) {
@@ -163,41 +164,41 @@ public class OneDimensionalPdfDocument extends AbstractPdfDocument
 	{
 		StringBuilder indent = new StringBuilder();
 		for (int i = 0; i < level; ++i)
-			indent.append("  ");
+			indent.append("  "); //$NON-NLS-1$
 
-		PDFObject pdfObjectResources = pdfObject.getDictRef("Resources");
+		PDFObject pdfObjectResources = pdfObject.getDictRef("Resources"); //$NON-NLS-1$
 		if (pdfObjectResources != null) {
-			logger.debug("readPdf: " + indent + "* resources=" + pdfObjectResources.dereference());
-			PDFObject procSet = pdfObjectResources.getDictRef("ProcSet");
+			logger.debug("readPdf: " + indent + "* resources=" + pdfObjectResources.dereference()); //$NON-NLS-1$ //$NON-NLS-2$
+			PDFObject procSet = pdfObjectResources.getDictRef("ProcSet"); //$NON-NLS-1$
 			if (procSet != null) {
-				logger.debug("readPdf: " + indent + "  * procSet=" + procSet.dereference());
+				logger.debug("readPdf: " + indent + "  * procSet=" + procSet.dereference()); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 
-			PDFObject font = pdfObjectResources.getDictRef("Font");
+			PDFObject font = pdfObjectResources.getDictRef("Font"); //$NON-NLS-1$
 			if (font != null) {
-				logger.debug("readPdf: " + indent + "  * font=" + font.dereference());
+				logger.debug("readPdf: " + indent + "  * font=" + font.dereference()); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 
-		PDFObject pdfObjectContents = pdfObject.getDictRef("Contents");
+		PDFObject pdfObjectContents = pdfObject.getDictRef("Contents"); //$NON-NLS-1$
 		if (pdfObjectContents != null) {
-			logger.debug("readPdf: " + indent + "* contents=" + pdfObjectContents.dereference());
+			logger.debug("readPdf: " + indent + "* contents=" + pdfObjectContents.dereference()); //$NON-NLS-1$ //$NON-NLS-2$
 			PDFObject[] contentKids = pdfObjectContents.getArray();
 			if (contentKids != null) {
 				for (PDFObject contentKid : contentKids) {
-					logger.debug("readPdf: " + indent + "  * contentKid=" + contentKid.dereference());
+					logger.debug("readPdf: " + indent + "  * contentKid=" + contentKid.dereference()); //$NON-NLS-1$ //$NON-NLS-2$
 					logPDFObject(level + 2, contentKid);
 				}
 			}
 		}
 
-		PDFObject pdfObjectKids = pdfObject.getDictRef("Kids");
+		PDFObject pdfObjectKids = pdfObject.getDictRef("Kids"); //$NON-NLS-1$
 		if (pdfObjectKids == null)
 			return;
 
 		PDFObject[] kidsArray = pdfObjectKids.getArray();
 		for (PDFObject kid : kidsArray) {
-			logger.debug("readPdf: " + indent + "* kid=" + kid.dereference());
+			logger.debug("readPdf: " + indent + "* kid=" + kid.dereference()); //$NON-NLS-1$ //$NON-NLS-2$
 			logPDFObject(level + 1, kid);
 		}
 	}
@@ -205,7 +206,7 @@ public class OneDimensionalPdfDocument extends AbstractPdfDocument
 	private static void logOutline(int level, OutlineNode outlineNode)
 	{
 		if (outlineNode == null) {
-			logger.debug("logOutline: OutlineNode is null!!!");
+			logger.debug("logOutline: OutlineNode is null!!!"); //$NON-NLS-1$
 			return;
 		}
 
@@ -213,7 +214,7 @@ public class OneDimensionalPdfDocument extends AbstractPdfDocument
 		for (int i = 0; i < level; ++i)
 			indent.append(' ');
 
-		logger.debug("logOutline: " + indent.toString() + '*' + outlineNode);
+		logger.debug("logOutline: " + indent.toString() + '*' + outlineNode); //$NON-NLS-1$
 
 		for (int i = 0; i < outlineNode.getChildCount(); ++i) {
 			OutlineNode child = (OutlineNode) outlineNode.getChildAt(i);
@@ -233,10 +234,10 @@ public class OneDimensionalPdfDocument extends AbstractPdfDocument
 
 		int anyVisiblePage = findVisiblePage(bounds);
 		if (logger.isDebugEnabled())
-			logger.debug("getVisiblePages: anyVisiblePage=" + anyVisiblePage);
+			logger.debug("getVisiblePages: anyVisiblePage=" + anyVisiblePage); //$NON-NLS-1$
 
 		if (anyVisiblePage < 0) {
-			logger.warn("getVisiblePages: findVisiblePage(...) found none! Using expensive full scan!");
+			logger.warn("getVisiblePages: findVisiblePage(...) found none! Using expensive full scan!"); //$NON-NLS-1$
 			for (int pageIdx = 0; pageIdx < pageBounds.size(); ++pageIdx) {
 				if (isPageVisible(pageBounds.get(pageIdx), bounds)) {
 					firstVisibleIdx = pageIdx;
@@ -245,7 +246,7 @@ public class OneDimensionalPdfDocument extends AbstractPdfDocument
 				}
 			}
 			if (anyVisiblePage < 0) {
-				logger.warn("getVisiblePages: No page is visible!");
+				logger.warn("getVisiblePages: No page is visible!"); //$NON-NLS-1$
 				return result;
 			}
 		}
@@ -269,9 +270,9 @@ public class OneDimensionalPdfDocument extends AbstractPdfDocument
 		}
 
 		if (logger.isDebugEnabled()) {
-			logger.debug("getVisiblePages: returning " + result.size() + " page numbers for bufferBounds=" + bounds);
+			logger.debug("getVisiblePages: returning " + result.size() + " page numbers for bufferBounds=" + bounds); //$NON-NLS-1$ //$NON-NLS-2$
 			for (Integer pageNumber : result) {
-				logger.debug("getVisiblePages: * " + pageNumber);
+				logger.debug("getVisiblePages: * " + pageNumber); //$NON-NLS-1$
 			}
 		}
 
@@ -321,7 +322,7 @@ public class OneDimensionalPdfDocument extends AbstractPdfDocument
 				break;
 
 				default:
-					throw new IllegalStateException("Unknown layout: " + layout);
+					throw new IllegalStateException("Unknown layout: " + layout); //$NON-NLS-1$
 			}
 		}
 
@@ -369,7 +370,7 @@ public class OneDimensionalPdfDocument extends AbstractPdfDocument
 	@Override
 	public void initPdfFile(PDFFile pdfFile, IProgressMonitor monitor) {
 		if (this.pdfFile != null)
-			throw new IllegalStateException("A PDF file has already been assigned! This method cannot be called again!");
+			throw new IllegalStateException("A PDF file has already been assigned! This method cannot be called again!"); //$NON-NLS-1$
 
 		this.pdfFile = pdfFile;
 		readPdf(monitor);

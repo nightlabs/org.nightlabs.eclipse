@@ -22,4 +22,5 @@ Export-Package: com.sun.pdfview,
  com.sun.pdfview.function,
  com.sun.pdfview.gfx,
  com.sun.pdfview.pattern,
- org.nightlabs.eclipse.ui.pdfviewer
+ org.nightlabs.eclipse.ui.pdfviewer,
+ org.nightlabs.eclipse.ui.pdfviewer.internal;x-internal:=true

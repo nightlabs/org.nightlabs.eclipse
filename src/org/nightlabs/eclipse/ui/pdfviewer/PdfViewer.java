@@ -96,7 +96,7 @@ public class PdfViewer
 	public static final String PROPERTY_CURRENT_PAGE = "currentPage";
 
 	/**
-	 * Constant used by the {@link PropertyChangeListener}s when a thumb-nail in PDF thumb-nail navigator
+	 * Constant used by the {@link PropertyChangeListener}s when a thumbnail in PDF thumbnail navigator
 	 * was clicked with the mouse.
 	 *
 	 * <p>
@@ -115,6 +115,8 @@ public class PdfViewer
 	public static final String PROPERTY_MOUSE_RELEASED = "mouseReleased";
 
 	public static final String PROPERTY_MOUSE_DRAGGED = "mouseDragged";
+
+	public static final String PROPERTY_COMPONENT_RESIZED = "componentResized";
 
 
 	public PdfViewer() { }
