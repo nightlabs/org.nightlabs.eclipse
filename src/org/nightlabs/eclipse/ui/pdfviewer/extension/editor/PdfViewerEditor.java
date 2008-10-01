@@ -9,7 +9,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -29,6 +28,7 @@ import org.nightlabs.eclipse.ui.pdfviewer.PdfFileLoader;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfSimpleNavigator;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfThumbnailNavigator;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
+import org.nightlabs.eclipse.ui.pdfviewer.extension.composite.PdfViewerComposite;
 
 import com.sun.pdfview.PDFFile;
 
@@ -173,50 +173,8 @@ public class PdfViewerEditor extends EditorPart
 							return;
 
 						loadingMessagePage.dispose();
-						SashForm page = new SashForm(parent, SWT.HORIZONTAL);
 
-						pdfViewer = new PdfViewer();
-
-						// PDF viewer fires a property change event concerning the property "PROPERTY_PDF_DOCUMENT"
-						// when setting the given PDF document here. PDF thumb-nail navigator will receive this event (when created)
-						// and will call setDocument for its corresponding composite to load the given PDF document in its composite.
-						pdfViewer.setPdfDocument(pdfDocument);
-
-						pdfThumbnailNavigator = new PdfThumbnailNavigator(pdfViewer);
-
-						Composite leftComp = new Composite(page, SWT.NONE);
-						leftComp.setLayout(new GridLayout());
-
-						// creating the control of PDF thumb-nail navigator (the composite of this control creates a new instance of PDF viewer!)
-						pdfThumbnailNavigatorControl = pdfThumbnailNavigator.createControl(leftComp, SWT.BORDER);
-						pdfThumbnailNavigatorControl.setLayoutData(new GridData(GridData.FILL_BOTH));
-
-						// creating the control of PDF viewer (a new PDF viewer composite will be created)
-						pdfViewerControl = pdfViewer.createControl(page, SWT.BORDER);
-						pdfViewerControl.setLayoutData(new GridData(GridData.FILL_BOTH));
-
-						// creating PDF simple navigator and its corresponding control (a new PDF simple navigator composite will be created)
-						pdfSimpleNavigator = new PdfSimpleNavigator(pdfViewer);
-						pdfSimpleNavigatorControl = pdfSimpleNavigator.createControl(leftComp, SWT.NONE);
-						pdfSimpleNavigatorControl.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_END));
-
-						if (logger.isDebugEnabled()) {
-							logger.info("simple navigator control width " + pdfSimpleNavigatorControl.getBounds().width);
-							logger.info("thumbnail navigator control width " + pdfThumbnailNavigatorControl.getBounds().width);
-							logger.info("thumbnail navigator control border width " + pdfThumbnailNavigatorControl.getBorderWidth());
-							logger.info("pdf viewer control border width " + pdfViewerControl.getBorderWidth());
-							logger.info("parent width " + parent.getBounds().width);
-						}
-
-						// TODO in the case the PDF viewer component has been resized weights have to be computed again (not optimal yet)
-						int absoluteWidth = pdfSimpleNavigatorControl.getBounds().width +
-											pdfThumbnailNavigatorControl.getBorderWidth() * 2 +
-											pdfViewerControl.getBorderWidth();
-
-						int relativeWidth = (int) Math.ceil(100f * absoluteWidth / parent.getBounds().width);
-						page.setWeights(new int[]{relativeWidth, 100 - relativeWidth});
-
-						parent.layout(true, true);
+						new PdfViewerComposite(parent, SWT.NONE, pdfDocument);
 
 //						pdfThumbnailNavigator.setPdfDocumentFactory(new PdfThumbnailNavigator.PdfDocumentFactory() {
 //							public PdfDocument createPdfDocument(PdfDocument pdfDocument)
