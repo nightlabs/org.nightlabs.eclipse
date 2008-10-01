@@ -260,9 +260,27 @@ implements IZoomSupport
 		}
 	}
 
+	private static final ThreadLocal<int[]> doZoomAllReferenceCounter = new ThreadLocal<int[]>() {
+		@Override
+		protected int[] initialValue() {
+			return new int[] { 0 };
+		}
+	};
+
 	protected void doZoomAll() {
 		if (zoomAll) {
-			zoomAll();
+			int[] recursionCounter = doZoomAllReferenceCounter.get();
+			try {
+				if (++recursionCounter[0] > 100) {
+					logger.warn("doZoomAll: detected recursion and will exit!");
+					return;
+				}
+
+				zoomAll();
+			} finally {
+				if (--recursionCounter[0] <= 0)
+					doZoomAllReferenceCounter.remove();
+			}
 		}
 	}
 
