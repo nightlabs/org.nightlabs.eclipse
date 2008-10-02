@@ -11,7 +11,6 @@ import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfSimpleNavigator;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfThumbnailNavigator;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
-import org.nightlabs.eclipse.ui.pdfviewer.extension.resource.Messages;
 
 /**
  * Off-the-shelf composite for displaying PDF files. This comprises the raw PDF viewing area (see {@link PdfViewer}) as well
@@ -83,10 +82,11 @@ public class PdfViewerComposite extends SashForm {
 									pdfThumbnailNavigatorControl.getBorderWidth() * 2 +
 									pdfViewerControl.getBorderWidth();
 
-				int relativeWidth = (int) Math.ceil(100f * absoluteWidth / PdfViewerComposite.this.getBounds().width);
+				int relativeWidth = (int) Math.ceil(100f * absoluteWidth / /*PdfViewerComposite.this.*/parent.getBounds().width);
 				logger.debug("relativeWeight " + relativeWidth); //$NON-NLS-1$
+				logger.info(absoluteWidth + " " + relativeWidth + " " + parent.getBounds().width);
 				PdfViewerComposite.this.setWeights(new int[]{relativeWidth, 100 - relativeWidth});
-				PdfViewerComposite.this.layout(true, true);
+				/*PdfViewerComposite.this.*/parent.layout(true, true);
             }
 		});
 	}
