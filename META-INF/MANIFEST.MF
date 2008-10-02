@@ -13,3 +13,4 @@ Eclipse-LazyStart: true
 Export-Package: org.nightlabs.eclipse.ui.pdfviewer.extension,
  org.nightlabs.eclipse.ui.pdfviewer.extension.composite,
  org.nightlabs.eclipse.ui.pdfviewer.extension.editor
+Bundle-Localization: plugin

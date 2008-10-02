@@ -37,7 +37,7 @@ implements IEditorInput
 	public PdfViewerEditorInput(String name, String toolTipText, ImageDescriptor imageDescriptor, File file)
 	{
 		if (file == null)
-			throw new IllegalArgumentException("file must not be null!");
+			throw new IllegalArgumentException("file must not be null!"); //$NON-NLS-1$
 
 		this.name = name;
 		this.toolTipText = toolTipText;
@@ -47,7 +47,7 @@ implements IEditorInput
 
 	public PdfViewerEditorInput(String name, String toolTipText, ImageDescriptor imageDescriptor, byte[] byteArray) {
 		if (byteArray == null)
-			throw new IllegalArgumentException("byteArray must not be null!");
+			throw new IllegalArgumentException("byteArray must not be null!"); //$NON-NLS-1$
 
 		this.name = name;
 		this.toolTipText = toolTipText;
@@ -82,7 +82,7 @@ implements IEditorInput
 		else if (file != null)
 			pdfFile = PdfFileLoader.loadPdf(file, monitor);
 		else
-			throw new IllegalStateException("Have no data!");
+			throw new IllegalStateException("Have no data!"); //$NON-NLS-1$
 
 		return pdfFile;
 	}
@@ -113,7 +113,7 @@ implements IEditorInput
 		return toolTipText;
 	}
 
-	@SuppressWarnings("unchecked") // seems, IAdaptable does not have a class type set (not even <?>).
+	@SuppressWarnings("unchecked") // seems, IAdaptable does not have a class type set (not even <?>). //$NON-NLS-1$
 	@Override
 	public Object getAdapter(Class arg0) {
 		// no adapter supported, at the moment

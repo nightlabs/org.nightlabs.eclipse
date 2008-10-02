@@ -29,6 +29,7 @@ import org.nightlabs.eclipse.ui.pdfviewer.PdfSimpleNavigator;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfThumbnailNavigator;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
 import org.nightlabs.eclipse.ui.pdfviewer.extension.composite.PdfViewerComposite;
+import org.nightlabs.eclipse.ui.pdfviewer.extension.resource.Messages;
 
 import com.sun.pdfview.PDFFile;
 
@@ -111,15 +112,15 @@ public class PdfViewerEditor extends EditorPart
 		gdLoadingMessageLabel.verticalIndent = 16;
 		gdLoadingMessageLabel.horizontalIndent = 16;
 		loadingMessageLabel.setLayoutData(gdLoadingMessageLabel);
-		loadingMessageLabel.setText("Loading PDF file...");
+		loadingMessageLabel.setText(Messages.getString("org.nightlabs.eclipse.ui.pdfviewer.extension.editor.PdfViewerEditor.loadingMessageLabel.text")); //$NON-NLS-1$
 
 		final Display display = loadingMessageLabel.getDisplay();
 
 		final IEditorInput input = getEditorInput();
-		Job job = new Job("Loading PDF file") {
+		Job job = new Job(Messages.getString("org.nightlabs.eclipse.ui.pdfviewer.extension.editor.PdfViewerEditor.monitor.task.name")) { //$NON-NLS-1$
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				monitor.beginTask("Loading PDF file", 100);
+				monitor.beginTask(Messages.getString("org.nightlabs.eclipse.ui.pdfviewer.extension.editor.PdfViewerEditor.monitor.task.name"), 100); //$NON-NLS-1$
 				try {
 					if (input instanceof PdfViewerEditorInput) {
 						pdfFile = ((PdfViewerEditorInput)input).getPDFFile();
@@ -147,11 +148,11 @@ public class PdfViewerEditor extends EditorPart
 //						}
 //					}
 					else
-						throw new IllegalArgumentException("Editor input is an unsupported type! class=" + input.getClass() + " instance=" + input);
+						throw new IllegalArgumentException("Editor input is an unsupported type! class=" + input.getClass() + " instance=" + input); //$NON-NLS-1$ //$NON-NLS-2$
 
 					pdfDocument = new OneDimensionalPdfDocument(pdfFile, new SubProgressMonitor(monitor, 80));
 				} catch (final Exception x) {
-					logger.error("Error while reading PDF file!", x);
+					logger.error("Error while reading PDF file!", x); //$NON-NLS-1$
 
 					display.asyncExec(new Runnable() {
 						public void run() {

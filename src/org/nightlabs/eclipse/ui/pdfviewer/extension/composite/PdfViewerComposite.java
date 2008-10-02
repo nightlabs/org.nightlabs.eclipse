@@ -11,6 +11,7 @@ import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfSimpleNavigator;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfThumbnailNavigator;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
+import org.nightlabs.eclipse.ui.pdfviewer.extension.resource.Messages;
 
 /**
  * Off-the-shelf composite for displaying PDF files. This comprises the raw PDF viewing area (see {@link PdfViewer}) as well
@@ -70,12 +71,12 @@ public class PdfViewerComposite extends SashForm {
 			@Override
             public void run() {
 				if (logger.isDebugEnabled()) {
-					logger.debug("simple navigator control width (computed) " + pdfSimpleNavigatorControl.getSize().x);
-					logger.debug("simple navigator control width (actual) " + pdfSimpleNavigatorControl.getBounds().width);
-					logger.debug("thumbnail navigator control width " + pdfThumbnailNavigatorControl.getBounds().width);
-					logger.debug("thumbnail navigator control border width " + pdfThumbnailNavigatorControl.getBorderWidth());
-					logger.debug("pdf viewer control border width " + pdfViewerControl.getBorderWidth());
-					logger.debug("PdfViewerComposite.this width " + PdfViewerComposite.this.getBounds().width);
+					logger.debug("simple navigator control width (computed) " + pdfSimpleNavigatorControl.getSize().x); //$NON-NLS-1$
+					logger.debug("simple navigator control width (actual) " + pdfSimpleNavigatorControl.getBounds().width); //$NON-NLS-1$
+					logger.debug("thumbnail navigator control width " + pdfThumbnailNavigatorControl.getBounds().width); //$NON-NLS-1$
+					logger.debug("thumbnail navigator control border width " + pdfThumbnailNavigatorControl.getBorderWidth()); //$NON-NLS-1$
+					logger.debug("pdf viewer control border width " + pdfViewerControl.getBorderWidth()); //$NON-NLS-1$
+					logger.debug("PdfViewerComposite.this width " + PdfViewerComposite.this.getBounds().width); //$NON-NLS-1$
 				}
 
 				int absoluteWidth = pdfSimpleNavigatorControl.getBounds().width +
@@ -83,7 +84,7 @@ public class PdfViewerComposite extends SashForm {
 									pdfViewerControl.getBorderWidth();
 
 				int relativeWidth = (int) Math.ceil(100f * absoluteWidth / PdfViewerComposite.this.getBounds().width);
-				logger.debug("relativeWeight " + relativeWidth);
+				logger.debug("relativeWeight " + relativeWidth); //$NON-NLS-1$
 				PdfViewerComposite.this.setWeights(new int[]{relativeWidth, 100 - relativeWidth});
 				PdfViewerComposite.this.layout(true, true);
             }
