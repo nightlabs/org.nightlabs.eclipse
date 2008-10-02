@@ -7,6 +7,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.nightlabs.eclipse.ui.pdfviewer.internal.PdfThumbnailNavigatorComposite;
+import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
 
 
 public class PdfThumbnailNavigator implements ContextElement<PdfThumbnailNavigator>
@@ -26,7 +27,7 @@ public class PdfThumbnailNavigator implements ContextElement<PdfThumbnailNavigat
 		assertValidThread();
 
 		if (pdfViewer == null)
-			throw new IllegalArgumentException("pdfViewer must not be null!");
+			throw new IllegalArgumentException("pdfViewer must not be null!"); //$NON-NLS-1$
 
 		this.pdfViewer = pdfViewer;
 		this.contextElementId = contextElementId;
@@ -86,7 +87,7 @@ public class PdfThumbnailNavigator implements ContextElement<PdfThumbnailNavigat
 
 	private static void assertValidThread()	{
 		if (Display.getCurrent() == null)
-			throw new IllegalStateException("Wrong thread! This method must be called on the SWT UI thread!");
+			throw new IllegalStateException("Wrong thread! This method must be called on the SWT UI thread!"); //$NON-NLS-1$
 	}
 
 //	public PdfViewer getThumbnailPdfViewer() {

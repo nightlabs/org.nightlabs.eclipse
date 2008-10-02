@@ -19,6 +19,7 @@ import javax.imageio.stream.FileImageOutputStream;
 import org.apache.log4j.Logger;
 import org.nightlabs.eclipse.ui.pdfviewer.Dimension2DDouble;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
+import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
 
 import com.sun.pdfview.PDFPage;
 
@@ -73,10 +74,10 @@ public class RenderBuffer
 	public void paintToBuffer(int bufferWidth, int bufferHeight, int posX, int posY, double zoomFactor)
 	{
 		if (bufferWidth < 1)
-			throw new IllegalArgumentException("bufferWidth < 1");
+			throw new IllegalArgumentException("bufferWidth < 1"); //$NON-NLS-1$
 
 		if (bufferHeight < 1)
-			throw new IllegalArgumentException("bufferHeight < 1");
+			throw new IllegalArgumentException("bufferHeight < 1"); //$NON-NLS-1$
 
 		String dumpImageRenderID = DUMP_IMAGE_BUFFER || DUMP_IMAGE_PAGE ? Long.toString(System.currentTimeMillis(), 36) : null;
 
@@ -163,7 +164,7 @@ public class RenderBuffer
 				);
 
 				if (DUMP_IMAGE_PAGE)
-					printToImageFile(pdfImage, String.format("%s-pdfImage-%03d", dumpImageRenderID, pageNumber));
+					printToImageFile(pdfImage, String.format("%s-pdfImage-%03d", dumpImageRenderID, pageNumber)); //$NON-NLS-1$
 
 				// In contrast to clipLeftBottom clipAbsoluteLeftTop specifies the top-left point of the clip relative
 				// to the PdfDocument's complete coordinate system.
@@ -210,7 +211,7 @@ public class RenderBuffer
 		pdfViewerComposite.firePaintToBufferListeners(graphics, true);
 
 		if (DUMP_IMAGE_BUFFER)
-			printToImageFile(bufferedImage, String.format("%s-bufferedImage", dumpImageRenderID));
+			printToImageFile(bufferedImage, String.format("%s-bufferedImage", dumpImageRenderID)); //$NON-NLS-1$
 
 		synchronized (mutex) {
 			if (this.bufferedImage != null)
@@ -241,12 +242,12 @@ public class RenderBuffer
 				_drawImage(graphics2D, image, x, y);
 				return;
 			} catch (StackOverflowError error) {
-				logger.warn("drawImage: WORKAROUND: Caught StackOverflowError with tryCount=" + tryCount, error);
+				logger.warn("drawImage: WORKAROUND: Caught StackOverflowError with tryCount=" + tryCount, error); //$NON-NLS-1$
 
 				if (tryCount > 5)
 					throw error;
 			} catch (WaitForRenderingException exception) {
-				logger.warn("drawImage: WORKAROUND: Caught WaitForRenderingException with tryCount=" + tryCount, exception);
+				logger.warn("drawImage: WORKAROUND: Caught WaitForRenderingException with tryCount=" + tryCount, exception); //$NON-NLS-1$
 
 				if (tryCount > 5)
 					throw exception;
@@ -315,12 +316,12 @@ public class RenderBuffer
 			try {
 				return _getPdfImage(pdfPage, pdfImageWidth, pdfImageHeight, clipLeftBottom);
 			} catch (StackOverflowError error) {
-				logger.warn("getPdfImage: WORKAROUND: Caught StackOverflowError with tryCount=" + tryCount, error);
+				logger.warn("getPdfImage: WORKAROUND: Caught StackOverflowError with tryCount=" + tryCount, error); //$NON-NLS-1$
 
 				if (tryCount > 5)
 					throw error;
 			} catch (WaitForRenderingException exception) {
-				logger.warn("getPdfImage: WORKAROUND: Caught WaitForRenderingException with tryCount=" + tryCount, exception);
+				logger.warn("getPdfImage: WORKAROUND: Caught WaitForRenderingException with tryCount=" + tryCount, exception); //$NON-NLS-1$
 
 				if (tryCount > 5)
 					throw exception;
@@ -348,10 +349,10 @@ public class RenderBuffer
 	)
 	{
 		if (graphics2D == null)
-			throw new IllegalArgumentException("graphics2D must not be null!");
+			throw new IllegalArgumentException("graphics2D must not be null!"); //$NON-NLS-1$
 
 		if (region == null)
-			throw new IllegalArgumentException("region must not be null!");
+			throw new IllegalArgumentException("region must not be null!"); //$NON-NLS-1$
 
 		synchronized (mutex) {
 			boolean zoomMismatch = (int)(requestedZoomFactor * 1000) != (int) (zoomFactor * 1000);
@@ -547,13 +548,13 @@ public class RenderBuffer
 	 */
 	private static void printToImageFile(Image image, String filenamePrefix) {
 		if (image == null)
-			throw new IllegalArgumentException("image must not be null!");
+			throw new IllegalArgumentException("image must not be null!"); //$NON-NLS-1$
 
-		File dumpDir = new File(Util.getTempDir(), "pdfviewer_images");
+		File dumpDir = new File(Util.getTempDir(), "pdfviewer_images"); //$NON-NLS-1$
 		if (!dumpDir.exists())
 			dumpDir.mkdirs();
 
-		String fileFormat = "png";
+		String fileFormat = "png"; //$NON-NLS-1$
 		ImageWriter writer = ImageIO.getImageWritersByFormatName(fileFormat).next();
 		try {
 			FileImageOutputStream out = new FileImageOutputStream(new File(dumpDir, filenamePrefix + '.' + fileFormat));
@@ -564,7 +565,7 @@ public class RenderBuffer
 				out.close();
 			}
 		} catch (Exception e) {
-			logger.warn("printToImageFile: writing image failed!", e);
+			logger.warn("printToImageFile: writing image failed!", e); //$NON-NLS-1$
 		} finally {
 			writer.dispose();
 		}

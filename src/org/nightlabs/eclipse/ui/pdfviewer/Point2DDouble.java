@@ -2,6 +2,8 @@ package org.nightlabs.eclipse.ui.pdfviewer;
 
 import java.awt.geom.Point2D;
 
+import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
+
 public class Point2DDouble extends Point2D
 {
 	private volatile boolean readOnly;
@@ -26,7 +28,7 @@ public class Point2DDouble extends Point2D
 	private void assertNotReadOnly()
 	{
 		if (readOnly)
-			throw new UnsupportedOperationException("This instance of Dimension2DDouble is read-only!");
+			throw new UnsupportedOperationException("This instance of Dimension2DDouble is read-only!"); //$NON-NLS-1$
 	}
 
 	@Override

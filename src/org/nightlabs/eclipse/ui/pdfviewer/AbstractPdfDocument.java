@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
+import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
 
 
 public abstract class AbstractPdfDocument implements PdfDocument {
@@ -49,7 +50,7 @@ public abstract class AbstractPdfDocument implements PdfDocument {
         	if (viewBounds.contains(pageBounds)) {
         		visiblePageArea = (int) (pageBounds.getWidth() * pageBounds.getHeight());
         		if (logger.isDebugEnabled())
-        			logger.debug("Page number: " + pageNumber + "; visible page area: " + visiblePageArea);
+        			logger.debug("Page number: " + pageNumber + "; visible page area: " + visiblePageArea); //$NON-NLS-1$ //$NON-NLS-2$
         	}
         	else if (viewBounds.intersects(pageBounds)) {
 
@@ -61,11 +62,11 @@ public abstract class AbstractPdfDocument implements PdfDocument {
         		visiblePageArea = (int) (width * height);
 
         		if (logger.isDebugEnabled()) {
-        			logger.debug("Page number: " + pageNumber + "; visible page area: " + visiblePageArea);
+        			logger.debug("Page number: " + pageNumber + "; visible page area: " + visiblePageArea); //$NON-NLS-1$ //$NON-NLS-2$
         		}
         	}
         	else
-        		throw new IllegalStateException("Inconsistent implementation of PdfDocument! getVisiblePages(...) returned page " + pageNumber + " but this page is neither contained in the bounds, nor does it intersect them!");
+        		throw new IllegalStateException("Inconsistent implementation of PdfDocument! getVisiblePages(...) returned page " + pageNumber + " but this page is neither contained in the bounds, nor does it intersect them!"); //$NON-NLS-1$ //$NON-NLS-2$
 
 
 			if (visiblePageArea >= visiblePageAreaMax) {

@@ -7,6 +7,7 @@ import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.widgets.Display;
+import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
 
 /**
  * @author frederik loeser - frederik at nightlabs dot de
@@ -25,7 +26,7 @@ public class RenderThread extends Thread
 	private RenderBuffer renderBuffer;
 
 	public RenderThread(PdfViewerComposite pdfViewerComposite, RenderBuffer renderBuffer) {
-		super("render-" + Long.toHexString(nextThreadId()));
+		super("render-" + Long.toHexString(nextThreadId())); //$NON-NLS-1$
 		this.renderBuffer = renderBuffer;
 		this.pdfViewerComposite = pdfViewerComposite;
 		this.display = pdfViewerComposite.getDisplay();
@@ -136,7 +137,7 @@ public class RenderThread extends Thread
 					}
 				}
 			} catch (final Throwable t) {
-				logger.error("run: " + t.getClass().getName() + ": " + t.getLocalizedMessage(), t);
+				logger.error("run: " + t.getClass().getName() + ": " + t.getLocalizedMessage(), t); //$NON-NLS-1$ //$NON-NLS-2$
 //				ExceptionHandlerRegistry.asyncHandleException(t);
 
 				// We don't want a dependency on org.nightlabs.base.ui, but want our exception handler to handle it

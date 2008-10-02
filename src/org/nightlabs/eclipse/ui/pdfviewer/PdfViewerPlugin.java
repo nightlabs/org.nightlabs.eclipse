@@ -4,6 +4,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.nightlabs.eclipse.ui.pdfviewer.internal.PdfSimpleNavigatorComposite;
+import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -16,7 +17,7 @@ import org.osgi.framework.BundleContext;
 public class PdfViewerPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.nightlabs.eclipse.ui.pdfviewer";
+	public static final String PLUGIN_ID = "org.nightlabs.eclipse.ui.pdfviewer"; //$NON-NLS-1$
 
 	// The shared instance
 	private static PdfViewerPlugin plugin;
@@ -63,28 +64,28 @@ public class PdfViewerPlugin extends AbstractUIPlugin {
 	    reg.put(
 	    		PdfSimpleNavigatorComposite.ImageKey.gotoFirstPageButton_enabled.name(),
 	    		ImageDescriptor.createFromURL(
-	    				plugin.getBundle().getEntry("icons/internal/PdfSimpleNavigatorComposite-gotoFirstPageButton-enabled.16x16.png")
+	    				plugin.getBundle().getEntry("icons/internal/PdfSimpleNavigatorComposite-gotoFirstPageButton-enabled.16x16.png") //$NON-NLS-1$
 	    		)
 	    );
 
 	    reg.put(
 	    		PdfSimpleNavigatorComposite.ImageKey.gotoPreviousPageButton_enabled.name(),
 	    		ImageDescriptor.createFromURL(
-	    				plugin.getBundle().getEntry("icons/internal/PdfSimpleNavigatorComposite-gotoPreviousPageButton-enabled.16x16.png")
+	    				plugin.getBundle().getEntry("icons/internal/PdfSimpleNavigatorComposite-gotoPreviousPageButton-enabled.16x16.png") //$NON-NLS-1$
 	    		)
 	    );
 
 	    reg.put(
 	    		PdfSimpleNavigatorComposite.ImageKey.gotoNextPageButton_enabled.name(),
 	    		ImageDescriptor.createFromURL(
-	    				plugin.getBundle().getEntry("icons/internal/PdfSimpleNavigatorComposite-gotoNextPageButton-enabled.16x16.png")
+	    				plugin.getBundle().getEntry("icons/internal/PdfSimpleNavigatorComposite-gotoNextPageButton-enabled.16x16.png") //$NON-NLS-1$
 	    		)
 	    );
 
 	    reg.put(
 	    		PdfSimpleNavigatorComposite.ImageKey.gotoLastPageButton_enabled.name(),
 	    		ImageDescriptor.createFromURL(
-	    				plugin.getBundle().getEntry("icons/internal/PdfSimpleNavigatorComposite-gotoLastPageButton-enabled.16x16.png")
+	    				plugin.getBundle().getEntry("icons/internal/PdfSimpleNavigatorComposite-gotoLastPageButton-enabled.16x16.png") //$NON-NLS-1$
 	    		)
 	    );
 	}

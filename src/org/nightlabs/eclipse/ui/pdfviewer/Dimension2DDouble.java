@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 
+import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
+
 /**
  * An implementation of {@link Dimension2D} using <code>double</code> values.
  * <p>
@@ -35,7 +37,7 @@ public class Dimension2DDouble extends Dimension2D
 	private void assertNotReadOnly()
 	{
 		if (readOnly)
-			throw new UnsupportedOperationException("This instance of Dimension2DDouble is read-only!");
+			throw new UnsupportedOperationException("This instance of Dimension2DDouble is read-only!"); //$NON-NLS-1$
 	}
 
 	public void setWidth(double width)

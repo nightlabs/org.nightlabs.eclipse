@@ -1,6 +1,7 @@
 package org.nightlabs.eclipse.ui.pdfviewer;
 
 import org.nightlabs.eclipse.ui.pdfviewer.internal.Util;
+import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
 
 
 /**
@@ -13,7 +14,7 @@ public class ContextElementType<T extends ContextElement<?>>
 
 	public ContextElementType(Class<T> contextElementBaseClass) {
 		if (contextElementBaseClass == null)
-			throw new IllegalArgumentException("contextElementBaseClass must not be null!");
+			throw new IllegalArgumentException("contextElementBaseClass must not be null!"); //$NON-NLS-1$
 
 		this.contextElementBaseClass = contextElementBaseClass;
 	}
@@ -56,6 +57,6 @@ public class ContextElementType<T extends ContextElement<?>>
 	public void assertValidContextElementImplementation(ContextElement<?> contextElement)
 	{
 		if (!isValidContextElementImplementation(contextElement))
-			throw new IllegalArgumentException("contextElement is not a valid implementation: " + contextElement);
+			throw new IllegalArgumentException("contextElement is not a valid implementation: " + contextElement); //$NON-NLS-1$
 	}
 }

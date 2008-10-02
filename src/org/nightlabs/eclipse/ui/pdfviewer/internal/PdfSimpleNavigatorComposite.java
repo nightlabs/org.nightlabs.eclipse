@@ -26,6 +26,7 @@ import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfSimpleNavigator;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfViewerPlugin;
+import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
 
 import com.sun.pdfview.PDFFile;
 
@@ -252,12 +253,12 @@ public class PdfSimpleNavigatorComposite extends Composite {
 		if (numberOfPages < 1) {
 			setControlEnabledStatus(1);
 			currentPageNumberText.setText(String.valueOf(1));
-			label.setText(" / 0");
+			label.setText(" / 0"); //$NON-NLS-1$
 		}
 		else {
 			currentPageNumberText.setText(String.valueOf(1));
 			currentPageNumberText.setTextLimit((Integer.toString(numberOfPages)).length());
-			label.setText(" / " + numberOfPages);
+			label.setText(" / " + numberOfPages); //$NON-NLS-1$
 			boolean morePages = numberOfPages > 1 ? true : false;
 			gotoNextPageButton.setEnabled(morePages);
 

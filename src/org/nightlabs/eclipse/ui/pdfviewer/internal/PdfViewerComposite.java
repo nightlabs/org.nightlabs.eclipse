@@ -56,6 +56,7 @@ import org.nightlabs.eclipse.ui.pdfviewer.PaintListener;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
 import org.nightlabs.eclipse.ui.pdfviewer.Point2DDouble;
+import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
 
 /**
  * @author frederik loeser - frederik at nightlabs dot de
@@ -132,7 +133,7 @@ public class PdfViewerComposite extends Composite
 			long start = System.currentTimeMillis();
 			while (renderThread.isAlive()) {
 				if (System.currentTimeMillis() - start > 60000)
-					throw new IllegalStateException("Timeout waiting for RenderThread to finish!");
+					throw new IllegalStateException("Timeout waiting for RenderThread to finish!"); //$NON-NLS-1$
 
 				renderThread.interrupt();
 				try {
@@ -210,7 +211,7 @@ public class PdfViewerComposite extends Composite
 		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=171432
 		// TODO perhaps not the right place to call this as the error still occurs sometimes
 		boolean x11ErrorHandlerFixInstalled = false;
-		if(!x11ErrorHandlerFixInstalled && "gtk".equals( SWT.getPlatform())) {
+		if(!x11ErrorHandlerFixInstalled && "gtk".equals( SWT.getPlatform())) { //$NON-NLS-1$
 			x11ErrorHandlerFixInstalled = true;
 			EventQueue.invokeLater( new Runnable() {
 			   public void run() {
@@ -236,7 +237,7 @@ public class PdfViewerComposite extends Composite
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (logger.isDebugEnabled())
-					logger.debug("mouseClicked: " + e);
+					logger.debug("mouseClicked: " + e); //$NON-NLS-1$
 
 				final org.nightlabs.eclipse.ui.pdfviewer.MouseEvent pdfMouseEvent = createMouseEvent(e);
 
@@ -264,7 +265,7 @@ public class PdfViewerComposite extends Composite
 			@Override
 			public void mousePressed(final MouseEvent e) {
 				if (logger.isDebugEnabled())
-					logger.debug("mousePressed: " + e);
+					logger.debug("mousePressed: " + e); //$NON-NLS-1$
 
 				intermediatePanel.requestFocus();
 				viewPanel.requestFocus();
@@ -278,7 +279,7 @@ public class PdfViewerComposite extends Composite
 			@Override
 			public void mouseReleased(final MouseEvent e) {
 				if (logger.isDebugEnabled())
-					logger.debug("mouseReleased: " + e);
+					logger.debug("mouseReleased: " + e); //$NON-NLS-1$
 
 				getDisplay().asyncExec(new Runnable() {
 					public void run() {
@@ -291,7 +292,7 @@ public class PdfViewerComposite extends Composite
 			@Override
 			public void mouseDragged(final MouseEvent e) {
 				if (logger.isDebugEnabled())
-					logger.debug("mouseDragged: " + e);
+					logger.debug("mouseDragged: " + e); //$NON-NLS-1$
 
 				getDisplay().asyncExec(new Runnable() {
 					public void run() {
@@ -302,7 +303,7 @@ public class PdfViewerComposite extends Composite
 			@Override
 			public void mouseMoved(final MouseEvent e) {
 				if (logger.isDebugEnabled())
-					logger.debug("mouseMoved: " + e);
+					logger.debug("mouseMoved: " + e); //$NON-NLS-1$
 
 				getDisplay().asyncExec(new Runnable() {
 					public void run() {
@@ -315,7 +316,7 @@ public class PdfViewerComposite extends Composite
 			@Override
 			public void keyPressed(java.awt.event.KeyEvent e) {
 				if (logger.isDebugEnabled())
-					logger.debug("keyPressed: " + e);
+					logger.debug("keyPressed: " + e); //$NON-NLS-1$
 
 //				if (e.getKeyCode() == 17)
 //					mouseWheelModeZoom = true;
@@ -323,7 +324,7 @@ public class PdfViewerComposite extends Composite
 			@Override
 			public void keyReleased(java.awt.event.KeyEvent e) {
 				if (logger.isDebugEnabled())
-					logger.debug("keyReleased: " + e);
+					logger.debug("keyReleased: " + e); //$NON-NLS-1$
 
 //				if (e.getKeyCode() == 17)
 //					mouseWheelModeZoom = false;
@@ -334,12 +335,12 @@ public class PdfViewerComposite extends Composite
 			@Override
 			public void focusGained(FocusEvent e) {
 				if (logger.isDebugEnabled())
-					logger.debug("viewPanel.FocusListener.focusGained: entered");
+					logger.debug("viewPanel.FocusListener.focusGained: entered"); //$NON-NLS-1$
 			}
 			@Override
 			public void focusLost(FocusEvent e) {
 				if (logger.isDebugEnabled())
-					logger.debug("viewPanel.FocusListener.focusLost: entered");
+					logger.debug("viewPanel.FocusListener.focusLost: entered"); //$NON-NLS-1$
 			}
 		});
 
@@ -347,19 +348,19 @@ public class PdfViewerComposite extends Composite
 			@Override
 			public void focusGained(FocusEvent e) {
 				if (logger.isDebugEnabled())
-					logger.debug("viewPanelFrame.FocusListener.focusGained: entered");
+					logger.debug("viewPanelFrame.FocusListener.focusGained: entered"); //$NON-NLS-1$
 			}
 			@Override
 			public void focusLost(FocusEvent e) {
 				if (logger.isDebugEnabled())
-					logger.debug("viewPanelFrame.FocusListener.focusLost: entered");
+					logger.debug("viewPanelFrame.FocusListener.focusLost: entered"); //$NON-NLS-1$
 			}
 		});
 
 		viewPanel.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
-				logger.info("componentResized");
+				logger.info("componentResized"); //$NON-NLS-1$
 				if (pdfDocument == null)
 					return;
 
@@ -462,12 +463,12 @@ public class PdfViewerComposite extends Composite
 			@Override
 			public void focusGained(org.eclipse.swt.events.FocusEvent event) {
 				if (logger.isDebugEnabled())
-					logger.debug("viewPanelComposite.FocusListener.focusGained: entered");
+					logger.debug("viewPanelComposite.FocusListener.focusGained: entered"); //$NON-NLS-1$
 			}
 			@Override
 			public void focusLost(org.eclipse.swt.events.FocusEvent event) {
 				if (logger.isDebugEnabled())
-					logger.debug("viewPanelComposite.FocusListener.focusLost: entered");
+					logger.debug("viewPanelComposite.FocusListener.focusLost: entered"); //$NON-NLS-1$
 			}
 		});
 
@@ -510,7 +511,7 @@ public class PdfViewerComposite extends Composite
 		public void handleEvent(Event event)
 		{
 			if (logger.isDebugEnabled())
-				logger.debug("keyDownListener.handleEvent: " + event.keyCode);
+				logger.debug("keyDownListener.handleEvent: " + event.keyCode); //$NON-NLS-1$
 
 //			switch (event.keyCode) {
 //				case SWT.CTRL:
@@ -524,7 +525,7 @@ public class PdfViewerComposite extends Composite
 		public void handleEvent(Event event)
 		{
 			if (logger.isDebugEnabled())
-				logger.debug("keyUpListener.handleEvent: " + event.keyCode);
+				logger.debug("keyUpListener.handleEvent: " + event.keyCode); //$NON-NLS-1$
 
 //			switch (event.keyCode) {
 //				case SWT.CTRL:
@@ -546,9 +547,9 @@ public class PdfViewerComposite extends Composite
 		newViewOrigin.setReadOnly();
 
 		if (logger.isDebugEnabled()) {
-			logger.debug("scrollVertically: scrollBarVerticalSelectionNew=" + scrollBarVertical.getSelection());
-			logger.debug("scrollVertically: newViewOrigin.y=" + newViewOrigin.getY());
-			logger.debug("scrollVertically: bottomRealY=" + (newViewOrigin.getY() + viewPanel.getHeight() / (zoomFactorPerMill * getZoomScreenResolutionFactor().getY() / 1000)));
+			logger.debug("scrollVertically: scrollBarVerticalSelectionNew=" + scrollBarVertical.getSelection()); //$NON-NLS-1$
+			logger.debug("scrollVertically: newViewOrigin.y=" + newViewOrigin.getY()); //$NON-NLS-1$
+			logger.debug("scrollVertically: bottomRealY=" + (newViewOrigin.getY() + viewPanel.getHeight() / (zoomFactorPerMill * getZoomScreenResolutionFactor().getY() / 1000))); //$NON-NLS-1$
 		}
 
 		centerVertically = false;
@@ -590,7 +591,7 @@ public class PdfViewerComposite extends Composite
 		newViewOrigin.setReadOnly();
 
 		if (logger.isDebugEnabled())
-			logger.debug("scrollHorizontally: newViewOrigin.x=" + newViewOrigin.getX());
+			logger.debug("scrollHorizontally: newViewOrigin.x=" + newViewOrigin.getX()); //$NON-NLS-1$
 
 		centerHorizontally = false;
 		this.viewOrigin = newViewOrigin;
@@ -675,21 +676,21 @@ public class PdfViewerComposite extends Composite
 				}
 
 				if (logger.isDebugEnabled()) {
-					logger.debug("setScrollbars: scrollBarVertical.minimum=" + scrollBarVertical.getMinimum());
-					logger.debug("setScrollbars: scrollBarVertical.maximum=" + scrollBarVertical.getMaximum());
-					logger.debug("setScrollbars: scrollBarVertical.thumb=" + scrollBarVertical.getThumb());
-					logger.debug("setScrollbars: scrollBarVertical.size.x=" + scrollBarVertical.getSize().x);
-					logger.debug("setScrollbars: scrollBarVertical.size.y=" + scrollBarVertical.getSize().y);
-					logger.debug("setScrollbars: scrollBarVertical.selection=" + scrollBarVertical.getSelection());
-					logger.debug("setScrollbars: centerHorizontally=" + centerHorizontally);
+					logger.debug("setScrollbars: scrollBarVertical.minimum=" + scrollBarVertical.getMinimum()); //$NON-NLS-1$
+					logger.debug("setScrollbars: scrollBarVertical.maximum=" + scrollBarVertical.getMaximum()); //$NON-NLS-1$
+					logger.debug("setScrollbars: scrollBarVertical.thumb=" + scrollBarVertical.getThumb()); //$NON-NLS-1$
+					logger.debug("setScrollbars: scrollBarVertical.size.x=" + scrollBarVertical.getSize().x); //$NON-NLS-1$
+					logger.debug("setScrollbars: scrollBarVertical.size.y=" + scrollBarVertical.getSize().y); //$NON-NLS-1$
+					logger.debug("setScrollbars: scrollBarVertical.selection=" + scrollBarVertical.getSelection()); //$NON-NLS-1$
+					logger.debug("setScrollbars: centerHorizontally=" + centerHorizontally); //$NON-NLS-1$
 
-					logger.debug("setScrollbars: scrollBarHorizontal.minimum=" + scrollBarHorizontal.getMinimum());
-					logger.debug("setScrollbars: scrollBarHorizontal.maximum=" + scrollBarHorizontal.getMaximum());
-					logger.debug("setScrollbars: scrollBarHorizontal.thumb=" + scrollBarHorizontal.getThumb());
-					logger.debug("setScrollbars: scrollBarHorizontal.size.x=" + scrollBarHorizontal.getSize().x);
-					logger.debug("setScrollbars: scrollBarHorizontal.size.y=" + scrollBarHorizontal.getSize().y);
-					logger.debug("setScrollbars: scrollBarHorizontal.selection=" + scrollBarHorizontal.getSelection());
-					logger.debug("setScrollbars: centerVertically=" + centerVertically);
+					logger.debug("setScrollbars: scrollBarHorizontal.minimum=" + scrollBarHorizontal.getMinimum()); //$NON-NLS-1$
+					logger.debug("setScrollbars: scrollBarHorizontal.maximum=" + scrollBarHorizontal.getMaximum()); //$NON-NLS-1$
+					logger.debug("setScrollbars: scrollBarHorizontal.thumb=" + scrollBarHorizontal.getThumb()); //$NON-NLS-1$
+					logger.debug("setScrollbars: scrollBarHorizontal.size.x=" + scrollBarHorizontal.getSize().x); //$NON-NLS-1$
+					logger.debug("setScrollbars: scrollBarHorizontal.size.y=" + scrollBarHorizontal.getSize().y); //$NON-NLS-1$
+					logger.debug("setScrollbars: scrollBarHorizontal.selection=" + scrollBarHorizontal.getSelection()); //$NON-NLS-1$
+					logger.debug("setScrollbars: centerVertically=" + centerVertically); //$NON-NLS-1$
 				}
 			}
 		});
@@ -718,10 +719,10 @@ public class PdfViewerComposite extends Composite
 		);
 
 		if (logger.isDebugEnabled()) {
-			logger.debug("paintViewPanel: zoomFactor=" + zoomFactor + " viewOrigin.x=" + viewOrigin.getX() + " viewOrigin.y=" + viewOrigin.getY());
-			logger.debug("paintViewPanel: viewPanel.width = " + viewPanel.getWidth());
-			logger.debug("paintViewPanel: viewPanel.height = " + viewPanel.getHeight());
-			logger.debug("paintViewPanel: region = " + region);
+			logger.debug("paintViewPanel: zoomFactor=" + zoomFactor + " viewOrigin.x=" + viewOrigin.getX() + " viewOrigin.y=" + viewOrigin.getY()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			logger.debug("paintViewPanel: viewPanel.width = " + viewPanel.getWidth()); //$NON-NLS-1$
+			logger.debug("paintViewPanel: viewPanel.height = " + viewPanel.getHeight()); //$NON-NLS-1$
+			logger.debug("paintViewPanel: region = " + region); //$NON-NLS-1$
 		}
 
 		boolean bufferSufficient = renderBuffer.paintToView(
@@ -860,7 +861,7 @@ public class PdfViewerComposite extends Composite
 														);
 		// get the scroll-bar width
 		UIDefaults uidef = UIManager.getDefaults();
-		int swidth = Integer.parseInt(uidef.get("ScrollBar.width").toString());
+		int swidth = Integer.parseInt(uidef.get("ScrollBar.width").toString()); //$NON-NLS-1$
 
 		// now compute the adequate zoom factor
 		double documentWidth = pdfDocument.getDocumentDimension().getWidth();
@@ -933,7 +934,7 @@ public class PdfViewerComposite extends Composite
 		setViewOrigin(new Point2D.Double((int) (middle.x - viewPanelBoundsReal.x / 2), (int) (middle.y - viewPanelBoundsReal.y / 2)));
 
 		if (logger.isDebugEnabled())
-			logger.debug("zoomPDFDocument: zoomFactor=" + zoomFactor + " viewOrigin.x=" + viewOrigin.getX() + " viewOrigin.y=" + viewOrigin.getY());
+			logger.debug("zoomPDFDocument: zoomFactor=" + zoomFactor + " viewOrigin.x=" + viewOrigin.getX() + " viewOrigin.y=" + viewOrigin.getY()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		viewDimensionCached = null;
 
@@ -1032,7 +1033,7 @@ public class PdfViewerComposite extends Composite
 	    					newViewBounds.y = pageBounds.getY();
 	    					break;
 	    				default:
-	    					throw new IllegalStateException("situation unknown: " + situation);
+	    					throw new IllegalStateException("situation unknown: " + situation); //$NON-NLS-1$
 	    			}
 
 	    			if (situation == 2 || isPageVisible(newViewBounds, pageBounds)) {
@@ -1042,7 +1043,7 @@ public class PdfViewerComposite extends Composite
 	    			}
 	    		}
 	    		if (!handled)
-	    			throw new IllegalStateException("What the fucking shit?!");
+	    			throw new IllegalStateException("What the fucking shit?!"); //$NON-NLS-1$
 	    	}
 	    }
 
@@ -1070,15 +1071,15 @@ public class PdfViewerComposite extends Composite
 
 		try {
 			// get XlibWrapper.SetToolkitErrorHandler() and XSetErrorHandler() methods
-			Class<?> xlibwrapperClass = Class.forName( "sun.awt.X11.XlibWrapper" );
-			final Method setToolkitErrorHandlerMethod = xlibwrapperClass.getDeclaredMethod( "SetToolkitErrorHandler", (Class[])null);
-			final Method setErrorHandlerMethod = xlibwrapperClass.getDeclaredMethod( "XSetErrorHandler", new Class[] { Long.TYPE } );
+			Class<?> xlibwrapperClass = Class.forName( "sun.awt.X11.XlibWrapper" ); //$NON-NLS-1$
+			final Method setToolkitErrorHandlerMethod = xlibwrapperClass.getDeclaredMethod( "SetToolkitErrorHandler", (Class[])null); //$NON-NLS-1$
+			final Method setErrorHandlerMethod = xlibwrapperClass.getDeclaredMethod( "XSetErrorHandler", new Class[] { Long.TYPE } ); //$NON-NLS-1$
 			setToolkitErrorHandlerMethod.setAccessible( true );
 			setErrorHandlerMethod.setAccessible( true );
 
 			// get XToolkit.saved_error_handler field
-			Class<?> xtoolkitClass = Class.forName( "sun.awt.X11.XToolkit" );
-			final Field savedErrorHandlerField = xtoolkitClass.getDeclaredField( "saved_error_handler" );
+			Class<?> xtoolkitClass = Class.forName( "sun.awt.X11.XToolkit" ); //$NON-NLS-1$
+			final Field savedErrorHandlerField = xtoolkitClass.getDeclaredField( "saved_error_handler" ); //$NON-NLS-1$
 			savedErrorHandlerField.setAccessible( true );
 
 			// determine the current error handler and the value of XLibWrapper.ToolkitErrorHandler

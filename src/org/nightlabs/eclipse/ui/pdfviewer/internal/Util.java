@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 
+import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
+
 /**
  * Utility methods used throughout the PDF viewer plug-in. All these methods have
  * been copied from the classes <code>org.nightlabs.util.Util</code>,
@@ -169,7 +171,7 @@ public final class Util {
 	public static File getTempDir()
 	{
 		if(tempDir == null)
-	    tempDir = new File(System.getProperty("java.io.tmpdir"));
+	    tempDir = new File(System.getProperty("java.io.tmpdir")); //$NON-NLS-1$
 		return tempDir;
 	}
 
@@ -193,7 +195,7 @@ public final class Util {
 		//skip offset
 		if(inputOffset > 0)
 			if(in.skip(inputOffset) != inputOffset)
-				throw new IOException("Input skip failed (offset "+inputOffset+")");
+				throw new IOException("Input skip failed (offset "+inputOffset+")"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		while (true) {
 			if(inputLen >= 0)

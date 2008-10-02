@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
+
 public class BufferedImagePool
 {
 	private static class BufferedImageCarrier
@@ -53,12 +55,12 @@ public class BufferedImagePool
 		for (BufferedImageCarrier carrier : pool) {
 			if (carrier.bufferedImage == bufferedImage) {
 				if (!carrier.acquired)
-					throw new IllegalArgumentException("This BufferedImage is known to this pool, but not acquired! " + bufferedImage);
+					throw new IllegalArgumentException("This BufferedImage is known to this pool, but not acquired! " + bufferedImage); //$NON-NLS-1$
 
 				carrier.acquired = false;
 				return;
 			}
         }
-		throw new IllegalArgumentException("This BufferedImage is not know to this pool! " + bufferedImage);
+		throw new IllegalArgumentException("This BufferedImage is not know to this pool! " + bufferedImage); //$NON-NLS-1$
 	}
 }

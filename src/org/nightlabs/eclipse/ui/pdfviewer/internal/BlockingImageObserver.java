@@ -6,6 +6,8 @@ package org.nightlabs.eclipse.ui.pdfviewer.internal;
 import java.awt.Image;
 import java.awt.image.ImageObserver;
 
+import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
+
 class BlockingImageObserver implements ImageObserver {
 	private boolean renderingFinished = false;
 	private boolean renderingAborted = false;
@@ -34,7 +36,7 @@ class BlockingImageObserver implements ImageObserver {
 		long start = System.currentTimeMillis();
 		while (!renderingFinished && !renderingAborted) {
 			if (System.currentTimeMillis() - start > timeoutMSec)
-				throw new WaitForRenderingException("Timeout waiting for rendering to finish or abort!");
+				throw new WaitForRenderingException("Timeout waiting for rendering to finish or abort!"); //$NON-NLS-1$
 
 			try {
 				this.wait(10000);
@@ -44,6 +46,6 @@ class BlockingImageObserver implements ImageObserver {
 		}
 
 		if (renderingAborted)
-			throw new WaitForRenderingException("Rendering was aborted! lastInfoflags=" + lastInfoflags);
+			throw new WaitForRenderingException("Rendering was aborted! lastInfoflags=" + lastInfoflags); //$NON-NLS-1$
 	}
 }

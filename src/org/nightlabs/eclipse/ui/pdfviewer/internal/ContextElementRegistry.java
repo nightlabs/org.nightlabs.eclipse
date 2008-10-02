@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Display;
 import org.nightlabs.eclipse.ui.pdfviewer.ContextElement;
 import org.nightlabs.eclipse.ui.pdfviewer.ContextElementType;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfSimpleNavigator;
+import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
 
 /**
  * Holds all {@link ContextElement}s for one {@link org.nightlabs.eclipse.ui.pdfviewer.PdfViewer} instance.
@@ -25,7 +26,7 @@ public class ContextElementRegistry
 	private static void assertValidThread()
 	{
 		if (Display.getCurrent() == null)
-			throw new IllegalStateException("Wrong thread! This method must be called on the SWT UI thread!");
+			throw new IllegalStateException("Wrong thread! This method must be called on the SWT UI thread!"); //$NON-NLS-1$
 	}
 
 	/**
@@ -61,7 +62,7 @@ public class ContextElementRegistry
 		assertValidThread();
 
 		if (contextElementType == null)
-			throw new IllegalArgumentException("contextElementType must not be null!");
+			throw new IllegalArgumentException("contextElementType must not be null!"); //$NON-NLS-1$
 
 		if (contextElement != null)
 			contextElementType.assertValidContextElementImplementation(contextElement);
@@ -97,12 +98,12 @@ public class ContextElementRegistry
 	 * @param id the identifier of the context-element as specified in {@link #setContextElement(ContextElementType, String, ContextElement)} - can be <code>null</code>.
 	 * @return the appropriate context-element or <code>null</code>.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public <T extends ContextElement<T>> T getContextElement(ContextElementType<T> contextElementType, String id) {
 		assertValidThread();
 
 		if (contextElementType == null)
-			throw new IllegalArgumentException("contextElementType must not be null!");
+			throw new IllegalArgumentException("contextElementType must not be null!"); //$NON-NLS-1$
 
 		Map<String, ContextElement<?>> id2contextElement = contextElementType2id2contextElement.get(contextElementType);
 		if (id2contextElement == null)
@@ -119,13 +120,13 @@ public class ContextElementRegistry
 	 *         (instead, an empty <code>Collection</code> is returned). This <code>Collection</code> is not backed by the registry and can
 	 *         be safely iterated while the registry is modified.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public <T extends ContextElement<T>> Collection<T> getContextElements(ContextElementType<T> contextElementType)
 	{
 		assertValidThread();
 
 		if (contextElementType == null)
-			throw new IllegalArgumentException("contextElementType must not be null!");
+			throw new IllegalArgumentException("contextElementType must not be null!"); //$NON-NLS-1$
 
 		Map<String, ContextElement<?>> id2contextElement = contextElementType2id2contextElementCache.get(contextElementType);
 		if (id2contextElement != null)

@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.nightlabs.eclipse.ui.pdfviewer.internal.ContextElementRegistry;
 import org.nightlabs.eclipse.ui.pdfviewer.internal.PdfViewerComposite;
+import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
 
 /**
  * The raw viewing area without any additional elements. Use this, if you want to
@@ -47,7 +48,7 @@ public class PdfViewer
 	 * @see #getViewOrigin()
 	 * @see #addPropertyChangeListener(String, PropertyChangeListener)
 	 */
-	public static final String PROPERTY_VIEW_ORIGIN = "viewOrigin";
+	public static final String PROPERTY_VIEW_ORIGIN = "viewOrigin"; //$NON-NLS-1$
 
 	/**
 	 * Constant used by the {@link PropertyChangeListener}s for modifications of the view-dimension,
@@ -62,7 +63,7 @@ public class PdfViewer
 	 * @see #getViewDimension()
 	 * @see #addPropertyChangeListener(String, PropertyChangeListener)
 	 */
-	public static final String PROPERTY_VIEW_DIMENSION = "viewDimension";
+	public static final String PROPERTY_VIEW_DIMENSION = "viewDimension"; //$NON-NLS-1$
 
 	/**
 	 * Constant used by the {@link PropertyChangeListener}s for modifications of the zoom factor.
@@ -76,7 +77,7 @@ public class PdfViewer
 	 * @see #getZoomFactorPerMill()
 	 * @see #addPropertyChangeListener(String, PropertyChangeListener)
 	 */
-	public static final String PROPERTY_ZOOM_FACTOR = "zoomFactor";
+	public static final String PROPERTY_ZOOM_FACTOR = "zoomFactor"; //$NON-NLS-1$
 
 	/**
 	 * Constant used by the {@link PropertyChangeListener}s when a {@link PdfDocument} has been assigned to this
@@ -91,9 +92,9 @@ public class PdfViewer
 	 * @see #setPdfDocument(PdfDocument)
 	 * @see #addPropertyChangeListener(String, PropertyChangeListener)
 	 */
-	public static final String PROPERTY_PDF_DOCUMENT = "pdfDocument";
+	public static final String PROPERTY_PDF_DOCUMENT = "pdfDocument"; //$NON-NLS-1$
 
-	public static final String PROPERTY_CURRENT_PAGE = "currentPage";
+	public static final String PROPERTY_CURRENT_PAGE = "currentPage"; //$NON-NLS-1$
 
 	/**
 	 * Constant used by the {@link PropertyChangeListener}s when a thumbnail in PDF thumbnail navigator
@@ -106,17 +107,17 @@ public class PdfViewer
 	 *
 	 * @see #addPropertyChangeListener(String, PropertyChangeListener)
 	 */
-	public static final String PROPERTY_MOUSE_CLICKED = "mouseClicked";
+	public static final String PROPERTY_MOUSE_CLICKED = "mouseClicked"; //$NON-NLS-1$
 
-	public static final String PROPERTY_MOUSE_PRESSED = "mousePressed";
+	public static final String PROPERTY_MOUSE_PRESSED = "mousePressed"; //$NON-NLS-1$
 
-	public static final String PROPERTY_MOUSE_MOVED = "mouseMoved";
+	public static final String PROPERTY_MOUSE_MOVED = "mouseMoved"; //$NON-NLS-1$
 
-	public static final String PROPERTY_MOUSE_RELEASED = "mouseReleased";
+	public static final String PROPERTY_MOUSE_RELEASED = "mouseReleased"; //$NON-NLS-1$
 
-	public static final String PROPERTY_MOUSE_DRAGGED = "mouseDragged";
+	public static final String PROPERTY_MOUSE_DRAGGED = "mouseDragged"; //$NON-NLS-1$
 
-	public static final String PROPERTY_COMPONENT_RESIZED = "componentResized";
+	public static final String PROPERTY_COMPONENT_RESIZED = "componentResized"; //$NON-NLS-1$
 
 
 	public PdfViewer() { }
@@ -193,7 +194,7 @@ public class PdfViewer
 	private static void assertValidThread()
 	{
 		if (Display.getCurrent() == null)
-			throw new IllegalStateException("Wrong thread! This method must be called on the SWT UI thread!");
+			throw new IllegalStateException("Wrong thread! This method must be called on the SWT UI thread!"); //$NON-NLS-1$
 	}
 
 	public Control createControl(Composite parent, int style) {
@@ -215,7 +216,7 @@ public class PdfViewer
 				if (PROPERTY_VIEW_ORIGIN.equals(event.getPropertyName())) {
 					viewOrigin = (Point2DDouble) event.getNewValue();
 					if (!viewOrigin.isReadOnly()) {
-						throw new IllegalStateException("Why the hell is this viewOrigin not immutable???!!!");
+						throw new IllegalStateException("Why the hell is this viewOrigin not immutable???!!!"); //$NON-NLS-1$
 					}
 				}
 				else if (PROPERTY_ZOOM_FACTOR.equals(event.getPropertyName())) {
@@ -429,7 +430,7 @@ public class PdfViewer
 
 	public int getCurrentPage() {
 		if (pdfViewerComposite == null)
-			throw new IllegalStateException("Currently, this method can only be called when a control has already been created (i.e. after PdfViewer.createControl() has been called)!"); // TODO use local mirror variable
+			throw new IllegalStateException("Currently, this method can only be called when a control has already been created (i.e. after PdfViewer.createControl() has been called)!"); // TODO use local mirror variable //$NON-NLS-1$
 
 		return pdfViewerComposite.getCurrentPage();
     }
@@ -438,7 +439,7 @@ public class PdfViewer
 		if (pdfViewerComposite != null)
 			pdfViewerComposite.setCurrentPage(currentPage);
 		else
-			throw new IllegalStateException("Currently, this method can only be called when a control has already been created (i.e. after PdfViewer.createControl() has been called)!"); // TODO use local mirror variable
+			throw new IllegalStateException("Currently, this method can only be called when a control has already been created (i.e. after PdfViewer.createControl() has been called)!"); // TODO use local mirror variable //$NON-NLS-1$
     }
 
 	/**
@@ -458,7 +459,7 @@ public class PdfViewer
 		if (pdfViewerComposite != null)
 			return pdfViewerComposite.getZoomScreenResolutionFactor();
 		else
-			throw new IllegalStateException("Currently, this method can only be called when a control has already been created (i.e. after PdfViewer.createControl() has been called)!");
+			throw new IllegalStateException("Currently, this method can only be called when a control has already been created (i.e. after PdfViewer.createControl() has been called)!"); //$NON-NLS-1$
 	}
 
 	public AutoZoom getAutoZoom() {
