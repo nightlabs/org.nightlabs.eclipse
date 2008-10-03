@@ -35,8 +35,16 @@ public class PdfFileLoader
 	 * @throws IOException if the {@link PDFFile} failed to read the data.
 	 */
 	public static PDFFile loadPdf(byte[] byteArray, IProgressMonitor monitor) throws IOException {
-		ByteBuffer byteBuffer = ByteBuffer.wrap(byteArray);
-		return new PDFFile(byteBuffer);
+		monitor.beginTask(Messages.getString("org.nightlabs.eclipse.ui.pdfviewer.PdfFileLoader.loadPdf.monitor.task.name"), 100); //$NON-NLS-1$
+		try {
+			ByteBuffer byteBuffer = ByteBuffer.wrap(byteArray);
+			monitor.worked(50);
+			PDFFile pdfFile = new PDFFile(byteBuffer);
+			monitor.worked(50);
+			return pdfFile;
+		} finally {
+			monitor.done();
+		}
 	}
 
 	/**

@@ -7,8 +7,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.nightlabs.eclipse.ui.pdfviewer.internal.PdfThumbnailNavigatorComposite;
-import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
-
 
 public class PdfThumbnailNavigator implements ContextElement<PdfThumbnailNavigator>
 {
@@ -118,14 +116,6 @@ public class PdfThumbnailNavigator implements ContextElement<PdfThumbnailNavigat
 	    pdfViewer.removePropertyChangeListener(PdfViewer.PROPERTY_COMPONENT_RESIZED, propertyChangeListenerComponentResized);
 	    pdfViewer = null; // ensure we can't do anything with it anymore - the pdfViewer forgot this instance already - so we forget it, too.
 	}
-
-	public PdfThumbnailNavigatorComposite getPdfThumbnailNavigatorComposite() {
-    	return pdfThumbnailNavigatorComposite;
-    }
-
-	public void setPdfThumbnailNavigatorComposite(PdfThumbnailNavigatorComposite pdfThumbnailNavigatorComposite) {
-    	this.pdfThumbnailNavigatorComposite = pdfThumbnailNavigatorComposite;
-    }
 
 	protected void setPdfDocument(PdfDocument pdfDocument) {
 	    this.pdfDocument = pdfDocument;

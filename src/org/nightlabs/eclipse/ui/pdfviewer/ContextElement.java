@@ -9,10 +9,11 @@ package org.nightlabs.eclipse.ui.pdfviewer;
  * </p>
  * <p>
  * Additionally, you <b>must</b> declare a <code>public static final</code> constant named
- * <code>CONTEXT_ELEMENT_TYPE</code>, if you don't subclass another <code>ContextElement</code> (that already
+ * <code>CONTEXT_ELEMENT_TYPE</code> (and return it in your implementation of {@link #getContextElementType()}),
+ * if you don't subclass another <code>ContextElement</code> (that already
  * defines this constant). However, if you subclass one and your new implementation is doing something completely
  * different, you are encouraged to redeclare this <code>CONTEXT_ELEMENT_TYPE</code> (with your new class)
- * in order to indicate that it has nothing in common with your superclass.
+ * in order to indicate that it has semantically nothing in common with the superclass.
  * </p>
  * <p>
  * You can obtain a certain <code>ContextElement</code> for a PdfViewer by
@@ -23,8 +24,37 @@ package org.nightlabs.eclipse.ui.pdfviewer;
  * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
  */
-public interface ContextElement<T extends ContextElement<T>> {
+public interface ContextElement<T extends ContextElement<T>>
+{
+	/**
+	 * Get the type of the context element. This type defines the semantic functionality
+	 * of your <code>ContextElement</code>. Therefore, if you subclass an existing implementation,
+	 * you have to think about whether your implementation is semantically the same (just better of course ;-)
+	 * or whether it's sth. different.
+	 * <p>
+	 * In other words: If an instance of your subclass would usually be used together with an instance
+	 * of the superclass in the same viewer (because they provide a complement to each other), then your
+	 * subclass is semantically different and should therefore declare its own <code>CONTEXT_ELEMENT_TYPE</code>.
+	 * If an instance of your subclass would instead replace the instance of the superclass, because they provide
+	 * the same functionality, you should not override this method and not declare your own <code>CONTEXT_ELEMENT_TYPE</code>.
+	 * </p>
+	 *
+	 * @return the constant <code>CONTEXT_ELEMENT_TYPE</code> declared by your implementation.
+	 */
 	ContextElementType<T> getContextElementType();
+
+	/**
+	 * Get the unique identifier of this <code>ContextElement</code> instance or <code>null</code>.
+	 * <p>
+	 * This is only required, if multiple instances of the same {@link ContextElementType} are
+	 * used with one {@link PdfViewer} instance. For example, if you put one simple navigator beneath
+	 * the thumbnails in an external view (e.g. the outline) and a second one beneath your main viewer
+	 * area inside an editor.
+	 * </p>
+	 *
+	 * @return the identifier of this <code>ContextElement</code> instance (within the scope of the current {@link PdfViewer}
+	 *		and the {@link ContextElementType} returned by {@link #getContextElementType()}).
+	 */
 	String getContextElementId();
 
 	/**
