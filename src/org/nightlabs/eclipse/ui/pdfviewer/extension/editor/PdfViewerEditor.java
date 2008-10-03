@@ -12,7 +12,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IEditorInput;
@@ -25,9 +24,6 @@ import org.nightlabs.base.ui.util.RCPUtil;
 import org.nightlabs.eclipse.ui.pdfviewer.OneDimensionalPdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfFileLoader;
-import org.nightlabs.eclipse.ui.pdfviewer.PdfSimpleNavigator;
-import org.nightlabs.eclipse.ui.pdfviewer.PdfThumbnailNavigator;
-import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
 import org.nightlabs.eclipse.ui.pdfviewer.extension.composite.PdfViewerComposite;
 import org.nightlabs.eclipse.ui.pdfviewer.extension.resource.Messages;
 
@@ -50,13 +46,8 @@ public class PdfViewerEditor extends EditorPart
 	private static final Logger logger = Logger.getLogger(PdfViewerEditor.class);
 	public static final String ID = PdfViewerEditor.class.getName();
 	private volatile PdfDocument pdfDocument;
-	private PdfViewer pdfViewer;
-	private Control pdfViewerControl;
-	private PdfSimpleNavigator pdfSimpleNavigator;
-	private Control pdfSimpleNavigatorControl;
-	private PdfThumbnailNavigator pdfThumbnailNavigator;
-	private Control pdfThumbnailNavigatorControl;
 	private PDFFile pdfFile;
+	private PdfViewerComposite pdfViewerComposite;
 //	private SashForm page;
 
 	@Override
@@ -175,7 +166,7 @@ public class PdfViewerEditor extends EditorPart
 
 						loadingMessagePage.dispose();
 
-						new PdfViewerComposite(parent, SWT.NONE, pdfDocument);
+						pdfViewerComposite = new PdfViewerComposite(parent, SWT.NONE, pdfDocument);
 
 //						pdfThumbnailNavigator.setPdfDocumentFactory(new PdfThumbnailNavigator.PdfDocumentFactory() {
 //							public PdfDocument createPdfDocument(PdfDocument pdfDocument)
@@ -195,8 +186,8 @@ public class PdfViewerEditor extends EditorPart
 
 	@Override
 	public void setFocus() {
-		if (pdfViewerControl != null) {
-			pdfViewerControl.setFocus();
+		if (pdfViewerComposite != null) {
+			pdfViewerComposite.setFocus();
 		}
 	}
 }

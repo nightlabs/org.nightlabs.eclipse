@@ -45,6 +45,17 @@ implements IEditorInput
 		this.file = file;
 	}
 
+	public PdfViewerEditorInput(String name, String toolTipText, ImageDescriptor imageDescriptor, PDFFile pdfFile)
+	{
+		if (pdfFile == null)
+			throw new IllegalArgumentException("pdfFile must not be null!"); //$NON-NLS-1$
+
+		this.name = name;
+		this.toolTipText = toolTipText;
+		this.imageDescriptor = imageDescriptor;
+		this.pdfFile = pdfFile;
+	}
+
 	public PdfViewerEditorInput(String name, String toolTipText, ImageDescriptor imageDescriptor, byte[] byteArray) {
 		if (byteArray == null)
 			throw new IllegalArgumentException("byteArray must not be null!"); //$NON-NLS-1$
@@ -57,7 +68,7 @@ implements IEditorInput
 
 	/**
 	 * Get the {@link PDFFile} or <code>null</code>, if none has been created before (i.e. {@link #createPDFFile(IProgressMonitor)} was
-	 * not yet called).
+	 * not yet called and a <code>PDFFile</code> instance was not passed as constructor argument either).
 	 *
 	 * @return the <code>PDFFile</code> which has been created by a previous call to {@link #createPDFFile(IProgressMonitor)} or <code>null</code>.
 	 */
@@ -67,7 +78,7 @@ implements IEditorInput
 	}
 
 	/**
-	 * Create a new <code>PDFFile</code> instance. Each call to this method creates a new instance. You should therefore
+	 * Create a new <code>PDFFile</code> instance. Calling this method a second time has no effect. You should therefore
 	 * use {@link #getPDFFile()} instead, after it was created once.
 	 *
 	 * @param monitor the monitor for progress feedback.
@@ -77,6 +88,13 @@ implements IEditorInput
 	public PDFFile createPDFFile(IProgressMonitor monitor)
 	throws IOException
 	{
+		if (pdfFile != null) {
+			monitor.beginTask("PDF already loaded", 1);
+			monitor.worked(1);
+			monitor.done();
+			return pdfFile;
+		}
+
 		if (byteArray != null)
 			pdfFile = PdfFileLoader.loadPdf(byteArray, monitor);
 		else if (file != null)

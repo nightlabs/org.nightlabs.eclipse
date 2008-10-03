@@ -42,8 +42,7 @@ public class PdfViewerComposite extends SashForm {
 		// PDF viewer fires a property change event concerning the property "PROPERTY_PDF_DOCUMENT"
 		// when setting the given PDF document here. PDF thumbnail navigator will receive this event (when created)
 		// and will call setDocument for its corresponding composite to load the given PDF document in its composite.
-		if (pdfDocument != null)
-			pdfViewer.setPdfDocument(pdfDocument);
+		pdfViewer.setPdfDocument(pdfDocument);
 
 		pdfThumbnailNavigator = new PdfThumbnailNavigator(pdfViewer);
 
