@@ -13,7 +13,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.nightlabs.eclipse.ui.pdfviewer.internal.ContextElementRegistry;
 import org.nightlabs.eclipse.ui.pdfviewer.internal.PdfViewerComposite;
-import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
 
 /**
  * The raw viewing area without any additional elements. Use this, if you want to
@@ -96,6 +95,9 @@ public class PdfViewer
 
 	public static final String PROPERTY_CURRENT_PAGE = "currentPage"; //$NON-NLS-1$
 
+	// TODO: What is thumbnail-specific in here??? This is the PdfViewer and not the PdfThumbnailNavigator!
+	// Please fix the documentation. The mouse-events are generic and have nothing to do with thumbnails.
+	// Marco.
 	/**
 	 * Constant used by the {@link PropertyChangeListener}s when a thumbnail in PDF thumbnail navigator
 	 * was clicked with the mouse.
@@ -222,8 +224,8 @@ public class PdfViewer
 				else if (PROPERTY_ZOOM_FACTOR.equals(event.getPropertyName())) {
 					zoomFactorPerMill = ((Integer) event.getNewValue()).intValue();
 				}
-				propertyChangeSupport.firePropertyChange(event.getPropertyName(), event.getOldValue(), event.getNewValue());
 
+				propertyChangeSupport.firePropertyChange(event.getPropertyName(), event.getOldValue(), event.getNewValue());
 			}
 		});
 

@@ -6,6 +6,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -14,6 +15,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.nightlabs.eclipse.ui.pdfviewer.AutoZoom;
+import org.nightlabs.eclipse.ui.pdfviewer.MouseEvent;
 import org.nightlabs.eclipse.ui.pdfviewer.OneDimensionalPdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.PaintAdapter;
 import org.nightlabs.eclipse.ui.pdfviewer.PaintEvent;
@@ -66,6 +68,26 @@ public class PdfThumbnailNavigatorComposite extends Composite
 			public void propertyChange(PropertyChangeEvent evt) {
 				if (thumbnailPdfViewerControl != null)
 					thumbnailPdfViewerControl.redraw();
+			}
+		});
+		thumbnailPdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_MOUSE_CLICKED, new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				final MouseEvent pdfMouseEvent = (MouseEvent) evt.getNewValue();
+
+				// calculate current page from pdfMouseEvent.getPointInRealCoordinate() and set it
+				Collection<Integer> visiblePages = pdfDocument.getVisiblePages(
+						new Rectangle2D.Double(pdfMouseEvent.getPointInRealCoordinate().getX(), pdfMouseEvent.getPointInRealCoordinate().getY(), 1, 1)
+				);
+
+				final Integer newCurrentPage;
+				if (visiblePages.isEmpty())
+					newCurrentPage = null;
+				else
+					newCurrentPage = visiblePages.iterator().next();
+
+				if (newCurrentPage != null)
+					setCurrentPage(newCurrentPage);
 			}
 		});
 

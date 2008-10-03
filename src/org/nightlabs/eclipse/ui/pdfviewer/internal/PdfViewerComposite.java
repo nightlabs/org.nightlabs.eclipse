@@ -26,7 +26,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Collection;
 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -56,7 +55,6 @@ import org.nightlabs.eclipse.ui.pdfviewer.PaintListener;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
 import org.nightlabs.eclipse.ui.pdfviewer.Point2DDouble;
-import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
 
 /**
  * @author frederik loeser - frederik at nightlabs dot de
@@ -235,28 +233,30 @@ public class PdfViewerComposite extends Composite
 
 		viewPanel.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(final MouseEvent e) {
 				if (logger.isDebugEnabled())
 					logger.debug("mouseClicked: " + e); //$NON-NLS-1$
 
-				final org.nightlabs.eclipse.ui.pdfviewer.MouseEvent pdfMouseEvent = createMouseEvent(e);
-
-				// calculate current page from pdfMouseEvent.getPointInRealCoordinate() and set it
-				Collection<Integer> visiblePages = pdfDocument.getVisiblePages(
-						new Rectangle2D.Double(pdfMouseEvent.getPointInRealCoordinate().getX(), pdfMouseEvent.getPointInRealCoordinate().getY(), 1, 1)
-				);
-
-				final Integer newCurrentPage;
-				if (visiblePages.isEmpty())
-					newCurrentPage = null;
-				else
-					newCurrentPage = visiblePages.iterator().next();
+// The following code is thumbnail-navigator-specific and should therefore not be here! I moved it into the correct class. Marco.
+//				final org.nightlabs.eclipse.ui.pdfviewer.MouseEvent pdfMouseEvent = createMouseEvent(e);
+//
+//				// calculate current page from pdfMouseEvent.getPointInRealCoordinate() and set it
+//				Collection<Integer> visiblePages = pdfDocument.getVisiblePages(
+//						new Rectangle2D.Double(pdfMouseEvent.getPointInRealCoordinate().getX(), pdfMouseEvent.getPointInRealCoordinate().getY(), 1, 1)
+//				);
+//
+//				final Integer newCurrentPage;
+//				if (visiblePages.isEmpty())
+//					newCurrentPage = null;
+//				else
+//					newCurrentPage = visiblePages.iterator().next();
 
 				getDisplay().asyncExec(new Runnable() {
 					public void run() {
-						if (newCurrentPage != null)
-							setCurrentPage(newCurrentPage);
+//						if (newCurrentPage != null)
+//							setCurrentPage(newCurrentPage);
 
+						org.nightlabs.eclipse.ui.pdfviewer.MouseEvent pdfMouseEvent = createMouseEvent(e);
 						propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_MOUSE_CLICKED, null, pdfMouseEvent);
 					}
 				});
