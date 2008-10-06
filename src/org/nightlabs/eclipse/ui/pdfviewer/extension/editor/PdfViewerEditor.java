@@ -24,6 +24,7 @@ import org.nightlabs.base.ui.util.RCPUtil;
 import org.nightlabs.eclipse.ui.pdfviewer.OneDimensionalPdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfFileLoader;
+import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
 import org.nightlabs.eclipse.ui.pdfviewer.extension.composite.PdfViewerComposite;
 import org.nightlabs.eclipse.ui.pdfviewer.extension.resource.Messages;
 
@@ -189,5 +190,9 @@ public class PdfViewerEditor extends EditorPart
 		if (pdfViewerComposite != null) {
 			pdfViewerComposite.setFocus();
 		}
+	}
+
+	public PdfViewer getPdfViewer() {
+		return pdfViewerComposite.getPdfViewer();
 	}
 }

@@ -11,6 +11,9 @@ import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfSimpleNavigator;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfThumbnailNavigator;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
+import org.nightlabs.eclipse.ui.pdfviewer.extension.action.PdfViewerActionRegistry;
+import org.nightlabs.eclipse.ui.pdfviewer.extension.action.UseCase;
+import org.nightlabs.eclipse.ui.pdfviewer.extension.coolbar.PdfCoolBar;
 
 /**
  * Off-the-shelf composite for displaying PDF files. This comprises the raw PDF viewing area (see {@link PdfViewer}) as well
@@ -20,9 +23,12 @@ import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
  *
  * @author frederik löser - frederik at nightlabs dot de
  */
-public class PdfViewerComposite extends SashForm {
+public class PdfViewerComposite extends Composite
+{
+	public static final UseCase USE_CASE_DEFAULT = new UseCase("default");
 
 	private static final Logger logger = Logger.getLogger(PdfViewerComposite.class);
+	private SashForm sashForm;
 	private PdfViewer pdfViewer;
 	private Control pdfViewerControl;
 	private PdfSimpleNavigator pdfSimpleNavigator;
@@ -30,14 +36,26 @@ public class PdfViewerComposite extends SashForm {
 	private PdfThumbnailNavigator pdfThumbnailNavigator;
 	private Control pdfThumbnailNavigatorControl;
 
+	private PdfViewerActionRegistry pdfViewerActionRegistry;
+	private PdfCoolBar pdfCoolBar;
+	private Control pdfCoolBarControl;
+
 	public PdfViewerComposite(Composite parent, int style) {
 		this(parent, style, null);
 	}
 
 	public PdfViewerComposite(final Composite parent, int style, PdfDocument pdfDocument) {
 		super(parent, SWT.HORIZONTAL);
+		this.setLayout(new GridLayout());
 
 		pdfViewer = new PdfViewer();
+		pdfViewerActionRegistry = new PdfViewerActionRegistry(pdfViewer, USE_CASE_DEFAULT);
+		pdfCoolBar = new PdfCoolBar(pdfViewerActionRegistry);
+		pdfCoolBarControl = pdfCoolBar.createControl(this, SWT.BORDER);
+		pdfCoolBarControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+		sashForm = new SashForm(this, SWT.NONE);
+		sashForm.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		// PDF viewer fires a property change event concerning the property "PROPERTY_PDF_DOCUMENT"
 		// when setting the given PDF document here. PDF thumbnail navigator will receive this event (when created)
@@ -46,28 +64,31 @@ public class PdfViewerComposite extends SashForm {
 
 		pdfThumbnailNavigator = new PdfThumbnailNavigator(pdfViewer);
 
-		Composite leftComp = new Composite(this, SWT.NONE);
+		Composite leftComp = new Composite(sashForm, SWT.NONE);
 		leftComp.setLayout(new GridLayout());
 
 		// creating the control of PDF thumbnail navigator (the composite of this control creates a new instance of PDF viewer!)
 		pdfThumbnailNavigatorControl = pdfThumbnailNavigator.createControl(leftComp, SWT.BORDER);
 		pdfThumbnailNavigatorControl.setLayoutData(new GridData(GridData.FILL_BOTH));
 
+
 		// creating the control of PDF viewer (a new PDF viewer composite will be created)
-		pdfViewerControl = pdfViewer.createControl(this, SWT.BORDER);
+		pdfViewerControl = pdfViewer.createControl(sashForm, SWT.BORDER);
 		pdfViewerControl.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		// creating PDF simple navigator and its corresponding control (a new PDF simple navigator composite will be created)
 		pdfSimpleNavigator = new PdfSimpleNavigator(pdfViewer);
 		pdfSimpleNavigatorControl = pdfSimpleNavigator.createControl(leftComp, SWT.BORDER);
 		pdfSimpleNavigatorControl.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_END));
-		setWeights(new int[] {1, 3});
+
+
+		sashForm.setWeights(new int[] {1, 3});
 		layout(true, true);
 
 		// TODO in the case the PDF viewer component has been resized weights have to be computed again (not optimal yet)
 		parent.getDisplay().asyncExec(new Runnable() {
 			@Override
-            public void run() {
+			public void run() {
 				if (logger.isDebugEnabled()) {
 					logger.debug("simple navigator control width (computed) " + pdfSimpleNavigatorControl.getSize().x); //$NON-NLS-1$
 					logger.debug("simple navigator control width (actual) " + pdfSimpleNavigatorControl.getBounds().width); //$NON-NLS-1$
@@ -78,20 +99,20 @@ public class PdfViewerComposite extends SashForm {
 				}
 
 				int absoluteWidth = pdfSimpleNavigatorControl.getBounds().width +
-									pdfThumbnailNavigatorControl.getBorderWidth() * 2 +
-									pdfViewerControl.getBorderWidth();
+				pdfThumbnailNavigatorControl.getBorderWidth() * 2 +
+				pdfViewerControl.getBorderWidth();
 
 				int relativeWidth = (int) Math.ceil(100f * absoluteWidth / /*PdfViewerComposite.this.*/parent.getBounds().width);
 				logger.debug("relativeWeight " + relativeWidth); //$NON-NLS-1$
 				logger.info(absoluteWidth + " " + relativeWidth + " " + parent.getBounds().width);
-				PdfViewerComposite.this.setWeights(new int[]{relativeWidth, 100 - relativeWidth});
+				sashForm.setWeights(new int[]{relativeWidth, 100 - relativeWidth});
 				/*PdfViewerComposite.this.*/parent.layout(true, true);
-            }
+			}
 		});
 	}
 
 	public PdfViewer getPdfViewer() {
-    	return pdfViewer;
-    }
+		return pdfViewer;
+	}
 
 }

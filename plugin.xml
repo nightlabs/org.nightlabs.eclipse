@@ -1,10 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin>
+   <extension-point id="pdfViewerAction" name="PDF Viewer Action" schema="schema/pdfViewerAction.exsd"/>
     <extension point="org.eclipse.ui.editors">
         <editor
-            class="org.nightlabs.eclipse.ui.pdfviewer.extension.editor.PdfViewerEditor"
-            extensions="pdf"
-            icon="icons/editor/PdfViewerEditor.16x16.png"
-            id="org.nightlabs.eclipse.ui.pdfviewer.extension.editor.PdfViewerEditor" name="%org.nightlabs.eclipse.ui.pdfviewer.extension.editor.PdfViewerEditor.name"/>
+              class="org.nightlabs.eclipse.ui.pdfviewer.extension.editor.PdfViewerEditor"
+              contributorClass="org.nightlabs.eclipse.ui.pdfviewer.extension.editor.PdfViewerEditorActionBarContributor"
+              extensions="pdf"
+              icon="icons/editor/PdfViewerEditor.16x16.png"
+              id="org.nightlabs.eclipse.ui.pdfviewer.extension.editor.PdfViewerEditor"
+              name="%org.nightlabs.eclipse.ui.pdfviewer.extension.editor.PdfViewerEditor.name"/>
     </extension>
+   <extension
+         point="org.nightlabs.eclipse.ui.pdfviewer.extension.pdfViewerAction">
+         <groupMarker
+               name="org.nightlabs.eclipse.ui.pdfviewer.extension.groupMarker1">
+         </groupMarker>
+         <action
+               class="org.nightlabs.eclipse.ui.pdfviewer.extension.action.zoom.ZoomContributionItem"
+               id="org.nightlabs.eclipse.ui.pdfviewer.extension.action.zoom.ZoomContributionItem"
+               name="ZoomCombo"
+               toolbarPath="org.nightlabs.eclipse.ui.pdfviewer.extension.groupMarker1"
+               useCase="default">
+         
+         </action>
+         <action
+               class="org.nightlabs.eclipse.ui.pdfviewer.extension.action.zoom.ZoomAction"
+               icon="icons/editor/PdfViewerEditor.16x16.png"
+               id="org.nightlabs.eclipse.ui.pdfviewer.extension.action.TestAction"
+               menubarPath="org.nightlabs.eclipse.ui.pdfviewer.extension.groupMarker1"
+               name="TestAction"
+               toolbarPath="org.nightlabs.eclipse.ui.pdfviewer.extension.groupMarker1"
+               useCase="default">
+         </action>
+   </extension>
 </plugin>
