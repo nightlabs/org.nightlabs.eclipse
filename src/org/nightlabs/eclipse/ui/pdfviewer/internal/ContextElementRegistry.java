@@ -11,7 +11,6 @@ import org.eclipse.swt.widgets.Display;
 import org.nightlabs.eclipse.ui.pdfviewer.ContextElement;
 import org.nightlabs.eclipse.ui.pdfviewer.ContextElementType;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfSimpleNavigator;
-import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
 
 /**
  * Holds all {@link ContextElement}s for one {@link org.nightlabs.eclipse.ui.pdfviewer.PdfViewer} instance.

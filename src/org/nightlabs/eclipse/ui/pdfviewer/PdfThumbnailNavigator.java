@@ -43,11 +43,12 @@ public class PdfThumbnailNavigator implements ContextElement<PdfThumbnailNavigat
 	public Control createControl(Composite parent, int style) {
 		assertValidThread();
 
-		if (this.pdfThumbnailNavigatorComposite != null)
+		if (this.pdfThumbnailNavigatorComposite != null) {
 			this.pdfThumbnailNavigatorComposite.dispose();
+			this.pdfThumbnailNavigatorComposite = null;
+		}
 
 		this.pdfThumbnailNavigatorComposite = new PdfThumbnailNavigatorComposite(parent, style, this);
-
 
 		this.pdfThumbnailNavigatorComposite.getThumbnailPdfViewer().addPropertyChangeListener(PdfViewer.PROPERTY_CURRENT_PAGE, new PropertyChangeListener() {
 			@Override

@@ -7,8 +7,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.nightlabs.eclipse.ui.pdfviewer.internal.PdfSimpleNavigatorComposite;
-import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
-
 
 public class PdfSimpleNavigator implements ContextElement<PdfSimpleNavigator> {
 
@@ -112,6 +110,7 @@ public class PdfSimpleNavigator implements ContextElement<PdfSimpleNavigator> {
 
 		if (this.pdfSimpleNavigatorComposite != null) {
 			this.pdfSimpleNavigatorComposite.dispose();
+			this.pdfSimpleNavigatorComposite = null;
 		}
 		this.pdfSimpleNavigatorComposite = new PdfSimpleNavigatorComposite(parent, style, this);
 		pdfSimpleNavigatorComposite.setPdfDocument(pdfDocument);

@@ -1,13 +1,10 @@
 package org.nightlabs.eclipse.ui.pdfviewer;
 
 import org.nightlabs.eclipse.ui.pdfviewer.internal.Util;
-import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
-
 
 /**
- *
+ * An instance of this class specifies a type a {@link ContextElement}.
  */
-
 public class ContextElementType<T extends ContextElement<?>>
 {
 	private Class<T> contextElementBaseClass;

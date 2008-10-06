@@ -95,6 +95,25 @@ public class PdfViewer
 
 	public static final String PROPERTY_CURRENT_PAGE = "currentPage"; //$NON-NLS-1$
 
+	/**
+	 * Constant used by the {@link PropertyChangeListener}s when a {@link ContextElement} has been registered
+	 * for this <code>PdfViewer</code>.
+	 * <p>
+	 * {@link PropertyChangeEvent#getNewValue()} returns the {@link ContextElement} (never <code>null</code>);
+	 * {@link PropertyChangeEvent#getOldValue()} returns <code>null</code>.
+	 * </p>
+	 */
+	public static final String PROPERTY_REGISTER_CONTEXT_ELEMENT = "registerContextElement"; //$NON-NLS-1$
+	/**
+	 * Constant used by the {@link PropertyChangeListener}s when a {@link ContextElement} has been unregistered
+	 * for this <code>PdfViewer</code>.
+	 * <p>
+	 * {@link PropertyChangeEvent#getNewValue()} returns the {@link ContextElement} (never <code>null</code>);
+	 * {@link PropertyChangeEvent#getOldValue()} returns <code>null</code>.
+	 * </p>
+	 */
+	public static final String PROPERTY_UNREGISTER_CONTEXT_ELEMENT = "unregisterContextElement"; //$NON-NLS-1$
+
 	// TODO: What is thumbnail-specific in here??? This is the PdfViewer and not the PdfThumbnailNavigator!
 	// Please fix the documentation. The mouse-events are generic and have nothing to do with thumbnails.
 	// Marco.
@@ -133,6 +152,7 @@ public class PdfViewer
 	public void registerContextElement(ContextElement<?> contextElement)
 	{
 		contextElementRegistry.registerContextElement(contextElement);
+		propertyChangeSupport.firePropertyChange(PROPERTY_REGISTER_CONTEXT_ELEMENT, null, contextElement);
 	}
 
 	/**
@@ -141,9 +161,12 @@ public class PdfViewer
 	 * @param contextElementType the type of the <code>contextElement</code> as specified by {@link ContextElement#getContextElementType()} when it was added.
 	 * @param contextElementId the identifier or <code>null</code> as specified by {@link ContextElement#getContextElementId()} when it was added.
 	 */
+	@SuppressWarnings("unchecked")
 	public void unregisterContextElement(ContextElementType<?> contextElementType, String contextElementId)
 	{
+		ContextElement<?> contextElement = contextElementRegistry.getContextElement((ContextElementType)contextElementType, contextElementId);
 		contextElementRegistry.unregisterContextElement(contextElementType, contextElementId);
+		propertyChangeSupport.firePropertyChange(PROPERTY_UNREGISTER_CONTEXT_ELEMENT, null, contextElement);
 	}
 
 	/**
