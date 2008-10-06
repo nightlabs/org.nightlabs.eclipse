@@ -26,6 +26,7 @@
 
 package org.nightlabs.base.ui.extensionpoint;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +36,8 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.action.IAction;
+import org.nightlabs.util.Util;
 
 /**
  * Used for parsing extensions to a certain extension-point.
@@ -52,11 +55,24 @@ import org.eclipse.core.runtime.Platform;
  * entries in processElement lazily by calling {@link #checkProcessing()}
  * everytime when asked for one element fist.
  * </p>
- * 
+ * <!-- serialize doesn't work because of different class loaders!
+ * <p>
+ * Since 2008-10-06, this class is {@link Serializable} in order to make it possible to clone
+ * extension-registries which usually extend this class (via {@link Util#cloneSerializable(Object)}).
+ * This is necessary, if the contents of
+ * the registry need to be instantiated multiple times for different use cases (for example
+ * {@link IAction}s used at different places simultaneously as in
+ * <code>org.nightlabs.eclipse.ui.pdfviewer.extension.action.PdfViewerActionRegistry</code>).
+ * It's still recommended, not to use this feature and instead model your extension point in a way
+ * (use factories!) that supports multiple instances of the elements held by your {@link AbstractEPProcessor}
+ * implementation.
+ * </p>
+ * -->
+ *
  * @author Alexander Bieber
  */
 public abstract class AbstractEPProcessor
-implements IEPProcessor
+implements IEPProcessor // , Serializable
 {
 	/**
 	 * Log4J Logger used for this class.
@@ -148,7 +164,7 @@ implements IEPProcessor
 
 	/**
 	 * Assures that this processor has processed its extensions
-	 * 
+	 *
 	 * @param throwExceptionIfErrorOccurs determines if a RuntimeException should be thrown
 	 * if a EPProcessorException occurs or only an error should be logged
 	 */
@@ -167,7 +183,7 @@ implements IEPProcessor
 	}
 
 	/**
-	 * 
+	 *
 	 * @param s the String to check
 	 * @return true if the String is neither null nor an empty String otherwise
 	 * returns false

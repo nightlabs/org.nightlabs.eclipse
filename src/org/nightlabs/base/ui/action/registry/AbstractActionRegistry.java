@@ -1,5 +1,5 @@
 /* *****************************************************************************
- * org.nightlabs.base.ui - NightLabs Eclipse utilities                            *
+ * org.nightlabs.base.ui - NightLabs Eclipse utilities                         *
  * Copyright (C) 2004-2005 NightLabs - http://NightLabs.org                    *
  *                                                                             *
  * This library is free software; you can redistribute it and/or               *
@@ -23,7 +23,6 @@
  *                                                                             *
  *                                                                             *
  ******************************************************************************/
-
 package org.nightlabs.base.ui.action.registry;
 
 import java.util.ArrayList;
@@ -60,8 +59,6 @@ import org.eclipse.swt.widgets.Display;
 import org.nightlabs.base.ui.action.IXContributionItem;
 import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
 import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
-import org.nightlabs.base.ui.resource.Messages;
-
 
 /**
  * This class can be used to easily create an own extension-point for the management of actions.
@@ -97,6 +94,7 @@ import org.nightlabs.base.ui.resource.Messages;
  */
 public abstract class AbstractActionRegistry
 extends AbstractEPProcessor
+//implements Cloneable
 {
 	protected static final String ELEMENT_NAME_SEPARATOR = "separator"; //$NON-NLS-1$
 	protected static final String ELEMENT_NAME_GROUP_MARKER = "groupMarker"; //$NON-NLS-1$
@@ -126,9 +124,9 @@ extends AbstractEPProcessor
 	protected static final String ATTRIBUTE_NAME_ACTION_VISIBLE_IN_MENUBAR = "visibleInMenubar"; //$NON-NLS-1$
 	protected static final String ATTRIBUTE_NAME_ACTION_VISIBLE_IN_TOOLBAR = "visibleInToolbar"; //$NON-NLS-1$
 	protected static final String ATTRIBUTE_NAME_ACTION_VISIBLE_IN_CONTEXTMENU = "visibleInContextmenu"; //$NON-NLS-1$
-	
+
 	private String elementNameAction = null;
-	
+
 	/**
 	 * LOG4J logger used by this class
 	 */
@@ -146,7 +144,7 @@ extends AbstractEPProcessor
 	private List<ItemDescriptor> menuRaw = new ArrayList<ItemDescriptor>();
 
 	private Map<ContributionManagerKind, List<ItemDescriptor>> contributionManagerKind2menuSorted = new HashMap<ContributionManagerKind, List<ItemDescriptor>>();
-	
+
 	/**
 	 * This method populates the passed <code>menuManager</code> with all visible
 	 * {@link IAction}s and other {@link IXContributionItem}s (e.g. separators or group-markers).
@@ -253,21 +251,22 @@ extends AbstractEPProcessor
 						IContributionItem removedItem = ((MenuManager)anchor).remove(ad.getID());
 						String removed = removedItem != null ? "" : "NOT "; //$NON-NLS-1$ //$NON-NLS-2$
 						logger.debug("ActionDescriptor with id "+ad.getID()+" was " + removed + "removed from "+kind+" !"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-					} 
+					}
 					else {
-						IContributionManager parent = ((ContributionItem)anchor).getParent(); 
+						IContributionManager parent = ((ContributionItem)anchor).getParent();
 						if (parent != null) {
 							IContributionItem removedItem = parent.remove(ad.getID());
 							String removed = removedItem != null ? "" : "NOT "; //$NON-NLS-1$ //$NON-NLS-2$
 							logger.debug("ActionDescriptor with id "+ad.getID()+ "was" + removed + "removed from "+kind+" !"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 						}
-					}					
+					}
 				}
 			}
 		}
 	}
 
 	private ActionVisibilityDecider actionVisibilityDeciderAlwaysVisible = new ActionVisibilityDecider() {
+		@Override
 		public boolean isVisible(ActionVisibilityContext actionVisibilityContext, ActionDescriptor actionDescriptor) {
 			return true;
 		}
@@ -280,7 +279,7 @@ extends AbstractEPProcessor
 	 * this is currently not possible and thats why this method
 	 * removes the affected contributions from the CoolBar.
 	 * This behaviour can is configured via {@link #useRemoveInsteadOfUnvisibleWorkaround}.
-	 * 
+	 *
 	 * @param coolBarManager The {@link ICoolBarManager} where the contributions of this registry should be removed from.
 	 */
 	public void removeAllFromCoolBar(ICoolBarManager coolBarManager) {
@@ -484,7 +483,7 @@ extends AbstractEPProcessor
 
 //		coolBarManager.update(true);
 		coolBarManager.update(true);
-		
+
 //		if (coolBarManager instanceof CoolBarManager)
 //			((CoolBarManager)coolBarManager).refresh();
 
@@ -810,18 +809,18 @@ extends AbstractEPProcessor
 		l.add(i);
 	}
 
-//	private static String getPath(ItemDescriptor itemDescriptor, ContributionManagerKind kind) 
+//	private static String getPath(ItemDescriptor itemDescriptor, ContributionManagerKind kind)
 //	{
 //		if (itemDescriptor instanceof ActionDescriptor) {
 //			return getPath((ActionDescriptor)itemDescriptor, kind);
 //		}
 //		else if (itemDescriptor instanceof PathItemDescriptor) {
-//			return ((PathItemDescriptor)itemDescriptor).getPath(); 
+//			return ((PathItemDescriptor)itemDescriptor).getPath();
 //		}
-//		
+//
 //		return null;
 //	}
-	
+
 	private static String getPath(ActionDescriptor actionDescriptor, ContributionManagerKind kind)
 	{
 		String path;
@@ -846,7 +845,7 @@ extends AbstractEPProcessor
 
 	/**
 	 * This method contributes WITHOUT removing items before.
-	 * 
+	 *
 	 * @param contributionManager
 	 * @param kind
 	 * @return Returns the number of visible contribution items (i.e. actions) that have been added.
@@ -996,8 +995,8 @@ extends AbstractEPProcessor
 			if (firstRun && (lastMenuRawSize == menuRaw.size())) {
 				if (logger.isDebugEnabled()) {
 					logger.debug("Could not add the following contributions to the menu (kind " + kind + "):"); //$NON-NLS-1$ //$NON-NLS-2$
-					for (Iterator it = menuRaw.iterator(); it.hasNext(); ) {
-						ItemDescriptor item = (ItemDescriptor) it.next();
+					for (Iterator<ItemDescriptor> it = menuRaw.iterator(); it.hasNext(); ) {
+						ItemDescriptor item = it.next();
 						if (item instanceof ActionDescriptor) {
 							logger.debug("    Action with id=" + ((ActionDescriptor)item).getID()); //$NON-NLS-1$
 						}
@@ -1040,16 +1039,16 @@ extends AbstractEPProcessor
 			}
 		}
 		contributionManager.update(true);
-		
+
 		debugContributions(visibleItemDescriptors, kind, true);
-		
+
 		return visibleItemDescriptors;
 	}
 
-	private void debugContributions(Map<Class<? extends ItemDescriptor>, List<ItemDescriptor>> itemDescriptors, ContributionManagerKind kind, boolean addIfTrueRemoveIfFalse) 
+	private void debugContributions(Map<Class<? extends ItemDescriptor>, List<ItemDescriptor>> itemDescriptors, ContributionManagerKind kind, boolean addIfTrueRemoveIfFalse)
 	{
 		for (Map.Entry<Class<? extends ItemDescriptor>, List<ItemDescriptor>> entry : itemDescriptors.entrySet()) {
-			Class clazz = entry.getKey();
+			Class<? extends ItemDescriptor> clazz = entry.getKey();
 			String descriptorKind = null;
 			if (clazz == ActionDescriptor.class) {
 				descriptorKind = "ActionDescriptor"; //$NON-NLS-1$
@@ -1070,7 +1069,7 @@ extends AbstractEPProcessor
 			}
 		}
 	}
-	
+
 	/**
 	 * You are free to name the action element as you desire. It's a good idea though, to name
 	 * it somewhat ending on "Action" (e.g. mySpecialAction) - or simply "action".
@@ -1155,10 +1154,14 @@ extends AbstractEPProcessor
 	 * @param actionDescriptor The <code>ActionDescriptor</code> that was previously created by {@link #createActionDescriptor()}.
 	 * @param extension The extension that is contributing the current action.
 	 * @param element The current element (which is matching {@link #getActionElementName()}).
+	 * @return whether to use this {@link ActionDescriptor}. <code>false</code> indicates that the current
+	 *		<code>actionDescriptor</code> shall be ignored by this registry instance (it will silently be
+	 *		thrown away instead of being added to the internal datastructure).
 	 * @throws EPProcessorException If the element's attributes are not correct or another problem occurs.
 	 */
-	protected void initActionDescriptor(ActionDescriptor actionDescriptor, IExtension extension, IConfigurationElement element) throws EPProcessorException
+	protected boolean initActionDescriptor(ActionDescriptor actionDescriptor, IExtension extension, IConfigurationElement element) throws EPProcessorException
 	{
+		return true;
 	}
 
 	@Override
@@ -1270,9 +1273,10 @@ extends AbstractEPProcessor
 					parseBooleanAcceptingNull(visibleInToolbar, true), parseBooleanAcceptingNull(visibleInContextmenu, true),
 					id);
 //			actionDescriptor.setGroupMarkerName(groupMarkerName);
-			initActionDescriptor(actionDescriptor, extension, element);
-			actionDescriptorsByID.put(id, actionDescriptor);
-			menuRaw.add(actionDescriptor);
+			if (initActionDescriptor(actionDescriptor, extension, element)) {
+				actionDescriptorsByID.put(id, actionDescriptor);
+				menuRaw.add(actionDescriptor);
+			}
 		}
 		else
 			throw new IllegalArgumentException("element.name=\"" + elementName + "\" unknown!"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1298,4 +1302,23 @@ extends AbstractEPProcessor
 		return descriptor;
 	}
 
+//	@Override
+//	protected Object clone() {
+//		AbstractActionRegistry clone;
+//		try {
+//			clone = (AbstractActionRegistry) super.clone();
+//		} catch (CloneNotSupportedException e) {
+//			throw new RuntimeException(e); // we do implement Cloneable, hence this exception should never be thrown.
+//		}
+//
+//		clone.menuRaw = new ArrayList<ItemDescriptor>(this.menuRaw.size());
+//		for (ItemDescriptor itemDescriptor : this.menuRaw) {
+//
+//		}
+//
+//		// we don't want the IActions to be cloned multiple times, hence we clear the menuSorted and recreate it from menuRaw
+//		clone.contributionManagerKind2menuSorted = new HashMap<ContributionManagerKind, List<ItemDescriptor>>();
+//
+//		return clone;
+//	}
 }
