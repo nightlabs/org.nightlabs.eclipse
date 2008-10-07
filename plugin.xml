@@ -24,11 +24,11 @@
          
          </action>
          <action
-               class="org.nightlabs.eclipse.ui.pdfviewer.extension.action.save.ZoomAction"
-               icon="icons/editor/PdfViewerEditor.16x16.png"
-               id="org.nightlabs.eclipse.ui.pdfviewer.extension.action.TestAction"
+               class="org.nightlabs.eclipse.ui.pdfviewer.extension.action.save.SaveAsAction"
+               icon="icons/action/save/SaveAsAction.16x16.png"
+               id="org.nightlabs.eclipse.ui.pdfviewer.extension.action.save.SaveAsAction"
                menubarPath="org.nightlabs.eclipse.ui.pdfviewer.extension.groupMarker1"
-               name="TestAction"
+               name="Save as..."
                toolbarPath="org.nightlabs.eclipse.ui.pdfviewer.extension.groupMarker1"
                useCase="default">
          </action>

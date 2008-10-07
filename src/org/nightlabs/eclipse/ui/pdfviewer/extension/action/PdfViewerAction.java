@@ -2,7 +2,7 @@ package org.nightlabs.eclipse.ui.pdfviewer.extension.action;
 
 import org.eclipse.jface.action.Action;
 
-public class PdfViewerAction extends Action implements IPdfViewerActionOrContributionItem
+public abstract class PdfViewerAction extends Action implements IPdfViewerActionOrContributionItem
 {
 	PdfViewerActionRegistry pdfViewerActionRegistry;
 
@@ -14,5 +14,10 @@ public class PdfViewerAction extends Action implements IPdfViewerActionOrContrib
 	@Override
 	public PdfViewerActionRegistry getPdfViewerActionRegistry() {
 		return pdfViewerActionRegistry;
+	}
+
+	@Override
+	public void calculateEnabled() {
+		setEnabled(pdfViewerActionRegistry.getPdfViewer().getPdfDocument() != null);
 	}
 }

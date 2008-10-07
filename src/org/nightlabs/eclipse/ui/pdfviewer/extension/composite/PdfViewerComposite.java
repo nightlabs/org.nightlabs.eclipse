@@ -45,8 +45,15 @@ public class PdfViewerComposite extends Composite
 	}
 
 	public PdfViewerComposite(final Composite parent, int style, PdfDocument pdfDocument) {
-		super(parent, SWT.HORIZONTAL);
-		this.setLayout(new GridLayout());
+		super(parent, style);
+		GridLayout gl = new GridLayout();
+		gl.marginLeft = 0;
+		gl.marginRight = 0;
+		gl.marginTop = 0;
+		gl.marginBottom = 0;
+		gl.marginWidth = 0;
+		gl.marginHeight = 0;
+		this.setLayout(gl);
 
 		pdfViewer = new PdfViewer();
 		pdfViewerActionRegistry = new PdfViewerActionRegistry(pdfViewer, USE_CASE_DEFAULT);
@@ -62,15 +69,23 @@ public class PdfViewerComposite extends Composite
 		// and will call setDocument for its corresponding composite to load the given PDF document in its composite.
 		pdfViewer.setPdfDocument(pdfDocument);
 
+		Composite leftComp = new Composite(sashForm, SWT.NONE);
+		gl = new GridLayout();
+		gl.marginLeft = 0;
+		gl.marginRight = 0;
+		gl.marginTop = 0;
+		gl.marginBottom = 0;
+		gl.marginWidth = 0;
+		gl.marginHeight = 0;
+		leftComp.setLayout(gl);
+
 		pdfThumbnailNavigator = new PdfThumbnailNavigator(pdfViewer);
 
-		Composite leftComp = new Composite(sashForm, SWT.NONE);
-		leftComp.setLayout(new GridLayout());
 
 		// creating the control of PDF thumbnail navigator (the composite of this control creates a new instance of PDF viewer!)
 		pdfThumbnailNavigatorControl = pdfThumbnailNavigator.createControl(leftComp, SWT.BORDER);
+//		pdfThumbnailNavigatorControl = new Label(leftComp, SWT.BORDER);
 		pdfThumbnailNavigatorControl.setLayoutData(new GridData(GridData.FILL_BOTH));
-
 
 		// creating the control of PDF viewer (a new PDF viewer composite will be created)
 		pdfViewerControl = pdfViewer.createControl(sashForm, SWT.BORDER);
@@ -102,11 +117,19 @@ public class PdfViewerComposite extends Composite
 				pdfThumbnailNavigatorControl.getBorderWidth() * 2 +
 				pdfViewerControl.getBorderWidth();
 
-				int relativeWidth = (int) Math.ceil(100f * absoluteWidth / /*PdfViewerComposite.this.*/parent.getBounds().width);
-				logger.debug("relativeWeight " + relativeWidth); //$NON-NLS-1$
-				logger.info(absoluteWidth + " " + relativeWidth + " " + parent.getBounds().width);
+				int relativeWidth = (int) Math.ceil(100f * absoluteWidth / parent.getBounds().width);
+
+				if (logger.isDebugEnabled()) {
+					logger.debug("relativeWeight=" + relativeWidth); //$NON-NLS-1$
+					logger.debug("absoluteWidth=" + absoluteWidth + " relativeWidth=" + relativeWidth + " " + parent.getBounds().width);
+				}
+
 				sashForm.setWeights(new int[]{relativeWidth, 100 - relativeWidth});
-				/*PdfViewerComposite.this.*/parent.layout(true, true);
+				parent.layout(true, true);
+
+//				// For a reason which I do not understand, the horizontal scroll bar become suddenly visible. So, we simply hide it here.
+//				getHorizontalBar().setVisible(false);
+//				getVerticalBar().setVisible(false);
 			}
 		});
 	}

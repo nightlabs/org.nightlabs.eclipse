@@ -4,4 +4,5 @@ public interface IPdfViewerActionOrContributionItem
 {
 	void init(PdfViewerActionRegistry pdfViewerActionRegistry);
 	PdfViewerActionRegistry getPdfViewerActionRegistry();
+	void calculateEnabled();
 }

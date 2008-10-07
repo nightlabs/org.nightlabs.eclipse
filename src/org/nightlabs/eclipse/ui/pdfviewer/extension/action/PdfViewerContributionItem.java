@@ -17,4 +17,9 @@ implements IPdfViewerActionOrContributionItem
 	public PdfViewerActionRegistry getPdfViewerActionRegistry() {
 		return pdfViewerActionRegistry;
 	}
+
+	@Override
+	public void calculateEnabled() {
+		setEnabled(pdfViewerActionRegistry.getPdfViewer().getPdfDocument() != null);
+	}
 }
