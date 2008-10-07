@@ -53,11 +53,11 @@ extends PreferencePage
 implements IWorkbenchPreferencePage {
 
 	private XComposite wrapper;
-	
+
 	private String editedFileExt = null;
 	private EditDocumentPrinterTypeRegsComposite typeRegsComposite;
 	private EditDocumentPrinterConfigComposite printerConfigComposite;
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.jface.preference.PreferencePage#createContents(org.eclipse.swt.widgets.Composite)
@@ -79,7 +79,7 @@ implements IWorkbenchPreferencePage {
 			}
 		});
 		printerConfigComposite = new EditDocumentPrinterConfigComposite(wrapper, SWT.NONE);
-		
+
 		typeRegsComposite.setDelegateConfigs(DelegatingDocumentPrinterCfMod.sharedInstance().getPrintConfigs());
 		return wrapper;
 	}
@@ -93,6 +93,7 @@ implements IWorkbenchPreferencePage {
 		cfMod.getPrintConfigs().clear();
 		for (Entry<String, DocumentPrinterDelegateConfig> entry : configs.entrySet()) {
 			cfMod.getPrintConfigs().put(entry.getKey(), entry.getValue());
+			cfMod.addKnownExtension(entry.getKey());
 		}
 		cfMod.setPrintConfigs(cfMod.getPrintConfigs());
 		try {
@@ -104,7 +105,7 @@ implements IWorkbenchPreferencePage {
 		}
 		return super.performOk();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
