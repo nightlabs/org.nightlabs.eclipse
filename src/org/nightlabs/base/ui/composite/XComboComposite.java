@@ -30,6 +30,7 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -296,5 +297,24 @@ public class XComboComposite<T>
 
 	public int getItemCount() {
 		return imageCombo.getItemCount();
+	}
+
+	public String getText() {
+		return imageCombo.getText();
+	}
+
+	public void setText(String string) {
+		imageCombo.setText(string);
+	}
+
+	@Override
+	public void addKeyListener(KeyListener listener) {
+		imageCombo.addKeyListener(listener);
+	}
+
+	@Override
+	public void removeKeyListener(KeyListener listener) {
+		if (!imageCombo.isDisposed())
+			imageCombo.removeKeyListener(listener);
 	}
 }

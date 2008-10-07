@@ -8,7 +8,6 @@ import org.eclipse.jface.action.IContributionManager;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.CoolBar;
 import org.eclipse.swt.widgets.CoolItem;
 import org.eclipse.swt.widgets.Menu;
@@ -47,6 +46,11 @@ extends XContributionItem
 		return comboComposite;
 	}
 
+	protected int getComboStyle(Composite parent)
+	{
+		return AbstractListComposite.getDefaultWidgetStyle(parent);
+	}
+
   /**
    * Creates and returns the control for this contribution item
    * under the given parent composite.
@@ -54,11 +58,11 @@ extends XContributionItem
    * @param parent the parent composite
    * @return the new control
    */
-  protected Control createControl(Composite parent)
+  protected XComboComposite<T> createControl(Composite parent)
   {
   	comboComposite = new XComboComposite<T>(
   			parent,
-  			AbstractListComposite.getDefaultWidgetStyle(parent),
+  			getComboStyle(parent),
   			(String)null,
   			labelProvider
   	);

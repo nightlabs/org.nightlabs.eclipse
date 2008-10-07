@@ -61,17 +61,16 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TypedListener;
 import org.eclipse.swt.widgets.Widget;
 import org.nightlabs.base.ui.composite.XComposite;
-import org.nightlabs.base.ui.resource.Messages;
 
 /**
  * A Custom Implementation of a ComboBox which is able not only to show Strings but also
  * {@link org.eclipse.swt.graphics.Image}s.
- * 
+ *
  * This Composite and its implementation (greate parts are adopted) is created more less
  * like a {@link org.eclipse.swt.custom.CCombo} but
  * internally, it uses a {@link org.eclipse.swt.widgets.Table} instead of a
  * {@link org.eclipse.swt.widgets.List} for displaying the entries.
- * 
+ *
  * @author Daniel.Mazurek [AT] NightLabs [DOT] com
  * @author Marco Schulze - Marco at NightLabs dot de
  */
@@ -94,7 +93,7 @@ extends XComposite
 		String ws = System.getProperty("osgi.ws"); //$NON-NLS-1$
 		return "gtk".equals(ws); //$NON-NLS-1$
 	}
-	
+
 /**
  * Constructs a new instance of this class given its parent
  * and a style value describing its behaviour and appearance.
@@ -126,12 +125,14 @@ extends XComposite
 public XCombo (Composite parent, int style) {
 	super (parent, style = checkStyle (style, parent), LayoutMode.NONE, LayoutDataMode.NONE);
 //	getGridLayout().horizontalSpacing = 2;
-	
+
 	imageLabel = new Label(this, SWT.NONE);
 	imageLabel.setBackground(getDefaultBackgroundColor());
 
 	int textStyle = SWT.SINGLE;
-	if ((style & SWT.READ_ONLY) != 0) textStyle |= SWT.READ_ONLY;
+	// The XCombo MUST NOT set this flag, because it is impossible to be used for free entries then. If a user of this XCombo
+	// wants read-only behaviour, he has to set it!!! Marco.
+//	if ((style & SWT.READ_ONLY) != 0) textStyle |= SWT.READ_ONLY;
 	if ((style & SWT.FLAT) != 0) textStyle |= SWT.FLAT;
 	text = new Text (this, textStyle);
 	// Workaround to avoid grey background if style == SWT.READ_ONLY; // TODO why this?! The native combos are grey, if this style is set.
@@ -142,7 +143,7 @@ public XCombo (Composite parent, int style) {
 
 	int arrowStyle = SWT.DOWN | SWT.ARROW;
 	if ((style & SWT.FLAT) != 0) arrowStyle |= SWT.FLAT;
-	
+
 	arrow = new Button (this, arrowStyle);
 
 	listener = new Listener () {
@@ -180,25 +181,25 @@ public XCombo (Composite parent, int style) {
 			}
 		}
 	};
-	
+
 	int [] comboEvents = {SWT.Dispose, SWT.Move, SWT.Resize};
 	for (int i=0; i<comboEvents.length; i++) this.addListener (comboEvents [i], listener);
-	
+
 	int [] textEvents = {SWT.KeyDown, SWT.KeyUp, SWT.Modify, SWT.MouseDown, SWT.MouseUp, SWT.Traverse, SWT.FocusIn};
 	for (int i=0; i<textEvents.length; i++) text.addListener (textEvents [i], listener);
-	
+
 	int [] arrowEvents = {SWT.Selection, SWT.FocusIn};
 	for (int i=0; i<arrowEvents.length; i++) arrow.addListener (arrowEvents [i], listener);
-	
+
 	addControlListener(new ControlAdapter() {
-	
+
 		@Override
 		public void controlResized(ControlEvent e) {
 			XCombo.this.controlResized(e);
 		}
-	
+
 	});
-	
+
 	createPopup(null, -1);
 	initAccessible();
 }
@@ -354,7 +355,7 @@ void arrowEvent (Event event) {
 		case SWT.Selection: {
 			if (!shellJustDeactivated)
 				dropDown (!isDropped ());
-			
+
 			shellJustDeactivated = false;
 			break;
 		}
@@ -452,7 +453,7 @@ public Point computeSize (int wHint, int hHint, boolean changed)
 	gc.dispose();
 	Point textSize = text.computeSize (SWT.DEFAULT, SWT.DEFAULT, changed);
 	Point arrowSize = arrow.computeSize (SWT.DEFAULT, SWT.DEFAULT, changed);
-	
+
 	// TODO workaround to change the size of the XCombo
 	if (isGtk()) { // added by Marco, because it doesn't look good in GTK.
 		Text t = new Text(this, SWT.BORDER);
@@ -461,7 +462,7 @@ public Point computeSize (int wHint, int hHint, boolean changed)
 		t.dispose();
 //		arrowSize.y -= 5;
 	}
-	
+
 	Point listSize = table.computeSize (wHint, SWT.DEFAULT, changed);
 	int borderWidth = getBorderWidth ();
 
@@ -487,12 +488,12 @@ void createPopup(TableItem[] items, int selectionIndex) {
 		if (font != null) table.setFont (font);
 		if (foreground != null) table.setForeground (foreground);
 //		if (background != null) table.setBackground (background); // always keep the backround of the table white!
-		
+
 		int [] popupEvents = {SWT.Close, SWT.Paint, SWT.Deactivate};
 		for (int i=0; i<popupEvents.length; i++) popup.addListener (popupEvents [i], listener);
 		int [] listEvents = {SWT.MouseUp, SWT.Selection, SWT.Traverse, SWT.KeyDown, SWT.KeyUp, SWT.FocusIn, SWT.Dispose};
 		for (int i=0; i<listEvents.length; i++) table.addListener (listEvents [i], listener);
-		
+
 		if (items != null)
 		{
 			for (TableItem item : items)
@@ -557,7 +558,7 @@ void dropDown (boolean drop) {
 		table = null;
 		createPopup (items, selectionIndex);
 	}
-	
+
 	Point size = getSize ();
 	int itemCount = table.getItemCount ();
 	itemCount = (itemCount == 0) ? visibleItemCount : Math.min(visibleItemCount, itemCount);
@@ -617,12 +618,12 @@ public Control [] getChildren () {
  * Gets the editable state.
  *
  * @return whether or not the reciever is editable
- * 
+ *
  * @exception SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
- * 
+ *
  * @since 3.0
  */
 public boolean getEditable () {
@@ -794,9 +795,9 @@ public int getTextHeight () {
  * text field is capable of holding. If this has not been changed
  * by <code>setTextLimit()</code>, it will be the constant
  * <code>Combo.LIMIT</code>.
- * 
+ *
  * @return the text limit
- * 
+ *
  * @exception SWTException <ul>
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
@@ -817,7 +818,7 @@ public int getTextLimit () {
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
- * 
+ *
  * @since 3.0
  */
 public int getVisibleItemCount () {
@@ -940,7 +941,7 @@ void initAccessible() {
 	getAccessible ().addAccessibleListener (accessibleAdapter);
 	text.getAccessible ().addAccessibleListener (accessibleAdapter);
 	table.getAccessible ().addAccessibleListener (accessibleAdapter);
-	
+
 	arrow.getAccessible ().addAccessibleListener (new AccessibleAdapter() {
 		@Override
 		public void getName (AccessibleEvent e) {
@@ -962,7 +963,7 @@ void initAccessible() {
 			e.offset = text.getCaretPosition ();
 		}
 	});
-	
+
 	getAccessible().addAccessibleControlListener (new AccessibleControlAdapter() {
 		@Override
 		public void getChildAtPoint (AccessibleControlEvent e) {
@@ -971,7 +972,7 @@ void initAccessible() {
 				e.childID = ACC.CHILDID_SELF;
 			}
 		}
-		
+
 		@Override
 		public void getLocation (AccessibleControlEvent e) {
 			Rectangle location = getBounds ();
@@ -981,17 +982,17 @@ void initAccessible() {
 			e.width = location.width;
 			e.height = location.height;
 		}
-		
+
 		@Override
 		public void getChildCount (AccessibleControlEvent e) {
 			e.detail = 0;
 		}
-		
+
 		@Override
 		public void getRole (AccessibleControlEvent e) {
 			e.detail = ACC.ROLE_COMBOBOX;
 		}
-		
+
 		@Override
 		public void getState (AccessibleControlEvent e) {
 			e.detail = ACC.STATE_NORMAL;
@@ -1150,7 +1151,7 @@ void listEvent (Event event) {
 			e.stateMask = event.stateMask;
 			notifyListeners(SWT.KeyDown, e);
 			break;
-			
+
 		}
 	}
 }
@@ -1182,10 +1183,10 @@ void popupEvent(Event event) {
 			break;
 		case SWT.Deactivate:
 			dropDown (false);
-			
+
 			// When clicked on the button set the flag indicating that the user wanted the popup to be
 			// closed -> when the button receives the selection event, it won't open the popup again.
-			final Control controlClickedOnTo = getDisplay().getCursorControl(); 
+			final Control controlClickedOnTo = getDisplay().getCursorControl();
 			if (controlClickedOnTo == arrow)
 			{
 				shellJustDeactivated = true;
@@ -1414,7 +1415,7 @@ public void setBackground (Color color) {
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
- * 
+ *
  * @since 3.0
  */
 public void setEditable (boolean editable) {
@@ -1434,7 +1435,7 @@ public boolean setFocus () {
 	checkWidget();
 	if (getEditable())
 		return text.setFocus ();
-	
+
 	return false;
 }
 
@@ -1610,7 +1611,7 @@ public void setVisible (boolean visible) {
  *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
  *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
  * </ul>
- * 
+ *
  * @since 3.0
  */
 public void setVisibleItemCount (int count) {
@@ -1650,7 +1651,7 @@ void textEvent (Event event) {
 			//At this point the widget may have been disposed.
 			// If so, do not continue.
 			if (isDisposed ()) break;
-			
+
 			if (event.keyCode == SWT.ARROW_UP || event.keyCode == SWT.ARROW_DOWN) {
 				event.doit = false;
 				if ((event.stateMask & SWT.ALT) != 0) {
@@ -1678,10 +1679,10 @@ void textEvent (Event event) {
 				// If so, do not continue.
 				if (isDisposed ()) break;
 			}
-			
+
 			// Further work : Need to add support for incremental search in
 			// pop up list as characters typed in text widget
-						
+
 			Event e = new Event ();
 			e.time = event.time;
 			e.character = event.character;
@@ -1734,7 +1735,7 @@ void textEvent (Event event) {
 					event.doit = false;
 					break;
 			}
-			
+
 			Event e = new Event ();
 			e.time = event.time;
 			e.detail = event.detail;
