@@ -137,10 +137,16 @@ public class PdfPrinter implements DocumentPrinter {
 			double pageWidth = pdfPage.getBBox().getWidth();
 			double pageHeight = pdfPage.getBBox().getHeight();
 
-			Point screenDPI = Display.getDefault().getDPI();
+			final Point[] screenDPI = new Point[1];
+			final Display display = Display.getDefault();
+			display.syncExec(new Runnable() {
+	            public void run() {
+	            	screenDPI[0] = display.getDPI();
+	            }
+            });
 			Point2DDouble zoomScreenResolutionFactor = new Point2DDouble(
-					(double)screenDPI.x / 72,
-					(double)screenDPI.y / 72
+					(double)screenDPI[0].x / 72,
+					(double)screenDPI[0].y / 72
 			);
 
 			Point2D.Double pageBoundsDimensionImage = new Point2D.Double(

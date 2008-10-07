@@ -33,4 +33,8 @@
                useCase="default">
          </action>
    </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+         <startup class="org.nightlabs.eclipse.ui.pdfviewer.extension.printer.PdfPrinterRegistrationStartup"/>         
+   </extension>
 </plugin>

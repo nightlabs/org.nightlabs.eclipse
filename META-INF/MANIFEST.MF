@@ -16,3 +16,4 @@ Export-Package: org.nightlabs.eclipse.ui.pdfviewer.extension,
  org.nightlabs.eclipse.ui.pdfviewer.extension.coolbar.internal;x-internal:=true,
  org.nightlabs.eclipse.ui.pdfviewer.extension.editor
 Bundle-Localization: plugin
+Eclipse-RegisterBuddy: org.nightlabs.base.ui
