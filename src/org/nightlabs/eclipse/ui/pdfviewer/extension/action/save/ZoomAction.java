@@ -1,4 +1,4 @@
-package org.nightlabs.eclipse.ui.pdfviewer.extension.action.zoom;
+package org.nightlabs.eclipse.ui.pdfviewer.extension.action.save;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.nightlabs.base.ui.util.RCPUtil;

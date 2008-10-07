@@ -24,7 +24,7 @@
          
          </action>
          <action
-               class="org.nightlabs.eclipse.ui.pdfviewer.extension.action.zoom.ZoomAction"
+               class="org.nightlabs.eclipse.ui.pdfviewer.extension.action.save.ZoomAction"
                icon="icons/editor/PdfViewerEditor.16x16.png"
                id="org.nightlabs.eclipse.ui.pdfviewer.extension.action.TestAction"
                menubarPath="org.nightlabs.eclipse.ui.pdfviewer.extension.groupMarker1"
