@@ -1,8 +1,10 @@
 package org.nightlabs.base.ui.composite;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -31,6 +33,8 @@ extends Dialog
 	private DateTime dateDateTime;
 	private Calendar date;
 	private Point initialLocation;
+	private Boolean allowPast;
+
 
 	/**
 	 * Create a new CalendarDateTimeEditLookupDialog instance.
@@ -50,12 +54,31 @@ extends Dialog
 	 */
 	public CalendarDateTimeEditLookupDialog(Shell parentShell, long flags, Point initialLocation)
 	{
+		this(parentShell, true , flags, null);
+	}
+
+	
+	
+	
+	/**
+	 * Create a new CalendarDateTimeEditLookupDialog instance.
+	 * @param parentShell The parent shell
+	 * @param flags One of the "FLAGS_"-constants in {@link DateFormatProvider}.
+	 * @param initialLocation The initial location for this dialog
+	 * @param allowPast don't allow the user to select a past date
+	 */
+	public CalendarDateTimeEditLookupDialog(Shell parentShell,boolean allowPast, long flags, Point initialLocation)
+	{
 		super(parentShell);
 		date = Calendar.getInstance();
 		this.flags = flags;
 		this.initialLocation = initialLocation;
-	}
+		this.allowPast = allowPast;
 
+	}
+	
+	
+	
 	/**
 	 * Set the initial date to show in this dialog. This must be called
 	 * before {@link #open()} to have any effect. Internally, a copy of
@@ -104,12 +127,26 @@ extends Dialog
 
 			calendarDateTime = new DateTime(dateComp, SWT.CALENDAR | SWT.BORDER);
 			DateTimeUtil.setDate(date, calendarDateTime);
+
 			calendarDateTime.addSelectionListener(new SelectionAdapter(){
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					dateDateTime.setYear(calendarDateTime.getYear());
-					dateDateTime.setMonth(calendarDateTime.getMonth());
-					dateDateTime.setDay(calendarDateTime.getDay());
+							
+					Calendar cal = Calendar.getInstance();
+					cal.setTime(DateTimeUtil.getDate(calendarDateTime));
+					
+					if(getDate().after(cal) && !allowPast  )
+					{
+						MessageDialog.openError(getShell(), "Past date", "You are not allowed to set a date in the past only future ones"); 
+						DateTimeUtil.setDate(getDate(), calendarDateTime);
+					}		
+					else
+					{
+						dateDateTime.setYear(calendarDateTime.getYear());
+						dateDateTime.setMonth(calendarDateTime.getMonth());
+						dateDateTime.setDay(calendarDateTime.getDay());
+
+					}
 				}
 			});
 
@@ -150,9 +187,23 @@ extends Dialog
 		dateDateTime.addSelectionListener(new SelectionAdapter(){
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				calendarDateTime.setYear(dateDateTime.getYear());
-				calendarDateTime.setMonth(dateDateTime.getMonth());
-				calendarDateTime.setDay(dateDateTime.getDay());
+				
+				
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(DateTimeUtil.getDate(dateDateTime));				
+				
+				if(getDate().after(cal) && !allowPast  )
+				{
+					MessageDialog.openError(getShell(), "Past date", "You are not allowed to set a date in the past only future ones"); 
+					DateTimeUtil.setDate(getDate(), dateDateTime);
+				}		
+				else
+				{
+					calendarDateTime.setYear(dateDateTime.getYear());
+					calendarDateTime.setMonth(dateDateTime.getMonth());
+					calendarDateTime.setDay(dateDateTime.getDay());
+				}
+
 			}
 		});
 	}
@@ -164,6 +215,7 @@ extends Dialog
 	@Override
 	protected void okPressed()
 	{
+				
 		if (calendarDateTime != null)
 		{
 			date.set(Calendar.YEAR, calendarDateTime.getYear());
@@ -178,6 +230,14 @@ extends Dialog
 			date.set(Calendar.SECOND, timeDateTime.getSeconds());
 		}
 		super.okPressed();
+	}
+
+	public Boolean getAllowPast() {
+		return allowPast;
+	}
+
+	public void setAllowPast(Boolean dontAllowPast) {
+		this.allowPast = dontAllowPast;
 	}
 
 }

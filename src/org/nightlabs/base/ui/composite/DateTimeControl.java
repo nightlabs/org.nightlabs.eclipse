@@ -33,7 +33,8 @@ public class DateTimeControl extends XComposite {
 	private Button lookupButton;
 	private Date date;
 	private long flags;
-
+	private Boolean allowPast;
+	
 	/**
 	 * Create a new DateTimeComposite for the current date and time.
 	 * @param parent The SWT parent.
@@ -43,8 +44,23 @@ public class DateTimeControl extends XComposite {
 	public DateTimeControl(Composite parent, int style, long flags)
 	{
 		this(parent, style, flags, new Date());
+		this.allowPast  = true;
 	}
-
+	
+	/**
+	 * Create a new DateTimeComposite for the current date and time.
+	 * @param parent The SWT parent.
+	 * @param style The SWT style.
+	 * @param flags One of the "FLAGS_"-constants in {@link DateFormatter}.
+	 * @param allowPast dont allow a past date
+	 */
+	public DateTimeControl(Composite parent, boolean allowPast , int style, long flags)
+	{
+		this(parent, style, flags, new Date());
+		this.allowPast  = allowPast;
+	}
+	
+	
 	/**
 	 * Create a new DateTimeComposite for the given date and time.
 	 * @param parent The SWT parent.
@@ -124,13 +140,14 @@ public class DateTimeControl extends XComposite {
 	{
 		CalendarDateTimeEditLookupDialog dialog = new CalendarDateTimeEditLookupDialog(
 				getShell(),
-				flags,
+				allowPast,flags,
 				lookupButton.toDisplay(0, 0)
 		);
 		Calendar cal = Calendar.getInstance();
 		if (date == null)
 			date = new Date();
 		cal.setTime(date);
+		
 		dialog.setInitialDate(cal);
 		if (dialog.open() == Window.OK) {
 			setDate(dialog.getDate().getTime());
