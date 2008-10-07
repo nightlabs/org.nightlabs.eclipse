@@ -30,8 +30,6 @@ import java.lang.reflect.Method;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.UIDefaults;
-import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.ListenerList;
@@ -56,6 +54,8 @@ import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
 import org.nightlabs.eclipse.ui.pdfviewer.Point2DDouble;
 
+import com.sun.pdfview.PDFPage;
+
 /**
  * @author frederik loeser - frederik at nightlabs dot de
  * @author marco schulze - marco at nightlabs dot de
@@ -71,9 +71,6 @@ public class PdfViewerComposite extends Composite
 	private ScrollBar scrollBarVertical, scrollBarHorizontal;
 	private Point2DDouble zoomScreenResolutionFactor;
 	private int currentPage;
-
-	@Deprecated // FIXME remove this workaround!
-	private boolean startingPoint = true;
 
 	/**
 	 * Since the int range of the scroll bars is limited and we don't need to be able to scroll to every single
@@ -98,12 +95,12 @@ public class PdfViewerComposite extends Composite
 	 */
 	private int zoomFactorPerMill = 1000;
 
-// We don't need this, because the mouse wheel listener event tells us whether CTRL is down or not.
-// and that seems to work pretty reliably. Marco.
+//	We don't need this, because the mouse wheel listener event tells us whether CTRL is down or not.
+//	and that seems to work pretty reliably. Marco.
 //	/**
-//	 * If <code>true</code>, turning the mouse wheel zooms (forward = zoom in, backward = zoom out).
-//	 * If <code>false</code>, turning the mouse wheel scrolls.
-//	 */
+//	* If <code>true</code>, turning the mouse wheel zooms (forward = zoom in, backward = zoom out).
+//	* If <code>false</code>, turning the mouse wheel scrolls.
+//	*/
 //	private boolean mouseWheelModeZoom = false;
 
 	/**
@@ -122,8 +119,13 @@ public class PdfViewerComposite extends Composite
 //	// http://forums.sun.com/thread.jspa?messageID=3369196
 //	// http://dev.eclipse.org/newslists/news.eclipse.platform.swt/msg24617.html
 //	static {
-//		System.setProperty("sun.awt.noerasebackground", "true");
+//	System.setProperty("sun.awt.noerasebackground", "true");
 //	}
+
+	private boolean isViewPanelMinimumSized()
+	{
+		return viewPanel.isVisible() && viewPanel.getWidth() >= 20 && viewPanel.getHeight() >= 20;
+	}
 
 	public void setPdfDocument(PdfDocument pdfDocument)
 	{
@@ -149,11 +151,17 @@ public class PdfViewerComposite extends Composite
 
 		this.pdfDocument = pdfDocument;
 
+		int newPageNumber = 0;
 		if (pdfDocument != null) {
 			renderBuffer = new RenderBuffer(this, pdfDocument);
 			renderThread = new RenderThread(this, renderBuffer);
+			if (pdfDocument.getPdfFile().getNumPages() > 0)
+				newPageNumber = 1;
 		}
-		setScrollbars();
+		setCurrentPage(newPageNumber);
+
+		applyAutoZoom();
+		calculateScrollbarValues();
 	}
 
 	private org.nightlabs.eclipse.ui.pdfviewer.MouseEvent createMouseEvent(MouseEvent event)
@@ -167,7 +175,7 @@ public class PdfViewerComposite extends Composite
 				viewOrigin.getY() + (pointRelative.getY() / (zoomScreenResolutionFactor.getY() * zoomFactorPerMill / 1000))
 		);
 		pointAbsolute.setReadOnly();
-		return new org.nightlabs.eclipse.ui.pdfviewer.MouseEvent(pointRelative, pointAbsolute);
+		return new org.nightlabs.eclipse.ui.pdfviewer.MouseEvent(pointRelative, pointAbsolute, event);
 	}
 
 	public PdfViewerComposite(Composite parent, int style, final PdfViewer pdfViewer)
@@ -212,9 +220,9 @@ public class PdfViewerComposite extends Composite
 		if(!x11ErrorHandlerFixInstalled && "gtk".equals( SWT.getPlatform())) { //$NON-NLS-1$
 			x11ErrorHandlerFixInstalled = true;
 			EventQueue.invokeLater( new Runnable() {
-			   public void run() {
-				   initX11ErrorHandlerFix();
-			   }
+				public void run() {
+					initX11ErrorHandlerFix();
+				}
 			});
 		}
 
@@ -237,24 +245,24 @@ public class PdfViewerComposite extends Composite
 				if (logger.isDebugEnabled())
 					logger.debug("mouseClicked: " + e); //$NON-NLS-1$
 
-// The following code is thumbnail-navigator-specific and should therefore not be here! I moved it into the correct class. Marco.
+//				The following code is thumbnail-navigator-specific and should therefore not be here! I moved it into the correct class. Marco.
 //				final org.nightlabs.eclipse.ui.pdfviewer.MouseEvent pdfMouseEvent = createMouseEvent(e);
-//
+
 //				// calculate current page from pdfMouseEvent.getPointInRealCoordinate() and set it
 //				Collection<Integer> visiblePages = pdfDocument.getVisiblePages(
-//						new Rectangle2D.Double(pdfMouseEvent.getPointInRealCoordinate().getX(), pdfMouseEvent.getPointInRealCoordinate().getY(), 1, 1)
+//				new Rectangle2D.Double(pdfMouseEvent.getPointInRealCoordinate().getX(), pdfMouseEvent.getPointInRealCoordinate().getY(), 1, 1)
 //				);
-//
+
 //				final Integer newCurrentPage;
 //				if (visiblePages.isEmpty())
-//					newCurrentPage = null;
+//				newCurrentPage = null;
 //				else
-//					newCurrentPage = visiblePages.iterator().next();
+//				newCurrentPage = visiblePages.iterator().next();
 
 				getDisplay().asyncExec(new Runnable() {
 					public void run() {
 //						if (newCurrentPage != null)
-//							setCurrentPage(newCurrentPage);
+//						setCurrentPage(newCurrentPage);
 
 						org.nightlabs.eclipse.ui.pdfviewer.MouseEvent pdfMouseEvent = createMouseEvent(e);
 						propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_MOUSE_CLICKED, null, pdfMouseEvent);
@@ -319,7 +327,7 @@ public class PdfViewerComposite extends Composite
 					logger.debug("keyPressed: " + e); //$NON-NLS-1$
 
 //				if (e.getKeyCode() == 17)
-//					mouseWheelModeZoom = true;
+//				mouseWheelModeZoom = true;
 			}
 			@Override
 			public void keyReleased(java.awt.event.KeyEvent e) {
@@ -327,7 +335,7 @@ public class PdfViewerComposite extends Composite
 					logger.debug("keyReleased: " + e); //$NON-NLS-1$
 
 //				if (e.getKeyCode() == 17)
-//					mouseWheelModeZoom = false;
+//				mouseWheelModeZoom = false;
 			}
 		});
 
@@ -360,56 +368,31 @@ public class PdfViewerComposite extends Composite
 		viewPanel.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
-				logger.info("componentResized"); //$NON-NLS-1$
+				if (logger.isDebugEnabled())
+					logger.debug("componentResized"); //$NON-NLS-1$
+
 				if (pdfDocument == null)
 					return;
 
-				final Point2D viewOriginBefore = viewOrigin;
-				Point2DDouble newViewOrigin = null;
+				if (!isViewPanelMinimumSized())
+					return;
+
 				final Dimension2D viewDimensionBefore = getViewDimension();
 
-				if (centerHorizontally) {
-					double middleX = pdfDocument.getDocumentDimension().getWidth() / 2;
-
-					if (newViewOrigin == null)
-						newViewOrigin = new Point2DDouble(viewOriginBefore);
-
-					newViewOrigin.setX(middleX - viewPanel.getWidth() / 2 / (zoomFactorPerMill * getZoomScreenResolutionFactor().getX() / 1000));
-				}
-
-				if (centerVertically) {
-					double middleY = pdfDocument.getDocumentDimension().getHeight() / 2;
-
-					if (newViewOrigin == null)
-						newViewOrigin = new Point2DDouble(viewOriginBefore);
-
-					newViewOrigin.setY(middleY - viewPanel.getHeight() / 2 / (zoomFactorPerMill * getZoomScreenResolutionFactor().getY() / 1000));
-				}
-
-				viewDimensionCached = null;
-
-				if (newViewOrigin != null) {
-					newViewOrigin.setReadOnly();
-
-					final Point2DDouble newViewOriginFinal = newViewOrigin;
-					if (!newViewOrigin.equals(viewOriginBefore)) {
-						getDisplay().syncExec(new Runnable() {
-			                public void run() {
-			                	viewOrigin = newViewOriginFinal;
-			                	propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_ORIGIN, viewOriginBefore, viewOrigin);
-			                }
-						});
-					}
-				}
+				applyAutoZoom();
+				calculateScrollbarValues();
 
 				AutoZoom autoZoom = pdfViewer.getAutoZoom();
-				logger.info(autoZoom);
-				getDisplay().asyncExec(new Runnable() {
-	                public void run() {
-	                	propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_COMPONENT_RESIZED, null, null);
-	                }
-                });
-/*				if (autoZoom == AutoZoom.pageWidth) {
+				if (logger.isDebugEnabled())
+					logger.debug("autoZoom: " + autoZoom);
+
+//				getDisplay().asyncExec(new Runnable() {
+//				public void run() {
+//				propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_COMPONENT_RESIZED, null, null);
+//				}
+//				});
+
+				/*				if (autoZoom == AutoZoom.pageWidth) {
 					Display.getDefault().asyncExec(new Runnable() {
 						public void run() {
 							logger.info("zooming to page width");
@@ -418,34 +401,39 @@ public class PdfViewerComposite extends Composite
 					});
 				}*/
 
-				setScrollbars();
+//				calculateScrollbarValues();
 
-				// positioning the first page of the given document at the top of PDF thumbnail navigator
-				if (autoZoom == AutoZoom.pageWidth && startingPoint) {
-					Display.getDefault().asyncExec(new Runnable() {
-						public void run() {
-							if (scrollBarVertical.isVisible()) {
-//								scrollBarVertical.setSelection(1);
-								scrollVertically();		// already invokes repainting
-							}
-							startingPoint = false;
-						}
-					});
-				}
-				else
-					// simply repaint without setting a scroll-bar selection
-					viewPanel.repaint();
+//				// positioning the first page of the given document at the top of PDF thumbnail navigator
+//				if (autoZoom == AutoZoom.pageWidth && startingPoint) {
+//				Display.getDefault().asyncExec(new Runnable() {
+//				public void run() {
+//				if (scrollBarVertical.isVisible()) {
+////			scrollBarVertical.setSelection(1);
+//				scrollVertically();		// already invokes repainting
+//				}
+//				startingPoint = false;
+//				}
+//				});
+//				}
+//				else
+//				// simply repaint without setting a scroll-bar selection
+//				viewPanel.repaint();
+
+				// TODO is this repaint necessary? Marco.
+				viewPanel.repaint();
 
 				getDisplay().asyncExec(new Runnable() {
-	                public void run() {
-	                	propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_DIMENSION, viewDimensionBefore, getViewDimension());
-	                }
-                });
+					public void run() {
+						propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_DIMENSION, viewDimensionBefore, getViewDimension());
+					}
+				});
 			}
 			@Override
 			public void componentShown(ComponentEvent e) {
 			}
 		});
+
+
 
 //		viewPanelFrame.add(viewPanel);
 		intermediatePanel = new Panel(new BorderLayout());
@@ -514,9 +502,9 @@ public class PdfViewerComposite extends Composite
 				logger.debug("keyDownListener.handleEvent: " + event.keyCode); //$NON-NLS-1$
 
 //			switch (event.keyCode) {
-//				case SWT.CTRL:
-//					mouseWheelModeZoom = true;
-//					break;
+//			case SWT.CTRL:
+//			mouseWheelModeZoom = true;
+//			break;
 //			}
 		}
 	};
@@ -528,15 +516,103 @@ public class PdfViewerComposite extends Composite
 				logger.debug("keyUpListener.handleEvent: " + event.keyCode); //$NON-NLS-1$
 
 //			switch (event.keyCode) {
-//				case SWT.CTRL:
-//					mouseWheelModeZoom = false;
-//					break;
+//			case SWT.CTRL:
+//			mouseWheelModeZoom = false;
+//			break;
 //			}
 		}
 	};
 
 	private boolean centerHorizontally;
 	private boolean centerVertically;
+
+	private void center()
+	{
+		if (logger.isDebugEnabled())
+			logger.debug("center: centerHorizontally=" + centerHorizontally + " centerVertically=" + centerVertically);
+
+		int pageNumber = getCurrentPage();
+		if (pageNumber < 1)
+			return;
+
+		Rectangle2D pageBounds = pdfDocument.getPageBounds(pageNumber);
+
+
+		final Point2D viewOriginBefore = viewOrigin;
+		Point2DDouble newViewOrigin = null;
+
+		if (centerHorizontally) {
+//			double middleX = pdfDocument.getDocumentDimension().getWidth() / 2;
+			double middleX = pageBounds.getCenterX();
+
+			if (newViewOrigin == null)
+				newViewOrigin = new Point2DDouble(viewOriginBefore);
+
+			newViewOrigin.setX(middleX - viewPanel.getWidth() / 2 / (zoomFactorPerMill * getZoomScreenResolutionFactor().getX() / 1000));
+		}
+
+		if (centerVertically) {
+//			double middleY = pdfDocument.getDocumentDimension().getHeight() / 2;
+			double middleY = pageBounds.getCenterY();
+
+			if (newViewOrigin == null)
+				newViewOrigin = new Point2DDouble(viewOriginBefore);
+
+			newViewOrigin.setY(middleY - viewPanel.getHeight() / 2 / (zoomFactorPerMill * getZoomScreenResolutionFactor().getY() / 1000));
+		}
+
+		if (newViewOrigin != null) {
+			limitNewViewOrigin(newViewOrigin);
+
+			// make the new view-origin read-only
+			newViewOrigin.setReadOnly();
+
+			// assign it, if it's different from our current situation
+			if (!newViewOrigin.equals(viewOriginBefore)) {
+				viewDimensionCached = null;
+				viewOrigin = newViewOrigin;
+				propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_ORIGIN, viewOriginBefore, viewOrigin);
+			}
+		}
+	}
+
+	private void limitNewViewOrigin(Point2DDouble newViewOrigin)
+	{
+		if (pdfDocument == null)
+			return;
+
+		double panelWidthReal = getViewPanel().getWidth() * (zoomFactorPerMill * getZoomScreenResolutionFactor().getX() / 1000);
+		double panelHeightReal = getViewPanel().getHeight() * (zoomFactorPerMill * getZoomScreenResolutionFactor().getY() / 1000);
+
+		// don't scroll outside the document, if the document is big enough
+		// check left side
+		if (!centerHorizontally && newViewOrigin.getX() < 0) {
+			if (panelWidthReal <= pdfDocument.getDocumentDimension().getWidth())
+				newViewOrigin.setX(0);
+			// else is centerHorizontally anyway (see calculateScrollbarValues)
+		}
+
+		// check top
+		if (!centerVertically && newViewOrigin.getY() < 0) {
+			if (panelHeightReal <= pdfDocument.getDocumentDimension().getHeight())
+				newViewOrigin.setY(0);
+			// else is centerVertically anyway (see calculateScrollbarValues)
+		}
+
+		// check right side
+		if (!centerHorizontally && newViewOrigin.getX() + panelWidthReal > pdfDocument.getDocumentDimension().getWidth()) {
+			if (panelWidthReal <= pdfDocument.getDocumentDimension().getWidth())
+				newViewOrigin.setX(pdfDocument.getDocumentDimension().getWidth() - panelWidthReal);
+			// else is centerHorizontally anyway (see calculateScrollbarValues)
+		}
+
+		// check bottom
+		if (!centerVertically && newViewOrigin.getY() + panelHeightReal > pdfDocument.getDocumentDimension().getHeight()) {
+			if (panelHeightReal <= pdfDocument.getDocumentDimension().getHeight())
+				newViewOrigin.setY(pdfDocument.getDocumentDimension().getHeight() - panelHeightReal);
+			// else is centerVertically anyway (see calculateScrollbarValues)
+		}
+	}
 
 	private void scrollVertically()
 	{
@@ -623,20 +699,26 @@ public class PdfViewerComposite extends Composite
 		}
 	}
 
-	private void setScrollbars() {
+	private void calculateScrollbarValues() {
 		Display.getDefault().syncExec(new Runnable() {
 			@Override
 			public void run() {
+				if (logger.isDebugEnabled())
+					logger.debug("calculateScrollbarValues: entered");
+
 				if (pdfDocument == null) {
 					scrollBarVertical.setVisible(false);
 					scrollBarHorizontal.setVisible(false);
 					return;
 				}
 
-				boolean showScrollBarHorizontal = true;
-				if (pdfViewer.getAutoZoom() == AutoZoom.pageWidth) {
-					showScrollBarHorizontal = false;
-				}
+				if (!isViewPanelMinimumSized())
+					return;
+
+//				boolean showScrollBarHorizontal = true;
+//				if (pdfViewer.getAutoZoom() == AutoZoom.pageWidth) {
+//				showScrollBarHorizontal = false;
+//				}
 
 				double zoomFactor = (zoomFactorPerMill / 1000d);
 
@@ -645,6 +727,12 @@ public class PdfViewerComposite extends Composite
 				scrollBarVertical.setMaximum((int) pdfDocument.getDocumentDimension().getHeight() / scrollBarDivisor);
 				scrollBarVertical.setSelection((int) (viewOrigin.getY() / scrollBarDivisor));
 				boolean verticalBarVisible = visibleAreaScrollHeight <= (scrollBarVertical.getMaximum() - scrollBarVertical.getMinimum());
+
+				if (AutoZoom.page == pdfViewer.getAutoZoom() || AutoZoom.pageHeight == pdfViewer.getAutoZoom()) {
+					centerVertically = true;
+//					verticalBarVisible = true; // prevent eternal flickering because of permanent enabling/disabling cycles by forcing it to stay visible.
+				}
+
 				scrollBarVertical.setVisible(verticalBarVisible);
 				if (!verticalBarVisible)
 					centerVertically = true;
@@ -653,27 +741,34 @@ public class PdfViewerComposite extends Composite
 				scrollBarVertical.setPageIncrement((int) (visibleAreaScrollHeight * 0.9d));
 				scrollBarVertical.setIncrement((int) (visibleAreaScrollHeight * 0.1d));
 
-				if (showScrollBarHorizontal == true) {
-					// PDF viewer composite does probably need a horizontal scroll-bar
-					int visibleAreaScrollWidth = (int) (getViewPanel().getWidth() / (zoomFactor * getZoomScreenResolutionFactor().getX())) / scrollBarDivisor;
-					scrollBarHorizontal.setMinimum(0);
-					scrollBarHorizontal.setMaximum((int) pdfDocument.getDocumentDimension().getWidth() / scrollBarDivisor);
-					scrollBarHorizontal.setSelection((int) (viewOrigin.getX() / scrollBarDivisor));
-					boolean horizontalBarVisible = visibleAreaScrollWidth <= (scrollBarHorizontal.getMaximum() - scrollBarHorizontal.getMinimum());
-					scrollBarHorizontal.setVisible(horizontalBarVisible);
-					if (!horizontalBarVisible)
-						centerHorizontally = true;
+//				if (showScrollBarHorizontal == true) {
+				// PDF viewer composite does probably need a horizontal scroll-bar
+				int visibleAreaScrollWidth = (int) (getViewPanel().getWidth() / (zoomFactor * getZoomScreenResolutionFactor().getX())) / scrollBarDivisor;
+				scrollBarHorizontal.setMinimum(0);
+				scrollBarHorizontal.setMaximum((int) pdfDocument.getDocumentDimension().getWidth() / scrollBarDivisor);
+				scrollBarHorizontal.setSelection((int) (viewOrigin.getX() / scrollBarDivisor));
+				boolean horizontalBarVisible = visibleAreaScrollWidth <= (scrollBarHorizontal.getMaximum() - scrollBarHorizontal.getMinimum());
 
-					scrollBarHorizontal.setThumb(visibleAreaScrollWidth);
-					scrollBarHorizontal.setPageIncrement((int) (visibleAreaScrollWidth * 0.9d));
-					scrollBarHorizontal.setIncrement((int) (visibleAreaScrollWidth * 0.1d));
+				if (AutoZoom.page == pdfViewer.getAutoZoom() || AutoZoom.pageWidth == pdfViewer.getAutoZoom()) {
+					centerHorizontally = true;
+//					horizontalBarVisible = true; // prevent eternal flickering because of permanent enabling/disabling cycles by forcing it to stay visible.
 				}
-				else {
-					// PDF thumbnail navigator composite doesn't need a horizontal scroll-bar at all
-					scrollBarHorizontal.setVisible(false);
+
+				scrollBarHorizontal.setVisible(horizontalBarVisible);
+				if (!horizontalBarVisible)
 					centerHorizontally = true;
 
-				}
+				scrollBarHorizontal.setThumb(visibleAreaScrollWidth);
+				scrollBarHorizontal.setPageIncrement((int) (visibleAreaScrollWidth * 0.9d));
+				scrollBarHorizontal.setIncrement((int) (visibleAreaScrollWidth * 0.1d));
+//				}
+//				else {
+//				// PDF thumbnail navigator composite doesn't need a horizontal scroll-bar at all
+//				scrollBarHorizontal.setVisible(false);
+//				centerHorizontally = true;
+//				}
+
+				center();
 
 				if (logger.isDebugEnabled()) {
 					logger.debug("setScrollbars: scrollBarVertical.minimum=" + scrollBarVertical.getMinimum()); //$NON-NLS-1$
@@ -757,7 +852,7 @@ public class PdfViewerComposite extends Composite
 				mouseRotationOrientation = 1;
 
 			if (mouseWheelModeZoom == true && pdfViewer.isMouseWheelZoomEnabled())	// do not allow zooming in PDF thumbnail viewer
-				zoomPDFDocument(mouseRotationOrientation);
+				zoomPDFDocumentOnMouseWheelMove(mouseRotationOrientation);
 			else {
 				Display.getDefault().asyncExec(new Runnable() {
 					public void run() {
@@ -785,7 +880,7 @@ public class PdfViewerComposite extends Composite
 	 *
 	 * @param mouseRotationOrientation the direction the user has scrolled into
 	 */
-	private void zoomPDFDocument(int mouseRotationOrientation) {
+	private void zoomPDFDocumentOnMouseWheelMove(int mouseRotationOrientation) {
 		int _zoomAfter = zoomFactorPerMill;
 
 		if (mouseRotationOrientation == 1)
@@ -806,6 +901,7 @@ public class PdfViewerComposite extends Composite
 
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
+				pdfViewer.setAutoZoom(AutoZoom.none);
 				setZoomFactorPerMill(zoomAfter);
 			}
 		});
@@ -818,10 +914,11 @@ public class PdfViewerComposite extends Composite
 	public void setViewOrigin(Point2D viewOrigin) {
 		Point2DDouble oldViewOrigin = this.viewOrigin;
 		Point2DDouble newViewOrigin = new Point2DDouble(viewOrigin);
+		limitNewViewOrigin(newViewOrigin);
 		newViewOrigin.setReadOnly();
 
 		this.viewOrigin = newViewOrigin;
-		this.setScrollbars();
+		this.calculateScrollbarValues();
 		viewPanel.repaint();
 		// TODO test this method! and modify if necessary.
 
@@ -849,38 +946,76 @@ public class PdfViewerComposite extends Composite
 		return viewDimensionCached;
 	}
 
-	public void zoomToPageWidth() {
+	private void applyAutoZoom()
+	{
+		getDisplay().syncExec(new Runnable() {
+			public void run() {
+				if (pdfDocument == null)
+					return;
 
-		// An adequate zoom factor for fitting the given document into PDF thumbnail navigator composite is computed
-		// considering the different widths of document and PDF viewer composite.
-		// The horizontal scroll-bar of PDF thumbnail navigator composite will be set invisible as it is not needed
-		// in this navigator.
-		Point screenDPI = getDisplay().getDPI();
-		zoomScreenResolutionFactor = new Point2DDouble(	(double)screenDPI.x / 72,
-														(double)screenDPI.y / 72
-														);
-		// get the scroll-bar width
-		UIDefaults uidef = UIManager.getDefaults();
-		int swidth = Integer.parseInt(uidef.get("ScrollBar.width").toString()); //$NON-NLS-1$
+				if (!isViewPanelMinimumSized())
+					return;
 
-		// now compute the adequate zoom factor
-		double documentWidth = pdfDocument.getDocumentDimension().getWidth();
-		int pdfViewerCompositeWidth = getBounds().width - swidth;
-		double pdfViewerCompositeWidthReal = pdfViewerCompositeWidth / (zoomScreenResolutionFactor.getX());
-		int zoomFactorPerMill = (int) (pdfViewerCompositeWidthReal / documentWidth * 1000);
+				if (AutoZoom.none == pdfViewer.getAutoZoom())
+					return;
 
-		pdfViewer.setZoomFactorPerMill(zoomFactorPerMill);
+				// An adequate zoom factor for fitting the given document into PDF thumbnail navigator composite is computed
+				// considering the different widths of document and PDF viewer composite.
+				// The horizontal scroll-bar of PDF thumbnail navigator composite will be set invisible as it is not needed
+				// in this navigator.
+
+//				// get the scroll-bar width
+//				UIDefaults uidef = UIManager.getDefaults();
+//				int swidth = Integer.parseInt(uidef.get("ScrollBar.width").toString()); //$NON-NLS-1$
+
+				// now compute the adequate zoom factor
+//				double documentHeight = pdfDocument.getDocumentDimension().getHeight();
+				int pageNumber = getCurrentPage();
+				if (pageNumber < 1)
+					return;
+
+				PDFPage page = pdfDocument.getPdfFile().getPage(pageNumber);
+
+				double pdfViewerCompositeHeightReal = viewPanel.getHeight() / zoomScreenResolutionFactor.getY();
+				int zoomFactorPerMillY = (int) (pdfViewerCompositeHeightReal / (page.getHeight() + pdfViewer.getAutoZoomVerticalMargin() * 2) * 1000);
+
+//				double documentWidth = pdfDocument.getDocumentDimension().getWidth();
+				double pdfViewerCompositeWidthReal = viewPanel.getWidth() / zoomScreenResolutionFactor.getX();
+				int zoomFactorPerMillX = (int) (pdfViewerCompositeWidthReal / (page.getWidth() + pdfViewer.getAutoZoomHorizontalMargin() * 2) * 1000);
+
+				switch (pdfViewer.getAutoZoom()) {
+					case pageWidth:
+						centerHorizontally = true;
+						setZoomFactorPerMill(zoomFactorPerMillX);
+						break;
+					case pageHeight:
+						centerVertically = true;
+						setZoomFactorPerMill(zoomFactorPerMillY);
+						break;
+					case page:
+						centerHorizontally = true;
+						centerVertically = true;
+						setZoomFactorPerMill(
+								Math.min(zoomFactorPerMillX, zoomFactorPerMillY)
+						);
+						break;
+					default:
+						throw new IllegalStateException("Unknown autoZoom: " + pdfViewer.getAutoZoom());
+				}
+				center();
+			}
+		});
 	}
 
-	public void zoomToPageHeight() {
+//	private void zoomToPageHeight() {
 
-		Point screenDPI = getDisplay().getDPI();
-		zoomScreenResolutionFactor = new Point2DDouble(	(double)screenDPI.x / 72,
-														(double)screenDPI.y / 72
-														);
-		// TODO implement
+//	Point screenDPI = getDisplay().getDPI();
+//	zoomScreenResolutionFactor = new Point2DDouble(	(double)screenDPI.x / 72,
+//	(double)screenDPI.y / 72
+//	);
+//	// TODO implement
 
-	}
+//	}
 
 	/**
 	 * Get the zoom factor in &permil; (1/1000).
@@ -893,11 +1028,14 @@ public class PdfViewerComposite extends Composite
 
 	public void setZoomFactorPerMill(int zoomFactorPerMill)
 	{
+		if (logger.isDebugEnabled())
+			logger.debug("setZoomFactorPerMill: zoomFactorPerMill=" + zoomFactorPerMill);
+
 		// TODO if PROPERTY_CURRENT_PAGE is fired again below, an error occurs
 //		boolean doFire = true;
 //		AutoZoom autoZoom = pdfViewer.getAutoZoom();
 //		if (autoZoom == AutoZoom.pageHeight || autoZoom == AutoZoom.pageWidth) {
-//			doFire = false;
+//		doFire = false;
 //		}
 
 		int zoomBefore = this.zoomFactorPerMill;
@@ -942,24 +1080,24 @@ public class PdfViewerComposite extends Composite
 		propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_DIMENSION, viewDimensionBefore, getViewDimension());
 
 //		if (doFire) {
-			Rectangle2D.Double rectangleView = new Rectangle2D.Double();
-			rectangleView.setRect(
-					(int) (middle.x - viewPanelBoundsReal.x / 2),
-					(int) (middle.y - viewPanelBoundsReal.y / 2),
-					getViewDimension().getWidth(),
-					getViewDimension().getHeight()
-			);
+		Rectangle2D.Double rectangleView = new Rectangle2D.Double();
+		rectangleView.setRect(
+				(int) (middle.x - viewPanelBoundsReal.x / 2),
+				(int) (middle.y - viewPanelBoundsReal.y / 2),
+				getViewDimension().getWidth(),
+				getViewDimension().getHeight()
+		);
 
-//			propertyChangeSupport.firePropertyChange(	PdfViewer.PROPERTY_CURRENT_PAGE,
-//														0,
-//														pdfDocument.getMostVisiblePage(
-//															rectangleView
-//														)
-//													);
+//		propertyChangeSupport.firePropertyChange(	PdfViewer.PROPERTY_CURRENT_PAGE,
+//		0,
+//		pdfDocument.getMostVisiblePage(
+//		rectangleView
+//		)
+//		);
 
-			int mostVisiblePage = pdfDocument.getMostVisiblePage(rectangleView);
-			if (mostVisiblePage > 0)
-				setCurrentPage(mostVisiblePage);
+		int mostVisiblePage = pdfDocument.getMostVisiblePage(rectangleView);
+		if (mostVisiblePage > 0)
+			setCurrentPage(mostVisiblePage);
 //		}
 	}
 
@@ -990,69 +1128,75 @@ public class PdfViewerComposite extends Composite
 	}
 
 	public int getCurrentPage() {
-	    return currentPage;
-    }
+		return currentPage;
+	}
 
 	public void setCurrentPage(int currentPage) {
+		if (logger.isDebugEnabled())
+			logger.debug("setCurrentPage: " + currentPage);
+
 		if (currentPage < 1)
 			currentPage = 0; // make sure, we have only numbers >= 0 with 0 having the meaning that NO page is "current".
 
 		int oldPageNumber = this.currentPage;
-	    this.currentPage = currentPage;
+		this.currentPage = currentPage;
 
-	    if (currentPage >= 1) {
-	    	Rectangle2D pageBounds = pdfDocument.getPageBounds(currentPage);
+		applyAutoZoom(); // pageheight/width might have changed
+		center();
 
-	    	// viewOrigin changes while choosing another page
-	    	Point2D oldViewOrigin = pdfViewer.getViewOrigin();
+		if (currentPage >= 1) {
+			Rectangle2D pageBounds = pdfDocument.getPageBounds(currentPage);
 
-	    	// viewDimension remains the same while choosing another page
-	    	Dimension2D viewDimension = pdfViewer.getViewDimension();
+			// viewOrigin changes while choosing another page
+			Point2D oldViewOrigin = pdfViewer.getViewOrigin();
 
-	    	Rectangle2D.Double oldViewBounds = new Rectangle2D.Double();
-	    	oldViewBounds.setFrame(oldViewOrigin, viewDimension);
+			// viewDimension remains the same while choosing another page
+			Dimension2D viewDimension = pdfViewer.getViewDimension();
 
-	    	// page is already visible => don't do anything
-	    	// maybe optimize and still scroll, but without minimum scrolling (only X / only Y, if possible)
-	    	if (!isPageVisible(oldViewBounds, pageBounds)) {
-	    		boolean handled = false;
-	    		for (int situation = 0; situation < 3; ++situation)
-	    		{
-	    			Rectangle2D.Double newViewBounds = new Rectangle2D.Double();
-	    			newViewBounds.setFrame(oldViewOrigin, viewDimension);
+			Rectangle2D.Double oldViewBounds = new Rectangle2D.Double();
+			oldViewBounds.setFrame(oldViewOrigin, viewDimension);
 
-	    			switch (situation) {
-	    				case 0: // scrolling X is sufficient
-	    					newViewBounds.x = pageBounds.getX();
-	    					break;
-	    				case 1: // scrolling Y is sufficient
-	    					newViewBounds.y = pageBounds.getY();
-	    					break;
-	    				case 2: // need to scroll both, X and Y
-	    					newViewBounds.x = pageBounds.getX();
-	    					newViewBounds.y = pageBounds.getY();
-	    					break;
-	    				default:
-	    					throw new IllegalStateException("situation unknown: " + situation); //$NON-NLS-1$
-	    			}
+			// page is already visible => don't do anything
+			// maybe optimize and still scroll, but without minimum scrolling (only X / only Y, if possible)
+			if (!isPageVisible(oldViewBounds, pageBounds)) {
+				boolean handled = false;
+				for (int situation = 0; situation < 3; ++situation)
+				{
+					Rectangle2D.Double newViewBounds = new Rectangle2D.Double();
+					newViewBounds.setFrame(oldViewOrigin, viewDimension);
 
-	    			if (situation == 2 || isPageVisible(newViewBounds, pageBounds)) {
-	    				pdfViewer.setViewOrigin(new Point2D.Double(newViewBounds.getX(), newViewBounds.getY()));
-	    				handled = true;
-	    				break;
-	    			}
-	    		}
-	    		if (!handled)
-	    			throw new IllegalStateException("What the fucking shit?!"); //$NON-NLS-1$
-	    	}
-	    }
+					switch (situation) {
+						case 0: // scrolling X is sufficient
+							newViewBounds.x = pageBounds.getX();
+							break;
+						case 1: // scrolling Y is sufficient
+							newViewBounds.y = pageBounds.getY();
+							break;
+						case 2: // need to scroll both, X and Y
+							newViewBounds.x = pageBounds.getX();
+							newViewBounds.y = pageBounds.getY();
+							break;
+						default:
+							throw new IllegalStateException("situation unknown: " + situation); //$NON-NLS-1$
+					}
+
+					if (situation == 2 || isPageVisible(newViewBounds, pageBounds)) {
+						pdfViewer.setViewOrigin(new Point2D.Double(newViewBounds.getX(), newViewBounds.getY()));
+						handled = true;
+						break;
+					}
+				}
+				if (!handled)
+					throw new IllegalStateException("What the fucking shit?!"); //$NON-NLS-1$
+			}
+		}
 
 		propertyChangeSupport.firePropertyChange(
 				PdfViewer.PROPERTY_CURRENT_PAGE,
 				oldPageNumber,
 				currentPage
 		);
-    }
+	}
 
 	private boolean isPageVisible(Rectangle2D viewBounds, Rectangle2D pageBounds) {
 		return viewBounds.contains(pageBounds) || pageBounds.contains(viewBounds) || viewBounds.intersects(pageBounds);
@@ -1118,8 +1262,8 @@ public class PdfViewerComposite extends Composite
 	}
 
 	public PdfViewer getPdfViewer() {
-    	return pdfViewer;
-    }
+		return pdfViewer;
+	}
 
 	private ListenerList paintToBufferListeners = new ListenerList();
 	private ListenerList paintToViewListeners = new ListenerList();
@@ -1174,14 +1318,20 @@ public class PdfViewerComposite extends Composite
 
 	@Override
 	public void redraw() {
-	    super.redraw();
-	    viewPanel.repaint();
+		super.redraw();
+		viewPanel.repaint();
 	}
 
 	@Override
 	public void redraw(int x, int y, int width, int height, boolean all) {
-	    super.redraw(x, y, width, height, all);
-	    viewPanel.repaint();
+		super.redraw(x, y, width, height, all);
+		viewPanel.repaint();
+	}
+
+	public void onAutoZoomChange()
+	{
+		applyAutoZoom();
+		calculateScrollbarValues();
 	}
 
 }

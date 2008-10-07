@@ -30,8 +30,27 @@ public class PdfViewer
 	private int zoomFactorPerMill = 1000;
 
 	private boolean updateCurrentPageOnScrolling = true;
-	private AutoZoom autoZoom = AutoZoom.none;
+	private AutoZoom autoZoom = AutoZoom.pageWidth;
 	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+
+//	/**
+//	 * When auto-zooming to page size/width/height, use this factor to determine, how much of the visible space
+//	 * shall be used as reference size. The value 1.0 means, the page's width, for example, will completely
+//	 * cover the panel's width.
+//	 */
+//	private double autoZoomFactor = 1.0d;
+
+	/**
+	 * When auto-zooming to page size/width/height, this margin (in real coordinates - i.e. DOT) defines how much the visible
+	 * space is reduced on the left and the right side (i.e. twice the value specified here).
+	 */
+	private int autoZoomHorizontalMargin = 0;
+
+	/**
+	 * When auto-zooming to page size/width/height, this margin (in real coordinates - i.e. DOT) defines how much the visible
+	 * space is reduced on the top and the bottom side (i.e. twice the value specified here).
+	 */
+	private int autoZoomVerticalMargin = 0;
 
 	/**
 	 * Constant used by the {@link PropertyChangeListener}s for modifications of the view-origin,
@@ -114,31 +133,70 @@ public class PdfViewer
 	 */
 	public static final String PROPERTY_UNREGISTER_CONTEXT_ELEMENT = "unregisterContextElement"; //$NON-NLS-1$
 
-	// TODO: What is thumbnail-specific in here??? This is the PdfViewer and not the PdfThumbnailNavigator!
-	// Please fix the documentation. The mouse-events are generic and have nothing to do with thumbnails.
-	// Marco.
 	/**
-	 * Constant used by the {@link PropertyChangeListener}s when a thumbnail in PDF thumbnail navigator
-	 * was clicked with the mouse.
+	 * Constant used by the {@link PropertyChangeListener}s when the user clicked somewhere in the viewing area.
+	 * A click is defined as pressing and releasing a mouse button.
 	 *
 	 * <p>
-	 * {@link PropertyChangeEvent#getNewValue()} returns
-	 * and {@link PropertyChangeEvent#getOldValue()} returns 0 (old value is not needed)
+	 * {@link PropertyChangeEvent#getNewValue()} returns an instance of {@link org.nightlabs.eclipse.ui.pdfviewer.MouseEvent}
+	 * and {@link PropertyChangeEvent#getOldValue()} returns <code>null</code>.
 	 * </p>
 	 *
 	 * @see #addPropertyChangeListener(String, PropertyChangeListener)
 	 */
 	public static final String PROPERTY_MOUSE_CLICKED = "mouseClicked"; //$NON-NLS-1$
 
+	/**
+	 * Constant used by the {@link PropertyChangeListener}s when the user pressed a mouse button somewhere in the viewing area.
+	 *
+	 * <p>
+	 * {@link PropertyChangeEvent#getNewValue()} returns an instance of {@link org.nightlabs.eclipse.ui.pdfviewer.MouseEvent}
+	 * and {@link PropertyChangeEvent#getOldValue()} returns <code>null</code>.
+	 * </p>
+	 *
+	 * @see #addPropertyChangeListener(String, PropertyChangeListener)
+	 */
 	public static final String PROPERTY_MOUSE_PRESSED = "mousePressed"; //$NON-NLS-1$
 
+	/**
+	 * Constant used by the {@link PropertyChangeListener}s whenever the mouse pointer is moved.
+	 *
+	 * <p>
+	 * {@link PropertyChangeEvent#getNewValue()} returns an instance of {@link org.nightlabs.eclipse.ui.pdfviewer.MouseEvent}
+	 * and {@link PropertyChangeEvent#getOldValue()} returns <code>null</code>.
+	 * </p>
+	 *
+	 * @see #addPropertyChangeListener(String, PropertyChangeListener)
+	 */
 	public static final String PROPERTY_MOUSE_MOVED = "mouseMoved"; //$NON-NLS-1$
 
+	/**
+	 * Constant used by the {@link PropertyChangeListener}s when the user released a mouse button
+	 * (that was pressed before - see {@link #PROPERTY_MOUSE_PRESSED}).
+	 *
+	 * <p>
+	 * {@link PropertyChangeEvent#getNewValue()} returns an instance of {@link org.nightlabs.eclipse.ui.pdfviewer.MouseEvent}
+	 * and {@link PropertyChangeEvent#getOldValue()} returns <code>null</code>.
+	 * </p>
+	 *
+	 * @see #addPropertyChangeListener(String, PropertyChangeListener)
+	 */
 	public static final String PROPERTY_MOUSE_RELEASED = "mouseReleased"; //$NON-NLS-1$
 
+	/**
+	 * Constant used by the {@link PropertyChangeListener}s whenever the mouse pointer is
+	 * dragged - i.e. moved while a mouse button is down (after pressed and before released).
+	 *
+	 * <p>
+	 * {@link PropertyChangeEvent#getNewValue()} returns an instance of {@link org.nightlabs.eclipse.ui.pdfviewer.MouseEvent}
+	 * and {@link PropertyChangeEvent#getOldValue()} returns <code>null</code>.
+	 * </p>
+	 *
+	 * @see #addPropertyChangeListener(String, PropertyChangeListener)
+	 */
 	public static final String PROPERTY_MOUSE_DRAGGED = "mouseDragged"; //$NON-NLS-1$
 
-	public static final String PROPERTY_COMPONENT_RESIZED = "componentResized"; //$NON-NLS-1$
+//	public static final String PROPERTY_COMPONENT_RESIZED = "componentResized"; //$NON-NLS-1$
 
 
 	public PdfViewer() { }
@@ -458,14 +516,14 @@ public class PdfViewer
 			throw new IllegalStateException("Currently, this method can only be called when a control has already been created (i.e. after PdfViewer.createControl() has been called)!"); // TODO use local mirror variable //$NON-NLS-1$
 
 		return pdfViewerComposite.getCurrentPage();
-    }
+	}
 
 	public void setCurrentPage(int currentPage) {
 		if (pdfViewerComposite != null)
 			pdfViewerComposite.setCurrentPage(currentPage);
 		else
 			throw new IllegalStateException("Currently, this method can only be called when a control has already been created (i.e. after PdfViewer.createControl() has been called)!"); // TODO use local mirror variable //$NON-NLS-1$
-    }
+	}
 
 	/**
 	 * Get the zoom correction factor (horizontal and vertical) to make <code>zoomFactor=100%</code> mean real-life size.
@@ -492,24 +550,28 @@ public class PdfViewer
 	}
 
 	public void setAutoZoom(AutoZoom autoZoom) {
+		assertValidThread();
+
 		this.autoZoom = autoZoom;
+		if (pdfViewerComposite != null)
+			pdfViewerComposite.onAutoZoomChange();
 	}
 
 	private boolean mouseWheelZoomEnabled = true;
 
 	public void setMouseWheelZoomEnabled(boolean zoomIsAllowed) {
-    	this.mouseWheelZoomEnabled = zoomIsAllowed;
-    }
+		this.mouseWheelZoomEnabled = zoomIsAllowed;
+	}
 
 	public boolean isMouseWheelZoomEnabled() {
-	    return mouseWheelZoomEnabled;
-    }
+		return mouseWheelZoomEnabled;
+	}
 
 	public PdfViewerComposite getPdfViewerComposite() {
 		assertValidThread();
 
-    	return this.pdfViewerComposite;
-    }
+		return this.pdfViewerComposite;
+	}
 
 	private ListenerList paintToBufferListeners = new ListenerList();
 	private ListenerList paintToViewListeners = new ListenerList();
@@ -541,9 +603,39 @@ public class PdfViewer
 	}
 
 	public void setUpdateCurrentPageOnScrolling(boolean updateCurrentPageOnScrolling) {
-	    this.updateCurrentPageOnScrolling = updateCurrentPageOnScrolling;
-    }
+		assertValidThread();
+
+		this.updateCurrentPageOnScrolling = updateCurrentPageOnScrolling;
+	}
 	public boolean isUpdateCurrentPageOnScrolling() {
-	    return updateCurrentPageOnScrolling;
-    }
+		return updateCurrentPageOnScrolling;
+	}
+
+//	public double getAutoZoomFactor() {
+//		return autoZoomFactor;
+//	}
+//	public void setAutoZoomFactor(double autoZoomFactor) {
+//		assertValidThread();
+//
+//		this.autoZoomFactor = autoZoomFactor;
+//		if (pdfViewerComposite != null)
+//			pdfViewerComposite.onAutoZoomChange();
+//	}
+
+	public int getAutoZoomHorizontalMargin() {
+		return autoZoomHorizontalMargin;
+	}
+	public void setAutoZoomHorizontalMargin(int autoZoomHorizontalMargin) {
+		this.autoZoomHorizontalMargin = autoZoomHorizontalMargin;
+		if (pdfViewerComposite != null)
+			pdfViewerComposite.onAutoZoomChange();
+	}
+	public int getAutoZoomVerticalMargin() {
+		return autoZoomVerticalMargin;
+	}
+	public void setAutoZoomVerticalMargin(int autoZoomVerticalMargin) {
+		this.autoZoomVerticalMargin = autoZoomVerticalMargin;
+		if (pdfViewerComposite != null)
+			pdfViewerComposite.onAutoZoomChange();
+	}
 }

@@ -46,6 +46,9 @@ public class PdfThumbnailNavigatorComposite extends Composite
 
 		thumbnailPdfViewer = new PdfViewer();
 		thumbnailPdfViewer.setUpdateCurrentPageOnScrolling(false);
+//		thumbnailPdfViewer.setAutoZoomFactor(0.92d);
+		thumbnailPdfViewer.setAutoZoomHorizontalMargin(24);
+		thumbnailPdfViewer.setAutoZoomVerticalMargin(24);
 		thumbnailPdfViewer.setAutoZoom(AutoZoom.pageWidth);
 		thumbnailPdfViewer.setMouseWheelZoomEnabled(false);
 		thumbnailPdfViewer.addPaintToViewListener(currentPageDrawListener);
@@ -213,8 +216,8 @@ public class PdfThumbnailNavigatorComposite extends Composite
 		thumbnailPdfViewer.setCurrentPage(pageNumber);
 	}
 
-	public void zoomToPageWidth() {
-		thumbnailPdfViewer.getPdfViewerComposite().zoomToPageWidth();
-	}
+//	public void zoomToPageWidth() {
+//		thumbnailPdfViewer.getPdfViewerComposite().zoomToPageWidth();
+//	}
 
 }

@@ -36,7 +36,7 @@ public class PdfThumbnailNavigator implements ContextElement<PdfThumbnailNavigat
 		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_CURRENT_PAGE, propertyChangeListenerCurrentPage);
 		// PDF thumbnail navigator will be notified in the case PDF viewer has loaded a PDF document.
 		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_PDF_DOCUMENT, propertyChangeListenerPdfDocument);
-		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_COMPONENT_RESIZED, propertyChangeListenerComponentResized);
+//		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_COMPONENT_RESIZED, propertyChangeListenerComponentResized);
 		setPdfDocument(pdfViewer.getPdfDocument());
 	}
 
@@ -56,17 +56,17 @@ public class PdfThumbnailNavigator implements ContextElement<PdfThumbnailNavigat
 				PdfThumbnailNavigator.this.pdfViewer.setCurrentPage((Integer) evt.getNewValue());
 			}
 		});
-		this.pdfThumbnailNavigatorComposite.getThumbnailPdfViewer().addPropertyChangeListener(PdfViewer.PROPERTY_COMPONENT_RESIZED, propertyChangeListenerComponentResized);
+//		this.pdfThumbnailNavigatorComposite.getThumbnailPdfViewer().addPropertyChangeListener(PdfViewer.PROPERTY_COMPONENT_RESIZED, propertyChangeListenerComponentResized);
 
 		return this.pdfThumbnailNavigatorComposite;
 	}
 
-	private PropertyChangeListener propertyChangeListenerComponentResized = new PropertyChangeListener() {
-		@Override
-		public void propertyChange(PropertyChangeEvent event) {
-			pdfThumbnailNavigatorComposite.zoomToPageWidth();
-		}
-	};
+//	private PropertyChangeListener propertyChangeListenerComponentResized = new PropertyChangeListener() {
+//		@Override
+//		public void propertyChange(PropertyChangeEvent event) {
+//			pdfThumbnailNavigatorComposite.zoomToPageWidth();
+//		}
+//	};
 
 	private PropertyChangeListener propertyChangeListenerCurrentPage = new PropertyChangeListener() {
 		@Override
@@ -114,7 +114,7 @@ public class PdfThumbnailNavigator implements ContextElement<PdfThumbnailNavigat
 	public void onUnregisterContextElement() {
 		pdfViewer.removePropertyChangeListener(PdfViewer.PROPERTY_PDF_DOCUMENT, propertyChangeListenerPdfDocument);
 	    pdfViewer.removePropertyChangeListener(PdfViewer.PROPERTY_CURRENT_PAGE, propertyChangeListenerCurrentPage);
-	    pdfViewer.removePropertyChangeListener(PdfViewer.PROPERTY_COMPONENT_RESIZED, propertyChangeListenerComponentResized);
+//	    pdfViewer.removePropertyChangeListener(PdfViewer.PROPERTY_COMPONENT_RESIZED, propertyChangeListenerComponentResized);
 	    pdfViewer = null; // ensure we can't do anything with it anymore - the pdfViewer forgot this instance already - so we forget it, too.
 	}
 

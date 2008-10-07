@@ -7,5 +7,6 @@ package org.nightlabs.eclipse.ui.pdfviewer;
 public enum AutoZoom {
 	pageWidth,
 	pageHeight,
+	page,
 	none
 }
