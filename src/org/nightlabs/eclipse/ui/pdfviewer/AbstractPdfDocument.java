@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
-import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
 
 
 public abstract class AbstractPdfDocument implements PdfDocument {
