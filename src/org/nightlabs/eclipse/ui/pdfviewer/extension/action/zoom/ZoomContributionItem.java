@@ -174,14 +174,14 @@ implements IPdfViewerActionOrContributionItem
 				throw new IllegalStateException("Unknown AutoZoom: " + pdfViewer.getAutoZoom());
 		}
 
-		getControl().selectElement(zoomLevel);
+		if (getControl() != null)
+			getControl().selectElement(zoomLevel);
 	}
 
 	protected PdfViewer getPdfViewer()
 	{
 		return pdfViewerActionRegistry == null ? null : pdfViewerActionRegistry.getPdfViewer();
 	}
-
 
 	@Override
 	protected int getComboStyle(Composite parent) {

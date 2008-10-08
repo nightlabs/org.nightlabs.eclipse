@@ -1,10 +1,14 @@
 package org.nightlabs.eclipse.ui.pdfviewer.extension.action;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.swt.widgets.Display;
 import org.nightlabs.base.ui.action.IXContributionItem;
 import org.nightlabs.base.ui.action.registry.AbstractActionRegistry;
@@ -32,10 +36,6 @@ implements ContextElement<PdfViewerActionRegistry>
 		}
 	}
 
-	public PdfViewerActionRegistry(PdfViewer pdfViewer, UseCase useCase) {
-		this(pdfViewer, useCase, null);
-	}
-
 	public PdfViewerActionRegistry(PdfViewer pdfViewer, UseCase useCase, String contextElementId) {
 		assertValidThread();
 
@@ -48,6 +48,10 @@ implements ContextElement<PdfViewerActionRegistry>
 		this.pdfViewer = pdfViewer;
 		this.useCase = useCase;
 		this.contextElementId = contextElementId;
+		pdfViewer.registerContextElement(this);
+		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_PDF_DOCUMENT, propertyChangeListenerCalculateEnabled);
+		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_REGISTER_CONTEXT_ELEMENT, propertyChangeListenerCalculateEnabled);
+		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_UNREGISTER_CONTEXT_ELEMENT, propertyChangeListenerCalculateEnabled);
 
 		long start = 0;
 		if (logger.isDebugEnabled())
@@ -59,9 +63,18 @@ implements ContextElement<PdfViewerActionRegistry>
 			logger.debug("process() took " + (System.currentTimeMillis() - start) + " msec!");
 	}
 
+	private PropertyChangeListener propertyChangeListenerCalculateEnabled = new PropertyChangeListener() {
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			calculateEnabled();
+		}
+	};
+
 	@Override
 	public void onUnregisterContextElement() {
-		// nothing to clean up
+		pdfViewer.removePropertyChangeListener(PdfViewer.PROPERTY_PDF_DOCUMENT, propertyChangeListenerCalculateEnabled);
+		pdfViewer.removePropertyChangeListener(PdfViewer.PROPERTY_REGISTER_CONTEXT_ELEMENT, propertyChangeListenerCalculateEnabled);
+		pdfViewer.removePropertyChangeListener(PdfViewer.PROPERTY_UNREGISTER_CONTEXT_ELEMENT, propertyChangeListenerCalculateEnabled);
 	}
 
 	@Override
@@ -122,5 +135,17 @@ implements ContextElement<PdfViewerActionRegistry>
 
 	public UseCase getUseCase() {
 		return useCase;
+	}
+
+	public void calculateEnabled() {
+		for (ActionDescriptor actionDescriptor : getActionDescriptors()) {
+			IAction action = actionDescriptor.getAction();
+			if (action instanceof IPdfViewerActionOrContributionItem)
+				((IPdfViewerActionOrContributionItem)action).calculateEnabled();
+
+			IContributionItem contributionItem = actionDescriptor.getContributionItem();
+			if (contributionItem instanceof IPdfViewerActionOrContributionItem)
+				((IPdfViewerActionOrContributionItem)contributionItem).calculateEnabled();
+		}
 	}
 }

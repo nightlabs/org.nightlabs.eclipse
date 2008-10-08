@@ -1,7 +1,10 @@
 package org.nightlabs.eclipse.ui.pdfviewer.extension.editor;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.Arrays;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -9,6 +12,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfFileLoader;
+import org.nightlabs.util.IOUtil;
 import org.nightlabs.util.Util;
 
 import com.sun.pdfview.PDFFile;
@@ -24,6 +28,7 @@ implements IEditorInput
 	private String name;
 	private String toolTipText;
 	private ImageDescriptor imageDescriptor;
+	private URL url;
 	private File file;
 	private byte[] byteArray;
 	private volatile PDFFile pdfFile;
@@ -45,15 +50,36 @@ implements IEditorInput
 		this.file = file;
 	}
 
-	public PdfViewerEditorInput(String name, String toolTipText, ImageDescriptor imageDescriptor, PDFFile pdfFile)
+//	public PdfViewerEditorInput(String name, String toolTipText, ImageDescriptor imageDescriptor, PDFFile pdfFile)
+//	{
+//		if (pdfFile == null)
+//			throw new IllegalArgumentException("pdfFile must not be null!"); //$NON-NLS-1$
+//
+//		this.name = name;
+//		this.toolTipText = toolTipText;
+//		this.imageDescriptor = imageDescriptor;
+//		this.pdfFile = pdfFile;
+//	}
+
+	public PdfViewerEditorInput(URL url)
 	{
-		if (pdfFile == null)
-			throw new IllegalArgumentException("pdfFile must not be null!"); //$NON-NLS-1$
+		this(
+				new File(url.getPath()).getName(),
+				url.toString(),
+				null,
+				url
+		);
+	}
+
+	public PdfViewerEditorInput(String name, String toolTipText, ImageDescriptor imageDescriptor, URL url)
+	{
+		if (url == null)
+			throw new IllegalArgumentException("url must not be null!"); //$NON-NLS-1$
 
 		this.name = name;
 		this.toolTipText = toolTipText;
 		this.imageDescriptor = imageDescriptor;
-		this.pdfFile = pdfFile;
+		this.url = url;
 	}
 
 	public PdfViewerEditorInput(String name, String toolTipText, ImageDescriptor imageDescriptor, byte[] byteArray) {
@@ -93,6 +119,18 @@ implements IEditorInput
 			monitor.worked(1);
 			monitor.done();
 			return pdfFile;
+		}
+
+		if (url != null) {
+			InputStream in = url.openStream();
+			try {
+				ByteArrayOutputStream out = new ByteArrayOutputStream();
+				IOUtil.transferStreamData(in, out);
+				out.close();
+				byteArray = out.toByteArray();
+			} finally {
+				in.close();
+			}
 		}
 
 		if (byteArray != null)
@@ -150,5 +188,37 @@ implements IEditorInput
 	@Override
 	public int hashCode() {
 		return Util.hashCode(file) + (byteArray == null ? 0 : Arrays.hashCode(byteArray));
+	}
+
+	/**
+	 * Get the URL that was used to create this EditorInput or <code>null</code>.
+	 * If an URL was used for the creation of this editor input and {@link #createPDFFile(IProgressMonitor)}
+	 * was called, {@link #getByteArray()} will also return the raw data.
+	 *
+	 * @return the URL pointing to the raw PDF data or <code>null</code>.
+	 */
+	public URL getUrl() {
+		return url;
+	}
+
+	/**
+	 * Get the byte array that was used to create this EditorInput or <code>null</code>.
+	 * If this is <code>null</code>, the method {@link #getFile()} will return a file containing
+	 * the data.
+	 *
+	 * @return the byte array containing the raw PDF data or <code>null</code>.
+	 */
+	public byte[] getByteArray() {
+		return byteArray;
+	}
+	/**
+	 * Get the file that was used to create this EditorInput or <code>null</code>.
+	 * If this is <code>null</code>, the method {@link #getByteArray()} will return the
+	 * PDF's raw data.
+	 *
+	 * @return the file containing the raw PDF data or <code>null</code>.
+	 */
+	public File getFile() {
+		return file;
 	}
 }
