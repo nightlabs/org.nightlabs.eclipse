@@ -27,14 +27,30 @@
                class="org.nightlabs.eclipse.ui.pdfviewer.extension.action.save.SaveAsAction"
                icon="icons/action/save/SaveAsAction.16x16.png"
                id="org.nightlabs.eclipse.ui.pdfviewer.extension.action.save.SaveAsAction"
-               menubarPath="org.nightlabs.eclipse.ui.pdfviewer.extension.groupMarker1"
+               menubarPath="file/additions"
                name="Save as..."
                toolbarPath="org.nightlabs.eclipse.ui.pdfviewer.extension.groupMarker1"
+               useCase="default">
+         </action>
+         <action
+               class="org.nightlabs.eclipse.ui.pdfviewer.extension.action.print.PrintAction"
+               id="org.nightlabs.eclipse.ui.pdfviewer.extension.action.print.PrintAction"
+               name="Print"
+               toolbarPath="org.nightlabs.eclipse.ui.pdfviewer.extension.groupMarker1"
+               tooltip="For Printing"
                useCase="default">
          </action>
    </extension>
    <extension
          point="org.eclipse.ui.startup">
          <startup class="org.nightlabs.eclipse.ui.pdfviewer.extension.printer.PdfPrinterRegistrationStartup"/>         
+   </extension>
+   <extension
+         point="org.nightlabs.base.ui.printerConfiguration">
+      <printerUseCase
+            description="Print PDF files"
+            id="org.nightlabs.eclipse.ui.pdfviewer.extension.printerUseCase"
+            name="Print PDF files">
+      </printerUseCase>
    </extension>
 </plugin>

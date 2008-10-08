@@ -45,6 +45,7 @@ public class PdfPrinter implements DocumentPrinter {
 	 */
 	@Override
 	public void printDocument(File file) throws PrinterException {
+		PDFFile pdfFile;
 		try {
 	        pdfFile = PdfFileLoader.loadPdf(file, new NullProgressMonitor());
         } catch (IOException exception) {
@@ -52,14 +53,15 @@ public class PdfPrinter implements DocumentPrinter {
         	x.initCause(exception);
         	throw x;
         }
-        this.printDocument();
+        this.printDocument(pdfFile);
 	}
 
 	/**
 	 * Creates {@link PrinterJob} and {@link PrintService} instances for printing and prints
 	 * the loaded {@link PDFFile} using a {@link PdfPageable}.
 	 */
-	public void printDocument() throws PrinterException {
+	public void printDocument(PDFFile file) throws PrinterException {
+		this.pdfFile = file;
 
 		// Creates and returns a PrinterJob which is initially associated with the default printer.
 	    printerJob = PrinterJob.getPrinterJob();

@@ -2,9 +2,7 @@ package org.nightlabs.eclipse.ui.pdfviewer.extension.action.save;
 
 import java.util.Collection;
 
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Event;
-import org.nightlabs.base.ui.util.RCPUtil;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
 import org.nightlabs.eclipse.ui.pdfviewer.extension.action.PdfViewerAction;
 
@@ -25,10 +23,10 @@ import com.sun.pdfview.PDFFile;
 public class SaveAsAction
 extends PdfViewerAction
 {
-	@Override
-	public void run() {
-		MessageDialog.openInformation(RCPUtil.getActiveShell(), "Save as", "This should be a dialog for saving the PDF to a local file.");
-	}
+//	@Override
+//	public void run() {
+//		MessageDialog.openInformation(RCPUtil.getActiveShell(), "Save as", "This should be a dialog for saving the PDF to a local file.");
+//	}
 
 	@Override
 	public void calculateEnabled() {
