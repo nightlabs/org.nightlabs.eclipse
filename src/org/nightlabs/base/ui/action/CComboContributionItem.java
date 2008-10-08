@@ -71,17 +71,17 @@ extends XContributionItem
   	return comboComposite;
   }
 
-	private ToolItem toolitem = null;
-	 /**
-  * The control item implementation of this <code>IContributionItem</code>
-  * method calls the <code>createControl</code> framework method to
-  * create a control with a combo under the given parent, and then creates
-  * a new tool item to hold it.
-  *
-  * @param parent The ToolBar to add the new control to
-  * @param index Index
-  */
-	@Override
+//	private ToolItem toolitem = null;
+  /**
+   * The control item implementation of this <code>IContributionItem</code>
+   * method calls the <code>createControl</code> framework method to
+   * create a control with a combo under the given parent, and then creates
+   * a new tool item to hold it.
+   *
+   * @param parent The ToolBar to add the new control to
+   * @param index Index
+   */
+  @Override
   public void fill(ToolBar parent, int index)
   {
 //		toolitem = new ToolItem(parent, SWT.SEPARATOR, index);
@@ -118,9 +118,15 @@ extends XContributionItem
 		public void fill(ToolBar parent, int index) {
 			final ToolItem toolItem = new ToolItem(parent, SWT.SEPARATOR);
 			toolItem.setControl(createControl(parent));
-			toolItem.setWidth(100);
+			toolItem.setWidth(getWidth());
 		}
 	}
+
+  protected int getWidth()
+  {
+//  	return 100;
+  	return getControl().computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x;
+  }
 
   private void fillToolBar(ToolBar parent, int index)
 	{
