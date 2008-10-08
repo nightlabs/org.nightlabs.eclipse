@@ -120,7 +120,7 @@ public class ContextElementRegistry
 	 *         be safely iterated while the registry is modified.
 	 */
 	@SuppressWarnings("unchecked") //$NON-NLS-1$
-	public <T extends ContextElement<T>> Collection<T> getContextElements(ContextElementType<T> contextElementType)
+	public <T extends ContextElement<?>> Collection<T> getContextElements(ContextElementType<?> contextElementType)
 	{
 		assertValidThread();
 
