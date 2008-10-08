@@ -311,10 +311,12 @@ public class PdfViewerEditor extends EditorPart
 										}
 									}
 									else if (datasourceFile != null) {
-										IOUtil.copyFile(
-												datasourceFile, file,
-												new org.nightlabs.progress.SubProgressMonitor(new ProgressMonitorWrapper(monitor), 90)
-										);
+										if (!datasourceFile.equals(file)) {
+											IOUtil.copyFile(
+													datasourceFile, file,
+													new org.nightlabs.progress.SubProgressMonitor(new ProgressMonitorWrapper(monitor), 90)
+											);
+										}
 									}
 //									else if (datasourceURL != null) {
 //										// NO NEED to handle this, because the datasourceByteArray will be loaded in this case.
