@@ -60,9 +60,9 @@ public class EditDocumentPrinterTypeRegsComposite extends XComposite {
 	private XComposite buttonWrapper;
 	private Button addDelegation;
 	private Button removeDelegation;
-	
+
 	private Map<String, DocumentPrinterDelegateConfig> delegateConfigs = new HashMap<String, DocumentPrinterDelegateConfig>();
-	
+
 	/**
 	 * @param parent
 	 * @param style
@@ -123,10 +123,10 @@ public class EditDocumentPrinterTypeRegsComposite extends XComposite {
 		getGridLayout().numColumns = 2;
 		fileExtList = new List(this, SWT.BORDER);
 		fileExtList.setLayoutData(new GridData(GridData.FILL_BOTH));
-		
+
 		buttonWrapper = new XComposite(this, SWT.NONE, LayoutMode.TIGHT_WRAPPER, LayoutDataMode.NONE);
 		buttonWrapper.setLayoutData(new GridData(GridData.FILL_VERTICAL));
-		
+
 		addDelegation = new Button(buttonWrapper, SWT.PUSH);
 		addDelegation.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		addDelegation.setText(Messages.getString("org.nightlabs.base.ui.print.pref.EditDocumentPrinterTypeRegsComposite.addDelegation.text")); //$NON-NLS-1$
@@ -142,7 +142,7 @@ public class EditDocumentPrinterTypeRegsComposite extends XComposite {
 				}
 			}
 		});
-		
+
 		removeDelegation = new Button(buttonWrapper, SWT.PUSH);
 		removeDelegation.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		removeDelegation.setText(Messages.getString("org.nightlabs.base.ui.print.pref.EditDocumentPrinterTypeRegsComposite.removeDelegation.text")); //$NON-NLS-1$
@@ -154,7 +154,7 @@ public class EditDocumentPrinterTypeRegsComposite extends XComposite {
 			}
 		});
 	}
-	
+
 	public String getSelectedFileExt() {
 		String[] selection = fileExtList.getSelection();
 		if (selection.length > 0)
@@ -170,9 +170,9 @@ public class EditDocumentPrinterTypeRegsComposite extends XComposite {
 	public void addSelectionListener(SelectionListener listener) {
 		fileExtList.addSelectionListener(listener);
 	}
-	
-	
-	
+
+
+
 	public void setDelegateConfigs(Map<String, DocumentPrinterDelegateConfig> _delegateConfigs) {
 		delegateConfigs.clear();
 		if (_delegateConfigs != null) {
@@ -182,15 +182,15 @@ public class EditDocumentPrinterTypeRegsComposite extends XComposite {
 		}
 		updateList();
 	}
-	
+
 	public DocumentPrinterDelegateConfig getDelegateConfig(String fileExt) {
 		return delegateConfigs.get(fileExt);
 	}
-	
+
 	public boolean hasRegistration(String fileExt) {
 		return delegateConfigs.containsKey(fileExt);
 	}
-	
+
 	public Map<String, DocumentPrinterDelegateConfig> getDelegateConfigs() {
 		return delegateConfigs;
 	}
@@ -199,7 +199,7 @@ public class EditDocumentPrinterTypeRegsComposite extends XComposite {
 		delegateConfigs.put(fileExt, delegateConfig);
 		updateList();
 	}
-	
+
 	public void updateList() {
 		String[] selection = fileExtList.getSelection();
 		fileExtList.removeAll();
@@ -210,17 +210,17 @@ public class EditDocumentPrinterTypeRegsComposite extends XComposite {
 		}
 		fileExtList.setSelection(selection);
 	}
-	
+
 	public void addTypeReg(String fileExt) {
 		delegateConfigs.put(fileExt, null);
 		updateList();
 	}
-	
+
 	public void removeTypeReg(String fileExt) {
 		delegateConfigs.remove(fileExt);
 		updateList();
 	}
-	
+
 	public static class FileExtDialog extends Dialog {
 		public LabeledText fileExtText;
 		private String fileExt;
@@ -250,5 +250,5 @@ public class EditDocumentPrinterTypeRegsComposite extends XComposite {
 		else
 			return null;
 	}
-	
+
 }
