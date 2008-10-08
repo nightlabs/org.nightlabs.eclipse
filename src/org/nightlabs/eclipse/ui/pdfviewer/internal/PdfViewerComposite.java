@@ -366,6 +366,9 @@ public class PdfViewerComposite extends Composite
 		});
 
 		viewPanel.addComponentListener(new ComponentAdapter() {
+			private Point pdfViewerCompositeOldSize;
+			private int flickeringCounter = 0;
+
 			@Override
 			public void componentResized(ComponentEvent e) {
 				if (logger.isDebugEnabled())
@@ -377,6 +380,21 @@ public class PdfViewerComposite extends Composite
 				if (!isViewPanelMinimumSized())
 					return;
 
+				final Point[] pdfViewerCompositeNewSize = new Point[1];
+				getDisplay().syncExec(new Runnable() {
+					public void run() {
+						pdfViewerCompositeNewSize[0] = PdfViewerComposite.this.getSize();
+					}
+				});
+
+				if (pdfViewerCompositeNewSize[0].equals(pdfViewerCompositeOldSize)) {
+					if (++flickeringCounter > 5)
+						return; // prevent eternal flickering between two states because of scroll bars coming and going.
+				}
+				else
+					flickeringCounter = 0;
+
+				pdfViewerCompositeOldSize = pdfViewerCompositeNewSize[0];
 				final Dimension2D viewDimensionBefore = getViewDimension();
 
 				applyAutoZoom();
@@ -422,17 +440,18 @@ public class PdfViewerComposite extends Composite
 				// TODO is this repaint necessary? Marco.
 				viewPanel.repaint();
 
-				getDisplay().asyncExec(new Runnable() {
-					public void run() {
-						propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_DIMENSION, viewDimensionBefore, getViewDimension());
-					}
-				});
+				if (!isDisposed()) {
+					getDisplay().asyncExec(new Runnable() {
+						public void run() {
+							propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_DIMENSION, viewDimensionBefore, getViewDimension());
+						}
+					});
+				}
 			}
 			@Override
 			public void componentShown(ComponentEvent e) {
 			}
 		});
-
 
 
 //		viewPanelFrame.add(viewPanel);
@@ -703,6 +722,9 @@ public class PdfViewerComposite extends Composite
 		Display.getDefault().syncExec(new Runnable() {
 			@Override
 			public void run() {
+				if (isDisposed())
+					return;
+
 				if (logger.isDebugEnabled())
 					logger.debug("calculateScrollbarValues: entered");
 

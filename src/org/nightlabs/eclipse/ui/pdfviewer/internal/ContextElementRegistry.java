@@ -129,7 +129,7 @@ public class ContextElementRegistry
 
 		Map<String, ContextElement<?>> id2contextElement = contextElementType2id2contextElementCache.get(contextElementType);
 		if (id2contextElement != null)
-			return (Collection<T>) id2contextElement;
+			return (Collection<T>) id2contextElement.values();
 
 		id2contextElement = contextElementType2id2contextElement.get(contextElementType);
 		if (id2contextElement == null)
@@ -139,7 +139,7 @@ public class ContextElementRegistry
 
 		contextElementType2id2contextElementCache.put(contextElementType, id2contextElement);
 
-		return (Collection<T>) id2contextElement;
+		return (Collection<T>) id2contextElement.values();
 	}
 
 	private Collection<ContextElement<?>> allContextElementsCache = null;

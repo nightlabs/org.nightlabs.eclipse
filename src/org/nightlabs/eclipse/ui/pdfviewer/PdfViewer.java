@@ -44,13 +44,13 @@ public class PdfViewer
 	 * When auto-zooming to page size/width/height, this margin (in real coordinates - i.e. DOT) defines how much the visible
 	 * space is reduced on the left and the right side (i.e. twice the value specified here).
 	 */
-	private int autoZoomHorizontalMargin = 0;
+	private int autoZoomHorizontalMargin = 3;
 
 	/**
 	 * When auto-zooming to page size/width/height, this margin (in real coordinates - i.e. DOT) defines how much the visible
 	 * space is reduced on the top and the bottom side (i.e. twice the value specified here).
 	 */
-	private int autoZoomVerticalMargin = 0;
+	private int autoZoomVerticalMargin = 3;
 
 	/**
 	 * Constant used by the {@link PropertyChangeListener}s for modifications of the view-origin,
