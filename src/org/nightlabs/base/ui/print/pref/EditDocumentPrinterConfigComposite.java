@@ -59,7 +59,7 @@ public class EditDocumentPrinterConfigComposite extends XComposite {
 	private Group typeGroup;
 	private Button typeSysCall;
 	private Button typeExtEngine;
-	
+
 	private Composite editWrapper;
 	private StackLayout stackLayout;
 	private XComposite sysCallEditComposite;
@@ -68,10 +68,10 @@ public class EditDocumentPrinterConfigComposite extends XComposite {
 	private AbstractListComposite<String> templates;
 	private LabeledText commandPattern;
 	private LabeledText parameterPattern;
-	
+
 	private XComposite extEngineEditComposite;
 	private LabeledText className;
-	
+
 	/**
 	 * @param parent
 	 * @param style
@@ -130,14 +130,14 @@ public class EditDocumentPrinterConfigComposite extends XComposite {
 
 	private static final String ACROBAT_WINDOWS = "Acrobat Reader Windows /t"; //$NON-NLS-1$
 	private static final String ACROBAT_WINDOWS_ONLY_DEFAULT = "Acrobat Reader Windows /p/h (Only default printer)"; //$NON-NLS-1$
-	
+
 	private static final List<String> options;
 	static {
 		 options = new LinkedList<String>();
 		 options.add(ACROBAT_WINDOWS);
 		 options.add(ACROBAT_WINDOWS_ONLY_DEFAULT);
 	}
-	
+
 	protected void initGUI() {
 		typeWrapper = new XComposite(this, SWT.NONE, LayoutMode.TIGHT_WRAPPER, LayoutDataMode.GRID_DATA_HORIZONTAL);
 		typeGroup = new Group(typeWrapper, SWT.NONE);
@@ -207,14 +207,14 @@ public class EditDocumentPrinterConfigComposite extends XComposite {
 	}
 
 	private void clearAll() {
-		typeSysCall.setSelection(false);
+		typeSysCall.setSelection(true);		// default selection
 		typeExtEngine.setSelection(false);
 		expectedReturnValue.setText(""); //$NON-NLS-1$
 		commandPattern.getTextControl().setText(""); //$NON-NLS-1$
 		parameterPattern.getTextControl().setText(""); //$NON-NLS-1$
 		className.getTextControl().setText(""); //$NON-NLS-1$
 	}
-	
+
 	private void updateTypeView() {
 		if (typeSysCall.getSelection())
 			stackLayout.topControl = sysCallEditComposite;
@@ -222,7 +222,7 @@ public class EditDocumentPrinterConfigComposite extends XComposite {
 			stackLayout.topControl = extEngineEditComposite;
 		editWrapper.layout(true, true);
 	}
-	
+
 	public void setDelegateConfig(DocumentPrinterDelegateConfig printerConfig) {
 		clearAll();
 		if (printerConfig != null) {
@@ -244,12 +244,19 @@ public class EditDocumentPrinterConfigComposite extends XComposite {
 			updateTypeView();
 		}
 	}
-	
+
 	public DocumentPrinterDelegateConfig readDelegateConfig() {
 		DocumentPrinterDelegateConfig result = null;
 		if (typeSysCall.getSelection()) {
 			result = new SystemCallDelegateConfig();
-			((SystemCallDelegateConfig)result).setExpectedReturnValue(Integer.parseInt(expectedReturnValue.getText()));
+
+			int expectedReturnValueInt;
+			if (expectedReturnValue.getText().equals(""))
+			 	expectedReturnValueInt = 0;
+			else
+				expectedReturnValueInt = Integer.parseInt(expectedReturnValue.getText());
+
+			((SystemCallDelegateConfig)result).setExpectedReturnValue(expectedReturnValueInt/*Integer.parseInt(expectedReturnValue.getText())*/);
 			((SystemCallDelegateConfig)result).setCommandPattern(commandPattern.getTextControl().getText());
 			((SystemCallDelegateConfig)result).setParameterPattern(parameterPattern.getTextControl().getText());
 		}
@@ -259,5 +266,5 @@ public class EditDocumentPrinterConfigComposite extends XComposite {
 		}
 		return result;
 	}
-	
+
 }

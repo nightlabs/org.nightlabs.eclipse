@@ -33,6 +33,13 @@ import java.util.TreeSet;
 import java.util.Map.Entry;
 
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.ListViewer;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -43,7 +50,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 import org.nightlabs.base.ui.composite.LabeledText;
 import org.nightlabs.base.ui.composite.XComposite;
@@ -56,7 +62,8 @@ import org.nightlabs.print.DocumentPrinterDelegateConfig;
  */
 public class EditDocumentPrinterTypeRegsComposite extends XComposite {
 
-	private List fileExtList;
+//	private List fileExtList;
+	private ListViewer fileExtListViewer;
 	private XComposite buttonWrapper;
 	private Button addDelegation;
 	private Button removeDelegation;
@@ -119,10 +126,52 @@ public class EditDocumentPrinterTypeRegsComposite extends XComposite {
 		initGUI();
 	}
 
+	class ListViewerContentProvider implements IStructuredContentProvider {
+
+		@Override
+        public Object[] getElements(Object inputElement) {
+
+			if (inputElement instanceof String){
+				return new Object[] {inputElement};
+			}
+			return new Object[] {};
+
+        }
+
+		@Override
+        public void dispose() {
+        }
+
+		@Override
+        public void inputChanged(Viewer arg0, Object arg1, Object arg2) {
+        }
+
+	}
+
+	class ListViewerLabelProvider extends LabelProvider {
+		@Override
+        public org.eclipse.swt.graphics.Image getImage(Object element) {
+			return null;
+	    }
+
+	    @Override
+        public String getText(Object element) {
+	    	return element.toString();
+
+
+//	    	return null;
+	    }
+	}
+
 	protected void initGUI() {
 		getGridLayout().numColumns = 2;
-		fileExtList = new List(this, SWT.BORDER);
-		fileExtList.setLayoutData(new GridData(GridData.FILL_BOTH));
+//		fileExtList = new List(this, SWT.BORDER);
+//		fileExtList.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+		fileExtListViewer = new ListViewer(this, SWT.BORDER | SWT.V_SCROLL);
+		fileExtListViewer.setContentProvider(new ListViewerContentProvider());
+		fileExtListViewer.setLabelProvider(new ListViewerLabelProvider());
+		fileExtListViewer.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		buttonWrapper = new XComposite(this, SWT.NONE, LayoutMode.TIGHT_WRAPPER, LayoutDataMode.NONE);
 		buttonWrapper.setLayoutData(new GridData(GridData.FILL_VERTICAL));
@@ -156,21 +205,34 @@ public class EditDocumentPrinterTypeRegsComposite extends XComposite {
 	}
 
 	public String getSelectedFileExt() {
-		String[] selection = fileExtList.getSelection();
-		if (selection.length > 0)
-			return selection[0];
-		else
-			return null;
+//		String[] selection = fileExtList.getSelection();
+//		if (selection.length > 0)
+//			return selection[0];
+//		else
+//			return null;
+
+		if (fileExtListViewer.getSelection() instanceof IStructuredSelection) {
+			IStructuredSelection structuredSelection = (IStructuredSelection) fileExtListViewer.getSelection();
+			if (structuredSelection.getFirstElement() instanceof String) {
+				String selection = (String)structuredSelection.getFirstElement();
+				System.out.println("selected entry: " + selection);
+				return selection;
+			}
+		}
+		return null;
 	}
 
 	/**
 	 * @param arg0
 	 * @see org.eclipse.swt.widgets.Button#addSelectionListener(org.eclipse.swt.events.SelectionListener)
 	 */
-	public void addSelectionListener(SelectionListener listener) {
-		fileExtList.addSelectionListener(listener);
-	}
+//	public void addSelectionListener(SelectionListener listener) {
+//		fileExtList.addSelectionListener(listener);
+//	}
 
+	public void addSelectionChangedListener(ISelectionChangedListener listener) {
+		fileExtListViewer.addSelectionChangedListener(listener);
+	}
 
 
 	public void setDelegateConfigs(Map<String, DocumentPrinterDelegateConfig> _delegateConfigs) {
@@ -201,19 +263,54 @@ public class EditDocumentPrinterTypeRegsComposite extends XComposite {
 	}
 
 	public void updateList() {
-		String[] selection = fileExtList.getSelection();
-		fileExtList.removeAll();
+
+//		String[] selection = fileExtList.getSelection();
+//		fileExtList.removeAll();
+//		SortedSet<String> keys = new TreeSet<String>();
+//		keys.addAll(delegateConfigs.keySet());
+//		for (String fileExt : keys) {
+//			fileExtList.add(fileExt);
+//		}
+//		fileExtList.setSelection(selection);
+
+
+		// does only remember the first selection out of a (possible larger) set of selections
+/*		String selection = "";
+		if (fileExtListViewer.getSelection() instanceof IStructuredSelection) {
+			IStructuredSelection structuredSelection = (IStructuredSelection) fileExtListViewer.getSelection();
+			if (structuredSelection.getFirstElement() instanceof String) {
+				selection = (String)structuredSelection.getFirstElement();
+			}
+		}*/
+
+		String[] selections = null; // = new String[];
+
+		if (fileExtListViewer.getSelection() instanceof IStructuredSelection) {
+			IStructuredSelection structuredSelection = (IStructuredSelection) fileExtListViewer.getSelection();
+			int amountOfChosenEntries = structuredSelection.toList().size();
+			selections = new String[amountOfChosenEntries];
+			for (int j = 0; j < amountOfChosenEntries; j++) {
+				selections[j] = (String) structuredSelection.toList().get(j);
+			}
+		}
+
+		fileExtListViewer.setInput(null);
 		SortedSet<String> keys = new TreeSet<String>();
 		keys.addAll(delegateConfigs.keySet());
 		for (String fileExt : keys) {
-			fileExtList.add(fileExt);
+			fileExtListViewer.add(fileExt);
 		}
-		fileExtList.setSelection(selection);
+
+		if (selections != null) {
+			fileExtListViewer.getList().setSelection(selections);
+		}
+
 	}
 
 	public void addTypeReg(String fileExt) {
 		delegateConfigs.put(fileExt, null);
 		updateList();
+		fileExtListViewer.setSelection(new StructuredSelection(fileExt));
 	}
 
 	public void removeTypeReg(String fileExt) {

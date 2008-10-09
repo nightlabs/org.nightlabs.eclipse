@@ -30,9 +30,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.eclipse.jface.preference.PreferencePage;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbench;
@@ -54,7 +54,7 @@ implements IWorkbenchPreferencePage {
 
 	private XComposite wrapper;
 
-	private String editedFileExt = null;
+	private String currentFileExt = null;
 	private EditDocumentPrinterTypeRegsComposite typeRegsComposite;
 	private EditDocumentPrinterConfigComposite printerConfigComposite;
 
@@ -66,17 +66,30 @@ implements IWorkbenchPreferencePage {
 	protected Control createContents(Composite parent) {
 		wrapper = new XComposite(parent, SWT.NONE);
 		typeRegsComposite = new EditDocumentPrinterTypeRegsComposite(wrapper, SWT.NONE);
-		typeRegsComposite.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(SelectionEvent arg0) {
+//		typeRegsComposite.addSelectionListener(new SelectionListener() {
+		typeRegsComposite.addSelectionChangedListener(new ISelectionChangedListener() {
+
+/*			public void widgetDefaultSelected(SelectionEvent arg0) {
 			}
 			public void widgetSelected(SelectionEvent arg0) {
-				if (editedFileExt != null) {
-					if (typeRegsComposite.hasRegistration(editedFileExt))
-						typeRegsComposite.setDelegateConfig(editedFileExt, printerConfigComposite.readDelegateConfig());
+				if (currentFileExt != null) {
+					if (typeRegsComposite.hasRegistration(currentFileExt))
+						typeRegsComposite.setDelegateConfig(currentFileExt, printerConfigComposite.readDelegateConfig());
 				}
-				editedFileExt = typeRegsComposite.getSelectedFileExt();
-				printerConfigComposite.setDelegateConfig(typeRegsComposite.getDelegateConfig(editedFileExt));
-			}
+				currentFileExt = typeRegsComposite.getSelectedFileExt();
+				printerConfigComposite.setDelegateConfig(typeRegsComposite.getDelegateConfig(currentFileExt));
+			}*/
+
+			@Override
+            public void selectionChanged(SelectionChangedEvent arg0) {
+				if (currentFileExt != null) {
+					if (typeRegsComposite.hasRegistration(currentFileExt))
+						typeRegsComposite.setDelegateConfig(currentFileExt, printerConfigComposite.readDelegateConfig());
+				}
+				currentFileExt = typeRegsComposite.getSelectedFileExt();
+				printerConfigComposite.setDelegateConfig(typeRegsComposite.getDelegateConfig(currentFileExt));
+
+            }
 		});
 		printerConfigComposite = new EditDocumentPrinterConfigComposite(wrapper, SWT.NONE);
 
@@ -86,8 +99,8 @@ implements IWorkbenchPreferencePage {
 
 	@Override
 	public boolean performOk() {
-		if (editedFileExt != null)
-			typeRegsComposite.setDelegateConfig(editedFileExt, printerConfigComposite.readDelegateConfig());
+		if (typeRegsComposite.getSelectedFileExt() != null)
+			typeRegsComposite.setDelegateConfig(typeRegsComposite.getSelectedFileExt(), printerConfigComposite.readDelegateConfig());
 		Map<String, DocumentPrinterDelegateConfig> configs = typeRegsComposite.getDelegateConfigs();
 		DelegatingDocumentPrinterCfMod cfMod = DelegatingDocumentPrinterCfMod.sharedInstance();
 		cfMod.getPrintConfigs().clear();
