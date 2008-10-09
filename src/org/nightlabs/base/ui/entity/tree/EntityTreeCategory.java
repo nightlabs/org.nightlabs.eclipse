@@ -42,7 +42,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * To create a new entity tree category, one should inherit this
  * class.
  * 
- * @version $Revision: 4430 $ - $Date: 2006-08-20 17:18:07 +0000 (Sun, 20 Aug 2006) $
+ * @version $Revision$ - $Date$
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  * @author marco schulze - marco at nightlabs dot de
  */

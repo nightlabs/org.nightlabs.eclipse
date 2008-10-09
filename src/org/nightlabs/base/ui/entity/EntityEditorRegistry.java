@@ -48,7 +48,7 @@ import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
  * An extension point registry for entity tree categories
  * and editor pages.
  * 
- * @version $Revision: 4430 $ - $Date: 2006-08-20 17:18:07 +0000 (Sun, 20 Aug 2006) $
+ * @version $Revision$ - $Date$
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  */

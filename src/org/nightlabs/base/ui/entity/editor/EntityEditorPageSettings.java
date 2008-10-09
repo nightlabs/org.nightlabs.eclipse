@@ -34,7 +34,7 @@ import org.nightlabs.util.Util;
 /**
  * Extension point settings for an entity page extension.
  * 
- * @version $Revision: 4430 $ - $Date: 2006-08-20 17:18:07 +0000 (Sun, 20 Aug 2006) $
+ * @version $Revision$ - $Date$
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  */
