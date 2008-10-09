@@ -1274,7 +1274,11 @@ extends AbstractEPProcessor
 					id);
 //			actionDescriptor.setGroupMarkerName(groupMarkerName);
 			if (initActionDescriptor(actionDescriptor, extension, element)) {
-				actionDescriptorsByID.put(id, actionDescriptor);
+				ActionDescriptor oldActionDescriptor = actionDescriptorsByID.put(id, actionDescriptor);
+				if (oldActionDescriptor != null) {
+					menuRaw.remove(oldActionDescriptor);
+				}
+
 				menuRaw.add(actionDescriptor);
 			}
 		}
