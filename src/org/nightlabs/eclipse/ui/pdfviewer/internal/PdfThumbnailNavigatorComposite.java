@@ -8,7 +8,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collection;
 
-import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -29,11 +28,14 @@ import org.nightlabs.eclipse.ui.pdfviewer.Point2DDouble;
  * This composite displays a scrollable list of thumbnails of a PDF file
  * in order to navigate a {@link PdfViewerComposite}.
  *
+ * @version $Revision$ - $Date$
  * @author frederik loeser - frederik at nightlabs dot de
+ * @author marco schulze - marco at nightlabs dot de
  */
 public class PdfThumbnailNavigatorComposite extends Composite
 {
-	private static final Logger logger = Logger.getLogger(PdfThumbnailNavigatorComposite.class);
+//	private static final Logger logger = Logger.getLogger(PdfThumbnailNavigatorComposite.class);
+	@SuppressWarnings("unused")
 	private PdfThumbnailNavigator pdfThumbnailNavigator;
 	private PdfViewer thumbnailPdfViewer;
 	private Control thumbnailPdfViewerControl;
@@ -46,7 +48,6 @@ public class PdfThumbnailNavigatorComposite extends Composite
 
 		thumbnailPdfViewer = new PdfViewer();
 		thumbnailPdfViewer.setUpdateCurrentPageOnScrolling(false);
-//		thumbnailPdfViewer.setAutoZoomFactor(0.92d);
 		thumbnailPdfViewer.setAutoZoomHorizontalMargin(24);
 		thumbnailPdfViewer.setAutoZoomVerticalMargin(24);
 		thumbnailPdfViewer.setAutoZoom(AutoZoom.pageWidth);
@@ -215,9 +216,5 @@ public class PdfThumbnailNavigatorComposite extends Composite
 	public void setCurrentPage(int pageNumber) {
 		thumbnailPdfViewer.setCurrentPage(pageNumber);
 	}
-
-//	public void zoomToPageWidth() {
-//		thumbnailPdfViewer.getPdfViewerComposite().zoomToPageWidth();
-//	}
 
 }

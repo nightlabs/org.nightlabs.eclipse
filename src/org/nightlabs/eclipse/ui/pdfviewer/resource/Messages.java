@@ -3,6 +3,10 @@ package org.nightlabs.eclipse.ui.pdfviewer.resource;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+/**
+ * @version $Revision$ - $Date$
+ * @author frederik loeser - frederik at nightlabs dot de
+ */
 public class Messages {
 	private static final String BUNDLE_NAME = "org.nightlabs.eclipse.ui.pdfviewer.resource.messages"; //$NON-NLS-1$
 

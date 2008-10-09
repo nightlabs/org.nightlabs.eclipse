@@ -6,8 +6,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 
-import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
-
 /**
  * Utility methods used throughout the PDF viewer plug-in. All these methods have
  * been copied from the classes <code>org.nightlabs.util.Util</code>,
@@ -15,8 +13,9 @@ import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
  * <code>org.nightlabs.base.ui.util.RCPUtil</code> in order to avoid a dependency
  * on the plug-in <code>org.nightlabs.base.ui</code> just for these few methods.
  *
+ * @version $Revision$ - $Date$
+ * @author frederik loeser - frederik at nightlabs dot de
  * @author marco schulze - marco at nightlabs dot de
- * @author frederik löser - frederik at nightlabs dot de
  */
 public final class Util {
 	private Util() { }

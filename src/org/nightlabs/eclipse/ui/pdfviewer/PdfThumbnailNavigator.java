@@ -8,6 +8,14 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.nightlabs.eclipse.ui.pdfviewer.internal.PdfThumbnailNavigatorComposite;
 
+/**
+ * A navigator showing thumbnails of all pages and allowing to navigate
+ * by scrolling and clicking.
+ * 
+ * @version $Revision$ - $Date$
+ * @author marco schulze - marco at nightlabs dot de
+ * @author frederik loeser - frederik at nightlabs dot de
+ */
 public class PdfThumbnailNavigator implements ContextElement<PdfThumbnailNavigator>
 {
 	public static final ContextElementType<PdfThumbnailNavigator> CONTEXT_ELEMENT_TYPE = new ContextElementType<PdfThumbnailNavigator>(PdfThumbnailNavigator.class);

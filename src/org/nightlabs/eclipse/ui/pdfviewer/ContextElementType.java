@@ -4,6 +4,9 @@ import org.nightlabs.eclipse.ui.pdfviewer.internal.Util;
 
 /**
  * An instance of this class specifies a type a {@link ContextElement}.
+ * 
+ * @version $Revision$ - $Date$
+ * @author marco schulze - marco at nightlabs dot de
  */
 public class ContextElementType<T extends ContextElement<?>>
 {

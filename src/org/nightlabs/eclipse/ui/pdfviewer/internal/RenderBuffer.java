@@ -19,11 +19,11 @@ import javax.imageio.stream.FileImageOutputStream;
 import org.apache.log4j.Logger;
 import org.nightlabs.eclipse.ui.pdfviewer.Dimension2DDouble;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
-import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
 
 import com.sun.pdfview.PDFPage;
 
 /**
+ * @version $Revision$ - $Date$
  * @author frederik loeser - frederik at nightlabs dot de
  * @author marco schulze - marco at nightlabs dot de
  */

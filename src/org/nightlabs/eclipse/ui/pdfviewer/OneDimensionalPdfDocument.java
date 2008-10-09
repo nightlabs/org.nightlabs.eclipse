@@ -21,6 +21,7 @@ import com.sun.pdfview.PDFPage;
  * One-dimensional implementation of {@link PdfDocument}. All pages are arranged either horizontally
  * or vertically (in a single row or a single column).
  *
+ * @version $Revision$ - $Date$
  * @author frederik loeser - frederik at nightlabs dot de
  * @author marco schulze - marco at nightlabs dot de
  */

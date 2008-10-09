@@ -2,8 +2,13 @@ package org.nightlabs.eclipse.ui.pdfviewer;
 
 import java.awt.geom.Point2D;
 
-import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
-
+/**
+ * A {@link Point2D} implementation using <code>double</code> values and supporting read-only mode.
+ *
+ * @version $Revision$ - $Date$
+ * @author marco schulze - marco at nightlabs dot de
+ * @author frederik loeser - frederik at nightlabs dot de
+ */
 public class Point2DDouble extends Point2D
 {
 	private volatile boolean readOnly;

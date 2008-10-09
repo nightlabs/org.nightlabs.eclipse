@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
  * <li>{@link PdfViewer#PROPERTY_MOUSE_RELEASED}</li>
  * </ul>
  *
+ * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
  */
 public class MouseEvent

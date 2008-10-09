@@ -26,10 +26,14 @@ import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfSimpleNavigator;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfViewerPlugin;
-import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
 
 import com.sun.pdfview.PDFFile;
 
+/**
+ * @version $Revision$ - $Date$
+ * @author frederik loeser - frederik at nightlabs dot de
+ * @author marco schulze - marco at nightlabs dot de
+ */
 public class PdfSimpleNavigatorComposite extends Composite {
 
 	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);

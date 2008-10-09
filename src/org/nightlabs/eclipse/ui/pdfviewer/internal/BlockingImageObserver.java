@@ -6,8 +6,11 @@ package org.nightlabs.eclipse.ui.pdfviewer.internal;
 import java.awt.Image;
 import java.awt.image.ImageObserver;
 
-import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
-
+/**
+ * @version $Revision$ - $Date$
+ * @author marco schulze - marco at nightlabs dot de
+ * @author frederik loeser - frederik at nightlabs dot de
+ */
 class BlockingImageObserver implements ImageObserver {
 	private boolean renderingFinished = false;
 	private boolean renderingAborted = false;

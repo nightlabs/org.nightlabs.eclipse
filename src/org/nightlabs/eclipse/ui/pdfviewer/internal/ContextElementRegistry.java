@@ -15,6 +15,7 @@ import org.nightlabs.eclipse.ui.pdfviewer.PdfSimpleNavigator;
 /**
  * Holds all {@link ContextElement}s for one {@link org.nightlabs.eclipse.ui.pdfviewer.PdfViewer} instance.
  *
+ * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
  */
 public class ContextElementRegistry

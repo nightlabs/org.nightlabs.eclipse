@@ -4,11 +4,10 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.nightlabs.eclipse.ui.pdfviewer.internal.PdfSimpleNavigatorComposite;
-import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
 import org.osgi.framework.BundleContext;
 
 /**
- * The activator class controls the plug-in life cycle
+ * The activator class controls the plug-in life cycle.
  *
  * @version $Revision$ - $Date$
  * @author frederik löser - frederik at nightlabs dot de

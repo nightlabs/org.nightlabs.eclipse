@@ -7,9 +7,9 @@ import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.widgets.Display;
-import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
 
 /**
+ * @version $Revision$ - $Date$
  * @author frederik loeser - frederik at nightlabs dot de
  * @author marco schulze - marco at nightlabs dot de
  */

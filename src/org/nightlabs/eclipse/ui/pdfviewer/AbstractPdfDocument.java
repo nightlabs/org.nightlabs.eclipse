@@ -6,7 +6,18 @@ import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 
-
+/**
+ * Subclass this abstract class instead of directly implementing {@link PdfDocument}.
+ * It provides default implementations for some methods
+ * (currently solely {@link #getMostVisiblePage(Rectangle2D)}, but more might follow).
+ * Additionally, it reduces impact on your code when {@link PdfDocument} is extended in
+ * the future (because we can provide default implementations in this class instead of
+ * breaking your code).
+ * 
+ * @version $Revision$ - $Date$
+ * @author marco schulze - marco at nightlabs dot de
+ * @author frederik loeser - frederik at nightlabs dot de
+ */
 public abstract class AbstractPdfDocument implements PdfDocument {
 
 	private static final Logger logger = Logger.getLogger(AbstractPdfDocument.class);

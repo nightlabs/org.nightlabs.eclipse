@@ -4,16 +4,16 @@ import java.awt.Dimension;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 
-import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
-
 /**
- * An implementation of {@link Dimension2D} using <code>double</code> values.
+ * An implementation of {@link Dimension2D} using <code>double</code> values and
+ * supporting read-only mode.
  * <p>
  * Since there is unfortunately no subclass-implementation like
  * {@link Point2D.Double}, but only {@link Dimension} which uses <code>int</code>
  * values, this implementation was required.
  * </p>
  *
+ * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
  */
 public class Dimension2DDouble extends Dimension2D

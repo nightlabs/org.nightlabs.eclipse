@@ -25,7 +25,12 @@ import com.sun.pdfview.PDFFile;
  * 595.28 DOT = 210 mm / 25.4 (mm/inch) * 72 (DOT/inch) and a
  * height of 841.89 DOT = 297 mm / 25.4 (mm/inch) * 72 (DOT/inch).
  * </p>
+ * <p>
+ * It's recommended that you subclass {@link AbstractPdfDocument} instead of directly implementing this
+ * interface.
+ * </p>
  *
+ * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
  */
 public interface PdfDocument

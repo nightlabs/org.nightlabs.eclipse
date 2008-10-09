@@ -8,6 +8,15 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.nightlabs.eclipse.ui.pdfviewer.internal.PdfSimpleNavigatorComposite;
 
+/**
+ * A simple navigator providing a text field for entering the desired page number
+ * (and viewing the current one) as well as some navigation buttons (back, forth,
+ * first, last).
+ *
+ * @version $Revision$ - $Date$
+ * @author marco schulze - marco at nightlabs dot de
+ * @author frederik loeser - frederik at nightlabs dot de
+ */
 public class PdfSimpleNavigator implements ContextElement<PdfSimpleNavigator> {
 
 	public static final ContextElementType<PdfSimpleNavigator> CONTEXT_ELEMENT_TYPE = new ContextElementType<PdfSimpleNavigator>(PdfSimpleNavigator.class);

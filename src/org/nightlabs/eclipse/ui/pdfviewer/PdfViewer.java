@@ -21,6 +21,7 @@ import org.nightlabs.eclipse.ui.pdfviewer.internal.PdfViewerComposite;
  *
  * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
+ * @author frederik loeser - frederik at nightlabs dot de
  */
 public class PdfViewer
 {
@@ -576,12 +577,25 @@ public class PdfViewer
 	private ListenerList paintToBufferListeners = new ListenerList();
 	private ListenerList paintToViewListeners = new ListenerList();
 
+	/**
+	 * Add a listener for custom painting into the buffer.
+	 *
+	 * @param listener the listener to be added.
+	 * @see #removePaintToBufferListener(PaintListener)
+	 * @see #addPaintToViewListener(PaintListener)
+	 */
 	public void addPaintToBufferListener(PaintListener listener)
 	{
 		paintToBufferListeners.add(listener);
 		if (pdfViewerComposite != null)
 			pdfViewerComposite.addPaintToBufferListener(listener);
 	}
+	/**
+	 * Remove a listener that was previously added by {@link #addPaintToBufferListener(PaintListener)}.
+	 *
+	 * @param listener the listener to be removed.
+	 * @see #addPaintToBufferListener(PaintListener)
+	 */
 	public void removePaintToBufferListener(PaintListener listener)
 	{
 		paintToBufferListeners.remove(listener);
@@ -589,12 +603,25 @@ public class PdfViewer
 			pdfViewerComposite.removePaintToBufferListener(listener);
 	}
 
+	/**
+	 * Add a listener for custom painting into the view area.
+	 *
+	 * @param listener the listener to be added.
+	 * @see #removePaintToViewListener(PaintListener)
+	 * @see #addPaintToBufferListener(PaintListener)
+	 */
 	public void addPaintToViewListener(PaintListener listener)
 	{
 		paintToViewListeners.add(listener);
 		if (pdfViewerComposite != null)
 			pdfViewerComposite.addPaintToViewListener(listener);
 	}
+	/**
+	 * Remove a listener that was previously added by {@link #addPaintToViewListener(PaintListener)}.
+	 *
+	 * @param listener the listener to be removed.
+	 * @see #addPaintToViewListener(PaintListener)
+	 */
 	public void removePaintToViewListener(PaintListener listener)
 	{
 		paintToViewListeners.remove(listener);

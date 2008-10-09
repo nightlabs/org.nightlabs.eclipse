@@ -57,6 +57,7 @@ import org.nightlabs.eclipse.ui.pdfviewer.Point2DDouble;
 import com.sun.pdfview.PDFPage;
 
 /**
+ * @version $Revision$ - $Date$
  * @author frederik loeser - frederik at nightlabs dot de
  * @author marco schulze - marco at nightlabs dot de
  */

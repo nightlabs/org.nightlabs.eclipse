@@ -21,7 +21,9 @@ import com.sun.pdfview.PDFFile;
  * It allows to load a PDF from a byte array, an input stream and a file - other
  * util methods might follow later.
  *
+ * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
+ * @author frederik loeser - frederik at nightlabs dot de
  */
 public class PdfFileLoader
 {

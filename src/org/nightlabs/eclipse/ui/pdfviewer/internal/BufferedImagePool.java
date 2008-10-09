@@ -5,8 +5,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
-
+/**
+ * @version $Revision$ - $Date$
+ * @author frederik loeser - frederik at nightlabs dot de
+ * @author marco schulze - marco at nightlabs dot de
+ */
 public class BufferedImagePool
 {
 	private static class BufferedImageCarrier
