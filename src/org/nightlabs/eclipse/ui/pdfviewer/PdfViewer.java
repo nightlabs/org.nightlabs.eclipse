@@ -568,12 +568,6 @@ public class PdfViewer
 		return mouseWheelZoomEnabled;
 	}
 
-	public PdfViewerComposite getPdfViewerComposite() {
-		assertValidThread();
-
-		return this.pdfViewerComposite;
-	}
-
 	private ListenerList paintToBufferListeners = new ListenerList();
 	private ListenerList paintToViewListeners = new ListenerList();
 
