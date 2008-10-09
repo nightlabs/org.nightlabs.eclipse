@@ -2,6 +2,10 @@ package org.nightlabs.eclipse.ui.pdfviewer.extension.action.zoom;
 
 import org.nightlabs.l10n.NumberFormatter;
 
+/**
+ * @version $Revision$ - $Date$
+ * @author marco schulze - marco at nightlabs dot de
+ */
 public class ZoomLevel
 {
 	public static final ZoomLevel ZOOM_TO_PAGE_WIDTH = new ZoomLevel("Page width");

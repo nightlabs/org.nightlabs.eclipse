@@ -9,6 +9,10 @@ import org.eclipse.ui.part.EditorActionBarContributor;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
 import org.nightlabs.eclipse.ui.pdfviewer.extension.action.PdfViewerActionRegistry;
 
+/**
+ * @version $Revision$ - $Date$
+ * @author marco schulze - marco at nightlabs dot de
+ */
 public class PdfViewerEditorActionBarContributor extends EditorActionBarContributor
 {
 	private PdfViewerEditor editor;

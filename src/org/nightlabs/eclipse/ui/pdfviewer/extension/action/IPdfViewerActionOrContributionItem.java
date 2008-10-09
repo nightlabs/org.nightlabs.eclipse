@@ -10,6 +10,7 @@ import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
  * (or {@link IXContributionItem}) to get access to the {@link PdfViewerActionRegistry}
  * (and thus the {@link PdfViewer}).
  *
+ * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
  */
 public interface IPdfViewerActionOrContributionItem

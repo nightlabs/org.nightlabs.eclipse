@@ -10,6 +10,11 @@ import org.nightlabs.print.PrinterInterface;
 
 import com.sun.pdfview.PDFFile;
 
+/**
+ * @version $Revision$ - $Date$
+ * @author kiran telukunta - kiran at nightlabs dot de
+ * @author marco schulze - marco at nightlabs dot de
+ */
 public class PrintAction extends PdfViewerAction {
 	public static final String PRINTER_USE_CASE_ID = "org.nightlabs.eclipse.ui.pdfviewer.extension.printerUseCase";
 

@@ -9,6 +9,14 @@ import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
 import org.nightlabs.eclipse.ui.pdfviewer.extension.action.PdfViewerActionRegistry;
 import org.nightlabs.eclipse.ui.pdfviewer.extension.coolbar.internal.PdfCoolBarComposite;
 
+/**
+ * API for creating a cool bar (i.e. a bar holding tools like actions and other contributions).
+ * Instantiate an instance of this class and use the {@link #createControl(Composite, int)} method
+ * to place a cool bar into a composite.
+ * 
+ * @version $Revision$ - $Date$
+ * @author marco schulze - marco at nightlabs dot de
+ */
 public class PdfCoolBar implements ContextElement<PdfCoolBar>
 {
 	public static final ContextElementType<PdfCoolBar> CONTEXT_ELEMENT_TYPE = new ContextElementType<PdfCoolBar>(PdfCoolBar.class);
@@ -37,9 +45,6 @@ public class PdfCoolBar implements ContextElement<PdfCoolBar>
 		this.pdfViewerActionRegistry = pdfViewerActionRegistry;
 		this.contextElementId = contextElementId;
 		pdfViewer.registerContextElement(this);
-//		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_PDF_DOCUMENT, propertyChangeListenerRefreshAllActions);
-//		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_REGISTER_CONTEXT_ELEMENT, propertyChangeListenerRefreshAllActions);
-//		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_UNREGISTER_CONTEXT_ELEMENT, propertyChangeListenerRefreshAllActions);
 	}
 
 	public Control createControl(Composite parent, int style)
@@ -52,7 +57,6 @@ public class PdfCoolBar implements ContextElement<PdfCoolBar>
 		}
 
 		pdfCoolBarComposite = new PdfCoolBarComposite(parent, style, this);
-//		pdfCoolBarComposite.setPdfDocument(pdfDocument);
 
 		return pdfCoolBarComposite;
 	}
@@ -63,26 +67,8 @@ public class PdfCoolBar implements ContextElement<PdfCoolBar>
 
 	@Override
 	public void onUnregisterContextElement() {
-//		pdfViewer.removePropertyChangeListener(PdfViewer.PROPERTY_PDF_DOCUMENT, propertyChangeListenerRefreshAllActions);
-//		pdfViewer.removePropertyChangeListener(PdfViewer.PROPERTY_REGISTER_CONTEXT_ELEMENT, propertyChangeListenerRefreshAllActions);
-//		pdfViewer.removePropertyChangeListener(PdfViewer.PROPERTY_UNREGISTER_CONTEXT_ELEMENT, propertyChangeListenerRefreshAllActions);
+		// nothing to do
 	}
-
-//	private PropertyChangeListener propertyChangeListenerRegisterContextElement = new PropertyChangeListener() {
-//		@Override
-//		public void propertyChange(PropertyChangeEvent evt) {
-//			ContextElement<?> contextElement = (ContextElement<?>) evt.getNewValue();
-//			if (PdfViewerActionRegistry.CONTEXT_ELEMENT_TYPE.equals(contextElement.getContextElementType()))
-//				pdfViewerActionRegistry = (PdfViewerActionRegistry) contextElement;
-//		}
-//	};
-
-//	private PropertyChangeListener propertyChangeListenerRefreshAllActions = new PropertyChangeListener() {
-//		@Override
-//		public void propertyChange(PropertyChangeEvent evt) {
-//			pdfCoolBarComposite.refresh();
-//		}
-//	};
 
 	@Override
 	public String getContextElementId() {

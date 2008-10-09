@@ -2,7 +2,6 @@ package org.nightlabs.eclipse.ui.pdfviewer.extension.composite;
 
 import java.util.EnumSet;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.ControlEvent;
@@ -26,11 +25,13 @@ import org.nightlabs.util.CollectionUtil;
  * If you don't like the way this composite looks like, please compose your own out of the various parts
  * provided by the projects <code>org.nightlabs.eclipse.ui.pdfviewer</code> and <code>org.nightlabs.eclipse.ui.pdfviewer.extension</code>.
  *
- * @author frederik löser - frederik at nightlabs dot de
+ * @version $Revision$ - $Date$
+ * @author frederik loeser - frederik at nightlabs dot de
+ * @author marco schulze - marco at nightlabs dot de
  */
 public class PdfViewerComposite extends Composite
 {
-	private static final Logger logger = Logger.getLogger(PdfViewerComposite.class);
+//	private static final Logger logger = Logger.getLogger(PdfViewerComposite.class);
 
 	public static final UseCase USE_CASE_DEFAULT = new UseCase("default");
 

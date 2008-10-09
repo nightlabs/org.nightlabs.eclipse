@@ -23,6 +23,10 @@ import org.nightlabs.eclipse.ui.pdfviewer.extension.action.IPdfViewerActionOrCon
 import org.nightlabs.eclipse.ui.pdfviewer.extension.action.PdfViewerActionRegistry;
 import org.nightlabs.l10n.NumberFormatter;
 
+/**
+ * @version $Revision$ - $Date$
+ * @author marco schulze - marco at nightlabs dot de
+ */
 public class ZoomContributionItem
 extends CComboContributionItem<ZoomLevel>
 implements IPdfViewerActionOrContributionItem

@@ -18,6 +18,10 @@ import org.nightlabs.eclipse.ui.pdfviewer.ContextElement;
 import org.nightlabs.eclipse.ui.pdfviewer.ContextElementType;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
 
+/**
+ * @version $Revision$ - $Date$
+ * @author marco schulze - marco at nightlabs dot de
+ */
 public class PdfViewerActionRegistry
 extends AbstractActionRegistry
 implements ContextElement<PdfViewerActionRegistry>

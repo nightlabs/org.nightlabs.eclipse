@@ -1,11 +1,13 @@
 package org.nightlabs.eclipse.ui.pdfviewer.extension;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.nightlabs.eclipse.ui.pdfviewer.extension.resource.Messages;
 import org.osgi.framework.BundleContext;
 
 /**
- * The activator class controls the plug-in life cycle
+ * The activator class controls the plug-in life cycle.
+ *
+ * @version $Revision$ - $Date$
+ * @author frederik loeser - frederik at nightlabs dot de
  */
 public class PdfViewerExtensionPlugin extends AbstractUIPlugin {
 

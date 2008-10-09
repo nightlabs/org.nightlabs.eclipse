@@ -18,6 +18,7 @@ import com.sun.pdfview.PDFFile;
  * {@link PdfViewer}!
  * </p>
  *
+ * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
  */
 public class SaveAsAction

@@ -20,6 +20,7 @@ import com.sun.pdfview.PDFFile;
 /**
  * An editor input that can be used to open a {@link PdfViewerEditor}.
  *
+ * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
  */
 public class PdfViewerEditorInput

@@ -1,5 +1,9 @@
 package org.nightlabs.eclipse.ui.pdfviewer.extension.action;
 
+/**
+ * @version $Revision$ - $Date$
+ * @author marco schulze - marco at nightlabs dot de
+ */
 public class UseCase {
 	private String useCaseId;
 	public UseCase(String useCaseId) {

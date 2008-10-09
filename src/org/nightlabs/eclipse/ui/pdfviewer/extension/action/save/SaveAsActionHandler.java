@@ -9,6 +9,7 @@ import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
  * {@link SaveAsAction}. You can register one instance of this class for each {@link PdfViewer}
  * only!
  *
+ * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
  */
 public abstract class SaveAsActionHandler implements ContextElement<SaveAsActionHandler>

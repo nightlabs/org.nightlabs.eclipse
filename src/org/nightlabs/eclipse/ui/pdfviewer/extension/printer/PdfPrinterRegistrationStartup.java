@@ -7,16 +7,10 @@ import org.eclipse.ui.IStartup;
 import org.nightlabs.print.DelegatingDocumentPrinterCfMod;
 
 /**
+ * @version $Revision$ - $Date$
  * @author frederik löser - frederik at nightlabs dot de
- *
  */
 public class PdfPrinterRegistrationStartup implements IStartup {
-
-	/**
-	 *
-	 */
-	public PdfPrinterRegistrationStartup() {
-	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IStartup#earlyStartup()

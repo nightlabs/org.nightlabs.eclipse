@@ -8,6 +8,10 @@ import org.eclipse.swt.widgets.CoolBar;
 import org.nightlabs.eclipse.ui.pdfviewer.extension.action.PdfViewerActionRegistry;
 import org.nightlabs.eclipse.ui.pdfviewer.extension.coolbar.PdfCoolBar;
 
+/**
+ * @version $Revision$ - $Date$
+ * @author marco schulze - marco at nightlabs dot de
+ */
 public class PdfCoolBarComposite extends Composite
 {
 	private PdfCoolBar pdfCoolBar;
@@ -28,10 +32,4 @@ public class PdfCoolBarComposite extends Composite
 		coolBar.setVisible(true);
 		coolBarManager.update(true);
 	}
-
-//	public void refresh() {
-//		pdfViewerActionRegistry.calculateEnabled();
-////		coolBarManager.update(true);
-////		coolBar.update();
-//	}
 }

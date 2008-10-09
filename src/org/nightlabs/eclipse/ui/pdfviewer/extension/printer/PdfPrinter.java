@@ -29,7 +29,13 @@ import com.sun.pdfview.PDFFile;
 import com.sun.pdfview.PDFPage;
 import com.sun.pdfview.PDFRenderer;
 
-
+/**
+ * Implementation of {@link DocumentPrinter} to handle PDF files. Throw-away instances
+ * of this class are used to print PDF documents.
+ *
+ * @version $Revision$ - $Date$
+ * @author frederik loeser - frederik at nightlabs dot de
+ */
 public class PdfPrinter implements DocumentPrinter {
 
 	private static final Logger logger = Logger.getLogger(PdfPrinter.class);

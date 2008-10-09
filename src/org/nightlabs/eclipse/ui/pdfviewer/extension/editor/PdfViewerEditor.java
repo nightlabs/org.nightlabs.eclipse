@@ -52,6 +52,7 @@ import com.sun.pdfview.PDFFile;
  *	<li>{@link IPathEditorInput}</li>
  * </ul>
  *
+ * @version $Revision$ - $Date$
  * @author frederik loeser - frederik at nightlabs dot de
  * @author marco schulze - marco at nightlabs dot de
  */
