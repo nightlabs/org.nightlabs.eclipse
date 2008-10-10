@@ -446,6 +446,7 @@ extends AbstractEPProcessor
 				else {
 					toolBarManager = new ToolBarManager();
 					toolBarContributionItem = new ToolBarContributionItem(toolBarManager, tmpSubMenuID);
+					toolBarContributionItem.setUseChevron(false);
 					coolBarManager.add(toolBarContributionItem);
 				}
 
@@ -469,6 +470,7 @@ extends AbstractEPProcessor
 			else {
 				toolBarManager = new ToolBarManager();
 				orphanageToolBarContributionItem = new ToolBarContributionItem(toolBarManager, orphanageToolbarID);
+				orphanageToolBarContributionItem.setUseChevron(false);
 				coolBarManager.add(orphanageToolBarContributionItem);
 			}
 
