@@ -571,6 +571,9 @@ public class PdfViewerComposite extends Composite
 
 	private void center()
 	{
+		if (pdfDocument == null)
+			return;
+
 		if (logger.isDebugEnabled())
 			logger.debug("center: centerHorizontally=" + centerHorizontally + " centerVertically=" + centerVertically);
 
@@ -1177,7 +1180,11 @@ public class PdfViewerComposite extends Composite
 		return currentPage;
 	}
 
-	public void setCurrentPage(int currentPage) {
+	public void setCurrentPage(int currentPage)
+	{
+		if (pdfDocument == null)
+			return;
+
 		if (logger.isDebugEnabled())
 			logger.debug("setCurrentPage: " + currentPage);
 
