@@ -123,7 +123,7 @@ extends XComposite
  * @see Widget#getStyle()
  */
 public XCombo (Composite parent, int style) {
-	super (parent, style = checkStyle (style, parent), LayoutMode.NONE, LayoutDataMode.NONE);
+	super(parent, style = checkAndAdaptStyle (style, parent), LayoutMode.NONE, LayoutDataMode.NONE);
 //	getGridLayout().horizontalSpacing = 2;
 
 	imageLabel = new Label(this, SWT.NONE);
@@ -132,7 +132,7 @@ public XCombo (Composite parent, int style) {
 	int textStyle = SWT.SINGLE;
 	// The XCombo MUST NOT set this flag, because it is impossible to be used for free entries then. If a user of this XCombo
 	// wants read-only behaviour, he has to set it!!! Marco.
-//	if ((style & SWT.READ_ONLY) != 0) textStyle |= SWT.READ_ONLY;
+	if ((style & SWT.READ_ONLY) != 0) textStyle |= SWT.READ_ONLY;
 	if ((style & SWT.FLAT) != 0) textStyle |= SWT.FLAT;
 	text = new Text (this, textStyle);
 	// Workaround to avoid grey background if style == SWT.READ_ONLY; // TODO why this?! The native combos are grey, if this style is set.
@@ -227,9 +227,14 @@ private boolean isReadOnly() {
 	return (getStyle() & SWT.READ_ONLY) != 0;
 }
 
-static int checkStyle (int style, Composite parent) {
-	int mask = XComposite.getBorderStyle(parent) | SWT.READ_ONLY | SWT.FLAT | SWT.LEFT_TO_RIGHT | SWT.RIGHT_TO_LEFT;
-	return style | mask;
+static int checkAndAdaptStyle (int style, Composite parent) {
+	int mask = (
+			SWT.READ_ONLY
+			| SWT.FLAT
+			| SWT.LEFT_TO_RIGHT
+			| SWT.RIGHT_TO_LEFT
+	);
+	return (style & mask) | XComposite.getBorderStyle(parent);
 }
 
 /**

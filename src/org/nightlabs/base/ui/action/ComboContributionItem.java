@@ -41,9 +41,11 @@ import org.nightlabs.base.ui.custom.XCombo;
 
 /**
  * A ContributionItem for a ToolBar showing a defined List of items.
- * 
+ *
  * @author Alexander Bieber <fleque@users.sourceforge.net>
+ * @deprecated I think this class is used nowhere. I have no idea whether it works, but maybe you want to use {@link CComboContributionItem} instead which works fine. Marco.
  */
+@Deprecated
 public abstract class ComboContributionItem extends XContributionItem {
 
 //	private XComposite wrapper;
@@ -52,7 +54,7 @@ public abstract class ComboContributionItem extends XContributionItem {
 
 	private boolean updating;
 	/**
-	 * 
+	 *
 	 */
 	public ComboContributionItem() {
 		super();
@@ -71,7 +73,7 @@ public abstract class ComboContributionItem extends XContributionItem {
 	 * Returns a list of keys that should be made selectable.
 	 */
 	protected abstract List getEntries();
-	
+
 	/**
 	 * Returns a short description for a given entry (key).
 	 */
@@ -91,7 +93,7 @@ public abstract class ComboContributionItem extends XContributionItem {
 //		wrapper.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		combo = new XCombo(parent, SWT.READ_ONLY);
 		combo.setSize(200, 30);
-		
+
 		for (Iterator iter = nullAddedSelListener.iterator(); iter.hasNext();) {
 			combo.addSelectionListener((SelectionListener) iter.next());
 		}
@@ -125,7 +127,7 @@ public abstract class ComboContributionItem extends XContributionItem {
 		toolitem.setWidth(100);
 		toolitem.setControl(control);
 	}
-	
+
 	/**
 	 * Returns the Combo control
 	 * @return the Combo control
@@ -146,7 +148,7 @@ public abstract class ComboContributionItem extends XContributionItem {
 			else
 				return null;
 	}
-	
+
 	/**
 	 * Set the selection of the Combo
 	 */
@@ -162,13 +164,13 @@ public abstract class ComboContributionItem extends XContributionItem {
 			}
 		}
 	}
-		
+
 	public boolean isUpdating() {
 		return updating;
 	}
-	
+
 	private List<SelectionListener> nullAddedSelListener = new LinkedList<SelectionListener>();
-	
+
 	/**
 	 * Call this to add a SelectionListener to the Combo. This is neccessary
 	 * because the Combo Control is created lazy. This method either delegates
@@ -182,7 +184,7 @@ public abstract class ComboContributionItem extends XContributionItem {
 		else
 			nullAddedSelListener.add(listener);
 	}
-	
+
 	/**
 	 * Remove a SelectionListener from the Combo.
 	 * @see #addSelectionListener(SelectionListener)
