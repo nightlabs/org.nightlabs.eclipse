@@ -36,7 +36,7 @@ import org.nightlabs.eclipse.ui.pdfviewer.extension.coolbar.internal.PdfCoolBarC
  * API for creating a cool bar (i.e. a bar holding tools like actions and other contributions).
  * Instantiate an instance of this class and use the {@link #createControl(Composite, int)} method
  * to place a cool bar into a composite.
- * 
+ *
  * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
  */
@@ -48,6 +48,9 @@ public class PdfCoolBar implements ContextElement<PdfCoolBar>
 	private PdfCoolBarComposite pdfCoolBarComposite;
 	private PdfViewerActionRegistry pdfViewerActionRegistry;
 
+	/**
+	 * Checks if a given method is called on the SWT UI thread.
+	 */
 	private static void assertValidThread()
 	{
 		if (Display.getCurrent() == null) {

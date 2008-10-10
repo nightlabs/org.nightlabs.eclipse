@@ -26,6 +26,7 @@ package org.nightlabs.eclipse.ui.pdfviewer.extension.action;
 import org.nightlabs.base.ui.action.XContributionItem;
 
 /**
+ * Implementation of IPdfViewerActionOrContributionItem.
  * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
  */

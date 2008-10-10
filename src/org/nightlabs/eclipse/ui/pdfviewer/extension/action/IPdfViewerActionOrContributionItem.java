@@ -26,6 +26,7 @@ package org.nightlabs.eclipse.ui.pdfviewer.extension.action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
 import org.nightlabs.base.ui.action.IXContributionItem;
+import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
 
 /**
@@ -38,7 +39,22 @@ import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
  */
 public interface IPdfViewerActionOrContributionItem
 {
+	/**
+	 * Set the {@link PdfViewerActionRegistry}.
+	 * @param pdfViewerActionRegistry the PdfViewerActionRegistry.
+	 */
 	void init(PdfViewerActionRegistry pdfViewerActionRegistry);
+
+	/**
+	 * Get the {@link PdfViewerActionRegistry}.
+	 * @return the PdfViewerActionRegistry.
+	 */
 	PdfViewerActionRegistry getPdfViewerActionRegistry();
+
+	/**
+	 * Calculates if a property change concerning the property ENABLED has to be fired.
+	 * This decision depends on whether a {@link PdfDocument} instance and a context
+	 * element of certain type are available.
+	 */
 	void calculateEnabled();
 }

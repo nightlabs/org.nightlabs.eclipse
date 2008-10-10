@@ -29,13 +29,17 @@ package org.nightlabs.eclipse.ui.pdfviewer.extension.action;
  */
 public class UseCase {
 	private String useCaseId;
+
 	public UseCase(String useCaseId) {
 		if (useCaseId == null)
 			throw new IllegalArgumentException("useCaseID must not be null!");
-
 		this.useCaseId = useCaseId;
 	}
 
+	/**
+	 * Get the {@link UseCase} ID.
+	 * @return the {@link UseCase} ID.
+ 	 */
 	public String getUseCaseId() {
 		return useCaseId;
 	}

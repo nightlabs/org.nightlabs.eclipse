@@ -42,6 +42,7 @@ import org.nightlabs.eclipse.ui.pdfviewer.ContextElementType;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
 
 /**
+ * This class is the main entry point for the registration of PDF viewer actions.
  * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
  */
@@ -56,6 +57,9 @@ implements ContextElement<PdfViewerActionRegistry>
 	private String contextElementId;
 	private UseCase useCase;
 
+	/**
+	 * Checks if a given method is called on the SWT UI thread.
+	 */
 	private static void assertValidThread()
 	{
 		if (Display.getCurrent() == null) {
@@ -63,6 +67,12 @@ implements ContextElement<PdfViewerActionRegistry>
 		}
 	}
 
+	/**
+	 * The constructor of {@link PdfViewerActionRegistry}.
+	 * @param pdfViewer the {@link PdfViewer} instance.
+	 * @param useCase the chosen {@link UseCase}.
+	 * @param contextElementId the id of the chosen {@link ContextElement}.
+	 */
 	public PdfViewerActionRegistry(PdfViewer pdfViewer, UseCase useCase, String contextElementId) {
 		assertValidThread();
 
@@ -142,7 +152,7 @@ implements ContextElement<PdfViewerActionRegistry>
 
 	@Override
 	public String getExtensionPointID() {
-		return "org.nightlabs.eclipse.ui.pdfviewer.extension.pdfViewerAction";
+		return "org.nightlabs.eclipse.ui.pdfviewer.extension.pdfViewerAction"; //$NON-NLS-1$
 	}
 
 	@Override
@@ -160,6 +170,10 @@ implements ContextElement<PdfViewerActionRegistry>
 		return pdfViewer;
 	}
 
+	/**
+	 * Get the {@link UseCase}.
+	 * @return the {@link UseCase}.
+ 	 */
 	public UseCase getUseCase() {
 		return useCase;
 	}

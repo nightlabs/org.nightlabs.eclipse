@@ -26,6 +26,7 @@ package org.nightlabs.eclipse.ui.pdfviewer.extension;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+
 /**
  * The activator class controls the plug-in life cycle.
  *
@@ -34,14 +35,18 @@ import org.osgi.framework.BundleContext;
  */
 public class PdfViewerExtensionPlugin extends AbstractUIPlugin {
 
-	// The plug-in ID
+	/**
+	 * The ID of this plugin.
+	 */
 	public static final String PLUGIN_ID = "org.nightlabs.eclipse.ui.pdfviewer.extension"; //$NON-NLS-1$
 
-	// The shared instance
+	/**
+	 * The shared instance.
+	 */
 	private static PdfViewerExtensionPlugin plugin;
 
 	/**
-	 * The constructor
+	 * The constructor of <code>PdfViewerExtensionPlugin</code>.
 	 */
 	public PdfViewerExtensionPlugin() {
 	}
@@ -67,9 +72,8 @@ public class PdfViewerExtensionPlugin extends AbstractUIPlugin {
 	}
 
 	/**
-	 * Returns the shared instance
-	 *
-	 * @return the shared instance
+	 * Returns the shared instance.
+	 * @return the shared instance.
 	 */
 	public static PdfViewerExtensionPlugin getDefault() {
 		return plugin;
