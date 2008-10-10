@@ -26,7 +26,7 @@ package org.nightlabs.eclipse.ui.pdfviewer;
 /**
  * A context-element is a UI element that interacts with a {@link PdfViewer}.
  * <p>
- * When implementing a <code>ContextElement</code>, you should register in the {@link PdfViewer}
+ * When implementing a <code>ContextElement</code>, you should register it in the {@link PdfViewer}
  * via {@link PdfViewer#registerContextElement(ContextElement)} as soon
  * as you know the <code>PdfViewer</code> (usually in the constructor of your implementation).
  * </p>

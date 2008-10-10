@@ -130,6 +130,9 @@ public class PdfSimpleNavigator implements ContextElement<PdfSimpleNavigator> {
 	    pdfViewer = null; // ensure we can't do anything with it anymore - the pdfViewer forgot this instance already - so we forget it, too.
 	}
 
+	/**
+	 * Checks if a given method is called on the SWT UI thread.
+	 */
 	private static void assertValidThread()
 	{
 		if (Display.getCurrent() == null) {

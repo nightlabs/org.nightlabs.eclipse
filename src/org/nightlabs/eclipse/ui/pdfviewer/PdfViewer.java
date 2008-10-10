@@ -298,6 +298,9 @@ public class PdfViewer
 		return result;
 	}
 
+	/**
+	 * Checks if a given method is called on the SWT UI thread.
+	 */
 	private static void assertValidThread()
 	{
 		if (Display.getCurrent() == null)

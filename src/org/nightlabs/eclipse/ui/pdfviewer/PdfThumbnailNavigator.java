@@ -34,7 +34,7 @@ import org.nightlabs.eclipse.ui.pdfviewer.internal.PdfThumbnailNavigatorComposit
 /**
  * A navigator showing thumbnails of all pages and allowing to navigate
  * by scrolling and clicking.
- * 
+ *
  * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
  * @author frederik loeser - frederik at nightlabs dot de
@@ -115,6 +115,9 @@ public class PdfThumbnailNavigator implements ContextElement<PdfThumbnailNavigat
 		}
 	};
 
+	/**
+	 * Checks if a given method is called on the SWT UI thread.
+	 */
 	private static void assertValidThread()	{
 		if (Display.getCurrent() == null)
 			throw new IllegalStateException("Wrong thread! This method must be called on the SWT UI thread!"); //$NON-NLS-1$

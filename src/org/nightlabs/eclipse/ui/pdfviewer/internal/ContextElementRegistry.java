@@ -46,6 +46,9 @@ public class ContextElementRegistry
 	private Map<ContextElementType<?>, Map<String, ContextElement<?>>> contextElementType2id2contextElement = new HashMap<ContextElementType<?>, Map<String,ContextElement<?>>>();
 	private Map<ContextElementType<?>, Map<String, ContextElement<?>>> contextElementType2id2contextElementCache = new HashMap<ContextElementType<?>, Map<String,ContextElement<?>>>();
 
+	/**
+	 * Checks if a given method is called on the SWT UI thread.
+	 */
 	private static void assertValidThread()
 	{
 		if (Display.getCurrent() == null)
