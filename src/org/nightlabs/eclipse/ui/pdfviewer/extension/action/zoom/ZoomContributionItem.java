@@ -47,6 +47,9 @@ import org.nightlabs.eclipse.ui.pdfviewer.extension.action.PdfViewerActionRegist
 import org.nightlabs.l10n.NumberFormatter;
 
 /**
+ * Creates an XComboComposite for the maintenance of zoom levels. A set of custom zoom levels between a certain range is created
+ * for displaying a given PDF document on one of these zoom levels. There is also the possibility to create and use a new zoom
+ * level not available yet.
  * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
  */
@@ -62,6 +65,11 @@ implements IPdfViewerActionOrContributionItem
 		}
 	}
 
+	/**
+	 * The constructor of {@link ZoomContributionItem}.
+	 * An array list of zoom levels is created for displaying a given PDF document
+	 * on different zoom levels.
+	 */
 	public ZoomContributionItem() {
 		super(ZoomContributionItem.class.getName(), null, null);
 		setLabelProvider(new ZoomLabelProvider());
@@ -149,6 +157,14 @@ implements IPdfViewerActionOrContributionItem
 		}
 	};
 
+	/**
+	 * Searches the appropriate {@link ZoomLevel} value in the currently used list of {@link ZoomLevel}s.
+	 * If the value is not available yet, a new entry for this {@link ZoomLevel} value will be created and
+	 * added to the list of {@link ZoomLevel}s.
+	 *
+	 * @param zoomFactorPerMill the value to search for in the list of {@link ZoomLevel}s.
+	 * @return the {@link ZoomLevel} that has been searched for.
+	 */
 	private ZoomLevel findOrCreateZoomLevel(int zoomFactorPerMill)
 	{
 		int nextSmallerZoomLevelIndex = -1;
@@ -173,9 +189,10 @@ implements IPdfViewerActionOrContributionItem
 	}
 
 	/**
-	 * Searches the appropriate {@link ZoomLevel}
-	 *
-	 * @param zoomFactorPerMill
+	 * Sets the selected element of the XComboComposite dependent on which value is set in the PDF viewer.
+	 * The zoom level has to be searched for in the list of zoom levels in the case the zoom level
+	 * chosen by the PDF viewer does not correspond with the zoom level constants ZOOM_TO_PAGE_WIDTH,
+	 * ZOOM_TO_PAGE_HEIGHT or ZOOM_TO_PAGE.
 	 */
 	private void setComboZoomFactorPerMill()
 	{
@@ -205,6 +222,10 @@ implements IPdfViewerActionOrContributionItem
 			getControl().selectElement(zoomLevel);
 	}
 
+	/**
+	 * Returns the {@link PdfViewer} instance by incorporating the PDF viewer action registry.
+	 * @return PdfViewer the {@link PdfViewer} instance.
+	 */
 	protected PdfViewer getPdfViewer()
 	{
 		return pdfViewerActionRegistry == null ? null : pdfViewerActionRegistry.getPdfViewer();

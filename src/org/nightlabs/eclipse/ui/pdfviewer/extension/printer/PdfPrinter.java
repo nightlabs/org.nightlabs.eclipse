@@ -70,7 +70,7 @@ public class PdfPrinter implements DocumentPrinter {
 
 	/**
 	 * Gets a {@link PDFFile} from a {@link File} by using {@link PdfFileLoader}.
-	 * @param file the file to print
+	 * @param file the file to print.
 	 */
 	@Override
 	public void printDocument(File file) throws PrinterException {
@@ -88,6 +88,7 @@ public class PdfPrinter implements DocumentPrinter {
 	/**
 	 * Creates {@link PrinterJob} and {@link PrintService} instances for printing and prints
 	 * the loaded {@link PDFFile} using a {@link PdfPageable}.
+	 * @param file the PDFFile to print.
 	 */
 	public void printDocument(PDFFile file) throws PrinterException {
 		this.pdfFile = file;

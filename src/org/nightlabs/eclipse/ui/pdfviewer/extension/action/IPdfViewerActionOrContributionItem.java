@@ -52,9 +52,8 @@ public interface IPdfViewerActionOrContributionItem
 	PdfViewerActionRegistry getPdfViewerActionRegistry();
 
 	/**
-	 * Calculates if a property change concerning the property ENABLED has to be fired.
-	 * This decision depends on whether a {@link PdfDocument} instance and a context
-	 * element of certain type are available.
+	 * Calculates if a property change concerning the property ENABLED has occurred.
+	 * This decision depends on whether a {@link PdfDocument} instance is available.
 	 */
 	void calculateEnabled();
 }

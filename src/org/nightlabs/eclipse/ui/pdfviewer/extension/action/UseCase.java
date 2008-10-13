@@ -23,6 +23,7 @@
  **********************************************************************/
 package org.nightlabs.eclipse.ui.pdfviewer.extension.action;
 
+
 /**
  * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
@@ -30,6 +31,10 @@ package org.nightlabs.eclipse.ui.pdfviewer.extension.action;
 public class UseCase {
 	private String useCaseId;
 
+	/**
+	 * The constructor of {@link UseCase}.
+	 * @param useCaseId the {@link UseCase} ID to use in this instance.
+	 */
 	public UseCase(String useCaseId) {
 		if (useCaseId == null)
 			throw new IllegalArgumentException("useCaseID must not be null!");
@@ -44,6 +49,10 @@ public class UseCase {
 		return useCaseId;
 	}
 
+	/**
+	 * Returns a hash code value for a given {@link UseCase} ID. If the ID is not available, a constant value of 31 is given back.
+	 * @return the hash code value for the given {@link UseCase} ID.
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;

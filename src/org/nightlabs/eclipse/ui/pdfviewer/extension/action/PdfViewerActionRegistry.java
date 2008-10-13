@@ -39,6 +39,7 @@ import org.nightlabs.base.ui.action.registry.ActionDescriptor;
 import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
 import org.nightlabs.eclipse.ui.pdfviewer.ContextElement;
 import org.nightlabs.eclipse.ui.pdfviewer.ContextElementType;
+import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
 
 /**
@@ -178,6 +179,10 @@ implements ContextElement<PdfViewerActionRegistry>
 		return useCase;
 	}
 
+	/**
+	 * Calculates if a property change concerning the property ENABLED has occurred.
+	 * This decision depends on whether a {@link PdfDocument} instance is available.
+	 */
 	public void calculateEnabled() {
 		for (ActionDescriptor actionDescriptor : getActionDescriptors()) {
 			IAction action = actionDescriptor.getAction();

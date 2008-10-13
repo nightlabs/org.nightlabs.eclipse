@@ -26,6 +26,7 @@ package org.nightlabs.eclipse.ui.pdfviewer.extension.action.zoom;
 import org.nightlabs.l10n.NumberFormatter;
 
 /**
+ * Declaration of different zoom level constants that can be chosen for zooming.
  * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
  */
@@ -34,23 +35,40 @@ public class ZoomLevel
 	public static final ZoomLevel ZOOM_TO_PAGE_WIDTH = new ZoomLevel("Page width");
 	public static final ZoomLevel ZOOM_TO_PAGE_HEIGHT = new ZoomLevel("Page height");
 	public static final ZoomLevel ZOOM_TO_PAGE = new ZoomLevel("Page (complete)");
+	private int zoomFactorPerMill = 0;
+	private String label = null;
 
+
+	/**
+	 * Constructor of {@link ZoomLevel}.
+	 * Sets the zoom factor per mill of the {@link ZoomLevel} given as argument.
+	 * @param zoomFactorPerMill the zoom factor per mill to set.
+	 */
 	public ZoomLevel(int zoomFactorPerMill) {
 		this.zoomFactorPerMill = zoomFactorPerMill;
 	}
 
-	private String label = null;
-
+	/**
+	 * Constructor of {@link ZoomLevel}.
+	 * Sets the label of the {@link ZoomLevel} given as argument.
+	 * @param label the label to set.
+	 */
 	public ZoomLevel(String label) {
 		this.label = label;
 	}
 
-	private int zoomFactorPerMill = 0;
-
+	/**
+	 * Gets the zoom factor per mill of a chosen {@link ZoomLevel} instance.
+	 * @return the zoom factor per mill.
+	 */
 	public int getZoomFactorPerMill() {
 		return zoomFactorPerMill;
 	}
 
+	/**
+	 * Gets the label of a chosen {@link ZoomLevel} instance.
+	 * @return the label.
+	 */
 	public String getLabel() {
 		return label;
 	}

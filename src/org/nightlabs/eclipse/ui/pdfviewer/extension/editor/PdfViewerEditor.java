@@ -95,14 +95,7 @@ public class PdfViewerEditor extends EditorPart
 
 	@Override
 	public void doSaveAs() {
-/*		IProgressMonitor monitor = new NullProgressMonitor();
-		String pathName = "abc.pdf";
-		try {
-			PdfFileSaver.savePdfAs(pathName, monitor);
-		}
-		catch (final Exception x) {
-			logger.error("Error while saving PDF file!", x);
-		}*/
+
 	}
 
 	@Override

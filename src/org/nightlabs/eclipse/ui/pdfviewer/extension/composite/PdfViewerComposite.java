@@ -65,11 +65,11 @@ public class PdfViewerComposite extends Composite
 	private Control pdfSimpleNavigatorControl;
 	private PdfThumbnailNavigator pdfThumbnailNavigator;
 	private Control pdfThumbnailNavigatorControl;
-
 	private PdfViewerActionRegistry pdfViewerActionRegistry;
 	private PdfCoolBar pdfCoolBar;
 	private Control pdfCoolBarControl;
 	private EnumSet<PdfViewerCompositeOption> options = EnumSet.noneOf(PdfViewerCompositeOption.class);
+
 
 	public PdfViewerComposite(Composite parent, int style) {
 		this(parent, style, null);
