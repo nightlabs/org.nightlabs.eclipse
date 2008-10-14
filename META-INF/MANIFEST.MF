@@ -7,16 +7,14 @@ Bundle-Activator: org.nightlabs.eclipse.ui.fckeditor.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.forms,
- org.nightlabs.jfire.base.j2ee;resolution:=optional
+ org.nightlabs.htmlcontent;bundle-version="1.0.0";visibility:=reexport
 Eclipse-LazyStart: true
-Bundle-ClassPath: .,
- lib/NightLabsHTMLContent.jar
+Bundle-ClassPath: .
 Export-Package: org.nightlabs.eclipse.ui.fckeditor,
  org.nightlabs.eclipse.ui.fckeditor.file,
  org.nightlabs.eclipse.ui.fckeditor.file.image,
  org.nightlabs.eclipse.ui.fckeditor.resource,
  org.nightlabs.eclipse.ui.fckeditor.server,
- org.nightlabs.eclipse.ui.fckeditor.test,
- org.nightlabs.htmlcontent
+ org.nightlabs.eclipse.ui.fckeditor.test
 Eclipse-BuddyPolicy: registered
 Eclipse-RegisterBuddy: org.nightlabs.jfire.base.j2ee 
