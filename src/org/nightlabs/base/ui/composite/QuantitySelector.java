@@ -49,11 +49,19 @@ public abstract class QuantitySelector extends XComposite
 
 	public QuantitySelector(Composite parent, int style)
 	{
-		super(parent, style, LayoutMode.TIGHT_WRAPPER);
-		getGridData().grabExcessHorizontalSpace = false;
-		getGridData().grabExcessVerticalSpace = false;
-		getGridLayout().verticalSpacing = 0;
-		getGridLayout().horizontalSpacing = 0;
+		this(parent, style, LayoutDataMode.GRID_DATA);
+	}
+
+	public QuantitySelector(Composite parent, int style, LayoutDataMode layoutDataMode)
+	{
+		super(parent, style, LayoutMode.TOTAL_WRAPPER, layoutDataMode);
+//		setLayoutData(new GridData());
+//		getGridData().horizontalAlignment = SWT.BEGINNING;
+//		getGridData().verticalAlignment = SWT.BEGINNING;
+//		getGridData().grabExcessHorizontalSpace = false;
+//		getGridData().grabExcessVerticalSpace = false;
+//		getGridLayout().verticalSpacing = 0;
+//		getGridLayout().horizontalSpacing = 0;
 //		getGridLayout().marginTop = 0;
 //		getGridLayout().marginBottom = 0;
 
@@ -96,6 +104,7 @@ public abstract class QuantitySelector extends XComposite
 
 	private GridData createGridData() {
 		GridData gd = new GridData();
+//		gd.verticalAlignment = SWT.BEGINNING;
 //		gd.verticalIndent = 0;
 //		gd.grabExcessVerticalSpace = false;
 		return gd;
