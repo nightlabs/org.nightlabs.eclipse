@@ -29,16 +29,16 @@ import org.nightlabs.base.ui.toolkit.AbstractToolkit;
  * Used to work around the problem with the {@link FormToolkit}, which recursively overrides the
  * menu! see {@link FormToolkit#adapt(Composite)} <br> <br>
  * This is now changed so that the menu of a child is only set if there was none before.
- * 
+ *
  * <p> This should only be a temporary solution. We will have to look at the Manifest Editor,
  * for example, to see how to omit this workaround!</p>
- * 
+ *
  * @author Marius Heinzmann [marius<at>NightLabs<dot>de]
  */
 public class NightlabsFormsToolkit extends AbstractToolkit
 {
 	private static final Logger logger = Logger.getLogger(NightlabsFormsToolkit.class);
-	
+
 	public NightlabsFormsToolkit(Display display) {
 		super(new FormColors(display));
 	}
@@ -46,7 +46,7 @@ public class NightlabsFormsToolkit extends AbstractToolkit
 	public NightlabsFormsToolkit(FormColors colors) {
 		super(colors);
 	}
-		
+
 	@Override
 	public void adapt(Composite composite) {
 		composite.setBackground(getColors().getBackground());
@@ -80,11 +80,11 @@ public class NightlabsFormsToolkit extends AbstractToolkit
 			}
 		}
 	}
-	
+
 	@Override
 	public void adapt(Control control, boolean trackFocus, boolean trackKeyboard) {
 		super.adapt(control, trackFocus, trackKeyboard);
-		
+
 		if (control.getParent() instanceof Section) {
 			Section section = (Section) control.getParent();
 			// Set the colour of the title label of section to the correct value. (Ugly, but works)
@@ -100,7 +100,7 @@ public class NightlabsFormsToolkit extends AbstractToolkit
 			}
 		}
 	}
-			
+
 	@Override
 	protected void paintTableBorder(Control control, GC gc, Color color) {
 		Rectangle b = control.getBounds();
@@ -117,30 +117,30 @@ public class NightlabsFormsToolkit extends AbstractToolkit
 		gc.drawRectangle(b.x -2, b.y -2, b.width+4, b.height+4);
 //		gc.drawRectangle(b.x - 1, b.y - 2, b.width + 1,	b.height + 3);
 	}
-	
+
 	@Override
 	protected boolean checkAdditionalTypesForBorders(Control control) {
 		return false;
 	}
 
 	protected static final int minBorderSpace = 3;
-	
+
 	/**
-	 * This method checks prerequisites by calling {@link #adjustLayoutForBorderPainting(Control, boolean)}. 
+	 * This method checks prerequisites by calling {@link #adjustLayoutForBorderPainting(Control, boolean)}.
 	 * @param child the Control which is getting a border and the insets are checked / enforced for.
 	 */
 	@Override
 	protected void checkPrerequisites(Control child) {
 		adjustLayoutForBorderPainting(child, false);
 	}
-	
+
 	private static void adjustLayoutForBorderPainting(Control child, boolean checkForToolkit) {
-		if (checkForToolkit) {			
+		if (checkForToolkit) {
 			if (XComposite.retrieveToolkit(child.getParent()) == null)
 				return;
 		}
 		Composite parent = child.getParent();
-		Layout layout = parent.getLayout();		
+		Layout layout = parent.getLayout();
 		if (layout instanceof GridLayout) {
 			GridLayout gridLayout = (GridLayout) layout;
 			if (gridLayout.marginHeight < minBorderSpace)				gridLayout.marginHeight = minBorderSpace;
@@ -183,12 +183,12 @@ public class NightlabsFormsToolkit extends AbstractToolkit
 					" to be able to draw a flat looking border around the given Control: " + child); //$NON-NLS-1$
 		}
 	}
-	
+
 	/**
 	 * This method ensures that the given controls parent has big enough insets to so that a
 	 * border can be drawn around the given control. Note, that this method will check first
 	 * if the adjustment is needed at all, i.e. if the given control in in a Form environment.
-	 * 
+	 *
 	 * @param child the Control which should get a border.
 	 */
 	public static void adjustLayoutForBorderPainting(Control child) {
