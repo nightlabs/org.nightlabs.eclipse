@@ -19,78 +19,81 @@ extends AbstractTool
 	protected DrawComponent rollOverDC = null;
 	private boolean showRollOver = true;
 	protected DrawComponent mouseMovedDC = null;
-//  private JToolTip toolTip = null;	
-//  private boolean showTooltip = true;
-	
+	//  private JToolTip toolTip = null;
+	//  private boolean showTooltip = true;
+
 	public void setShowRollOver(boolean b) {
 		this.showRollOver = b;
 	}
 	public boolean isShowRollOver() {
 		return showRollOver;
 	}
-	
-//	public boolean isShowTooltip() {
-//		return showTooltip;
-//	}
-//	public void setShowTooltip(boolean showTooltip) {
-//		this.showTooltip = showTooltip;
-//	}
-	
+
+	//	public boolean isShowTooltip() {
+	//		return showTooltip;
+	//	}
+	//	public void setShowTooltip(boolean showTooltip) {
+	//		this.showTooltip = showTooltip;
+	//	}
+
 	@Override
 	public void deactivate()
 	{
 		super.deactivate();
-		
+
 		if (showRollOver)
 			rollOverDC = null;
-		
-//		if (showTooltip)
-//			toolTip = null;
-		
+
+		//		if (showTooltip)
+		//			toolTip = null;
+
 		mouseMovedDC = null;
-	}		
-	
+	}
+
 	@Override
 	public void mouseMoved(MouseEvent me)
 	{
 		super.mouseMoved(me);
+		DrawComponent dc = getViewer().getDrawComponent();
+		if (dc == null || dc.isDisposed())
+			return;
 
 		int currentX = getRelativeX(currentPoint.x);
 		int currentY = getRelativeY(currentPoint.y);
-				
+
 		if (showRollOver && rollOverDC != null) {
 			removeTempContent(rollOverDC);
-			rollOverDC = null;				
+			rollOverDC = null;
 		}
-		
-//		if (showTooltip && toolTip != null) {
-//			removeTempContent(toolTip);
-//			toolTip = null;
-//		}
-		
-//		if (showRollOver || showTooltip) {
+
+		//		if (showTooltip && toolTip != null) {
+		//			removeTempContent(toolTip);
+		//			toolTip = null;
+		//		}
+
+		//		if (showRollOver || showTooltip) {
 		if (showRollOver) {
 			mouseMovedDC = getViewer().getHitTestManager().findObjectAt(
-					getViewer().getDrawComponent(), currentX, currentY, getConditional(), null);			
+					getViewer().getDrawComponent(), currentX, currentY, getConditional(), null);
 		}
-		
+
 		if (showRollOver && mouseMovedDC != null) {
 			rollOverDC = createRollOverDrawComponent(mouseMovedDC);
 			if (rollOverDC != null)
-				addToTempContent(rollOverDC);				
+				addToTempContent(rollOverDC);
 		}
 
-//		if (showTooltip && mouseMovedDC != null) {
-//			toolTip = createToolTip(mouseMovedDC, null, me.getX(), me.getY());
-//			addToTempContent(toolTip);
-//		}		
+		//		if (showTooltip && mouseMovedDC != null) {
+		//			toolTip = createToolTip(mouseMovedDC, null, me.getX(), me.getY());
+		//			addToTempContent(toolTip);
+		//		}
 	}
-						
+
 	protected DrawComponent createRollOverDrawComponent(DrawComponent dc)
 	{
 		return ToolUtil.createFeedbackDrawComponent(dc, Color.BLACK, 5);
 	}
-		
+
 	protected JToolTip createToolTip(DrawComponent dc, String text, int x, int y)
 	{
 		JToolTip toolTip = new JToolTip();
@@ -111,6 +114,6 @@ extends AbstractTool
 		}
 		return toolTip;
 	}
-	  
+
 }
 

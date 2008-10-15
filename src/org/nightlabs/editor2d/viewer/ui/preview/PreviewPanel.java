@@ -43,6 +43,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.util.GeomUtil;
@@ -61,7 +62,7 @@ public class PreviewPanel
 extends JPanel
 {
 	private static final long serialVersionUID = 1L;
-//	private static final Logger logger = Logger.getLogger(PreviewPanel.class);
+	//	private static final Logger logger = Logger.getLogger(PreviewPanel.class);
 	private IViewport viewport = null;
 	private DrawComponent dc = null;
 	private Color bgColor = Color.WHITE;
@@ -77,7 +78,7 @@ extends JPanel
 	private int diffY;
 	private int startViewX;
 	private int startViewY;
-	
+
 	/**
 	 * @param dc The DrawComponent
 	 */
@@ -89,14 +90,14 @@ extends JPanel
 		this.sysBGColor = sysBGColor;
 		init();
 	}
-		
+
 	private ComponentListener resizeListener = new ComponentAdapter(){
 		@Override
 		public void componentResized(ComponentEvent e) {
 			clearBuffer();
 		}
 	};
-			
+
 	private MouseListener mouseListener = new MouseAdapter(){
 		@Override
 		public void mouseReleased(MouseEvent e) {
@@ -114,7 +115,7 @@ extends JPanel
 			}
 		}
 	};
-	
+
 	private MouseMotionListener mouseMotionListener = new MouseMotionAdapter()
 	{
 		@Override
@@ -130,8 +131,8 @@ extends JPanel
 				viewport.setViewLocation((int)realX, (int)realY);
 			}
 		}
-	};	
-	
+	};
+
 	protected void init()
 	{
 		addComponentListener(resizeListener);
@@ -140,7 +141,7 @@ extends JPanel
 		addMouseListener(mouseListener);
 		addMouseMotionListener(mouseMotionListener);
 	}
-	
+
 	/**
 	 * gets notified when the viewBounds of the Viewport change
 	 * @see org.nightlabs.editor2d.viewer.ui.IViewport#getViewBounds()
@@ -164,92 +165,126 @@ extends JPanel
 			repaint();
 		}
 	};
-					
+
 	@Override
 	public void paintComponent(Graphics g)
 	{
+		if (disposed)
+			return;
+
 		Graphics2D g2d = (Graphics2D) g;
-		
+
 		if (bufferImage == null) {
 			double width = getVisibleRect().getWidth();
 			double height = getVisibleRect().getHeight();
 			bufferImage = new BufferedImage((int)width, (int)height, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D bg2d = (Graphics2D) bufferImage.getGraphics();
-//			Rectangle dcBounds = dc.getBounds();
+			//			Rectangle dcBounds = dc.getBounds();
 			Rectangle dcBounds = GeomUtil.translateToOriginAndAdjustSize(dc.getBounds());
-//			Rectangle dcBounds = GeomUtil.translateToOrigin(dc.getBounds());
+			//			Rectangle dcBounds = GeomUtil.translateToOrigin(dc.getBounds());
 			double scaleX = width / dcBounds.getWidth();
 			double scaleY = height / dcBounds.getHeight();
 			zoom = Math.min(scaleX, scaleY);
 			paintDrawComponent(bg2d, zoom, dcBounds, (int)width, (int)height);
-//			if (logger.isDebugEnabled()) {
-//				logger.debug("dc.bounds = "+dc.getBounds());
-//				logger.debug("visibleRect = "+getVisibleRect());			
-//			}
+			//			if (logger.isDebugEnabled()) {
+			//				logger.debug("dc.bounds = "+dc.getBounds());
+			//				logger.debug("visibleRect = "+getVisibleRect());
+			//			}
 		}
 		if (bufferImage != null)
 			g2d.drawImage(bufferImage, 0, 0, this);
 
-		drawViewRect(g2d);		
+		drawViewRect(g2d);
 	}
-			
+
 	private void drawViewRect(Graphics2D g2d)
 	{
-		double viewRealWidth = viewport.getRealBounds().getWidth();
-		double viewRealHeight = viewport.getRealBounds().getHeight();
-//		Rectangle dcBounds = dc.getBounds();
+		if (dc == null || dc.isDisposed())
+			return;
+
+		Rectangle realBounds = viewport.getRealBounds();
+		Rectangle viewBounds = viewport.getViewBounds();
+		if (realBounds == null || viewBounds == null) {
+			// the viewport is obviously shut down (disposed) => return.
+			return;
+		}
+
+		double viewRealWidth = realBounds.getWidth();
+		double viewRealHeight = realBounds.getHeight();
+		//		Rectangle dcBounds = dc.getBounds();
 		Rectangle dcBounds = GeomUtil.translateToOriginAndAdjustSize(dc.getBounds());
-//		Rectangle dcBounds = GeomUtil.translateToOrigin(dc.getBounds());
+		//		Rectangle dcBounds = GeomUtil.translateToOrigin(dc.getBounds());
 		double dcWidth = dcBounds.getWidth();
 		double dcHeight = dcBounds.getHeight();
 		double scaleX = dcWidth / viewRealWidth;
 		double scaleY = dcHeight / viewRealHeight;
 		double scale = Math.min(scaleX, scaleY);
 		proportionScale = scale * zoom;
-		
+
 		double proportionScaleX = scaleX * zoom;
 		double proportionScaleY = scaleY * zoom;
 		double translateX = -dcBounds.getX() * proportionScale;
 		double translateY = -dcBounds.getY() * proportionScale;
-		 
-		viewRectangle = GeomUtil.scaleRect(viewport.getViewBounds(),
+
+		viewRectangle = GeomUtil.scaleRect(viewBounds,
 				proportionScaleX, proportionScaleY, false);
 		g2d.translate(translateX, translateY);
 		g2d.setPaint(Color.RED);
 		g2d.setStroke(new BasicStroke(2));
 		g2d.draw(viewRectangle);
 	}
-	
+
 	private void paintDrawComponent(Graphics2D g2d, double scale, Rectangle bounds, int width, int height)
 	{
-//		RenderingHints rh = g2d.getRenderingHints();
-//		RenderingHintsManager.setSpeedRenderMode(rh);
-//		g2d.setRenderingHints(rh);		
+		//		RenderingHints rh = g2d.getRenderingHints();
+		//		RenderingHintsManager.setSpeedRenderMode(rh);
+		//		g2d.setRenderingHints(rh);
 		g2d.setPaint(sysBGColor);
-		g2d.fillRect(0, 0, width, height);				
+		g2d.fillRect(0, 0, width, height);
 		g2d.setBackground(bgColor);
 		g2d.setPaint(bgColor);
 		g2d.translate(-bounds.x, -bounds.y);
-		g2d.setClip(bounds);				
-		g2d.scale(scale, scale);		
+		g2d.setClip(bounds);
+		g2d.scale(scale, scale);
 		g2d.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
-		DrawComponentPaintable.paintDrawComponent(dc, g2d);		
+		DrawComponentPaintable.paintDrawComponent(dc, g2d);
 	}
-	
+
 	public void clearBuffer() {
 		if (bufferImage != null)
 			bufferImage.flush();
 		bufferImage = null;
 		repaint();
 	}
-	
+
+	private volatile boolean disposed = false;
+
 	public void dispose()
 	{
-		if (bufferImage != null)
-			bufferImage.flush();
-		bufferImage = null;
-		viewport.removePropertyChangeListener(realChangeListener);
-		viewport.removePropertyChangeListener(viewChangeListener);
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				disposed = true;
+
+				if (dc != null) {
+					dc.dispose();
+					dc = null;
+				}
+
+				if (bufferImage != null) {
+					bufferImage.flush();
+					bufferImage = null;
+				}
+				if (viewport != null) {
+					viewport.removePropertyChangeListener(realChangeListener);
+					viewport.removePropertyChangeListener(viewChangeListener);
+					viewport = null;
+				}
+				bgColor = null;
+				sysBGColor = null;
+				listenerList = null;
+				mouseListener = null;
+				mouseMotionListener = null;
+			}
+		});
 	}
-			
 }

@@ -26,6 +26,7 @@
 
 package org.nightlabs.editor2d.viewer.ui;
 
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Color;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.render.RenderModeManager;
@@ -37,50 +38,50 @@ public interface IViewer
 	 * @return the drawComponent to draw
 	 */
 	DrawComponent getDrawComponent();
-	
+
 	/**
 	 * 
 	 * @param dc the DrawComponent to draw
 	 */
 	void setDrawComponent(DrawComponent dc);
-	
+
 	/**
 	 * refreshes/repaints the Canvas
 	 *
 	 */
 	void updateCanvas();
-	
+
 	/**
 	 * 
 	 * @return the Background Color of the Viewer
 	 */
 	Color getBgColor();
-	
+
 	/**
 	 * 
 	 * @param bgColor the Background Color of the Viewer to set
 	 */
 	void setBgColor(Color bgColor);
-			
+
 	/**
 	 * 
 	 * @param zoomFactor the zoomFactor of the viewer (100% = 1.0)
 	 */
 	void setZoom(double zoomFactor);
-	
+
 	/**
 	 * 
 	 * @return the zoomFactor of the viewer (100% = 1.0)
 	 */
 	double getZoom();
-	
+
 	/**
 	 * 
 	 * @return the IZoomSupport of the viewer
 	 * @see org.nightlabs.editor2d.viewer.ui.IZoomSupport
 	 */
 	IZoomSupport getZoomSupport();
-	
+
 	/**
 	 * 
 	 * @return the RenderModeManager which manages the visual representation
@@ -88,22 +89,22 @@ public interface IViewer
 	 * @see RenderModeManager
 	 */
 	RenderModeManager getRenderModeManager();
-	
+
 	/**
 	 * 
 	 * @return the viewport which displays the DrawComponent
 	 */
 	IViewport getViewport();
-	
+
 	/**
 	 * 
 	 * @return the BufferedCanvas of the Viewer
 	 * (in most cases this is the viewport itself)
 	 */
 	IBufferedCanvas getBufferedCanvas();
-	
-//	IBufferedViewport getViewport();
-		
+
+	//	IBufferedViewport getViewport();
+
 	/**
 	 * 
 	 * @return the implementation of IMouseManager, which is responsible for
@@ -111,35 +112,39 @@ public interface IViewer
 	 * @see IMouseManager
 	 */
 	IMouseManager getMouseManager();
-	
+
 	/**
-	* 
-	* @return the SelectionManager which manages the selection of the viewer
-	* @see SelectionManager
-	*/
+	 * 
+	 * @return the SelectionManager which manages the selection of the viewer
+	 * @see SelectionManager
+	 */
 	SelectionManager getSelectionManager();
-	
+
 	/**
 	 * 
 	 * @return the HitTestManager which manages hitTesting
 	 * @see HitTestManager
 	 */
 	HitTestManager getHitTestManager();
-	
+
 	/**
 	 * releases ressources of the viewer
 	 */
 	void dispose();
-	
-//	/**
-//	 * Returns the {@link IToolManager} for the Viewer
-//	 * @return the {@link IToolManager} for the Viewer
-//	 */
-//	IToolManager getToolManager();
-//	
-//	/**
-//	 * Sets the {@link IToolManager} for the Viewer
-//	 * @param toolManager the {@link IToolManager} to set
-//	 */
-//	void setToolManager(IToolManager toolManager);
+
+	void addDisposeListener(DisposeListener listener);
+	void removeDisposeListener(DisposeListener listener);
+
+
+	//	/**
+	//	 * Returns the {@link IToolManager} for the Viewer
+	//	 * @return the {@link IToolManager} for the Viewer
+	//	 */
+	//	IToolManager getToolManager();
+	//
+	//	/**
+	//	 * Sets the {@link IToolManager} for the Viewer
+	//	 * @param toolManager the {@link IToolManager} to set
+	//	 */
+	//	void setToolManager(IToolManager toolManager);
 }

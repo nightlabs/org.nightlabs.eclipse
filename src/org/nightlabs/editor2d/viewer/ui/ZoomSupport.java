@@ -188,18 +188,18 @@ implements IZoomSupport
 		if (absoluteView.height != 0 && absoluteRect.height != 0)
 			zoomY = (double)absoluteView.height / (double)absoluteRect.height;
 
-	  double newZoom = Math.min(zoomX, zoomY);
-	  setZoom(newZoom);
-	  // maybe realZoom is beyond minZoom or maxZoom
-	  double zoom = getZoom();
+		double newZoom = Math.min(zoomX, zoomY);
+		setZoom(newZoom);
+		// maybe realZoom is beyond minZoom or maxZoom
+		double zoom = getZoom();
 
-	  double newX = ((absoluteRect.x) * zoom);
-	  double newY = ((absoluteRect.y) * zoom);
+		double newX = ((absoluteRect.x) * zoom);
+		double newY = ((absoluteRect.y) * zoom);
 
-  	getViewport().setViewLocation((int)newX, (int)newY);
+		getViewport().setViewLocation((int)newX, (int)newY);
 
-  	// FIXME: Workaround to avoid strange redraw bugs when zoom to rectangle
-  	Display.getDefault().timerExec(250, new Runnable(){
+		// FIXME: Workaround to avoid strange redraw bugs when zoom to rectangle
+		Display.getDefault().timerExec(250, new Runnable(){
 			@Override
 			public void run() {
 				SwingUtilities.invokeLater(new Runnable() {
@@ -211,14 +211,14 @@ implements IZoomSupport
 			}
 		});
 
-  	if (logger.isDebugEnabled()) {
-  		logger.debug("absoluteRect = "+absoluteRect); //$NON-NLS-1$
-  		logger.debug("absoluteView = "+absoluteView); //$NON-NLS-1$
-  		logger.debug("newZoom = "+newZoom); //$NON-NLS-1$
-  		logger.debug("newX = "+newX); //$NON-NLS-1$
-  		logger.debug("newY = "+newY); //$NON-NLS-1$
-  		logger.debug(""); //$NON-NLS-1$
-  	}
+		if (logger.isDebugEnabled()) {
+			logger.debug("absoluteRect = "+absoluteRect); //$NON-NLS-1$
+			logger.debug("absoluteView = "+absoluteView); //$NON-NLS-1$
+			logger.debug("newZoom = "+newZoom); //$NON-NLS-1$
+			logger.debug("newX = "+newX); //$NON-NLS-1$
+			logger.debug("newY = "+newY); //$NON-NLS-1$
+			logger.debug(""); //$NON-NLS-1$
+		}
 	}
 
 	private boolean zoomAll = true;
@@ -284,22 +284,25 @@ implements IZoomSupport
 		}
 	}
 
-//	protected void doZoomAll()
-//	{
-////		Display.getDefault().asyncExec(new Runnable() {
-////			public void run() {
-////				if (zoomAll) {
-////					logger.debug("zoomAll"); //$NON-NLS-1$
-//					zoomAll();
-////				}
-////			}
-////		});
-//	}
+	//	protected void doZoomAll()
+	//	{
+	////		Display.getDefault().asyncExec(new Runnable() {
+	////			public void run() {
+	////				if (zoomAll) {
+	////					logger.debug("zoomAll"); //$NON-NLS-1$
+	//					zoomAll();
+	////				}
+	////			}
+	////		});
+	//	}
 
 	private PropertyChangeListener viewportListener = new PropertyChangeListener() {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
-			doZoomAll();
+			String propertyName = evt.getPropertyName();
+
+			if (IViewport.REAL_CHANGE.equals(propertyName) || IViewport.VIEW_CHANGE.equals(propertyName))
+				doZoomAll();
 		}
 	};
 }

@@ -54,32 +54,32 @@ implements IViewer
 		init(this);
 		addDisposeListener(disposeListener);
 	}
-	
+
 	private boolean autoScroll = true;
 	private IAutoScrollSupport autoScrollSupport = null;
 	public IAutoScrollSupport getAutoScrollSupport() {
 		return autoScrollSupport;
 	}
-	
+
 	protected void init(Composite parent)
 	{
 		// TODO: uncomment if used as plugin, renderMode Registration now done by TestDialog
-//		RenderModeManager renderMan = RendererRegistry.sharedInstance().getRenderModeManager();
-//		drawComponent.setRenderModeManager(renderMan);
-		
+		//		RenderModeManager renderMan = RendererRegistry.sharedInstance().getRenderModeManager();
+		//		drawComponent.setRenderModeManager(renderMan);
+
 		getHitTestManager();
 		canvas = createCanvas(this);
 		mouseManager = initMouseManager(this);
 		getZoomSupport().addZoomListener(zoomListener);
 		updateCanvas();
-		
+
 		if (autoScroll) {
 			autoScrollSupport = initAutoScrollSupport();
 		}
 	}
-		
+
 	private DrawComponent drawComponent;
-		
+
 	/**
 	 * 
 	 * @return the DrawComponent to draw
@@ -87,7 +87,7 @@ implements IViewer
 	public DrawComponent getDrawComponent() {
 		return drawComponent;
 	}
-	
+
 	/**
 	 * 
 	 * @param drawComponent the DrawComponent to draw
@@ -96,7 +96,7 @@ implements IViewer
 		this.drawComponent = drawComponent;
 		hitTestManager = new HitTestManager(drawComponent);
 	}
-				
+
 	/**
 	 * updates the Canvas
 	 *
@@ -106,7 +106,7 @@ implements IViewer
 		if (canvas != null)
 			canvas.repaint();
 	}
-	
+
 	/**
 	 * zooms the viewer to the given zoomFactor
 	 * @param zoomFactor the zoomFactor to zoom (1.0 = 100%)
@@ -116,10 +116,10 @@ implements IViewer
 	}
 
 	private ICanvas canvas;
-	public ICanvas getCanvas() {
+	public final ICanvas getCanvas() {
 		return canvas;
 	}
-	
+
 	protected void setZoom(double zoomFactor, boolean internal)
 	{
 		if (internal) {
@@ -131,7 +131,7 @@ implements IViewer
 			canvas.repaint();
 		}
 	}
-		
+
 	/**
 	 * 
 	 * @return the current zoomFactor as double (100% = 1.0)
@@ -139,10 +139,10 @@ implements IViewer
 	public double getZoom() {
 		return getZoomSupport().getZoom();
 	}
-	 		
+
 	public static Color defaultBgColor = new Color(null, 255, 255, 255);
 	private Color bgColor = defaultBgColor;
-	
+
 	/**
 	 * 
 	 * @return the Background Color of the Viewer
@@ -168,48 +168,47 @@ implements IViewer
 	{
 		if (selectionManager == null)
 			selectionManager = new SelectionManager(this);
-		
+
 		return selectionManager;
 	}
 
 	private IZoomSupport zoomSupport = null;
-	public IZoomSupport getZoomSupport()
+	public final IZoomSupport getZoomSupport()
 	{
+		if (isDisposed())
+			throw new IllegalStateException("This AbstractCanvasComposite is already disposed!");
+
 		if (zoomSupport == null)
 			zoomSupport = new ZoomSupport(getViewport());
-		
+
 		return zoomSupport;
 	}
 
-	/**
-	 * 
-	 * @see org.nightlabs.editor2d.viewer.ui.IViewer#getRenderModeManager()
-	 */
 	public RenderModeManager getRenderModeManager() {
 		return getDrawComponent().getRenderModeManager();
 	}
-	
+
 	private IZoomListener zoomListener = new IZoomListener()
 	{
 		public void zoomChanged(double zoom) {
 			setZoom(zoom, false);
 		}
 	};
-	
+
 	private IMouseManager mouseManager = null;
 	public IMouseManager getMouseManager() {
 		return mouseManager;
 	}
-	
+
 	private HitTestManager hitTestManager = null;
 	public HitTestManager getHitTestManager()
 	{
 		if (hitTestManager == null)
 			hitTestManager = new HitTestManager(getDrawComponent());
-		
+
 		return hitTestManager;
 	}
-	
+
 	protected abstract IMouseManager initMouseManager(IViewer viewer);
 	protected abstract ICanvas createCanvas(Composite parent);
 	protected abstract IAutoScrollSupport initAutoScrollSupport();
@@ -218,15 +217,25 @@ implements IViewer
 	{
 		public void widgetDisposed(DisposeEvent e)
 		{
-			getZoomSupport().removeZoomListener(zoomListener);
-			getCanvas().dispose();
+			if (zoomSupport != null) {
+				zoomSupport.removeZoomListener(zoomListener);
+				zoomSupport = null;
+			}
+			if (canvas != null) {
+				canvas.dispose();
+				canvas = null;
+			}
+			toolManager = null;
+			autoScrollSupport = null;
+			bgColor = null;
+			hitTestManager = null;
+			drawComponent = null;
 			hitTestManager = null;
 			mouseManager = null;
 			selectionManager = null;
-			zoomSupport = null;
 		}
 	};
-	
+
 	private IToolManager toolManager;
 	/**
 	 * Return the toolManager.
@@ -243,5 +252,5 @@ implements IViewer
 	public void setToolManager(IToolManager toolManager) {
 		this.toolManager = toolManager;
 	}
-	
+
 }

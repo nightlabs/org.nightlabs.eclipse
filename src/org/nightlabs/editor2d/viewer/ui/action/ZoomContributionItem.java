@@ -55,7 +55,7 @@ extends AbstractContributionItem
 		this.zoomSupport = zoomSupport;
 		zoomSupport.addZoomListener(zoomListener);
 	}
-	
+
 	protected IZoomSupport zoomSupport = null;
 	public IZoomSupport getZoomSupport() {
 		return zoomSupport;
@@ -64,36 +64,36 @@ extends AbstractContributionItem
 		this.zoomSupport = zoomSupport;
 	}
 
-//	protected Text text = null;
-//  protected Control createControl(Composite parent)
-//  {
-//  	text = new Text(parent, SWT.BORDER);
-//  	setText(getZoomSupport().getZoom());
-//  	text.addDisposeListener(disposeListener);
-//  	return text;
-//  }
+	//	protected Text text = null;
+	//  protected Control createControl(Composite parent)
+	//  {
+	//  	text = new Text(parent, SWT.BORDER);
+	//  	setText(getZoomSupport().getZoom());
+	//  	text.addDisposeListener(disposeListener);
+	//  	return text;
+	//  }
 
 	protected XCombo combo = null;
-  @Override
+	@Override
 	protected Control createControl(Composite parent)
-  {
-  	combo = new XCombo(parent, SWT.BORDER);
-  	
-  	// to set right width
-  	String initString = "1000%"; //$NON-NLS-1$
-  	combo.add(null, initString, 0);
-  	if (getToolItem() != null) {
-  		getToolItem().setWidth(computeWidth(combo));
-  	}
-  	combo.remove(0);
-  	
-  	initComboEntries(combo);
-  	combo.addSelectionListener(selectionListener);
-  	combo.addDisposeListener(disposeListener);
-  	setText(zoomSupport.getZoom());
-  	return combo;
-  }
-	  
+	{
+		combo = new XCombo(parent, SWT.BORDER);
+
+		// to set right width
+		String initString = "1000%"; //$NON-NLS-1$
+		combo.add(null, initString, 0);
+		if (getToolItem() != null) {
+			getToolItem().setWidth(computeWidth(combo));
+		}
+		combo.remove(0);
+
+		initComboEntries(combo);
+		combo.addSelectionListener(selectionListener);
+		combo.addDisposeListener(disposeListener);
+		setText(zoomSupport.getZoom());
+		return combo;
+	}
+
 	protected void initComboEntries(XCombo c)
 	{
 		addEntry(c, null, "  25%", 0.25); //$NON-NLS-1$
@@ -104,41 +104,44 @@ extends AbstractContributionItem
 		addEntry(c, null, " 400%", 4.0); //$NON-NLS-1$
 		addEntry(c, null, " 500%", 5.0); //$NON-NLS-1$
 	}
-  
+
 	protected Map<String, Double> entry2ZoomValue = new HashMap<String, Double>();
 	protected void addEntry(XCombo c, Image img, String name, double zoomValue) {
 		c.add(img, name);
 		entry2ZoomValue.put(name, new Double(zoomValue));
 	}
-	
-  protected DisposeListener disposeListener = new DisposeListener()
-  {
+
+	protected DisposeListener disposeListener = new DisposeListener()
+	{
 		public void widgetDisposed(DisposeEvent e) {
 			zoomSupport.removeZoomListener(zoomListener);
 			combo.removeSelectionListener(selectionListener);
 		}
 	};
-  
-  protected IZoomListener zoomListener = new IZoomListener()
-  {
+
+	protected IZoomListener zoomListener = new IZoomListener()
+	{
 		public void zoomChanged(double zoom) {
 			setText(zoom);
 		}
 	};
-	
+
 	protected void setText(double zoom)
 	{
 		final int percentage = (int) Math.floor(zoom * 100);
-		if (combo != null) {
-			Display.getDefault().syncExec(new Runnable(){
+		if (combo != null && !combo.isDisposed()) {
+			Display.getDefault().asyncExec(new Runnable(){
 				@Override
 				public void run() {
+					if (combo == null || combo.isDisposed())
+						return;
+
 					combo.setText(""+percentage+" %"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			});
 		}
 	}
-			
+
 	protected SelectionListener selectionListener = new SelectionListener()
 	{
 		public void widgetDefaultSelected(SelectionEvent e) {

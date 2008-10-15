@@ -34,60 +34,60 @@ public interface IViewport
 {
 	public static final String VIEW_CHANGE = "viewChange";	 //$NON-NLS-1$
 	public static final String REAL_CHANGE = "realChange"; //$NON-NLS-1$
-//	public static final String BUFFER_CHANGE = "bufferChange";
-	
+	//	public static final String BUFFER_CHANGE = "bufferChange";
+
 	/**
 	 * @param realBounds the bounds of the whole area of the viewport
 	 */
 	void setRealBounds(Rectangle realBounds);
-	
+
 	/**
 	 * 
 	 * @return the bounds of the whole area of the viewport
 	 */
 	Rectangle getRealBounds();
-	
+
 	/**
 	 * 
 	 * @param viewBounds sets the bounds of the visible area of the viewport
 	 */
 	void setViewBounds(Rectangle viewBounds);
-	
+
 	/**
 	 * 
 	 * @return the bounds of the visible area of the viewport
 	 */
 	Rectangle getViewBounds();
-	
+
 	/**
 	 * sets the upper left corner of visible area of the viewport
 	 * @param p the upper left view location
 	 */
 	void setViewLocation(Point2D p);
-	
+
 	/**
 	 * sets the upper left corner of visible area of the viewport
 	 * @param x the X-Coordinate
 	 * @param y the Y-Coordinate
 	 */
 	void setViewLocation(int x, int y);
-	
+
 	/**
 	 * 
 	 * @return the viewLocation
 	 */
 	Point2D getViewLocation();
-			
+
 	/**
 	 * @return the offset in X-direction between the viewBounds and the realBounds
 	 */
 	int getOffsetX();
-		
+
 	/**
 	 * @return the offset in Y-direction between the viewBounds and the realBounds
 	 */
 	int getOffsetY();
-	
+
 	/**
 	 * Adds a {@link PropertyChangeListener} to listen for viewport changes.
 	 * @param pcl the PropertyChangeListener which will be notified of
@@ -95,24 +95,24 @@ public interface IViewport
 	 * propertyName is either <code>VIEW_CHANGE</code> or <code>REAL_CHANGE</code>
 	 */
 	void addPropertyChangeListener(PropertyChangeListener pcl);
-	
+
 	/**
 	 * Removes a previously added {@link PropertyChangeListener}.
 	 * @param pcl the propertyChangeListener to remove
 	 */
 	void removePropertyChangeListener(PropertyChangeListener pcl);
-	
+
 	/**
 	 * Returns the initial real bounds.
 	 * @return the initial real bounds
 	 */
 	Rectangle getInitRealBounds();
-	
+
 	/**
 	 * Returns the initial view bounds.
 	 * @return the initial view bounds
 	 */
 	Rectangle getInitViewBounds();
-	
+
 	void notifyChange();
 }

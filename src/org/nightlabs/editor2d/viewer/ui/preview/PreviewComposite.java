@@ -27,8 +27,6 @@ package org.nightlabs.editor2d.viewer.ui.preview;
 
 import java.awt.BorderLayout;
 import java.awt.Frame;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
@@ -72,34 +70,45 @@ extends XComposite
 		this.dc = dc;
 		this.viewport = viewport;
 		init();
-		addDisposeListener(new DisposeListener() {
-			@Override
-			public void widgetDisposed(DisposeEvent e) {
-				if (previewPanel != null)
-					previewPanel.dispose();
-			}
-		});
 	}
 
 	private DrawComponent dc;
 	private IViewport viewport;
 	private Frame previewFrame;
 	private PreviewPanel previewPanel;
-	
+
 	private void init()
 	{
 		previewFrame = SWT_AWT.new_Frame(this);
 		previewFrame.setLayout(new BorderLayout());
 		previewPanel = new PreviewPanel(dc, viewport, ColorUtil.toAWTColor(getBackground()));
 		previewFrame.add(previewPanel, BorderLayout.CENTER);
-		previewFrame.addWindowListener(new WindowAdapter(){
+		//		previewFrame.addWindowListener(new WindowAdapter(){
+		//			@Override
+		//			public void windowClosing(WindowEvent e) {
+		//				previewPanel.dispose();
+		//			}
+		//		});
+
+		addDisposeListener(new DisposeListener() {
 			@Override
-			public void windowClosing(WindowEvent e) {
-				previewPanel.dispose();
+			public void widgetDisposed(DisposeEvent e) {
+				if (previewPanel != null) {
+					previewPanel.dispose();
+					previewPanel = null;
+				}
+
+				if (previewFrame != null) {
+					previewFrame.dispose();
+					previewFrame = null;
+				}
+
+				PreviewComposite.this.viewport = null;
+				PreviewComposite.this.dc = null;
 			}
 		});
 	}
-	
+
 	public PreviewPanel getPreviewPanel() {
 		return previewPanel;
 	}

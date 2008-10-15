@@ -33,6 +33,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
 
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.nightlabs.editor2d.viewer.ui.AbstractMouseManager;
 import org.nightlabs.editor2d.viewer.ui.IViewer;
 
@@ -45,17 +47,26 @@ extends AbstractMouseManager
 		this.component = c;
 		init();
 	}
-	
+
 	private Component component = null;
 	public Component getComponent() {
 		return component;
 	}
-	
+
 	protected void init() {
 		component.addMouseListener(mouseListener);
 		component.addMouseMotionListener(mouseMotionListener);
+
+		getViewer().addDisposeListener(new DisposeListener() {
+			@Override
+			public void widgetDisposed(DisposeEvent event) {
+				component.removeMouseListener(mouseListener);
+				component.removeMouseMotionListener(mouseMotionListener);
+				component = null;
+			}
+		});
 	}
-	
+
 	private MouseMotionListener mouseMotionListener = new MouseMotionAdapter()
 	{
 		@Override
@@ -63,33 +74,33 @@ extends AbstractMouseManager
 		{
 			x = evt.getX();
 			y = evt.getY();
-//			doFireMouseMoved(x, y, evt.getButton());
+			//			doFireMouseMoved(x, y, evt.getButton());
 			fireMouseMoved(x, y, evt.getButton());
 		}
-		
+
 		@Override
 		public void mouseDragged(MouseEvent evt)
 		{
 			x = evt.getX();
 			y = evt.getY();
-//			doFireMouseMoved(x, y, evt.getButton());
+			//			doFireMouseMoved(x, y, evt.getButton());
 			fireMouseMoved(x, y, evt.getButton());
 		}
 	};
-	
+
 	private MouseListener mouseListener = new MouseAdapter()
 	{
 		@Override
 		public void mousePressed(MouseEvent me) {
-//			doFireMousePressed(me.getX(), me.getY(), me.getButton());
+			//			doFireMousePressed(me.getX(), me.getY(), me.getButton());
 			fireMousePressed(me.getX(), me.getY(), me.getButton());
 		}
-		
+
 		@Override
 		public void mouseReleased(MouseEvent me) {
-//			doFireMouseReleased(me.getX(), me.getY(), me.getButton());
+			//			doFireMouseReleased(me.getX(), me.getY(), me.getButton());
 			fireMouseReleased(me.getX(), me.getY(), me.getButton());
 		}
 	};
-	
+
 }
