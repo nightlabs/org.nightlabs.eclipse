@@ -34,7 +34,7 @@ import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 
 /* OLD JAVADOC:
- * 
+ *
  * Used for Wizards with dynamic WizardPages.
  * Inteded to be used as follows.<br/>
  * Subclass DynamicPathWizardPage and implement
@@ -61,13 +61,13 @@ import org.eclipse.jface.wizard.Wizard;
  *   by simply switching populators and the user can go back and
  *   even take an other way.
  * </p>
- * 
+ *
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
  * @author Marco Schulze
  */
 
 /**
- * 
+ *
  * Used for Wizards with dynamic WizardPages.
  * Intended to be used as follows.<br/>
  * Subclass DynamicPathWizardPage and implement
@@ -81,11 +81,11 @@ import org.eclipse.jface.wizard.Wizard;
  *   pages as you need them. If you don't override the getNextPage-behavior
  *   of the added pages they will appear in the same order as added.
  * </p>
- * 
+ *
  * FIXME: must be rewritten as from Eclipse 3.2, Wizard works different then in 3.1
  * Wizard.createPageControls() does not work properly when in addPages() only addDynamicPage() is called
  * instead of addPage()
- * 
+ *
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
  * @author Marco Schulze
  */
@@ -139,9 +139,6 @@ public abstract class DynamicPathWizard extends Wizard implements IDynamicPathWi
 		return this.getClass().getName();
 	}
 
-	/**
-	 * @see org.eclipse.jface.wizard.Wizard#addPages()
-	 */
 	@Override
 	public void addPages()
 	{
@@ -169,7 +166,7 @@ public abstract class DynamicPathWizard extends Wizard implements IDynamicPathWi
 	 *
 	 * @see DynamicPathWizardPage
 	 * @see IDynamicPathWizardPage
-	 * 
+	 *
 	 * @deprecated
 	 */
 	@Deprecated
@@ -190,11 +187,11 @@ public abstract class DynamicPathWizard extends Wizard implements IDynamicPathWi
 	 * <p>
 	 * <strong>Important API change: Do not overwrite this method anymore!!!</strong>
 	 * Overwrite {@link #createWizardEntryPage()} instead!
-	 * 
+	 *
 	 * @return Returns the first page of the wizard. If this page does not yet exist
 	 * (means it's the first call to this method), {@link #createWizardEntryPage()} is
 	 * called.
-	 * 
+	 *
 	 * @deprecated
 	 */
 	@Deprecated
@@ -305,7 +302,7 @@ public abstract class DynamicPathWizard extends Wizard implements IDynamicPathWi
 
 	/**
 	 * Add a dynamic wizard page at the end of the wizard.
-	 * 
+	 *
 	 * @param page The page to add
 	 * @see org.nightlabs.base.ui.wizard.IDynamicPathWizard#addDynamicWizardPage(org.nightlabs.base.ui.wizard.IDynamicPathWizardPage)
 	 */
