@@ -69,12 +69,17 @@ public class LanguageChooserList
 
 	public LanguageChooserList(Composite parent, boolean grabExcessHorizontalSpace, boolean showHeader)
 	{
-		super(parent, SWT.NONE, true);
+		this(parent, SWT.BORDER | SWT.H_SCROLL | SWT.FULL_SELECTION, showHeader);
 		((GridData)getLayoutData()).grabExcessHorizontalSpace = grabExcessHorizontalSpace;
+	}
+	
+	public LanguageChooserList(Composite parent, int tableStyle, boolean showHeader)
+	{
+		super(parent, SWT.NONE, true);
 
 		contentProvider = new LanguageTableContentProvider();
 		labelProvider = new LanguageTableLabelProvider();
-		viewer = new TableViewer(this, SWT.BORDER | SWT.H_SCROLL | SWT.FULL_SELECTION);
+		viewer = new TableViewer(this, tableStyle);
 		viewer.setContentProvider(contentProvider);
 		viewer.setLabelProvider(labelProvider);
 
