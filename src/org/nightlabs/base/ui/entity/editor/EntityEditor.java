@@ -33,12 +33,15 @@ import java.util.List;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.IPageChangedListener;
+import org.eclipse.jface.dialogs.PageChangedEvent;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.forms.editor.IFormPage;
+import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.composite.Fadeable;
 import org.nightlabs.base.ui.editor.CommitableFormEditor;
 import org.nightlabs.base.ui.entity.EntityEditorRegistry;
@@ -86,10 +89,29 @@ public class EntityEditor extends CommitableFormEditor
 	 */
 	private EntityEditorStaleHandler staleHandler;
 	
+	private String LAST_ACTIVE_PAGE_KEY_PREFIX = EntityEditor.class.getSimpleName() + ".lastPage.";
+	private String lastPageId = null;
+	private IPageChangedListener pageChangedListener = new IPageChangedListener() {
+		@Override
+		public void pageChanged(PageChangedEvent event) {
+			Object page = event.getSelectedPage();
+			if (page instanceof IFormPage) {
+				lastPageId = ((IFormPage) page).getId();
+			}
+		}
+	};
+	
 	public EntityEditor()
 	{	}
 	
-	/* (non-Javadoc)
+	/**
+	 * This method creates the form pages of the editor and adds them to it. 
+	 * Furthermore it adds page controllers for each registered page.
+	 * <p>
+	 * For storing the last active page of the editor a listener for page changes is added in
+	 * this page change provider.
+	 * </p>
+	 * 
 	 * @see org.eclipse.ui.forms.editor.FormEditor#addPages()
 	 */
 	@Override
@@ -106,6 +128,9 @@ public class EntityEditor extends CommitableFormEditor
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}
+		addPageChangedListener(pageChangedListener);
+		selectLastActivePage();
+		
 	}
 	
 	/**
@@ -131,7 +156,58 @@ public class EntityEditor extends CommitableFormEditor
 	public String getEditorID() {
 		return getEditorSite().getId();
 	}
-
+	
+	/**
+	 * This method sets the active page of an editor.
+	 * Therefore, the ID of the recently active page of an editor before closing it is utilized by the use
+	 * of the preference store of the corresponding plugin. The ID has been saved in the store at the same time 
+	 * the editor has been closed.
+	 * <p>   
+	 * In {@link ArticleContainerEditor} controls are not available in the case a page other than the first one is chosen as 
+	 * active at the beginning. For this reason the FIRST page of this editor is always chosen as active, i.e. the last page ID 
+	 * is not maintained.    
+	 * </p>
+	 */
+	protected void selectLastActivePage() {
+		if (!maintainLastPageID())
+			return;
+		String pageID = NLBasePlugin.getDefault().getPluginPreferences().getString(getLastPageIDPreferenceKey());
+		if (pageID != null && !pageID.isEmpty()) {
+			setActivePage(pageID);
+		}
+	}
+	
+	/**
+	 * Determines if the ID of the last active page before closing a certain editor will be chosen as active page when 
+	 * starting this editor again.
+	 * <p>
+	 * In {@link ArticleContainerEditor} control is not available in the case a page other than the first one is chosen as 
+	 * active at the beginning. For this reason the FIRST page of this editor is always chosen as active, i.e. the last page ID 
+	 * is not maintained.    
+	 * </p>
+	 * 
+	 * @return true if the last page ID shall be maintained, otherwise false.
+	 */
+	protected boolean maintainLastPageID() {
+		return true;
+	}
+	
+	/**
+	 * This method returns the key under which the last active page id
+	 * will be stored in the preferences store.
+	 * <p>
+	 * The default implementation will include a prefix and the id of
+	 * the current editor. Subclasses may override to change this key
+	 * (for example to add more details about the editor instance).
+	 * </p>
+	 *
+	 * @return The key under which the last active page id
+	 * will be stored in the preferences store.
+	 */
+	protected String getLastPageIDPreferenceKey() {
+		return LAST_ACTIVE_PAGE_KEY_PREFIX + getEditorID();
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.part.EditorPart#doSaveAs()
 	 */
@@ -280,6 +356,10 @@ public class EntityEditor extends CommitableFormEditor
 	 */
 	@Override
 	public void dispose() {
+		removePageChangedListener(pageChangedListener);
+		if (lastPageId != null && !lastPageId.isEmpty()) {
+			NLBasePlugin.getDefault().getPluginPreferences().setValue(getLastPageIDPreferenceKey(), lastPageId);
+		}
 		super.dispose();
 		if (controller != null)
 			controller.dispose();
