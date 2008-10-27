@@ -75,8 +75,9 @@ import org.nightlabs.progress.ProgressMonitor;
  * controller was created by the {@link IEntityEditorPageFactory} of this
  * page. <br/>
  * Within the job the page will load the controllers data. if a controller was found.
- * Then it will call the {@link #asyncCallback()} method still on the jobs thread,
- * to let implementations react on to the loading. Implementations could fill the gui with
+ * Then the {@link #handleControllerObjectModified(EntityEditorPageControllerModifyEvent)}
+ * method will be invoked (still on the jobs thread) by the page-controller listener
+ * mechanism, to let implementations react on to the loading. Implementations could fill the gui with
  * the obtained data, for example. The callback is on the jobs thread, however,
  * in order to enable subclasses to extend the background job with own tasks.
  * Implementors should also not forget to switch to the content view when
@@ -201,7 +202,7 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 //					}
 //				});
 			}
-			asyncCallback(); // TODO: Maybe change this and require the controller to fire change event onLoad() ?!?!
+//			asyncCallback(); // TODO: Maybe change this and require the controller to fire change event onLoad() ?!?!
 			// TODO maybe call switchToContent() here?!?!
 			return Status.OK_STATUS;
 		}
@@ -209,30 +210,19 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 
 	/**
 	 * This method is invoked when the {@link IEntityEditorPageController} associated to this page
-	 * notifies that one of its objects has changed. The default implementation will
-	 * invoke {@link #asyncCallback()} on every notification. Subclasses may override this behaviour.
+	 * notifies that one of its objects has changed. This happens when the controller (re-)loaded
+	 * or saved its model. This method is invoked on the thread that caused the notification
+	 * so it is very likely that it is called on a non-ui thread, so please remember that ui
+	 * operations have to be done on the {@link Display} thread.
+	 * <p>
+	 * This implementation does nothing and is intended to be overridden in order to fill
+	 * the ui with the data now loaded. Also make use of the {@link #switchToContent()} method
+	 * here.
+	 * </p> 
 	 *
 	 * @param modifyEvent The Event thrown by the associated controller.
 	 */
 	protected void handleControllerObjectModified(EntityEditorPageControllerModifyEvent modifyEvent) {
-		asyncCallback();
-	}
-
-	/**
-	 * This method is called <b>on the loading job's thread</b> after
-	 * the loading was done. It is intended to be used in order
-	 * to fill the page with the data now loaded.
-	 * Remember that gui operations have to be done on the {@link Display} thread.
-	 * Also implementations might want to {@link #switchToContent()} at
-	 * the end of this method.
-	 * <p>
-	 * Note that this method might also called when the {@link IEntityEditorPageController}
-	 * associated to this page notifies a change of one of its controller objects.
-	 * This page adds an {@link IEntityEditorPageControllerModifyListener} to the controller,
-	 * that will invoke {@link #handleControllerObjectModified(EntityEditorPageControllerModifyEvent)}.
-	 * </p>
-	 */
-	protected void asyncCallback() {
 	}
 
 
