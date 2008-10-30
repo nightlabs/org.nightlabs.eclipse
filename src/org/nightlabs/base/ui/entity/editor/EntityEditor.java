@@ -359,6 +359,7 @@ public class EntityEditor extends CommitableFormEditor
 		removePageChangedListener(pageChangedListener);
 		if (lastPageId != null && !lastPageId.isEmpty()) {
 			NLBasePlugin.getDefault().getPluginPreferences().setValue(getLastPageIDPreferenceKey(), lastPageId);
+			NLBasePlugin.getDefault().savePluginPreferences();
 		}
 		super.dispose();
 		if (controller != null)
