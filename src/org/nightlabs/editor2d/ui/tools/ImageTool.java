@@ -59,15 +59,15 @@ extends CreationTool
     super(aFactory);
     this.colorConversion = colorConversion;
   }
-    
+
   private boolean colorConversion = false;
-  
+
   // TODO should come from ImageIO
   private static final String[] fileExtensions =
-  	new String[] {"*.jpg", "*.png", "*.gif", "*.bmp", "*.pcx"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-  
+	  new String[] {"jpg", "png", "gif", "bmp", "pcx"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+
   private List<RenderModeMetaData> renderModeMetaDatas = new LinkedList<RenderModeMetaData>();
-  
+
   /**
    * Creates a {@link CreateRequest} and sets this tool's factory on the request.
    * @see org.eclipse.gef.tools.TargetingTool#createTargetRequest()
@@ -79,22 +79,32 @@ extends CreationTool
     request.setFactory(getFactory());
     return request;
   }
-  
+
   protected ImageCreateRequest getImageCreateRequest() {
     return (ImageCreateRequest) getTargetRequest();
   }
-    
-  public String[] getFileExtensions() {
-  	return fileExtensions;
+
+  public String[] getFileExtensions()
+  {
+	String[] dialogFileExtensions = new String[fileExtensions.length + 1];
+	StringBuffer sb = new StringBuffer();
+	String wildcard = "*.";
+	for (int i=0; i<fileExtensions.length; i++) {
+		String fileExtension = fileExtensions[i];
+		dialogFileExtensions[i+1] = wildcard + fileExtension;
+		sb.append(wildcard);
+		sb.append(fileExtension);
+		if (i != fileExtensions.length - 1)
+			sb.append(File.pathSeparatorChar + " ");
+	}
+	dialogFileExtensions[0] = sb.toString();
+  	return dialogFileExtensions;
   }
-//  public String[] getFileExtensions() {
-//  	return ImageIO.getReaderFormatNames();
-//  }
-  
+
   protected Shell getShell() {
   	return getCurrentViewer().getControl().getShell();
   }
-  
+
   protected FileDialog openFileDialog()
   {
     FileDialog dialog = new FileDialog(getShell());
@@ -103,7 +113,7 @@ extends CreationTool
     dialog.open();
     return dialog;
   }
-   
+
   @Override
 	protected boolean handleButtonDown(int button)
   {
@@ -137,7 +147,7 @@ extends CreationTool
     }
     return false;
   }
-    
+
   protected void doCreation(String fullFileName, String fileName)
   {
     ((CreateImageCommand)getCurrentCommand()).setFileName(fullFileName);
