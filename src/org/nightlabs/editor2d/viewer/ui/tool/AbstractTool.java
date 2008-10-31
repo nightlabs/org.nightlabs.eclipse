@@ -50,7 +50,7 @@ implements ITool, MouseListener, MouseMoveListener
 	private IToolManager toolManager = null;
 	private boolean leftPressed = false;
 	private boolean rightPressed = false;
-	
+
 	public boolean isLeftPressed() {
 		return leftPressed;
 	}
@@ -58,11 +58,11 @@ implements ITool, MouseListener, MouseMoveListener
 	public boolean isRightPressed() {
 		return rightPressed;
 	}
-	
+
 	public boolean isRepaintNeeded() {
 		return repaintNeeded;
 	}
-	
+
 	public void setRepaintNeeded(boolean repaint) {
 		this.repaintNeeded = repaint;
 	}
@@ -70,11 +70,11 @@ implements ITool, MouseListener, MouseMoveListener
 	public String getID() {
 		return id;
 	}
-	
+
 	public void setID(String id) {
 		this.id = id;
 	}
-	
+
 	public void activate() {
 		startPoint = new Point();
 		currentPoint = new Point();
@@ -90,21 +90,23 @@ implements ITool, MouseListener, MouseMoveListener
 	public void setViewer(IViewer viewer) {
 		this.viewer = viewer;
 	}
-	
+
 	public IViewer getViewer() {
 		return viewer;
 	}
- 	
+
 	protected void addToTempContent(Object o) {
 		getViewer().getBufferedCanvas().getTempContentManager().addToTempContent(o);
 		repaintNeeded = true;
 	}
 
-	protected void removeTempContent(Object o) {
-		getViewer().getBufferedCanvas().getTempContentManager().removeFromTempContent(o);
+	protected void removeTempContent(Object o)
+	{
+		if (getViewer() != null && getViewer().getBufferedCanvas() != null && getViewer().getBufferedCanvas().getTempContentManager() != null)
+			getViewer().getBufferedCanvas().getTempContentManager().removeFromTempContent(o);
 		repaintNeeded = true;
 	}
-			
+
 	@Override
 	public void mouseMoved(MouseEvent me) {
 		currentPoint.setLocation(me.getX(), me.getY());
@@ -113,7 +115,7 @@ implements ITool, MouseListener, MouseMoveListener
 		}
 		doMouseMoved(me);
 	}
-			
+
 	/**
 	 * Subclasses can override this method to react on mouseMovement
 	 * @param me the {@link MouseEvent}
@@ -121,26 +123,26 @@ implements ITool, MouseListener, MouseMoveListener
 	protected void doMouseMoved(MouseEvent me) {
 		// Does nothing by default
 	}
-	
+
 	@Override
 	public void mousePressed(MouseEvent me) {
 		if (me.getButton() == java.awt.event.MouseEvent.BUTTON1)
 			leftPressed = true;
 		if (me.getButton() == java.awt.event.MouseEvent.BUTTON3)
 			rightPressed = true;
-		
+
 		startPoint.setLocation(me.getX(), me.getY());
-		doMousePressed(me);		
+		doMousePressed(me);
 	}
 
 	/**
 	 * Subclasses can override this method to react on mousePressed
 	 * @param me the {@link MouseEvent}
-	 */	
+	 */
 	protected void doMousePressed(MouseEvent me) {
 		// Does nothing by default
 	}
-	
+
 	@Override
 	public void mouseReleased(MouseEvent me) {
 		doMouseReleased(me);
@@ -151,23 +153,23 @@ implements ITool, MouseListener, MouseMoveListener
 	/**
 	 * Subclasses can override this method to react on mouseRelease
 	 * @param me the {@link MouseEvent}
-	 */		
+	 */
 	protected void doMouseReleased(MouseEvent me) {
 		// Does nothing by default
 	}
-	
+
 	protected double getZoom() {
 		return getViewer().getZoom();
 	}
-	
+
 	protected int getAbsoluteScrollOffsetX() {
 		return getViewer().getViewport().getOffsetX();
 	}
-	
+
 	protected int getAbsoluteScrollOffsetY() {
 		return getViewer().getViewport().getOffsetY();
 	}
-	
+
 	protected int getRelativeScrollOffsetX() {
 		return (int) Math.rint(getAbsoluteScrollOffsetX() / getZoom());
 	}
@@ -175,24 +177,24 @@ implements ITool, MouseListener, MouseMoveListener
 	protected int getRelativeScrollOffsetY() {
 		return (int) Math.rint(getAbsoluteScrollOffsetY() / getZoom());
 	}
-	
+
 	public int getRelativeX(int x) {
 		return ((int) Math.rint(x / getZoom())) + getRelativeScrollOffsetX();
 	}
-	
+
 	public int getRelativeY(int y) {
 		return ((int) Math.rint(y / getZoom())) + getRelativeScrollOffsetY();
 	}
-	
+
 	public void setConditional(IDrawComponentConditional conditional) {
 		this.conditional = conditional;
 	}
-	
+
 	public IDrawComponentConditional getConditional() {
 		return conditional;
 	}
-	
-	public DrawComponent getDrawComponent(int x, int y, IDrawComponentConditional conditional, 
+
+	public DrawComponent getDrawComponent(int x, int y, IDrawComponentConditional conditional,
 			Collection<DrawComponent> excludeList)
 	{
 		return getViewer().getHitTestManager().findObjectAt(getViewer().getDrawComponent(),
@@ -204,15 +206,15 @@ implements ITool, MouseListener, MouseMoveListener
 		return getViewer().getHitTestManager().findObjectAt(getViewer().getDrawComponent(),
 				x, y, conditional, null);
 	}
-	
+
 	@Override
 	public IToolManager getToolManager() {
 		return toolManager;
 	}
-	
+
 	@Override
 	public void setToolManager(IToolManager toolManager) {
 		this.toolManager = toolManager;
 	}
-	 
+
 }
