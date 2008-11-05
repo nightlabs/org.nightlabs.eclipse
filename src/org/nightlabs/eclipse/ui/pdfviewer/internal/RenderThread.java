@@ -26,6 +26,7 @@ package org.nightlabs.eclipse.ui.pdfviewer.internal;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
@@ -76,6 +77,8 @@ public class RenderThread extends Thread
 				if (pdfViewerComposite.isDisposed())
 					return;
 
+				JPanel viewPanel = pdfViewerComposite.getViewPanel();
+
 				// rendering necessary, if zoom has been changed
 				boolean doRender = pdfViewerComposite.getZoomFactorPerMill() != (int) (renderBuffer.getZoomFactor() * 1000);
 
@@ -86,8 +89,8 @@ public class RenderThread extends Thread
 				Rectangle2D viewRegion = new Rectangle2D.Double(
 						pdfViewerComposite.getViewOrigin().getX(),
 						pdfViewerComposite.getViewOrigin().getY(),
-						pdfViewerComposite.getViewPanel().getWidth() / (zoomFactor * getZoomScreenResolutionFactorX()),
-						pdfViewerComposite.getViewPanel().getHeight() / (zoomFactor * getZoomScreenResolutionFactorY())
+						viewPanel.getWidth() / (zoomFactor * getZoomScreenResolutionFactorX()),
+						viewPanel.getHeight() / (zoomFactor * getZoomScreenResolutionFactorY())
 				);
 
 //				int bufferWidth = (int) (pdfViewerComposite.getViewPanel().getWidth() * RenderBuffer.BUFFER_WIDTH_FACTOR);
@@ -104,10 +107,10 @@ public class RenderThread extends Thread
 					bufferWidthFactor = RenderBuffer.BUFFER_SIZE_FACTOR_SMALL;
 					bufferHeightFactor = RenderBuffer.BUFFER_SIZE_FACTOR_LARGE;
 				}
-				
-				int bufferWidth = (int) (pdfViewerComposite.getViewPanel().getWidth() * bufferWidthFactor);
-				int bufferHeight = (int) (pdfViewerComposite.getViewPanel().getHeight() * bufferHeightFactor);
-				
+
+				int bufferWidth = (int) (viewPanel.getWidth() * bufferWidthFactor);
+				int bufferHeight = (int) (viewPanel.getHeight() * bufferHeightFactor);
+
 				if (bufferWidth >= 1 && bufferHeight >= 1) {
 
 					if (!doRender) {
@@ -145,7 +148,9 @@ public class RenderThread extends Thread
 						);
 						SwingUtilities.invokeLater(new Runnable() {
 							public void run() {
-								pdfViewerComposite.getViewPanel().repaint();
+								JPanel viewPanel = pdfViewerComposite.getViewPanel();
+								if (viewPanel != null)
+									viewPanel.repaint();
 							}
 						});
 					}

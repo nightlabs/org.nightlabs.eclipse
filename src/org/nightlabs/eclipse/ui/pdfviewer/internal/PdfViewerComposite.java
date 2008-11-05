@@ -24,21 +24,21 @@
 package org.nightlabs.eclipse.ui.pdfviewer.internal;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Panel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
@@ -47,12 +47,9 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.ListenerList;
@@ -163,7 +160,7 @@ public class PdfViewerComposite extends Composite
 				try {
 					renderThread.join(10000);
 				} catch (InterruptedException e) {
-					// ignore
+					logger.warn("renderThread.join(...) was interrupted!", e);
 				}
 			}
 			renderThread = null;
@@ -205,6 +202,8 @@ public class PdfViewerComposite extends Composite
 	public PdfViewerComposite(Composite parent, int style, final PdfViewer pdfViewer)
 	{
 		super(parent, style);
+		addDisposeListener(disposeListener);
+
 		this.pdfViewer = pdfViewer;
 		this.setLayout(new FillLayout());
 
@@ -238,19 +237,20 @@ public class PdfViewerComposite extends Composite
 		scrollBarHorizontal = viewPanelComposite.getHorizontalBar();
 		viewPanelFrame = SWT_AWT.new_Frame(viewPanelComposite);
 
-		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=171432
-		// TODO perhaps not the right place to call this as the error still occurs sometimes
-		boolean x11ErrorHandlerFixInstalled = false;
-		if(!x11ErrorHandlerFixInstalled && "gtk".equals( SWT.getPlatform())) { //$NON-NLS-1$
-			x11ErrorHandlerFixInstalled = true;
-			EventQueue.invokeLater( new Runnable() {
-				public void run() {
-					initX11ErrorHandlerFix();
-				}
-			});
-		}
+//		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=171432
+//		// TODO perhaps not the right place to call this as the error still occurs sometimes
+//		boolean x11ErrorHandlerFixInstalled = false;
+//		if(!x11ErrorHandlerFixInstalled && "gtk".equals( SWT.getPlatform())) { //$NON-NLS-1$
+//			x11ErrorHandlerFixInstalled = true;
+//			EventQueue.invokeLater( new Runnable() {
+//				public void run() {
+//					initX11ErrorHandlerFix();
+//				}
+//			});
+//		}
 
 		viewPanelFrame.setFocusableWindowState(true);
+
 //		viewPanelFrame.setFocusable(true);
 
 		viewPanel = new JPanel(true) {
@@ -263,230 +263,41 @@ public class PdfViewerComposite extends Composite
 		viewPanel.enableInputMethods(true);
 		viewPanel.setFocusable(true);
 
-		viewPanel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(final MouseEvent e) {
-				if (logger.isDebugEnabled())
-					logger.debug("mouseClicked: " + e); //$NON-NLS-1$
+		viewPanel.addMouseListener(viewPanel_mouseListener);
+		viewPanel.addMouseMotionListener(viewPanel_mouseMotionListener);
+		viewPanel.addKeyListener(viewPanel_keyListener);
+		viewPanel.addComponentListener(viewPanel_componentListener);
 
-//				The following code is thumbnail-navigator-specific and should therefore not be here! I moved it into the correct class. Marco.
-//				final org.nightlabs.eclipse.ui.pdfviewer.MouseEvent pdfMouseEvent = createMouseEvent(e);
-
-//				// calculate current page from pdfMouseEvent.getPointInRealCoordinate() and set it
-//				Collection<Integer> visiblePages = pdfDocument.getVisiblePages(
-//				new Rectangle2D.Double(pdfMouseEvent.getPointInRealCoordinate().getX(), pdfMouseEvent.getPointInRealCoordinate().getY(), 1, 1)
-//				);
-
-//				final Integer newCurrentPage;
-//				if (visiblePages.isEmpty())
-//				newCurrentPage = null;
-//				else
-//				newCurrentPage = visiblePages.iterator().next();
-
-				getDisplay().asyncExec(new Runnable() {
-					public void run() {
-//						if (newCurrentPage != null)
-//						setCurrentPage(newCurrentPage);
-
-						org.nightlabs.eclipse.ui.pdfviewer.MouseEvent pdfMouseEvent = createMouseEvent(e);
-						propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_MOUSE_CLICKED, null, pdfMouseEvent);
-					}
-				});
-			}
-
-			@Override
-			public void mousePressed(final MouseEvent e) {
-				if (logger.isDebugEnabled())
-					logger.debug("mousePressed: " + e); //$NON-NLS-1$
-
-				intermediatePanel.requestFocus();
-				viewPanel.requestFocus();
-
-				getDisplay().asyncExec(new Runnable() {
-					public void run() {
-						propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_MOUSE_PRESSED, null, createMouseEvent(e));
-					}
-				});
-			}
-			@Override
-			public void mouseReleased(final MouseEvent e) {
-				if (logger.isDebugEnabled())
-					logger.debug("mouseReleased: " + e); //$NON-NLS-1$
-
-				getDisplay().asyncExec(new Runnable() {
-					public void run() {
-						propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_MOUSE_RELEASED, null, createMouseEvent(e));
-					}
-				});
-			}
-		});
-		viewPanel.addMouseMotionListener(new MouseMotionListener() {
-			@Override
-			public void mouseDragged(final MouseEvent e) {
-				if (logger.isDebugEnabled())
-					logger.debug("mouseDragged: " + e); //$NON-NLS-1$
-
-				getDisplay().asyncExec(new Runnable() {
-					public void run() {
-						propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_MOUSE_DRAGGED, null, createMouseEvent(e));
-					}
-				});
-			}
-			@Override
-			public void mouseMoved(final MouseEvent e) {
-				if (logger.isDebugEnabled())
-					logger.debug("mouseMoved: " + e); //$NON-NLS-1$
-
-				getDisplay().asyncExec(new Runnable() {
-					public void run() {
-						propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_MOUSE_MOVED, null, createMouseEvent(e));
-					}
-				});
-			}
-		});
-		viewPanel.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(java.awt.event.KeyEvent e) {
-				if (logger.isDebugEnabled())
-					logger.debug("keyPressed: " + e); //$NON-NLS-1$
-
-//				if (e.getKeyCode() == 17)
-//				mouseWheelModeZoom = true;
-			}
-			@Override
-			public void keyReleased(java.awt.event.KeyEvent e) {
-				if (logger.isDebugEnabled())
-					logger.debug("keyReleased: " + e); //$NON-NLS-1$
-
-//				if (e.getKeyCode() == 17)
-//				mouseWheelModeZoom = false;
-			}
-		});
-
-		viewPanel.addFocusListener(new FocusListener() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				if (logger.isDebugEnabled())
-					logger.debug("viewPanel.FocusListener.focusGained: entered"); //$NON-NLS-1$
-			}
-			@Override
-			public void focusLost(FocusEvent e) {
-				if (logger.isDebugEnabled())
-					logger.debug("viewPanel.FocusListener.focusLost: entered"); //$NON-NLS-1$
-			}
-		});
-
-		viewPanelFrame.addFocusListener(new FocusListener() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				if (logger.isDebugEnabled())
-					logger.debug("viewPanelFrame.FocusListener.focusGained: entered"); //$NON-NLS-1$
-			}
-			@Override
-			public void focusLost(FocusEvent e) {
-				if (logger.isDebugEnabled())
-					logger.debug("viewPanelFrame.FocusListener.focusLost: entered"); //$NON-NLS-1$
-			}
-		});
-
-		viewPanel.addComponentListener(new ComponentAdapter() {
-			private Point pdfViewerCompositeOldSize;
-			private int flickeringCounter = 0;
-
-			@Override
-			public void componentResized(ComponentEvent e) {
-				if (logger.isDebugEnabled())
-					logger.debug("componentResized"); //$NON-NLS-1$
-
-				if (pdfDocument == null)
-					return;
-
-				if (!isViewPanelMinimumSized())
-					return;
-
-				final Point[] pdfViewerCompositeNewSize = new Point[1];
-				getDisplay().syncExec(new Runnable() {
-					public void run() {
-						pdfViewerCompositeNewSize[0] = PdfViewerComposite.this.getSize();
-					}
-				});
-
-				if (pdfViewerCompositeNewSize[0].equals(pdfViewerCompositeOldSize)) {
-					if (++flickeringCounter > 5)
-						return; // prevent eternal flickering between two states because of scroll bars coming and going.
-				}
-				else
-					flickeringCounter = 0;
-
-				pdfViewerCompositeOldSize = pdfViewerCompositeNewSize[0];
-				final Dimension2D viewDimensionBefore = getViewDimension();
-
-				applyAutoZoom();
-				calculateScrollbarValues();
-
-				AutoZoom autoZoom = pdfViewer.getAutoZoom();
-				if (logger.isDebugEnabled())
-					logger.debug("autoZoom: " + autoZoom);
-
-//				getDisplay().asyncExec(new Runnable() {
-//				public void run() {
-//				propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_COMPONENT_RESIZED, null, null);
-//				}
-//				});
-
-				/*				if (autoZoom == AutoZoom.pageWidth) {
-					Display.getDefault().asyncExec(new Runnable() {
-						public void run() {
-							logger.info("zooming to page width");
-							zoomToPageWidth();
-						}
-					});
-				}*/
-
-//				calculateScrollbarValues();
-
-//				// positioning the first page of the given document at the top of PDF thumbnail navigator
-//				if (autoZoom == AutoZoom.pageWidth && startingPoint) {
-//				Display.getDefault().asyncExec(new Runnable() {
-//				public void run() {
-//				if (scrollBarVertical.isVisible()) {
-////			scrollBarVertical.setSelection(1);
-//				scrollVertically();		// already invokes repainting
-//				}
-//				startingPoint = false;
-//				}
-//				});
-//				}
-//				else
-//				// simply repaint without setting a scroll-bar selection
-//				viewPanel.repaint();
-
-				// TODO is this repaint necessary? Marco.
-				viewPanel.repaint();
-
-				if (!isDisposed()) {
-					getDisplay().asyncExec(new Runnable() {
-						public void run() {
-							propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_DIMENSION, viewDimensionBefore, getViewDimension());
-						}
-					});
-				}
-			}
-			@Override
-			public void componentShown(ComponentEvent e) {
-			}
-		});
-
+//		viewPanel.addFocusListener(new FocusListener() {
+//			@Override
+//			public void focusGained(FocusEvent e) {
+//				if (logger.isDebugEnabled())
+//					logger.debug("viewPanel.FocusListener.focusGained: entered"); //$NON-NLS-1$
+//			}
+//			@Override
+//			public void focusLost(FocusEvent e) {
+//				if (logger.isDebugEnabled())
+//					logger.debug("viewPanel.FocusListener.focusLost: entered"); //$NON-NLS-1$
+//			}
+//		});
+//
+//		viewPanelFrame.addFocusListener(new FocusListener() {
+//			@Override
+//			public void focusGained(FocusEvent e) {
+//				if (logger.isDebugEnabled())
+//					logger.debug("viewPanelFrame.FocusListener.focusGained: entered"); //$NON-NLS-1$
+//			}
+//			@Override
+//			public void focusLost(FocusEvent e) {
+//				if (logger.isDebugEnabled())
+//					logger.debug("viewPanelFrame.FocusListener.focusLost: entered"); //$NON-NLS-1$
+//			}
+//		});
 
 //		viewPanelFrame.add(viewPanel);
 		intermediatePanel = new Panel(new BorderLayout());
 		intermediatePanel.setFocusable(true);
-		intermediatePanel.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				viewPanel.requestFocus();
-			}
-		});
+		intermediatePanel.addFocusListener(intermediatePanel_focusListener);
 		viewPanelFrame.add(intermediatePanel);
 		intermediatePanel.add(viewPanel, BorderLayout.CENTER);
 
@@ -524,19 +335,233 @@ public class PdfViewerComposite extends Composite
 		getDisplay().addFilter(SWT.KeyDown, keyDownListener);
 		getDisplay().addFilter(SWT.KeyUp, keyUpListener);
 
-		addDisposeListener(new DisposeListener() {
-			@Override
-			public void widgetDisposed(DisposeEvent arg0) {
-				getDisplay().removeFilter(SWT.KeyDown, keyDownListener);
-				getDisplay().removeFilter(SWT.KeyUp, keyUpListener);
-			}
-		});
-
 		viewPanel.requestFocus();
 
 //		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_MOUSE_CLICKED, propertyChangeListenerMouseClicked);
-
 	}
+
+	private DisposeListener disposeListener = new DisposeListener() {
+		@Override
+		public void widgetDisposed(DisposeEvent event) {
+			getDisplay().removeFilter(SWT.KeyDown, keyDownListener);
+			getDisplay().removeFilter(SWT.KeyUp, keyUpListener);
+
+			// There is a known memory leak when working with java.awt.Frame:
+			//		http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6474128
+			// Thus, we do a thorough cleanup to minimize the effect:
+			//  - remove all listeners from viewPanel
+			//  - remove all listeners from intermediatePanel
+			//  - viewPanelFrame.removeAll() to remove all contents
+			//  - set all fields null, after stopping the renderThread
+
+			if (viewPanel != null) {
+				viewPanel.removeMouseListener(viewPanel_mouseListener);
+				viewPanel.removeMouseMotionListener(viewPanel_mouseMotionListener);
+				viewPanel.removeKeyListener(viewPanel_keyListener);
+				viewPanel.removeComponentListener(viewPanel_componentListener);
+			}
+
+			if (intermediatePanel != null) {
+				intermediatePanel.removeFocusListener(intermediatePanel_focusListener);
+			}
+
+			if (viewPanelFrame != null) {
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						if (viewPanelFrame != null) {
+							viewPanelFrame.removeAll();
+							viewPanelFrame.dispose();
+							viewPanelFrame = null;
+						}
+					}
+				});
+			}
+
+			if (renderThread != null) {
+				renderThread.interrupt();
+				try {
+					renderThread.join(30000);
+					renderThread = null;
+				} catch (InterruptedException e) {
+					logger.warn("renderThread.join(...) was interrupted!", e);
+				}
+			}
+
+			if (renderThread == null) {
+				// We set these fields only to null, if the renderThread was successfully stopped - otherwise it might still access them and cause NPEs.
+				// nulling these fields is only additional safety and shouldn't be necessary, anyway. Marco.
+				renderBuffer = null;
+				pdfDocument = null;
+				viewPanel = null;
+				intermediatePanel = null;
+				pdfViewer = null;
+			}
+		}
+	};
+
+	private FocusListener intermediatePanel_focusListener = new FocusAdapter() {
+		@Override
+		public void focusGained(FocusEvent e) {
+			viewPanel.requestFocus();
+		}
+	};
+
+	private ComponentListener viewPanel_componentListener = new ComponentAdapter() {
+		private Point pdfViewerCompositeOldSize;
+		private int flickeringCounter = 0;
+
+		@Override
+		public void componentResized(ComponentEvent e) {
+			if (logger.isDebugEnabled())
+				logger.debug("componentResized"); //$NON-NLS-1$
+
+			if (pdfDocument == null)
+				return;
+
+			if (!isViewPanelMinimumSized())
+				return;
+
+			final Point[] pdfViewerCompositeNewSize = new Point[1];
+			getDisplay().syncExec(new Runnable() {
+				public void run() {
+					pdfViewerCompositeNewSize[0] = PdfViewerComposite.this.getSize();
+				}
+			});
+
+			if (pdfViewerCompositeNewSize[0].equals(pdfViewerCompositeOldSize)) {
+				if (++flickeringCounter > 5)
+					return; // prevent eternal flickering between two states because of scroll bars coming and going.
+			}
+			else
+				flickeringCounter = 0;
+
+			pdfViewerCompositeOldSize = pdfViewerCompositeNewSize[0];
+			final Dimension2D viewDimensionBefore = getViewDimension();
+
+			applyAutoZoom();
+			calculateScrollbarValues();
+
+			AutoZoom autoZoom = pdfViewer.getAutoZoom();
+			if (logger.isDebugEnabled())
+				logger.debug("autoZoom: " + autoZoom);
+
+			// TODO is this repaint necessary? Marco.
+			viewPanel.repaint();
+
+			if (!isDisposed()) {
+				getDisplay().asyncExec(new Runnable() {
+					public void run() {
+						propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_DIMENSION, viewDimensionBefore, getViewDimension());
+					}
+				});
+			}
+		}
+		@Override
+		public void componentShown(ComponentEvent e) {
+		}
+	};
+
+	private KeyListener viewPanel_keyListener = new KeyAdapter() {
+		@Override
+		public void keyPressed(java.awt.event.KeyEvent e) {
+			if (logger.isDebugEnabled())
+				logger.debug("keyPressed: " + e); //$NON-NLS-1$
+
+//			if (e.getKeyCode() == 17)
+//			mouseWheelModeZoom = true;
+		}
+		@Override
+		public void keyReleased(java.awt.event.KeyEvent e) {
+			if (logger.isDebugEnabled())
+				logger.debug("keyReleased: " + e); //$NON-NLS-1$
+
+//			if (e.getKeyCode() == 17)
+//			mouseWheelModeZoom = false;
+		}
+	};
+
+	private MouseMotionListener viewPanel_mouseMotionListener = new MouseMotionListener() {
+		@Override
+		public void mouseDragged(final MouseEvent e) {
+			if (logger.isDebugEnabled())
+				logger.debug("mouseDragged: " + e); //$NON-NLS-1$
+
+			getDisplay().asyncExec(new Runnable() {
+				public void run() {
+					propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_MOUSE_DRAGGED, null, createMouseEvent(e));
+				}
+			});
+		}
+		@Override
+		public void mouseMoved(final MouseEvent e) {
+			if (logger.isDebugEnabled())
+				logger.debug("mouseMoved: " + e); //$NON-NLS-1$
+
+			getDisplay().asyncExec(new Runnable() {
+				public void run() {
+					propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_MOUSE_MOVED, null, createMouseEvent(e));
+				}
+			});
+		}
+	};
+
+	private MouseListener viewPanel_mouseListener = new MouseAdapter() {
+		@Override
+		public void mouseClicked(final MouseEvent e) {
+			if (logger.isDebugEnabled())
+				logger.debug("mouseClicked: " + e); //$NON-NLS-1$
+
+//			The following code is thumbnail-navigator-specific and should therefore not be here! I moved it into the correct class. Marco.
+//			final org.nightlabs.eclipse.ui.pdfviewer.MouseEvent pdfMouseEvent = createMouseEvent(e);
+
+//			// calculate current page from pdfMouseEvent.getPointInRealCoordinate() and set it
+//			Collection<Integer> visiblePages = pdfDocument.getVisiblePages(
+//			new Rectangle2D.Double(pdfMouseEvent.getPointInRealCoordinate().getX(), pdfMouseEvent.getPointInRealCoordinate().getY(), 1, 1)
+//			);
+
+//			final Integer newCurrentPage;
+//			if (visiblePages.isEmpty())
+//			newCurrentPage = null;
+//			else
+//			newCurrentPage = visiblePages.iterator().next();
+
+			getDisplay().asyncExec(new Runnable() {
+				public void run() {
+//					if (newCurrentPage != null)
+//					setCurrentPage(newCurrentPage);
+
+					org.nightlabs.eclipse.ui.pdfviewer.MouseEvent pdfMouseEvent = createMouseEvent(e);
+					propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_MOUSE_CLICKED, null, pdfMouseEvent);
+				}
+			});
+		}
+
+		@Override
+		public void mousePressed(final MouseEvent e) {
+			if (logger.isDebugEnabled())
+				logger.debug("mousePressed: " + e); //$NON-NLS-1$
+
+			intermediatePanel.requestFocus();
+			viewPanel.requestFocus();
+
+			getDisplay().asyncExec(new Runnable() {
+				public void run() {
+					propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_MOUSE_PRESSED, null, createMouseEvent(e));
+				}
+			});
+		}
+		@Override
+		public void mouseReleased(final MouseEvent e) {
+			if (logger.isDebugEnabled())
+				logger.debug("mouseReleased: " + e); //$NON-NLS-1$
+
+			getDisplay().asyncExec(new Runnable() {
+				public void run() {
+					propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_MOUSE_RELEASED, null, createMouseEvent(e));
+				}
+			});
+		}
+	};
 
 	private Listener keyDownListener = new Listener() {
 		public void handleEvent(Event event)
@@ -1263,56 +1288,56 @@ public class PdfViewerComposite extends Composite
 		return pdfDocument;
 	}
 
-	private static void initX11ErrorHandlerFix() {
-		assert EventQueue.isDispatchThread();
-
-		try {
-			// get XlibWrapper.SetToolkitErrorHandler() and XSetErrorHandler() methods
-			Class<?> xlibwrapperClass = Class.forName( "sun.awt.X11.XlibWrapper" ); //$NON-NLS-1$
-			final Method setToolkitErrorHandlerMethod = xlibwrapperClass.getDeclaredMethod( "SetToolkitErrorHandler", (Class[])null); //$NON-NLS-1$
-			final Method setErrorHandlerMethod = xlibwrapperClass.getDeclaredMethod( "XSetErrorHandler", new Class[] { Long.TYPE } ); //$NON-NLS-1$
-			setToolkitErrorHandlerMethod.setAccessible( true );
-			setErrorHandlerMethod.setAccessible( true );
-
-			// get XToolkit.saved_error_handler field
-			Class<?> xtoolkitClass = Class.forName( "sun.awt.X11.XToolkit" ); //$NON-NLS-1$
-			final Field savedErrorHandlerField = xtoolkitClass.getDeclaredField( "saved_error_handler" ); //$NON-NLS-1$
-			savedErrorHandlerField.setAccessible( true );
-
-			// determine the current error handler and the value of XLibWrapper.ToolkitErrorHandler
-			// (XlibWrapper.SetToolkitErrorHandler() sets the X11 error handler to
-			// XLibWrapper.ToolkitErrorHandler and returns the old error handler)
-			final Object defaultErrorHandler = setToolkitErrorHandlerMethod.invoke( null, (Object[]) null);
-			final Object toolkitErrorHandler = setToolkitErrorHandlerMethod.invoke( null, (Object[]) null);
-			setErrorHandlerMethod.invoke( null, new Object[] { defaultErrorHandler } );
-
-			// create timer that watches XToolkit.saved_error_handler whether its value is equal
-			// to XLibWrapper.ToolkitErrorHandler, which indicates the start of the trouble
-			Timer timer = new Timer( 200, new ActionListener() {
-				public void actionPerformed( ActionEvent e ) {
-					try {
-						Object savedErrorHandler = savedErrorHandlerField.get( null );
-						if( toolkitErrorHandler.equals( savedErrorHandler ) ) {
-							// Last saved error handler in XToolkit.WITH_XERROR_HANDLER
-							// is XLibWrapper.ToolkitErrorHandler, which will cause
-							// the StackOverflowError when the next X11 error occurs.
-							// Workaround: restore the default error handler.
-							// Also update XToolkit.saved_error_handler so that
-							// this is done only once.
-							setErrorHandlerMethod.invoke( null, new Object[] { defaultErrorHandler } );
-							savedErrorHandlerField.setLong( null, ((Long)defaultErrorHandler).longValue() );
-						}
-					} catch( Exception ex ) {
-						// ignore
-					}
-
-				}
-			} );
-			timer.start();
-		} catch( Exception ex ) {
-			// ignore
-		}
-	}
+//	private static void initX11ErrorHandlerFix() {
+//		assert EventQueue.isDispatchThread();
+//
+//		try {
+//			// get XlibWrapper.SetToolkitErrorHandler() and XSetErrorHandler() methods
+//			Class<?> xlibwrapperClass = Class.forName( "sun.awt.X11.XlibWrapper" ); //$NON-NLS-1$
+//			final Method setToolkitErrorHandlerMethod = xlibwrapperClass.getDeclaredMethod( "SetToolkitErrorHandler", (Class[])null); //$NON-NLS-1$
+//			final Method setErrorHandlerMethod = xlibwrapperClass.getDeclaredMethod( "XSetErrorHandler", new Class[] { Long.TYPE } ); //$NON-NLS-1$
+//			setToolkitErrorHandlerMethod.setAccessible( true );
+//			setErrorHandlerMethod.setAccessible( true );
+//
+//			// get XToolkit.saved_error_handler field
+//			Class<?> xtoolkitClass = Class.forName( "sun.awt.X11.XToolkit" ); //$NON-NLS-1$
+//			final Field savedErrorHandlerField = xtoolkitClass.getDeclaredField( "saved_error_handler" ); //$NON-NLS-1$
+//			savedErrorHandlerField.setAccessible( true );
+//
+//			// determine the current error handler and the value of XLibWrapper.ToolkitErrorHandler
+//			// (XlibWrapper.SetToolkitErrorHandler() sets the X11 error handler to
+//			// XLibWrapper.ToolkitErrorHandler and returns the old error handler)
+//			final Object defaultErrorHandler = setToolkitErrorHandlerMethod.invoke( null, (Object[]) null);
+//			final Object toolkitErrorHandler = setToolkitErrorHandlerMethod.invoke( null, (Object[]) null);
+//			setErrorHandlerMethod.invoke( null, new Object[] { defaultErrorHandler } );
+//
+//			// create timer that watches XToolkit.saved_error_handler whether its value is equal
+//			// to XLibWrapper.ToolkitErrorHandler, which indicates the start of the trouble
+//			Timer timer = new Timer( 200, new ActionListener() {
+//				public void actionPerformed( ActionEvent e ) {
+//					try {
+//						Object savedErrorHandler = savedErrorHandlerField.get( null );
+//						if( toolkitErrorHandler.equals( savedErrorHandler ) ) {
+//							// Last saved error handler in XToolkit.WITH_XERROR_HANDLER
+//							// is XLibWrapper.ToolkitErrorHandler, which will cause
+//							// the StackOverflowError when the next X11 error occurs.
+//							// Workaround: restore the default error handler.
+//							// Also update XToolkit.saved_error_handler so that
+//							// this is done only once.
+//							setErrorHandlerMethod.invoke( null, new Object[] { defaultErrorHandler } );
+//							savedErrorHandlerField.setLong( null, ((Long)defaultErrorHandler).longValue() );
+//						}
+//					} catch( Exception ex ) {
+//						// ignore
+//					}
+//
+//				}
+//			} );
+//			timer.start();
+//		} catch( Exception ex ) {
+//			// ignore
+//		}
+//	}
 
 	public PdfViewer getPdfViewer() {
 		return pdfViewer;
