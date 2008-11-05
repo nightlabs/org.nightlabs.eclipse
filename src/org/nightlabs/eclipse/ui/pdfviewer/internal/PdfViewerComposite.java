@@ -377,25 +377,31 @@ public class PdfViewerComposite extends Composite
 				});
 			}
 
-			if (renderThread != null) {
-				renderThread.interrupt();
-				try {
-					renderThread.join(30000);
-					renderThread = null;
-				} catch (InterruptedException e) {
-					logger.warn("renderThread.join(...) was interrupted!", e);
-				}
-			}
+			// Interrupting the renderThread on another Thread in order to *not* block the UI. Marco.
+			new Thread() {
+				@Override
+				public void run() {
+					if (renderThread != null) {
+						renderThread.interrupt();
+						try {
+							renderThread.join(30000);
+							renderThread = null;
+						} catch (InterruptedException e) {
+							logger.warn("renderThread.join(...) was interrupted!", e);
+						}
+					}
 
-			if (renderThread == null) {
-				// We set these fields only to null, if the renderThread was successfully stopped - otherwise it might still access them and cause NPEs.
-				// nulling these fields is only additional safety and shouldn't be necessary, anyway. Marco.
-				renderBuffer = null;
-				pdfDocument = null;
-				viewPanel = null;
-				intermediatePanel = null;
-				pdfViewer = null;
-			}
+					if (renderThread == null) {
+						// We set these fields only to null, if the renderThread was successfully stopped - otherwise it might still access them and cause NPEs.
+						// nulling these fields is only additional safety and shouldn't be necessary, anyway. Marco.
+						renderBuffer = null;
+						pdfDocument = null;
+						viewPanel = null;
+						intermediatePanel = null;
+						pdfViewer = null;
+					}
+				}
+			}.start();
 		}
 	};
 
