@@ -27,6 +27,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 
 import org.apache.log4j.Logger;
@@ -333,9 +334,22 @@ public class PdfViewerEditor extends EditorPart
 											);
 										}
 									}
-//									else if (datasourceURL != null) {
-//										// NO NEED to handle this, because the datasourceByteArray will be loaded in this case.
-//									}
+									else if (datasourceURL != null) {
+										InputStream in = datasourceURL.openStream();
+										try {
+											FileOutputStream out = new FileOutputStream(file);
+											try {
+												IOUtil.transferStreamData(
+														in, out
+												);
+											} finally {
+												out.close();
+											}
+										} finally {
+											in.close();
+										}
+										monitor.worked(90);
+									}
 									else
 										throw new IllegalStateException("No datasource! Cannot save!");
 
