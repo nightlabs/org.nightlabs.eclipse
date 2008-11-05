@@ -430,9 +430,16 @@ public class PdfViewerComposite extends Composite
 			final Point[] pdfViewerCompositeNewSize = new Point[1];
 			getDisplay().syncExec(new Runnable() {
 				public void run() {
+					if (isDisposed()) {
+						pdfViewerCompositeNewSize[0] = null;
+						return;
+					}
+
 					pdfViewerCompositeNewSize[0] = PdfViewerComposite.this.getSize();
 				}
 			});
+			if (pdfViewerCompositeNewSize[0] == null) // was disposed => return.
+				return;
 
 			if (pdfViewerCompositeNewSize[0].equals(pdfViewerCompositeOldSize)) {
 				if (++flickeringCounter > 5)
@@ -457,6 +464,9 @@ public class PdfViewerComposite extends Composite
 			if (!isDisposed()) {
 				getDisplay().asyncExec(new Runnable() {
 					public void run() {
+						if (isDisposed()) // might have become disposed in the mean time => check again => return if yes
+							return;
+
 						propertyChangeSupport.firePropertyChange(PdfViewer.PROPERTY_VIEW_DIMENSION, viewDimensionBefore, getViewDimension());
 					}
 				});
