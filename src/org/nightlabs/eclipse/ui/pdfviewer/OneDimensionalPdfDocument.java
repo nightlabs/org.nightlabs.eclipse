@@ -25,7 +25,6 @@ package org.nightlabs.eclipse.ui.pdfviewer;
 
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -34,9 +33,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.nightlabs.eclipse.ui.pdfviewer.resource.Messages;
 
-import com.sun.pdfview.OutlineNode;
 import com.sun.pdfview.PDFFile;
-import com.sun.pdfview.PDFObject;
 import com.sun.pdfview.PDFPage;
 
 
@@ -151,100 +148,100 @@ public class OneDimensionalPdfDocument extends AbstractPdfDocument
 					throw new IllegalStateException("Unknown layout: " + layout); //$NON-NLS-1$
 			}
 
-			if (logger.isDebugEnabled()) {
-				int pageNumber = 0;
-				for (Rectangle2D.Double page : pageBounds) {
-					logger.debug("readPdf: page " + (++pageNumber) + ": x=" + page.getX() + " y=" + page.getY() + " w=" + page.getWidth() + " h=" + page.getHeight()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-				}
-
-				try {
-					OutlineNode outlineNode = pdfFile.getOutline();
-					logOutline(0, outlineNode);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-
-				try {
-					PDFObject pdfObject = pdfFile.getRoot().getDictRef("Pages"); //$NON-NLS-1$
-					logger.debug("readPdf: pagesPDFObject=" + pdfObject); //$NON-NLS-1$
-					PDFObject[] pageArray = pdfObject.getArray();
-//					logger.debug("readPdfDocumentProperties: pageArray=" + pageArray);
-
-					for (PDFObject page : pageArray) {
-						logger.debug("readPdf:   * page=" + page.dereference()); //$NON-NLS-1$
-						logPDFObject(1, page);
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
+//			if (logger.isDebugEnabled()) {
+//				int pageNumber = 0;
+//				for (Rectangle2D.Double page : pageBounds) {
+//					logger.debug("readPdf: page " + (++pageNumber) + ": x=" + page.getX() + " y=" + page.getY() + " w=" + page.getWidth() + " h=" + page.getHeight()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+//				}
+//
+//				try {
+//					OutlineNode outlineNode = pdfFile.getOutline();
+//					logOutline(0, outlineNode);
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//
+//				try {
+//					PDFObject pdfObject = pdfFile.getRoot().getDictRef("Pages"); //$NON-NLS-1$
+//					logger.debug("readPdf: pagesPDFObject=" + pdfObject); //$NON-NLS-1$
+//					PDFObject[] pageArray = pdfObject.getArray();
+////					logger.debug("readPdfDocumentProperties: pageArray=" + pageArray);
+//
+//					for (PDFObject page : pageArray) {
+//						logger.debug("readPdf:   * page=" + page.dereference()); //$NON-NLS-1$
+//						logPDFObject(1, page);
+//					}
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//			}
 
 		} finally {
 			monitor.done();
 		}
 	}
 
-	private static void logPDFObject(int level, PDFObject pdfObject) throws IOException
-	{
-		StringBuilder indent = new StringBuilder();
-		for (int i = 0; i < level; ++i)
-			indent.append("  "); //$NON-NLS-1$
-
-		PDFObject pdfObjectResources = pdfObject.getDictRef("Resources"); //$NON-NLS-1$
-		if (pdfObjectResources != null) {
-			logger.debug("readPdf: " + indent + "* resources=" + pdfObjectResources.dereference()); //$NON-NLS-1$ //$NON-NLS-2$
-			PDFObject procSet = pdfObjectResources.getDictRef("ProcSet"); //$NON-NLS-1$
-			if (procSet != null) {
-				logger.debug("readPdf: " + indent + "  * procSet=" + procSet.dereference()); //$NON-NLS-1$ //$NON-NLS-2$
-			}
-
-			PDFObject font = pdfObjectResources.getDictRef("Font"); //$NON-NLS-1$
-			if (font != null) {
-				logger.debug("readPdf: " + indent + "  * font=" + font.dereference()); //$NON-NLS-1$ //$NON-NLS-2$
-			}
-		}
-
-		PDFObject pdfObjectContents = pdfObject.getDictRef("Contents"); //$NON-NLS-1$
-		if (pdfObjectContents != null) {
-			logger.debug("readPdf: " + indent + "* contents=" + pdfObjectContents.dereference()); //$NON-NLS-1$ //$NON-NLS-2$
-			PDFObject[] contentKids = pdfObjectContents.getArray();
-			if (contentKids != null) {
-				for (PDFObject contentKid : contentKids) {
-					logger.debug("readPdf: " + indent + "  * contentKid=" + contentKid.dereference()); //$NON-NLS-1$ //$NON-NLS-2$
-					logPDFObject(level + 2, contentKid);
-				}
-			}
-		}
-
-		PDFObject pdfObjectKids = pdfObject.getDictRef("Kids"); //$NON-NLS-1$
-		if (pdfObjectKids == null)
-			return;
-
-		PDFObject[] kidsArray = pdfObjectKids.getArray();
-		for (PDFObject kid : kidsArray) {
-			logger.debug("readPdf: " + indent + "* kid=" + kid.dereference()); //$NON-NLS-1$ //$NON-NLS-2$
-			logPDFObject(level + 1, kid);
-		}
-	}
-
-	private static void logOutline(int level, OutlineNode outlineNode)
-	{
-		if (outlineNode == null) {
-			logger.debug("logOutline: OutlineNode is null!!!"); //$NON-NLS-1$
-			return;
-		}
-
-		StringBuilder indent = new StringBuilder();
-		for (int i = 0; i < level; ++i)
-			indent.append(' ');
-
-		logger.debug("logOutline: " + indent.toString() + '*' + outlineNode); //$NON-NLS-1$
-
-		for (int i = 0; i < outlineNode.getChildCount(); ++i) {
-			OutlineNode child = (OutlineNode) outlineNode.getChildAt(i);
-			logOutline(level + 1, child);
-		}
-	}
+//	private static void logPDFObject(int level, PDFObject pdfObject) throws IOException
+//	{
+//		StringBuilder indent = new StringBuilder();
+//		for (int i = 0; i < level; ++i)
+//			indent.append("  "); //$NON-NLS-1$
+//
+//		PDFObject pdfObjectResources = pdfObject.getDictRef("Resources"); //$NON-NLS-1$
+//		if (pdfObjectResources != null) {
+//			logger.debug("readPdf: " + indent + "* resources=" + pdfObjectResources.dereference()); //$NON-NLS-1$ //$NON-NLS-2$
+//			PDFObject procSet = pdfObjectResources.getDictRef("ProcSet"); //$NON-NLS-1$
+//			if (procSet != null) {
+//				logger.debug("readPdf: " + indent + "  * procSet=" + procSet.dereference()); //$NON-NLS-1$ //$NON-NLS-2$
+//			}
+//
+//			PDFObject font = pdfObjectResources.getDictRef("Font"); //$NON-NLS-1$
+//			if (font != null) {
+//				logger.debug("readPdf: " + indent + "  * font=" + font.dereference()); //$NON-NLS-1$ //$NON-NLS-2$
+//			}
+//		}
+//
+//		PDFObject pdfObjectContents = pdfObject.getDictRef("Contents"); //$NON-NLS-1$
+//		if (pdfObjectContents != null) {
+//			logger.debug("readPdf: " + indent + "* contents=" + pdfObjectContents.dereference()); //$NON-NLS-1$ //$NON-NLS-2$
+//			PDFObject[] contentKids = pdfObjectContents.getArray();
+//			if (contentKids != null) {
+//				for (PDFObject contentKid : contentKids) {
+//					logger.debug("readPdf: " + indent + "  * contentKid=" + contentKid.dereference()); //$NON-NLS-1$ //$NON-NLS-2$
+//					logPDFObject(level + 2, contentKid);
+//				}
+//			}
+//		}
+//
+//		PDFObject pdfObjectKids = pdfObject.getDictRef("Kids"); //$NON-NLS-1$
+//		if (pdfObjectKids == null)
+//			return;
+//
+//		PDFObject[] kidsArray = pdfObjectKids.getArray();
+//		for (PDFObject kid : kidsArray) {
+//			logger.debug("readPdf: " + indent + "* kid=" + kid.dereference()); //$NON-NLS-1$ //$NON-NLS-2$
+//			logPDFObject(level + 1, kid);
+//		}
+//	}
+//
+//	private static void logOutline(int level, OutlineNode outlineNode)
+//	{
+//		if (outlineNode == null) {
+//			logger.debug("logOutline: OutlineNode is null!!!"); //$NON-NLS-1$
+//			return;
+//		}
+//
+//		StringBuilder indent = new StringBuilder();
+//		for (int i = 0; i < level; ++i)
+//			indent.append(' ');
+//
+//		logger.debug("logOutline: " + indent.toString() + '*' + outlineNode); //$NON-NLS-1$
+//
+//		for (int i = 0; i < outlineNode.getChildCount(); ++i) {
+//			OutlineNode child = (OutlineNode) outlineNode.getChildAt(i);
+//			logOutline(level + 1, child);
+//		}
+//	}
 
 
 	/* (non-Javadoc)
