@@ -150,9 +150,7 @@ public class PdfViewerEditor extends EditorPart
 				try {
 					if (input instanceof PdfViewerEditorInput) {
 						PdfViewerEditorInput i = (PdfViewerEditorInput)input;
-						pdfFile = i.getPDFFile();
-						if (pdfFile == null)
-							pdfFile = i.createPDFFile(new SubProgressMonitor(monitor, 20));
+						pdfFile = i.createPDFFile(new SubProgressMonitor(monitor, 20));
 						datasourceURL = i.getUrl();
 						datasourceByteArray = i.getByteArray();
 						datasourceFile = i.getFile();

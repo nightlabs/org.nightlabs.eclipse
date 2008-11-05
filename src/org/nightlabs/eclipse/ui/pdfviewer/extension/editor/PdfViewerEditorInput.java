@@ -55,14 +55,31 @@ implements IEditorInput
 	private URL url;
 	private File file;
 	private byte[] byteArray;
-	private volatile PDFFile pdfFile;
+//	private volatile PDFFile pdfFile;
 
-
+	/**
+	 * Create an instance of this editor-input with a file containing the PDF's data.
+	 * <p>
+	 * This constructor delegates to {@link #PdfViewerEditorInput(String, String, ImageDescriptor, File)}
+	 * and passes the file's simple name (without directory) as <code>name</code> and the file's
+	 * complete path and name as <code>toolTipText</code>.
+	 * </p>
+	 *
+	 * @param file the file containing the PDF's data.
+	 */
 	public PdfViewerEditorInput(File file)
 	{
 		this(file.getName(), file.getAbsolutePath(), null, file);
 	}
 
+	/**
+	 * Create an instance of this editor-input with a file containing the PDF's data.
+	 *
+	 * @param name the name of the editor (displayed in the editor's tab).
+	 * @param toolTipText an optional tool tip of the editor (displayed when the mouse is held over the editor's tab).
+	 * @param imageDescriptor an optional image to be displayed in the editor's tab (if <code>null</code>, the default icon of the editor is used instead).
+	 * @param file the file containing the PDF's data.
+	 */
 	public PdfViewerEditorInput(String name, String toolTipText, ImageDescriptor imageDescriptor, File file)
 	{
 		if (file == null)
@@ -74,17 +91,16 @@ implements IEditorInput
 		this.file = file;
 	}
 
-//	public PdfViewerEditorInput(String name, String toolTipText, ImageDescriptor imageDescriptor, PDFFile pdfFile)
-//	{
-//		if (pdfFile == null)
-//			throw new IllegalArgumentException("pdfFile must not be null!"); //$NON-NLS-1$
-//
-//		this.name = name;
-//		this.toolTipText = toolTipText;
-//		this.imageDescriptor = imageDescriptor;
-//		this.pdfFile = pdfFile;
-//	}
-
+	/**
+	 * Create an instance of this editor-input with an URL pointing to the PDF's data.
+	 * <p>
+	 * This constructor delegates to {@link #PdfViewerEditorInput(String, String, ImageDescriptor, URL)}
+	 * and passes the file's simple name (without protocol, host and directory) as <code>name</code> and the file's
+	 * complete URL as <code>toolTipText</code>.
+	 * </p>
+	 *
+	 * @param url the URL pointing to the PDF's data.
+	 */
 	public PdfViewerEditorInput(URL url)
 	{
 		this(
@@ -95,6 +111,14 @@ implements IEditorInput
 		);
 	}
 
+	/**
+	 * Create an instance of this editor-input with an URL pointing to the PDF's data.
+	 *
+	 * @param name the name of the editor (displayed in the editor's tab).
+	 * @param toolTipText an optional tool tip of the editor (displayed when the mouse is held over the editor's tab).
+	 * @param imageDescriptor an optional image to be displayed in the editor's tab (if <code>null</code>, the default icon of the editor is used instead).
+	 * @param url the URL pointing to the PDF's data.
+	 */
 	public PdfViewerEditorInput(String name, String toolTipText, ImageDescriptor imageDescriptor, URL url)
 	{
 		if (url == null)
@@ -106,6 +130,20 @@ implements IEditorInput
 		this.url = url;
 	}
 
+	/**
+	 * Create an instance of this editor-input with the PDF's raw data in the given byte-array. Note, that
+	 * it is recommended not to use this constructor, because editor-inputs are held in a history by
+	 * Eclipse and therefore this byte-array will never be garbage-collected (thus consuming memory
+	 * even after the editor was closed).
+	 *
+	 * @param name the name of the editor (displayed in the editor's tab).
+	 * @param toolTipText an optional tool tip of the editor (displayed when the mouse is held over the editor's tab).
+	 * @param imageDescriptor an optional image to be displayed in the editor's tab (if <code>null</code>, the default icon of the editor is used instead).
+	 * @param byteArray the PDF's raw data.
+	 *
+	 * @deprecated Because of eclipse's internal editor history, it's recommended to use one of the other constructors.
+	 */
+	@Deprecated
 	public PdfViewerEditorInput(String name, String toolTipText, ImageDescriptor imageDescriptor, byte[] byteArray) {
 		if (byteArray == null)
 			throw new IllegalArgumentException("byteArray must not be null!"); //$NON-NLS-1$
@@ -116,20 +154,20 @@ implements IEditorInput
 		this.byteArray = byteArray;
 	}
 
-	/**
-	 * Get the {@link PDFFile} or <code>null</code>, if none has been created before (i.e. {@link #createPDFFile(IProgressMonitor)} was
-	 * not yet called and a <code>PDFFile</code> instance was not passed as constructor argument either).
-	 *
-	 * @return the <code>PDFFile</code> which has been created by a previous call to {@link #createPDFFile(IProgressMonitor)} or <code>null</code>.
-	 */
-	public PDFFile getPDFFile()
-	{
-		return pdfFile;
-	}
+//	/**
+//	 * Get the {@link PDFFile} or <code>null</code>, if none has been created before (i.e. {@link #createPDFFile(IProgressMonitor)} was
+//	 * not yet called and a <code>PDFFile</code> instance was not passed as constructor argument either).
+//	 *
+//	 * @return the <code>PDFFile</code> which has been created by a previous call to {@link #createPDFFile(IProgressMonitor)} or <code>null</code>.
+//	 */
+//	public PDFFile getPDFFile()
+//	{
+//		return pdfFile;
+//	}
 
 	/**
-	 * Create a new <code>PDFFile</code> instance. Calling this method a second time has no effect. You should therefore
-	 * use {@link #getPDFFile()} instead, after it was created once.
+	 * Create a new <code>PDFFile</code> instance. Calling this method a second time, again creates a new <code>PDFFile</code> instance.
+	 * You should therefore keep the instance, once you created it.
 	 *
 	 * @param monitor the monitor for progress feedback.
 	 * @return a new instance of <code>PDFFile</code>. This
@@ -138,26 +176,26 @@ implements IEditorInput
 	public PDFFile createPDFFile(IProgressMonitor monitor)
 	throws IOException
 	{
-		if (pdfFile != null) {
-			monitor.beginTask("PDF already loaded", 1);
-			monitor.worked(1);
-			monitor.done();
-			return pdfFile;
-		}
+//		if (pdfFile != null) {
+//			monitor.beginTask("PDF already loaded", 1);
+//			monitor.worked(1);
+//			monitor.done();
+//			return pdfFile;
+//		}
 
+		PDFFile pdfFile;
 		if (url != null) {
 			InputStream in = url.openStream();
 			try {
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
 				IOUtil.transferStreamData(in, out);
 				out.close();
-				byteArray = out.toByteArray();
+				pdfFile = PdfFileLoader.loadPdf(out.toByteArray(), monitor);
 			} finally {
 				in.close();
 			}
 		}
-
-		if (byteArray != null)
+		else if (byteArray != null)
 			pdfFile = PdfFileLoader.loadPdf(byteArray, monitor);
 		else if (file != null)
 			pdfFile = PdfFileLoader.loadPdf(file, monitor);
@@ -206,18 +244,18 @@ implements IEditorInput
 		if (obj == null) return false;
 		if (obj.getClass() != this.getClass()) return false;
 		PdfViewerEditorInput o = (PdfViewerEditorInput) obj;
-		return Util.equals(file, o.file) && Util.equals(byteArray, o.byteArray);
+		return Util.equals(url, o.url) && Util.equals(file, o.file) && Util.equals(byteArray, o.byteArray);
 	}
 
 	@Override
 	public int hashCode() {
-		return Util.hashCode(file) + (byteArray == null ? 0 : Arrays.hashCode(byteArray));
+		return Util.hashCode(url) + Util.hashCode(file) + (byteArray == null ? 0 : Arrays.hashCode(byteArray));
 	}
 
 	/**
 	 * Get the URL that was used to create this EditorInput or <code>null</code>.
-	 * If an URL was used for the creation of this editor input and {@link #createPDFFile(IProgressMonitor)}
-	 * was called, {@link #getByteArray()} will also return the raw data.
+	 * If this is <code>null</code>, one of the methods {@link #getByteArray()} or
+	 * {@link #getFile()} will return the PDF input data.
 	 *
 	 * @return the URL pointing to the raw PDF data or <code>null</code>.
 	 */
@@ -227,8 +265,8 @@ implements IEditorInput
 
 	/**
 	 * Get the byte array that was used to create this EditorInput or <code>null</code>.
-	 * If this is <code>null</code>, the method {@link #getFile()} will return a file containing
-	 * the data.
+	 * If this is <code>null</code>, the method {@link #getFile()} or {@link #getUrl()}
+	 * will return a file/url containing the data.
 	 *
 	 * @return the byte array containing the raw PDF data or <code>null</code>.
 	 */
@@ -238,7 +276,8 @@ implements IEditorInput
 	/**
 	 * Get the file that was used to create this EditorInput or <code>null</code>.
 	 * If this is <code>null</code>, the method {@link #getByteArray()} will return the
-	 * PDF's raw data.
+	 * PDF's raw data or the method {@link #getUrl()} will return an URL pointing to the
+	 * input data.
 	 *
 	 * @return the file containing the raw PDF data or <code>null</code>.
 	 */
