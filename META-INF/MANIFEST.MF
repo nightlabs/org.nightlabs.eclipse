@@ -11,9 +11,14 @@ Require-Bundle: org.eclipse.ui,
  org.nightlabs.eclipse.ui.pdfviewer;visibility:=reexport
 Eclipse-LazyStart: true
 Export-Package: org.nightlabs.eclipse.ui.pdfviewer.extension,
+ org.nightlabs.eclipse.ui.pdfviewer.extension.action,
+ org.nightlabs.eclipse.ui.pdfviewer.extension.action.print,
+ org.nightlabs.eclipse.ui.pdfviewer.extension.action.save,
+ org.nightlabs.eclipse.ui.pdfviewer.extension.action.zoom,
  org.nightlabs.eclipse.ui.pdfviewer.extension.composite,
  org.nightlabs.eclipse.ui.pdfviewer.extension.coolbar,
  org.nightlabs.eclipse.ui.pdfviewer.extension.coolbar.internal;x-internal:=true,
- org.nightlabs.eclipse.ui.pdfviewer.extension.editor
+ org.nightlabs.eclipse.ui.pdfviewer.extension.editor,
+ org.nightlabs.eclipse.ui.pdfviewer.extension.printer
 Bundle-Localization: plugin
 Eclipse-RegisterBuddy: org.nightlabs.base.ui
