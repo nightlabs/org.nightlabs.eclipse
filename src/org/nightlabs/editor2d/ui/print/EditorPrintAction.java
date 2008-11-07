@@ -81,7 +81,7 @@ extends AbstractEditorPrintAction
 				pf = printJob.defaultPage(awtPrinter.getConfiguration().getPageFormat());
 			else
 				pf = printJob.defaultPage();
-			
+
 			logger.debug("PageFormat in EditorPrintAction"); //$NON-NLS-1$
 			PrintUtil.logPageFormat(pf);
 		}
@@ -98,6 +98,6 @@ extends AbstractEditorPrintAction
 	}
 
 	protected PrintConstant getPrintConstant() {
-		return PrintConstant.FIT_ALL;
+		return PrintConstant.FIT_PAGE;
 	}
 }
