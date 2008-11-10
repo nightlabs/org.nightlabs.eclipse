@@ -27,8 +27,8 @@ import java.util.EnumSet;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -70,6 +70,7 @@ public class PdfViewerComposite extends Composite
 	private Control pdfCoolBarControl;
 	private EnumSet<PdfViewerCompositeOption> options = EnumSet.noneOf(PdfViewerCompositeOption.class);
 
+	private Composite leftComp;
 
 	public PdfViewerComposite(Composite parent, int style) {
 		this(parent, style, null);
@@ -111,8 +112,16 @@ public class PdfViewerComposite extends Composite
 		// when setting the given PDF document here. PDF thumbnail navigator will receive this event (when created)
 		// and will call setDocument for its corresponding composite to load the given PDF document in its composite.
 		pdfViewer.setPdfDocument(pdfDocument);
+//		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_PDF_DOCUMENT, new PropertyChangeListener() {
+//			@Override
+//			public void propertyChange(PropertyChangeEvent evt) {
+//				if (isDisposed())
+//					return;
+//
+//				ensureSizeConstraints();
+//			}
+//		});
 
-		final Composite leftComp;
 		if (sashForm == null)
 			leftComp = null;
 		else{
@@ -153,30 +162,21 @@ public class PdfViewerComposite extends Composite
 				pdfSimpleNavigatorControl = pdfSimpleNavigator.createControl(leftComp, SWT.BORDER);
 
 			pdfSimpleNavigatorControl.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_END));
+
+			pdfSimpleNavigatorControl.addControlListener(new ControlAdapter() {
+				@Override
+				public void controlResized(ControlEvent e) {
+					ensureSizeConstraints();
+				}
+			});
 		}
 
 		if (leftComp != null && sashForm != null) {
-			leftComp.addControlListener(new ControlListener() {
-				@Override
-				public void controlMoved(ControlEvent event) {
-				}
-
+			leftComp.addControlListener(new ControlAdapter() {
 				@Override
 				public void controlResized(ControlEvent event) {
-					final int[] weights = new int[2];
-					int minWidth = pdfSimpleNavigatorControl == null ? leftComp.computeSize(SWT.DEFAULT, SWT.DEFAULT).x + 10 : pdfSimpleNavigatorControl.computeSize(SWT.DEFAULT, SWT.DEFAULT).x;
-					if (leftComp.getClientArea().width < minWidth) {
-						int total = 10000;
-						weights[0] = minWidth * total / sashForm.getClientArea().width;
-						weights[1] = total - weights[0];
-						leftComp.getDisplay().asyncExec(new Runnable() {
-							public void run() {
-								sashForm.setWeights(weights);
-							}
-						});
-					}
+					ensureSizeConstraints();
 				}
-
 			});
 		}
 
@@ -245,4 +245,25 @@ public class PdfViewerComposite extends Composite
 		return pdfViewer;
 	}
 
+	private void ensureSizeConstraints() {
+		final int[] weights = new int[2];
+		int minWidth = pdfSimpleNavigatorControl == null ? leftComp.computeSize(SWT.DEFAULT, SWT.DEFAULT).x + 10 : pdfSimpleNavigatorControl.computeSize(SWT.DEFAULT, SWT.DEFAULT).x;
+		if (leftComp.getClientArea().width < minWidth) {
+			int sashWidth = sashForm.getClientArea().width;
+			if (sashWidth < 1)
+				return;
+
+			int total = 10000;
+			weights[0] = minWidth * total / sashWidth;
+			weights[1] = total - weights[0];
+			if (weights[1] < 1)
+				return;
+
+			leftComp.getDisplay().asyncExec(new Runnable() {
+				public void run() {
+					sashForm.setWeights(weights);
+				}
+			});
+		}
+	}
 }
