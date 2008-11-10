@@ -99,6 +99,8 @@ public class OneDimensionalPdfDocument extends AbstractPdfDocument
 
 					for (int j = 0; j < pdfFile.getNumPages(); j++) {
 						PDFPage pdfPage = pdfFile.getPage(j + 1);
+						if (pdfPage == null)
+							throw new IllegalStateException("Could not get the page commands for page " + (j + 1)); //$NON-NLS-1$
 						double pdfPageWidth = pdfPage.getBBox().getWidth();
 						double pdfPageHeight = pdfPage.getBBox().getHeight();
 						if (documentDimension.getWidth() < pdfPageWidth) {
