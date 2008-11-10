@@ -112,15 +112,6 @@ public class PdfViewerComposite extends Composite
 		// when setting the given PDF document here. PDF thumbnail navigator will receive this event (when created)
 		// and will call setDocument for its corresponding composite to load the given PDF document in its composite.
 		pdfViewer.setPdfDocument(pdfDocument);
-//		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_PDF_DOCUMENT, new PropertyChangeListener() {
-//			@Override
-//			public void propertyChange(PropertyChangeEvent evt) {
-//				if (isDisposed())
-//					return;
-//
-//				ensureSizeConstraints();
-//			}
-//		});
 
 		if (sashForm == null)
 			leftComp = null;
@@ -180,65 +171,10 @@ public class PdfViewerComposite extends Composite
 			});
 		}
 
-//		if (sashForm != null)
-//			sashForm.setWeights(new int[] {1, 3});
-//
-//		layout(true, true);
+		if (sashForm != null)
+			sashForm.setWeights(new int[] {1, 100});
 
-//		parent.getDisplay().asyncExec(new Runnable() {
-//			@Override
-//			public void run() {
-				if (sashForm != null)
-					sashForm.setWeights(new int[] {1, 100});
-
-				parent.layout(true, true);
-//			}
-//		});
-
-//		// TODO in the case the PDF viewer component has been resized weights have to be computed again (not optimal yet)
-//		parent.getDisplay().asyncExec(new Runnable() {
-//			@Override
-//			public void run() {
-//				if (sashForm == null)
-//					return;
-//
-//				if (logger.isDebugEnabled()) {
-//					if (pdfSimpleNavigatorControl != null) {
-//						logger.debug("simple navigator control width (computed) " + pdfSimpleNavigatorControl.getSize().x); //$NON-NLS-1$
-//						logger.debug("simple navigator control width (actual) " + pdfSimpleNavigatorControl.getBounds().width); //$NON-NLS-1$
-//					}
-//					if (pdfThumbnailNavigatorControl != null) {
-//						logger.debug("thumbnail navigator control width " + pdfThumbnailNavigatorControl.getBounds().width); //$NON-NLS-1$
-//						logger.debug("thumbnail navigator control border width " + pdfThumbnailNavigatorControl.getBorderWidth()); //$NON-NLS-1$
-//					}
-//					logger.debug("pdf viewer control border width " + pdfViewerControl.getBorderWidth()); //$NON-NLS-1$
-//					logger.debug("PdfViewerComposite.this width " + PdfViewerComposite.this.getBounds().width); //$NON-NLS-1$
-//				}
-//
-////				int absoluteWidth = (
-////						(pdfSimpleNavigatorControl == null ? WIDTH_WITHOUT_SIMPLE_NAVIGATOR : pdfSimpleNavigatorControl.getBounds().width) +
-////						pdfThumbnailNavigatorControl.getBorderWidth() * 2 +
-////						pdfViewerControl.getBorderWidth()
-////				);
-//				int absoluteWidth = getBounds().width;
-//
-//				int relativeWidth = (int) Math.ceil(100f * absoluteWidth / parent.getBounds().width);
-//
-//				if (logger.isDebugEnabled()) {
-//					logger.debug("relativeWeight=" + relativeWidth); //$NON-NLS-1$
-//					logger.debug("absoluteWidth=" + absoluteWidth + " relativeWidth=" + relativeWidth + " " + parent.getBounds().width);
-//				}
-//
-////				sashForm.setWeights(new int[]{relativeWidth, 100 - relativeWidth});
-//				sashForm.setWeights(new int[] {1, 3});
-//
-//				parent.layout(true, true);
-//
-////				// For a reason which I do not understand, the horizontal scroll bar become suddenly visible. So, we simply hide it here.
-////				getHorizontalBar().setVisible(false);
-////				getVerticalBar().setVisible(false);
-//			}
-//		});
+		parent.layout(true, true);
 	}
 
 	public PdfViewer getPdfViewer() {
