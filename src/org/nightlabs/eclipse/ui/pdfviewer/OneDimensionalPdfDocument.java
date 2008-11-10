@@ -100,12 +100,16 @@ public class OneDimensionalPdfDocument extends AbstractPdfDocument
 					for (int j = 0; j < pdfFile.getNumPages(); j++) {
 						PDFPage pdfPage = pdfFile.getPage(j + 1);
 						if (pdfPage == null)
-							throw new IllegalStateException("Could not get the page commands for page " + (j + 1)); //$NON-NLS-1$
+							throw new IllegalStateException("pdfFile.getPage(...) returned null for page " + (j + 1) + "!"); //$NON-NLS-1$ //$NON-NLS-2$
+
+						if (pdfPage.getBBox() == null)
+							throw new IllegalStateException("pdfFile.getPage(...).getBBox() returned null for page " + (j + 1) + "!"); //$NON-NLS-1$ //$NON-NLS-2$
+
 						double pdfPageWidth = pdfPage.getBBox().getWidth();
 						double pdfPageHeight = pdfPage.getBBox().getHeight();
-						if (documentDimension.getWidth() < pdfPageWidth) {
+						if (documentDimension.getWidth() < pdfPageWidth)
 							documentDimension.setWidth(pdfPageWidth);
-						}
+
 						pageBounds.add(new Rectangle2D.Double(0, nextPageTop, pdfPageWidth, pdfPageHeight));
 						nextPageTop += pdfPageHeight + MARGIN;
 
@@ -126,6 +130,12 @@ public class OneDimensionalPdfDocument extends AbstractPdfDocument
 
 					for (int j = 0; j < pdfFile.getNumPages(); j++) {
 						PDFPage pdfPage = pdfFile.getPage(j + 1);
+						if (pdfPage == null)
+							throw new IllegalStateException("pdfFile.getPage(...) returned null for page " + (j + 1) + "!"); //$NON-NLS-1$ //$NON-NLS-2$
+
+						if (pdfPage.getBBox() == null)
+							throw new IllegalStateException("pdfFile.getPage(...).getBBox() returned null for page " + (j + 1) + "!"); //$NON-NLS-1$ //$NON-NLS-2$
+
 						double pdfPageWidth = pdfPage.getBBox().getWidth();
 						double pdfPageHeight = pdfPage.getBBox().getHeight();
 						if (documentDimension.getHeight() < pdfPageHeight) {
