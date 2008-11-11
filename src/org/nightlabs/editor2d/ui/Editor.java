@@ -45,31 +45,31 @@ extends AbstractEditor
 	/**
 	 * @see org.nightlabs.editor2d.ui.AbstractEditor#createEditPartFactory()
 	 */
-  @Override
+	@Override
 	public EditPartFactory createEditPartFactory() {
-  	return new GraphicalEditPartFactory();
-  }
-    
+		return new GraphicalEditPartFactory();
+	}
+
 	/**
 	 * @see org.nightlabs.editor2d.ui.AbstractEditor#createOutlineEditPartFactory()
 	 */
-  @Override
+	@Override
 	public EditPartFactory createOutlineEditPartFactory() {
-  	return new TreePartFactory(getFilterManager());
-  }
+		return new TreePartFactory(getFilterManager());
+	}
 
 	/**
 	 * @see org.nightlabs.editor2d.ui.AbstractEditor#createContextMenuProvider()
 	 */
-  @Override
+	@Override
 	public ContextMenuProvider createContextMenuProvider() {
-    return new EditorContextMenuProvider(getGraphicalViewer(), getActionRegistry());
-  }
+		return new EditorContextMenuProvider(getGraphicalViewer(), getActionRegistry());
+	}
 
 	/**
 	 * @see org.nightlabs.editor2d.ui.AbstractEditor#createNameProvider()
 	 */
-  @Override
+	@Override
 	public NameProvider createNameProvider() {
 		return new EditorNameProvider();
 	}
@@ -81,7 +81,7 @@ extends AbstractEditor
 	public Editor2DFactory createModelFactory() {
 		return new Editor2DFactoryImpl();
 	}
-	
+
 //	/**
 //	 * @see org.nightlabs.editor2d.ui.AbstractEditor#createRootDrawComponent()
 //	 */
@@ -106,6 +106,6 @@ extends AbstractEditor
 		ioFilterMan.setDefaultReadIOFilter(ioFilterMan.getIOFilter(XStreamFilter.FILE_EXTENSION));
 		ioFilterMan.setDefaultWriteIOFilter(ioFilterMan.getIOFilter(XStreamFilter.FILE_EXTENSION));
 	}
-			
+
 }
   

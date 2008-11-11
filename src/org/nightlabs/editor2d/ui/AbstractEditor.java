@@ -564,7 +564,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		};
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	public Object getAdapter(Class type)
 	{
@@ -821,7 +821,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		return null;
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	protected void createActions()
 	{
@@ -1152,10 +1152,10 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	protected boolean performSaveAs()
 	{
 		String inputFileName = getEditorInput().getName();
-		String defaultFileExtension = "";
+		String defaultFileExtension = ""; //$NON-NLS-1$
 		if (getIOFilterMan().getDefaultWriteIOFilter() != null) {
 			defaultFileExtension = getIOFilterMan().getDefaultWriteIOFilter().getFileExtensions()[0];
-			inputFileName.concat("."+defaultFileExtension);
+			inputFileName.concat("."+defaultFileExtension); //$NON-NLS-1$
 		}
 
 		FileDialog dialog = new FileDialog(getSite().getWorkbenchWindow().getShell(), SWT.SAVE);
@@ -1168,15 +1168,15 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		
 		List<String> fileExtensions = new ArrayList<String>();
 		List<String> fileExtensionDescriptions = new ArrayList<String>();
-		fileExtensions.add("*.*");
-		fileExtensionDescriptions.add("*.* (All Files)");
+		fileExtensions.add("*.*"); //$NON-NLS-1$
+		fileExtensionDescriptions.add("*.* (All Files)"); //$NON-NLS-1$
 		Collection<IOFilter> writeFilters = getIOFilterMan().getWriteFilter();
 		for (IOFilter writeFilter : writeFilters) {
 			for (String fileExtension : writeFilter.getFileExtensions()) {
-				String fileExt = "*."+fileExtension;
+				String fileExt = "*."+fileExtension; //$NON-NLS-1$
 				fileExtensions.add(fileExt);
 				String description = writeFilter.getFileExtensionDescription(fileExtension).getText();
-				fileExtensionDescriptions.add(fileExt + " (" + description + ")");
+				fileExtensionDescriptions.add(fileExt + " (" + description + ")"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 		String[] extensions = fileExtensions.toArray(new String[fileExtensions.size()]);
@@ -1208,13 +1208,13 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		String fileExtension = IOUtil.getFileExtension(fullPath);
 		// No fileExtension specified, add the default fileExtension
 		if (fileExtension == null) {
-			fullPath = fullPath.concat("."+defaultFileExtension);
+			fullPath = fullPath.concat("."+defaultFileExtension); //$NON-NLS-1$
 		}
 		else {
 			IOFilter ioFilter = getIOFilterMan().getIOFilter(fileExtension);
 			// No ioFilter found for the given fileExtension, add the default fileExtension
 			if (ioFilter == null) {
-				fullPath = fullPath.concat("."+defaultFileExtension);
+				fullPath = fullPath.concat("."+defaultFileExtension); //$NON-NLS-1$
 			}
 		}
 
@@ -1350,9 +1350,29 @@ extends J2DGraphicalEditorWithFlyoutPalette
 			progressMonitor = new NullProgressMonitor();
 
 		// use IOFilterMan
-		IOFilter ioFilter = getIOFilterMan().getIOFilter(file);
+		final IOFilter ioFilter = getIOFilterMan().getIOFilter(file);
 		if (ioFilter != null)
 		{
+			final String fileExt = IOUtil.getFileExtension(file.getName());
+			
+			if (!ioFilter.supportsWrite(fileExt)) {
+				// The IOFilter that was found does not support writing
+				// we tell the user and call saveAs() afterwards, of course it would be better 
+				// to filter out the current file-extension but well...
+				Display.getDefault().syncExec(new Runnable() {
+					public void run() {
+						MessageDialog.openInformation(Display.getCurrent().getActiveShell(),
+								Messages.getString("org.nightlabs.editor2d.ui.AbstractEditor.formatNotSupportedDialog.title"),  //$NON-NLS-1$
+								String.format(
+										Messages.getString("org.nightlabs.editor2d.ui.AbstractEditor.formatNotSupportedDialog.message"),  //$NON-NLS-1$
+										ioFilter.getFileExtensionDescription(fileExt).getText())
+								 );
+					}
+				});
+				doSaveAs();
+				return true;
+			}
+			
 			if (!reactOnSave(ioFilter)) {
 				return false;
 			}
@@ -1409,7 +1429,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 				} catch (OutOfMemoryError e) {
 					System.gc();
 					MessageDialog.openError(RCPUtil.getActiveShell(),
-							"Not enough memory", "The opened File needs more memory than is available");
+							Messages.getString("org.nightlabs.editor2d.ui.AbstractEditor.notEnoughMemoryDialog.title"), Messages.getString("org.nightlabs.editor2d.ui.AbstractEditor.notEnoughMemoryDialog.message")); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				zoomAll();
 			}
@@ -1649,7 +1669,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	
 	/**
 	 * By default empty, subclasses can override this method to react
-	 * before ssaving with a iofiter e.g. to display a message before
+	 * before saving with a iofiter e.g. to display a message before
 	 * 
 	 * @param ioFilter the iofilter to use for saving
 	 * @return true if perform save or false if not
