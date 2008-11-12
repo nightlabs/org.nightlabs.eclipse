@@ -148,7 +148,7 @@ public class PrinterConfiguratorComposite extends XComposite {
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = 2;
 		useSysDefaultPrinter.setLayoutData(gd);
-		printServiceCombo = new PrintServiceCombo(printerGroup, SWT.WRAP);
+		printServiceCombo = new PrintServiceCombo(printerGroup, SWT.READ_ONLY);
 		printServiceCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		selectPrinterButton = new Button(printerGroup, SWT.PUSH);
 		selectPrinterButton.setText("..."); //$NON-NLS-1$
@@ -216,7 +216,7 @@ public class PrinterConfiguratorComposite extends XComposite {
 			else
 				newPageFormat = printerJob.pageDialog(printerJob.defaultPage());
 			PrinterConfiguratorComposite.this.pageFormat = newPageFormat;
-//			printerJob.g
+			
 			pageFormatDescription.setText(getPageFormatDescription(PrinterConfiguratorComposite.this.pageFormat));
 			if (pageSetupComposite != null)
 				pageSetupComposite.refresh(PrinterConfiguratorComposite.this.pageFormat);
