@@ -32,7 +32,7 @@ public abstract class ResizableTitleAreaDialog extends TitleAreaDialog
 	{
 		super(shell);
 		setShellStyle(getShellStyle() | SWT.RESIZE | SWT.MAX);
-		this.resizableDialogSupport = new ResizableDialogSupport(this, resourceBundle);
+		this.resizableDialogSupport = new ResizableDialogSupport(this, getDialogIdentfier(), null, resourceBundle);
 	}
 
 	/**
@@ -65,6 +65,27 @@ public abstract class ResizableTitleAreaDialog extends TitleAreaDialog
 		return super.getInitialLocation(initialSize);
 	}
 	
+	/**
+	 * Returns the {@link ResizableDialogSupport} that was created for this dialog.
+	 * @return The {@link ResizableDialogSupport} that was created for this dialog.
+	 */
+	protected ResizableDialogSupport getResizableDialogSupport() {
+		return resizableDialogSupport;
+	}
+	
+	/**
+	 * Returns the identifier for this dialog that will be used as prefix
+	 * to store the last size and position of this dialog.
+	 * This implementation returns <code>null</code> which causes the 
+	 * default value (the class-name of the dialog) to be used.
+	 * Override this method to store the dialog-bounds under a
+	 * different (dynamic) namespace.
+	 * 
+	 * @return The identifier for this dialog or <code>null</code> to use the default value.
+	 */
+	protected String getDialogIdentfier() {
+		return null;
+	}	
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.dialogs.TrayDialog#close()
 	 */

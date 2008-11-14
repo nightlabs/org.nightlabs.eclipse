@@ -13,6 +13,8 @@ import org.eclipse.swt.widgets.Shell;
  * To define the preferred size (the size on first startup) place entries in
  * the {@link ResourceBundle} you pass to the constructor. See the JavaDoc of {@link ResizableDialogSupport}
  * for the format of the entries.
+ * The last size of this dialog will be stored under a prefix which is by default
+ * the class-name of the concrete dialog. To change this behaviour override {@link #getDialogIdentfier()}.
  * 
  * @see ResizableDialogSupport
  * @see TrayDialog
@@ -33,7 +35,7 @@ public abstract class ResizableTrayDialog extends TrayDialog
 	{
 		super(shell);
 		setShellStyle(getShellStyle() | SWT.RESIZE | SWT.MAX);
-		this.resizableDialogSupport = new ResizableDialogSupport(this, resourceBundle);
+		this.resizableDialogSupport = new ResizableDialogSupport(this, getDialogIdentfier(), null, resourceBundle);
 	}
 
 	/**
@@ -46,7 +48,7 @@ public abstract class ResizableTrayDialog extends TrayDialog
 	{
 		super(parentShell);
 		setShellStyle(getShellStyle() | SWT.RESIZE | SWT.MAX);
-		this.resizableDialogSupport = new ResizableDialogSupport(this, resourceBundle);
+		this.resizableDialogSupport = new ResizableDialogSupport(this, getDialogIdentfier(), null, resourceBundle);
 	}
 
 	/**
@@ -77,6 +79,28 @@ public abstract class ResizableTrayDialog extends TrayDialog
 		if(loc != null)
 			return loc;
 		return super.getInitialLocation(initialSize);
+	}
+	
+	/**
+	 * Returns the {@link ResizableDialogSupport} that was created for this dialog.
+	 * @return The {@link ResizableDialogSupport} that was created for this dialog.
+	 */
+	protected ResizableDialogSupport getResizableDialogSupport() {
+		return resizableDialogSupport;
+	}
+	
+	/**
+	 * Returns the identifier for this dialog that will be used as prefix
+	 * to store the last size and position of this dialog.
+	 * This implementation returns <code>null</code> which causes the 
+	 * default value (the class-name of the dialog) to be used.
+	 * Override this method to store the dialog-bounds under a
+	 * different (dynamic) namespace.
+	 * 
+	 * @return The identifier for this dialog or <code>null</code> to use the default value.
+	 */
+	protected String getDialogIdentfier() {
+		return null;
 	}
 	
 	/* (non-Javadoc)
