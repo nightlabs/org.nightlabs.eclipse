@@ -26,7 +26,6 @@
 
 package org.nightlabs.eclipse.ui.dialog;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
@@ -35,20 +34,25 @@ import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 
 /**
+ * This Dialog will open full-screen on the primary screen 
+ * at the first time it will be used. From then on it will store
+ * its bounds using a prefix: {@link #getDialogIdentfier()}.
+ * 
  * @author unascribed
  * @author Marc Klinger - marc[at]nightlabs[dot]de
+ * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  */
 public class FullScreenDialog
-extends Dialog
+extends ResizableTrayDialog
 {
 
 	public FullScreenDialog(Shell shell) {
-		super(shell);
+		super(shell, null);
 		setShellStyle(getShellStyle() | SWT.RESIZE | SWT.MIN | SWT.MAX);
 	}
 
 	public FullScreenDialog(IShellProvider shellProvider) {
-		super(shellProvider);
+		super(shellProvider, null);
 		setShellStyle(getShellStyle() | SWT.RESIZE | SWT.MIN | SWT.MAX );
 	}
 
@@ -58,6 +62,9 @@ extends Dialog
 	@Override
 	protected Point getInitialSize()
 	{
+		Point size = getResizableDialogSupport().getInitialSize();
+		if (size != null)
+			return size;
 		Monitor monitor;
 		Composite parent = getShell().getParent();
 		if (parent != null)
@@ -73,6 +80,9 @@ extends Dialog
 	@Override
 	protected Point getInitialLocation(Point initialSize)
 	{
+		Point location = getResizableDialogSupport().getInitialLocation();
+		if (location != null)
+			return location;
 		Monitor monitor;
 		Composite parent = getShell().getParent();
 		if (parent != null)
