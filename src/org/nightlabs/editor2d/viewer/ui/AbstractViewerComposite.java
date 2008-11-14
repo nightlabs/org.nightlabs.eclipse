@@ -63,26 +63,26 @@ public abstract class AbstractViewerComposite
 extends XComposite
 {
 //	private static final Logger logger = Logger.getLogger(AbstractViewerComposite.class);
-	
+
 	protected AbstractViewerComposite(Composite parent, int style, boolean showTools) {
 		super(parent, style);
 		this.showTools = showTools;
 	}
-	
+
 	public AbstractViewerComposite(Composite parent, int style, DrawComponent dc) {
 		this(parent, style, dc, true);
 	}
 
 	public AbstractViewerComposite(Composite parent, int style, DrawComponent dc,
-			boolean showTools) 
+			boolean showTools)
 	{
 		super(parent, style);
 		this.showTools = showTools;
 		init(dc);
 	}
-	
+
 	private boolean showTools = true;
-	private DrawComponent drawComponent;	
+	private DrawComponent drawComponent;
 	private ToolBarManager upperToolBarMan;
 	private AbstractCanvasComposite canvasComp;
 	private Composite sideComp;
@@ -90,13 +90,13 @@ extends XComposite
 	protected Composite toolsComp;
 	private Label mouseLabel = null;
 	private ToolEntryManager toolEntryManager = null;
-	
+
 	public DrawComponent getDrawComponent() {
 		return drawComponent;
 	}
 
 	protected abstract AbstractCanvasComposite initCanvasComposite(Composite parent);
-	
+
 	protected void init(DrawComponent drawComponent)
 	{
 		if (drawComponent == null)
@@ -108,13 +108,13 @@ extends XComposite
 		addDisposeListener(disposeListener);
 		createComposite(this);
 	}
-	
+
 	protected void initRenderModeManager()
 	{
 		drawComponent.setRenderModeManager(RendererRegistry.sharedInstance().getRenderModeManager());
 		getRenderModeManager().addRenderModeListener(renderModeListener);
 	}
-		
+
 	protected void createComposite(Composite parent)
 	{
 		// UpperToolBar
@@ -122,7 +122,7 @@ extends XComposite
 		ToolBar upperToolBar = upperToolBarMan.createControl(parent);
 		GridData upperToolBarData = new GridData(GridData.FILL_HORIZONTAL);
 		upperToolBar.setLayoutData(upperToolBarData);
-		
+
 		// Middle Wrapper Composite (Tools + Canvas + SideToolBar)
 		XComposite comp = new XComposite(parent, SWT.NONE);
 		int size = 3;
@@ -130,39 +130,39 @@ extends XComposite
 			size = 2;
 		GridLayout compLayout = new GridLayout(size, false);
 		comp.setLayout(compLayout);
-		
+
 		// Tools
 		if (showTools) {
 			toolsComp = new XComposite(comp, SWT.BORDER);
 			GridData toolsData = new GridData(GridData.FILL_VERTICAL);
-			toolsComp.setLayoutData(toolsData);			
+			toolsComp.setLayoutData(toolsData);
 		}
-		
+
 		// Canvas
 		canvasComp = initCanvasComposite(comp);
 		GridData canvasData = new GridData(GridData.FILL_BOTH);
 		canvasComp.setLayoutData(canvasData);
-				
+
 		// SideToolBar
 		sideComp = new XComposite(comp, SWT.BORDER);
 		GridData sideData = new GridData(GridData.FILL_VERTICAL);
 		sideData.widthHint = 200;
 		sideComp.setLayoutData(sideData);
 //		sideComp.setSize(200, 200);
-		
+
 		// BottomToolBar
 		bottomComp = new XComposite(parent, SWT.BORDER);
 		GridData bottomData = new GridData(GridData.FILL_HORIZONTAL);
 		bottomComp.setLayoutData(bottomData);
-		
+
 		initToolbars();
 		getViewer().updateCanvas();
-		
+
 //		doZoomAll();
 //		addControlListener(resizeListener);
 //		getViewer().getViewport().addPropertyChangeListener(viewChangeListener);
 	}
-	
+
 //	private ControlListener resizeListener = new ControlAdapter(){
 //		public void controlResized(ControlEvent e) {
 //			logger.debug("control resized!");
@@ -178,7 +178,7 @@ extends XComposite
 //			}
 //		}
 //	};
-	
+
 //	protected void doZoomAll()
 //	{
 //		Display.getDefault().asyncExec(new Runnable() {
@@ -203,7 +203,7 @@ extends XComposite
 //		else
 //			getViewer().updateCanvas();
 //	}
-				
+
 	protected void registerToolEntries()
 	{
 		toolEntryManager = getToolEntryManager();
@@ -211,22 +211,22 @@ extends XComposite
 		toolEntryManager.addToolEntry(selectToolEntry);
 		toolEntryManager.addToolEntry(new MarqueeToolEntry());
 		toolEntryManager.addToolEntry(new ZoomToolEntry());
-		
+
 		if (showTools) {
 			toolEntryManager.createToolsComposite(toolsComp);
 		}
 		toolEntryManager.setDefaultToolEntry(selectToolEntry);
 		toolEntryManager.setActiveToolEntry(selectToolEntry);
 	}
-	
+
 	public ToolEntryManager getToolEntryManager()
 	{
 		if (toolEntryManager == null)
 			toolEntryManager = new ToolEntryManager(getViewer());
-		
+
 		return toolEntryManager;
 	}
-		
+
 	protected void initToolbars()
 	{
 		initUpperToolBar(upperToolBarMan);
@@ -234,58 +234,58 @@ extends XComposite
 		initBottomComposite(bottomComp);
 		registerToolEntries();
 	}
-	
+
 	protected void initUpperToolBar(ToolBarManager tbm)
 	{
 		Action action = new ZoomInAction(getZoomSupport());
 		action.setEnabled(true);
 		tbm.add(action);
-		
+
 		action = new ZoomOutAction(getZoomSupport());
 		action.setEnabled(true);
 		tbm.add(action);
-				
+
 		action = new ZoomAllAction(getZoomSupport());
 		action.setEnabled(true);
 		tbm.add(action);
-		
+
 //		action = new ZoomSelectionAction(getViewer());
 //		action.setEnabled(false);
 //		tbm.add(action);
-				
+
 		tbm.add(new Separator());
-		
+
 		ZoomContributionItem zoomItem = new ZoomContributionItem(getZoomSupport());
 		zoomItem.setEnabled(true);
 		tbm.add(zoomItem);
-				
+
 		tbm.add(new Separator());
-		
+
 		if (getRenderModeManager().getRenderModes().size() > 1)
 		{
 			IContributionItem item = new RenderModeContributionItem(getRenderModeManager(), false);
 			item.setVisible(true);
 			tbm.add(item);
 		}
-		
+
 //		action = new ZoomAllStateAction(getZoomSupport());
 //		action.setEnabled(true);
 //		tbm.add(action);
-		
+
 //		tbm.add(new Separator());
 //		bgColorItem = new BackgroundContributionItem(getViewer());
 //		bgColorItem.setVisible(true);
 //		tbm.add(bgColorItem);
-		
+
 		tbm.update(true);
 		tbm.getControl().update();
 	}
-	
+
 //	private BackgroundContributionItem bgColorItem = null;
 //	public BackgroundContributionItem getBackgroundContributionItem() {
 //		return bgColorItem;
 //	}
-	
+
 	protected void initSideComposite(Composite comp)
 	{
 		createPreviewComposite(comp);
@@ -302,7 +302,7 @@ extends XComposite
 					previewComposite.getPreviewPanel().clearBuffer();
 				}
 			}
-		});		
+		});
 		GridData previewData = new GridData(GridData.FILL_BOTH);
 		previewData.minimumHeight = 150;
 		previewComposite.setLayoutData(previewData);
@@ -313,7 +313,7 @@ extends XComposite
 	protected void initBottomComposite(Composite comp)
 	{
 		mouseLabel = new Label(comp, SWT.NONE);
-		mouseLabel.setText("X = 10000, Y = 10000"); //$NON-NLS-1$
+		mouseLabel.setText("X =      , Y =       "); //$NON-NLS-1$
 		getViewer().getMouseManager().addMouseMoveListener(mouseListener);
 	}
 
@@ -325,10 +325,10 @@ extends XComposite
 				int x = getViewer().getMouseManager().getAbsoluteX();
 				int y = getViewer().getMouseManager().getAbsoluteY();
 				mouseLabel.setText("X = "+x+", Y = "+y); //$NON-NLS-1$ //$NON-NLS-2$
-			}			
+			}
 		}
 	};
-	
+
 	protected RenderModeListener renderModeListener = new RenderModeListener()
 	{
 		public void renderModeChanges(String renderMode) {
@@ -336,15 +336,15 @@ extends XComposite
 				getViewer().updateCanvas();
 		}
 	};
-	
+
 	protected IZoomSupport getZoomSupport() {
 		return canvasComp.getZoomSupport();
 	}
-		
+
 	protected RenderModeManager getRenderModeManager() {
 		return drawComponent.getRenderModeManager();
 	}
-	
+
 	public IViewer getViewer() {
 		return canvasComp;
 	}
@@ -364,5 +364,5 @@ extends XComposite
 	public boolean isShowTools() {
 		return showTools;
 	}
-	
+
 }
