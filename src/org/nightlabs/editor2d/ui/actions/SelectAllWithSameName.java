@@ -41,7 +41,7 @@ public class SelectAllWithSameName
 extends AbstractEditorSelectionAction
 {
 	public static final String ID = SelectAllWithSameName.class.getName();
-	
+
 	public SelectAllWithSameName(AbstractEditor editor, int style) {
 		super(editor, style);
 	}
@@ -52,7 +52,7 @@ extends AbstractEditorSelectionAction
 
 	protected EditPart editPart = null;
 	protected List<DrawComponent> drawComponentsWithSameName = null;
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	protected boolean calculateEnabled()
@@ -63,7 +63,7 @@ extends AbstractEditorSelectionAction
 			DrawComponent dc = (DrawComponent) editPart.getModel();
 			String name = dc.getName();
 			Class c = dc.getClass();
-			List<DrawComponent> drawComponents = getRootDrawComponent().getDrawComponents(c);
+			Collection<DrawComponent> drawComponents = getRootDrawComponent().findDrawComponents(c);
 			drawComponentsWithSameName = getDrawComponentsWithSameName(drawComponents, name);
 			if (!drawComponentsWithSameName.isEmpty())
 				return true;

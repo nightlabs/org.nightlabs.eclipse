@@ -97,11 +97,11 @@ extends AbstractEditorSelectionAction
 	}
 
 	protected boolean onlyOneLayer() {
-		return !(getRootDrawComponent().getDrawComponents(LayerImpl.class).size() > 1);
+		return !(getRootDrawComponent().findDrawComponents(LayerImpl.class).size() > 1); // TODO maybe find should be called with Layer.class instead of the impl
 	}
 
 	protected DrawComponent getOnlyLayer() {
-		return getRootDrawComponent().getDrawComponents(LayerImpl.class).get(0);
+		return getRootDrawComponent().findDrawComponents(LayerImpl.class).iterator().next(); // TODO maybe find should be called with Layer.class instead of the impl
 	}
 
 	@Override
@@ -124,7 +124,7 @@ extends AbstractEditorSelectionAction
 	public void run() {
 		execute(createDeleteCommand(getSelectedObjects()));
 	}
-	
+
 	/**
 	 * Create a command to remove the selected objects.
 	 * @param objects The objects to be deleted.
