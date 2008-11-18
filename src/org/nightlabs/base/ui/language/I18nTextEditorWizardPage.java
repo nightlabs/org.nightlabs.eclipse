@@ -112,6 +112,13 @@ public class I18nTextEditorWizardPage extends WizardHopPage {
 		textEditor.setI18nText(buffer);
 	}
 	
+	/**
+	 * @return The {@link LanguageChooser} of the {@link I18nTextEditor} of this page.
+	 */
+	protected LanguageChooser getLanguageChooser() {
+		return textEditor.getLanguageChooser();
+	}
+	
 	public I18nText getI18nText() {
 		return buffer;
 	}
