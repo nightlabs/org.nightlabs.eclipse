@@ -27,6 +27,7 @@
 package org.nightlabs.base.ui.language;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -37,10 +38,9 @@ import org.nightlabs.i18n.I18nText;
 import org.nightlabs.i18n.I18nTextBuffer;
 
 /**
- * Simple extendable Wizardpage showing one I18nTextEditor.
+ * Simple extensible {@link WizardPage} showing one I18nTextEditor.
  * 
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
- *
  */
 public class I18nTextEditorWizardPage extends WizardHopPage {
 
@@ -101,7 +101,7 @@ public class I18nTextEditorWizardPage extends WizardHopPage {
 	 * This is called after the I18TextEditor is created to allow
 	 * subclasses to add additional Controls to the page.
 	 * 
-	 * @param wrapper
+	 * @param wrapper The parent for the additional contents
 	 */
 	protected void createAdditionalContents(Composite wrapper) {}
 	
