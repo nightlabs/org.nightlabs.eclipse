@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+   <extension
+         point="org.nightlabs.base.ui.errorreport">
+      <errorReportSender
+            class="org.nightlabs.jfire.ui.errorreport.mantis.MantisSubmissionModule"
+            name="Mantis error submission">
+      </errorReportSender>
+   </extension>
+</plugin>
