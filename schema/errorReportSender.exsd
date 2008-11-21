@@ -3,7 +3,7 @@
 <schema targetNamespace="org.nightlabs.base.ui" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.nightlabs.base.ui" id="errorReportSender" name="Error Report Sender"/>
+         <meta.schema plugin="org.nightlabs.base.ui" id="errorreport" name="Error Report Sender"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]

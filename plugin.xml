@@ -36,7 +36,7 @@
     <extension-point id="entityEditorActionBarContribution"
         name="entityEditorActionBarContribution" schema="schema/entityEditorActionBarContribution.exsd"/>
     <extension-point id="workbenchListener" name="workbenchListener" schema="schema/workbenchListener.exsd"/>
-    <extension-point id="errorreport" name="Error Report Sender" schema="schema/errorReportSender.exsd"/>
+    <extension-point id="errorreport" name="error report sender" schema="schema/errorReportSender.exsd"/>
     <extension point="org.nightlabs.base.ui.exceptionhandler">
         <exceptionHandler
               class="org.nightlabs.base.ui.exceptionhandler.ThrowableHandler"

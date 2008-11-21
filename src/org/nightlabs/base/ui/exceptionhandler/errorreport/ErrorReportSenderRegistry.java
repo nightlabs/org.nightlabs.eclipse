@@ -6,13 +6,12 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
-import org.nightlabs.base.ui.exceptionhandler.IExceptionHandler;
 import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
 
 public class ErrorReportSenderRegistry extends AbstractEPProcessor
 {
 	private static final Logger logger = Logger.getLogger(ErrorReportSenderRegistry.class);
-	private static final String EXTENSION_POINT_ID = "org.nightlabs.base.ui.exceptionhandler.errorreport"; //$NON-NLS-1$
+	private static final String EXTENSION_POINT_ID = "org.nightlabs.base.ui.errorreport"; //$NON-NLS-1$
 
 	private Map<String, IErrorReportSender> senders = new HashMap<String, IErrorReportSender>();
 	
