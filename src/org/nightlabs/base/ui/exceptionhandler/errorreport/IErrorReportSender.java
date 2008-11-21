@@ -29,7 +29,7 @@ package org.nightlabs.base.ui.exceptionhandler.errorreport;
 /**
  * @author Simon Lehmann - simon@nightlabs.de
  */
-public interface ErrorReportSender
+public interface IErrorReportSender
 {
 	public void sendErrorReport(ErrorReport errorReport);
 }

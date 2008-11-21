@@ -56,7 +56,7 @@ import org.nightlabs.config.Config;
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  * @author Fitas Amine - fitas[at]nightlabs[dot]de
  */
-public class ErrorReportSenderEMail implements ErrorReportSender
+public class ErrorReportSenderEMail implements IErrorReportSender
 {
 	/**
 	 * LOG4J logger used by this class
@@ -64,7 +64,7 @@ public class ErrorReportSenderEMail implements ErrorReportSender
 	private static final Logger logger = Logger.getLogger(ErrorReportSenderEMail.class);
 
 	/**
-	 * @see org.nightlabs.exceptiontest.wizard.ErrorReportSender#sendErrorReport(org.nightlabs.exceptiontest.wizard.ErrorReport)
+	 * @see org.nightlabs.IErrorReportSender.wizard.ErrorReportSender#sendErrorReport(org.nightlabs.exceptiontest.wizard.ErrorReport)
 	 */
 	public void sendErrorReport(ErrorReport errorReport)
 	{

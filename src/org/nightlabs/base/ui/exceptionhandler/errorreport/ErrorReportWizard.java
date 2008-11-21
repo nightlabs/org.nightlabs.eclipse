@@ -89,12 +89,12 @@ public class ErrorReportWizard extends DynamicPathWizard
 						"Invalid configuration parameter in \"" + ErrorReportSenderCfMod.class + "\": Unable to load class \"" + cfMod.getErrorReportSenderClass() + "\"!", x);  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 			}
 
-			if (!ErrorReportSender.class.isAssignableFrom(clazz))
+			if (!IErrorReportSender.class.isAssignableFrom(clazz))
 				throw new ClassCastException(
-						"Invalid configuration parameter in \"" + ErrorReportSenderCfMod.class + "\": Class \"" + cfMod.getErrorReportSenderClass() + "\" does not implement interface \""+ErrorReportSender.class.getName()+"\"!");  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+						"Invalid configuration parameter in \"" + ErrorReportSenderCfMod.class + "\": Class \"" + cfMod.getErrorReportSenderClass() + "\" does not implement interface \""+IErrorReportSender.class.getName()+"\"!");  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			
 			errorReport.setIsSendScreenShot(ScreenShotPage.getIsSendsScreenshotImage());
-			ErrorReportSender sender = (ErrorReportSender) clazz.newInstance();
+			IErrorReportSender sender = (IErrorReportSender) clazz.newInstance();
 			sender.sendErrorReport(errorReport);
 			return true;
 		} catch (Throwable e) {
