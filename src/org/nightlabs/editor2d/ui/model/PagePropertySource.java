@@ -38,6 +38,7 @@ import org.nightlabs.editor2d.PageDrawComponent;
 import org.nightlabs.editor2d.RootDrawComponent;
 import org.nightlabs.editor2d.ui.resource.Messages;
 import org.nightlabs.i18n.I18nText;
+import org.nightlabs.i18n.unit.resolution.Resolution;
 
 /**
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
@@ -52,12 +53,12 @@ extends DrawComponentPropertySource
 	protected PageDrawComponent getPageDrawComponent() {
 		return (PageDrawComponent) drawComponent;
 	}
-	
+
 	@Override
 	protected List<IPropertyDescriptor> createPropertyDescriptors()
 	{
 		List<IPropertyDescriptor> descriptors = getDescriptors();
-		
+
 		// Name
 		descriptors.add(createNamePD());
 		// Orientation
@@ -82,10 +83,10 @@ extends DrawComponentPropertySource
 //		List<IPropertyDescriptor> extensionPointProperties = getExtensionPointProperties();
 //		if (!extensionPointProperties.isEmpty())
 //			descriptors.addAll(extensionPointProperties);
-		
+
 		return descriptors;
 	}
-	
+
 	protected PropertyDescriptor createPageWidthPD()
 	{
 		PropertyDescriptor desc = new DoublePropertyDescriptor(DrawComponent.PROP_WIDTH,
@@ -93,7 +94,7 @@ extends DrawComponentPropertySource
 		desc.setCategory(CATEGORY_GEOM);
 		return desc;
 	}
-	
+
 	protected PropertyDescriptor createPageHeightPD()
 	{
 		PropertyDescriptor desc = new DoublePropertyDescriptor(DrawComponent.PROP_HEIGHT,
@@ -101,27 +102,27 @@ extends DrawComponentPropertySource
 		desc.setCategory(CATEGORY_GEOM);
 		return desc;
 	}
-		
+
 	public static String getOrientationString(int orientation)
 	{
 		if (orientation == PageDrawComponent.ORIENTATION_HORIZONTAL)
 			return Messages.getString("org.nightlabs.editor2d.ui.model.PagePropertySource.horizontal"); //$NON-NLS-1$
 		if (orientation == PageDrawComponent.ORIENTATION_VERTICAL)
 			return Messages.getString("org.nightlabs.editor2d.ui.model.PagePropertySource.vertical"); //$NON-NLS-1$
-		
+
 		return null;
 	}
-	
+
 	public static int getOrientation(String orientationString)
 	{
 		if (orientationString.equals(Messages.getString("org.nightlabs.editor2d.ui.model.PagePropertySource.horizontal"))) //$NON-NLS-1$
 			return PageDrawComponent.ORIENTATION_HORIZONTAL;
 		if (orientationString.equals(Messages.getString("org.nightlabs.editor2d.ui.model.PagePropertySource.vertical"))) //$NON-NLS-1$
 			return PageDrawComponent.ORIENTATION_VERTICAL;
-		
+
 		return -1;
 	}
-		
+
 	protected PropertyDescriptor createOrientationPD()
 	{
 		String horizontal = getOrientationString(PageDrawComponent.ORIENTATION_HORIZONTAL);
@@ -139,11 +140,11 @@ extends DrawComponentPropertySource
 		desc.setCategory(CATEGORY_PAGE);
 		return desc;
 	}
-		
+
 	protected PropertyDescriptor createResolutionValuePD()
 	{
 		PropertyDescriptor desc = new DoublePropertyDescriptor(RootDrawComponent.PROP_RESOLUTION,
-				Messages.getString("org.nightlabs.editor2d.ui.model.PagePropertySource.resolution"), true); //$NON-NLS-1$
+				Messages.getString("org.nightlabs.editor2d.ui.model.PagePropertySource.resolution"), false); //$NON-NLS-1$
 		desc.setCategory(CATEGORY_RESOLUTION);
 		return desc;
 	}
@@ -151,7 +152,7 @@ extends DrawComponentPropertySource
 	public static final String ID_RESOLUTION_UNIT = "ResolutionUnit"; //$NON-NLS-1$
 	public static final String CATEGORY_RESOLUTION = Messages.getString("org.nightlabs.editor2d.ui.model.PagePropertySource.category.resolution");	 //$NON-NLS-1$
 	public static final String CATEGORY_PAGE = Messages.getString("org.nightlabs.editor2d.ui.model.PagePropertySource.category.page");	 //$NON-NLS-1$
-	
+
 	protected PropertyDescriptor createResolutionUnitPD()
 	{
 		PropertyDescriptor desc = new XTextPropertyDescriptor(ID_RESOLUTION_UNIT,
@@ -159,7 +160,7 @@ extends DrawComponentPropertySource
 		desc.setCategory(CATEGORY_RESOLUTION);
 		return desc;
 	}
-		
+
 	/**
 	 * @see org.eclipse.ui.views.properties.IPropertySource#getPropertyValue(java.lang.Object)
 	 */
@@ -194,11 +195,11 @@ extends DrawComponentPropertySource
 //			pageSize.setResolution(getPageDrawComponent().getResolution());
 //			return pageSize;
 //		}
-		
+
 //		return null;
 		return super.getPropertyValue(id);
 	}
-	
+
 	/**
 	 * @see org.eclipse.ui.views.properties.IPropertySource#setPropertyValue(java.lang.Object, java.lang.Object)
 	 */
@@ -215,12 +216,14 @@ extends DrawComponentPropertySource
 		else if (id.equals(PageDrawComponent.PROP_SHOW_PAGE_BOUNDS)) {
 			getPageDrawComponent().setShowPageBounds((Boolean)value);
 		}
-//		else if (id.equals(RootDrawComponent.PROP_RESOLUTION))
-//		{
-//			double resolution = ((Double)value).doubleValue();
-//			getPageDrawComponent().getRoot().getResolution().setResolutionX(resolution);
-//			getPageDrawComponent().getRoot().getResolution().setResolutionY(resolution);
-//		}
+		else if (id.equals(RootDrawComponent.PROP_RESOLUTION))
+		{
+			double resolution = ((Double)value).doubleValue();
+			Resolution newResolution = (Resolution) getPageDrawComponent().getRoot().getResolution().clone();
+			newResolution.setResolutionX(resolution);
+			newResolution.setResolutionY(resolution);
+			getPageDrawComponent().getRoot().setResolution(newResolution);
+		}
 //		else if (id.equals(PageDrawComponent.PROP_PAGE_BOUNDS))
 //		{
 //			PageSize pageSize = (PageSize) value;
@@ -233,5 +236,5 @@ extends DrawComponentPropertySource
 //		}
 		super.setPropertyValue(id, value);
 	}
-	
+
 }
