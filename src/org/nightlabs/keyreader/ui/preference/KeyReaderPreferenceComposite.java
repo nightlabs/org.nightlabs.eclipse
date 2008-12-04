@@ -26,6 +26,7 @@ import org.nightlabs.connection.ui.ConnectionCfEditFactory;
 import org.nightlabs.connection.ui.ConnectionCfEditRegistry;
 import org.nightlabs.connection.ui.ConnectionImplementationRegistry;
 import org.nightlabs.keyreader.KeyReaderImplementation;
+import org.nightlabs.keyreader.KeyReaderMan;
 import org.nightlabs.keyreader.KeyReaderSharingDevice;
 import org.nightlabs.keyreader.config.KeyReaderCf;
 import org.nightlabs.keyreader.config.KeyReaderConfigModule;
@@ -330,6 +331,8 @@ extends XComposite
 	{
 		for (KeyReaderCf clone : keyReaderID2keyReaderCfClone.values())
 			keyReaderConfigModule._addKeyReaderCf(Util.cloneSerializable(clone));
+		
+		new TestKeyReadersDialog(getShell()).open();
 	}
 
 }
