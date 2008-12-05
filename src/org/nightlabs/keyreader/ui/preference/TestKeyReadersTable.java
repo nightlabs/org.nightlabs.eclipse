@@ -183,6 +183,7 @@ public class TestKeyReadersTable extends AbstractTableComposite<TestKeyReaderIte
 					public void run() {
 						setInput(testKeyReaderItems);
 						select(0);
+						propertyChangeSupport.firePropertyChange(PROPERTY_REFRESH, null, null);
 					}
 				});
 

@@ -8,10 +8,12 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.nightlabs.eclipse.ui.dialog.ResizableTrayDialog;
@@ -27,6 +29,12 @@ public class TestKeyReadersDialog extends ResizableTrayDialog {
 		setShellStyle(getShellStyle() | SWT.RESIZE);
 	}
 
+	@Override
+	public void create() {
+		super.create();
+		getShell().setText("Test key readers");
+	}
+
 	private SashForm sashForm;
 	private TestKeyReadersTable testKeyReadersTable;
 	private Text keyReaderErrorText;
@@ -34,9 +42,18 @@ public class TestKeyReadersDialog extends ResizableTrayDialog {
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite area = (Composite) super.createDialogArea(parent);
-		area.setLayout(new FillLayout());
+		area.setLayout(new GridLayout());
+
+		Label msg = new Label(area, SWT.WRAP);
+		msg.setText(
+				"Use your key readers to scan some codes. The last key that has been read is shown for each reader as well as the last error.\n" +
+				"\n" +
+				"You can select a key reader to see details: In case of an error, the complete error message (with stack trace) is shown in the detail area below."
+		);
+		msg.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		sashForm = new SashForm(area, SWT.VERTICAL);
+		sashForm.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		testKeyReadersTable = new TestKeyReadersTable(sashForm, SWT.NONE);
 		testKeyReadersTable.getGridData().grabExcessHorizontalSpace = true;
@@ -45,16 +62,16 @@ public class TestKeyReadersDialog extends ResizableTrayDialog {
 		testKeyReadersTable.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
-				showCurrentError();
+				showCurrentDetails();
 			}
 		});
 
-		keyReaderErrorText = new Text(sashForm, SWT.MULTI | SWT.READ_ONLY);
+		keyReaderErrorText = new Text(sashForm, SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 
 		testKeyReadersTable.addPropertyChangeListener(TestKeyReadersTable.PROPERTY_REFRESH, new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				showCurrentError();
+				showCurrentDetails();
 			}
 		});
 
@@ -63,7 +80,7 @@ public class TestKeyReadersDialog extends ResizableTrayDialog {
 		return area;
 	}
 
-	private void showCurrentError() {
+	private void showCurrentDetails() {
 		if (testKeyReadersTable.isDisposed())
 			return;
 
@@ -73,19 +90,43 @@ public class TestKeyReadersDialog extends ResizableTrayDialog {
 			return;
 		}
 
+		StringBuilder sb = new StringBuilder();
+
 		TestKeyReaderItem testKeyReaderItem = sel.iterator().next();
-		if (testKeyReaderItem.getLastKeyReaderErrorEvent() == null) {
-			keyReaderErrorText.setText("");
-			return;
+
+		sb.append("*** Use case ***");
+		sb.append("\nUse case name: ");
+		sb.append(testKeyReaderItem.getKeyReaderUseCase().getName());
+		sb.append("\nKey reader ID: ");
+		sb.append(testKeyReaderItem.getKeyReaderUseCase().getKeyReaderID());
+
+		if (testKeyReaderItem.getLastKeyReadEvent() != null) {
+			sb.append("\n*** Last key ***\n");
+			sb.append(
+					DateFormatter.formatDateShortTimeHMS(
+							testKeyReaderItem.getLastKeyReadEvent().getTimestamp(),
+							false
+					)
+			);
+			sb.append('\n');
+			sb.append(testKeyReaderItem.getLastKeyReadEvent().getKey());
 		}
 
-		keyReaderErrorText.setText(
-				DateFormatter.formatDateShortTimeHMS(
-						testKeyReaderItem.getLastKeyReaderErrorEvent().getTimestamp(),
-						false
-				) + '\n' +
-				Util.getStackTraceAsString(testKeyReaderItem.getLastKeyReaderErrorEvent().getError())
-		);
+		if (testKeyReaderItem.getLastKeyReaderErrorEvent() != null) {
+			sb.append("\n*** Error ***\n");
+			sb.append(
+					DateFormatter.formatDateShortTimeHMS(
+							testKeyReaderItem.getLastKeyReaderErrorEvent().getTimestamp(),
+							false
+					)
+			);
+			sb.append('\n');
+			sb.append(
+					Util.getStackTraceAsString(testKeyReaderItem.getLastKeyReaderErrorEvent().getError())
+			);
+		}
+
+		keyReaderErrorText.setText(sb.toString());
 	}
 	@Override
 	protected Button createButton(Composite parent, int id, String label, boolean defaultButton) {
