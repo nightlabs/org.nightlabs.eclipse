@@ -79,18 +79,18 @@ implements IWorkbenchPreferencePage
 		setTitle(Messages.getString("org.nightlabs.editor2d.ui.preferences.DocumentPropertiesPreferencePage.title")); //$NON-NLS-1$
 		setPreferenceStore(Preferences.getPreferenceStore());
 	}
-	
+
 	private PredefinedPageComposite pageComp = null;
 	private ResolutionUnitComposite resUnitComp = null;
 	private UnitComposite unitComp = null;
 	private Text resolutionText = null;
 	private PageOrientationComposite orientationComp = null;
 	private XComboComposite<Class<? extends AbstractEditor>> editorChooseCombo = null;
-	
+
 	protected  DocumentConfigModule getDocumentConfigModule() {
 		return DocumentPropertiesRegistry.sharedInstance().getDocumentConfModule();
 	}
-	
+
 	private ISelectionChangedListener editorListener = new ISelectionChangedListener() {
 		public void selectionChanged(SelectionChangedEvent event) {
 			Class<? extends AbstractEditor> selectedClass = editorChooseCombo.getSelectedElement();
@@ -111,7 +111,7 @@ implements IWorkbenchPreferencePage
 //			}
 		}
 	};
-	
+
 	/**
 	 * @see org.eclipse.jface.preference.FieldEditorPreferencePage#createFieldEditors()
 	 */
@@ -121,21 +121,21 @@ implements IWorkbenchPreferencePage
 		Composite content = new XComposite(parent, SWT.NONE, LayoutMode.TIGHT_WRAPPER);
 		content.setLayout(new GridLayout(2, false));
 		content.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		
+
 		// Editors
 		Label editorSelectLabel = new Label(content, SWT.NONE);
 		editorSelectLabel.setText(Messages.getString("org.nightlabs.editor2d.ui.preferences.DocumentPropertiesPreferencePage.label.editor")); //$NON-NLS-1$
-		editorChooseCombo = new XComboComposite<Class<? extends AbstractEditor>>(content, SWT.NONE, editorLabelProvider);
+		editorChooseCombo = new XComboComposite<Class<? extends AbstractEditor>>(content, SWT.READ_ONLY, editorLabelProvider);
 		editorChooseCombo.setInput(getEditorClasses());
 		editorChooseCombo.selectElement(Editor.class);
 		editorChooseCombo.addSelectionChangedListener(editorListener);
 		editorChooseCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		
+
 		Label separator = new Label(content, SWT.SEPARATOR | SWT.HORIZONTAL);
 		GridData separatorData = new GridData(GridData.FILL_HORIZONTAL);
 		separatorData.horizontalSpan = 2;
 		separator.setLayoutData(separatorData);
-		
+
 		// Predefined Pages
 		Label pageSelectLabel = new Label(content, SWT.NONE);
 		pageSelectLabel.setText(Messages.getString("org.nightlabs.editor2d.ui.preferences.DocumentPropertiesPreferencePage.label.predefinedPage")); //$NON-NLS-1$
@@ -143,7 +143,7 @@ implements IWorkbenchPreferencePage
 		pageComp.selectPage(PredefinedPageEP.sharedInstance().getPageRegistry().getPage(
 				Preferences.getPreferenceStore().getString(Preferences.PREF_PREDEFINED_PAGE_ID)));
 		pageComp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-	
+
 		// Page Orientation
 		Label orientationLabel = new Label(content, SWT.NONE);
 		orientationLabel.setText(Messages.getString("org.nightlabs.editor2d.ui.preferences.DocumentPropertiesPreferencePage.label.orientation")); //$NON-NLS-1$
@@ -151,7 +151,7 @@ implements IWorkbenchPreferencePage
 		orientationComp.selectOrientation(Preferences.getPreferenceStore().getInt(
 				Preferences.PREF_PAGE_ORIENTATION_ID));
 		orientationComp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		
+
 		// Resolution Unit
 		Label resolutionUnitSelectLabel = new Label(content, SWT.NONE);
 		resolutionUnitSelectLabel.setText(Messages.getString("org.nightlabs.editor2d.ui.preferences.DocumentPropertiesPreferencePage.label.resolutionUnit")); //$NON-NLS-1$
@@ -166,7 +166,7 @@ implements IWorkbenchPreferencePage
 		resolutionText = new Text(content, SWT.BORDER);
 		resolutionText.setText(Preferences.getPreferenceStore().getString(Preferences.PREF_DOCUMENT_RESOLUTION));
 		resolutionText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		
+
 		// Standard Unit
 		Label unitSelectLabel = new Label(content, SWT.NONE);
 		unitSelectLabel.setText(Messages.getString("org.nightlabs.editor2d.ui.preferences.DocumentPropertiesPreferencePage.label.standardUnit")); //$NON-NLS-1$
@@ -174,10 +174,10 @@ implements IWorkbenchPreferencePage
 		unitComp.selectUnit(UnitRegistryEP.sharedInstance().getUnitRegistry().getUnit(
 				Preferences.getPreferenceStore().getString(Preferences.PREF_STANDARD_UNIT_ID)));
 		unitComp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		
+
 		return content;
 	}
-	
+
 	/**
 	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
 	 */
@@ -211,7 +211,7 @@ implements IWorkbenchPreferencePage
 		return new DocumentProperties(pageComp.getSelectedPage(), orientationComp.getOrientation(),
 				resUnitComp.getSelectedResolutionUnit(), getResolution());
 	}
-	
+
 	private void setDocumentProperties(DocumentProperties documentProperties)
 	{
 		pageComp.selectPage(documentProperties.getPredefinedPage());
@@ -219,7 +219,7 @@ implements IWorkbenchPreferencePage
 		resolutionText.setText(String.valueOf(documentProperties.getResolution()));
 		orientationComp.selectOrientation(documentProperties.getOrientation());
 	}
-	
+
 	private List<Class<? extends AbstractEditor>> getEditorClasses()
 	{
 		Map<Class<? extends AbstractEditor>, DocumentProperties> editorClass2DocumentProperties = getDocumentConfigModule().getEditorClass2DocumentProperties();
@@ -230,7 +230,7 @@ implements IWorkbenchPreferencePage
 		}
 		return editorClasses;
 	}
-	
+
 	private ILabelProvider editorLabelProvider = new LabelProvider()
 	{
 		@Override
@@ -244,7 +244,7 @@ implements IWorkbenchPreferencePage
 			return super.getText(element);
 		}
 	};
-			
+
 	@Override
 	public boolean performOk()
 	{
@@ -253,10 +253,10 @@ implements IWorkbenchPreferencePage
 		Map<Class<? extends AbstractEditor>, DocumentProperties> editorClass2DocumentProperties = getDocumentConfigModule().getEditorClass2DocumentProperties();
 		editorClass2DocumentProperties.put(editorChooseCombo.getSelectedElement(), getCurrentDocmuentProperties());
 		getDocumentConfigModule().setEditorClass2DocumentProperties(editorClass2DocumentProperties);
-		
+
 		return super.performOk();
 	}
-	
+
 	@Override
 	protected void performDefaults()
 	{
@@ -265,8 +265,8 @@ implements IWorkbenchPreferencePage
 		editorChooseCombo.selectElement(Editor.class);
 		DocumentProperties documentProperties = getDocumentConfigModule().getEditorClass2DocumentProperties().get(Editor.class);
 		setDocumentProperties(documentProperties);
-		
+
 		super.performDefaults();
 	}
-		
+
 }
