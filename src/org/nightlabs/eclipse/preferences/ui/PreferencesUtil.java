@@ -19,6 +19,12 @@ public class PreferencesUtil
 	 * This implementation makes use of the {@link XMLDecoder} class,
 	 * thus only Java standard types and Beans are supported.
 	 * </p>
+	 * <p>
+	 * <strong>Note:</strong> When using this method from another eclipse
+	 * plugin, you might need to add
+	 * <strong><code>Eclipse-RegisterBuddy: org.nightlabs.eclipse.preference.ui</code></strong>
+	 * to your MANIFEST.MF file.
+	 * </p>
 	 * @param string The string to deserialize
 	 * @param <T> The type to be returned. If the serialized object is
 	 * 		not of type T, this implementation returns <code>null</code>
@@ -53,6 +59,12 @@ public class PreferencesUtil
 	 * <p>
 	 * This implementation makes use of the {@link XMLEncoder} class,
 	 * thus only Java standard types and Beans are supported.
+	 * </p>
+	 * <p>
+	 * <strong>Note:</strong> When using this method from another eclipse
+	 * plugin, you might need to add
+	 * <strong><code>Eclipse-RegisterBuddy: org.nightlabs.eclipse.preference.ui</code></strong>
+	 * to your MANIFEST.MF file.
 	 * </p>
 	 * @param object The object to serialize
 	 * @return The serialized object as string
