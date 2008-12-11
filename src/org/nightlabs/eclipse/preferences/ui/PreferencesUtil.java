@@ -31,8 +31,27 @@ public class PreferencesUtil
 	 * 		and logs the class cast exception.
 	 * @return The deserialized Object
 	 */
-	@SuppressWarnings("unchecked")
 	public static <T> T deserialize(String string)
+	{
+		return deserialize(string, PreferencesUtil.class.getClassLoader());
+	}
+
+	/**
+	 * Deserialize an object from a string.
+	 * <p>
+	 * This implementation makes use of the {@link XMLDecoder} class,
+	 * thus only Java standard types and Beans are supported.
+	 * </p>
+	 * @param string The string to deserialize
+	 * @param classLoader The class loader to use within the XMLDecoder
+	 * 		load classes.
+	 * @param <T> The type to be returned. If the serialized object is
+	 * 		not of type T, this implementation returns <code>null</code>
+	 * 		and logs the class cast exception.
+	 * @return The deserialized Object
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> T deserialize(String string, ClassLoader classLoader)
 	{
 		if(string == null || string.length() == 0)
 			return null;
@@ -43,7 +62,7 @@ public class PreferencesUtil
 			// this should never happen
 			throw new RuntimeException(e);
 		}
-		XMLDecoder dec = new XMLDecoder(in);
+		XMLDecoder dec = new XMLDecoder(in, null, null, classLoader);
 		try {
 			T result = (T)dec.readObject();
 			dec.close();
