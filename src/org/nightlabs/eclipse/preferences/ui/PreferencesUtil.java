@@ -53,7 +53,7 @@ public class PreferencesUtil
 	@SuppressWarnings("unchecked")
 	public static <T> T deserialize(String string, ClassLoader classLoader)
 	{
-		if(string == null || string.length() == 0)
+		if(string == null || string.trim().length() == 0)
 			return null;
 		ByteArrayInputStream in;
 		try {
