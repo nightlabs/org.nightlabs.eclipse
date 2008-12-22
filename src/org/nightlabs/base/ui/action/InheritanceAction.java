@@ -27,7 +27,6 @@ package org.nightlabs.base.ui.action;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
-import org.nightlabs.annotation.Implement;
 import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.composite.InheritanceToggleButton;
 import org.nightlabs.base.ui.resource.Messages;
@@ -41,7 +40,7 @@ public abstract class InheritanceAction
 extends Action implements IUpdateActionOrContributionItem
 {
 	public static final String ID = InheritanceAction.class.getName();
-	
+
 	public InheritanceAction() {
 		super("", IAction.AS_CHECK_BOX); //$NON-NLS-1$
 		setId(ID);
@@ -95,17 +94,17 @@ extends Action implements IUpdateActionOrContributionItem
 	 * <p>Returns <code>true</code>.</p>
 	 * @see org.nightlabs.base.ui.action.IUpdateActionOrContributionItem#calculateEnabled()
 	 */
-	@Implement
+	@Override
 	public boolean calculateEnabled() {
 		return true;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 * <p>Returns <code>true</code>.</p>
 	 * @see org.nightlabs.base.ui.action.IUpdateActionOrContributionItem#calculateVisible()
 	 */
-	@Implement
+	@Override
 	public boolean calculateVisible() {
 		return true;
 	}
