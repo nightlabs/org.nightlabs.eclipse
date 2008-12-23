@@ -33,8 +33,8 @@ public class DateTimeControl extends XComposite {
 	private Button lookupButton;
 	private Date date;
 	private long flags;
-	private Boolean allowPast;
-	
+	private boolean allowPast;
+
 	/**
 	 * Create a new DateTimeComposite for the current date and time.
 	 * @param parent The SWT parent.
@@ -44,9 +44,9 @@ public class DateTimeControl extends XComposite {
 	public DateTimeControl(Composite parent, int style, long flags)
 	{
 		this(parent, style, flags, new Date());
-		this.allowPast  = true;
+		this.allowPast = true;
 	}
-	
+
 	/**
 	 * Create a new DateTimeComposite for the current date and time.
 	 * @param parent The SWT parent.
@@ -57,10 +57,9 @@ public class DateTimeControl extends XComposite {
 	public DateTimeControl(Composite parent, boolean allowPast , int style, long flags)
 	{
 		this(parent, style, flags, new Date());
-		this.allowPast  = allowPast;
+		this.allowPast = allowPast;
 	}
-	
-	
+
 	/**
 	 * Create a new DateTimeComposite for the given date and time.
 	 * @param parent The SWT parent.
@@ -72,6 +71,7 @@ public class DateTimeControl extends XComposite {
 	{
 		super(parent, style, LayoutMode.TIGHT_WRAPPER, LayoutDataMode.NONE);
 		this.flags = flags;
+		this.allowPast = true;
 
 		getGridLayout().numColumns = 2;
 
@@ -93,7 +93,7 @@ public class DateTimeControl extends XComposite {
 		// This needs to be done, somehow as the layout is tight wrapping and the borders
 		// are otherwise not shown in a Form environment (at least for gtk)
 		NightlabsFormsToolkit.adjustLayoutForBorderPainting(text);
-		
+
 		this.setDate(date); // text needs to exist
 
 		lookupButton = new Button(this, SWT.NONE);
@@ -147,7 +147,7 @@ public class DateTimeControl extends XComposite {
 		if (date == null)
 			date = new Date();
 		cal.setTime(date);
-		
+
 		dialog.setInitialDate(cal);
 		if (dialog.open() == Window.OK) {
 			setDate(dialog.getDate().getTime());
