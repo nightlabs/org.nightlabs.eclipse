@@ -33,11 +33,11 @@ import org.eclipse.swt.graphics.Image;
 /**
  * Adapter for LabelProviders for Tables.
  * 
- * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
+ * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  */
 public abstract class TableLabelProvider
 extends LabelProvider
-implements ITableLabelProvider
+implements ITableLabelProvider, IColumnComparableProvider
 {
 
 	@Override
@@ -47,6 +47,23 @@ implements ITableLabelProvider
 	
 	public Image getColumnImage(Object element, int columnIndex) {
 		return null;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * This implementation uses the {@link #getColumnText(Object, int)} method
+	 * of the label-provider to get the column text as Comparable.
+	 * </p>
+	 * <p>
+	 * Subclasses may override this method to provide Comparable objects for those
+	 * columns where sorting the String representation is not equivalent to sorting 
+	 * the actual column object (like for date columns).
+	 * </p>
+	 */
+	@Override
+	public Comparable<?> getColumnComparable(Object element, int columnIndex) {
+		return getColumnText(element, columnIndex);
 	}
 
 }

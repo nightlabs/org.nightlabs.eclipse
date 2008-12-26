@@ -29,12 +29,24 @@ import org.eclipse.jface.viewers.ContentViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 
 /**
+ * This sorter can be used with a column of a {@link TableViewer} or {@link TreeViewer}
+ * in combination with a {@link TableSortSelectionListener} to provide column sorting for the viewer.
+ * <p>
+ * The sorter is instantiated for a specific column-index it is responsible for.
+ * It will use the viewers label-provider to obtain a Comparable for each element of the column
+ * and sort using that comparable. 
+ * This sorter can operate on the following label-providers: 
+ * {@link IColumnComparableProvider}, {@link ITableLabelProvider} or {@link IBaseLabelProvider}.
+ * </p>
+ * 
  * @author Daniel.Mazurek [at] NightLabs [dot] de
- *
+ * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  */
 public class GenericInvertViewerSorter
 extends InvertableSorter<Object>
@@ -100,38 +112,42 @@ extends InvertableSorter<Object>
 			return cat1 - cat2;
 		}
 
-		String name1;
-		String name2;
+		Comparable comp1;
+		Comparable comp2;
 
 		if (viewer == null || !(viewer instanceof ContentViewer)) {
-			name1 = e1.toString();
-			name2 = e2.toString();
+			comp1 = e1.toString();
+			comp2 = e2.toString();
 		} else {
 			IBaseLabelProvider prov = ((ContentViewer) viewer).getLabelProvider();
-			if (prov instanceof ITableLabelProvider) {
+			if (prov instanceof IColumnComparableProvider) {
+				IColumnComparableProvider cprov = (IColumnComparableProvider) prov;
+				comp1 = cprov.getColumnComparable(e1, columnIndex);
+				comp2 = cprov.getColumnComparable(e2, columnIndex);
+			} 
+			else if (prov instanceof ITableLabelProvider) {
 				ITableLabelProvider lprov = (ITableLabelProvider) prov;
-				name1 = lprov.getColumnText(e1, columnIndex);
-				name2 = lprov.getColumnText(e2, columnIndex);
+				comp1 = lprov.getColumnText(e1, columnIndex);
+				comp2 = lprov.getColumnText(e2, columnIndex);
 			}
 			else if (prov instanceof ILabelProvider) {
 				ILabelProvider lprov = (ILabelProvider) prov;
-				name1 = lprov.getText(e1);
-				name2 = lprov.getText(e2);
+				comp1 = lprov.getText(e1);
+				comp2 = lprov.getText(e2);
 			}
 			else {
-				name1 = e1.toString();
-				name2 = e2.toString();
+				comp1 = e1.toString();
+				comp2 = e2.toString();
 			}
 		}
-		if (name1 == null) {
-			name1 = "";//$NON-NLS-1$
+		if (comp1 == null) {
+			return comp2 != null ? -1: 0;
 		}
-		if (name2 == null) {
-			name2 = "";//$NON-NLS-1$
+		if (comp2 == null) {
+			return comp1 != null ? 1 : 0;
 		}
-
-		// use the comparator to compare the strings
-		return getComparator().compare(name1, name2);
+		
+		return comp1.compareTo(comp2);
 	}
 
 }
