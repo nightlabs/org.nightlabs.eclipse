@@ -40,6 +40,7 @@ import javax.swing.text.TableView;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.util.SafeRunnable;
 import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.ContentViewer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IContentProvider;
@@ -340,6 +341,10 @@ public abstract class AbstractTableComposite<ElementType>
 	 * <p>
 	 * Note, that new label and content providers as well as a new input will be set to the {@link TableView}.
 	 * The providers will be restored on the next call to {@link #setInput(Object)}.
+	 * </p>
+	 * <p>
+	 * Also note, that using this method will cause the current content-provider to be disposed
+	 * as the implementation of {@link ContentViewer} disposes it when setting a new one.
 	 * </p>
 	 * @param message The message to be shown.
 	 */

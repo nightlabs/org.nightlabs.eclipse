@@ -671,5 +671,4 @@ implements ISelectionProvider
 	{
 		doubleClickListeners.remove(listener);
 	}
-
 }
