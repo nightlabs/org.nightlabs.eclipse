@@ -246,10 +246,10 @@ public class MantisSubmissionModule implements IErrorReportSender
   		m.getParams().setCookiePolicy(CookiePolicy.RFC_2109);
       m.setRequestEntity(new MultipartRequestEntity(parts, m.getParams()));
 
-//      client.executeMethod(m);
-//			headers = m.getResponseHeaders();
-//      res = new String(m.getResponseBody());
-//      int x = 0;
+      client.executeMethod(m);
+			headers = m.getResponseHeaders();
+      res = new String(m.getResponseBody());
+      int x = 0;
       
 		}
 		catch (HttpException e)
