@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,9 +22,13 @@ import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.PartSource;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
+import org.eclipse.core.runtime.IBundleGroup;
+import org.eclipse.core.runtime.IBundleGroupProvider;
+import org.eclipse.core.runtime.Platform;
 import org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReport;
 import org.nightlabs.base.ui.exceptionhandler.errorreport.IErrorReportSender;
 import org.nightlabs.base.ui.util.ImageUtil;
+import org.osgi.framework.Bundle;
 
 /**
  * @author Niklas Schiffler <nick@nightlabs.de>
@@ -34,6 +39,8 @@ public class MantisSubmissionModule implements IErrorReportSender
 	/* (non-Javadoc)
 	 * @see org.nightlabs.base.ui.exceptionhandler.errorreport.IErrorReportSender#sendErrorReport(org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReport)
 	 */
+	
+	public static final String BUNDLE_ID = "org.nightlabs.base.ui.errorreport.mantis";
 	
 	private String loginURL = "https://www.jfire.org/user.php";
 	private String startSessionURL = "https://www.jfire.org/modules/bugs/index.php";
@@ -102,9 +109,11 @@ public class MantisSubmissionModule implements IErrorReportSender
 		
 	}
 	
+	
 	@Override
 	public void sendErrorReport(final ErrorReport errorReport) 
 	{
+		
 		HttpClient client = new HttpClient();
     try
 		{
@@ -180,7 +189,7 @@ public class MantisSubmissionModule implements IErrorReportSender
 				if("MANTIS_PROJECT_COOKIE".equals(cookies[i].getName()))
 					mantisProjectCookie = cookies[i].getValue();
 			}
-			if(mantisProjectCookie == null);
+			if(mantisProjectCookie == null)
 			{
 				mantisProjectCookie="29";
 				// TODO: do something
@@ -198,34 +207,49 @@ public class MantisSubmissionModule implements IErrorReportSender
 			String comment = ErrorReport.getTimeAsString(errorReport.getTime()) + "\n\n";
 			if(errorReport.getUserComment() != null)
 					comment += errorReport.getUserComment() + "\n\n---\n\n";
-			comment += ErrorReport.getExceptionStackTraceAsString(errorReport.getFirstThrowable()).substring(0, 200) + "...";
-				
+			comment += ErrorReport.getExceptionStackTraceAsString(errorReport.getFirstThrowable()).substring(0, 250) + "...";
 			
+			// create bundle list
+			TreeSet<String> ts = new TreeSet<String>();
+			Bundle me = Platform.getBundle(BUNDLE_ID);
+			Bundle[] bundles = me.getBundleContext().getBundles();
+			for(int i = 0; i < bundles.length; i++)
+			{
+				String version = (String)bundles[i].getHeaders().get(org.osgi.framework.Constants.BUNDLE_VERSION);
+				String name = (String)bundles[i].getHeaders().get(org.osgi.framework.Constants.BUNDLE_NAME);
+				String vendor = (String)bundles[i].getHeaders().get(org.osgi.framework.Constants.BUNDLE_VENDOR);
+				String id = bundles[i].getSymbolicName();
+				ts.add(id + " : " + version + " (" + name + " / " + vendor + ")");
+			}
+			String bundleList = "";
+			for (String s : ts)
+				bundleList += s + "\n";
+
 			// issue submission
 			m = new PostMethod(submissionURL);
       Part[] parts = {
       	new StringPart("m_id","0"), // ?
-      	new StringPart("project_id","29"), // 29 = jfire.org 'Automated submissions'
+      	new StringPart("project_id", mantisProjectCookie), // 29 = jfire.org 'Automated submissions'
       	new StringPart("handler_id","0"), // nobody?
       	new StringPart("reproducibility","70"), // 70 = 'have not tried'
       	new StringPart("severity","60"), // 60 = major
       	new StringPart("priority","30"), // 30 = normal
       	new StringPart("summary", shortText),
       	new StringPart("description", comment),
-      	new StringPart("additional_info",errorReport.toString()),
+      	new StringPart("additional_info",errorReport.toString() + "\n\n" + bundleList),
       	new StringPart("view_state","50"),
       	new StringPart("max_file_size","2000000"),
       	new FilePart("file", new ScreenshotPartSource(errorReport)),
       };
   		m.setRequestHeader("Referer", "https://www.jfire.org/modules/bugs/bug_report_page.php");
-  		m.setRequestHeader("Cookie", "PHPSESSID=" + sessionCookie + "; MANTIS_STRING_COOKIE=" + mantisCookie + "; MANTIS_PROJECT_COOKIE=23%3B13;");
+  		m.setRequestHeader("Cookie", "PHPSESSID=" + sessionCookie + "; MANTIS_STRING_COOKIE=" + mantisCookie + "; MANTIS_PROJECT_COOKIE="+mantisProjectCookie+";");
   		m.getParams().setCookiePolicy(CookiePolicy.RFC_2109);
       m.setRequestEntity(new MultipartRequestEntity(parts, m.getParams()));
 
-      client.executeMethod(m);
-			headers = m.getResponseHeaders();
-      res = new String(m.getResponseBody());
-      int x = 0;
+//      client.executeMethod(m);
+//			headers = m.getResponseHeaders();
+//      res = new String(m.getResponseBody());
+//      int x = 0;
       
 		}
 		catch (HttpException e)
@@ -247,7 +271,7 @@ public class MantisSubmissionModule implements IErrorReportSender
 		{
 			try
 			{
-				throw new RuntimeException("blahblah_1");
+				throw new RuntimeException("blahblah_2");
 			}
 			catch (Exception e)
 			{
