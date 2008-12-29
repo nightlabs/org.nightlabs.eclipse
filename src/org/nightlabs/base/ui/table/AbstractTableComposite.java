@@ -327,6 +327,8 @@ public abstract class AbstractTableComposite<ElementType>
 			tableViewer.setInput(null);
 			tableViewer.setLabelProvider(tmpLabelProvider);
 			tableViewer.setContentProvider(tmpContentProvider);
+			tmpLabelProvider = null;
+			tmpContentProvider = null;
 		}
 
 		if (tableViewer != null)
@@ -343,22 +345,25 @@ public abstract class AbstractTableComposite<ElementType>
 	 * The providers will be restored on the next call to {@link #setInput(Object)}.
 	 * </p>
 	 * <p>
-	 * Also note, that using this method will cause the current content-provider to be disposed
-	 * as the implementation of {@link ContentViewer} disposes it when setting a new one.
+	 * Also note, that using this method will cause the current content- and label-provider to be disposed
+	 * as the implementation of {@link ContentViewer} disposes them when setting a new ones.
 	 * </p>
 	 * @param message The message to be shown.
 	 */
 	public void setLoadingMessage(String message) {
-		tmpLabelProvider = tableViewer.getLabelProvider();
-		tmpContentProvider = tableViewer.getContentProvider();
-		tableViewer.setLabelProvider(new TableLabelProvider() {
-			public String getColumnText(Object element, int columnIndex) {
-				if (columnIndex == 0 && element != null)
-					return element.toString();
-				return ""; //$NON-NLS-1$
-			}
-		});
-		tableViewer.setContentProvider(new TableContentProvider());
+		if (tmpLabelProvider == null) {
+			// Set the label and content provider only they are not already set.
+			tmpLabelProvider = tableViewer.getLabelProvider();
+			tmpContentProvider = tableViewer.getContentProvider();
+			tableViewer.setLabelProvider(new TableLabelProvider() {
+				public String getColumnText(Object element, int columnIndex) {
+					if (columnIndex == 0 && element != null)
+						return element.toString();
+					return ""; //$NON-NLS-1$
+				}
+			});
+			tableViewer.setContentProvider(new TableContentProvider());
+		}
 		tableViewer.setInput(new String[] { message });
 	}
 
