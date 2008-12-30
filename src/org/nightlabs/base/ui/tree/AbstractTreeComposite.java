@@ -94,6 +94,18 @@ implements ISelectionProvider
 	}
 
 	/**
+	 * Convenience parameter with a GridData,
+	 * directly initialised and visible headers for the tree.
+	 * @see #AbstractTreeComposite(Composite, int, boolean, boolean, boolean)
+	 *
+	 * @param parent The parent to use.
+	 * @param style the SWT style flag for the table
+	 */
+	public AbstractTreeComposite(Composite parent, int style) {
+		this(parent, style, true, true, true);
+	}
+
+	/**
 	 * Creates a new tree composite with the given parent.
 	 * The init parameter controls whether or not the tree providers
 	 * and colums should be configured already.
