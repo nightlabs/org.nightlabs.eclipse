@@ -370,14 +370,15 @@ implements ISelectionProvider
 	 * Selects the given element in the tree. (Shortcut to #setSelection(List)).
 	 * @param element the element to be selected
 	 */
-//	public void setSelection(Object element)
 	public void setSelection(ElementType element)
 	{
 		getTreeViewer().setSelection(new StructuredSelection(element), true);
 	}
 
 	public void setInput(Object input) {
-		treeViewer.setInput(input);
+		// we only set the input when the viewers control is there and not disposed
+		if (treeViewer != null && treeViewer.getControl() != null && !treeViewer.getControl().isDisposed())
+			treeViewer.setInput(input);
 	}
 
 	public void setSelection(ISelection selection)
@@ -390,7 +391,8 @@ implements ISelectionProvider
 	 * This method is used to intercept when the selection is read in order to return the
 	 * real selection object.
 	 * <p>
-	 * The default implementation returns the given obj.
+	 * The default implementation returns the given obj if it can be casted to the type the tree was parameterized with,
+	 * it will return <code>null</code> otherwise.
 	 * </p>
 	 * <p>
 	 * When overriding this method, you should return <code>null</code>, if the passed object <code>obj</code>
@@ -406,7 +408,12 @@ implements ISelectionProvider
 	protected ElementType getSelectionObject(Object obj)
 	{
 		// TODO maybe we should make this method abstract, since the tree holds almost always nodes and not the managed objects directly. Marco.
-		return (ElementType) obj;
+		// I think the base implementation is ok, as there are now already many usages that do not override this method, Alex
+		try {
+			return (ElementType) obj;
+		} catch (ClassCastException e) {
+			return null;
+		}
 	}
 
 	/**
