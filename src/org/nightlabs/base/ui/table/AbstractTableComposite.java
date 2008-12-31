@@ -243,7 +243,9 @@ public abstract class AbstractTableComposite<ElementType>
 			IStructuredSelection selection = (IStructuredSelection) sel;
 			for (Iterator iter = selection.iterator(); iter.hasNext();) {
 				Object obj = iter.next();
-				result.add((ElementType) obj);
+				ElementType el = getSelectionObject(obj);
+				if (el != null)
+					result.add(el);
 			}
 			return result;
 		} else
@@ -263,7 +265,9 @@ public abstract class AbstractTableComposite<ElementType>
 			elementsCacheInput = getTableViewer().getInput();
 			elements = new LinkedList<ElementType>();
 			for (TableItem item : getTable().getItems()) {
-				elements.add((ElementType) item.getData());
+				ElementType el = getSelectionObject(item.getData());
+				if (el != null)
+					elements.add((ElementType) item.getData());
 			}
 		}
 		return (Collection<ElementType>) (elements != null ? elements : Collections.emptySet());
@@ -281,7 +285,7 @@ public abstract class AbstractTableComposite<ElementType>
 	 */
 	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public ElementType getFirstSelectedElement() {
-		return (ElementType) getFirstSelectedElementUnchecked();
+		return getSelectionObject(getFirstSelectedElementUnchecked());
 	}
 
 	/**
@@ -330,8 +334,8 @@ public abstract class AbstractTableComposite<ElementType>
 			tmpLabelProvider = null;
 			tmpContentProvider = null;
 		}
-
-		if (tableViewer != null)
+		// we only set the input if the viewers control is there and not disposed
+		if (tableViewer != null && tableViewer.getControl() != null && !tableViewer.getControl().isDisposed())
 			tableViewer.setInput(input);
 	}
 
@@ -442,8 +446,11 @@ public abstract class AbstractTableComposite<ElementType>
 		List<ElementType> checkedElements = new LinkedList<ElementType>();
 		TableItem[] items = tableViewer.getTable().getItems();
 		for (int i = 0; i < items.length; i++) {
-			if (items[i].getChecked())
-				checkedElements.add((ElementType) items[i].getData());
+			if (items[i].getChecked()) {
+				ElementType el = getSelectionObject(items[i].getData());
+				if (el != null)
+					checkedElements.add(el);
+			}
 		}
 		return checkedElements;
 	}
@@ -461,12 +468,38 @@ public abstract class AbstractTableComposite<ElementType>
 		List<ElementType> uncheckedElements = new LinkedList<ElementType>();
 		TableItem[] items = tableViewer.getTable().getItems();
 		for (int i = 0; i < items.length; i++) {
-			if (!items[i].getChecked())
-				uncheckedElements.add((ElementType) items[i].getData());
+			if (!items[i].getChecked()) {
+				ElementType el = getSelectionObject(items[i].getData());
+				if (el != null)
+					uncheckedElements.add(el);
+			}
 		}
 		return uncheckedElements;
 	}
 
+
+	/**
+	 * Should check if the given element (out of the selection of the underlying viewer)
+	 * is a valid selection for this {@link AbstractTableComposite}, i.e. if it is of 
+	 * the expected class. If the element is valid the element itself should be returned,
+	 * if not <code>null</code> should be returned. 
+	 * <p>
+	 * This implementation tries to cast the element to the parameterized ElementType
+	 * and returns <code>null</code> if this fails.
+	 * </p>
+	 * 
+	 * @param element The element to check.
+	 * @return The given element if its a valid selection, <code>null</code> otherwise.
+	 */
+	@SuppressWarnings("unchecked")
+	protected ElementType getSelectionObject(Object element) {
+		try {
+			return (ElementType) element;
+		} catch (ClassCastException e) {
+			return null;
+		}
+	}
+	
 	/**
 	 * Set the viewers selection.
 	 *
@@ -569,7 +602,20 @@ public abstract class AbstractTableComposite<ElementType>
 	/**
 	 * Delegating method for {@link TableViewer}
 	 */
+	@SuppressWarnings("unchecked")
 	public ISelection getSelection() {
+		ISelection viewerSelection = tableViewer.getSelection();
+		if (viewerSelection instanceof IStructuredSelection) {
+			IStructuredSelection structuredSel = (IStructuredSelection) viewerSelection;
+			List<Object> newSelection = new ArrayList<Object>(structuredSel.size());
+			for (Iterator it = structuredSel.iterator(); it.hasNext();) {
+				Object element = (Object) it.next();
+				Object el = getSelectionObject(element);
+				if (el != null)
+					newSelection.add(el);
+			}
+			return new StructuredSelection(newSelection);
+		}
 		return tableViewer.getSelection();
 	}
 
