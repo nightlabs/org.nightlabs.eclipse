@@ -81,7 +81,7 @@ extends XContributionItem
 	private RenderModeManager renderModeMan;
   private Collection<Renderer> currentRenderers = null;
   private boolean showCheckBoxes = true;
-  
+
 	public RenderModeContributionItem(IWorkbenchPage page, boolean showCheckBoxes)
 	{
 		super(ID);
@@ -89,14 +89,14 @@ extends XContributionItem
 		this.showCheckBoxes = showCheckBoxes;
 		this.page.addPartListener(partListener);
 	}
-		
+
 	public RenderModeContributionItem(RenderModeManager renderModeMan, boolean showCheckBoxes)
 	{
 		super(ID);
 		this.showCheckBoxes = showCheckBoxes;
 		setRenderModeMan(renderModeMan);
 	}
-	
+
 	private IPartListener partListener = new IPartListener()
 	{
 		public void partActivated(IWorkbenchPart part)
@@ -107,36 +107,36 @@ extends XContributionItem
 		  }
 		}
 		public void partOpened(IWorkbenchPart part) {
-			
+
 		}
 		public void partDeactivated(IWorkbenchPart part) {
-			
+
 		}
 		public void partClosed(IWorkbenchPart part) {
-			
+
 		}
 		public void partBroughtToTop(IWorkbenchPart part) {
-			
+
 		}
 	};
-			
+
   protected void refresh(boolean repopulateCombo)
   {
   	if (combo == null || combo.isDisposed())
   		return;
-  	
+
 		if (renderModeMan == null) {
 			combo.setEnabled(false);
 			if (showCheckBoxes) {
 				showString.setEnabled(false);
-				showFillColor.setEnabled(false);				
+				showFillColor.setEnabled(false);
 			}
 		}
-		
+
 		if (renderModeMan != null)
 		{
 			checkRenderers(getCurrentRenderers());
-			
+
 			if (repopulateCombo)
 			{
 				combo.remove(0);
@@ -157,7 +157,7 @@ extends XContributionItem
 			combo.setEnabled(true);
 		}
   }
-    
+
   /**
    * Computes the width required by control
    * @param control The control to compute width
@@ -169,7 +169,7 @@ extends XContributionItem
   	int width = control.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x;
   	return width;
   }
-  
+
   /**
    * Creates and returns the control for this contribution item
    * under the given parent composite.
@@ -192,38 +192,38 @@ extends XContributionItem
 		layout.marginTop = 0;
 		layout.marginBottom = 0;
   	comp.setLayout(layout);
-  	
-  	combo = new XCombo(comp, SWT.DROP_DOWN | SWT.BORDER);
+
+  	combo = new XCombo(comp, SWT.DROP_DOWN | SWT.BORDER | SWT.READ_ONLY);
   	combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
   	combo.addSelectionListener(comboSelectionListener);
   	combo.addFocusListener(comboFocusListener);
   	combo.addDisposeListener(comboDisposeListener);
-  	
+
   	// Initialize width of combo
   	combo.add(null, initString, 0);
-  	
+
   	if (showCheckBoxes) {
     	showString = new Button(comp, SWT.CHECK);
     	showString.setText(Messages.getString("org.nightlabs.editor2d.viewer.ui.action.RenderModeContributionItem.text.showText")); //$NON-NLS-1$
     	showString.setToolTipText(Messages.getString("org.nightlabs.editor2d.viewer.ui.action.RenderModeContributionItem.tooltip.showText")); //$NON-NLS-1$
     	showString.addSelectionListener(showStringSelectionListener);
     	showString.addDisposeListener(showStringDisposeListener);
-    	
+
     	showFillColor = new Button(comp, SWT.CHECK);
     	showFillColor.setText(ViewerPlugin.getResourceString(Messages.getString("org.nightlabs.editor2d.viewer.ui.action.RenderModeContributionItem.text.showFillColor"))); //$NON-NLS-1$
     	showFillColor.setToolTipText(ViewerPlugin.getResourceString(Messages.getString("org.nightlabs.editor2d.viewer.ui.action.RenderModeContributionItem.tooltip.showFillColor"))); //$NON-NLS-1$
     	showFillColor.addSelectionListener(showShapeSelectionListener);
-    	showFillColor.addDisposeListener(showFillColorDisposeListener);  		
+    	showFillColor.addDisposeListener(showFillColorDisposeListener);
   	}
-  	  	
+
   	if (toolitem != null)
   		toolitem.setWidth(computeWidth(comp));
-  	
+
   	refresh(true);
-  	  	
+
   	return comp;
   }
-  		
+
 	public RenderModeManager getRenderModeMan() {
 		return renderModeMan;
 	}
@@ -240,7 +240,7 @@ extends XContributionItem
   	if (renderModeMan != null)
   		renderModeMan.addRenderModeListener(renderModeListener);
 	}
-	
+
 	 /**
    * The control item implementation of this <code>IContributionItem</code>
    * method calls the <code>createControl</code> framework method to
@@ -248,7 +248,7 @@ extends XContributionItem
    * a new tool item to hold it.
    * Subclasses must implement <code>createControl</code> rather than
    * overriding this method.
-   * 
+   *
    * @param parent The ToolBar to add the new control to
    * @param index Index
    */
@@ -259,13 +259,13 @@ extends XContributionItem
   	Control control = createControl(parent);
   	toolitem.setControl(control);
   }
-  
+
   /**
    * The control item implementation of this <code>IContributionItem</code>
    * method calls the <code>createControl</code> framework method.
    * Subclasses must implement <code>createControl</code> rather than
    * overriding this method.
-   * 
+   *
    * @param parent The parent of the control to fill
    */
   @Override
@@ -276,7 +276,7 @@ extends XContributionItem
   /**
    * The control item implementation of this <code>IContributionItem</code>
    * method throws an exception since controls cannot be added to menus.
-   * 
+   *
    * @param parent The menu
    * @param index Menu index
    */
@@ -284,7 +284,7 @@ extends XContributionItem
 	public final void fill(Menu parent, int index) {
   	Assert.isTrue(false, "Can't add a control to a menu");//$NON-NLS-1$
   }
-  
+
   /**
    * @see org.eclipse.jface.action.ContributionItem#dispose()
    */
@@ -293,7 +293,7 @@ extends XContributionItem
   {
   	if (partListener != null && page != null)
   		page.removePartListener(partListener);
-  	
+
   	if (renderModeMan != null) {
   		renderModeMan.removeRenderModeListener(renderModeListener);
   		renderModeMan = null;
@@ -303,7 +303,7 @@ extends XContributionItem
   	}
   	partListener = null;
   }
-    
+
   protected void populateMaps(RenderModeManager rmm)
   {
   	for (Iterator<String> it = rmm.getRenderModes().iterator(); it.hasNext(); )
@@ -320,17 +320,17 @@ extends XContributionItem
   		renderMode2String.put(renderMode, s);
   	}
   }
-  
+
   protected String getRenderMode(String entry)
   {
   	String renderMode = string2RenderMode.get(entry);
   	return renderMode;
   }
-  
+
   protected String getEntry(String renderMode) {
   	return renderMode2String.get(renderMode);
   }
-  
+
   protected int getIndex(String entry)
   {
   	Integer i = entry2Index.get(entry);
@@ -339,15 +339,15 @@ extends XContributionItem
   	else
   		return 0;
   }
-  
+
   protected String getRenderMode(int index) {
   	return index2RenderMode.get(index);
   }
-   
+
   protected Collection<Renderer> getCurrentRenderers() {
   	return currentRenderers;
   }
-  
+
 	private RenderModeListener renderModeListener = new RenderModeListener()
 	{
 		public void renderModeChanges(String renderMode) {
@@ -355,7 +355,7 @@ extends XContributionItem
 			currentRenderers = renderModeMan.getRenderers(renderMode);
 		}
 	};
-	
+
 	private SelectionListener comboSelectionListener = new SelectionListener()
 	{
 		public void widgetDefaultSelected(SelectionEvent e) {
@@ -368,7 +368,7 @@ extends XContributionItem
 			renderModeMan.setCurrentRenderMode(renderMode);
 		}
 	};
-	
+
 	private FocusListener comboFocusListener = new FocusListener()
 	{
 		public void focusLost(FocusEvent e) {
@@ -378,7 +378,7 @@ extends XContributionItem
 			// do nothing
 		}
 	};
-	
+
 	private DisposeListener comboDisposeListener = new DisposeListener()
 	{
 		public void widgetDisposed(DisposeEvent e)
@@ -395,7 +395,7 @@ extends XContributionItem
 				showString.removeSelectionListener(showStringSelectionListener);
 		}
 	};
-	
+
 	private DisposeListener showFillColorDisposeListener = new DisposeListener()
 	{
 		public void widgetDisposed(DisposeEvent e) {
@@ -403,7 +403,7 @@ extends XContributionItem
 				showFillColor.removeSelectionListener(showShapeSelectionListener);
 		}
 	};
-		
+
 	private SelectionListener showStringSelectionListener = new SelectionListener()
 	{
 		public void widgetDefaultSelected(SelectionEvent e) {
@@ -415,7 +415,7 @@ extends XContributionItem
 			setStringRenderer(getCurrentRenderers(), selection);
 		}
 	};
-	
+
 	private SelectionListener showShapeSelectionListener = new SelectionListener()
 	{
 		public void widgetDefaultSelected(SelectionEvent e) {
@@ -427,7 +427,7 @@ extends XContributionItem
 			setShapeRenderer(getCurrentRenderers(), selection);
 		}
 	};
-	
+
 	protected void setStringRenderer(Collection<Renderer> renderer, boolean showString)
 	{
 		if (renderer != null)
@@ -461,7 +461,7 @@ extends XContributionItem
 			updateViewer();
 		}
 	}
-		
+
 	protected void checkRenderers(Collection<Renderer> renderer)
 	{
 		if (renderer != null)
@@ -487,20 +487,20 @@ extends XContributionItem
 			if (showCheckBoxes) {
 				showFillColor.setEnabled(shapeRendererContained);
 				showString.setEnabled(stringRendererContained);
-				
+
 				// remove SelectionListener first to avoid repaint
 				showFillColor.removeSelectionListener(showShapeSelectionListener);
 				showString.removeSelectionListener(showStringSelectionListener);
-				
+
 				showFillColor.setSelection(showFillColorActive);
 				showString.setSelection(showStringActive);
-				
+
 				showFillColor.addSelectionListener(showShapeSelectionListener);
-				showString.addSelectionListener(showStringSelectionListener);				
+				showString.addSelectionListener(showStringSelectionListener);
 			}
 		}
 	}
-		
+
 	protected void updateViewer()
 	{
 		renderModeMan.setCurrentRenderMode(renderModeMan.getCurrentRenderMode());
