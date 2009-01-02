@@ -76,11 +76,11 @@ extends XContributionItem
 	private IWorkbenchPage page;
 	private Map<String, Integer> entry2Index = new HashMap<String, Integer>();
 	private Map<Integer, String> index2RenderMode = new HashMap<Integer, String>();
-  private Map<String, String> string2RenderMode = new HashMap<String, String>();
-  private Map<String, String> renderMode2String = new HashMap<String, String>();
+	private Map<String, String> string2RenderMode = new HashMap<String, String>();
+	private Map<String, String> renderMode2String = new HashMap<String, String>();
 	private RenderModeManager renderModeMan;
-  private Collection<Renderer> currentRenderers = null;
-  private boolean showCheckBoxes = true;
+	private Collection<Renderer> currentRenderers = null;
+	private boolean showCheckBoxes = true;
 
 	public RenderModeContributionItem(IWorkbenchPage page, boolean showCheckBoxes)
 	{
@@ -120,10 +120,10 @@ extends XContributionItem
 		}
 	};
 
-  protected void refresh(boolean repopulateCombo)
-  {
-  	if (combo == null || combo.isDisposed())
-  		return;
+	protected void refresh(boolean repopulateCombo)
+	{
+		if (combo == null || combo.isDisposed())
+			return;
 
 		if (renderModeMan == null) {
 			combo.setEnabled(false);
@@ -156,34 +156,34 @@ extends XContributionItem
 			combo.select(getIndex(entry));
 			combo.setEnabled(true);
 		}
-  }
+	}
 
-  /**
-   * Computes the width required by control
-   * @param control The control to compute width
-   * @return int The width required
-   */
-  @Override
+	/**
+	 * Computes the width required by control
+	 * @param control The control to compute width
+	 * @return int The width required
+	 */
+	@Override
 	protected int computeWidth(Control control)
-  {
-  	int width = control.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x;
-  	return width;
-  }
+	{
+		int width = control.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x;
+		return width;
+	}
 
-  /**
-   * Creates and returns the control for this contribution item
-   * under the given parent composite.
-   *
-   * @param parent the parent composite
-   * @return the new control
-   */
-  protected Control createControl(Composite parent)
-  {
-  	Composite comp = new XComposite(parent, SWT.NONE, LayoutMode.TIGHT_WRAPPER);
-  	int size = 3;
-  	if (!showCheckBoxes)
-  		size = 1;
-  	GridLayout layout = new GridLayout(size, false);
+	/**
+	 * Creates and returns the control for this contribution item
+	 * under the given parent composite.
+	 *
+	 * @param parent the parent composite
+	 * @return the new control
+	 */
+	protected Control createControl(Composite parent)
+	{
+		Composite comp = new XComposite(parent, SWT.NONE, LayoutMode.TIGHT_WRAPPER);
+		int size = 3;
+		if (!showCheckBoxes)
+			size = 1;
+		GridLayout layout = new GridLayout(size, false);
 		layout.verticalSpacing = 0;
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
@@ -191,162 +191,163 @@ extends XContributionItem
 		layout.marginRight = 0;
 		layout.marginTop = 0;
 		layout.marginBottom = 0;
-  	comp.setLayout(layout);
+		comp.setLayout(layout);
 
-  	combo = new XCombo(comp, SWT.DROP_DOWN | SWT.BORDER | SWT.READ_ONLY);
-  	combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-  	combo.addSelectionListener(comboSelectionListener);
-  	combo.addFocusListener(comboFocusListener);
-  	combo.addDisposeListener(comboDisposeListener);
+		combo = new XCombo(comp, SWT.DROP_DOWN | SWT.BORDER | SWT.READ_ONLY);
+		combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		combo.addSelectionListener(comboSelectionListener);
+		combo.addFocusListener(comboFocusListener);
+		combo.addDisposeListener(comboDisposeListener);
 
-  	// Initialize width of combo
-  	combo.add(null, initString, 0);
+		// Initialize width of combo
+		combo.add(null, initString, 0);
 
-  	if (showCheckBoxes) {
-    	showString = new Button(comp, SWT.CHECK);
-    	showString.setText(Messages.getString("org.nightlabs.editor2d.viewer.ui.action.RenderModeContributionItem.text.showText")); //$NON-NLS-1$
-    	showString.setToolTipText(Messages.getString("org.nightlabs.editor2d.viewer.ui.action.RenderModeContributionItem.tooltip.showText")); //$NON-NLS-1$
-    	showString.addSelectionListener(showStringSelectionListener);
-    	showString.addDisposeListener(showStringDisposeListener);
+		if (showCheckBoxes) {
+			showString = new Button(comp, SWT.CHECK);
+			showString.setText(Messages.getString("org.nightlabs.editor2d.viewer.ui.action.RenderModeContributionItem.text.showText")); //$NON-NLS-1$
+			showString.setToolTipText(Messages.getString("org.nightlabs.editor2d.viewer.ui.action.RenderModeContributionItem.tooltip.showText")); //$NON-NLS-1$
+			showString.addSelectionListener(showStringSelectionListener);
+			showString.addDisposeListener(showStringDisposeListener);
 
-    	showFillColor = new Button(comp, SWT.CHECK);
-    	showFillColor.setText(ViewerPlugin.getResourceString(Messages.getString("org.nightlabs.editor2d.viewer.ui.action.RenderModeContributionItem.text.showFillColor"))); //$NON-NLS-1$
-    	showFillColor.setToolTipText(ViewerPlugin.getResourceString(Messages.getString("org.nightlabs.editor2d.viewer.ui.action.RenderModeContributionItem.tooltip.showFillColor"))); //$NON-NLS-1$
-    	showFillColor.addSelectionListener(showShapeSelectionListener);
-    	showFillColor.addDisposeListener(showFillColorDisposeListener);
-  	}
+			showFillColor = new Button(comp, SWT.CHECK);
+			showFillColor.setText(ViewerPlugin.getResourceString(Messages.getString("org.nightlabs.editor2d.viewer.ui.action.RenderModeContributionItem.text.showFillColor"))); //$NON-NLS-1$
+			showFillColor.setToolTipText(ViewerPlugin.getResourceString(Messages.getString("org.nightlabs.editor2d.viewer.ui.action.RenderModeContributionItem.tooltip.showFillColor"))); //$NON-NLS-1$
+			showFillColor.addSelectionListener(showShapeSelectionListener);
+			showFillColor.addDisposeListener(showFillColorDisposeListener);
+		}
 
-  	if (toolitem != null)
-  		toolitem.setWidth(computeWidth(comp));
+		if (toolitem != null)
+			toolitem.setWidth(computeWidth(comp));
 
-  	refresh(true);
+		refresh(true);
 
-  	return comp;
-  }
+		return comp;
+	}
 
 	public RenderModeManager getRenderModeMan() {
 		return renderModeMan;
 	}
+
 	public void setRenderModeMan(RenderModeManager rm)
 	{
-  	if (renderModeMan == rm)
-  		return;
-  	if (renderModeMan != null)
-  		renderModeMan.removeRenderModeListener(renderModeListener);
+	  	if (renderModeMan == rm)
+	  		return;
+	  	if (renderModeMan != null)
+	  		renderModeMan.removeRenderModeListener(renderModeListener);
 
-  	renderModeMan = rm;
-  	refresh(true);
+	  	renderModeMan = rm;
+	  	refresh(true);
 
-  	if (renderModeMan != null)
-  		renderModeMan.addRenderModeListener(renderModeListener);
+	  	if (renderModeMan != null)
+	  		renderModeMan.addRenderModeListener(renderModeListener);
 	}
 
-	 /**
-   * The control item implementation of this <code>IContributionItem</code>
-   * method calls the <code>createControl</code> framework method to
-   * create a control under the given parent, and then creates
-   * a new tool item to hold it.
-   * Subclasses must implement <code>createControl</code> rather than
-   * overriding this method.
-   *
-   * @param parent The ToolBar to add the new control to
-   * @param index Index
-   */
-  @Override
+	/**
+	 * The control item implementation of this <code>IContributionItem</code>
+	 * method calls the <code>createControl</code> framework method to
+	 * create a control under the given parent, and then creates
+	 * a new tool item to hold it.
+	 * Subclasses must implement <code>createControl</code> rather than
+	 * overriding this method.
+	 *
+	 * @param parent The ToolBar to add the new control to
+	 * @param index Index
+	 */
+	@Override
 	public void fill(ToolBar parent, int index)
-  {
-  	toolitem = new ToolItem(parent, SWT.SEPARATOR, index);
-  	Control control = createControl(parent);
-  	toolitem.setControl(control);
-  }
+	{
+		toolitem = new ToolItem(parent, SWT.SEPARATOR, index);
+		Control control = createControl(parent);
+		toolitem.setControl(control);
+	}
 
-  /**
-   * The control item implementation of this <code>IContributionItem</code>
-   * method calls the <code>createControl</code> framework method.
-   * Subclasses must implement <code>createControl</code> rather than
-   * overriding this method.
-   *
-   * @param parent The parent of the control to fill
-   */
-  @Override
+	/**
+	 * The control item implementation of this <code>IContributionItem</code>
+	 * method calls the <code>createControl</code> framework method.
+	 * Subclasses must implement <code>createControl</code> rather than
+	 * overriding this method.
+	 *
+	 * @param parent The parent of the control to fill
+	 */
+	@Override
 	public final void fill(Composite parent) {
-  	createControl(parent);
-  }
+		createControl(parent);
+	}
 
-  /**
-   * The control item implementation of this <code>IContributionItem</code>
-   * method throws an exception since controls cannot be added to menus.
-   *
-   * @param parent The menu
-   * @param index Menu index
-   */
-  @Override
+	/**
+	 * The control item implementation of this <code>IContributionItem</code>
+	 * method throws an exception since controls cannot be added to menus.
+	 *
+	 * @param parent The menu
+	 * @param index Menu index
+	 */
+	@Override
 	public final void fill(Menu parent, int index) {
-  	Assert.isTrue(false, "Can't add a control to a menu");//$NON-NLS-1$
-  }
+		Assert.isTrue(false, "Can't add a control to a menu");//$NON-NLS-1$
+	}
 
-  /**
-   * @see org.eclipse.jface.action.ContributionItem#dispose()
-   */
-  @Override
+	/**
+	 * @see org.eclipse.jface.action.ContributionItem#dispose()
+	 */
+	@Override
 	public void dispose()
-  {
-  	if (partListener != null && page != null)
-  		page.removePartListener(partListener);
+	{
+		if (partListener != null && page != null)
+			page.removePartListener(partListener);
 
-  	if (renderModeMan != null) {
-  		renderModeMan.removeRenderModeListener(renderModeListener);
-  		renderModeMan = null;
-  	}
-  	if (combo != null) {
-    	combo = null;
-  	}
-  	partListener = null;
-  }
+		if (renderModeMan != null) {
+			renderModeMan.removeRenderModeListener(renderModeListener);
+			renderModeMan = null;
+		}
+		if (combo != null) {
+			combo = null;
+		}
+		partListener = null;
+	}
 
-  protected void populateMaps(RenderModeManager rmm)
-  {
-  	for (Iterator<String> it = rmm.getRenderModes().iterator(); it.hasNext(); )
-  	{
-  		String renderMode = it.next();
-  		RenderModeDescriptor desc = rmm.getRenderModeDescriptor(renderMode);
-  		String s = null;
-  		if (desc != null) {
-  			s = desc.getLocalizedText();
-  		} else {
-  			s = renderMode;
-  		}
-  		string2RenderMode.put(s, renderMode);
-  		renderMode2String.put(renderMode, s);
-  	}
-  }
+	protected void populateMaps(RenderModeManager rmm)
+	{
+		for (Iterator<String> it = rmm.getRenderModes().iterator(); it.hasNext(); )
+		{
+			String renderMode = it.next();
+			RenderModeDescriptor desc = rmm.getRenderModeDescriptor(renderMode);
+			String s = null;
+			if (desc != null) {
+				s = desc.getLocalizedText();
+			} else {
+				s = renderMode;
+			}
+			string2RenderMode.put(s, renderMode);
+			renderMode2String.put(renderMode, s);
+		}
+	}
 
-  protected String getRenderMode(String entry)
-  {
-  	String renderMode = string2RenderMode.get(entry);
-  	return renderMode;
-  }
+	protected String getRenderMode(String entry)
+	{
+		String renderMode = string2RenderMode.get(entry);
+		return renderMode;
+	}
 
-  protected String getEntry(String renderMode) {
-  	return renderMode2String.get(renderMode);
-  }
+	protected String getEntry(String renderMode) {
+		return renderMode2String.get(renderMode);
+	}
 
-  protected int getIndex(String entry)
-  {
-  	Integer i = entry2Index.get(entry);
-  	if (i != null)
-    	return i.intValue();
-  	else
-  		return 0;
-  }
+	protected int getIndex(String entry)
+	{
+		Integer i = entry2Index.get(entry);
+		if (i != null)
+			return i.intValue();
+		else
+			return 0;
+	}
 
-  protected String getRenderMode(int index) {
-  	return index2RenderMode.get(index);
-  }
+	protected String getRenderMode(int index) {
+		return index2RenderMode.get(index);
+	}
 
-  protected Collection<Renderer> getCurrentRenderers() {
-  	return currentRenderers;
-  }
+	protected Collection<Renderer> getCurrentRenderers() {
+		return currentRenderers;
+	}
 
 	private RenderModeListener renderModeListener = new RenderModeListener()
 	{
