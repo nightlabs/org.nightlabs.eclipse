@@ -45,6 +45,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import org.apache.log4j.Logger;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.util.GeomUtil;
 import org.nightlabs.editor2d.viewer.ui.DrawComponentPaintable;
@@ -53,7 +54,7 @@ import org.nightlabs.editor2d.viewer.ui.IViewport;
 /**
  * Shows a preview of an viewport so that the whole content
  * is visible and the viewBounds of the viewport are displayed
- * 
+ *
  * <p> Project: org.nightlabs.editor2d.viewer.ui </p>
  * <p> Creation Date: 04.01.2006 </p>
  * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
@@ -62,7 +63,7 @@ public class PreviewPanel
 extends JPanel
 {
 	private static final long serialVersionUID = 1L;
-	//	private static final Logger logger = Logger.getLogger(PreviewPanel.class);
+	private static final Logger logger = Logger.getLogger(PreviewPanel.class);
 	private IViewport viewport = null;
 	private DrawComponent dc = null;
 	private Color bgColor = Color.WHITE;
@@ -179,17 +180,15 @@ extends JPanel
 			double height = getVisibleRect().getHeight();
 			bufferImage = new BufferedImage((int)width, (int)height, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D bg2d = (Graphics2D) bufferImage.getGraphics();
-			//			Rectangle dcBounds = dc.getBounds();
 			Rectangle dcBounds = GeomUtil.translateToOriginAndAdjustSize(dc.getBounds());
-			//			Rectangle dcBounds = GeomUtil.translateToOrigin(dc.getBounds());
 			double scaleX = width / dcBounds.getWidth();
 			double scaleY = height / dcBounds.getHeight();
 			zoom = Math.min(scaleX, scaleY);
 			paintDrawComponent(bg2d, zoom, dcBounds, (int)width, (int)height);
-			//			if (logger.isDebugEnabled()) {
-			//				logger.debug("dc.bounds = "+dc.getBounds());
-			//				logger.debug("visibleRect = "+getVisibleRect());
-			//			}
+			if (logger.isDebugEnabled()) {
+				logger.debug("dc.bounds = "+dc.getBounds());
+				logger.debug("visibleRect = "+getVisibleRect());
+			}
 		}
 		if (bufferImage != null)
 			g2d.drawImage(bufferImage, 0, 0, this);
@@ -211,14 +210,13 @@ extends JPanel
 
 		double viewRealWidth = realBounds.getWidth();
 		double viewRealHeight = realBounds.getHeight();
-		//		Rectangle dcBounds = dc.getBounds();
 		Rectangle dcBounds = GeomUtil.translateToOriginAndAdjustSize(dc.getBounds());
-		//		Rectangle dcBounds = GeomUtil.translateToOrigin(dc.getBounds());
 		double dcWidth = dcBounds.getWidth();
 		double dcHeight = dcBounds.getHeight();
 		double scaleX = dcWidth / viewRealWidth;
 		double scaleY = dcHeight / viewRealHeight;
 		double scale = Math.min(scaleX, scaleY);
+//		double scale = Math.max(scaleX, scaleY);
 		proportionScale = scale * zoom;
 
 		double proportionScaleX = scaleX * zoom;

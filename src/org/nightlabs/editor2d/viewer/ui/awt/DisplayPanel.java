@@ -169,9 +169,12 @@ implements IBufferedViewport
 			if (debugPaint)
 				logger.debug("BitBlockTransfer took "+(System.currentTimeMillis()-startTime)+" ms!"); //$NON-NLS-1$ //$NON-NLS-2$
 
-			if (debugBounds) {
-				logger.debug("viewImage width = "+viewImage.getWidth()); //$NON-NLS-1$
-				logger.debug("viewImage height = "+viewImage.getHeight()); //$NON-NLS-1$
+			if (debugBounds)
+			{
+				if (viewImage != null) {
+					logger.debug("viewImage width = "+viewImage.getWidth()); //$NON-NLS-1$
+					logger.debug("viewImage height = "+viewImage.getHeight()); //$NON-NLS-1$
+				}
 			}
 		}
 
@@ -224,13 +227,10 @@ implements IBufferedViewport
 			if ((bufferedImage.getWidth() >= viewBounds.width + offsetX) &&
 					(bufferedImage.getHeight() >= viewBounds.height + offsetY) &&
 					viewBounds.width > 0 && viewBounds.height > 0
-					//					&& offsetX >= 0 && offsetY >= 0
 			)
 			{
-				//				if (viewImage == null) {
 				viewImage =
 					bufferedImage.getSubimage(offsetX, offsetY, viewBounds.width, viewBounds.height);
-				//				}
 			}
 			else {
 				if (logger.isDebugEnabled()) {
@@ -258,7 +258,7 @@ implements IBufferedViewport
 	/**
 	 * sets realBounds to a new scaled Rectangle which is determined
 	 * by the given scale
-	 * 
+	 *
 	 * @param scale the scaleFactor
 	 */
 	protected void setZoomedRealBounds(double scale)
@@ -343,7 +343,7 @@ implements IBufferedViewport
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the visible area of the IViewport
 	 */
 	public Rectangle getViewBounds() {
@@ -374,7 +374,7 @@ implements IBufferedViewport
 			if (viewBounds.contains(realBounds))
 				this.realBounds = new Rectangle(viewBounds);
 
-			this.viewBounds = GeomUtil.checkBounds(viewBounds, realBounds);
+			this.viewBounds = checkBounds(viewBounds, realBounds);
 		}
 
 		firePropertyChange(VIEW_CHANGE, oldView, this.viewBounds);
@@ -386,6 +386,42 @@ implements IBufferedViewport
 			logger.debug("bufferBounds = " + bufferBounds); //$NON-NLS-1$
 			logger.debug("viewBounds = "+viewBounds); //$NON-NLS-1$
 			logger.debug(""); //$NON-NLS-1$
+		}
+	}
+
+	protected Rectangle checkBounds(Rectangle source, Rectangle target)
+	{
+		if (target.contains(source))
+			return new Rectangle(target);
+		else
+		{
+			Rectangle trimmedSource = new Rectangle(source);
+			// is source outter target left
+			if (trimmedSource.x < target.x) {
+				trimmedSource.x = target.x;
+				if (trimmedSource.width > target.width)
+					trimmedSource.width = target.width;
+			}
+			// is source outter target top
+			if (trimmedSource.y < target.y) {
+				trimmedSource.y = target.y;
+				if (trimmedSource.height > target.height)
+					trimmedSource.height = target.height;
+			}
+			// is source outter target right
+			if (trimmedSource.getMaxX() > target.getMaxX()) {
+				trimmedSource.x = (int)target.getMaxX() - trimmedSource.width;
+//				if (trimmedSource.width > target.width)
+//					trimmedSource.width = target.width;
+			}
+			// is source outter target bottom
+			if (trimmedSource.getMaxY() > target.getMaxY()) {
+				trimmedSource.y = (int) target.getMaxY() - trimmedSource.height;
+//				if (trimmedSource.height > target.height)
+//					trimmedSource.height = target.height;
+			}
+
+			return trimmedSource;
 		}
 	}
 
@@ -417,6 +453,7 @@ implements IBufferedViewport
 	{
 		bufferBounds = new Rectangle(0, 0, initSize, initSize);
 		bufferedImage = new BufferedImage(bufferBounds.width, bufferBounds.height, imageType);
+		viewImage = null;
 	}
 
 	private ComponentListener resizeListener = new ComponentAdapter()
@@ -535,7 +572,7 @@ implements IBufferedViewport
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a Rectangle which determines the Size of the BufferedImage to create
 	 * If it fits the size of the BufferedImage is viewBounds * bufferScaleFactor
 	 */
