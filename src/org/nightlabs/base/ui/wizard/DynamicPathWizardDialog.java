@@ -29,6 +29,7 @@ package org.nightlabs.base.ui.wizard;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
+import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizard;
@@ -51,6 +52,8 @@ import org.nightlabs.config.Config;
 public class DynamicPathWizardDialog extends WizardDialog
 {
 	private DynamicPathWizard dynamicWizard;
+
+	private ListenerList buttonListeners;
 
 	/**
 	 * Create a new DynamicPathWizardDialog.
@@ -76,43 +79,43 @@ public class DynamicPathWizardDialog extends WizardDialog
 	/**
 	 * Overrides and makes it public so the wizard can
 	 * trigger the update of the dialog buttons.
-	 * 
+	 *
 	 * @see org.eclipse.jface.wizard.WizardDialog#update()
 	 */
 	@Override
 	public void update() {
 		super.update();
 	}
-	
+
 	/**
 	 * Overrides and makes it public.
-	 * 
+	 *
 	 * @see org.eclipse.jface.dialogs.Dialog#getButton(int)
 	 */
 	@Override
 	public Button getButton(int id) {
 		return super.getButton(id);
 	}
-	
+
 	@Override
 	protected void backPressed() {
 		buttonBar.setFocus(); // to trigger all GUI-element-to-backend-object-store-methods
-		
+
 		if (getCurrentPage() instanceof IDynamicPathWizardPage) {
 			((IDynamicPathWizardPage)getCurrentPage()).onPrevious();
 		}
-		
+
 		super.backPressed();
 	}
-	
+
 	@Override
 	protected void nextPressed() {
 		buttonBar.setFocus(); // to trigger all GUI-element-to-backend-object-store-methods
-		
+
 		if (getCurrentPage() instanceof IDynamicPathWizardPage) {
 			((IDynamicPathWizardPage)getCurrentPage()).onNext();
 		}
-		
+
 //		if (getCurrentPage() == dynamicWizard.getWizardEntryPage()) {
 //			if (dynamicWizard.getPopulator() != null)
 //				dynamicWizard.getPopulator().addDynamicWizardPages(dynamicWizard);
@@ -151,7 +154,8 @@ public class DynamicPathWizardDialog extends WizardDialog
 	}
 
 	@Override
-	protected void buttonPressed(int buttonId) {
+	protected void buttonPressed(int buttonId)
+	{
 		if (buttonId == IDialogConstants.FINISH_ID) {
 			IWizardPage currPage = getCurrentPage();
 			if (currPage instanceof IDynamicPathWizardPage)
@@ -162,6 +166,11 @@ public class DynamicPathWizardDialog extends WizardDialog
 			IWizardPage currPage = getCurrentPage();
 			if (currPage instanceof IDynamicPathWizardPage)
 				((IDynamicPathWizardPage)currPage).onShow();
+		}
+
+		for (Object o : getButtonListeners().getListeners()) {
+			IDynamicPathWizardListener l = (IDynamicPathWizardListener) o;
+			l.buttonPressed(buttonId);
 		}
 	}
 
@@ -183,8 +192,13 @@ public class DynamicPathWizardDialog extends WizardDialog
 
 		if (page instanceof IDynamicPathWizardPage)
 			((IDynamicPathWizardPage)page).onShow();
+
+		for (Object o : getButtonListeners().getListeners()) {
+			IDynamicPathWizardListener l = (IDynamicPathWizardListener) o;
+			l.pageChanged(getCurrentPage());
+		}
 	}
-	
+
 	@Override
 	public void create()
 	{
@@ -224,7 +238,7 @@ public class DynamicPathWizardDialog extends WizardDialog
 		storeDialogSize();
 		return super.close();
 	}
-	
+
 	protected void storeDialogSize() {
 		getDialogCfMod().createDialogCf(
 				getWizardIdentifier(getWizard()),
@@ -232,5 +246,22 @@ public class DynamicPathWizardDialog extends WizardDialog
 				getShell().getLocation().y,
 				getShell().getSize().x,
 				getShell().getSize().y);
+	}
+
+	protected ListenerList getButtonListeners() {
+		if (buttonListeners == null) {
+			buttonListeners = new ListenerList();
+		}
+		return buttonListeners;
+	}
+
+	public void addListener(IDynamicPathWizardListener listener)
+	{
+		getButtonListeners().add(listener);
+	}
+
+	public void removeListener(IDynamicPathWizardListener listener)
+	{
+		getButtonListeners().remove(listener);
 	}
 }
