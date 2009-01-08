@@ -42,7 +42,7 @@ public class DrawComponentPaintable
 	 * LOG4J logger used by this class
 	 */
 	private static final Logger logger = Logger.getLogger(DrawComponentPaintable.class.getName());
-	
+
 	public DrawComponentPaintable(DrawComponent dc)
 	{
 		super();
@@ -53,11 +53,11 @@ public class DrawComponentPaintable
 	public DrawComponent getDrawComponent() {
 		return dc;
 	}
-	
+
 	/**
 	 * calls paintDrawComponent with the given DrawComponent and the given
 	 * Graphics2D
-	 * 
+	 *
 	 * @see org.holongate.j2d.IPaintable#paint(org.eclipse.swt.widgets.Control, java.awt.Graphics2D)
 	 */
 	public void paint(Control control, Graphics2D g2d)
@@ -102,12 +102,17 @@ public class DrawComponentPaintable
 	 * paints the {@link DrawComponent} on the given {@link Graphics2D}
 	 * @param dc the DrawComponent to paint
 	 * @param g2d the Graphics2D to paint on
-	 * 
+	 *
 	 * @see RenderUtil#paintDrawComponent(DrawComponent, Graphics2D)
 	 */
 	public static void paintDrawComponent(DrawComponent dc, Graphics2D g2d)
 	{
+		long start = System.currentTimeMillis();
 		RenderUtil.paintDrawComponent(dc, g2d);
+		if (logger.isDebugEnabled()) {
+			long duration = System.currentTimeMillis() - start;
+			logger.debug("paintDrawComponent for took "+duration+" ms!");
+		}
 	}
 }
 
