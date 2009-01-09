@@ -296,8 +296,21 @@ public abstract class DynamicPathWizard extends Wizard implements IDynamicPathWi
 	 */
 	public void addDynamicWizardPage(int index, IWizardPage page) {
 		assertCanInsertDynamicWizardPage(index);
+		assertPageDoesNotYetExist(page);
 		dynamicWizardPages.add(index, page);
 		page.setWizard(this);
+	}
+
+	private void assertPageDoesNotYetExist(IWizardPage page)
+	{
+		for (IWizardPage existingPage : dynamicWizardPages) {
+			if (existingPage.getName().equals(page.getName())) {
+				if (existingPage == page)
+					throw new IllegalStateException("Trying to add the same page instance (named \"" + page.getName() + "\") multiple times!");
+				else
+					throw new IllegalStateException("Another page with the same name (\"" + page.getName() + "\") already exists!");
+			}
+		}
 	}
 
 	/**
@@ -307,6 +320,7 @@ public abstract class DynamicPathWizard extends Wizard implements IDynamicPathWi
 	 * @see org.nightlabs.base.ui.wizard.IDynamicPathWizard#addDynamicWizardPage(org.nightlabs.base.ui.wizard.IDynamicPathWizardPage)
 	 */
 	public void addDynamicWizardPage(IWizardPage page) {
+		assertPageDoesNotYetExist(page);
 		dynamicWizardPages.add(page);
 		page.setWizard(this);
 	}
@@ -386,6 +400,8 @@ public abstract class DynamicPathWizard extends Wizard implements IDynamicPathWi
 				return false;
 			lastPage = page;
 			page = page.getNextPage();
+			if (lastPage == page)
+				throw new IllegalStateException("Page \"" + page.getName() + "\" returned itself as next page!");
 		}
 		if (!(lastPage instanceof IDynamicPathWizardPage))
 			return true;

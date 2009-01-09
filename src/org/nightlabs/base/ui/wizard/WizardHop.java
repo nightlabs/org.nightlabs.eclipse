@@ -58,7 +58,7 @@ import org.eclipse.jface.wizard.IWizardPage;
 public class WizardHop implements IWizardHop
 {
 	private static final Logger logger = Logger.getLogger(WizardHop.class);
-	
+
 	private IWizardHop parentHop;
 
 	private List<IWizardHopPage> hopPages = new ArrayList<IWizardHopPage>();
@@ -87,7 +87,7 @@ public class WizardHop implements IWizardHop
 	{
 		setEntryPage(entryPage);
 	}
-	
+
 	/**
 	 * @see org.nightlabs.base.ui.wizard.IWizardHop#getParentHop()
 	 */
@@ -102,7 +102,7 @@ public class WizardHop implements IWizardHop
 	{
 		this.parentHop = parentHop;
 	}
-	
+
 	/**
 	 * @return Returns the wizard.
 	 */
@@ -122,7 +122,7 @@ public class WizardHop implements IWizardHop
 		entryPage.setWizardHop(this);
 		this.entryPage = entryPage;
 	}
-	
+
 	/**
 	 * @see org.nightlabs.base.ui.wizard.IWizardHop#getExitPage()
 	 */
@@ -157,6 +157,17 @@ public class WizardHop implements IWizardHop
 
 	public void addHopPage(IWizardHopPage page)
 	{
+		// Check, if a page with the same ID already exists. Since this would lead to endless loops later, we already throw an exception here.
+		for (IWizardHopPage hopPage : hopPages) {
+			if (hopPage.getName().equals(page.getName())) {
+//				if (page == hopPage) // the given page already exists => silently exit
+//					return;
+
+				throw new IllegalStateException("Another page with the same name (\"" + page.getName() + "\") already exists in this WizardHop!");
+			}
+		}
+
+
 		page.setWizard(getWizard());
 		if (page.getWizardHop() == null)
 			page.setWizardHop(this);
@@ -200,7 +211,7 @@ public class WizardHop implements IWizardHop
 				if (getParentHop() != null) {
 					return getParentHop().getNextPage(currentPage);
 				}
-				
+
 				return wizard.getNextPage(entryPage);
 			}
 
@@ -325,7 +336,7 @@ public class WizardHop implements IWizardHop
 //			setHopPagesWizard(wizard, wizardHop.getExitPage().getWizardHop());
 //		}
 //	}
-	
+
 	/**
 	 * @see IWizardHop#hookWizard(IDynamicPathWizard)
 	 * @deprecated Hook a WizardHop simply by adding its entry page to the wizard
