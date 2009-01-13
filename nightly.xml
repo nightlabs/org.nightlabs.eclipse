@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE nightlybuild PUBLIC "-//NightLabs//DTD NightlyBuild V 0.9//EN" "http://www.nightlabs.de/dtd/nightlybuild_0_9.dtd">
+<!DOCTYPE nightlybuild PUBLIC "-//NightLabs//DTD NightlyBuild V 0.20//EN" "http://www.nightlabs.de/dtd/nightlybuild_0_20.dtd">
 
 <nightlybuild>
 
@@ -15,12 +15,16 @@
     <provides/>
     <javadoc path="org.nightlabs.editor2d.ui/src"/>
 
+<!-- JFire-Max contains JFire-Editor2D now, since products can contain each other. Marco.
     <product name="JFire-Max" />
+-->
     <product name="JFire-Editor2D" />
   </project>
 
   <project name="org.eclipse.core.resources.compatibility">
+<!-- JFire-Max contains JFire-Editor2D now, since products can contain each other. Marco.
     <product name="JFire-Max" />
+-->
     <product name="JFire-Editor2D" />
   </project>
 
