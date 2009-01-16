@@ -150,6 +150,10 @@ public class DynamicPathWizardDialog extends WizardDialog
 		Control result = super.createContents(parent);
 		if (dynamicWizard.getFirstPage() instanceof IDynamicPathWizardPage)
 			((IDynamicPathWizardPage)dynamicWizard.getFirstPage()).onShow();
+		for (Object o : getDynamicPathWizardListeners().getListeners()) {
+			IDynamicPathWizardListener l = (IDynamicPathWizardListener) o;
+			l.pageChanged(dynamicWizard.getFirstPage());
+		}
 		return result;
 	}
 
@@ -168,7 +172,7 @@ public class DynamicPathWizardDialog extends WizardDialog
 				((IDynamicPathWizardPage)currPage).onShow();
 		}
 
-		for (Object o : getButtonListeners().getListeners()) {
+		for (Object o : getDynamicPathWizardListeners().getListeners()) {
 			IDynamicPathWizardListener l = (IDynamicPathWizardListener) o;
 			l.buttonPressed(buttonId);
 		}
@@ -193,7 +197,7 @@ public class DynamicPathWizardDialog extends WizardDialog
 		if (page instanceof IDynamicPathWizardPage)
 			((IDynamicPathWizardPage)page).onShow();
 
-		for (Object o : getButtonListeners().getListeners()) {
+		for (Object o : getDynamicPathWizardListeners().getListeners()) {
 			IDynamicPathWizardListener l = (IDynamicPathWizardListener) o;
 			l.pageChanged(getCurrentPage());
 		}
@@ -248,7 +252,7 @@ public class DynamicPathWizardDialog extends WizardDialog
 				getShell().getSize().y);
 	}
 
-	protected ListenerList getButtonListeners() {
+	protected ListenerList getDynamicPathWizardListeners() {
 		if (buttonListeners == null) {
 			buttonListeners = new ListenerList();
 		}
@@ -257,11 +261,11 @@ public class DynamicPathWizardDialog extends WizardDialog
 
 	public void addListener(IDynamicPathWizardListener listener)
 	{
-		getButtonListeners().add(listener);
+		getDynamicPathWizardListeners().add(listener);
 	}
 
 	public void removeListener(IDynamicPathWizardListener listener)
 	{
-		getButtonListeners().remove(listener);
+		getDynamicPathWizardListeners().remove(listener);
 	}
 }
