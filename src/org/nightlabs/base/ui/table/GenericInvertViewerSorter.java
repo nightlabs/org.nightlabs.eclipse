@@ -25,6 +25,8 @@
  ******************************************************************************/
 package org.nightlabs.base.ui.table;
 
+import java.util.Comparator;
+
 import org.eclipse.jface.viewers.ContentViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -40,11 +42,11 @@ import org.eclipse.swt.SWT;
  * <p>
  * The sorter is instantiated for a specific column-index it is responsible for.
  * It will use the viewers label-provider to obtain a Comparable for each element of the column
- * and sort using that comparable. 
- * This sorter can operate on the following label-providers: 
- * {@link IColumnComparableProvider}, {@link ITableLabelProvider} or {@link IBaseLabelProvider}.
+ * and sort using that comparable.
+ * This sorter can operate on the following label-providers:
+ * {@link IColumnComparatorProvider}, {@link ITableLabelProvider} or {@link IBaseLabelProvider}.
  * </p>
- * 
+ *
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  */
@@ -112,20 +114,26 @@ extends InvertableSorter<Object>
 			return cat1 - cat2;
 		}
 
-		Comparable comp1;
-		Comparable comp2;
+		Comparable comp1 = null;
+		Comparable comp2 = null;
 
 		if (viewer == null || !(viewer instanceof ContentViewer)) {
 			comp1 = e1.toString();
 			comp2 = e2.toString();
-		} else {
+		}
+		else {
 			IBaseLabelProvider prov = ((ContentViewer) viewer).getLabelProvider();
-			if (prov instanceof IColumnComparableProvider) {
-				IColumnComparableProvider cprov = (IColumnComparableProvider) prov;
-				comp1 = cprov.getColumnComparable(e1, columnIndex);
-				comp2 = cprov.getColumnComparable(e2, columnIndex);
-			} 
-			else if (prov instanceof ITableLabelProvider) {
+			if (prov instanceof IColumnComparatorProvider) {
+				IColumnComparatorProvider cprov = (IColumnComparatorProvider) prov;
+//				comp1 = cprov.getColumnComparable(e1, columnIndex);
+//				comp2 = cprov.getColumnComparable(e2, columnIndex);
+				Comparator comparator = cprov.getColumnComparator(e1, columnIndex);
+				if (comparator != null) {
+					return comparator.compare(e1, e2);
+				}
+			}
+
+			if (prov instanceof ITableLabelProvider) {
 				ITableLabelProvider lprov = (ITableLabelProvider) prov;
 				comp1 = lprov.getColumnText(e1, columnIndex);
 				comp2 = lprov.getColumnText(e2, columnIndex);
@@ -146,7 +154,6 @@ extends InvertableSorter<Object>
 		if (comp2 == null) {
 			return comp1 != null ? 1 : 0;
 		}
-		
 		return comp1.compareTo(comp2);
 	}
 

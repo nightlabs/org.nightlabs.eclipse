@@ -26,44 +26,76 @@
 
 package org.nightlabs.base.ui.table;
 
+import java.util.Comparator;
+import java.util.Date;
+
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
+import org.nightlabs.util.BaseComparator;
 
 /**
  * Adapter for LabelProviders for Tables.
- * 
+ *
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  */
 public abstract class TableLabelProvider
 extends LabelProvider
-implements ITableLabelProvider, IColumnComparableProvider
+implements ITableLabelProvider, IColumnComparatorProvider
 {
+	public static final Comparator<Date> DATE_COMPARATOR = new Comparator<Date>() {
+		@Override
+		public int compare(Date o1, Date o2)
+		{
+			int result = BaseComparator.comparatorNullCheck(o1, o2);
+			if (result == BaseComparator.COMPARE_RESULT_NOT_NULL) {
+				return o1.compareTo(o2);
+			}
+			return result;
+		}
+	};
 
 	@Override
 	public String getText(Object element) {
 		return getColumnText(element, 0);
 	}
-	
+
 	public Image getColumnImage(Object element, int columnIndex) {
 		return null;
 	}
-	
+
+//	/**
+//	 * {@inheritDoc}
+//	 * <p>
+//	 * This implementation uses the {@link #getColumnText(Object, int)} method
+//	 * of the label-provider to get the column text as Comparable.
+//	 * </p>
+//	 * <p>
+//	 * Subclasses may override this method to provide Comparable objects for those
+//	 * columns where sorting the String representation is not equivalent to sorting
+//	 * the actual column object (like for date columns).
+//	 * </p>
+//	 */
+//	@Override
+//	public Comparable<?> getColumnComparable(Object element, int columnIndex) {
+//		return getColumnText(element, columnIndex);
+//	}
+
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * This implementation uses the {@link #getColumnText(Object, int)} method
-	 * of the label-provider to get the column text as Comparable.
+	 * This implementation returns null, and therefore {@link GenericInvertViewerSorter} uses the
+	 * {@link #getColumnText(Object, int)} method of the label-provider to compare the column text.
 	 * </p>
 	 * <p>
-	 * Subclasses may override this method to provide Comparable objects for those
-	 * columns where sorting the String representation is not equivalent to sorting 
+	 * Subclasses may override this method to provide Comparator objects for those
+	 * columns where sorting the String representation is not equivalent to sorting
 	 * the actual column object (like for date columns).
 	 * </p>
 	 */
 	@Override
-	public Comparable<?> getColumnComparable(Object element, int columnIndex) {
-		return getColumnText(element, columnIndex);
+	public Comparator<?> getColumnComparator(Object element, int columnIndex)
+	{
+		return null;
 	}
-
 }
