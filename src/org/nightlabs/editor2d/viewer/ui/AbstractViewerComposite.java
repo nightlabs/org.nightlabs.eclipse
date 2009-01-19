@@ -65,8 +65,13 @@ extends XComposite
 //	private static final Logger logger = Logger.getLogger(AbstractViewerComposite.class);
 
 	protected AbstractViewerComposite(Composite parent, int style, boolean showTools) {
+		this(parent, style, showTools, true);
+	}
+
+	protected AbstractViewerComposite(Composite parent, int style, boolean showTools, boolean showRenderModes) {
 		super(parent, style);
 		this.showTools = showTools;
+		this.showRenderModes = showRenderModes;
 	}
 
 	public AbstractViewerComposite(Composite parent, int style, DrawComponent dc) {
@@ -76,8 +81,15 @@ extends XComposite
 	public AbstractViewerComposite(Composite parent, int style, DrawComponent dc,
 			boolean showTools)
 	{
+		this(parent, style, dc, showTools, true);
+	}
+
+	public AbstractViewerComposite(Composite parent, int style, DrawComponent dc,
+			boolean showTools, boolean showRenderModes)
+	{
 		super(parent, style);
 		this.showTools = showTools;
+		this.showRenderModes = showRenderModes;
 		init(dc);
 	}
 
@@ -90,6 +102,7 @@ extends XComposite
 	protected Composite toolsComp;
 	private Label mouseLabel = null;
 	private ToolEntryManager toolEntryManager = null;
+	private boolean showRenderModes = true;
 
 	public DrawComponent getDrawComponent() {
 		return drawComponent;
@@ -261,7 +274,7 @@ extends XComposite
 
 		tbm.add(new Separator());
 
-		if (getRenderModeManager().getRenderModes().size() > 1)
+		if (showRenderModes && getRenderModeManager().getRenderModes().size() > 1)
 		{
 			IContributionItem item = new RenderModeContributionItem(getRenderModeManager(), false);
 			item.setVisible(true);
@@ -306,8 +319,6 @@ extends XComposite
 		GridData previewData = new GridData(GridData.FILL_BOTH);
 		previewData.minimumHeight = 150;
 		previewComposite.setLayoutData(previewData);
-//		Composite spacer = new XComposite(comp, SWT.BORDER);
-//		spacer.setLayoutData(new GridData(GridData.FILL_BOTH));
 	}
 
 	protected void initBottomComposite(Composite comp)
@@ -365,4 +376,7 @@ extends XComposite
 		return showTools;
 	}
 
+	public boolean isShowRenderModes() {
+		return showRenderModes;
+	}
 }
