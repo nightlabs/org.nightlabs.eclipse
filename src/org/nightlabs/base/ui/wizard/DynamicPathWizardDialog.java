@@ -29,6 +29,7 @@ package org.nightlabs.base.ui.wizard;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.window.Window;
@@ -267,5 +268,10 @@ public class DynamicPathWizardDialog extends WizardDialog
 	public void removeListener(IDynamicPathWizardListener listener)
 	{
 		getDynamicPathWizardListeners().remove(listener);
+	}
+
+	@Override
+	public IProgressMonitor getProgressMonitor() {
+		return super.getProgressMonitor();
 	}
 }
