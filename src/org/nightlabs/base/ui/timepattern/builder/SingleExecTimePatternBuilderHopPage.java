@@ -27,28 +27,15 @@ public class SingleExecTimePatternBuilderHopPage extends WizardHopPage {
 
 	private PatternExecutionTimeComposite startTimeComposite;
 	private DateTimeEdit executionDateEdit;
-	private boolean allowEditDate; 
-	
-	
+
 	/**
 	 * @param pageName
 	 */
 	public SingleExecTimePatternBuilderHopPage() {
-	this(true);
-	}
-
-
-	/**
-	 * @param pageName
-	 */
-	public SingleExecTimePatternBuilderHopPage(boolean allowEditDate) {
 		super(SingleExecTimePatternBuilderHopPage.class.getName(), Messages.getString("org.nightlabs.base.ui.timepattern.builder.SingleExecTimePatternBuilderHopPage.title")); //$NON-NLS-1$
 		setDescription(Messages.getString("org.nightlabs.base.ui.timepattern.builder.SingleExecTimePatternBuilderHopPage.description")); //$NON-NLS-1$
-		this.allowEditDate =allowEditDate;
 	}
-	
-	
-	
+
 	/* (non-Javadoc)
 	 * @see org.nightlabs.base.ui.wizard.DynamicPathWizardPage#createPageContents(org.eclipse.swt.widgets.Composite)
 	 */
@@ -57,7 +44,6 @@ public class SingleExecTimePatternBuilderHopPage extends WizardHopPage {
 		XComposite wrapper = new XComposite(parent, SWT.NONE);
 		startTimeComposite = new PatternExecutionTimeComposite(wrapper, SWT.NONE);
 		startTimeComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		startTimeComposite.getStartTimeEdit().setAllowEditDate(this.allowEditDate);	
 		(new Label(wrapper, SWT.SEPARATOR | SWT.HORIZONTAL)).setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		XComposite dayWrapper = new XComposite(wrapper, SWT.NONE);
 		executionDateEdit = new DateTimeEdit(

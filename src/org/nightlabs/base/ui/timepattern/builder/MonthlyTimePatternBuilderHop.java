@@ -20,8 +20,8 @@ implements ITimePatternSetBuilderWizardHop
 	/**
 	 * 
 	 */
-	public MonthlyTimePatternBuilderHop(boolean allowEditDate) {
-		super(new MonthlyTimePatternBuilderHopPage(allowEditDate));
+	public MonthlyTimePatternBuilderHop() {
+		super(new MonthlyTimePatternBuilderHopPage());
 	}
 
 	/* (non-Javadoc)

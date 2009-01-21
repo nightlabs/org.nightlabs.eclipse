@@ -21,7 +21,6 @@ public class TimePatternSetBuilderWizard extends DynamicPathWizard {
 	private TimePatternSetBuilderEntryWizardPage entryPage;
 	private TimePatternSet timePatternSet;
 	private boolean clearBeforeBuild;
-
 	
 	public TimePatternSetBuilderWizard(TimePatternSet timePatternSet) {
 		this(timePatternSet, true);
@@ -57,18 +56,12 @@ public class TimePatternSetBuilderWizard extends DynamicPathWizard {
 	}
 	
 	public static boolean open(TimePatternSet timePatternSet) {
-			return  open(timePatternSet,true);
-	}
-
-	public static boolean open(TimePatternSet timePatternSet,boolean allowEditDate) {
 		TimePatternSetBuilderWizard wiz = new TimePatternSetBuilderWizard(timePatternSet);
-		wiz.addBuilderHop(new DailyTimePatternBuilderHop(allowEditDate));
-		wiz.addBuilderHop(new MonthlyTimePatternBuilderHop(allowEditDate));
-		wiz.addBuilderHop(new SingleExecTimePatternBuilderHop(allowEditDate));
+		wiz.addBuilderHop(new DailyTimePatternBuilderHop());
+		wiz.addBuilderHop(new MonthlyTimePatternBuilderHop());
+		wiz.addBuilderHop(new SingleExecTimePatternBuilderHop());
 		DynamicPathWizardDialog dlg = new DynamicPathWizardDialog(wiz);
 		return dlg.open() == Window.OK;
 	}
-
-
 
 }

@@ -34,7 +34,7 @@ extends Dialog
 	private Calendar date;
 	private Point initialLocation;
 	private Boolean allowPast;
-	private Boolean allowEditDate;
+
 
 	/**
 	 * Create a new CalendarDateTimeEditLookupDialog instance.
@@ -54,9 +54,11 @@ extends Dialog
 	 */
 	public CalendarDateTimeEditLookupDialog(Shell parentShell, long flags, Point initialLocation)
 	{
-		this(parentShell,true ,true , flags, initialLocation);
+		this(parentShell, true , flags, null);
 	}
 
+	
+	
 	
 	/**
 	 * Create a new CalendarDateTimeEditLookupDialog instance.
@@ -67,31 +69,13 @@ extends Dialog
 	 */
 	public CalendarDateTimeEditLookupDialog(Shell parentShell,boolean allowPast, long flags, Point initialLocation)
 	{
-		this(parentShell,allowPast ,true ,flags,initialLocation);
-	}
-	
-	
-	
-	/**
-	 * Create a new CalendarDateTimeEditLookupDialog instance.
-	 * @param parentShell The parent shell
-	 * @param flags One of the "FLAGS_"-constants in {@link DateFormatProvider}.
-	 * @param initialLocation The initial location for this dialog
-	 * @param allowPast don't allow the user to select a past date
-	 */
-	public CalendarDateTimeEditLookupDialog(Shell parentShell,boolean allowPast,boolean allowEditDate ,long flags, Point initialLocation)
-	{
 		super(parentShell);
 		date = Calendar.getInstance();
 		this.flags = flags;
 		this.initialLocation = initialLocation;
 		this.allowPast = allowPast;
-		this.allowEditDate = allowEditDate;
-		
-		
-	}
-	
 
+	}
 	
 	
 	
@@ -140,9 +124,10 @@ extends Dialog
 		if ((DateFormatProvider.DATE & flags) == DateFormatProvider.DATE) {
 			++numColumns;
 			XComposite dateComp = new XComposite(page, SWT.NONE);
-			
+
 			calendarDateTime = new DateTime(dateComp, SWT.CALENDAR | SWT.BORDER);
 			DateTimeUtil.setDate(date, calendarDateTime);
+
 			calendarDateTime.addSelectionListener(new SelectionAdapter(){
 				@Override
 				public void widgetSelected(SelectionEvent e) {
@@ -169,22 +154,13 @@ extends Dialog
 				createDateDateTime(dateComp);
 		}
 
-		
-		
-
-		
 		if ((DateFormatProvider.TIME & flags) == DateFormatProvider.TIME) {
 			++numColumns;
 			XComposite timeComp = new XComposite(page, SWT.NONE);
-			
-			if(allowEditDate)
-			{
-				timeComp.getGridLayout().numColumns = 2;
-				new Label(timeComp, SWT.NONE).setText(Messages.getString("CalendarDateTimeEditLookupDialog.label.date")); //$NON-NLS-1$
-				createDateDateTime(timeComp);
-			}
-			else
-				timeComp.getGridLayout().numColumns = 1;
+			timeComp.getGridLayout().numColumns = 1;
+
+//			new Label(timeComp, SWT.NONE).setText(Messages.getString("CalendarDateTimeEditLookupDialog.label.date")); //$NON-NLS-1$
+//			createDateDateTime(timeComp);
 
 			int timeStyle = SWT.TIME;
 
@@ -198,7 +174,6 @@ extends Dialog
 			timeDateTime = new DateTime(timeComp, timeStyle | SWT.BORDER);
 			timeDateTime.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			DateTimeUtil.setDate(date, timeDateTime);
-
 		}
 
 		page.setLayout(new GridLayout(numColumns, false));

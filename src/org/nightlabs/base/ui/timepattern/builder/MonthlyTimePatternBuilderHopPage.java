@@ -35,21 +35,12 @@ public class MonthlyTimePatternBuilderHopPage extends WizardHopPage {
 	private SortedSet<Integer> selectedDays = new TreeSet<Integer>();
 	private Group monthWrapper;
 	private SortedSet<Integer> selectedMonths = new TreeSet<Integer>();
-	private boolean allowEditDate; 
-	
-	
-	public MonthlyTimePatternBuilderHopPage() {
-	 this(true);
-	}
 
-	public MonthlyTimePatternBuilderHopPage(boolean allowEditDate) {
-		
+	public MonthlyTimePatternBuilderHopPage() {
 		super(MonthlyTimePatternBuilderHopPage.class.getName(), Messages.getString("org.nightlabs.base.ui.timepattern.builder.MonthlyTimePatternBuilderHopPage.title")); //$NON-NLS-1$
 		setDescription(Messages.getString("org.nightlabs.base.ui.timepattern.builder.MonthlyTimePatternBuilderHopPage.description")); //$NON-NLS-1$
-		this.allowEditDate =allowEditDate;
 	}
-	
-	
+
 	/* (non-Javadoc)
 	 * @see org.nightlabs.base.ui.wizard.DynamicPathWizardPage#createPageContents(org.eclipse.swt.widgets.Composite)
 	 */
@@ -57,7 +48,6 @@ public class MonthlyTimePatternBuilderHopPage extends WizardHopPage {
 	public Control createPageContents(Composite parent) {
 		XComposite wrapper = new XComposite(parent, SWT.NONE);
 		startTimeComposite = new PatternExecutionTimeComposite(wrapper, SWT.NONE);
-		startTimeComposite.getStartTimeEdit().setAllowEditDate(this.allowEditDate);
 		(new Label(wrapper, SWT.SEPARATOR | SWT.HORIZONTAL)).setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		XComposite selectionWrapper = new XComposite(wrapper, SWT.NONE);
 		dayWrapper = new Group(selectionWrapper, SWT.NONE);
