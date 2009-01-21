@@ -34,11 +34,11 @@ extends Composite
 {
 	/**
 	 * creates a Preview Composite for displaying drawComponents
-	 * 
+	 *
 	 * @param parent the Composite parent
 	 * @param style the style
 	 * @param dc the drawComponent to display
-	 * 
+	 *
 	 */
 	public PreviewComposite(Composite parent, int style, DrawComponent dc) {
 		this(parent, style, dc, true, true, true, null);
@@ -46,7 +46,7 @@ extends Composite
 
 	/**
 	 * creates a Preview Composite for displaying drawComponents
-	 * 
+	 *
 	 * @param parent the Composite parent
 	 * @param style the style
 	 * @param dc the drawComponent to display
@@ -58,10 +58,10 @@ extends Composite
 	{
 		this(parent, style, dc, true, true, true, renderModeMan);
 	}
-		
+
 	/**
 	 * creates a Preview Composite for displaying drawComponents
-	 * 
+	 *
 	 * @param parent the Composite parent
 	 * @param style the style
 	 * @param dc the drawComponent to display
@@ -83,12 +83,12 @@ extends Composite
 		setLayout(new GridLayout());
 		setLayoutData(new GridData(GridData.FILL_BOTH));
 		createCanvas(this);
-		
+
 		zoom = getResolutionFactor();
 		applyZoom(zoom);
-		updateZoomLabel();
+//		updateZoomLabel();
 	}
-			
+
 	protected boolean renderModes;
 	protected boolean zoomButtons = false;
 	protected boolean resizeCanvas = true;
@@ -96,7 +96,7 @@ extends Composite
 	protected Button zoomInButton;
 	protected Button zoomOutButton;
 	protected Label zoomLabel;
-	
+
 	protected double getResolutionFactor()
 	{
 		double screenResolutionDPI = 72;
@@ -105,7 +105,7 @@ extends Composite
 		double factor = screenResolutionDPI / documentResolutionDPI;
 		return factor;
 	}
-	
+
 	protected DrawComponent drawComponent;
 	public DrawComponent getDrawComponent() {
 		return drawComponent;
@@ -113,7 +113,7 @@ extends Composite
 	public void setDrawComponent(DrawComponent drawComponent) {
 		this.drawComponent = drawComponent;
 	}
-	
+
 	protected RenderModeManager renderModeMan = null;
 	public RenderModeManager getRenderModeMan() {
 		return renderModeMan;
@@ -121,12 +121,12 @@ extends Composite
 	public void setRenderModeMan(RenderModeManager renderModeMan) {
 		this.renderModeMan = renderModeMan;
 	}
-	
+
 	protected J2DCanvas canvas;
 	public J2DCanvas getCanvas() {
 		return canvas;
 	}
-		
+
 	protected Color backgroundColor = new Color(null, 255, 255, 255);
 	public Color getBackgroundColor() {
 		return backgroundColor;
@@ -134,7 +134,7 @@ extends Composite
 	public void setBackgroundColor(Color backgroundColor) {
 		this.backgroundColor = backgroundColor;
 	}
-		
+
 	protected J2DCanvas createCanvas(Composite parent)
 	{
 		paintable = new DrawComponentPaintable(getDrawComponent());
@@ -143,11 +143,11 @@ extends Composite
 			group.setLayoutData(new GridData(GridData.FILL_BOTH));
 			group.setText(Messages.getString("org.nightlabs.editor2d.ui.composite.PreviewComposite.group.preview.text")); //$NON-NLS-1$
 			group.setLayout(new GridLayout(1, true));
-			
+
 			Composite buttonBar = new XComposite(group, SWT.NONE);
 			buttonBar.setLayout(new GridLayout(5, false));
 			buttonBar.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			
+
 			Composite beginComp = new XComposite(buttonBar, SWT.NONE);
 			beginComp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			zoomInButton = new Button(buttonBar, SWT.PUSH);
@@ -160,15 +160,15 @@ extends Composite
 			zoomOutButton.setImage(SharedImages.getSharedImage(EditorPlugin.getDefault(),
 					EditorActionBarContributor.class, "ZoomOut"));			 //$NON-NLS-1$
 			zoomOutButton.addSelectionListener(zoomListener);
-			
+
 			if (renderModes) {
 				RenderModeContributionItem renderModeCI = new RenderModeContributionItem(getRenderModeMan(), false);
 				renderModeCI.fill(buttonBar);
 			}
-			
+
 			Composite endComp = new XComposite(buttonBar, SWT.NONE);
 			endComp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-										
+
 			canvas = new J2DCanvas(group, SWT.BORDER, paintable);
 			if (resizeCanvas)
 				canvas.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -185,13 +185,13 @@ extends Composite
 			return canvas;
 		}
 	}
-	
+
 	protected double zoom = 1;
 	private double initalZoomStep = 0.2d;
 	protected double getZoomStep() {
 		return initalZoomStep * getResolutionFactor();
 	}
-	
+
 	protected SelectionListener zoomListener = new SelectionListener()
 	{
 		public void widgetDefaultSelected(SelectionEvent e) {
@@ -202,23 +202,23 @@ extends Composite
 			if (e.getSource().equals(zoomInButton)) {
 				zoom += getZoomStep();
 				applyZoom(zoom);
-				updateZoomLabel();
+//				updateZoomLabel();
 				updateCanvas();
 			}
 			else if (e.getSource().equals(zoomOutButton)) {
 				zoom -= getZoomStep();
 				applyZoom(zoom);
-				updateZoomLabel();
+//				updateZoomLabel();
 				updateCanvas();
 			}
 		}
 	};
-	
+
 	protected void updateZoomLabel() {
 		double z = Math.floor(zoom * 100) / getResolutionFactor();
 		zoomLabel.setText(z + "%"); //$NON-NLS-1$
 	}
-	
+
 	public void updateCanvas()
 	{
 		if (canvas != null) {
@@ -228,8 +228,14 @@ extends Composite
 			canvas.redraw();
 		}
 	}
-	
+
 	public void applyZoom(double zoomFactor) {
+		this.zoom = zoomFactor;
 		canvas.getPaintableManager().setScale(zoomFactor);
+		updateZoomLabel();
+	}
+
+	public double getZoom() {
+		return zoom;
 	}
 }
