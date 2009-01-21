@@ -45,18 +45,25 @@ public class DailyTimePatternBuilderHopPage extends WizardHopPage {
 	private Button typeEachXDay;
 	private XComposite eachXDayWrapper;
 	private Spinner eachXDaySpinner;
+	private boolean allowEditDate; 
+	
 
-	/**
-	 * @param pageName
-	 */
 	public DailyTimePatternBuilderHopPage() {
+
+		this(true);
+	}
+
+	public DailyTimePatternBuilderHopPage(boolean allowEditDate) {
 		super(
 				DailyTimePatternBuilderHopPage.class.getName(),
 				Messages.getString("org.nightlabs.base.ui.timepattern.builder.DailyTimePatternBuilderHopPage.title")); //$NON-NLS-1$
 		setDescription(Messages.getString("org.nightlabs.base.ui.timepattern.builder.DailyTimePatternBuilderHopPage.description")); //$NON-NLS-1$
-//		setMessage("Configure the time pattern for a daily execution.");
-	}
+		this.allowEditDate =allowEditDate;
+	}	
+	
 
+	
+	
 	/**
 	 * @param pageName
 	 * @param title
@@ -84,7 +91,8 @@ public class DailyTimePatternBuilderHopPage extends WizardHopPage {
 	public Control createPageContents(Composite parent) {
 		XComposite wrapper = new XComposite(parent, SWT.NONE);
 		startTimeEdit = new PatternExecutionTimeComposite(wrapper, SWT.NONE);
-
+		startTimeEdit.getStartTimeEdit().setAllowEditDate(this.allowEditDate);
+		
 		(new Label(wrapper, SWT.SEPARATOR | SWT.HORIZONTAL))
 				.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 

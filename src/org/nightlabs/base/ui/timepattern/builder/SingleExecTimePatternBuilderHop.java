@@ -20,8 +20,8 @@ implements ITimePatternSetBuilderWizardHop
 	/**
 	 * 
 	 */
-	public SingleExecTimePatternBuilderHop() {
-		super(new SingleExecTimePatternBuilderHopPage());
+	public SingleExecTimePatternBuilderHop(boolean allowEditDate) {
+		super(new SingleExecTimePatternBuilderHopPage(allowEditDate));
 	}
 
 	/* (non-Javadoc)

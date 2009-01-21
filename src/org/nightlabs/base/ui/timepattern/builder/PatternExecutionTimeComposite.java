@@ -24,6 +24,10 @@ public class PatternExecutionTimeComposite extends XComposite {
 	
 	private DateTimeEdit startTimeEdit;
 
+	public DateTimeEdit getStartTimeEdit() {
+		return startTimeEdit;
+	}
+
 	/**
 	 * @param parent
 	 * @param style

@@ -66,6 +66,16 @@ public class DateTimeEdit extends XComposite
 	private Date date;
 	private long flags;
 	private Button active;
+	// wether to show the date edit composite as it cause errors 
+	//in some cases, so there s a possibilty to hide the widget
+	private boolean allowEditDate; 
+	public boolean isAllowEditDate() {
+		return allowEditDate;
+	}
+
+	public void setAllowEditDate(boolean allowEditDate) {
+		this.allowEditDate = allowEditDate;
+	}
 
 	protected static boolean autoCalendarButton(long flags)
 	{
@@ -127,7 +137,7 @@ public class DateTimeEdit extends XComposite
 		this.getGridData().grabExcessVerticalSpace = false;
 		this.getGridData().horizontalAlignment = SWT.BEGINNING;
 		this.getGridData().verticalAlignment = SWT.BEGINNING;
-
+		this.allowEditDate = true;
 		if (top)
 			getGridLayout().numColumns = 3;
 		else
@@ -206,7 +216,7 @@ public class DateTimeEdit extends XComposite
 	private void lookupButtonClicked()
 	{
 		CalendarDateTimeEditLookupDialog dialog = new CalendarDateTimeEditLookupDialog(getShell(),
-				flags, lookupButton.toDisplay(0, 0));
+				true,isAllowEditDate(),flags, lookupButton.toDisplay(0, 0));
 		Calendar cal = Calendar.getInstance();
 		if(date != null)
 			cal.setTime(date);

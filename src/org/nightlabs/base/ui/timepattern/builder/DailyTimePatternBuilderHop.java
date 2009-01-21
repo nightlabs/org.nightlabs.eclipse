@@ -20,8 +20,8 @@ implements ITimePatternSetBuilderWizardHop
 	/**
 	 * @param entryPage
 	 */
-	public DailyTimePatternBuilderHop() {
-		super(new DailyTimePatternBuilderHopPage());
+	public DailyTimePatternBuilderHop(boolean allowEditDate) {
+		super(new DailyTimePatternBuilderHopPage(allowEditDate));
 	}
 
 	public String getHopDescription() {
