@@ -173,8 +173,6 @@ extends XComposite
 
 		previewComp.repaintCanvas();
 
-//		adaptToToolkit();
-
 		long end = System.currentTimeMillis() - start;
 		logger.debug("init took "+end+" ms!"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
@@ -246,7 +244,6 @@ extends XComposite
 		@Override
 		public void expansionStateChanged(ExpansionEvent e)
 		{
-			// TODO: dont layout detailParent but change size of composite
 			detailParent.layout(true, true);
 		}
 	};
@@ -295,7 +292,7 @@ extends XComposite
 		grey = ImageUtil.getColorModel(BufferedImage.TYPE_BYTE_GRAY);
 		colorModels.add(grey);
 
-		rgb = ImageUtil.getColorModel(BufferedImage.TYPE_INT_RGB);
+		rgb = ImageUtil.getColorModel(BufferedImage.TYPE_INT_ARGB);
 		colorModels.add(rgb);
 
 		colorModel = rgb;
@@ -320,7 +317,6 @@ extends XComposite
 		}
 	};
 
-//	private RenderingHints renderHints = null;
 	private ColorModel colorModel = null;
 	private SelectionListener colorModelListener = new SelectionListener()
 	{
@@ -339,8 +335,6 @@ extends XComposite
 		if (dithering)
 			detailComp = createDitherDetail(detailParent);
 
-		// TODO: dont layout detailParent but change size of composite
-//		detailParent.layout(true, true);
 		layout(true, true);
 		if (refresh)
 			refresh();
@@ -348,7 +342,6 @@ extends XComposite
 
 	protected void selectColorMode(ColorModel cm)
 	{
-//		colorModelCombo.selectElement(cm);
 		colorModel = cm;
 		boolean blackwhite = colorModel.equals(bw);
 		ditherButton.setEnabled(blackwhite);
@@ -510,9 +503,9 @@ extends XComposite
 	{
 		long startTime = System.currentTimeMillis();
 
-    Map<String, Object> parameters = new HashMap<String, Object>();
-    parameters.put(BWDitheringColorConvertDelegate.KEY_DITHER_MODE, ditherMode);
-    parameters.put(BWDitheringColorConvertDelegate.KEY_DITHER_ALGORITHM, ditherAlgorithm);
+	    Map<String, Object> parameters = new HashMap<String, Object>();
+	    parameters.put(BWDitheringColorConvertDelegate.KEY_DITHER_MODE, ditherMode);
+	    parameters.put(BWDitheringColorConvertDelegate.KEY_DITHER_ALGORITHM, ditherAlgorithm);
 
 		String renderDelegateClassName = BWDitheringColorConvertDelegate.class.getName();
 		Set<String> supportedRenderModes = new HashSet<String>();

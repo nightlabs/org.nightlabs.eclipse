@@ -131,6 +131,7 @@ extends CreationTool
 				try {
 					long start = System.currentTimeMillis();
 					originalImage = ImageIO.read(new File(fullPathName));
+//					originalImage = Toolkit.getDefaultToolkit().createImage(fullPathName);
 					if (logger.isDebugEnabled()) {
 						long duration = System.currentTimeMillis() - start;
 						logger.debug("read image file "+fullPathName+" took "+duration+" ms!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$

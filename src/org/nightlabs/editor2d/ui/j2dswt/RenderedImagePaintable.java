@@ -88,6 +88,7 @@ implements IPaintable
 
 		if (image != null) {
 			long start = System.currentTimeMillis();
+//			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC));
 			g2d.drawRenderedImage(image, null);
 			long end = System.currentTimeMillis() - start;
 			logger.debug("paint took "+end+" ms!"); //$NON-NLS-1$ //$NON-NLS-2$
