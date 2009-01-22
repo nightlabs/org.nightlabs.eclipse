@@ -1,7 +1,6 @@
 package org.nightlabs.base.ui.composite;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -150,8 +149,8 @@ extends Dialog
 				}
 			});
 
-			if ((DateFormatProvider.TIME & flags) != DateFormatProvider.TIME)
-				createDateDateTime(dateComp);
+//			if ((DateFormatProvider.TIME & flags) != DateFormatProvider.TIME)
+//				createDateDateTime(dateComp);
 		}
 
 		if ((DateFormatProvider.TIME & flags) == DateFormatProvider.TIME) {
@@ -180,33 +179,33 @@ extends Dialog
 		return page;
 	}
 
-	private void createDateDateTime(Composite parent) {
-		dateDateTime = new DateTime(parent, SWT.DATE | SWT.BORDER);
-		dateDateTime.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		DateTimeUtil.setDate(date, dateDateTime);
-		dateDateTime.addSelectionListener(new SelectionAdapter(){
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				
-				
-				Calendar cal = Calendar.getInstance();
-				cal.setTime(DateTimeUtil.getDate(dateDateTime));				
-				
-				if(getDate().after(cal) && !allowPast  )
-				{
-					MessageDialog.openError(getShell(), "Past date", "You are not allowed to set a date in the past only future ones"); 
-					DateTimeUtil.setDate(getDate(), dateDateTime);
-				}		
-				else
-				{
-					calendarDateTime.setYear(dateDateTime.getYear());
-					calendarDateTime.setMonth(dateDateTime.getMonth());
-					calendarDateTime.setDay(dateDateTime.getDay());
-				}
-
-			}
-		});
-	}
+//	private void createDateDateTime(Composite parent) {
+//		dateDateTime = new DateTime(parent, SWT.DATE | SWT.BORDER);
+//		dateDateTime.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+//		DateTimeUtil.setDate(date, dateDateTime);
+//		dateDateTime.addSelectionListener(new SelectionAdapter(){
+//			@Override
+//			public void widgetSelected(SelectionEvent e) {
+//				
+//				
+//				Calendar cal = Calendar.getInstance();
+//				cal.setTime(DateTimeUtil.getDate(dateDateTime));				
+//				
+//				if(getDate().after(cal) && !allowPast  )
+//				{
+//					MessageDialog.openError(getShell(), "Past date", "You are not allowed to set a date in the past only future ones"); 
+//					DateTimeUtil.setDate(getDate(), dateDateTime);
+//				}		
+//				else
+//				{
+//					calendarDateTime.setYear(dateDateTime.getYear());
+//					calendarDateTime.setMonth(dateDateTime.getMonth());
+//					calendarDateTime.setDay(dateDateTime.getDay());
+//				}
+//
+//			}
+//		});
+//	}
 
 	public Calendar getDate() {
 		return date;
