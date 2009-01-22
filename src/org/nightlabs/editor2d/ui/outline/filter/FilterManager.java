@@ -38,6 +38,7 @@ import java.util.List;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.NameProvider;
 import org.nightlabs.editor2d.RootDrawComponent;
+import org.nightlabs.editor2d.ui.resource.Messages;
 
 /**
  * Used to set Filters in the Outline Page
@@ -145,7 +146,7 @@ public class FilterManager
 	
 	protected PropertyChangeListener newTypeListener = new PropertyChangeListener()
 	{
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked") //$NON-NLS-1$
 		public void propertyChange(PropertyChangeEvent evt)
 		{
 			if (evt.getPropertyName().equals(RootDrawComponent.TYPE_ADDED)) {

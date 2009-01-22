@@ -48,6 +48,7 @@ import org.nightlabs.editor2d.ui.figures.DrawComponentFigure;
 import org.nightlabs.editor2d.ui.figures.RendererFigure;
 import org.nightlabs.editor2d.ui.model.DrawComponentPropertySource;
 import org.nightlabs.editor2d.ui.request.EditorRequestConstants;
+import org.nightlabs.editor2d.ui.resource.Messages;
 import org.nightlabs.editor2d.ui.util.EditorUtil;
 import org.nightlabs.editor2d.ui.util.J2DUtil;
 import org.nightlabs.editor2d.viewer.ui.descriptor.DescriptorManager;
@@ -119,7 +120,7 @@ implements EditorRequestConstants
     }
   }
   
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked") //$NON-NLS-1$
 	public RootDrawComponentEditPart getModelRoot()
   {
   	if (getRoot() instanceof RootDrawComponentEditPart) {
@@ -248,7 +249,7 @@ implements EditorRequestConstants
   /**
    * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
   public Object getAdapter(Class key)
   {

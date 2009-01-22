@@ -43,6 +43,7 @@ import org.nightlabs.editor2d.IVisible;
 import org.nightlabs.editor2d.ui.editpolicy.DrawComponentEditPolicy;
 import org.nightlabs.editor2d.ui.editpolicy.tree.DrawComponentTreeEditPolicy;
 import org.nightlabs.editor2d.ui.model.DrawComponentPropertySource;
+import org.nightlabs.editor2d.ui.resource.Messages;
 
 
 public abstract class DrawComponentTreeEditPart
@@ -58,7 +59,7 @@ extends AbstractTreeEditPart
     super(drawComponent);
   }
   
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	public Object getAdapter(Class key)
   {
@@ -251,7 +252,7 @@ extends AbstractTreeEditPart
 			refreshVisuals();
 			return;
 		}
-		else if (propertyName.equals("VisibleScript")) {
+		else if (propertyName.equals("VisibleScript")) { //$NON-NLS-1$
 			// TODO: add extension point to register property name with appropriate decoration id
 			notifyLabelDecorator();
 			refreshVisuals();
@@ -269,7 +270,7 @@ extends AbstractTreeEditPart
 		}
 	}
 			
-	@SuppressWarnings("restriction")
+	@SuppressWarnings("restriction") //$NON-NLS-1$
 	public void notifyLabelDecorator()
 	{
 		// TODO: create static instance which can cache the decorator definitions which match, to avoid iterate each time

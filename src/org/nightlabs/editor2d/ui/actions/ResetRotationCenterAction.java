@@ -47,7 +47,7 @@ implements EditorRequestConstants
     super(part);
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	protected boolean calculateEnabled()
   {
@@ -68,7 +68,7 @@ implements EditorRequestConstants
     return false;
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	public void run()
   {

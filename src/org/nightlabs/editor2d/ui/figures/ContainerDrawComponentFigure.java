@@ -32,6 +32,7 @@ import java.util.Iterator;
 
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
+import org.nightlabs.editor2d.ui.resource.Messages;
 
 /**
  * Overrides paint methods of DrawComponentFigures
@@ -47,7 +48,7 @@ extends DrawComponentFigure
 	/**
 	 * Overridden to paint only children
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	public void paint(Graphics2D graphics) {
 		for (Iterator iter = getChildren().iterator(); iter.hasNext();) {
@@ -61,7 +62,7 @@ extends DrawComponentFigure
 	/**
 	 * Overridden to paint only children
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	public void paint(Graphics graphics) {
 		for (Iterator iter = getChildren().iterator(); iter.hasNext();) {

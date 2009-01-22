@@ -50,6 +50,7 @@ import org.nightlabs.editor2d.ui.config.PreferencesConfigModule;
 import org.nightlabs.editor2d.ui.figures.BufferedFreeformLayer;
 import org.nightlabs.editor2d.ui.figures.OversizedBufferFreeformLayer;
 import org.nightlabs.editor2d.ui.model.RootDrawComponentPropertySource;
+import org.nightlabs.editor2d.ui.resource.Messages;
 import org.nightlabs.editor2d.viewer.ui.descriptor.DescriptorManager;
 
 public class RootDrawComponentEditPart
@@ -131,7 +132,7 @@ extends AbstractDrawComponentContainerEditPart
   /**
    * @return a List of all Layers
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	protected List getModelChildren()
   {
@@ -141,7 +142,7 @@ extends AbstractDrawComponentContainerEditPart
   /**
    * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	public Object getAdapter(Class adapter)
   {

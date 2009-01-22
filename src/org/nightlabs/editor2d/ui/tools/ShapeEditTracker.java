@@ -34,6 +34,7 @@ import org.eclipse.gef.Request;
 import org.nightlabs.editor2d.j2d.GeneralShape;
 import org.nightlabs.editor2d.ui.edit.ShapeDrawComponentEditPart;
 import org.nightlabs.editor2d.ui.request.EditorEditShapeRequest;
+import org.nightlabs.editor2d.ui.resource.Messages;
 
 // TODO; Use SelectEditPartTracker instead to avoid multiple Selections
 public class ShapeEditTracker
@@ -81,7 +82,7 @@ extends AbstractDragTracker
   /**
    * @see org.eclipse.gef.tools.SimpleDragTracker#createSourceRequest()
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	protected Request createSourceRequest()
   {

@@ -35,6 +35,7 @@ import org.eclipse.draw2d.FreeformListener;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.nightlabs.editor2d.ui.resource.Messages;
 
 
 public class LayerFreeformHelper
@@ -54,7 +55,7 @@ implements FreeformListener
   	this.host = host;
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked") //$NON-NLS-1$
 	public Rectangle getFreeformExtent()
   {
   	if (freeformExtent != null)
@@ -132,7 +133,7 @@ implements FreeformListener
   	invalidate();
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked") //$NON-NLS-1$
 	public void setFreeformBounds(Rectangle bounds) {
   	host.setBounds(bounds);
   	bounds = bounds.getCopy();

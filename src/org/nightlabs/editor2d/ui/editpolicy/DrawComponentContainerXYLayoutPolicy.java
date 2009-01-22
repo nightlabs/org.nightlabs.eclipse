@@ -224,7 +224,7 @@ implements EditorRequestConstants
   	return null;
   }
       
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	protected Command getAddCommand(Request generic)
   {

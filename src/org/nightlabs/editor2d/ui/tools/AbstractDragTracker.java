@@ -41,6 +41,7 @@ import org.eclipse.gef.tools.ResizeTracker;
 import org.eclipse.gef.tools.SimpleDragTracker;
 import org.eclipse.gef.tools.ToolUtilities;
 import org.nightlabs.editor2d.ui.request.EditorRequestConstants;
+import org.nightlabs.editor2d.ui.resource.Messages;
 import org.nightlabs.editor2d.ui.util.EditorUtil;
 
 
@@ -80,7 +81,7 @@ implements EditorRequestConstants
     }
   }
   
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	protected List createOperationSet()
   {

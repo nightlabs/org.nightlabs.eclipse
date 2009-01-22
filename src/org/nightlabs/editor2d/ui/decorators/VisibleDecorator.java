@@ -62,7 +62,7 @@ implements ILightweightLabelDecorator
 				decoration.addSuffix(" ["+Messages.getString("org.nightlabs.editor2d.ui.decorators.VisibleDecorator.template")+"]");				 //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
 			if (!dc.isEditable()) {
-				decoration.addSuffix(" ["+"Locked"+"]");
+				decoration.addSuffix(Messages.getString("org.nightlabs.editor2d.ui.decorators.VisibleDecorator.0")+Messages.getString("org.nightlabs.editor2d.ui.decorators.VisibleDecorator.locked")+Messages.getString("org.nightlabs.editor2d.ui.decorators.VisibleDecorator.2")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
 		}
 	}

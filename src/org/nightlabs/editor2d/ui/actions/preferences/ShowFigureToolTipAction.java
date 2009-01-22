@@ -79,7 +79,7 @@ extends PreferencesAction
 		updateToolTips(modelRootEditPart);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	protected void updateToolTips(EditPart ep)
 	{
 		if (ep instanceof AbstractDrawComponentEditPart) {

@@ -95,7 +95,6 @@ extends XComposite
 		createComposite(this);
 	}
 
-//	private NightlabsFormsToolkit toolkit = null;
 	private BufferedImage originalImage = null;
 	public BufferedImage getOriginalImage() {
 		return originalImage;
@@ -109,26 +108,25 @@ extends XComposite
 		convertPaintable.setImage(convertImage);
 		rescaleImages();
 	}
-	
+
 	private ScrolledComposite originalSC = null;
 	private ScrolledComposite convertSC = null;
 	private J2DCanvas originalCanvas = null;
 	private J2DCanvas convertCanvas = null;
 	private RenderedImagePaintable originalPaintable = null;
 	private RenderedImagePaintable convertPaintable = null;
-	
+
 	protected void createComposite(Composite parent)
 	{
 		toolkit = new NightlabsFormsToolkit(Display.getCurrent());
-		
-//		Composite comp = toolkit.createComposite(parent, SWT.NONE);
+
 		Composite comp = new XComposite(parent, SWT.NONE);
 		comp.setLayout(new GridLayout(2, true));
 		comp.setLayoutData(new GridData(GridData.FILL_BOTH));
-		
+
 		Group originalGroup = new Group(comp, SWT.NONE);
 		originalGroup.setText(Messages.getString("org.nightlabs.editor2d.ui.composite.ImagePreviewComposite.group.originalImage.text")); //$NON-NLS-1$
-		
+
 		originalGroup.setLayoutData(new GridData(GridData.FILL_BOTH));
 		originalGroup.setLayout(new GridLayout());
 		originalSC = new ScrolledComposite(originalGroup, SWT.H_SCROLL | SWT.V_SCROLL);
@@ -141,7 +139,7 @@ extends XComposite
 		originalCanvas.setLayoutData(new GridData(GridData.FILL_BOTH));
 		originalSC.setContent(originalCanvas);
 		originalSC.setMinSize(originalCanvas.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-		
+
 		Group convertGroup = new Group(comp, SWT.NONE);
 		convertGroup.setText(Messages.getString("org.nightlabs.editor2d.ui.composite.ImagePreviewComposite.group.convertedImage.text")); //$NON-NLS-1$
 		convertGroup.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -156,16 +154,16 @@ extends XComposite
 		convertCanvas.setLayoutData(new GridData(GridData.FILL_BOTH));
 		convertSC.setContent(convertCanvas);
 		convertSC.setMinSize(convertCanvas.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-		
+
 		convertCanvas.addControlListener(resizeListener);
 		originalSC.getHorizontalBar().addSelectionListener(horizontalScrollListener);
 		originalSC.getVerticalBar().addSelectionListener(verticalScrollListener);
 		convertSC.getHorizontalBar().addSelectionListener(horizontalScrollListener);
 		convertSC.getVerticalBar().addSelectionListener(verticalScrollListener);
-		
+
 		addDisposeListener(disposeListener);
 	}
-	
+
 	private SelectionListener horizontalScrollListener = new SelectionListener()
 	{
 		public void widgetDefaultSelected(SelectionEvent e) {
@@ -175,7 +173,7 @@ extends XComposite
 			repaintCanvas();
 		}
 	};
-	
+
 	private SelectionListener verticalScrollListener = new SelectionListener()
 	{
 		public void widgetDefaultSelected(SelectionEvent e) {
@@ -185,13 +183,13 @@ extends XComposite
 			repaintCanvas();
 		}
 	};
-	
+
 	public void repaintCanvas()
 	{
 		originalCanvas.repaint();
 		convertCanvas.repaint();
 	}
-	
+
 	public void repaintOriginal() {
 		originalCanvas.repaint();
 	}
@@ -199,7 +197,7 @@ extends XComposite
 	public void repaintConvert() {
 		convertCanvas.repaint();
 	}
-	
+
 	private float scale = 1.0f;
 	private ControlListener resizeListener = new ControlAdapter()
 	{
@@ -213,26 +211,26 @@ extends XComposite
 			float newHeight = canvasSize.height;
 			float scaleX = 1;
 			float scaleY = 1;
-			
+
 			if (originalWidth != 0 && newWidth != 0)
 				scaleX = newWidth / originalWidth;
 			if (originalHeight != 0 && newWidth != 0)
 				scaleY = newHeight / originalHeight;
-			
+
 			float tmpScale = Math.min(scaleX, scaleY);
 			if (tmpScale != 1)
 				scale = tmpScale;
-			
+
 			rescaleOp = null;
 			logger.debug("Canvas resized!"); //$NON-NLS-1$
-			
+
 			rescaleImages();
 		}
 	};
-	
+
 	private BufferedImage originalScale = null;
 	private BufferedImage convertScale = null;
-	
+
 	private boolean fitImage = true;
 	public void setFitImage(boolean b)
 	{
@@ -243,11 +241,11 @@ extends XComposite
 	public boolean isFitImage() {
 		return fitImage;
 	}
-		
+
 	protected void rescaleImages()
 	{
 		long start = System.currentTimeMillis();
-				
+
 		if (fitImage)
 		{
 			final int scaledWidth = (int) (originalImage.getWidth() * scale);
@@ -265,23 +263,26 @@ extends XComposite
 			originalPaintable.setImage(originalImage);
 			convertPaintable.setImage(convertImage);
 		}
-		
+
 		if (logger.isDebugEnabled()) {
 			long end = System.currentTimeMillis() - start;
 			logger.debug("rescaleImages took "+end+" ms!");			 //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		repaintCanvas();
 	}
-	
+
 	protected BufferedImage scaleImage(BufferedImage img, int width, int height)
 	{
 		logger.debug("scale = "+scale); //$NON-NLS-1$
 		if (rescaleOp == null)
 			rescaleOp = createRescaleOp(scale);
-		
-		return rescaleOp.filter(img, null);
+
+		if (img != null)
+			return rescaleOp.filter(img, null);
+
+		return img;
 	}
-		
+
 	private int scaleInterpolationType = AffineTransformOp.TYPE_NEAREST_NEIGHBOR;
 	private AffineTransformOp rescaleOp = null;
 	protected AffineTransformOp createRescaleOp(float scale)
@@ -291,7 +292,7 @@ extends XComposite
 		logger.debug("image scale factor = "+scale); //$NON-NLS-1$
 		return new AffineTransformOp(at, scaleInterpolationType);
 	}
-		
+
 	protected void layoutScrollBars()
 	{
 		Point size = null;
@@ -299,7 +300,7 @@ extends XComposite
 			size = new Point(originalImage.getWidth(), originalImage.getHeight());
 		else
 			size = new Point(originalScale.getWidth(null), originalScale.getHeight(null));
-		
+
 		originalCanvas.computeSize(size.x, size.y);
 		convertCanvas.computeSize(size.x, size.y);
 		originalSC.setMinSize(size);
@@ -307,7 +308,7 @@ extends XComposite
 		originalCanvas.layout(true);
 		convertCanvas.layout(true);
 	}
-	
+
 	private DisposeListener disposeListener = new DisposeListener()
 	{
 		public void widgetDisposed(DisposeEvent e)
@@ -317,12 +318,15 @@ extends XComposite
 			originalSC.getVerticalBar().removeSelectionListener(verticalScrollListener);
 			convertSC.getHorizontalBar().removeSelectionListener(horizontalScrollListener);
 			convertSC.getVerticalBar().removeSelectionListener(verticalScrollListener);
-			
+
 			originalImage = null;
 			convertImage = null;
 			originalScale = null;
 			convertScale = null;
 		}
 	};
-	
+
+	public void setConvertText(String text) {
+		convertPaintable.setText(text);
+	}
 }

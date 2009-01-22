@@ -44,6 +44,7 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.nightlabs.editor2d.ui.figures.RendererFigure;
+import org.nightlabs.editor2d.ui.resource.Messages;
 
 /**
  * 
@@ -249,7 +250,7 @@ implements ISmartUpdateFigure
 	 * Clears and rebuilds the tiles
 	 *
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	protected void rebuildTiles() {
 		tiles.clear();
 		figuresInTiles.clear();
@@ -274,7 +275,7 @@ implements ISmartUpdateFigure
 		internalPaintRegion(graphics, region);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	private void internalPaintRegion(Object graphics, Rectangle region) {
 		if (!tilesBuild)
 			rebuildTiles();

@@ -34,6 +34,7 @@ import org.nightlabs.base.ui.print.page.PredefinedPageEP;
 import org.nightlabs.config.Config;
 import org.nightlabs.editor2d.PageDrawComponent;
 import org.nightlabs.editor2d.ui.config.DocumentConfigModule;
+import org.nightlabs.editor2d.ui.resource.Messages;
 import org.nightlabs.i18n.unit.resolution.IResolutionUnit;
 import org.nightlabs.print.page.IPredefinedPage;
 import org.osgi.framework.Bundle;
@@ -76,7 +77,7 @@ extends AbstractEPProcessor
 		return EXTENSION_POINT_ID;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	public void processElement(IExtension extension, IConfigurationElement element)
 	throws Exception

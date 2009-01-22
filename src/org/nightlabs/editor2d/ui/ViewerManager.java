@@ -99,7 +99,7 @@ public class ViewerManager
   
   private EditPartListener rootListener = new EditPartListener.Stub()
   {
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked") //$NON-NLS-1$
 		@Override
 		public void removingChild(EditPart child, int index)
 		{
@@ -108,7 +108,7 @@ public class ViewerManager
 				excludeListRef.getExcludeList().remove(it.next());
 			}
 		}
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked") //$NON-NLS-1$
 		@Override
 		public void childAdded(EditPart child, int index)
 		{

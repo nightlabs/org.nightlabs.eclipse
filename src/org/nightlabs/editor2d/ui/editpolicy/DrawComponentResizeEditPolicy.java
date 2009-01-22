@@ -174,7 +174,7 @@ implements EditorRequestConstants
   	return super.understandsRequest(request);
   }
     
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	protected List createSelectionHandles()
   {

@@ -36,6 +36,7 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseEvent;
 import org.nightlabs.editor2d.ui.EditorStateManager;
 import org.nightlabs.editor2d.ui.request.EditorRequestConstants;
+import org.nightlabs.editor2d.ui.resource.Messages;
 
 
 public class EditorSelectionTool
@@ -50,7 +51,7 @@ implements EditorRequestConstants
     super();
   }
   
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	protected boolean handleDoubleClick(int button)
   {

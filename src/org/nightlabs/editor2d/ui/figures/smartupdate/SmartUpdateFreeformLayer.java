@@ -43,6 +43,7 @@ import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.swt.widgets.Control;
 import org.nightlabs.editor2d.ui.figures.BufferedFreeformLayer;
+import org.nightlabs.editor2d.ui.resource.Messages;
 import org.nightlabs.editor2d.ui.util.EditorUtil;
 
 /**
@@ -121,7 +122,7 @@ public class SmartUpdateFreeformLayer
 	 * 
 	 * @param graphics the graphics to paint on
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	public void paint(Graphics graphics) {
 		
@@ -165,7 +166,7 @@ public class SmartUpdateFreeformLayer
 	/**
 	 * @see org.nightlabs.editor2d.ui.figures.BufferedFreeformLayer#refresh()
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public void refresh() {
 		for (Iterator iter = getChildren().iterator(); iter.hasNext();) {
 			Figure child = (Figure) iter.next();
@@ -178,7 +179,7 @@ public class SmartUpdateFreeformLayer
 	/**
 	 * @see BufferedFreeformLayer#refresh(IFigure)
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public void refresh(IFigure figure) {
 		for (Iterator iter = getChildren().iterator(); iter.hasNext();) {
 			Figure child = (Figure) iter.next();

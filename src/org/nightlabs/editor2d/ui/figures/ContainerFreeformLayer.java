@@ -10,6 +10,7 @@ import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.render.Renderer;
+import org.nightlabs.editor2d.ui.resource.Messages;
 
 public class ContainerFreeformLayer
 extends FreeformLayer
@@ -23,7 +24,7 @@ implements RendererFigure
 	/**
 	 * Overridden to paint only children
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public void paint(Graphics2D graphics)
 	{
 		for (Iterator iter = getChildren().iterator(); iter.hasNext();) {
@@ -37,7 +38,7 @@ implements RendererFigure
 	/**
 	 * Overridden to paint only children
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	public void paint(Graphics graphics)
 	{

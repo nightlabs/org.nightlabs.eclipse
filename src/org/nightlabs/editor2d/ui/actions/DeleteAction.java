@@ -119,7 +119,7 @@ extends AbstractEditorSelectionAction
 	/**
 	 * Performs the delete action on the selected objects.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	public void run() {
 		execute(createDeleteCommand(getSelectedObjects()));

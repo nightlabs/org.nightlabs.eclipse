@@ -38,6 +38,7 @@ import org.nightlabs.editor2d.DrawComponentContainer;
 import org.nightlabs.editor2d.RootDrawComponent;
 import org.nightlabs.editor2d.ui.model.RootDrawComponentPropertySource;
 import org.nightlabs.editor2d.ui.outline.filter.FilterManager;
+import org.nightlabs.editor2d.ui.resource.Messages;
 
 
 public class RootDrawComponentTreeEditPart
@@ -76,7 +77,7 @@ extends DrawComponentContainerTreeEditPart
 //  	installEditPolicy(EditPolicy.COMPONENT_ROLE, new RootComponentEditPolicy());
 //  }
   
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	protected List getModelChildren()
   {

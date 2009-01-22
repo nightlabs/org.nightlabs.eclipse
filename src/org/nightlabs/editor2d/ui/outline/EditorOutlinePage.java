@@ -244,7 +244,7 @@ implements IAdaptable
 //      return editor.getOutlineGraphicalViewer().getProperty(ZoomManager.class.toString());
 //    return null;
 //  }
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked") //$NON-NLS-1$
 	public Object getAdapter(Class type) {
     return null;
   }
@@ -356,7 +356,7 @@ implements IAdaptable
  
   private PropertyChangeListener filterListener = new PropertyChangeListener()
   {
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked") //$NON-NLS-1$
 		public void propertyChange(PropertyChangeEvent pce)
 		{
 			if (pce.getPropertyName().equals(FilterManager.FILTER_CHANGED))

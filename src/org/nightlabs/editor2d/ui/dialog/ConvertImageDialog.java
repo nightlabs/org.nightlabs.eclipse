@@ -41,6 +41,9 @@ import org.nightlabs.editor2d.ui.resource.Messages;
 public class ConvertImageDialog
 extends ResizableTrayDialog
 {
+	private BufferedImage image = null;
+	private ConvertImageComposite convertImageComp = null;
+
 	/**
 	 * @param parentShell
 	 */
@@ -50,20 +53,18 @@ extends ResizableTrayDialog
 		setShellStyle(getShellStyle() | SWT.RESIZE);
 		this.image = originalImage;
 	}
-	
+
 	@Override
 	public void create()
 	{
 		super.create();
 		getShell().setText(Messages.getString("org.nightlabs.editor2d.ui.dialog.ConvertImageDialog.text")); //$NON-NLS-1$
 	}
-	
-	private BufferedImage image = null;
-	private ConvertImageComposite convertImageComp = null;
+
 	public ConvertImageComposite getConvertImageComposite() {
 		return convertImageComp;
 	}
-	
+
 	/**
 	 * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
 	 */

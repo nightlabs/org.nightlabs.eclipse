@@ -35,6 +35,7 @@ import org.eclipse.gef.RootEditPart;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
 import org.nightlabs.editor2d.DrawComponentContainer;
 import org.nightlabs.editor2d.ui.editpolicy.tree.DrawComponentTreeContainerEditPolicy;
+import org.nightlabs.editor2d.ui.resource.Messages;
 
 public abstract class DrawComponentContainerTreeEditPart
 extends DrawComponentTreeEditPart
@@ -77,7 +78,7 @@ extends DrawComponentTreeEditPart
    *
    * @return  List of children.
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	protected List getModelChildren()
   {

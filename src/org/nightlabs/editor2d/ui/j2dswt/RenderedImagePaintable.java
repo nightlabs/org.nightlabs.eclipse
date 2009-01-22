@@ -44,15 +44,33 @@ implements IPaintable
 	 * LOG4J logger used by this class
 	 */
 	private static final Logger logger = Logger.getLogger(RenderedImagePaintable.class);
-	
+
 	private RenderedImage image = null;
+
+	private String text = null;
+
 	public void setImage(RenderedImage bi) {
 		this.image = bi;
 	}
+
 	public RenderedImage getImage() {
 		return image;
 	}
-	
+
+	/**
+	 * @return Returns the text.
+	 */
+	public String getText() {
+		return text;
+	}
+
+	/**
+	 * @param text The text to set.
+	 */
+	public void setText(String text) {
+		this.text = text;
+	}
+
 	public RenderedImagePaintable(RenderedImage bi) {
 		super();
 		this.image = bi;
@@ -63,15 +81,20 @@ implements IPaintable
 	 */
 	public void paint(Control control, Graphics2D g2d)
 	{
-		if (image == null) {
-			logger.debug("image = null!"); //$NON-NLS-1$
+		if (image == null && text == null) {
+			logger.debug("image == null && text == null"); //$NON-NLS-1$
 			return;
 		}
-		
-		long start = System.currentTimeMillis();
-		g2d.drawRenderedImage(image, null);
-		long end = System.currentTimeMillis() - start;
-		logger.debug("paint took "+end+" ms!"); //$NON-NLS-1$ //$NON-NLS-2$
+
+		if (image != null) {
+			long start = System.currentTimeMillis();
+			g2d.drawRenderedImage(image, null);
+			long end = System.currentTimeMillis() - start;
+			logger.debug("paint took "+end+" ms!"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		else if (text != null) {
+			g2d.drawString(text, 0, 20);
+		}
 	}
 
 	/**

@@ -40,6 +40,7 @@ import org.nightlabs.editor2d.ui.editpolicy.DrawComponentContainerXYLayoutPolicy
 import org.nightlabs.editor2d.ui.editpolicy.DrawComponentEditPolicy;
 import org.nightlabs.editor2d.ui.editpolicy.EditorEditPolicy;
 import org.nightlabs.editor2d.ui.figures.ContainerDrawComponentFigure;
+import org.nightlabs.editor2d.ui.resource.Messages;
 
 
 public abstract class AbstractDrawComponentContainerEditPart
@@ -101,7 +102,7 @@ extends AbstractDrawComponentEditPart
 		}
 	}
 	
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
   protected List getModelChildren()
   {

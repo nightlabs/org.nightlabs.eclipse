@@ -53,7 +53,7 @@ extends TreeContainerEditPolicy
 {
 	private static final Logger logger = Logger.getLogger(DrawComponentTreeContainerEditPolicy.class);
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	protected Command getAddCommand(ChangeBoundsRequest request)
 	{
@@ -95,7 +95,7 @@ extends TreeContainerEditPolicy
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	protected Command getMoveChildrenCommand(ChangeBoundsRequest request)
 	{
@@ -167,7 +167,7 @@ extends TreeContainerEditPolicy
 		return true;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	protected Command getOrphanChildrenCommand(GroupRequest request)
 	{
 		if (logger.isDebugEnabled())

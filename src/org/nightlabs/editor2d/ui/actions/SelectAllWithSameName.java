@@ -53,7 +53,7 @@ extends AbstractEditorSelectionAction
 	protected EditPart editPart = null;
 	protected List<DrawComponent> drawComponentsWithSameName = null;
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	protected boolean calculateEnabled()
 	{

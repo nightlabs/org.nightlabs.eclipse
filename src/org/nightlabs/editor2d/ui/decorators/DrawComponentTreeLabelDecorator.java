@@ -61,10 +61,10 @@ implements ILabelDecorator
 				sb.append(" ["+Messages.getString("org.nightlabs.editor2d.ui.decorators.DrawComponentTreeLabelDecorator.textAddition.invisible")+"]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
 			if (dc.isTemplate()) {
-				sb.append(" ["+"Template"+"]");
+				sb.append(" ["+Messages.getString("org.nightlabs.editor2d.ui.decorators.DrawComponentTreeLabelDecorator.template")+"]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
 			if (!dc.isEditable()) {
-				sb.append( "["+"Locked"+"]");
+				sb.append( "["+Messages.getString("org.nightlabs.editor2d.ui.decorators.DrawComponentTreeLabelDecorator.locked")+"]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
 			return sb.toString();
 		}

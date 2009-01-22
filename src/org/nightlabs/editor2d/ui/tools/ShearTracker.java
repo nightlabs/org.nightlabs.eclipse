@@ -37,6 +37,7 @@ import org.eclipse.swt.graphics.Cursor;
 import org.nightlabs.editor2d.ui.custom.EditorCursors;
 import org.nightlabs.editor2d.ui.edit.AbstractDrawComponentEditPart;
 import org.nightlabs.editor2d.ui.request.EditorShearRequest;
+import org.nightlabs.editor2d.ui.resource.Messages;
 import org.nightlabs.editor2d.ui.util.J2DUtil;
 
 
@@ -56,7 +57,7 @@ extends AbstractDragTracker
   /* (non-Javadoc)
    * @see org.eclipse.gef.tools.SimpleDragTracker#createSourceRequest()
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	protected Request createSourceRequest()
   {

@@ -38,6 +38,7 @@ import org.nightlabs.editor2d.IVisible;
 import org.nightlabs.editor2d.Layer;
 import org.nightlabs.editor2d.ui.figures.ContainerFreeformLayer;
 import org.nightlabs.editor2d.ui.model.LayerPropertySource;
+import org.nightlabs.editor2d.ui.resource.Messages;
 
 public class LayerEditPart
 extends AbstractDrawComponentContainerEditPart
@@ -72,7 +73,7 @@ extends AbstractDrawComponentContainerEditPart
     return (Layer) getModel();
   }
   
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	protected List getModelChildren()
   {

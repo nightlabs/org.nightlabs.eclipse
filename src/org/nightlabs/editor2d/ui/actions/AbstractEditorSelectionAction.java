@@ -64,6 +64,7 @@ import org.nightlabs.editor2d.ui.edit.RectangleEditPart;
 import org.nightlabs.editor2d.ui.edit.RootDrawComponentEditPart;
 import org.nightlabs.editor2d.ui.edit.ShapeDrawComponentEditPart;
 import org.nightlabs.editor2d.ui.edit.TextEditPart;
+import org.nightlabs.editor2d.ui.resource.Messages;
 
 public abstract class AbstractEditorSelectionAction
 extends SelectionAction
@@ -138,7 +139,7 @@ extends SelectionAction
 	 * @return true if the selected objects contain minimum so many EditPart
 	 * as the given amount of the given class
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public boolean selectionContains(Class<?>[] clazzes, int amount, boolean model)
 	{
 		if (!getSelectedObjects().isEmpty())
@@ -188,7 +189,7 @@ extends SelectionAction
 	 * @return a Collection of all objects from the selection which are assignable
 	 * from the given class
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public <T extends Object> Collection<T> getSelection(Class<T> clazz, boolean model) {
 		return (Collection<T>) getSelection(new Class[] {clazz}, model);
 	}
@@ -201,7 +202,7 @@ extends SelectionAction
 	 * @return a List of all objects from the selection which are assignable
 	 * from the given classes
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public Collection getSelection(Class[] clazzes, boolean model)
 	{
 		if (!getSelectedObjects().isEmpty())
@@ -241,7 +242,7 @@ extends SelectionAction
 	 * @return a Collection of all objects from the selection which are assignable
 	 * from the given class
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public <T extends Object> List<T> getSelectionAsList(Class<T> clazz, boolean model)
 	{
 		return (List<T>) getSelectionAsList(new Class[] {clazz}, model);
@@ -255,7 +256,7 @@ extends SelectionAction
 	 * @return a List of all objects from the selection which are assignable
 	 * from the given classes
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public List<Object> getSelectionAsList(Class[] clazzes, boolean model)
 	{
 		if (!getSelectedObjects().isEmpty())
@@ -294,7 +295,7 @@ extends SelectionAction
 	private Class<? extends EditPart>[] defaultEditPartExcludes = null;
 	private Class<? extends DrawComponent>[] defaultModelExcludes = null;
 	
-	@SuppressWarnings({ "unchecked", "unchecked" })
+	@SuppressWarnings({ "unchecked", "unchecked" }) //$NON-NLS-1$ //$NON-NLS-2$
 	public Class<?>[] getDefaultExcludes(boolean model)
 	{
 		if (!model) {
@@ -334,7 +335,7 @@ extends SelectionAction
 	
 	private Class<? extends EditPart>[] defaultEditPartIncludes = null;
 	private Class<? extends DrawComponent>[] defaultModelIncludes = null;
-	@SuppressWarnings({ "unchecked", "unchecked" })
+	@SuppressWarnings({ "unchecked", "unchecked" }) //$NON-NLS-1$ //$NON-NLS-2$
 	public Class<?>[] getDefaultIncludes(boolean model)
 	{
 		if (!model) {

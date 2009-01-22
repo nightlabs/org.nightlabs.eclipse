@@ -51,6 +51,7 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Control;
 import org.holongate.j2d.J2DRegistry;
+import org.nightlabs.editor2d.ui.resource.Messages;
 import org.nightlabs.editor2d.ui.util.EditorUtil;
 
 /**
@@ -156,7 +157,7 @@ implements FreeformFigure, BufferedFreeformLayer
 	 * 
 	 * @return The offscreen buffer
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	protected BufferedImage getBufferedImage()
 	{
 		double tmpZoom = EditorUtil.getZoom(editPart);
@@ -314,7 +315,7 @@ implements FreeformFigure, BufferedFreeformLayer
 		
 	private Rectangle childBounds;
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	protected Rectangle getChildBounds()
 	{
 		if (childBounds == null) {
@@ -369,7 +370,7 @@ implements FreeformFigure, BufferedFreeformLayer
 	/**
 	 * @see FreeformFigure#fireExtentChanged()
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public void fireExtentChanged() {
 		Iterator iter = getListeners(FreeformListener.class);
 		while (iter.hasNext())
