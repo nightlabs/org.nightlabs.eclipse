@@ -140,6 +140,11 @@ public class DailyTimePatternBuilderHopPage extends WizardHopPage {
 		return wrapper;
 	}
 
+	@Override
+	public boolean isPageComplete() {
+		return getControl() != null && !getControl().isDisposed();
+	}
+
 	private SelectionListener typeSelectionListener = new SelectionListener() {
 		public void widgetDefaultSelected(SelectionEvent e) {
 		}

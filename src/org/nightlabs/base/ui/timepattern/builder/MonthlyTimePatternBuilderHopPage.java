@@ -75,6 +75,11 @@ public class MonthlyTimePatternBuilderHopPage extends WizardHopPage {
 		return wrapper;
 	}
 
+	@Override
+	public boolean isPageComplete() {
+		return getControl() != null && !getControl().isDisposed();
+	}
+	
 	private SelectionListener daySelectListner = new SelectionListener () {
 		public void widgetDefaultSelected(SelectionEvent arg0) {
 		}

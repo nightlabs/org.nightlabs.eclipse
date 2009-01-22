@@ -53,6 +53,11 @@ public class SingleExecTimePatternBuilderHopPage extends WizardHopPage {
 		return wrapper;
 	}
 
+	@Override
+	public boolean isPageComplete() {
+		return getControl() != null && !getControl().isDisposed();
+	}
+	
 	public void configureTimePattern(TimePattern timePattern)
 	throws TimePatternFormatException
 	{

@@ -113,4 +113,9 @@ public class TimePatternSetBuilderEntryWizardPage extends WizardHopPage {
 	public void configureTimePatternSet(TimePatternSet timePatternSet) throws TimePatternFormatException {
 		currentBuilderHop.configureTimePatternSet(timePatternSet);
 	}
+	
+	@Override
+	public boolean isPageComplete() {
+		return currentBuilderHop != null;
+	}
 }
