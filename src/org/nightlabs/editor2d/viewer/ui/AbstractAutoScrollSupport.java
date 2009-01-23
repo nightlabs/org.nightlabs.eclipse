@@ -36,7 +36,7 @@ import org.nightlabs.editor2d.viewer.ui.preferences.Preferences;
 
 /**
  * This is an abstract implementation of a generic AutoScrollSupport
- * 
+ *
  * @author Daniel.Mazurek [dot] NightLabs [dot] de
  *
  */
@@ -51,47 +51,88 @@ implements IAutoScrollSupport
 		Preferences.getPreferenceStore().getDefaultInt(Preferences.PREFERENCE_TIMER_DELAY);
 
 	private int scrollStep = DEFAULT_SCROLL_STEP;
-		
+	private int scrollTolerance = DEFAULT_SCROLL_TOLERANCE;
+	private int timerDelay = DEFAULT_TIMER_DELAY;
+
+	private ActionListener scrollRight = new ActionListener()
+	{
+		public void actionPerformed(ActionEvent e) {
+			doScrollRight(scrollStep);
+		}
+	};
+
+	private ActionListener scrollLeft = new ActionListener()
+	{
+		public void actionPerformed(ActionEvent e) {
+			doScrollLeft(scrollStep);
+		}
+	};
+
+	private ActionListener scrollUp = new ActionListener()
+	{
+		public void actionPerformed(ActionEvent e) {
+			doScrollUp(scrollStep);
+		}
+	};
+
+	private ActionListener scrollDown = new ActionListener()
+	{
+		public void actionPerformed(ActionEvent e) {
+			doScrollDown(scrollStep);
+		}
+	};
+
+	private Timer timerLeft = new Timer(timerDelay, scrollLeft);
+	private Timer timerRight = new Timer(timerDelay, scrollRight);
+	private Timer timerUp = new Timer(timerDelay, scrollUp);
+	private Timer timerDown = new Timer(timerDelay, scrollDown);
+
+	private Rectangle upperScrollArea = null;
+	private Rectangle bottomScrollArea = null;
+	private Rectangle leftScrollArea = null;
+	private Rectangle rightScrollArea = null;
+
+	private boolean isInTop = false;
+	private boolean isInBottom = false;
+	private boolean isInLeft = false;
+	private boolean isInRight = false;
+
 	/**
-	 * 
+	 *
 	 * @param step the value which will be scrolled by each timerDelay
 	 */
 	public void setScrollStep(int step) {
 		scrollStep = step;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return the value which will be scrolled by each timerDelay
 	 */
 	public int getScrollStep() {
 		return scrollStep;
 	}
-	
-	private int scrollTolerance = DEFAULT_SCROLL_TOLERANCE;
-	
+
 	/**
-	 * 
+	 *
 	 * @param scrollTolerance the value which determines size
 	 * of the area in which autoScrolling begins
 	 */
 	public void setScrollTolerance(int scrollTolerance) {
 		this.scrollTolerance = scrollTolerance;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return the value which determines size
 	 * of the area in which autoScrolling begins
 	 */
 	public int getScrollTolerance() {
 		return scrollTolerance;
 	}
-	
-	private int timerDelay = DEFAULT_TIMER_DELAY;
-	
+
 	/**
-	 * 
+	 *
 	 * @param timerDelay determines the amount of time (milliseconds) which passes each time
 	 * the AutoScrollTimer for the repsective direction is triggered
 	 */
@@ -104,57 +145,14 @@ implements IAutoScrollSupport
 	}
 
 	/**
-	 * 
+	 *
 	 * @return determines the amount of time (milliseconds) which passes each time
 	 * the AutoScrollTimer for the repsective direction is triggered
 	 */
 	public int getTimerDelay() {
 		return timerDelay;
 	}
-		
-	protected ActionListener scrollRight = new ActionListener()
-	{
-		public void actionPerformed(ActionEvent e) {
-			doScrollRight(scrollStep);
-		}
-	};
-		
-	protected ActionListener scrollLeft = new ActionListener()
-	{
-		public void actionPerformed(ActionEvent e) {
-			doScrollLeft(scrollStep);
-		}
-	};
-	
-	protected ActionListener scrollUp = new ActionListener()
-	{
-		public void actionPerformed(ActionEvent e) {
-			doScrollUp(scrollStep);
-		}
-	};
-	
-	protected ActionListener scrollDown = new ActionListener()
-	{
-		public void actionPerformed(ActionEvent e) {
-			doScrollDown(scrollStep);
-		}
-	};
-	
-	private Timer timerLeft = new Timer(timerDelay, scrollLeft);
-	private Timer timerRight = new Timer(timerDelay, scrollRight);
-	private Timer timerUp = new Timer(timerDelay, scrollUp);
-	private Timer timerDown = new Timer(timerDelay, scrollDown);
-	
-	private Rectangle upperScrollArea = null;
-	private Rectangle bottomScrollArea = null;
-	private Rectangle leftScrollArea = null;
-	private Rectangle rightScrollArea = null;
-	
-	private boolean isInTop = false;
-	private boolean isInBottom = false;
-	private boolean isInLeft = false;
-	private boolean isInRight = false;
-	
+
 	protected void initAutoScroll(Rectangle bounds)
 	{
 		int width = bounds.width;
@@ -164,67 +162,59 @@ implements IAutoScrollSupport
 		leftScrollArea = new Rectangle(0, 0, scrollTolerance, height);
 		rightScrollArea = new Rectangle(width - scrollTolerance, 0, scrollTolerance, height);
 	}
-	
-	protected abstract void scrollDown(int scrollStep);
-	protected abstract void scrollUp(int scrollStep);
-	protected abstract void scrollLeft(int scrollStep);
-	protected abstract void scrollRight(int scrollStep);
-		
+
+//	protected abstract void scrollDown(int scrollStep);
+//	protected abstract void scrollUp(int scrollStep);
+//	protected abstract void scrollLeft(int scrollStep);
+//	protected abstract void scrollRight(int scrollStep);
+
+	protected abstract ICanvas getCanvas();
+
+	protected void scrollDown(int scrollStep) {
+		getCanvas().translateY(scrollStep);
+		getCanvas().repaint();
+	}
+
+	protected void scrollUp(int scrollStep) {
+		getCanvas().translateY(-scrollStep);
+		getCanvas().repaint();
+	}
+
+	protected void scrollLeft(int scrollStep) {
+		getCanvas().translateX(-scrollStep);
+		getCanvas().repaint();
+	}
+
+	protected void scrollRight(int scrollStep) {
+		getCanvas().translateX(scrollStep);
+		getCanvas().repaint();
+	}
+
+	protected boolean doMouseMoved(int x, int y, boolean b, Rectangle scrollArea, Timer timer)
+	{
+		if (!scrollArea.contains(x,y)) {
+			if (b == true) {
+				b = false;
+				timer.stop();
+			}
+		}
+		else {
+			if (b == false) {
+				b = true;
+				timer.restart();
+			}
+		}
+		return b;
+	}
+
 	protected void mouseMoved(int x, int y)
 	{
-		if (!upperScrollArea.contains(x,y)) {
-			if (isInTop == true) {
-				isInTop = false;
-				timerUp.stop();
-			}
-		}
-		else {
-			if (isInTop == false) {
-				isInTop = true;
-				timerUp.restart();
-			}
-		}
-		
-		if (!bottomScrollArea.contains(x, y)) {
-			if (isInBottom == true) {
-				isInBottom = false;
-				timerDown.stop();
-			}
-		}
-		else {
-			if (isInBottom == false) {
-				isInBottom = true;
-				timerDown.restart();
-			}
-		}
-		
-		if (!leftScrollArea.contains(x, y)) {
-			if (isInLeft == true) {
-				isInLeft = false;
-				timerLeft.stop();
-			}
-		}
-		else {
-			if (isInLeft == false) {
-				isInLeft = true;
-				timerLeft.restart();
-			}
-		}
-		
-		if (!rightScrollArea.contains(x, y)) {
-			if (isInRight == true) {
-				isInRight = false;
-				timerRight.stop();
-			}
-		}
-		else {
-			if (isInRight == false) {
-				isInRight = true;
-				timerRight.restart();
-			}
-		}
+		isInTop = doMouseMoved(x, y, isInTop, upperScrollArea, timerUp);
+		isInBottom = doMouseMoved(x, y, isInBottom, bottomScrollArea, timerDown);
+		isInLeft = doMouseMoved(x, y, isInLeft, leftScrollArea, timerLeft);
+		isInRight = doMouseMoved(x, y, isInRight, rightScrollArea, timerRight);
 	}
-	
+
 	protected void mouseExited()
 	{
 		if (isInTop) {
@@ -243,9 +233,8 @@ implements IAutoScrollSupport
 			isInLeft = false;
 			timerLeft.stop();
 		}
-//		System.out.println("Mouse Exit");
 	}
-	
+
 	protected void stopTimers()
 	{
 		timerLeft.stop();
@@ -253,35 +242,35 @@ implements IAutoScrollSupport
 		timerUp.stop();
 		timerDown.stop();
 	}
-	
+
 	protected void doScrollDown(final int scrollStep) {
 		scrollDown(scrollStep);
 	}
-	
+
 	protected void doScrollUp(final int scrollStep) {
 		scrollUp(scrollStep);
 	}
-	
+
 	protected void doScrollLeft(final int scrollStep) {
 		scrollLeft(scrollStep);
 	}
-	
+
 	protected void doScrollRight(final int scrollStep){
 		scrollRight(scrollStep);
 	}
-			
+
 	public void dispose()
 	{
 		timerDown.removeActionListener(scrollDown);
 		timerUp.removeActionListener(scrollUp);
 		timerLeft.removeActionListener(scrollLeft);
 		timerRight.removeActionListener(scrollRight);
-		
+
 		timerDown = null;
 		timerUp = null;
 		timerLeft = null;
 		timerRight = null;
-		
+
 		bottomScrollArea = null;
 		upperScrollArea = null;
 		leftScrollArea = null;

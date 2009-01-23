@@ -27,42 +27,78 @@
 package org.nightlabs.editor2d.viewer.ui.awt;
 
 import java.awt.Component;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
 
+import org.nightlabs.editor2d.viewer.ui.AbstractAutoScrollSupport;
 import org.nightlabs.editor2d.viewer.ui.ICanvas;
 
 public class AWTCanvasAutoScrollSupport
-extends AbstractAWTAutoScrollSupport
+extends AbstractAutoScrollSupport
 {
-	public AWTCanvasAutoScrollSupport(Component comp) {
-		super(comp);
+	public AWTCanvasAutoScrollSupport(Component comp)
+	{
+		super();
+		component = comp;
+		init();
 	}
 
+	private Component component;
+	public Component getComponent() {
+		return component;
+	}
+
+	protected void init()
+	{
+		component.addComponentListener(resizeListener);
+		component.addMouseListener(exitListener);
+		component.addMouseMotionListener(moveListener);
+		initAutoScroll(component.getBounds());
+	}
+
+	private ComponentListener resizeListener = new ComponentAdapter()
+	{
+		@Override
+		public void componentResized(ComponentEvent evt)
+		{
+			Component c = evt.getComponent();
+			initAutoScroll(c.getBounds());
+		}
+	};
+
+	private MouseMotionListener moveListener = new MouseMotionAdapter()
+	{
+		@Override
+		public void mouseMoved(MouseEvent evt) {
+			AWTCanvasAutoScrollSupport.this.mouseMoved(evt.getX(), evt.getY());
+		}
+	};
+
+	private MouseListener exitListener = new MouseAdapter()
+	{
+		@Override
+		public void mouseExited(MouseEvent arg0) {
+			AWTCanvasAutoScrollSupport.this.mouseExited();
+		}
+	};
+	@Override
+	public void dispose()
+	{
+		component.removeComponentListener(resizeListener);
+		component.removeMouseMotionListener(moveListener);
+		component.removeMouseListener(exitListener);
+		super.dispose();
+	}
+
+	@Override
 	protected ICanvas getCanvas() {
 		return (ICanvas) getComponent();
-	}
-	
-	@Override
-	protected void scrollDown(int scrollStep) {
-		getCanvas().translateY(scrollStep);
-		getCanvas().repaint();
-	}
-
-	@Override
-	protected void scrollUp(int scrollStep) {
-		getCanvas().translateY(-scrollStep);
-		getCanvas().repaint();
-	}
-
-	@Override
-	protected void scrollLeft(int scrollStep) {
-		getCanvas().translateX(-scrollStep);
-		getCanvas().repaint();
-	}
-
-	@Override
-	protected void scrollRight(int scrollStep) {
-		getCanvas().translateX(scrollStep);
-		getCanvas().repaint();
 	}
 
 }

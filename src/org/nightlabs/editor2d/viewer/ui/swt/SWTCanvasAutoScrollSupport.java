@@ -26,42 +26,144 @@
 
 package org.nightlabs.editor2d.viewer.ui.swt;
 
+import org.apache.log4j.Logger;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.events.MouseTrackAdapter;
+import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
+import org.nightlabs.base.ui.util.GeomUtil;
+import org.nightlabs.editor2d.viewer.ui.AbstractAutoScrollSupport;
 import org.nightlabs.editor2d.viewer.ui.ICanvas;
 
 public class SWTCanvasAutoScrollSupport
-extends AbstractSWTAutoScrollSupport
+extends AbstractAutoScrollSupport
 {
-	public SWTCanvasAutoScrollSupport(Control control) {
-		super(control);
+	/**
+	 * LOG4J logger used by this class
+	 */
+	private static final Logger logger = Logger.getLogger(AbstractAutoScrollSupport.class.getName());
+
+	protected Control control;
+
+	public Control getControl() {
+		return control;
 	}
-	
+
+	public SWTCanvasAutoScrollSupport(Control control)
+	{
+		super();
+		this.control = control;
+		init();
+	}
+
+	protected void init()
+	{
+		control.addControlListener(controlSizeListener);
+		control.addMouseMoveListener(autoScrollListener);
+		control.addMouseTrackListener(mouseTrackListener);
+		control.addDisposeListener(disposeListener);
+		initAutoScroll(GeomUtil.toAWTRectangle(control.getBounds()));
+	}
+
+	protected DisposeListener disposeListener = new DisposeListener()
+	{
+		public void widgetDisposed(DisposeEvent e)
+		{
+			control.removeControlListener(controlSizeListener);
+			control.removeMouseMoveListener(autoScrollListener);
+			control.removeMouseTrackListener(mouseTrackListener);
+			stopTimers();
+		}
+	};
+
+	protected ControlListener controlSizeListener = new ControlListener()
+	{
+		public void controlResized(ControlEvent evt)
+		{
+			logger.debug("Control Resized!"); //$NON-NLS-1$
+			Control c = (Control) evt.getSource();
+			initAutoScroll(GeomUtil.toAWTRectangle(c.getBounds()));
+		}
+		public void controlMoved(ControlEvent arg0) {
+
+		}
+	};
+
+	protected MouseMoveListener autoScrollListener = new MouseMoveListener()
+	{
+		public void mouseMove(MouseEvent e)
+		{
+			mouseMoved(e.x, e.y);
+		}
+	};
+
+	protected MouseTrackListener mouseTrackListener = new MouseTrackAdapter()
+	{
+		@Override
+		public void mouseExit(MouseEvent e)
+		{
+			mouseExited();
+		}
+
+		@Override
+		public void mouseEnter(MouseEvent e) {
+			super.mouseEnter(e);
+		}
+	};
+
+	@Override
+	protected void doScrollDown(final int scrollStep)
+	{
+		Display.getDefault().asyncExec(new Runnable()
+		{
+			public void run() {
+				scrollDown(scrollStep);
+			}
+		});
+	}
+
+	@Override
+	protected void doScrollUp(final int scrollStep)
+	{
+		Display.getDefault().asyncExec(new Runnable()
+		{
+			public void run() {
+				scrollUp(scrollStep);
+			}
+		});
+	}
+
+	@Override
+	protected void doScrollLeft(final int scrollStep)
+	{
+		Display.getDefault().asyncExec(new Runnable()
+		{
+			public void run() {
+				scrollLeft(scrollStep);
+			}
+		});
+	}
+
+	@Override
+	protected void doScrollRight(final int scrollStep)
+	{
+		Display.getDefault().asyncExec(new Runnable()
+		{
+			public void run() {
+				scrollRight(scrollStep);
+			}
+		});
+	}
+
+	@Override
 	protected ICanvas getCanvas() {
 		return (ICanvas) getControl();
-	}
-	
-	@Override
-	protected void scrollDown(int scrollStep) {
-		getCanvas().translateY(scrollStep);
-		getCanvas().repaint();
-	}
-
-	@Override
-	protected void scrollUp(int scrollStep) {
-		getCanvas().translateY(-scrollStep);
-		getCanvas().repaint();
-	}
-
-	@Override
-	protected void scrollLeft(int scrollStep) {
-		getCanvas().translateX(scrollStep);
-		getCanvas().repaint();
-	}
-
-	@Override
-	protected void scrollRight(int scrollStep) {
-		getCanvas().translateX(-scrollStep);
-		getCanvas().repaint();
 	}
 
 }

@@ -39,6 +39,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.DrawComponentContainer;
+import org.nightlabs.editor2d.IVisible;
 import org.nightlabs.editor2d.Layer;
 import org.nightlabs.editor2d.ShapeDrawComponent;
 import org.nightlabs.editor2d.j2d.GeneralShape;
@@ -50,13 +51,13 @@ public class HitTestManager
 	 * LOG4J logger used by this class
 	 */
 	private static final Logger logger = Logger.getLogger(HitTestManager.class);
-	
+
 	public HitTestManager(DrawComponent dc)
 	{
 		this.dc = dc;
 		init(dc);
 	}
-	
+
 	protected void init(DrawComponent dc)
 	{
 		long startTime = System.currentTimeMillis();
@@ -65,7 +66,7 @@ public class HitTestManager
 		long endTime = System.currentTimeMillis() - startTime;
 		logger.debug("Initialzation took "+endTime+" ms");		 //$NON-NLS-1$ //$NON-NLS-2$
 	}
-	
+
 	private DrawComponent dc = null;
 	public DrawComponent getDrawComponent() {
 		return dc;
@@ -74,7 +75,7 @@ public class HitTestManager
 		this.dc = dc;
 		init(dc);
 	}
-	
+
 	private double hitTolerance = 3;
 	public void setHitTolerance(double hitTolerance) {
 		this.hitTolerance = hitTolerance;
@@ -83,7 +84,7 @@ public class HitTestManager
 	public double getHitTolerance() {
 		return hitTolerance;
 	}
-	
+
 //	protected IDrawComponentConditional conditional = null;
 //	public IDrawComponentConditional getConditional() {
 //		return conditional;
@@ -99,7 +100,7 @@ public class HitTestManager
 //	public Collection<DrawComponent> getExcludeList() {
 //		return excludeList;
 //	}
-	
+
 	protected void initBounds(DrawComponent dc)
 	{
 		if (dc instanceof DrawComponentContainer) {
@@ -112,7 +113,7 @@ public class HitTestManager
 		else
 			dc.getBounds();
 	}
-	
+
 	private Map<ShapeDrawComponent, Area> unfilledShape2Area = new HashMap<ShapeDrawComponent, Area>();
 	protected void initShapes(DrawComponent dc)
 	{
@@ -133,26 +134,26 @@ public class HitTestManager
 			}
 		}
 	}
-	
+
 	protected Area calculateOutlineArea(ShapeDrawComponent sdc, double hitTolerance)
 	{
-    if (sdc.getGeneralShape() != null) {
-	    Rectangle outerBounds = TransformUtil.expand(sdc.getBounds(), (int)hitTolerance, (int)hitTolerance, true);
-	    Rectangle innerBounds = TransformUtil.shrink(sdc.getBounds(), (int)hitTolerance, (int)hitTolerance, true);
-      GeneralShape outerGS = (GeneralShape) sdc.getGeneralShape().clone();
-      GeneralShape innerGS = (GeneralShape) sdc.getGeneralShape().clone();
-      TransformUtil.transformGeneralShape(outerGS, sdc.getBounds(), outerBounds);
-      TransformUtil.transformGeneralShape(innerGS, sdc.getBounds(), innerBounds);
-      Area outlineArea = new Area(outerGS);
-      Area innerArea = new Area(innerGS);
-      outlineArea.exclusiveOr(innerArea);
-      return outlineArea;
-    }
-    return null;
+		if (sdc.getGeneralShape() != null) {
+			Rectangle outerBounds = TransformUtil.expand(sdc.getBounds(), (int)hitTolerance, (int)hitTolerance, true);
+			Rectangle innerBounds = TransformUtil.shrink(sdc.getBounds(), (int)hitTolerance, (int)hitTolerance, true);
+			GeneralShape outerGS = (GeneralShape) sdc.getGeneralShape().clone();
+			GeneralShape innerGS = (GeneralShape) sdc.getGeneralShape().clone();
+			TransformUtil.transformGeneralShape(outerGS, sdc.getBounds(), outerBounds);
+			TransformUtil.transformGeneralShape(innerGS, sdc.getBounds(), innerBounds);
+			Area outlineArea = new Area(outerGS);
+			Area innerArea = new Area(innerGS);
+			outlineArea.exclusiveOr(innerArea);
+			return outlineArea;
+		}
+		return null;
 	}
-		
+
 	/**
-	 * 
+	 *
 	 * @param sdc the ShapeDrawComponent to check for containment
 	 * @param x the x-Coordinate
 	 * @param y the y-Coordinate
@@ -171,9 +172,9 @@ public class HitTestManager
 			return outlineArea.contains(x, y);
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param dc the DrawComponent to iterate through
 	 * @param x the x-Coordinate
 	 * @param y the y-Coordinate
@@ -211,9 +212,9 @@ public class HitTestManager
 			return dc.getBounds().contains(x, y) ? dc : null;
 		}
 	}
-	 
+
 	/**
-	 * 
+	 *
 	 * @param dc the DrawComponent to iterate through (if it is a DrawComponentContainer)
 	 * @param x the x-Coordinate
 	 * @param y the y-Coordinate
@@ -243,7 +244,7 @@ public class HitTestManager
 	}
 
 	/**
-	 * 
+	 *
 	 * @param dc the DrawComponent to iterate through
 	 * @param x the x-Coordinate
 	 * @param y the y-Coordinate
@@ -258,28 +259,28 @@ public class HitTestManager
 		List<DrawComponent> objects = findObjectsAt(dc, x, y, conditional, excludeList);
 		return !objects.isEmpty() ? (DrawComponent) objects.get(0) : null;
 	}
-	
+
 	/**
 	 * the order of the returned List represents the Z-Order of the hit-testing
 	 * (first entry = topmost, last entry = bottom most)
-	 * 
-	 * 
+	 *
+	 *
 	 * @param dc the DrawComponent to iterate through
 	 * @param x the x-Coordinate
 	 * @param y the y-Coordinate
 	 * @return a List which contains all DrawComponents which contain x and y,
 	 * if no drawComponents are found an empty List is returned
-	 * 
+	 *
 	 */
 	public List<DrawComponent> findObjectsAt(DrawComponent dc, int x, int y)
 	{
 		List<DrawComponent> l = new LinkedList<DrawComponent>();
 		if (dc instanceof DrawComponentContainer)
 		{
-			if (dc instanceof Layer)
+			if (dc instanceof IVisible)
 			{
-				Layer layer = (Layer) dc;
-				if (!layer.isVisible())
+				IVisible visible = dc;
+				if (!visible.isVisible())
 					return l;
 			}
 			DrawComponentContainer container = (DrawComponentContainer) dc;
@@ -308,9 +309,9 @@ public class HitTestManager
 		}
 		return l;
 	}
-		
+
 	/**
-	 * 
+	 *
 	 * @param sdc the ShapeDrawComponent to check for intersection
 	 * @param r the Rectangle2D to check for
 	 * @return true if the ShapeDrawComponent intersects r
@@ -319,9 +320,9 @@ public class HitTestManager
 	{
 		return sdc.getGeneralShape().intersects(r);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param dc the DrawComponent to iterate through (if it is a DrawComponentContainer)
 	 * @param r the Rectangle to check for intersection
 	 * @return a List of DrawCompoennts which intersects the Rectangle
@@ -331,10 +332,10 @@ public class HitTestManager
 		List<DrawComponent> l = new LinkedList<DrawComponent>();
 		if (dc instanceof DrawComponentContainer)
 		{
-			if (dc instanceof Layer)
+			if (dc instanceof IVisible)
 			{
-				Layer layer = (Layer) dc;
-				if (!layer.isVisible())
+				IVisible visible = dc;
+				if (!visible.isVisible())
 					return l;
 			}
 			DrawComponentContainer container = (DrawComponentContainer) dc;
@@ -362,7 +363,7 @@ public class HitTestManager
 		}
 		return l;
 	}
-	
+
 	/**
 	 * @param dc the DrawComponent to iterate through (if it is a DrawComponentContainer)
 	 * @param r the Rectangle to check for intersection

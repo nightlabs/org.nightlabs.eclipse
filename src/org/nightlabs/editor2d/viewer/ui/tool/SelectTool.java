@@ -46,7 +46,7 @@ extends RectangleTool
 //		setShowTooltip(false);
 		setShowRollOver(true);
 	}
-				
+
 	@Override
 	protected void doMouseReleased(MouseEvent me)
 	{
@@ -54,7 +54,7 @@ extends RectangleTool
 		if (isLeftPressed()) {
 			int currentX = getRelativeX(currentPoint.x);
 			int currentY = getRelativeY(currentPoint.y);
-			checkDrawComponents(currentX, currentY);			
+			checkDrawComponents(currentX, currentY);
 		}
 	}
 
@@ -82,7 +82,7 @@ extends RectangleTool
 
 		return selectionInterceptor.canSelect(dc);
 	}
-	
+
 	protected void checkDrawComponents(int x, int y)
 	{
 		DrawComponent dc = getDrawComponent(x, y);
@@ -100,5 +100,5 @@ extends RectangleTool
 			getViewer().getSelectionManager().clearSelection(true);
 		}
 	}
-	
+
 }

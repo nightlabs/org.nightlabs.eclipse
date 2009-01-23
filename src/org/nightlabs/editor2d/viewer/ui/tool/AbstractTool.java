@@ -27,18 +27,24 @@
 package org.nightlabs.editor2d.viewer.ui.tool;
 
 import java.awt.Point;
+import java.awt.geom.Rectangle2D;
 import java.util.Collection;
+import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.viewer.ui.IDrawComponentConditional;
 import org.nightlabs.editor2d.viewer.ui.IViewer;
 import org.nightlabs.editor2d.viewer.ui.event.MouseEvent;
 import org.nightlabs.editor2d.viewer.ui.event.MouseListener;
 import org.nightlabs.editor2d.viewer.ui.event.MouseMoveListener;
+import org.nightlabs.editor2d.viewer.ui.preferences.Preferences;
 
 public abstract class AbstractTool
 implements ITool, MouseListener, MouseMoveListener
 {
+	private static final Logger logger = Logger.getLogger(AbstractTool.class);
+
 	public static final String ID_DEFAULT = "DefaultToolID";  //$NON-NLS-1$
 	private String id = ID_DEFAULT;
 	private IViewer viewer = null;
@@ -194,17 +200,39 @@ implements ITool, MouseListener, MouseMoveListener
 		return conditional;
 	}
 
+//	public DrawComponent getDrawComponent(int x, int y, IDrawComponentConditional conditional,
+//			Collection<DrawComponent> excludeList)
+//	{
+//		return getViewer().getHitTestManager().findObjectAt(getViewer().getDrawComponent(),
+//				x, y, conditional, excludeList);
+//	}
 	public DrawComponent getDrawComponent(int x, int y, IDrawComponentConditional conditional,
 			Collection<DrawComponent> excludeList)
 	{
-		return getViewer().getHitTestManager().findObjectAt(getViewer().getDrawComponent(),
-				x, y, conditional, excludeList);
+//		long start = System.currentTimeMillis();
+		double hitTolerance = Preferences.getPreferenceStore().getDouble(Preferences.PREFERENCE_HIT_TOLERANCE);
+		Rectangle2D rect = new Rectangle2D.Double(x - hitTolerance, y - hitTolerance, hitTolerance * 2, hitTolerance * 2);
+		List<DrawComponent> dcs = getViewer().getHitTestManager().findObjectsAt(getViewer().getDrawComponent(),
+				rect, conditional, excludeList);
+		DrawComponent dc = null;
+		if (!dcs.isEmpty()) {
+			dc = dcs.iterator().next();
+		}
+//		if (logger.isDebugEnabled()) {
+//			long duration = System.currentTimeMillis() - start;
+//			logger.debug("x = "+x);
+//			logger.debug("y = "+y);
+//			logger.debug("hitTolerance = "+hitTolerance);
+//			logger.debug("rect = "+rect);
+//			logger.debug("found dc = "+dc);
+//			logger.debug("hitTest took = "+duration+" ms!");
+//		}
+		return dc;
 	}
 
 	public DrawComponent getDrawComponent(int x, int y)
 	{
-		return getViewer().getHitTestManager().findObjectAt(getViewer().getDrawComponent(),
-				x, y, conditional, null);
+		return getDrawComponent(x, y, conditional, null);
 	}
 
 	@Override

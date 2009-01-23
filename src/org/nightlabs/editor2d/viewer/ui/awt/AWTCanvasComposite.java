@@ -33,6 +33,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.events.DisposeEvent;
@@ -46,6 +47,7 @@ import org.nightlabs.editor2d.viewer.ui.ICanvas;
 import org.nightlabs.editor2d.viewer.ui.IMouseManager;
 import org.nightlabs.editor2d.viewer.ui.IViewer;
 import org.nightlabs.editor2d.viewer.ui.IViewport;
+import org.nightlabs.editor2d.viewer.ui.preferences.Preferences;
 
 public class AWTCanvasComposite
 extends AbstractCanvasComposite
@@ -57,7 +59,7 @@ implements IComponentViewer
 	public static final Logger logger = Logger.getLogger(AWTCanvasComposite.class);
 	private Frame frame = null;
 	private DisplayPanel displayPanel = null;
-//	private BufferedViewport displayPanel = null;	
+//	private BufferedViewport displayPanel = null;
 
 	public AWTCanvasComposite(Composite parent, int style, DrawComponent dc)
 	{
@@ -74,29 +76,44 @@ implements IComponentViewer
 	public Component getComponent() {
 		return (Component) getCanvas();
 	}
-			
+
+//	@Override
+//	protected IAutoScrollSupport initAutoScrollSupport()
+//	{
+//		IAutoScrollSupport autoScrollSupport = new AWTCanvasAutoScrollSupport(getComponent());
+//		autoScrollSupport.setScrollStep(10);
+//		autoScrollSupport.setTimerDelay(25);
+//		return autoScrollSupport;
+//	}
+
 	@Override
 	protected IAutoScrollSupport initAutoScrollSupport()
 	{
 		IAutoScrollSupport autoScrollSupport = new AWTCanvasAutoScrollSupport(getComponent());
-		autoScrollSupport.setScrollStep(10);
-		autoScrollSupport.setTimerDelay(5);
+		IPreferenceStore preferenceStore = Preferences.getPreferenceStore();
+		int scrollStep = preferenceStore.getInt(Preferences.PREFERENCE_SCROLL_STEP);
+		int timerDelay = preferenceStore.getInt(Preferences.PREFERENCE_TIMER_DELAY);
+		int scrollTolerance = preferenceStore.getInt(Preferences.PREFERENCE_SCROLL_TOLERANCE);
+		autoScrollSupport.setScrollStep(scrollStep);
+		autoScrollSupport.setTimerDelay(timerDelay);
+		autoScrollSupport.setScrollTolerance(scrollTolerance);
 		return autoScrollSupport;
 	}
-	  
+
+
 	@Override
 	public IMouseManager initMouseManager(IViewer viewer) {
 		return new AWTMouseManager(viewer, getComponent());
 	}
-				
+
 	public IBufferedCanvas getBufferedCanvas() {
 		return (IBufferedCanvas) getCanvas();
 	}
-	
+
 	public IViewport getViewport() {
 		return (IViewport) getCanvas();
 	}
-	
+
 	@Override
 	public void updateCanvas()
 	{
@@ -111,7 +128,7 @@ implements IComponentViewer
 		frame.setLayout(new BorderLayout());
 		displayPanel = new DisplayPanel(getDrawComponent());
 //		displayPanel = new BufferedViewport(getDrawComponent());
-		frame.add(displayPanel, BorderLayout.CENTER);		
+		frame.add(displayPanel, BorderLayout.CENTER);
 		frame.addWindowListener(new WindowAdapter(){
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -119,20 +136,20 @@ implements IComponentViewer
 					displayPanel.dispose();
 			}
 		});
-		
+
 		return displayPanel;
 	}
-			
+
 	private DisposeListener disposeListener = new DisposeListener()
 	{
 		public void widgetDisposed(DisposeEvent e)
 		{
 			if (logger.isDebugEnabled())
 				logger.debug("disposeListener()!"); //$NON-NLS-1$
-			
+
 			if (getAutoScrollSupport() != null)
 				getAutoScrollSupport().dispose();
 		}
 	};
-			
+
 }

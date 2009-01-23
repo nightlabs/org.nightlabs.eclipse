@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.nightlabs.editor2d.viewer.ui.tool;
 
@@ -73,8 +73,9 @@ extends AbstractTool
 
 		//		if (showRollOver || showTooltip) {
 		if (showRollOver) {
-			mouseMovedDC = getViewer().getHitTestManager().findObjectAt(
-					getViewer().getDrawComponent(), currentX, currentY, getConditional(), null);
+//			mouseMovedDC = getViewer().getHitTestManager().findObjectAt(
+//					getViewer().getDrawComponent(), currentX, currentY, getConditional(), null);
+			mouseMovedDC = getDrawComponent(currentX, currentY, getConditional(), null);
 		}
 
 		if (showRollOver && mouseMovedDC != null) {

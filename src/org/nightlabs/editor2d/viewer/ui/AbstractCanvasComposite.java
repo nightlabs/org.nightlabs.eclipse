@@ -81,7 +81,7 @@ implements IViewer
 	private DrawComponent drawComponent;
 
 	/**
-	 * 
+	 *
 	 * @return the DrawComponent to draw
 	 */
 	public DrawComponent getDrawComponent() {
@@ -89,7 +89,7 @@ implements IViewer
 	}
 
 	/**
-	 * 
+	 *
 	 * @param drawComponent the DrawComponent to draw
 	 */
 	public void setDrawComponent(DrawComponent drawComponent) {
@@ -133,7 +133,7 @@ implements IViewer
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the current zoomFactor as double (100% = 1.0)
 	 */
 	public double getZoom() {
@@ -144,14 +144,14 @@ implements IViewer
 	private Color bgColor = defaultBgColor;
 
 	/**
-	 * 
+	 *
 	 * @return the Background Color of the Viewer
 	 */
 	public Color getBgColor() {
 		return bgColor;
 	}
 	/**
-	 * 
+	 *
 	 * @param bgColor the Background Color of the Viewer
 	 */
 	public void setBgColor(Color bgColor) {
@@ -161,7 +161,7 @@ implements IViewer
 
 	private SelectionManager selectionManager = null;
 	/**
-	 * 
+	 *
 	 * @see org.nightlabs.editor2d.viewer.ui.IViewer#getSelectionManager()
 	 */
 	public SelectionManager getSelectionManager()
@@ -203,8 +203,10 @@ implements IViewer
 	private HitTestManager hitTestManager = null;
 	public HitTestManager getHitTestManager()
 	{
-		if (hitTestManager == null)
+		if (hitTestManager == null) {
 			hitTestManager = new HitTestManager(getDrawComponent());
+//			hitTestManager.setHitTolerance(Preferences.getPreferenceStore().getDouble(Preferences.PREFERENCE_HIT_TOLERANCE));
+		}
 
 		return hitTestManager;
 	}

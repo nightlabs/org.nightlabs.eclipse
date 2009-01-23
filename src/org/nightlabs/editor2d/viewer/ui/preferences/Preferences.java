@@ -34,28 +34,26 @@ public class Preferences
 	public static final String PREFERENCE_TIMER_DELAY = "TimerDelay"; //$NON-NLS-1$
 	public static final String PREFERENCE_SCROLL_STEP = "ScrollStep"; //$NON-NLS-1$
 	public static final String PREFERENCE_SCROLL_TOLERANCE = "ScrollTolerance"; //$NON-NLS-1$
-	
 	public static final String PREFERENCE_BUFFER_SCALE = "BufferScale"; //$NON-NLS-1$
-	
 	public static final String PREFERENCE_RENDERING = "Rendering";	 //$NON-NLS-1$
 	public static final String PREFERENCE_QUALITY = "Quality"; //$NON-NLS-1$
 	public static final String PREFERENCE_DEFAULT = "Default"; //$NON-NLS-1$
 	public static final String PREFERENCE_SPEED = "Speed"; //$NON-NLS-1$
-	
+	public static final String PREFERENCE_HIT_TOLERANCE = "HitTolerance"; //$NON-NLS-1$
+
 	public static IPreferenceStore getPreferenceStore()
 	{
 		initDefaultValues(ViewerPlugin.getDefault().getPreferenceStore());
 		return ViewerPlugin.getDefault().getPreferenceStore();
 	}
-	
+
 	public static void initDefaultValues(IPreferenceStore store)
 	{
 		store.setDefault(PREFERENCE_BUFFER_SCALE, 2);
-		
-		store.setDefault(PREFERENCE_TIMER_DELAY, 5);
+		store.setDefault(PREFERENCE_TIMER_DELAY, 25);
 		store.setDefault(PREFERENCE_SCROLL_STEP, 10);
 		store.setDefault(PREFERENCE_SCROLL_TOLERANCE, 25);
-		
+		store.setDefault(PREFERENCE_HIT_TOLERANCE, 10);
 		store.setDefault(PREFERENCE_RENDERING, PREFERENCE_DEFAULT);
 	}
 }

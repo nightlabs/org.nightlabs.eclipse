@@ -76,21 +76,6 @@
             class="org.nightlabs.editor2d.viewer.ui.preferences.ViewerPreferencePage"
             id="org.nightlabs.editor2d.viewer"
             name="%preferences.category.name"/>
-      <page
-            category="org.nightlabs.editor2d.viewer"
-            class="org.nightlabs.editor2d.viewer.ui.preferences.AutoScrollPreferencePage"
-            id="org.nightlabs.editor2d.viewer.buffer"
-            name="%preferences.autoScroll.name"/>
-      <page
-            category="org.nightlabs.editor2d.viewer"
-            class="org.nightlabs.editor2d.viewer.ui.preferences.RenderingPreferencePage"
-            id="org.nightlabs.editor2d.viewer.rendering"
-            name="%preferences.rendering.name"/>
-      <page
-            category="org.nightlabs.editor2d.viewer"
-            class="org.nightlabs.editor2d.viewer.ui.preferences.BufferPreferencePage"
-            id="org.nightlabs.editor2d.viewer.buffer"
-            name="%preferences.buffer.name"/>
    </extension>
    <extension
          id="app"
