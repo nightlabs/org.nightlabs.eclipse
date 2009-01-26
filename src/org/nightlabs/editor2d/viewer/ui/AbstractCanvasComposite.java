@@ -205,6 +205,7 @@ implements IViewer
 	{
 		if (hitTestManager == null) {
 			hitTestManager = new HitTestManager(getDrawComponent());
+			// Somehow this does not worked correctly thats why it is now done in AbstractTool#getDrawComponent()
 //			hitTestManager.setHitTolerance(Preferences.getPreferenceStore().getDouble(Preferences.PREFERENCE_HIT_TOLERANCE));
 		}
 
