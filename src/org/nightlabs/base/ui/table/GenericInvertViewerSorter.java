@@ -27,6 +27,9 @@ package org.nightlabs.base.ui.table;
 
 import java.util.Comparator;
 
+import org.eclipse.jface.viewers.CellLabelProvider;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.ContentViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -122,7 +125,9 @@ extends InvertableSorter<Object>
 			comp2 = e2.toString();
 		}
 		else {
+			ContentViewer contentViewer = (ContentViewer) viewer;
 			IBaseLabelProvider prov = ((ContentViewer) viewer).getLabelProvider();
+
 			if (prov instanceof IColumnComparatorProvider) {
 				IColumnComparatorProvider cprov = (IColumnComparatorProvider) prov;
 //				comp1 = cprov.getColumnComparable(e1, columnIndex);
@@ -133,7 +138,25 @@ extends InvertableSorter<Object>
 				}
 			}
 
-			if (prov instanceof ITableLabelProvider) {
+			// handle special case of ColumnViewers and new Eclipse 3.3 API
+			// (e.g. TableViewerColumn#setLabelProvider(ColumnLabelProvider))
+			if (contentViewer instanceof ColumnViewer)
+			{
+				final ColumnViewer columnViewer = (ColumnViewer) contentViewer;
+				CellLabelProvider lprov = columnViewer.getLabelProvider(columnIndex);
+				if (lprov != null && (lprov instanceof ColumnLabelProvider))
+				{
+					final ColumnLabelProvider clprov = (ColumnLabelProvider) lprov;
+					comp1 = clprov.getText(e1);
+					comp2 = clprov.getText(e2);
+				}
+				else
+				{
+					comp1 = e1.toString();
+					comp2 = e2.toString();
+				}
+			}
+			else if (prov instanceof ITableLabelProvider) {
 				ITableLabelProvider lprov = (ITableLabelProvider) prov;
 				comp1 = lprov.getColumnText(e1, columnIndex);
 				comp2 = lprov.getColumnText(e2, columnIndex);
