@@ -137,12 +137,19 @@ extends InvertableSorter<Object>
 					return comparator.compare(e1, e2);
 				}
 			}
-
+			if (prov instanceof ITableLabelProvider) {
+				ITableLabelProvider lprov = (ITableLabelProvider) prov;
+				comp1 = lprov.getColumnText(e1, columnIndex);
+				comp2 = lprov.getColumnText(e2, columnIndex);
+			}
 			// handle special case of ColumnViewers and new Eclipse 3.3 API
 			// (e.g. TableViewerColumn#setLabelProvider(ColumnLabelProvider))
-			if (contentViewer instanceof ColumnViewer)
+			else if (contentViewer instanceof ColumnViewer)
 			{
 				final ColumnViewer columnViewer = (ColumnViewer) contentViewer;
+				// this always returns a result even if no ColumnLabelProvider was set for a column
+				// then getText() just returns element.toString(), therefore the check for ColumnLabelProvider
+				// should be quite at the end and definitely after the check for ITabelLabelProvider
 				CellLabelProvider lprov = columnViewer.getLabelProvider(columnIndex);
 				if (lprov != null && (lprov instanceof ColumnLabelProvider))
 				{
@@ -155,11 +162,6 @@ extends InvertableSorter<Object>
 					comp1 = e1.toString();
 					comp2 = e2.toString();
 				}
-			}
-			else if (prov instanceof ITableLabelProvider) {
-				ITableLabelProvider lprov = (ITableLabelProvider) prov;
-				comp1 = lprov.getColumnText(e1, columnIndex);
-				comp2 = lprov.getColumnText(e2, columnIndex);
 			}
 			else if (prov instanceof ILabelProvider) {
 				ILabelProvider lprov = (ILabelProvider) prov;
