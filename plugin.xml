@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin>
    <extension
-         point="org.nightlabs.base.ui.errorreport">
+         point="org.nightlabs.base.ui.errorReportSender">
       <errorReportSender
-            class="org.nightlabs.jfire.ui.errorreport.mantis.MantisSubmissionModule"
-            name="Mantis error submission">
+            class="org.nightlabs.jfire.ui.errorreport.mantis.JFireOrgMantisErrorReportSender"
+            id="org.nightlabs.jfire.ui.errorreport.mantis.JFireOrgMantisErrorReportSender"
+            name="JFire Bugtracker Error Submission">
       </errorReportSender>
    </extension>
-  <extension point="org.eclipse.ui.startup">
-	<startup class="org.nightlabs.jfire.ui.errorreport.mantis.MantisSubmissionStartup"/>
-  </extension>
 </plugin>
