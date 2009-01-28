@@ -28,7 +28,6 @@ package org.nightlabs.base.ui.exceptionhandler.errorreport;
 
 import java.util.List;
 
-import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.config.CfModList;
 import org.nightlabs.config.ConfigModule;
 import org.nightlabs.config.InitException;

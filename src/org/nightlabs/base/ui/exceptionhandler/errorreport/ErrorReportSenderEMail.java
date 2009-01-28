@@ -45,7 +45,6 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import org.apache.log4j.Logger;
-import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.util.ImageUtil;
 import org.nightlabs.config.Config;
 

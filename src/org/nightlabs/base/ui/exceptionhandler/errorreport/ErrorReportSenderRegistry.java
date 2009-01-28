@@ -1,40 +1,35 @@
 package org.nightlabs.base.ui.exceptionhandler.errorreport;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
 
+/**
+ * Registry for error senders provided by extensions.
+ * @author Marc Klinger - marc[at]nightlabs[dot]de
+ */
 public class ErrorReportSenderRegistry extends AbstractEPProcessor
 {
-	private static final Logger logger = Logger.getLogger(ErrorReportSenderRegistry.class);
-	private static final String EXTENSION_POINT_ID = "org.nightlabs.base.ui.errorreport"; //$NON-NLS-1$
+	private static final String EXTENSION_POINT_ID = "org.nightlabs.base.ui.errorReportSender"; //$NON-NLS-1$
 
-	private Map<String, IErrorReportSender> senders = new HashMap<String, IErrorReportSender>();
+	private static ErrorReportSenderRegistry registry = null;
 	
-	public void addSender(String name, IErrorReportSender sender)
+	/**
+	 * Get the shared registry.
+	 * @return The registry
+	 */
+	public static ErrorReportSenderRegistry getRegistry()
 	{
-		synchronized (senders)
-		{
-			senders.put(name, sender);
-		}
+		if(registry == null)
+			registry = new ErrorReportSenderRegistry();
+		return registry;
 	}
-
-	public void removeSender(String name)
-	{
-		synchronized (senders)
-		{
-			senders.remove(name);
-		}
-	}
-
-	public Map<String, IErrorReportSender> getSenders()
-	{
-		return senders;
-	}
+	
+	private Map<String, ErrorReportSenderDescriptor> senders;
 	
 	@Override
 	public String getExtensionPointID()
@@ -43,22 +38,34 @@ public class ErrorReportSenderRegistry extends AbstractEPProcessor
 	}
 
 	@Override
-	public void processElement(IExtension extension, IConfigurationElement element) throws Exception
+	public synchronized void processElement(IExtension extension, IConfigurationElement element) throws Exception
 	{
-		if (element.getName().toLowerCase().equals("errorreport")) { //$NON-NLS-1$
-			String name = element.getAttribute("name"); //$NON-NLS-1$
-
-			IErrorReportSender sender = (IErrorReportSender) element.createExecutableExtension("class"); //$NON-NLS-1$
-			if (!IErrorReportSender.class.isAssignableFrom(sender.getClass()))
-				throw new IllegalArgumentException("Specified class for element errorreport must implement "+IErrorReportSender.class.getName()+". "+sender.getClass().getName()+" does not."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-
-			addSender(name, sender);
+		if(senders == null)
+			senders = new HashMap<String, ErrorReportSenderDescriptor>();
+		ErrorReportSenderDescriptor sd = new ErrorReportSenderDescriptor(element);
+		senders.put(sd.getId(), sd);
+	}
+	
+	/**
+	 * Get an unmodifiable senders map id -&gt; sender descriptor.
+	 * @return the senders
+	 */
+	public synchronized Map<String, ErrorReportSenderDescriptor> getSenders()
+	{
+		process();
+		if(senders == null)
+			return Collections.emptyMap();
+		return Collections.unmodifiableMap(senders);
+	}
+	
+	public ErrorReportSenderDescriptor getDefaultSender()
+	{
+		ErrorReportSenderDescriptor highestPrioritySender = null;
+		Map<String, ErrorReportSenderDescriptor> senders = getSenders();
+		for (ErrorReportSenderDescriptor sd : senders.values()) {
+			if(highestPrioritySender == null || highestPrioritySender.getPriority() < sd.getPriority())
+				highestPrioritySender = sd;
 		}
-		else 
-		{
-			// wrong element according to schema, probably checked earlier
-			throw new IllegalArgumentException("Element "+element.getName()+" is not supported by extension-point " + EXTENSION_POINT_ID); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
+		return highestPrioritySender;
 	}
 }

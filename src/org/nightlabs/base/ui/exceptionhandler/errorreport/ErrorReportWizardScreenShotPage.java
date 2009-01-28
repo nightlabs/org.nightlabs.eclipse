@@ -114,7 +114,7 @@ extends DynamicPathWizardPage
 						scaledImage = ImageUtil.resize(image,(int)(data.width * imgRatio),(int)(data.height * imgRatio),false);
 					}
 
-					image.dispose(); 
+					image.dispose();
 
 					screenshotImage.setImage(scaledImage);
 					screenshotImage.redraw();					

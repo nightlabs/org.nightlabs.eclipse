@@ -36,7 +36,7 @@
     <extension-point id="entityEditorActionBarContribution"
         name="entityEditorActionBarContribution" schema="schema/entityEditorActionBarContribution.exsd"/>
     <extension-point id="workbenchListener" name="workbenchListener" schema="schema/workbenchListener.exsd"/>
-    <extension-point id="errorreport" name="error report sender" schema="schema/errorReportSender.exsd"/>
+    <extension-point id="errorReportSender" name="Error Report Sender" schema="schema/errorReportSender.exsd"/>
     <extension point="org.nightlabs.base.ui.exceptionhandler">
         <exceptionHandler
               class="org.nightlabs.base.ui.exceptionhandler.ThrowableHandler"
@@ -62,6 +62,9 @@
         <page category="%category.general"
             class="org.eclipse.ui.internal.dialogs.ContentTypesPreferencePage"
             id="org.eclipse.ui.internal.dialogs.ContentTypesPreferencePage" name="%preferencePage.contentTypes.label"/>
+        <page category="%category.general"
+            class="org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportSenderPreferencePage"
+            id="org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportSenderPreferencePage" name="%preferencePage.errorReportSender.label"/>
         <page category=""
             class="org.nightlabs.base.ui.print.pref.PrinterPreferencePage"
             id="org.nightlabs.base.ui.print.pref.PrinterPreferencePage" name="%preferencePage.printer.label"/>
@@ -83,6 +86,18 @@
                 id="org.eclipse.ui.actions.showKeyAssistHandler"
                 label="%menu.help.showKeyAssistant.label"
                 menubarPath="help/group.assist" style="push"/>
+        </actionSet>
+        <actionSet
+              id="org.nightlabs.base.ui.actionSet1"
+              label="Error Test"
+              visible="true">
+           <action
+                 class="org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorTestAction"
+                 id="org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorTestAction"
+                 label="Error Test"
+                 menubarPath="help/group.assist"
+                 style="push">
+           </action>
         </actionSet>
     </extension>
     <extension point="org.nightlabs.base.ui.printerConfiguration">
@@ -160,6 +175,15 @@
 -->
     <extension point="org.nightlabs.base.ui.cache">
         <cacheFactory class="org.nightlabs.base.ui.cache.DummyCacheFactory"/>
+    </extension>
+    <extension
+          point="org.nightlabs.base.ui.errorReportSender">
+       <errorReportSender
+             class="org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportSenderEMail"
+             id="org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportSenderEMail"
+             name="EMail to JFire developers"
+             priority="-1000">
+       </errorReportSender>
     </extension>
     <!--   
    <extension

@@ -28,8 +28,15 @@ package org.nightlabs.base.ui.exceptionhandler.errorreport;
 
 /**
  * @author Simon Lehmann - simon@nightlabs.de
+ * @author Marc Klinger - marc[at]nightlabs[dot]de
  */
 public interface IErrorReportSender
 {
-	public void sendErrorReport(ErrorReport errorReport);
+	/**
+	 * Send the given error report. All exceptions thrown in this method
+	 * will not be escalated but logged by the caller.
+	 * @param errorReport The error report to send
+	 * @throws Exception in case of an error sending the report
+	 */
+	public void sendErrorReport(ErrorReport errorReport) throws Exception;
 }

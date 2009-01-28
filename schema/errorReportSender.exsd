@@ -6,7 +6,7 @@
          <meta.schema plugin="org.nightlabs.base.ui" id="errorreport" name="Error Report Sender"/>
       </appinfo>
       <documentation>
-         [Enter description of this extension point.]
+         Use this extension point to register error report sender modules.
       </documentation>
    </annotation>
 
@@ -49,17 +49,41 @@
 
    <element name="errorReportSender">
       <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
          <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java"/>
+                  <meta.attribute kind="java" basedOn=":org.nightlabs.base.ui.exceptionhandler.errorreport.IErrorReportSender"/>
                </appinfo>
             </annotation>
          </attribute>
-         <attribute name="name" type="string" use="required">
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="priority" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="preferencePageId" type="string">
             <annotation>
                <documentation>
                   

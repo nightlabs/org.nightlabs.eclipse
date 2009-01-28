@@ -32,32 +32,50 @@ import org.nightlabs.config.InitException;
 /**
  * @author Simon Lehmann - simon at nightlabs dot de
  * @author marco schulze - marco at nightlabs dot de
+ * @author Marc Klinger - marc[at]nightlabs[dot]de
  */
 public class ErrorReportSenderCfMod extends ConfigModule
 {
 	private static final long serialVersionUID = 1L;
 	
-	private String errorReportSenderClass;
-	private boolean attachScreenShotToErrorReport_default;
-	private boolean attachScreenShotToErrorReport_decide;
+	private String errorReportSenderId;
+	private Boolean attachScreenShotToErrorReport_default;
+	private Boolean attachScreenShotToErrorReport_decide;
 	
 	@Override
 	public void init() throws InitException
 	{
 		super.init();
-		if (errorReportSenderClass == null)
-			errorReportSenderClass = ErrorReportSenderEMail.class.getName();
+		// dont set a default for the sender id. null means auto-select
+		
+		// set attachScreenShotToErrorReport_decide to true by default but disable sending by default.
+		// JFire changes this value depending on security rules. In this case, this value only
+		// applies as long as no JFire user was logged in.
+		if(attachScreenShotToErrorReport_decide == null)
+			attachScreenShotToErrorReport_decide = true;
+		if(attachScreenShotToErrorReport_default == null)
+			attachScreenShotToErrorReport_default = false;
 	}
-	public String getErrorReportSenderClass()
+	
+	/**
+	 * Get the errorReportSenderId.
+	 * @return the errorReportSenderId
+	 */
+	public String getErrorReportSenderId()
 	{
-		return errorReportSenderClass;
+		return errorReportSenderId;
 	}
-	public void setErrorReportSenderClass(String errorReportSenderClass)
+	
+	/**
+	 * Set the errorReportSenderId.
+	 * @param errorReportSenderId the errorReportSenderId to set
+	 */
+	public void setErrorReportSenderId(String errorReportSenderId)
 	{
-		this.errorReportSenderClass = errorReportSenderClass;
+		this.errorReportSenderId = errorReportSenderId;
 		setChanged();
 	}
-
+	
 	/**
 	 * Is the user allowed to override the default value specified by {@link #isAttachScreenShotToErrorReport_default()}?
 	 *

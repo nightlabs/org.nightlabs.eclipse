@@ -48,8 +48,8 @@ public class ErrorReportWizard extends DynamicPathWizard
 	private ErrorReportWizardEntryPage entryPage;
 	private ErrorReportWizardCommentPage sendExceptionPage;
 	private ErrorReportWizardSummaryPage exceptionSummaryPage;
-	private ErrorReportWizardScreenShotPage ScreenShotPage;
-	
+	private ErrorReportWizardScreenShotPage screenShotPage;
+
 	/**
 	 * @param errorReport A raw <tt>ErrorReport</tt>. It will be populated with user comment
 	 * and other data by this wizard.
@@ -59,13 +59,62 @@ public class ErrorReportWizard extends DynamicPathWizard
 		this.errorReport = errorReport;
 		entryPage = new ErrorReportWizardEntryPage();
 		sendExceptionPage = new ErrorReportWizardCommentPage();
-		ScreenShotPage = new ErrorReportWizardScreenShotPage();
+		screenShotPage = new ErrorReportWizardScreenShotPage();
 		exceptionSummaryPage = new ErrorReportWizardSummaryPage();
-		
+
 		addPage(entryPage);
 		addPage(sendExceptionPage);
-		addPage(ScreenShotPage);
+		addPage(screenShotPage);
 		addPage(exceptionSummaryPage);
+	}
+
+	/**
+	 * Find the sender to use.
+	 * 1st: Try to get the selected sender by consulting the config module
+	 * 2nd: If this fails or no sender is selected, try to use the default sender
+	 * 3rd: If all fails, use the email sender 
+	 * @return The sender to use
+	 */
+	private IErrorReportSender getSenderToUse()
+	{
+		IErrorReportSender sender = null;
+
+		// try selected sender
+		try {
+			Config configuration = Config.sharedInstance();
+			ErrorReportSenderCfMod cfMod  = configuration.createConfigModule(ErrorReportSenderCfMod.class);
+			String errorReportSenderId = cfMod.getErrorReportSenderId();
+			if(errorReportSenderId != null) {
+				ErrorReportSenderDescriptor selectedSender = ErrorReportSenderRegistry.getRegistry().getSenders().get(errorReportSenderId);
+				if(selectedSender != null) {
+					sender = selectedSender.getInstance();
+					logger.info("Using selected error report sender: "+selectedSender.getId());
+				}
+			}
+		} catch(Throwable e) {
+			logger.error("Error getting selected error report sender", e);
+		}
+
+
+		if(sender == null) {
+			// fall back to default sender
+			try {
+				ErrorReportSenderDescriptor defaultSender = ErrorReportSenderRegistry.getRegistry().getDefaultSender();
+				if(defaultSender != null)
+					sender = defaultSender.getInstance();
+				logger.info("Using default error report sender: "+defaultSender.getId());
+			} catch(Throwable e) {
+				logger.error("Error getting default error report sender", e);
+			}
+		}
+
+		if(sender == null) {
+			// fall back to email
+			sender = new ErrorReportSenderEMail();
+			logger.info("Using fall-back EMail error report sender");
+		}
+
+		return sender;
 	}
 
 	/**
@@ -75,26 +124,8 @@ public class ErrorReportWizard extends DynamicPathWizard
 	public boolean performFinish()
 	{
 		try {
-//			obtain configuration
-			Config configuration = Config.sharedInstance();
-
-//			create new ConfigModule or obtain the one read from xml files
-			ErrorReportSenderCfMod cfMod  = configuration.createConfigModule(ErrorReportSenderCfMod.class);
-
-			Class clazz;
-			try {
-				clazz = Class.forName(cfMod.getErrorReportSenderClass());
-			} catch (Throwable x) {
-				throw new ClassNotFoundException(
-						"Invalid configuration parameter in \"" + ErrorReportSenderCfMod.class + "\": Unable to load class \"" + cfMod.getErrorReportSenderClass() + "\"!", x);  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-			}
-
-			if (!IErrorReportSender.class.isAssignableFrom(clazz))
-				throw new ClassCastException(
-						"Invalid configuration parameter in \"" + ErrorReportSenderCfMod.class + "\": Class \"" + cfMod.getErrorReportSenderClass() + "\" does not implement interface \""+IErrorReportSender.class.getName()+"\"!");  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-			
-			errorReport.setIsSendScreenShot(ScreenShotPage.getIsSendsScreenshotImage());
-			IErrorReportSender sender = (IErrorReportSender) clazz.newInstance();
+			errorReport.setIsSendScreenShot(screenShotPage.getIsSendsScreenshotImage());
+			IErrorReportSender sender = getSenderToUse();
 			sender.sendErrorReport(errorReport);
 			return true;
 		} catch (Throwable e) {
@@ -105,9 +136,9 @@ public class ErrorReportWizard extends DynamicPathWizard
 					String.format(
 							Messages.getString("org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportWizard.sendingErrorReportFailedDialog.message"), //$NON-NLS-1$
 							new Object[] {
-									e.getClass().getName(),
-									e.getLocalizedMessage(),
-									Util.getStackTraceAsString(e)
+								e.getClass().getName(),
+								e.getLocalizedMessage(),
+								Util.getStackTraceAsString(e)
 							}
 					)
 			);
