@@ -1,6 +1,5 @@
 package org.nightlabs.connection.ui.tcp;
 
-import org.nightlabs.annotation.Implement;
 import org.nightlabs.connection.config.ConnectionCf;
 import org.nightlabs.connection.ui.AbstractConnectionCfEditFactory;
 import org.nightlabs.connection.ui.ConnectionCfEdit;
@@ -8,8 +7,7 @@ import org.nightlabs.connection.ui.ConnectionCfEdit;
 public class TCPConnectionCfEditFactory
 		extends AbstractConnectionCfEditFactory
 {
-
-	@Implement
+	@Override
 	public ConnectionCfEdit createConnectionCfEdit(ConnectionCf connectionCf)
 	{
 		TCPConnectionCfEdit res = new TCPConnectionCfEdit();
@@ -18,5 +16,4 @@ public class TCPConnectionCfEditFactory
 		res.init();
 		return res;
 	}
-
 }
