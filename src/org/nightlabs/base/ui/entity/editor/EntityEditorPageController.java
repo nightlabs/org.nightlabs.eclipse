@@ -42,7 +42,6 @@ import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.ui.forms.editor.IFormPage;
-import org.nightlabs.annotation.Implement;
 import org.nightlabs.base.ui.exceptionhandler.ExceptionHandlerRegistry;
 import org.nightlabs.base.ui.job.Job;
 import org.nightlabs.base.ui.progress.CompoundProgressMonitor;
@@ -412,7 +411,6 @@ implements IEntityEditorPageController
 	 * </p>
 	 * @see org.nightlabs.base.ui.entity.editor.IEntityEditorPageController#dispose()
 	 */
-	@Implement
 	public void dispose() {
 		// does nothing
 	}

@@ -38,7 +38,6 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
-import org.nightlabs.annotation.Implement;
 import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.exceptionhandler.ExceptionHandlerRegistry;
 import org.nightlabs.base.ui.exceptionhandler.SaveRunnableRunner;
@@ -323,7 +322,7 @@ implements IApplication
 	 * 
 	 * @see IApplication#start(IApplicationContext)
 	 */
-	@Implement
+	@Override
 	public Object start(IApplicationContext context) throws Exception {
 		try {
 			initExceptionHandling();
@@ -411,7 +410,7 @@ implements IApplication
 	 * 
 	 * @see IApplication#stop()
 	 */
-	@Implement
+	@Override
 	public void stop() {
 		final IWorkbench workbench = PlatformUI.getWorkbench();
 		if (workbench == null)

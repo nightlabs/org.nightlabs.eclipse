@@ -4,7 +4,6 @@ import javax.security.auth.login.LoginException;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
-import org.nightlabs.annotation.Implement;
 import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
 import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
 
@@ -101,13 +100,11 @@ extends AbstractEPProcessor
 	private ILoginDelegate loginDelegate = null;
 
 	@Override
-	@Implement
 	public String getExtensionPointID() {
 		return "org.nightlabs.base.ui.login"; //$NON-NLS-1$
 	}
 
 	@Override
-	@Implement
 	public void processElement(IExtension extension, IConfigurationElement element)
 	throws Exception
 	{

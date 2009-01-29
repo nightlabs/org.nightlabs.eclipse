@@ -13,7 +13,6 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
-import org.nightlabs.annotation.Implement;
 import org.nightlabs.base.ui.resource.Messages;
 
 public class CountdownButton
@@ -30,7 +29,6 @@ public class CountdownButton
 	private Timer timer;
 	private TimerTask timerTask = new TimerTask() {
 		@Override
-		@Implement
 		public void run()
 		{
 			button.getDisplay().asyncExec(new Runnable()
