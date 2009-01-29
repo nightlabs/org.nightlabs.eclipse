@@ -11,7 +11,6 @@ import java.util.zip.GZIPOutputStream;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.multipart.ByteArrayPartSource;
 import org.apache.commons.httpclient.methods.multipart.FilePart;
@@ -26,6 +25,7 @@ import org.nightlabs.base.ui.util.ImageUtil;
 import org.nightlabs.util.IOUtil;
 
 /**
+ * Base mantis error report sender. Tested and working with Mantis 1.0.8 and 1.0.7.
  * @author Niklas Schiffler <nick@nightlabs.de>
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  */
@@ -109,10 +109,8 @@ public abstract class AbstractMantisErrorReportSender implements IErrorReportSen
 				//				new StringPart("max_file_size", "5000000"),
 				new FilePart("file", new ByteArrayPartSource("screenshot.jpg", bout.toByteArray()), "image/jpeg", "UTF-8"),
 		};
-//		m.setRequestHeader("Referer", "https://www.jfire.org/modules/bugs/view.php?"+issueId);
 		m.setRequestEntity(new MultipartRequestEntity(parts, m.getParams()));
 		client.executeMethod(m);
-
 		return m;
 	}
 
@@ -160,20 +158,18 @@ public abstract class AbstractMantisErrorReportSender implements IErrorReportSen
 		// post issue
 		PostMethod m = new PostMethod(getMantisBaseUrl()+"/bug_report.php");
 		List<Part> parts = new ArrayList<Part>(8);
-		parts.add(new StringPart("project_id", String.valueOf(getProjectId()))); // 29 = jfire.org 'Automated submissions'
+		parts.add(new StringPart("project_id", String.valueOf(getProjectId())));
 		parts.add(new StringPart("severity","60")); // 60 = major
 		parts.add(new StringPart("priority","30")); // 30 = normal
-		parts.add(new StringPart("view_state","50")); // private
+		parts.add(new StringPart("view_state","50")); // 10 = public (default) / 50 = private
+		parts.add(new StringPart("reproducibility", "100")); // 100 = N/A
 		parts.add(new StringPart("summary", summary.toString()));
 		parts.add(new StringPart("description", description.toString()));
 		parts.add(new StringPart("additional_info", strackTraces.toString()));
 		if(bout != null)
 			parts.add(new FilePart("file", new ByteArrayPartSource("errorreport.xml.gz", bout.toByteArray()), "application/x-gzip", "UTF-8"));
-
-//		m.setRequestHeader("Referer", "https://www.jfire.org/modules/bugs/bug_report_page.php");
 		m.setRequestEntity(new MultipartRequestEntity(parts.toArray(new Part[parts.size()]), m.getParams()));
 		client.executeMethod(m);
-		//System.out.println("response: \n"+m.getResponseBodyAsString());
 		return m;
 	}
 
@@ -181,8 +177,6 @@ public abstract class AbstractMantisErrorReportSender implements IErrorReportSen
 	{
 		//select mantis project
 		PostMethod m = new PostMethod(getMantisBaseUrl()+"/set_project.php");
-//		m.setRequestHeader("Referer", "https://www.jfire.org/modules/bugs/login_select_proj_page.php?ref=bug_report_page.php");
-		m.getParams().setCookiePolicy(CookiePolicy.RFC_2109);
 		m.setParameter("ref", "bug_report_page.php");
 		m.setParameter("project_id", String.valueOf(getProjectId()));
 		client.executeMethod(m);
@@ -191,17 +185,10 @@ public abstract class AbstractMantisErrorReportSender implements IErrorReportSen
 
 	protected PostMethod doLogin(HttpClient client) throws IOException
 	{
-		// jfire.org xoops login
-		PostMethod m = new PostMethod("https://www.jfire.org/user.php");
-		m.addParameter("uname", getUserName());
-		m.addParameter("pass", getPassword());
-		m.addParameter("op", "login");
-		m.setRequestHeader("Referer", "https://www.jfire.org/modules/content/");
-		client.executeMethod(m);
-
-		// start mantis session
-		m = new PostMethod(getMantisBaseUrl()+"/index.php");
-		m.setRequestHeader("Referer", "https://www.jfire.org/user.php");
+		// mantis login
+		PostMethod m = new PostMethod(getMantisBaseUrl()+"/login.php");
+		m.addParameter("username", getUserName());
+		m.addParameter("password", getPassword());
 		client.executeMethod(m);
 		return m;
 	}
