@@ -249,7 +249,7 @@
 <!--  -->
 <!-- -->
       <page
-            category="org.nightlabs.editor2d.ui"
+            category="org.nightlabs.editor2d.viewer.ui.preferences.Editor2DPreferencePage"
             class="org.nightlabs.editor2d.ui.preferences.DocumentPropertiesPreferencePage"
             id="org.nightlabs.editor2d.ui.preferences.DocumentPropertiesPreferencePage"
             name="%preferences.document.properties.title"/>
@@ -291,6 +291,15 @@
            resolution="762"
            resolutionUnit="org.nightlabs.i18n.unit.resolution.DPIResolutionUnit">
      </documentProperties>
+  </extension>
+  <extension
+        point="org.nightlabs.base.ui.removeExtension">
+     <removeExtension
+           attributeName="id"
+           attributePattern="org.holongate.j2d.prefs*"
+           elementPath="page"
+           extensionPointID="org.eclipse.ui.preferencePages">
+     </removeExtension>
   </extension>    
        
 <!--
