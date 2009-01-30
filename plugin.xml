@@ -12,9 +12,15 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
+            category="org.nightlabs.keyreader.ui.preference.HardwarePreferencePage"
             class="org.nightlabs.keyreader.ui.preference.KeyReaderPreferencePage"
             id="org.nightlabs.keyreader.ui.preference.KeyReaderPreferencePage"
             name="%org.nightlabs.keyreader.ui.preference.KeyReaderPreferencePage.name"/>
+      <page
+            class="org.nightlabs.keyreader.ui.preference.HardwarePreferencePage"
+            id="org.nightlabs.keyreader.ui.preference.HardwarePreferencePage"
+            name="Hardware">
+      </page>
    </extension>
 
 </plugin>
