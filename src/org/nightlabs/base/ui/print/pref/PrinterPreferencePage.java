@@ -26,45 +26,16 @@
 
 package org.nightlabs.base.ui.print.pref;
 
-import org.eclipse.jface.preference.PreferencePage;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.nightlabs.base.ui.composite.XComposite;
-import org.nightlabs.base.ui.resource.Messages;
+import org.nightlabs.base.ui.preference.CategoryPreferencePage;
 
 /**
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  *
  */
 public class PrinterPreferencePage
-extends PreferencePage
-implements IWorkbenchPreferencePage {
-
-	private XComposite wrapper;
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.preference.PreferencePage#createContents(org.eclipse.swt.widgets.Composite)
-	 */
-	@Override
-	protected Control createContents(Composite parent) {
-		wrapper = new XComposite(parent, SWT.NONE);
-		Label descriptionLabel = new Label(wrapper, SWT.WRAP);
-		descriptionLabel.setLayoutData(new GridData());
-		descriptionLabel.setText(Messages.getString("org.nightlabs.base.ui.print.pref.PrinterPreferencePage.descriptionLabel.text")); //$NON-NLS-1$
-		return wrapper;
+extends CategoryPreferencePage
+{
+	public PrinterPreferencePage() {
+		super();
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
-	 */
-	public void init(IWorkbench workbench) {
-	}
-
 }
