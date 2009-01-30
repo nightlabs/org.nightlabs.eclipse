@@ -134,17 +134,18 @@ extends Dialog
 					Calendar cal = Calendar.getInstance();
 					cal.setTime(DateTimeUtil.getDate(calendarDateTime));
 					
-					if(getDate().after(cal) && !allowPast  )
+					if(getDate().after(cal) && !allowPast)
 					{
-						MessageDialog.openError(getShell(), "Past date", "You are not allowed to set a date in the past only future ones"); 
+						MessageDialog.openError(getShell(), "Past date", "You are not allowed to set a date in the past - only future ones!"); 
 						DateTimeUtil.setDate(getDate(), calendarDateTime);
 					}		
 					else
 					{
-						dateDateTime.setYear(calendarDateTime.getYear());
-						dateDateTime.setMonth(calendarDateTime.getMonth());
-						dateDateTime.setDay(calendarDateTime.getDay());
-
+						if (dateDateTime != null) { // TODO that thing is commented out below - shall we remove it completely? Marco.
+							dateDateTime.setYear(calendarDateTime.getYear());
+							dateDateTime.setMonth(calendarDateTime.getMonth());
+							dateDateTime.setDay(calendarDateTime.getDay());
+						}
 					}
 				}
 			});

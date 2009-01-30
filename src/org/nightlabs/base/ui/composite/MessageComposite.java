@@ -48,7 +48,7 @@ extends XComposite
 		
 		setLayout(new GridLayout(2, false));
 		imageLabel = new Label(this, SWT.NONE);
-		label = new Label(this, SWT.NONE);
+		label = new Label(this, SWT.WRAP);
 		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
 		setMessage(message, messageType);
