@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
+import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.config.Config;
 
 /**
@@ -69,7 +70,7 @@ public class ErrorReportSenderPreferencePage extends PreferencePage implements I
 		@Override
 		public String getName()
 		{
-			return "Automatic selection";
+			return Messages.getString("org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportSenderPreferencePage.autoSelectComboItem"); //$NON-NLS-1$
 		}
 	};
 	private ComboViewer senderCombo;
@@ -91,7 +92,7 @@ public class ErrorReportSenderPreferencePage extends PreferencePage implements I
 
 		
 		Label l = new Label(composite, SWT.WRAP);
-		l.setText("Error report sender module: ");
+		l.setText(Messages.getString("org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportSenderPreferencePage.senderModuleLabel")); //$NON-NLS-1$
 		
 		senderCombo = new ComboViewer(composite, SWT.DROP_DOWN | SWT.READ_ONLY);
 		senderCombo.setContentProvider(new ArrayContentProvider());
@@ -102,8 +103,6 @@ public class ErrorReportSenderPreferencePage extends PreferencePage implements I
 			@Override
 			public String getText(Object element)
 			{
-				if(element == null)
-					return "Automatic selection";
 				if(element instanceof ErrorReportSenderDescriptor)
 					return ((ErrorReportSenderDescriptor)element).getName();
 				return super.getText(element);
@@ -124,7 +123,7 @@ public class ErrorReportSenderPreferencePage extends PreferencePage implements I
 		gd.horizontalIndent = 32;
 		link.setLayoutData(gd);
 		link.setFont(composite.getFont());
-		link.setText("<A>Configure selected error report sender...</A>");  //$NON-NLS-1$
+		link.setText(Messages.getString("org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportSenderPreferencePage.configureSelectionLink")); //$NON-NLS-1$
 		link.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				doLinkActivated((Link) e.widget);
