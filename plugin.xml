@@ -73,9 +73,15 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
+            category="org.nightlabs.editor2d.viewer.ui.preferences.Editor2DPreferencePage"
             class="org.nightlabs.editor2d.viewer.ui.preferences.ViewerPreferencePage"
-            id="org.nightlabs.editor2d.viewer"
-            name="%preferences.category.name"/>
+            id="org.nightlabs.editor2d.viewer.ui.preferences.ViewerPreferencePage"
+            name="%org.nightlabs.editor2d.viewer.ui.preferences.ViewerPreferencePage.name"/>
+      <page
+            class="org.nightlabs.editor2d.viewer.ui.preferences.Editor2DPreferencePage"
+            id="org.nightlabs.editor2d.viewer.ui.preferences.Editor2DPreferencePage"
+            name="%org.nightlabs.editor2d.viewer.ui.preferences.Editor2DPreferencePage.name">
+      </page>
    </extension>
    <extension
          id="app"
