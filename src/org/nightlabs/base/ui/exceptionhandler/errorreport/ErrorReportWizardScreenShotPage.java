@@ -62,10 +62,10 @@ extends DynamicPathWizardPage
 		});		    
 
 		ErrorReportSenderCfMod cfMod = Config.sharedInstance().createConfigModule(ErrorReportSenderCfMod.class);
-		sendScreenShotCheckBox.setSelection(cfMod.isAttachScreenShotToErrorReport_default());
+		sendScreenShotCheckBox.setSelection(cfMod.getAttachScreenShotToErrorReport_default());
 
 		sendScreenShotCheckBox.setToolTipText(Messages.getString("org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportWizardScreenShotPage.sendScreenShotCheckBox.tooltip")); //$NON-NLS-1$
-		if(!cfMod.isAttachScreenShotToErrorReport_decide())
+		if(!cfMod.getAttachScreenShotToErrorReport_decide())
 		{
 			sendScreenShotCheckBox.setEnabled(false);
 			sendScreenShotCheckBox.setSelection(false);

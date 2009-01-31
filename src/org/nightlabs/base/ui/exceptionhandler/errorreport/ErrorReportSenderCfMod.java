@@ -37,17 +37,17 @@ import org.nightlabs.config.InitException;
 public class ErrorReportSenderCfMod extends ConfigModule
 {
 	private static final long serialVersionUID = 1L;
-	
+
 	private String errorReportSenderId;
 	private Boolean attachScreenShotToErrorReport_default;
 	private Boolean attachScreenShotToErrorReport_decide;
-	
+
 	@Override
 	public void init() throws InitException
 	{
 		super.init();
 		// dont set a default for the sender id. null means auto-select
-		
+
 		// set attachScreenShotToErrorReport_decide to true by default but disable sending by default.
 		// JFire changes this value depending on security rules. In this case, this value only
 		// applies as long as no JFire user was logged in.
@@ -56,7 +56,7 @@ public class ErrorReportSenderCfMod extends ConfigModule
 		if(attachScreenShotToErrorReport_default == null)
 			attachScreenShotToErrorReport_default = false;
 	}
-	
+
 	/**
 	 * Get the errorReportSenderId.
 	 * @return the errorReportSenderId
@@ -65,7 +65,7 @@ public class ErrorReportSenderCfMod extends ConfigModule
 	{
 		return errorReportSenderId;
 	}
-	
+
 	/**
 	 * Set the errorReportSenderId.
 	 * @param errorReportSenderId the errorReportSenderId to set
@@ -75,21 +75,23 @@ public class ErrorReportSenderCfMod extends ConfigModule
 		this.errorReportSenderId = errorReportSenderId;
 		setChanged();
 	}
-	
+
 	/**
-	 * Is the user allowed to override the default value specified by {@link #isAttachScreenShotToErrorReport_default()}?
+	 * Is the user allowed to override the default value specified by {@link #getAttachScreenShotToErrorReport_default()}?
 	 *
 	 * @return whether the user is allowed to decide about sending a screen shot.
 	 */
-	public boolean isAttachScreenShotToErrorReport_decide() {
+	public Boolean getAttachScreenShotToErrorReport_decide() {
+		// Note: This method must return a Boolean object, because we otherwise get NullPointerExceptions when the XML-BeanSerializer writes this config module. Marco.
 		return attachScreenShotToErrorReport_decide;
 	}
 	/**
-	 * Set whether the user is allowed to override the default value specified by {@link #isAttachScreenShotToErrorReport_default()}.
+	 * Set whether the user is allowed to override the default value specified by {@link #getAttachScreenShotToErrorReport_default()}.
 	 *
 	 * @param attachScreenShotToErrorReport_decide whether the user is allowed to decide (or must take the default value).
 	 */
-	public void setAttachScreenShotToErrorReport_decide(boolean attachScreenShotToErrorReport_decide) {
+	public void setAttachScreenShotToErrorReport_decide(Boolean attachScreenShotToErrorReport_decide) {
+		// Note: This method must take a Boolean argument, because we otherwise get NullPointerExceptions when the XML-BeanSerializer writes this config module. Marco.
 		this.attachScreenShotToErrorReport_decide = attachScreenShotToErrorReport_decide;
 		setChanged();
 	}
@@ -99,7 +101,8 @@ public class ErrorReportSenderCfMod extends ConfigModule
 	 *
 	 * @return the default value.
 	 */
-	public boolean isAttachScreenShotToErrorReport_default() {
+	public Boolean getAttachScreenShotToErrorReport_default() {
+		// Note: This method must return a Boolean object, because we otherwise get NullPointerExceptions when the XML-BeanSerializer writes this config module. Marco.
 		return attachScreenShotToErrorReport_default;
 	}
 	/**
@@ -107,7 +110,8 @@ public class ErrorReportSenderCfMod extends ConfigModule
 	 *
 	 * @param attachScreenShotToErrorReport_default the new default value.
 	 */
-	public void setAttachScreenShotToErrorReport_default(boolean attachScreenShotToErrorReport_default) {
+	public void setAttachScreenShotToErrorReport_default(Boolean attachScreenShotToErrorReport_default) {
+		// Note: This method must take a Boolean argument, because we otherwise get NullPointerExceptions when the XML-BeanSerializer writes this config module. Marco.
 		this.attachScreenShotToErrorReport_default = attachScreenShotToErrorReport_default;
 		setChanged();
 	}
