@@ -33,7 +33,9 @@ public class PreferencesUtil
 	 */
 	public static <T> T deserialize(String string)
 	{
-		return deserialize(string, PreferencesUtil.class.getClassLoader());
+		// The code "return deserialize(...)" compiles in eclipse but not with Sun compiler.
+		// According to http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6302954 this is a workaround:
+		return PreferencesUtil.<T>deserialize(string, PreferencesUtil.class.getClassLoader());
 	}
 
 	/**
