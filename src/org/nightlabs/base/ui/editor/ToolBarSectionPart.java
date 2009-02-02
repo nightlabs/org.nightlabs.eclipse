@@ -30,12 +30,16 @@ import java.util.LinkedList;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.ToolBarManager;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.forms.editor.IFormPage;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.nightlabs.base.ui.action.IUpdateActionOrContributionItem;
+import org.nightlabs.base.ui.action.SelectionAction;
 
 /**
  * 
@@ -57,11 +61,11 @@ extends MessageSectionPart
 	}
 
 	/**
-	 * Returns the {@link ToolBarManager} where all registered {@link IAction}s 
+	 * Returns the {@link ToolBarManager} where all registered {@link IAction}s
 	 * are contained.
 	 * <p>
 	 * Note, that this method will lazily create a {@link ToolBar} and
-	 * a {@link ToolBarManager} for this section if not already done. 
+	 * a {@link ToolBarManager} for this section if not already done.
 	 * </p>
 	 * @return the {@link ToolBarManager}.
 	 */
@@ -128,4 +132,31 @@ extends MessageSectionPart
 		getToolBarManager().update(true);
 	}
 	
+	private ISelectionProvider selectionProvider;
+
+	/**
+	 * @return the selectionProvider
+	 */
+	public ISelectionProvider getSelectionProvider() {
+		return selectionProvider;
+	}
+
+	/**
+	 * Setting the selection provider triggers an update of the registered {@link SelectionAction}s whenever the selection is changed.
+	 * 
+	 * @param selectionProvider the selectionProvider to set
+	 */
+	public void setSelectionProvider(final ISelectionProvider selectionProvider) {
+		this.selectionProvider = selectionProvider;
+		selectionProvider.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				for (IAction action : new ArrayList<IAction> (registeredActions)) {
+					if (action instanceof SelectionAction)
+						((SelectionAction) action).setSelection(selectionProvider.getSelection());
+				}
+				updateToolBarManager();
+			}
+		});
+	}
 }
