@@ -95,7 +95,7 @@ import org.nightlabs.progress.ProgressMonitor;
  *
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  */
-public abstract class EntityEditorPageWithProgress extends FormPage implements Fadeable
+public abstract class EntityEditorPageWithProgress extends FormPage implements Fadeable, IEntityEditorPage
 {
 	/**
 	 * Wrapper that holds the stack layout.
@@ -199,7 +199,7 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 	 * This implementation does nothing and is intended to be overridden in order to fill
 	 * the ui with the data now loaded. Also make use of the {@link #switchToContent()} method
 	 * here.
-	 * </p> 
+	 * </p>
 	 *
 	 * @param modifyEvent The Event thrown by the associated controller.
 	 */
