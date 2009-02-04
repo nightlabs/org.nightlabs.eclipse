@@ -31,36 +31,36 @@ import java.util.Collection;
 public interface ITempContentManager
 {
 	/**
-	 * 
+	 *
 	 * @param o the Object to add to the Temp Content
 	 */
 	void addToTempContent(Object o);
-	
+
 	/**
-	 * 
+	 *
 	 * @param c the Collection of Objects to add to the Temp Content
 	 */
 	void addToTempContent(Collection<Object> c);
-	
+
 	/**
-	 * 
+	 *
 	 * @param o the Object to remove from the Temp Content
 	 */
-	void removeFromTempContent(Object o);
-	
+	boolean removeFromTempContent(Object o);
+
 	/**
-	 * 
-	 * @param c the Collection of Objects to remove to the Temp Content
+	 *
+	 * @param c the Collection of Objects to remove from the Temp Content
 	 */
-	void removeFromTempContent(Collection<Object> c);
-	
+	boolean removeManyFromTempContent(Collection<?> c);
+
 	/**
 	 * clears the Temp Content
 	 */
 	void clear();
-	
+
 	/**
-	 * 
+	 *
 	 * @return a unmodifiable Collection which contains the Temp Content
 	 */
 	Collection<Object> getTempContent();

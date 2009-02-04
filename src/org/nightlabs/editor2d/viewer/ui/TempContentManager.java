@@ -54,25 +54,31 @@ implements ITempContentManager
 	/**
 	 * @see ITempContentManager#removeFromTempContent(Object)
 	 */
-	public void removeFromTempContent(Object _object)
+	public boolean removeFromTempContent(Object _object)
 	{
 		synchronized (tempContent) {
-			if (tempContent.remove(_object))
+			boolean removed = tempContent.remove(_object);
+			if (removed) {
 				readOnlyTempContent = null;
+			}
+			return removed;
 		}
 	}
 
 	/**
 	 * @see ITempContentManager#removeFromTempContent(Collection)
 	 */
-	public void removeFromTempContent(Collection<Object> c)
+	public boolean removeManyFromTempContent(Collection<?> c)
 	{
 		synchronized (tempContent) {
-			if (tempContent.removeAll(c))
+			boolean removed = tempContent.removeAll(c);
+			if (removed) {
 				readOnlyTempContent = null;
+			}
+			return removed;
 		}
 	}
-		
+
 	public boolean contains(Object o) {
 		synchronized (tempContent) {
 			return tempContent.contains(o);
@@ -89,7 +95,7 @@ implements ITempContentManager
 			readOnlyTempContent = null;
 		}
 	}
-	
+
 	/**
 	 * @see ITempContentManager#addToTempContent(Collection)
 	 */
@@ -100,7 +106,7 @@ implements ITempContentManager
 			readOnlyTempContent = null;
 		}
 	}
-	
+
 	public boolean isEmpty()
 	{
 		synchronized (tempContent) {

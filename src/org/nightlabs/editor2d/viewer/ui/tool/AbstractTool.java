@@ -102,15 +102,34 @@ implements ITool, MouseListener, MouseMoveListener
 	}
 
 	protected void addToTempContent(Object o) {
-		getViewer().getBufferedCanvas().getTempContentManager().addToTempContent(o);
-		repaintNeeded = true;
+		if (checkTempContentManager()) {
+			getViewer().getBufferedCanvas().getTempContentManager().addToTempContent(o);
+			repaintNeeded = true;
+		}
 	}
 
-	protected void removeTempContent(Object o)
+	protected boolean checkTempContentManager() {
+		return getViewer() != null && getViewer().getBufferedCanvas() != null && getViewer().getBufferedCanvas().getTempContentManager() != null;
+	}
+
+	protected boolean removeTempContent(Object o)
 	{
-		if (getViewer() != null && getViewer().getBufferedCanvas() != null && getViewer().getBufferedCanvas().getTempContentManager() != null)
-			getViewer().getBufferedCanvas().getTempContentManager().removeFromTempContent(o);
-		repaintNeeded = true;
+		boolean removed = false;
+		if (checkTempContentManager()) {
+			removed = getViewer().getBufferedCanvas().getTempContentManager().removeFromTempContent(o);
+			repaintNeeded = true;
+		}
+		return removed;
+	}
+
+	protected boolean removeManyFromTempContent(Collection<?> objects)
+	{
+		boolean removed = false;
+		if (checkTempContentManager()) {
+			removed = getViewer().getBufferedCanvas().getTempContentManager().removeManyFromTempContent(objects);
+			repaintNeeded = true;
+		}
+		return removed;
 	}
 
 	@Override
@@ -206,6 +225,7 @@ implements ITool, MouseListener, MouseMoveListener
 //		return getViewer().getHitTestManager().findObjectAt(getViewer().getDrawComponent(),
 //				x, y, conditional, excludeList);
 //	}
+
 	public DrawComponent getDrawComponent(int x, int y, IDrawComponentConditional conditional,
 			Collection<DrawComponent> excludeList)
 	{
