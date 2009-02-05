@@ -26,16 +26,8 @@
 
 package org.nightlabs.base.ui.exceptionhandler;
 
-import java.awt.AWTException;
-import java.awt.Rectangle;
-import java.awt.Robot;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.Toolkit;
-import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -44,6 +36,8 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
@@ -61,28 +55,28 @@ import org.nightlabs.base.ui.util.RCPUtil;
  * by calling one of the <code>showError</code> methods in {@link ErrorDialogFactory}.
  * This error dialog implementation is capable of handling multiple errors in
  * one dialog. It registers itsself in {@link ErrorDialogFactory} to do so.
- * 
+ *
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  * @author Tobias Langner <!-- tobias[dot]langner[at]nightlabs[dot]de -->
  */
 public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 {
 	private static final Logger logger = Logger.getLogger(DefaultErrorDialog.class);
-	
+
 	private static final int CUSTOM_ELEMENTS_WIDTH_HINT = 300;
 
 	private static final int ERROR_TABLE_HEIGHT_HINT = 180;
 
-	
-	
+
+
 	private static final int STACK_TRACE_LINE_COUNT = 15;
 
 	protected static final int SEND_ERROR_REPORT_ID = IDialogConstants.CLIENT_ID + 1;
 
 	private ExceptionHandlerParam exceptHandlerParam;
-	
-	
-	
+
+
+
 	/**
 	 * Dialog title (a localized string).
 	 */
@@ -114,7 +108,7 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 	{
 		this.title = dialogTitle == null ? JFaceResources.getString("Problem_Occurred") : dialogTitle; //$NON-NLS-1$
 		this.exceptHandlerParam = exceptionHandlerParam;
-		
+
 		ErrorItem errorItem = creatErrorItem(dialogTitle, message, exceptHandlerParam.getThrownException(), exceptHandlerParam.getTriggerException());
 		errorList.add(errorItem);
 		if(errorTable != null) {
@@ -171,10 +165,10 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 				else
 					errorReport.addThrowablePair(error.getThrownException(), error.getTriggerException());
 			}
-			
+
 			if(this.exceptHandlerParam.getErrorScreenShot() != null)
 				errorReport.setErrorScreenshot(this.exceptHandlerParam.getErrorScreenShot());
-			
+
 			ErrorReportWizardDialog dlg = new ErrorReportWizardDialog(errorReport);
 			okPressed();
 			dlg.open();
@@ -246,6 +240,13 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 	private Control createErrorTable(Composite parent)
 	{
 		errorTable = new ErrorTable(parent, SWT.NONE);
+		errorTable.addDisposeListener(new DisposeListener() {
+			@Override
+			public void widgetDisposed(DisposeEvent event) {
+				errorTable = null;
+			}
+		});
+
 		applyDialogFont(errorTable);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.widthHint = CUSTOM_ELEMENTS_WIDTH_HINT;
@@ -265,7 +266,8 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 					{
 						setErrorItem(errorTable.getSelectedItem());
 					}
-				});
+				}
+		);
 		return errorTable;
 	}
 
