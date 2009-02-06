@@ -30,17 +30,17 @@ import org.nightlabs.base.ui.wizard.DynamicPathWizardDialog;
 
 public class ErrorReportWizardDialog extends DynamicPathWizardDialog
 {
-  public ErrorReportWizardDialog(ErrorReport errorReport)
-  {
-    super(new ErrorReportWizard(errorReport));
-  }
-  public ErrorReportWizardDialog(ErrorReportWizard errorReportWizard)
-  {
-    super(errorReportWizard);
-  }
-  @Override
+	public ErrorReportWizardDialog(ErrorReport errorReport)
+	{
+		super(new ErrorReportWizard(errorReport));
+	}
+	public ErrorReportWizardDialog(ErrorReportWizard errorReportWizard)
+	{
+		super(errorReportWizard);
+	}
+	@Override
 	public int open()
-  {
-    return super.open();
-  }
+	{
+		return super.open();
+	}
 }

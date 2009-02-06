@@ -166,6 +166,11 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 					errorReport.addThrowablePair(error.getThrownException(), error.getTriggerException());
 			}
 
+			if (errorReport == null) {
+				Exception xxx = new IllegalStateException("There was no error in the errorList!!! How can this happen?!");
+				errorReport = new ErrorReport(xxx, xxx);
+			}
+
 			if(this.exceptHandlerParam.getErrorScreenShot() != null)
 				errorReport.setErrorScreenshot(this.exceptHandlerParam.getErrorScreenShot());
 

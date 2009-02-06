@@ -56,6 +56,9 @@ public class ErrorReportWizard extends DynamicPathWizard
 	 */
 	public ErrorReportWizard(ErrorReport errorReport)
 	{
+		if (errorReport == null)
+			throw new IllegalArgumentException("errorReport is null!");
+
 		this.errorReport = errorReport;
 		entryPage = new ErrorReportWizardEntryPage();
 		sendExceptionPage = new ErrorReportWizardCommentPage();
@@ -72,7 +75,7 @@ public class ErrorReportWizard extends DynamicPathWizard
 	 * Find the sender to use.
 	 * 1st: Try to get the selected sender by consulting the config module
 	 * 2nd: If this fails or no sender is selected, try to use the default sender
-	 * 3rd: If all fails, use the email sender 
+	 * 3rd: If all fails, use the email sender
 	 * @return The sender to use
 	 */
 	private IErrorReportSender getSenderToUse()
@@ -117,9 +120,6 @@ public class ErrorReportWizard extends DynamicPathWizard
 		return sender;
 	}
 
-	/**
-	 * @see org.eclipse.jface.wizard.IWizard#performFinish()
-	 */
 	@Override
 	public boolean performFinish()
 	{
