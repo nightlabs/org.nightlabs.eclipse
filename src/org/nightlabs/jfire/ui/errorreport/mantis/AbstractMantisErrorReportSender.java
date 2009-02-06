@@ -29,37 +29,37 @@ import org.nightlabs.util.IOUtil;
  * @author Niklas Schiffler <nick@nightlabs.de>
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  */
-public abstract class AbstractMantisErrorReportSender implements IErrorReportSender 
+public abstract class AbstractMantisErrorReportSender implements IErrorReportSender
 {
 	/**
 	 * Get the base mantis URL for all operations.
 	 * @return teh base mantis URL.
 	 */
 	protected abstract String getMantisBaseUrl();
-	
+
 	/**
 	 * Get the userName.
 	 * @return the userName
 	 */
 	protected abstract String getUserName();
-	
+
 	/**
 	 * Get the password.
 	 * @return the password
 	 */
 	protected abstract String getPassword();
-	
+
 	/**
 	 * Get the projectId.
 	 * @return the projectId
 	 */
 	public abstract int getProjectId();
-	
+
 	/* (non-Javadoc)
 	 * @see org.nightlabs.base.ui.exceptionhandler.errorreport.IErrorReportSender#sendErrorReport(org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReport)
 	 */
 	@Override
-	public void sendErrorReport(final ErrorReport errorReport) throws IOException 
+	public void sendErrorReport(final ErrorReport errorReport) throws IOException
 	{
 		HttpClient client = new HttpClient();
 		doLogin(client);
@@ -69,7 +69,8 @@ public abstract class AbstractMantisErrorReportSender implements IErrorReportSen
 			String response = m.getResponseBodyAsString();
 			Integer issueId = extractIssueId(response);
 			if(issueId != null) {
-				doAttachScreenshot(client, issueId, errorReport.getErrorScreenshot());
+				if (errorReport.getErrorScreenshot() != null) // the screenshot might be null!
+					doAttachScreenshot(client, issueId, errorReport.getErrorScreenshot());
 			}
 		}
 	}
@@ -94,9 +95,15 @@ public abstract class AbstractMantisErrorReportSender implements IErrorReportSen
 			return null;
 		}
 	}
-	
+
 	protected PostMethod doAttachScreenshot(HttpClient client, int issueId, ImageData errorScreenshot) throws IOException
 	{
+		if (client == null)
+			throw new IllegalArgumentException("client must not null!");
+
+		if (errorScreenshot == null)
+			throw new IllegalArgumentException("errorScreenshot must not null!");
+
 		ByteArrayOutputStream bout = new ByteArrayOutputStream();
 		ImageIO.write(
 				ImageUtil.convertToAWT(errorScreenshot),
