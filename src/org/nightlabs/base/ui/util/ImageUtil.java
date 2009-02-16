@@ -50,7 +50,7 @@ public class ImageUtil
 	/**
 	 * converts a SWT Image to a SWT BufferedImage
 	 * taken from http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.swt.snippets/src/org/eclipse/swt/snippets/Snippet156.java
-	 * 
+	 *
 	 * @param data The ImageData of the SWT Image (@link org.eclipse.swt.graphics.Image.getImageData())
 	 * @return a (@link java.awt.image.BufferedImage) which is identical to the original SWT Image
 	 */
@@ -103,11 +103,11 @@ public class ImageUtil
 			return bufferedImage;
 		}
 	}
-	
+
 	/**
 	 * converts an AWT BufferedImage to an SWT ImageData
 	 * taken from http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.swt.snippets/src/org/eclipse/swt/snippets/Snippet156.java
-	 * 
+	 *
 	 * @param bufferedImage the (@link java.awt.image.BufferedImage) to convert
 	 * @return a (@link org.eclipse.swt.graphics) which can be used to construct a SWT Image
 	 */
@@ -155,11 +155,23 @@ public class ImageUtil
 		}
 		return null;
 	}
-	
-  public static Image createColorImage(Color color) {
-    return createColorImage(color, 16, 16);
-  }
-  
+
+	/**
+	 * @deprecated Because of the non-disposed SWT-Color-instance, this method should NOT be used! Use {@link #createColorImage(org.eclipse.swt.graphics.Color)} instead!
+	 */
+	@Deprecated
+	public static Image createColorImage(Color color) {
+		return createColorImage(color, 16, 16);
+	}
+
+	public static Image createColorImage(org.eclipse.swt.graphics.Color color) {
+		return createColorImage(color, 16, 16);
+	}
+
+  /**
+   * @deprecated Because of the non-disposed SWT-Color-instance, this method should NOT be used! Use {@link #createColorImage(org.eclipse.swt.graphics.Color, int, int)} instead!
+   */
+  @Deprecated
   public static Image createColorImage(Color color, int width, int height)
   {
     Image image = new Image(Display.getDefault(), width, height);
@@ -167,13 +179,27 @@ public class ImageUtil
     try {
       gc.setBackground(ColorUtil.toSWTColor(color));
       gc.fillRectangle(0, 0, width, height);
-      gc.drawRectangle(0,0,width-1,height-2);
+      gc.drawRectangle(0,0,width-1,height-1);
     } finally {
       gc.dispose();
     }
     return image;
   }
-  
+
+  public static Image createColorImage(org.eclipse.swt.graphics.Color color, int width, int height)
+  {
+    Image image = new Image(Display.getDefault(), width, height);
+    GC gc = new GC(image);
+    try {
+      gc.setBackground(color);
+      gc.fillRectangle(0, 0, width, height);
+      gc.drawRectangle(0,0,width-1,height-1);
+    } finally {
+      gc.dispose();
+    }
+    return image;
+  }
+
 
   public static Image createLineStyleImage(int lineStyle, int width, int height)
   {
@@ -189,18 +215,18 @@ public class ImageUtil
     }
     return image;
   }
-  
+
   public static Image createLineStyleImage(int lineStyle) {
     return createLineStyleImage(lineStyle, 16, 64);
   }
-  
+
 	/**
-	 *this method Resizes an Image SWT 
+	 *this method Resizes an Image SWT
 	 * @param image to resize
 	 * @param width, height new desired Image Size
 	 * @param highQuality if the resize should be high quality thus slower
 	 * @return Image of the new resized Image
-	 */	
+	 */
 	public static Image resize(Image image, int width, int height,Boolean highQuality) {
 		Image scaled = new Image(Display.getDefault(), width, height);
 		GC gc = new GC(scaled);
@@ -215,7 +241,7 @@ public class ImageUtil
 		gc.dispose();
 		return scaled;
 	}
-  
-  
-     	
+
+
+
 }
