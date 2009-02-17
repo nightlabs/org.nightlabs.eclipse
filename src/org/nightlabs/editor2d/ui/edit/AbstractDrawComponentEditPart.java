@@ -48,37 +48,40 @@ import org.nightlabs.editor2d.ui.figures.DrawComponentFigure;
 import org.nightlabs.editor2d.ui.figures.RendererFigure;
 import org.nightlabs.editor2d.ui.model.DrawComponentPropertySource;
 import org.nightlabs.editor2d.ui.request.EditorRequestConstants;
-import org.nightlabs.editor2d.ui.resource.Messages;
 import org.nightlabs.editor2d.ui.util.EditorUtil;
 import org.nightlabs.editor2d.ui.util.J2DUtil;
 import org.nightlabs.editor2d.viewer.ui.descriptor.DescriptorManager;
 
+/**
+ * @author Daniel.Mazurek[AT]NightLabs[DOT]de
+ * @author Marco Schulze - marco at nightlabs dot de
+ */
 public abstract class AbstractDrawComponentEditPart
 extends AbstractGraphicalEditPart
 implements EditorRequestConstants
 {
 	private static final Logger logger = Logger.getLogger(AbstractDrawComponentEditPart.class);
-	
+
   public AbstractDrawComponentEditPart(DrawComponent drawComponent) {
     setModel(drawComponent);
 //    drawComponent.clearBounds();
 //    drawComponent.getBounds();
   }
-  
+
   private Label tooltip = new Label();
   protected Label getTooltip()
   {
   	tooltip.setText(getTooltipText(getDrawComponent()));
   	return tooltip;
   }
-  
+
   protected String getTooltipText(DrawComponent dc)
   {
   	DescriptorManager descMan = getModelRoot().getDescriptorManager();
   	descMan.setDrawComponent(getDrawComponent());
   	return descMan.getEntriesAsString(true);
   }
-   
+
   public void updateTooltip()
   {
   	if (getModelRoot().getPreferencesConfigModule().isShowToolTips())
@@ -86,7 +89,7 @@ implements EditorRequestConstants
   	else
   		getFigure().setToolTip(null);
   }
-  
+
   @Override
   protected IFigure createFigure()
   {
@@ -98,7 +101,7 @@ implements EditorRequestConstants
     figure.setToolTip(getTooltip());
     return figure;
   }
-      
+
   public DrawComponentFigure getDrawComponentFigure()
   {
   	if (getFigure() instanceof DrawComponentFigure) {
@@ -106,7 +109,7 @@ implements EditorRequestConstants
   	}
   	return null;
   }
-  
+
   protected void addRenderer(RendererFigure figure)
   {
     // add Renderer
@@ -119,7 +122,7 @@ implements EditorRequestConstants
       }
     }
   }
-  
+
   @SuppressWarnings("unchecked") //$NON-NLS-1$
 	public RootDrawComponentEditPart getModelRoot()
   {
@@ -136,7 +139,7 @@ implements EditorRequestConstants
   	}
   	return null;
   }
-  
+
   protected void addZoomListener(DrawComponentFigure figure)
   {
     ZoomManager zoomManager = EditorUtil.getZoomManager(this);
@@ -154,83 +157,77 @@ implements EditorRequestConstants
   }
 
   protected RendererFigure getRendererFigure() {
-    return (RendererFigure) getFigure();
+	  return (RendererFigure) getFigure();
   }
-  
-  /**
-   * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
-   */
+
   @Override
-	protected abstract void createEditPolicies();
-  
-  /**
-   * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#activate()
-   */
+  protected abstract void createEditPolicies();
+
   @Override
   public void activate()
   {
-    if (isActive())
-      return;
-    
-    // start listening for changes in the model
-    hookIntoDrawComponent(getDrawComponent());
-            
-    super.activate();
-    
-    if (getDrawComponent().isTemplate())
-    	setContains(false);
+	  if (isActive())
+		  return;
+
+	  // start listening for changes in the model
+	  hookIntoDrawComponent(getDrawComponent());
+
+	  super.activate();
+
+	  if (getDrawComponent().isTemplate())
+		  setContains(false);
   }
-  
-  /**
-   * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#deactivate()
-   */
+
+  @SuppressWarnings("deprecation")
   @Override
   public void deactivate()
   {
-    if (!isActive())
-      return;
-    
-    // stop listening for changes in the model
-    unhookFromDrawComponent(getDrawComponent());
-    
-    if (getFigure() instanceof DrawComponentFigure) {
-    	DrawComponentFigure dcf = (DrawComponentFigure) figure;
-    	removeZoomListener(dcf);
-    	dcf.dispose();
-    }
-    
-    if (getPropertySource() instanceof DrawComponentPropertySource) {
-    	DrawComponentPropertySource dcps = (DrawComponentPropertySource) getPropertySource();
-    	dcps.clean();
-    }
-    
-    if (logger.isDebugEnabled())
-    	logger.debug("deactivate called"); //$NON-NLS-1$
-    
-    super.deactivate();
+	  if (!isActive())
+		  return;
+
+	  // stop listening for changes in the model
+	  unhookFromDrawComponent(getDrawComponent());
+
+	  if (getFigure() instanceof DrawComponentFigure) {
+		  DrawComponentFigure dcf = (DrawComponentFigure) figure;
+		  removeZoomListener(dcf);
+		  dcf.dispose();
+	  }
+
+	  if (getPropertySource() instanceof DrawComponentPropertySource) {
+		  DrawComponentPropertySource dcps = (DrawComponentPropertySource) getPropertySource();
+		  dcps.onDeselect();
+		  dcps.clean();
+		  dcps.onEditorDeactivate();
+	  }
+
+	  if (logger.isDebugEnabled())
+		  logger.debug("deactivate called"); //$NON-NLS-1$
+
+	  super.deactivate();
   }
-  
+
   public DrawComponent getDrawComponent() {
     return (DrawComponent) getModel();
   }
-    
+
   @Override
   protected void refreshVisuals()
   {
     Rectangle r = new Rectangle(J2DUtil.toDraw2D(getDrawComponent().getBounds()));
-    
+
     if (getParent() != null) {
       ((GraphicalEditPart) getParent()).setLayoutConstraint(
           this,
           getFigure(),
-          r);    	
+          r);
     }
-    
+
     if (getFigure() instanceof RendererFigure) {
       getRendererFigure().setRenderer(getDrawComponent().getRenderer());
       getRendererFigure().setDrawComponent(getDrawComponent());
     }
-    
+
     getFigure().repaint();
     updateRoot(getFigure());
     updateTooltip();
@@ -245,7 +242,7 @@ implements EditorRequestConstants
     		rootEditPart.getBufferedFreeformLayer().refresh(figure);
     }
   }
-      
+
   /**
    * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
    */
@@ -263,7 +260,7 @@ implements EditorRequestConstants
     }
     return super.getAdapter(key);
   }
-  
+
   protected IPropertySource propertySource = null;
   public IPropertySource getPropertySource()
   {
@@ -272,17 +269,17 @@ implements EditorRequestConstants
     }
     return propertySource;
   }
-  
+
   private PropertyChangeListener listener = new PropertyChangeListener(){
 		public void propertyChange(PropertyChangeEvent evt) {
 			propertyChanged(evt);
 		}
 	};
-  
+
 	protected void propertyChanged(PropertyChangeEvent evt)
 	{
 		String propertyName = evt.getPropertyName();
-		
+
 		if (propertyName.equals(DrawComponent.PROP_BOUNDS)) {
 			refreshVisuals();
 			return;
@@ -342,11 +339,11 @@ implements EditorRequestConstants
 			return;
 		}
 	}
-	  
+
   /**
    * Registers this edit part as a listener for change notifications
    * to the specified DrawComponent element.
-   * 
+   *
    * @param element the DrawComponent element that should be observed
    * for change notifications
    */
@@ -355,11 +352,11 @@ implements EditorRequestConstants
     if (element != null)
       element.addPropertyChangeListener(listener);
   }
-  
+
   /**
    * Removes this edit part from the specified DrawComponent element.
    * Thus, it will no longe receive change notifications.
-   * 
+   *
    * @param element the DrawComponent element that should not be observed
    * any more
    */
@@ -368,7 +365,7 @@ implements EditorRequestConstants
     if (element != null)
       element.removePropertyChangeListener(listener);
   }
-            
+
 //  public boolean understandsRequest(Request req)
 //  {
 //    if (req.getType().equals(REQ_ROTATE))
@@ -382,7 +379,7 @@ implements EditorRequestConstants
 //
 //    return super.understandsRequest(req);
 //  }
-  
+
 	protected void setContains(boolean contains)
 	{
 		Collection<DrawComponent> drawComponents = new ArrayList<DrawComponent>(1);
@@ -391,7 +388,7 @@ implements EditorRequestConstants
 		} else {
 			drawComponents.add(getDrawComponent());
 		}
-		
+
 		for (Iterator<DrawComponent> it = drawComponents.iterator(); it.hasNext(); )
 		{
 			Object o = getViewer().getEditPartRegistry().get(it.next());
@@ -407,8 +404,8 @@ implements EditorRequestConstants
 				}
 			}
 		}
-		
+
 		refresh();
 	}
-	
+
 }

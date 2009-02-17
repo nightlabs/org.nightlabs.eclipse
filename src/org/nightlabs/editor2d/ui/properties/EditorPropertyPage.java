@@ -50,13 +50,13 @@ extends PropertySheetPage
 	 * LOG4J logger used by this class
 	 */
 	private static final Logger logger = Logger.getLogger(EditorPropertyPage.class);
-	
+
 	public EditorPropertyPage(UnitManager unitManager)
 	{
 		super();
 		this.unitManager = unitManager;
 	}
-	
+
 	private UnitManager unitManager = null;
 	public UnitManager getUnitManager() {
 		return unitManager;
@@ -66,37 +66,51 @@ extends PropertySheetPage
 	}
 
 	private UnitContributionItem unitContributionItem = null;
-  @Override
+
+	@Override
 	public void makeContributions(IMenuManager menuManager,
-      IToolBarManager toolBarManager, IStatusLineManager statusLineManager)
-  {
+			IToolBarManager toolBarManager, IStatusLineManager statusLineManager)
+	{
 //  	LanguageContributionItem langContribution = new LanguageContributionItem();
 //  	toolBarManager.add(langContribution);
-  	
-  	unitContributionItem = new UnitContributionItem(getUnitManager());
-  	toolBarManager.add(unitContributionItem);
-  	
-  	super.makeContributions(menuManager, toolBarManager, statusLineManager);
-  }
-      		
+
+		unitContributionItem = new UnitContributionItem(getUnitManager());
+		toolBarManager.add(unitContributionItem);
+
+		super.makeContributions(menuManager, toolBarManager, statusLineManager);
+	}
+
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection)
 	{
 		if (!listenerAdded) {
-	  	unitContributionItem.getCombo().addSelectionListener(unitListener);
-	  	listenerAdded = true;
+			unitContributionItem.getCombo().addSelectionListener(unitListener);
+			listenerAdded = true;
 		}
+
+		if (this.selection != null) {
+			for (Object oldSelectedObject : this.selection) {
+				IPropertySource ps = getPropertySource(oldSelectedObject);
+				if (ps instanceof DrawComponentPropertySource)
+					((DrawComponentPropertySource)ps).onDeselect();
+			}
+		}
+
 		unitContributionItem.selectUnit(getUnitManager().getCurrentUnit());
-	  if (selection instanceof IStructuredSelection) {
-	  	Object[] sel = ((IStructuredSelection) selection).toArray();
-	  	this.selection = sel;
-	  	for (int i=0; i<sel.length; i++) {
-	  		setUnit(sel[i]);
-	  	}
-	  }
+		if (selection instanceof IStructuredSelection) {
+			Object[] sel = ((IStructuredSelection) selection).toArray();
+			this.selection = sel;
+			for (Object selectedObject : this.selection) {
+				setUnit(selectedObject);
+
+				IPropertySource ps = getPropertySource(selectedObject);
+				if (ps instanceof DrawComponentPropertySource)
+					((DrawComponentPropertySource)ps).onSelect();
+			}
+		}
 		super.selectionChanged(part, selection);
 	}
-	
+
 	private Object[] selection = null;
 	private boolean listenerAdded = false;
 	protected SelectionListener unitListener = new SelectionListener()
@@ -116,25 +130,26 @@ extends PropertySheetPage
 		}
 	};
 
+	protected static IPropertySource getPropertySource(Object o)
+	{
+		if (o instanceof AbstractDrawComponentEditPart)
+			return ((AbstractDrawComponentEditPart)o).getPropertySource();
+		else if (o instanceof DrawComponentTreeEditPart)
+			return ((DrawComponentTreeEditPart)o).getPropertySource();
+		else
+			return null;
+	}
+
 	protected void setUnit(Object o)
 	{
-		if (o != null)
-		{
-			IPropertySource ps = null;
-			if (o instanceof AbstractDrawComponentEditPart)
-				ps = ((AbstractDrawComponentEditPart)o).getPropertySource();
-			else if (o instanceof DrawComponentTreeEditPart)
-				ps = ((DrawComponentTreeEditPart)o).getPropertySource();
-			
-			if (ps != null && ps instanceof DrawComponentPropertySource)
-			{
-				DrawComponentPropertySource dcps = (DrawComponentPropertySource) ps;
-				IUnit currentUnit = getUnitManager().getCurrentUnit();
-				dcps.setUnit(currentUnit);
-			}
+		IPropertySource ps = getPropertySource(o);
+		if (ps instanceof DrawComponentPropertySource) {
+			DrawComponentPropertySource dcps = (DrawComponentPropertySource) ps;
+			IUnit currentUnit = getUnitManager().getCurrentUnit();
+			dcps.setUnit(currentUnit);
 		}
 	}
-							
+
 //  protected Collection makeLanguageActions()
 //  {
 //  	Collection languageActions = new ArrayList(langMan.getLanguages().size());
@@ -145,7 +160,7 @@ extends PropertySheetPage
 //  	}
 //  	return languageActions;
 //  }
-  
+
 //	protected LanguageChangeListener langListener = new LanguageChangeListener()
 //	{
 //		public void languageChanged(LanguageChangeEvent event)
@@ -155,7 +170,7 @@ extends PropertySheetPage
 //			}
 //		}
 //	};
-  
+
 //	private PropertyChangeListener languageListener = new PropertyChangeListener()
 //	{
 //		public void propertyChange(PropertyChangeEvent evt)
@@ -165,5 +180,5 @@ extends PropertySheetPage
 //			}
 //		}
 //	};
-		
+
 }

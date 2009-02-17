@@ -50,19 +50,16 @@ extends DrawComponentPropertySource
 {
 	public static final String CATEGORY_COLORS = Messages.getString("org.nightlabs.editor2d.ui.model.ShapeDrawComponentPropertySource.category.color"); //$NON-NLS-1$
 	public static final String CATEGORY_LINE = Messages.getString("org.nightlabs.editor2d.ui.model.ShapeDrawComponentPropertySource.category.line");	 //$NON-NLS-1$
-	
-  /**
-   * @param element
-   */
-  public ShapeDrawComponentPropertySource(ShapeDrawComponent element) {
-    super(element);
-  }
-   
-  @Override
+
+	public ShapeDrawComponentPropertySource(ShapeDrawComponent element) {
+		super(element);
+	}
+
+	@Override
 	protected List<IPropertyDescriptor> createPropertyDescriptors()
 	{
 		List<IPropertyDescriptor> descriptors = super.createPropertyDescriptors();
-		
+
 		// Line Color
 		descriptors.add(createLineColorPD());
 		// Fill Color
@@ -75,10 +72,10 @@ extends DrawComponentPropertySource
 		descriptors.add(createFillPD());
 		// Stroke
 		descriptors.add(createStrokePD());
-		
+
 		return descriptors;
 	}
-			
+
 	protected PropertyDescriptor createStrokePD()
 	{
 		PropertyDescriptor desc = new CheckboxPropertyDescriptor(ShapeDrawComponent.PROP_SHOW_STROKE,
@@ -86,7 +83,7 @@ extends DrawComponentPropertySource
 		desc.setCategory(CATEGORY_LINE);
 		return desc;
 	}
-	
+
 	protected PropertyDescriptor createLineColorPD()
 	{
 		PropertyDescriptor desc = new AWTColorPropertyDescriptor(ShapeDrawComponent.PROP_LINE_COLOR,
@@ -94,7 +91,7 @@ extends DrawComponentPropertySource
 		desc.setCategory(CATEGORY_COLORS);
 		return desc;
 	}
-	
+
 	protected PropertyDescriptor createFillColorPD()
 	{
 		PropertyDescriptor desc = new AWTColorPropertyDescriptor(ShapeDrawComponent.PROP_FILL_COLOR,
@@ -102,7 +99,7 @@ extends DrawComponentPropertySource
 		desc.setCategory(CATEGORY_COLORS);
 		return desc;
 	}
-	
+
 //	protected PropertyDescriptor createLineWidthPD()
 //	{
 //		PropertyDescriptor desc = new IntPropertyDescriptor(ShapeDrawComponent.PROP_LINE_WIDTH,
@@ -118,7 +115,7 @@ extends DrawComponentPropertySource
 		desc.setCategory(CATEGORY_LINE);
 		return desc;
 	}
-		
+
 //	protected PropertyDescriptor createLineStylePD()
 //	{
 //		PropertyDescriptor desc = new IntPropertyDescriptor(ShapeDrawComponent.PROP_LINE_STYLE,
@@ -149,7 +146,7 @@ extends DrawComponentPropertySource
 			return Messages.getString("org.nightlabs.editor2d.ui.model.ShapeDrawComponentPropertySource.solid");			 //$NON-NLS-1$
 		}
 	};
-	
+
 	protected PropertyDescriptor createLineStylePD()
 	{
 //		List<LineStyle> lineStyles = Utils.enum2List(Enum.valueOf(LineStyle.class, "SOLID"));
@@ -162,14 +159,14 @@ extends DrawComponentPropertySource
 		desc.setCategory(CATEGORY_LINE);
 		return desc;
 	}
-	
+
 	protected PropertyDescriptor createFillPD()
 	{
 		PropertyDescriptor desc = new CheckboxPropertyDescriptor(IFillable.PROP_FILL,
 				Messages.getString("org.nightlabs.editor2d.ui.model.ShapeDrawComponentPropertySource.fill"));				 //$NON-NLS-1$
 		return desc;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.views.properties.IPropertySource#getPropertyValue(java.lang.Object)
 	 */
@@ -199,11 +196,11 @@ extends DrawComponentPropertySource
 			else if (id.equals(ShapeDrawComponent.PROP_SHOW_STROKE)) {
 				return getShapeDrawComponent().isShowStroke();
 			}
-			
+
 			return null;
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.views.properties.IPropertySource#setPropertyValue(java.lang.Object, java.lang.Object)
 	 */
@@ -211,7 +208,7 @@ extends DrawComponentPropertySource
 	public void setPropertyValue(Object id, Object value)
 	{
 		super.setPropertyValue(id, value);
-		
+
 		if (id.equals(ShapeDrawComponent.PROP_FILL_COLOR)) {
 			getShapeDrawComponent().setFillColor((Color)value);
 		}
@@ -232,7 +229,7 @@ extends DrawComponentPropertySource
 			getShapeDrawComponent().setShowStroke((Boolean)value);
 		}
 	}
-	
+
 	protected ShapeDrawComponent getShapeDrawComponent() {
 		return (ShapeDrawComponent) drawComponent;
 	}

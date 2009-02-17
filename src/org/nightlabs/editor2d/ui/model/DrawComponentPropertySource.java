@@ -40,6 +40,7 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.nightlabs.base.ui.i18n.UnitRegistryEP;
 import org.nightlabs.base.ui.property.CheckboxPropertyDescriptor;
 import org.nightlabs.base.ui.property.DoublePropertyDescriptor;
+import org.nightlabs.base.ui.property.IXPropertyDescriptor;
 import org.nightlabs.base.ui.property.IntPropertyDescriptor;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.IVisible;
@@ -56,25 +57,62 @@ public class DrawComponentPropertySource
 implements IPropertySource
 {
 	private static final Logger logger = Logger.getLogger(DrawComponentPropertySource.class);
-	
+
 	public static final String CATEGORY_NAME = EditorPlugin.getResourceString(Messages.getString("org.nightlabs.editor2d.ui.model.DrawComponentPropertySource.category.name")); //$NON-NLS-1$
 	public static final String CATEGORY_GEOM = EditorPlugin.getResourceString(Messages.getString("org.nightlabs.editor2d.ui.model.DrawComponentPropertySource.category.geometry"));		 //$NON-NLS-1$
 	public static final String CATEGORY_ROTATION = EditorPlugin.getResourceString(Messages.getString("org.nightlabs.editor2d.ui.model.DrawComponentPropertySource.category.rotation")); //$NON-NLS-1$
-	
+
 	public DrawComponentPropertySource(DrawComponent element)
 	{
 		this.drawComponent = element;
 		descriptors = createPropertyDescriptors();
 	}
-	
+
 	protected DrawComponent drawComponent;
 	public DrawComponent getDrawComponent() {
 		return drawComponent;
 	}
-	
-	public void clean() {
+
+	/**
+	 * This method is called whenever the {@link DrawComponent} belonging to this {@link DrawComponentPropertySource} is
+	 * unselected (if it was selected before). This provides a possibility to clean up resources that have been allocated
+	 * before.
+	 * @see #onSelect()
+	 * @see #onEditorDeactivate()
+	 */
+	public void onDeselect() {
+		for (IPropertyDescriptor propertyDescriptor : getPropertyDescriptors()) {
+			if (propertyDescriptor instanceof IXPropertyDescriptor)
+				((IXPropertyDescriptor)propertyDescriptor).onDeactivate();
+		}
 	}
-	
+
+	/**
+	 * This method is called whenever the {@link DrawComponent} belonging to this {@link DrawComponentPropertySource} is
+	 * selected.
+	 * @see #onDeselect()
+	 * @see #onEditorDeactivate()
+	 */
+	public void onSelect() {
+		for (IPropertyDescriptor propertyDescriptor : getPropertyDescriptors()) {
+			if (propertyDescriptor instanceof IXPropertyDescriptor)
+				((IXPropertyDescriptor)propertyDescriptor).onActivate();
+		}
+	}
+
+	/**
+	 * This method is called whenever the current editor is deactivated. It gives implementors the possibility to
+	 * do larger clean-up that was not yet done by {@link #onDeselect()}.
+	 * When you override this method, you should call the super-implementation at the end of your overridden
+	 */
+	public void onEditorDeactivate() { }
+
+	/**
+	 * @deprecated It seems this method was never actually used and its name as well as the lifecycle wasn't really clear. It has been replaced by {@link #onEditorDeactivate()} and {@link #onDeselect()}.
+	 */
+	@Deprecated
+	public void clean() { }
+
 	private IUnit unit = null;
 	public IUnit getUnit() {
 		if (unit == null)
@@ -84,46 +122,46 @@ implements IPropertySource
 	public void setUnit(IUnit unit) {
 		this.unit = unit;
 	}
-	
+
 	private DotUnit dotUnit = null;
 	protected DotUnit getDotUnit() {
 		if (dotUnit == null)
 			dotUnit = getDrawComponent().getRoot().getModelUnit();
 		return dotUnit;
 	}
-			
+
 	// TODO: format value so that only 3 digits after the comma are visible
 	public double getValue(int modelValue, IUnit unit) {
 		return UnitUtil.getUnitValue(modelValue, getDotUnit(), unit);
 	}
-	
+
 	// TODO: format value so that only 3 digits after the comma are visible
 	public int getSetValue(double value, IUnit unit) {
 		return UnitUtil.getModelValue(value, getDotUnit(), unit);
 	}
-	
+
 	/**
 	 * @see org.eclipse.ui.views.properties.IPropertySource#getEditableValue()
 	 */
 	public Object getEditableValue() {
 		return drawComponent;
 	}
-	
+
 	protected List<IPropertyDescriptor> descriptors = null;
 	protected List<IPropertyDescriptor> getDescriptors() {
 		if (descriptors == null) {
 			descriptors = new ArrayList<IPropertyDescriptor>();
 			List<IPropertyDescriptor> extensionPointProperties = getExtensionPointProperties();
 			if (!extensionPointProperties.isEmpty())
-				descriptors.addAll(extensionPointProperties);			
+				descriptors.addAll(extensionPointProperties);
 		}
 		return descriptors;
 	}
-		
+
 	protected List<IPropertyDescriptor> createPropertyDescriptors()
 	{
 		List<IPropertyDescriptor> descriptors = getDescriptors();
-		
+
 		// Name
 		descriptors.add(createNamePD());
 		// X
@@ -144,12 +182,12 @@ implements IPropertySource
 		descriptors.add(createVisiblePD());
 		// Template
 		descriptors.add(createTemplatePD());
-		
+
 //		// PropertyDescriptors from extension point
 //		List<IPropertyDescriptor> extensionPointProperties = getExtensionPointProperties();
 //		if (!extensionPointProperties.isEmpty())
 //			descriptors.addAll(extensionPointProperties);
-		
+
 		return descriptors;
 	}
 
@@ -167,18 +205,18 @@ implements IPropertySource
 				descriptors.add(property.getPropertyDescriptor());
 				id2DrawComponentProperty.put(property.getID(), property);
 			}
-			
+
 			if (logger.isDebugEnabled())
 				logger.debug(properties.size()+" extension point properties registered for "+getDrawComponent().getClass()); //$NON-NLS-1$
-			
+
 			return descriptors;
 		}
 		return Collections.emptyList();
 	}
-	
+
 	private Map<String, DrawComponentProperty> id2DrawComponentProperty =
 		new HashMap<String, DrawComponentProperty>();
-	
+
 	protected PropertyDescriptor createNamePD()
 	{
 		PropertyDescriptor desc = new NamePropertyDescriptor(drawComponent,
@@ -187,7 +225,7 @@ implements IPropertySource
 		desc.setCategory(CATEGORY_NAME);
 		return desc;
 	}
-	
+
 	protected PropertyDescriptor createXPD()
 	{
 		PropertyDescriptor desc = new DoublePropertyDescriptor(DrawComponent.PROP_X,
@@ -195,7 +233,7 @@ implements IPropertySource
 		desc.setCategory(CATEGORY_GEOM);
 		return desc;
 	}
-	
+
 	protected PropertyDescriptor createYPD()
 	{
 		PropertyDescriptor desc = new DoublePropertyDescriptor(DrawComponent.PROP_Y,
@@ -219,7 +257,7 @@ implements IPropertySource
 		desc.setCategory(CATEGORY_GEOM);
 		return desc;
 	}
-	
+
 	protected PropertyDescriptor createRotationPD()
 	{
 		PropertyDescriptor desc = new RotationPropertyDescriptor(DrawComponent.PROP_ROTATION,
@@ -227,7 +265,7 @@ implements IPropertySource
 		desc.setCategory(CATEGORY_ROTATION);
 		return desc;
 	}
-	
+
 	protected PropertyDescriptor createRotationXPD()
 	{
 		PropertyDescriptor desc = new IntPropertyDescriptor(DrawComponent.PROP_ROTATION_X,
@@ -245,16 +283,16 @@ implements IPropertySource
 		desc.setCategory(CATEGORY_ROTATION);
 		return desc;
 	}
-	
+
 	public IPropertyDescriptor[] getPropertyDescriptors()
 	{
 		if (drawComponent == null)
 			return new IPropertyDescriptor[0];
-		
+
 		List<IPropertyDescriptor> descriptors = getDescriptors();
 		return descriptors.toArray(new IPropertyDescriptor[descriptors.size()]);
 	}
-	
+
 	/**
 	 * @see org.eclipse.ui.views.properties.IPropertySource#getPropertyValue(java.lang.Object)
 	 */
@@ -291,17 +329,17 @@ implements IPropertySource
 		else if (id.equals(DrawComponent.PROP_TEMPLATE)) {
 			return new Boolean(drawComponent.isTemplate());
 		}
-		
+
 		// properties from extension point
 		DrawComponentProperty property = id2DrawComponentProperty.get(id);
 		if (property != null) {
 			property.setDrawComponent(drawComponent);
 			return property.getPropertyValue();
 		}
-		
+
 		return null;
 	}
-	
+
 	/*
 	 * @see org.eclipse.ui.views.properties.IPropertySource#isPropertySet(java.lang.Object)
 	 */
@@ -365,7 +403,7 @@ implements IPropertySource
 			drawComponent.setTemplate(((Boolean)value).booleanValue());
 			return;
 		}
-		
+
 		// properties from extension point
 		DrawComponentProperty property = id2DrawComponentProperty.get(id);
 		if (property != null) {
@@ -373,14 +411,14 @@ implements IPropertySource
 			property.setPropertyValue(value);
 		}
 	}
-			
+
 	protected PropertyDescriptor createVisiblePD()
 	{
 		PropertyDescriptor pd = new CheckboxPropertyDescriptor(IVisible.PROP_VISIBLE,
 				Messages.getString("org.nightlabs.editor2d.ui.model.DrawComponentPropertySource.visible"), false); //$NON-NLS-1$
 		return pd;
 	}
-	
+
 	protected PropertyDescriptor createTemplatePD()
 	{
 		PropertyDescriptor pd = new CheckboxPropertyDescriptor(DrawComponent.PROP_TEMPLATE,
