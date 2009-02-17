@@ -300,6 +300,22 @@
            elementPath="page"
            extensionPointID="org.eclipse.ui.preferencePages">
      </removeExtension>
+  </extension>
+  <extension
+        point="org.eclipse.ui.newWizards">
+     <category
+           id="org.nightlabs.editor2d.ui"
+           name="%newWizard.category.org.nightlabs.editor2d.ui.name">
+     </category>
+     <wizard
+           canFinishEarly="true"
+           category="org.nightlabs.editor2d.ui"
+           class="org.nightlabs.editor2d.ui.NewEditor2DFileWizard"
+           hasPages="false"
+           icon="icons/EditorPlugin-Logo.16x16.png"
+           id="org.nightlabs.editor2d.ui.NewEditor2DFileWizard"
+           name="%action.new.text">
+     </wizard>
   </extension>    
        
 <!--
