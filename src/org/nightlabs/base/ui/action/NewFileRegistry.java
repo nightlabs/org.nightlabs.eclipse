@@ -61,7 +61,7 @@ extends AbstractEPProcessor
 	 * @return a {@link Map} containing categoryIDs {@link String} as key and
 	 * a {@link List} of {@link INewFileAction} as value
 	 */
-	public Map getCategory2Actions() {
+	public Map<String, List<INewFileAction>> getCategory2Actions() {
 		checkProcessing();
 		return category2Actions;
 	}
