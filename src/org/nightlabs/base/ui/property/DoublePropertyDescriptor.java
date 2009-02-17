@@ -31,26 +31,30 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.nightlabs.base.ui.celleditor.DoubleCellEditor;
 
+/**
+ * @author unascribed (probably Daniel Mazurek)
+ * @author Marco Schulze - Marco at NightLabs dot de
+ */
 public class DoublePropertyDescriptor
 extends XPropertyDescriptor
 {
 
-  public DoublePropertyDescriptor(Object id, String displayName)
-  {
-    super(id, displayName);
-  }
+	public DoublePropertyDescriptor(Object id, String displayName)
+	{
+		super(id, displayName);
+	}
 
-  public DoublePropertyDescriptor(Object id, String displayName, boolean readOnly)
-  {
-    super(id, displayName, readOnly);
-  }
-  
-  @Override
+	public DoublePropertyDescriptor(Object id, String displayName, boolean readOnly)
+	{
+		super(id, displayName, readOnly);
+	}
+
+	@Override
 	public CellEditor createPropertyEditor(Composite parent)
-  {
-    CellEditor editor = new DoubleCellEditor(parent, SWT.NONE, readOnly);
-    if (getValidator() != null)
-      editor.setValidator(getValidator());
-    return editor;
-  }
+	{
+		CellEditor editor = new DoubleCellEditor(parent, SWT.NONE, isReadOnly());
+		if (getValidator() != null)
+			editor.setValidator(getValidator());
+		return editor;
+	}
 }

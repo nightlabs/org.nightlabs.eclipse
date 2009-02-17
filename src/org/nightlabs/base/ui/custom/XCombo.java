@@ -633,6 +633,9 @@ public Control [] getChildren () {
  */
 public boolean getEditable () {
 	checkWidget ();
+	if (text == null) // is nulled during dispose - however this method might still be called (don't know why checkWidget doesn't throw an excetpion - maybe we're right now in the process of disposing
+		return false;
+
 	return text.getEditable();
 }
 

@@ -26,32 +26,64 @@
 
 package org.nightlabs.base.ui.property;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.nightlabs.base.ui.celleditor.AWTColorCellEditor;
 import org.nightlabs.base.ui.labelprovider.AWTColorLabelProvider;
 
+/**
+ * @author unascribed (probably Daniel Mazurek)
+ * @author Marco Schulze - Marco at NightLabs dot de
+ */
 public class AWTColorPropertyDescriptor
-extends PropertyDescriptor
+extends XPropertyDescriptor
 {
-  /**
-   * @param id
-   * @param displayName
-   */
-  public AWTColorPropertyDescriptor(Object id, String displayName)
-  {
-    super(id, displayName);
-    setLabelProvider(new AWTColorLabelProvider());
-  }
+	private static final Logger logger = Logger.getLogger(AWTColorPropertyDescriptor.class);
 
-  @Override
+	/**
+	 * @param id
+	 * @param displayName
+	 */
+	public AWTColorPropertyDescriptor(Object id, String displayName)
+	{
+		super(id, displayName);
+	}
+
+	@Override
 	public CellEditor createPropertyEditor(Composite parent)
-  {
-  	CellEditor editor = new AWTColorCellEditor(parent);
-  	if (getValidator() != null)
-  		editor.setValidator(getValidator());
-            
-  	return editor;
-  }
+	{
+		CellEditor editor = new AWTColorCellEditor(parent);
+		if (getValidator() != null)
+			editor.setValidator(getValidator());
+
+		return editor;
+	}
+
+	@Override
+	public ILabelProvider getLabelProvider() {
+		return super.getLabelProvider();
+	}
+
+	@Override
+	public void onActivate() {
+		if (logger.isDebugEnabled())
+			logger.debug("onActivate: this=" + this);
+
+		setLabelProvider(new AWTColorLabelProvider());
+
+		super.onActivate();
+	}
+
+	@Override
+	public void onDeactivate() {
+		if (logger.isDebugEnabled())
+			logger.debug("onDeactivate: this=" + this);
+
+//		((AWTColorLabelProvider)getLabelProvider()).onDeactivate();
+		getLabelProvider().dispose();
+		setLabelProvider(null);
+		super.onDeactivate();
+	}
 }

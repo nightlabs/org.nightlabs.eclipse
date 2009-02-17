@@ -28,38 +28,27 @@ package org.nightlabs.base.ui.property;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.nightlabs.base.ui.celleditor.XSpinnerCellEditor;
 
 /**
- * @author Daniel.Mazurek <at> Nightlabs <dot> de
+ * A {@link PropertyDescriptor} rendering a spinner (i.e. a composite where numbers can be entered, incremented and decremented).
  *
+ * @author Daniel.Mazurek <at> Nightlabs <dot> de
+ * @author Marco Schulze - marco at nightlabs dot de
  */
 public class SpinnerPropertyDescriptor
 extends XPropertyDescriptor
 {
 
-	/**
-	 * @param id
-	 * @param displayName
-	 */
 	public SpinnerPropertyDescriptor(Object id, String displayName) {
 		super(id, displayName);
 	}
 
-	/**
-	 * @param id
-	 * @param displayName
-	 * @param readOnly
-	 */
 	public SpinnerPropertyDescriptor(Object id, String displayName, boolean readOnly) {
 		super(id, displayName, readOnly);
 	}
 
-	/**
-	 * @param id
-	 * @param displayName
-	 * @param readOnly
-	 */
 	public SpinnerPropertyDescriptor(Object id, String displayName, boolean readOnly,
 			int minimum, int maximum)
 	{
@@ -67,13 +56,13 @@ extends XPropertyDescriptor
 		this.minimum = minimum;
 		this.maximum = maximum;
 	}
-	
+
 	private int minimum = 0;
 	private int maximum = Integer.MAX_VALUE;
-	
+
 	@Override
 	public CellEditor createPropertyEditor(Composite parent) {
-		return new XSpinnerCellEditor(parent, SWT.NONE, readOnly, minimum, maximum);
+		return new XSpinnerCellEditor(parent, SWT.NONE, isReadOnly(), minimum, maximum);
 	}
-	
+
 }

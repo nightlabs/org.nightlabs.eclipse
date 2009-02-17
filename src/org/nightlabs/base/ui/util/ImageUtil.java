@@ -32,7 +32,12 @@ import java.awt.image.ColorModel;
 import java.awt.image.DirectColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.WritableRaster;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -41,11 +46,17 @@ import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
+/**
+ * Utility class for working with AWT and SWT images.
+ *
+ * @author unascribed (probably Daniel Mazurek)
+ * @author Marco Schulze - marco at nightlabs dot de
+ */
 public class ImageUtil
 {
-	public ImageUtil() {
-		super();
-	}
+	private static final Logger logger = Logger.getLogger(ImageUtil.class);
+
+	protected ImageUtil() { }
 
 	/**
 	 * converts a SWT Image to a SWT BufferedImage
@@ -156,10 +167,78 @@ public class ImageUtil
 		return null;
 	}
 
-	/**
-	 * @deprecated Because of the non-disposed SWT-Color-instance, this method should NOT be used! Use {@link #createColorImage(org.eclipse.swt.graphics.Color)} instead!
-	 */
-	@Deprecated
+	private static final class ImageColorEntry {
+		public Image image;
+		public org.eclipse.swt.graphics.Color color;
+
+		public ImageColorEntry(Image image, org.eclipse.swt.graphics.Color color) {
+			if (image == null)
+				throw new IllegalArgumentException("image == null");
+
+			if (color == null)
+				throw new IllegalArgumentException("color == null");
+
+			this.image = image;
+			this.color = color;
+		}
+	}
+
+	private static LinkedList<ImageColorEntry> temporaryImageColors = new LinkedList<ImageColorEntry>();
+	private static Timer disposeTemporaryColorsTimer = null;
+
+	private static void disposeUnusedTemporaryColors()
+	{
+		int nondisposedColorCount;
+
+		LinkedList<ImageColorEntry> imageColorsToDispose = new LinkedList<ImageColorEntry>();
+
+		synchronized (temporaryImageColors) {
+			for (Iterator<ImageColorEntry> it = temporaryImageColors.iterator(); it.hasNext();) {
+				ImageColorEntry imageColorEntry = it.next();
+				if (imageColorEntry.image.isDisposed()) {
+					if (logger.isTraceEnabled())
+						logger.trace("disposeUnusedTemporaryColors: image=" + Integer.toHexString(System.identityHashCode(imageColorEntry.image)) + " color=" + Integer.toHexString(System.identityHashCode(imageColorEntry.color)));
+
+					imageColorsToDispose.add(imageColorEntry);
+					it.remove();
+				}
+			}
+			nondisposedColorCount = temporaryImageColors.size();
+
+			if (nondisposedColorCount == 0) {
+				disposeTemporaryColorsTimer.cancel();
+				disposeTemporaryColorsTimer = null;
+			}
+		}
+
+		for (ImageColorEntry imageColorEntry : imageColorsToDispose) {
+			imageColorEntry.color.dispose();
+		}
+
+		if (logger.isDebugEnabled())
+			logger.debug("disposeUnusedTemporaryColors: Disposed " + imageColorsToDispose.size() + " unused temporary colors. Still non-disposed are " + nondisposedColorCount + " colors.");
+	}
+
+	private static void registerTemporaryColor(Image image, org.eclipse.swt.graphics.Color color)
+	{
+		synchronized (temporaryImageColors) {
+			if (disposeTemporaryColorsTimer == null) {
+				disposeTemporaryColorsTimer = new Timer("DisposeTemporaryColors", true);
+				disposeTemporaryColorsTimer.schedule(new TimerTask() {
+					@Override
+					public void run() {
+						disposeUnusedTemporaryColors();
+					}
+				}, 30000, 30000);
+			}
+
+			temporaryImageColors.add(new ImageColorEntry(image, color));
+
+			if (logger.isTraceEnabled())
+				logger.trace("registerTemporaryColor: image=" + Integer.toHexString(System.identityHashCode(image)) + " color=" + Integer.toHexString(System.identityHashCode(color)));
+		}
+	}
+
 	public static Image createColorImage(Color color) {
 		return createColorImage(color, 16, 16);
 	}
@@ -168,57 +247,55 @@ public class ImageUtil
 		return createColorImage(color, 16, 16);
 	}
 
-  /**
-   * @deprecated Because of the non-disposed SWT-Color-instance, this method should NOT be used! Use {@link #createColorImage(org.eclipse.swt.graphics.Color, int, int)} instead!
-   */
-  @Deprecated
-  public static Image createColorImage(Color color, int width, int height)
-  {
-    Image image = new Image(Display.getDefault(), width, height);
-    GC gc = new GC(image);
-    try {
-      gc.setBackground(ColorUtil.toSWTColor(color));
-      gc.fillRectangle(0, 0, width, height);
-      gc.drawRectangle(0,0,width-1,height-1);
-    } finally {
-      gc.dispose();
-    }
-    return image;
-  }
+	public static Image createColorImage(Color color, int width, int height)
+	{
+		Image image = new Image(Display.getDefault(), width, height);
+		GC gc = new GC(image);
+		try {
+			org.eclipse.swt.graphics.Color swtColor = ColorUtil.toSWTColor(color);
+			registerTemporaryColor(image, swtColor);
+			gc.setBackground(swtColor);
+			gc.fillRectangle(0, 0, width, height);
+			gc.drawRectangle(0,0,width-1,height-1);
+		} finally {
+			gc.dispose();
+		}
+		return image;
+	}
 
-  public static Image createColorImage(org.eclipse.swt.graphics.Color color, int width, int height)
-  {
-    Image image = new Image(Display.getDefault(), width, height);
-    GC gc = new GC(image);
-    try {
-      gc.setBackground(color);
-      gc.fillRectangle(0, 0, width, height);
-      gc.drawRectangle(0,0,width-1,height-1);
-    } finally {
-      gc.dispose();
-    }
-    return image;
-  }
+	public static Image createColorImage(org.eclipse.swt.graphics.Color color, int width, int height)
+	{
+		Image image = new Image(Display.getDefault(), width, height);
+		GC gc = new GC(image);
+		try {
+			gc.setBackground(color);
+			gc.fillRectangle(0, 0, width, height);
+			gc.drawRectangle(0,0,width-1,height-1);
+		} finally {
+			gc.dispose();
+		}
+		return image;
+	}
 
 
-  public static Image createLineStyleImage(int lineStyle, int width, int height)
-  {
-    Image image = new Image(Display.getDefault(), width, height);
-    GC gc = new GC(image);
-    try {
-      gc.setLineStyle(lineStyle);
-      gc.setLineWidth(5);
-      gc.setForeground(new org.eclipse.swt.graphics.Color(Display.getDefault(), 0, 0, 0));
-      gc.drawLine(1, height/2, width-1, height/2);
-    } finally {
-      gc.dispose();
-    }
-    return image;
-  }
+	public static Image createLineStyleImage(int lineStyle, int width, int height)
+	{
+		Image image = new Image(Display.getDefault(), width, height);
+		GC gc = new GC(image);
+		try {
+			gc.setLineStyle(lineStyle);
+			gc.setLineWidth(5);
+			gc.setForeground(new org.eclipse.swt.graphics.Color(Display.getDefault(), 0, 0, 0));
+			gc.drawLine(1, height/2, width-1, height/2);
+		} finally {
+			gc.dispose();
+		}
+		return image;
+	}
 
-  public static Image createLineStyleImage(int lineStyle) {
-    return createLineStyleImage(lineStyle, 16, 64);
-  }
+	public static Image createLineStyleImage(int lineStyle) {
+		return createLineStyleImage(lineStyle, 16, 64);
+	}
 
 	/**
 	 *this method Resizes an Image SWT
@@ -241,7 +318,5 @@ public class ImageUtil
 		gc.dispose();
 		return scaled;
 	}
-
-
 
 }

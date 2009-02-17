@@ -30,10 +30,10 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 
 /**
  * @author Daniel.Mazurek <at> NightLabs <dot> de
- *
+ * @author Marco Schulze - marco at nightlabs dot de
  */
 public class XPropertyDescriptor
-extends PropertyDescriptor
+extends PropertyDescriptor implements IXPropertyDescriptor
 {
 
 	/**
@@ -45,7 +45,7 @@ extends PropertyDescriptor
 	}
 
 	/**
-	 * 
+	 *
 	 * @param id the ID of the PropertyDescriptor
 	 * @param displayName the DisplayName of the PropertyDescriptor
 	 * @param readOnly determines if the used CellEditor should be readOnly or not
@@ -54,15 +54,25 @@ extends PropertyDescriptor
 		super(id, displayName);
 		this.readOnly = readOnly;
 	}
-	
-	protected boolean readOnly = false;
+
+	private boolean readOnly = false;
+
+	@Override
 	public boolean isReadOnly() {
 		return readOnly;
 	}
+
+	@Override
 	public void setReadOnly(boolean readOnly) {
 		this.readOnly = readOnly;
 	}
-	
+
+	@Override
+	public void onActivate() { }
+
+	@Override
+	public void onDeactivate() { }
+
 //	protected void init() {
 //		setLabelProvider(new LabelProvider() {
 //			@Override

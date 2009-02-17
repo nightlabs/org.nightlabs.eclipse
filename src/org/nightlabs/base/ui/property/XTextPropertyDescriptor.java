@@ -29,48 +29,44 @@ package org.nightlabs.base.ui.property;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.nightlabs.base.ui.celleditor.XTextCellEditor;
 
 /**
- * @author Daniel.Mazurek <at> NightLabs <dot> de
+ * A {@link PropertyDescriptor} implementation that displays a simple text and renders
+ * an editable (or read-only) {@link Text} for editing it.
  *
+ * @author Daniel.Mazurek <at> NightLabs <dot> de
+ * @author Marco Schulze - marco at nightlabs dot de
  */
 public class XTextPropertyDescriptor
 //extends TextPropertyDescriptor
 extends XPropertyDescriptor
 {
 
-	/**
-	 * @param id
-	 * @param displayName
-	 */
 	public XTextPropertyDescriptor(Object id, String displayName) {
 		super(id, displayName);
 	}
 
-	/**
-	 * @param id
-	 * @param displayName
-	 * @param readOnly
-	 */
 	public XTextPropertyDescriptor(Object id, String displayName, boolean readOnly) {
 		super(id, displayName, readOnly);
 	}
-	
-  /**
-   * The <code>TextPropertyDescriptor</code> implementation of this
-   * <code>IPropertyDescriptor</code> method creates and returns a new
-   * <code>XTextCellEditor</code>.
-   * <p>
-   * The editor is configured with the current validator if there is one.
-   * </p>
-   */
-  @Override
+
+	/**
+	 * The <code>TextPropertyDescriptor</code> implementation of this
+	 * <code>IPropertyDescriptor</code> method creates and returns a new
+	 * <code>XTextCellEditor</code>.
+	 * <p>
+	 * The editor is configured with the current validator if there is one.
+	 * </p>
+	 */
+	@Override
 	public CellEditor createPropertyEditor(Composite parent)
-  {
-    CellEditor editor = new XTextCellEditor(parent, SWT.NONE, readOnly);
-    if (getValidator() != null)
-        editor.setValidator(getValidator());
-    return editor;
-  }
+	{
+		CellEditor editor = new XTextCellEditor(parent, SWT.NONE, isReadOnly());
+		if (getValidator() != null)
+			editor.setValidator(getValidator());
+		return editor;
+	}
 }

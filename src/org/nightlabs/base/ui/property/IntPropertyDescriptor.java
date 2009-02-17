@@ -31,36 +31,39 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.nightlabs.base.ui.celleditor.IntCellEditor;
 
-
+/**
+ * @author unascribed (probably Daniel Mazurek)
+ * @author Marco Schulze - Marco at NightLabs dot de
+ */
 public class IntPropertyDescriptor
 extends XPropertyDescriptor
 {
 
-  /**
-   * @param id
-   * @param displayName
-   */
-  public IntPropertyDescriptor(Object id, String displayName) {
-    super(id, displayName);
-  }
-	
-	
-  /**
-   * @param id
-   * @param displayName
-   * @param readOnly
-   */
-  public IntPropertyDescriptor(Object id, String displayName, boolean readOnly) {
-    super(id, displayName, readOnly);
-  }
-  
-  @Override
+	/**
+	 * @param id
+	 * @param displayName
+	 */
+	public IntPropertyDescriptor(Object id, String displayName) {
+		super(id, displayName);
+	}
+
+
+	/**
+	 * @param id
+	 * @param displayName
+	 * @param readOnly
+	 */
+	public IntPropertyDescriptor(Object id, String displayName, boolean readOnly) {
+		super(id, displayName, readOnly);
+	}
+
+	@Override
 	public CellEditor createPropertyEditor(Composite parent)
-  {
-  	CellEditor editor = new IntCellEditor(parent, SWT.NONE, readOnly);
-  	if (getValidator() != null)
-  		editor.setValidator(getValidator());
-  	return editor;
-  }
-  
+	{
+		CellEditor editor = new IntCellEditor(parent, SWT.NONE, isReadOnly());
+		if (getValidator() != null)
+			editor.setValidator(getValidator());
+		return editor;
+	}
+
 }
