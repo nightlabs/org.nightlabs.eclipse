@@ -889,8 +889,11 @@ public class PdfViewerComposite extends Composite
 	private void paintViewPanel(Graphics2D g)
 	{
 		if (renderBuffer == null || renderThread == null) {
-			g.setColor(getViewPanel().getBackground());
-			g.fillRect(0, 0, getViewPanel().getWidth(), getViewPanel().getHeight());
+			JPanel viewPanel = getViewPanel();
+			if (viewPanel != null) {
+				g.setColor(viewPanel.getBackground());
+				g.fillRect(0, 0, viewPanel.getWidth(), viewPanel.getHeight());				
+			}
 			return;
 		}
 
