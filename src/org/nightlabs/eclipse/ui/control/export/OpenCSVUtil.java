@@ -16,7 +16,7 @@ import au.com.bytecode.opencsv.CSVWriter;
  * @author Chairat Kongarayawetchakun - chairat[at]nightlabs[dot]de
  *
  */
-public class OpenCSVUtils {
+public class OpenCSVUtil {
 	public static void exportControlToCSV(String fileName, Control control) {
 		try {
 			String[] columnNames = extractColumnNames(control);
