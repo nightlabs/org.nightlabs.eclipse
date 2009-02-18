@@ -39,6 +39,7 @@ import java.util.TimerTask;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
@@ -205,11 +206,11 @@ public class ImageUtil
 			}
 			nondisposedColorCount = temporaryImageColors.size();
 
-			if (nondisposedColorCount == 0) {
+			if (nondisposedColorCount == 0 && disposeTemporaryColorsTimer != null) {
 				disposeTemporaryColorsTimer.cancel();
 				disposeTemporaryColorsTimer = null;
 			}
-		}
+		} // synchronized (temporaryImageColors) {
 
 		for (ImageColorEntry imageColorEntry : imageColorsToDispose) {
 			imageColorEntry.color.dispose();
@@ -222,6 +223,8 @@ public class ImageUtil
 	private static void registerTemporaryColor(Image image, org.eclipse.swt.graphics.Color color)
 	{
 		synchronized (temporaryImageColors) {
+			temporaryImageColors.add(new ImageColorEntry(image, color));
+
 			if (disposeTemporaryColorsTimer == null) {
 				disposeTemporaryColorsTimer = new Timer("DisposeTemporaryColors", true);
 				disposeTemporaryColorsTimer.schedule(new TimerTask() {
@@ -231,22 +234,70 @@ public class ImageUtil
 					}
 				}, 30000, 30000);
 			}
+		} // synchronized (temporaryImageColors) {
 
-			temporaryImageColors.add(new ImageColorEntry(image, color));
-
-			if (logger.isTraceEnabled())
-				logger.trace("registerTemporaryColor: image=" + Integer.toHexString(System.identityHashCode(image)) + " color=" + Integer.toHexString(System.identityHashCode(color)));
-		}
+		if (logger.isTraceEnabled())
+			logger.trace("registerTemporaryColor: image=" + Integer.toHexString(System.identityHashCode(image)) + " color=" + Integer.toHexString(System.identityHashCode(color)));
 	}
 
+	/**
+	 * Create an image with a width and a height of 16 pixel filled by the specified AWT color.
+	 * <b>You must ensure that the image is disposed when not needed anymore!</b>
+	 * <p>
+	 * This is a convenience method delegating to {@link #createColorImage(Color, int, int)}.
+	 * </p>
+	 * <p>
+	 * The SWT {@link org.eclipse.swt.graphics.Color} instance that is created internally on-the-fly
+	 * is automatically disposed when the returned {@link Image} is disposed. Because the {@link Image}
+	 * class doesn't support {@link DisposeListener}s, this is implemented with a {@link Timer} and therefore
+	 * delayed. Though this should never cause a problem in real life, you might at least theoretically run into trouble,
+	 * if you create and dispose many images very fast in a short time. In this unlikely case, consider using
+	 * {@link #createColorImage(org.eclipse.swt.graphics.Color)} instead
+	 * and manage the SWT {@link org.eclipse.swt.graphics.Color} instances yourself (pool them and dispose them
+	 * immediately whenever possible).
+	 * </p>
+	 *
+	 * @param color the AWT color to fill the image.
+	 * @return the newly created image.
+	 * @see #createColorImage(Color, int, int)
+	 */
 	public static Image createColorImage(Color color) {
 		return createColorImage(color, 16, 16);
 	}
 
+	/**
+	 * Create an image with a width and a height of 16 pixel filled by the specified SWT color.
+	 * <b>You must ensure that the image is disposed when not needed anymore!</b>
+	 * <p>
+	 * This is a convenience method delegating to {@link #createColorImage(org.eclipse.swt.graphics.Color, int, int)}.
+	 * </p>
+	 *
+	 * @param color the SWT color to fill the image.
+	 * @return the newly created image.
+	 * @see #createColorImage(org.eclipse.swt.graphics.Color, int, int)
+	 */
 	public static Image createColorImage(org.eclipse.swt.graphics.Color color) {
 		return createColorImage(color, 16, 16);
 	}
 
+	/**
+	 * Create an image filled by the specified AWT color.
+	 * <b>You must ensure that the image is disposed when not needed anymore!</b>
+	 * <p>
+	 * The SWT {@link org.eclipse.swt.graphics.Color} instance that is created internally on-the-fly
+	 * is automatically disposed when the returned {@link Image} is disposed. Because the {@link Image}
+	 * class doesn't support {@link DisposeListener}s, this is implemented with a {@link Timer} and therefore
+	 * delayed. Though this should never cause a problem in real life, you might at least theoretically run into trouble,
+	 * if you create and dispose many images very fast in a short time. In this unlikely case, consider using
+	 * {@link #createColorImage(org.eclipse.swt.graphics.Color, int, int)} instead
+	 * and manage the SWT {@link org.eclipse.swt.graphics.Color} instances yourself (pool them and dispose them
+	 * immediately whenever possible).
+	 * </p>
+	 *
+	 * @param color the AWT color to fill the image.
+	 * @return the newly created image.
+	 * @see #createColorImage(Color)
+	 */
 	public static Image createColorImage(Color color, int width, int height)
 	{
 		Image image = new Image(Display.getDefault(), width, height);
@@ -263,6 +314,14 @@ public class ImageUtil
 		return image;
 	}
 
+	/**
+	 * Create an image filled by the specified SWT color.
+	 * <b>You must ensure that the image is disposed when not needed anymore!</b>
+	 *
+	 * @param color the SWT color to fill the image.
+	 * @return the newly created image.
+	 * @see #createColorImage(org.eclipse.swt.graphics.Color)
+	 */
 	public static Image createColorImage(org.eclipse.swt.graphics.Color color, int width, int height)
 	{
 		Image image = new Image(Display.getDefault(), width, height);
