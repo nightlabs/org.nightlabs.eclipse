@@ -212,6 +212,8 @@ public class ImageUtil
 			}
 		} // synchronized (temporaryImageColors) {
 
+		// Dispose outside of the synchronized block, because that otherwise causes dead-locks sometimes
+		// (the Color.dispose() method does some other synchronisation).
 		for (ImageColorEntry imageColorEntry : imageColorsToDispose) {
 			imageColorEntry.color.dispose();
 		}
