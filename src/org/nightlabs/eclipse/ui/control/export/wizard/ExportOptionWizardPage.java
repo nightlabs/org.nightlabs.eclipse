@@ -67,11 +67,12 @@ extends WizardPage
 		Composite fileLocationComposite = new Composite(container, SWT.NULL);
 		final GridLayout gridLayout2 = new GridLayout(3, false);
 		fileLocationComposite.setLayout(gridLayout2);
+		fileLocationComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		new Label(fileLocationComposite, SWT.NONE).setText("Save Location: ");
 
 		fileText = new Text(fileLocationComposite, SWT.SINGLE);
-		gridData = new GridData(GridData.FILL_BOTH);
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		fileText.setLayoutData(gridData);
 
 		Button browseButton = new Button(fileLocationComposite, SWT.PUSH);
