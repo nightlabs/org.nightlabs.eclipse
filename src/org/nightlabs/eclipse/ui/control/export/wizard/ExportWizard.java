@@ -1,11 +1,14 @@
 /**
- * 
+ *
  */
 package org.nightlabs.eclipse.ui.control.export.wizard;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbench;
+import org.nightlabs.eclipse.ui.control.export.FocusHistory;
+import org.nightlabs.eclipse.ui.control.export.OpenCSVUtil;
 
 /**
  * @author Chairat Kongarayawetchakun - chairat [AT] nightlabs [DOT] de
@@ -13,10 +16,10 @@ import org.eclipse.ui.IWorkbench;
  */
 public class ExportWizard extends Wizard
 {
-	private IStructuredSelection initialSelection; 
-	public void init(IWorkbench workbench, IStructuredSelection selection) { 
-		initialSelection = selection; 
-	} 
+	private IStructuredSelection initialSelection;
+	public void init(IWorkbench workbench, IStructuredSelection selection) {
+		initialSelection = selection;
+	}
 
 	private ExportOptionWizardPage optionPage;
 	private ExportPreviewWizardPage previewPage;
@@ -37,6 +40,7 @@ public class ExportWizard extends Wizard
 	 */
 	@Override
 	public boolean performFinish() {
-		return false;
+		OpenCSVUtil.exportControlToCSV(optionPage.getFilePath(), (Control)FocusHistory.sharedInstance().getLastItem().getWidget(), optionPage.getSeperator());
+		return true;
 	}
 }

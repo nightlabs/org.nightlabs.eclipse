@@ -1,6 +1,8 @@
 package org.nightlabs.eclipse.ui.control.export;
 
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
@@ -39,14 +41,20 @@ public class FocusHistory {
 		if (!((widget instanceof Table) || (widget instanceof Tree)))
 			return;
 
-		if (items.size() > MAX_HISTORY_ITEM_COUNT) {
+		items.add(new FocusHistoryItem(widget));
+
+		while (items.size() > MAX_HISTORY_ITEM_COUNT) {
 			items.removeFirst();
 		}
-
-		items.add(new FocusHistoryItem(widget));
 	}
 
-	public LinkedList<FocusHistoryItem> getItems() {
-		return items;
+	public List<FocusHistoryItem> getItems() {
+		assertUIThread();
+		return Collections.unmodifiableList(items);
+	}
+
+	public FocusHistoryItem getLastItem() {
+		assertUIThread();
+		return items.getLast();
 	}
 }
