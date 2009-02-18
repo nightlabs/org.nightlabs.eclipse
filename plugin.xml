@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="org.nightlabs.eclipse.ui.control.export.workbenchActionSet"
+            label="Data Exporting"
+            visible="true">
+         <menu
+               id="org.nightlabs.eclipse.ui.control.export.treetableexportmenu"
+               label="&amp;Tree/Table Export"
+               path="window/additions">
+         </menu>
+         <action
+               class="org.nightlabs.eclipse.ui.control.export.action.ExportCSVAction"
+               icon="icons/action/ExportCSVAction.png"
+               id="org.nightlabs.eclipse.ui.control.export.action.ExportCSVAction"
+               label="&amp;CSV"
+               menubarPath="window/org.nightlabs.eclipse.ui.control.export.treetableexportmenu/content"
+               tooltip="Exports Data in Tree/Table into a CSV file.">
+         </action>
+         <action
+               class="org.nightlabs.eclipse.ui.control.export.action.ExportPrinterAction"
+               icon="icons/action/ExportPrinterAction.png"
+               id="org.nightlabs.eclipse.ui.control.export.action.ExportPrinterAction"
+               label="&amp;Printer"
+               menubarPath="window/org.nightlabs.eclipse.ui.control.export.treetableexportmenu/content"
+               tooltip="Exports Data in Tree/Table into printer.">
+         </action>
+      </actionSet>
+   </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="org.nightlabs.eclipse.ui.control.export.startup.Startup">
+      </startup>
+   </extension>
+</plugin>
