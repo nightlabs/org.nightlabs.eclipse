@@ -9,6 +9,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.Widget;
 import org.nightlabs.eclipse.ui.control.export.FocusHistory;
 import org.nightlabs.eclipse.ui.control.export.copy.WidgetCopyUtil;
@@ -39,7 +40,13 @@ public class ExportPreviewWizardPage extends WizardPage {
 			 newTable.setLayoutData(new GridData(GridData.FILL_BOTH));
 		 }
 
-//		 new Label(container, SWT.NONE).setText(":" + FocusHistory.sharedInstance().getLastItem());
+		 else if (widget instanceof Tree) {
+			 Tree tree = (Tree)widget;
+
+			 Tree newTree = WidgetCopyUtil.createCopy(container, tree);
+			 newTree.setLayoutData(new GridData(GridData.FILL_BOTH));
+		 }
+
 		 setControl(container);
 	}
 

@@ -9,6 +9,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -36,8 +37,7 @@ extends WizardPage
 	//UI
 	private Combo seperatorCombo;
 
-	private Button showControl;
-	private Button showPreviewData;
+	private Button showPreviewDataButton;
 
 	private Text fileText;
 
@@ -78,14 +78,16 @@ extends WizardPage
 			}
 		});
 
-		showControl = new Button(container, SWT.CHECK);
-		showControl.setSelection(true);
-		showControl.setText("Show selected control");
-
-		showPreviewData = new Button(container, SWT.CHECK);
-		showControl.setSelection(true);
-		showPreviewData.setText("Show exported preview data");
-
+		showPreviewDataButton = new Button(container, SWT.CHECK);
+		showPreviewDataButton.setText("Show exported preview data");
+		showPreviewDataButton.setSelection(true);
+		showPreviewDataButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				getContainer().updateButtons();
+			}
+		});
+		
 		Composite fileLocationComposite = new Composite(container, SWT.NULL);
 		final GridLayout gridLayout2 = new GridLayout(3, false);
 		fileLocationComposite.setLayout(gridLayout2);
@@ -131,7 +133,17 @@ extends WizardPage
 
 		if (filePath == null || filePath.equals("")) {
 			result = false;
-			setErrorMessage("Please select the location for saving the file.");
+			setErrorMessage("Please select the location & name the file you want to save.");
+		}
+
+		return result;
+	}
+
+	@Override
+	public boolean canFlipToNextPage() {
+		boolean result = true;
+		if (showPreviewDataButton.getSelection() == false) {
+			result = false;
 		}
 
 		return result;

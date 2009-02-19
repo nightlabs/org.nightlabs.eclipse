@@ -4,6 +4,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
 
 public class WidgetCopyUtil
 {
@@ -27,5 +29,25 @@ public class WidgetCopyUtil
 
 		newTable.setHeaderVisible(true);
 		return newTable;
+	}
+
+	public static Tree createCopy(Composite composite, Tree oldTree) {
+		Tree newTree = new Tree(composite, oldTree.getStyle());
+
+		TreeItem[] treeItems = oldTree.getItems();
+		for (TreeItem treeItem : treeItems) {
+			TreeItem newTreeItem = new TreeItem(newTree, treeItem.getStyle());
+			newTreeItem.setText(treeItem.getText());
+			generateChildItems(newTreeItem, treeItem);
+		}
+		return newTree;
+	}
+
+	private static void generateChildItems(TreeItem newParentItem, TreeItem treeItem) {
+		TreeItem newTreeItem = new TreeItem(newParentItem, treeItem.getStyle());
+		for (TreeItem ti : treeItem.getItems()) {
+			newTreeItem.setText(ti.getText());
+			generateChildItems(newTreeItem, ti);
+		}
 	}
 }
