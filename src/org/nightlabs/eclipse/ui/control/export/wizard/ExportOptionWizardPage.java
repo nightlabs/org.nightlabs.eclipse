@@ -5,6 +5,8 @@ package org.nightlabs.eclipse.ui.control.export.wizard;
 
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -23,7 +25,13 @@ import org.eclipse.swt.widgets.Text;
 public class ExportOptionWizardPage
 extends WizardPage
 {
-	private final String[] DEFAULT_SEPERATORS = new String[]{",",";",":"};
+	private final char TAB = '\t';
+	private final char COMMA = ',';
+	private final char SEMICOLON = ';';
+	private final char COLON = ':' ;
+	private final char SPACE = ' ';
+
+	private final char[] DEFAULT_SEPERATORS = new char[]{COMMA, SEMICOLON, COLON, SPACE, TAB};
 
 	//UI
 	private Combo seperatorCombo;
@@ -51,10 +59,24 @@ extends WizardPage
 		new Label(container, SWT.NONE).setText("Selected Seperator :");
 
 		seperatorCombo = new Combo(container, SWT.DROP_DOWN);
-		seperatorCombo.setItems(DEFAULT_SEPERATORS);
-		seperatorCombo.setTextLimit(1);
+
+		for (char c : DEFAULT_SEPERATORS) {
+			if (c == TAB)
+				seperatorCombo.add("[TAB]");
+			else if (c == SPACE)
+				seperatorCombo.add("[SPACE]");
+			else
+				seperatorCombo.add(Character.toString(c));
+		}
+
 		GridData gridData = new GridData();
 		seperatorCombo.setLayoutData(gridData);
+		seperatorCombo.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				getContainer().updateButtons();
+			}
+		});
 
 		showControl = new Button(container, SWT.CHECK);
 		showControl.setSelection(true);
@@ -72,8 +94,15 @@ extends WizardPage
 		new Label(fileLocationComposite, SWT.NONE).setText("Save Location: ");
 
 		fileText = new Text(fileLocationComposite, SWT.SINGLE);
+		fileText.setTextLimit(1);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		fileText.setLayoutData(gridData);
+		fileText.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				getContainer().updateButtons();
+			}
+		});
 
 		Button browseButton = new Button(fileLocationComposite, SWT.PUSH);
 		browseButton.setText("Browse");
@@ -90,8 +119,28 @@ extends WizardPage
 		setControl(container);
 	}
 
+	@Override
+	public boolean isPageComplete() {
+		boolean result = true;
+		setErrorMessage(null);
+
+		if (getSeperator() == ' ') { //$NON-NLS-1$
+			result = false;
+			setErrorMessage("Please enter a seperator character.");
+		}
+
+		if (filePath == null || filePath.equals("")) {
+			result = false;
+			setErrorMessage("Please select the location for saving the file.");
+		}
+
+		return result;
+	}
+
 	public char getSeperator() {
-		return seperatorCombo.getText().toCharArray()[0];
+		if (seperatorCombo.getSelectionIndex() > 0)
+			return DEFAULT_SEPERATORS[seperatorCombo.getSelectionIndex()];
+		return COMMA;
 	}
 
 	public String getFilePath() {

@@ -12,14 +12,20 @@ public class WidgetCopyUtil
 
 		TableColumn[] tableColumns = oldTable.getColumns();
 		for (TableColumn tableColumn : tableColumns) {
-			new TableColumn(newTable, tableColumn.getStyle()).setText(tableColumn.getText());
+			TableColumn tc = new TableColumn(newTable, tableColumn.getStyle());
+			tc.setText(tableColumn.getText());
+			tc.pack();
 		}
 
 		TableItem[] tableItems = oldTable.getItems();
 		for (TableItem tableItem : tableItems) {
-			new TableItem(newTable, tableItem.getStyle()).setText(new String[]{"","","","","","","","","" });
+			TableItem ti = new TableItem(newTable, tableItem.getStyle());
+			for (int i = 0; i < tableColumns.length; i++)
+				if (tableColumns[i] != null)
+					ti.setText(i, tableItem.getText(i));
 		}
 
+		newTable.setHeaderVisible(true);
 		return newTable;
 	}
 }
