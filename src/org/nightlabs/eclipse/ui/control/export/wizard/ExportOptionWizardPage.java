@@ -5,11 +5,12 @@ package org.nightlabs.eclipse.ui.control.export.wizard;
 
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -59,6 +60,7 @@ extends WizardPage
 		new Label(container, SWT.NONE).setText("Selected Seperator :");
 
 		seperatorCombo = new Combo(container, SWT.DROP_DOWN);
+		seperatorCombo.setTextLimit(1);
 
 		for (char c : DEFAULT_SEPERATORS) {
 			if (c == TAB)
@@ -78,6 +80,15 @@ extends WizardPage
 			}
 		});
 
+		seperatorCombo.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (seperatorCombo.getText() != null && !seperatorCombo.getText().equals("")) {
+					seperatorCombo.setText(Character.toString(seperatorCombo.getText().charAt(0)));
+				}
+			}
+		});
+
 		showPreviewDataButton = new Button(container, SWT.CHECK);
 		showPreviewDataButton.setText("Show exported preview data");
 		showPreviewDataButton.setSelection(true);
@@ -85,9 +96,10 @@ extends WizardPage
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				getContainer().updateButtons();
+
 			}
 		});
-		
+
 		Composite fileLocationComposite = new Composite(container, SWT.NULL);
 		final GridLayout gridLayout2 = new GridLayout(3, false);
 		fileLocationComposite.setLayout(gridLayout2);
@@ -96,7 +108,6 @@ extends WizardPage
 		new Label(fileLocationComposite, SWT.NONE).setText("Save Location: ");
 
 		fileText = new Text(fileLocationComposite, SWT.SINGLE);
-		fileText.setTextLimit(1);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		fileText.setLayoutData(gridData);
 		fileText.addModifyListener(new ModifyListener() {
@@ -106,14 +117,14 @@ extends WizardPage
 			}
 		});
 
+
 		Button browseButton = new Button(fileLocationComposite, SWT.PUSH);
 		browseButton.setText("Browse");
 		browseButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				FileDialog dialog = new FileDialog(getShell(), SWT.NULL);
-				String path = dialog.open();
-				filePath = path;
+				filePath = dialog.open();
 				fileText.setText(filePath);
 			}
 		});
