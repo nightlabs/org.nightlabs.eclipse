@@ -60,7 +60,6 @@ extends WizardPage
 		new Label(container, SWT.NONE).setText("Selected Seperator :");
 
 		seperatorCombo = new Combo(container, SWT.DROP_DOWN);
-		seperatorCombo.setTextLimit(1);
 
 		for (char c : DEFAULT_SEPERATORS) {
 			if (c == TAB)
@@ -82,9 +81,10 @@ extends WizardPage
 
 		seperatorCombo.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyPressed(KeyEvent e) {
+			public void keyReleased(KeyEvent e) {
 				if (seperatorCombo.getText() != null && !seperatorCombo.getText().equals("")) {
-					seperatorCombo.setText(Character.toString(seperatorCombo.getText().charAt(0)));
+					String seperatorString = Character.toString(seperatorCombo.getText().charAt(0));
+					seperatorCombo.setText(seperatorString);
 				}
 			}
 		});
