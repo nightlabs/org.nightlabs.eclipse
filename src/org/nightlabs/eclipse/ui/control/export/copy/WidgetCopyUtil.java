@@ -57,9 +57,6 @@ public class WidgetCopyUtil
 			generateChildItems(newTreeItem, oldTreeItem);
 			expandTreeItemRecursively(newTreeItem);
 		}
-
-
-//		newTree.update();
 		return newTree;
 	}
 
@@ -71,7 +68,6 @@ public class WidgetCopyUtil
 	}
 
 	private static void generateChildItems(TreeItem newParentItem, TreeItem oldParentItem) {
-//		newTreeItem.clearAll(true);
 		for (TreeItem oldTreeItem : oldParentItem.getItems()) {
 			TreeItem newTreeItem = new TreeItem(newParentItem, oldParentItem.getStyle());
 			if (logger.isDebugEnabled())
@@ -85,7 +81,6 @@ public class WidgetCopyUtil
 	private static void copyTreeProperties(TreeItem newItem, TreeItem oldItem) {
 		TreeColumn[] treeColumns = oldItem.getParent().getColumns();
 		for (int idx = 0; idx < treeColumns.length; ++idx) {
-//			newItem.setData(oldItem.getData());
 			String text = oldItem.getText(idx);
 			newItem.setText(idx, text);
 			newItem.setImage(idx, oldItem.getImage(idx));

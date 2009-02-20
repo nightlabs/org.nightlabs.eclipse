@@ -137,7 +137,7 @@ extends WizardPage
 		boolean result = true;
 		setErrorMessage(null);
 
-		if (getSeparator() == ' ') { //$NON-NLS-1$
+		if (getSeparator() == null) { //$NON-NLS-1$
 			result = false;
 			setErrorMessage("Please enter a seperator character.");
 		}
@@ -160,10 +160,10 @@ extends WizardPage
 //		return result;
 //	}
 
-	public char getSeparator() {
+	public Character getSeparator() {
 		if (separatorCombo.getSelectionIndex() > 0)
 			return DEFAULT_SEPARATORS[separatorCombo.getSelectionIndex()];
-		return COMMA;
+		return null;
 	}
 
 	public String getFilePath() {
