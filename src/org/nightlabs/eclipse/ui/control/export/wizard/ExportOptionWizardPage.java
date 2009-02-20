@@ -33,10 +33,10 @@ extends WizardPage
 	private final char COLON = ':' ;
 	private final char SPACE = ' ';
 
-	private final char[] DEFAULT_SEPERATORS = new char[]{COMMA, SEMICOLON, COLON, SPACE, TAB};
+	private final char[] DEFAULT_SEPARATORS = new char[]{COMMA, SEMICOLON, COLON, SPACE, TAB};
 
 	//UI
-	private Combo seperatorCombo;
+	private Combo separatorCombo;
 
 	private Button showPreviewDataButton;
 
@@ -57,34 +57,34 @@ extends WizardPage
 		final GridLayout gridLayout = new GridLayout();
 		container.setLayout(gridLayout);
 
-		new Label(container, SWT.NONE).setText("Selected Seperator :");
+		new Label(container, SWT.NONE).setText("Selected separator:");
 
-		seperatorCombo = new Combo(container, SWT.DROP_DOWN);
+		separatorCombo = new Combo(container, SWT.DROP_DOWN);
 
-		for (char c : DEFAULT_SEPERATORS) {
+		for (char c : DEFAULT_SEPARATORS) {
 			if (c == TAB)
-				seperatorCombo.add("[TAB]");
+				separatorCombo.add("[TAB]");
 			else if (c == SPACE)
-				seperatorCombo.add("[SPACE]");
+				separatorCombo.add("[SPACE]");
 			else
-				seperatorCombo.add(Character.toString(c));
+				separatorCombo.add(Character.toString(c));
 		}
 
 		GridData gridData = new GridData();
-		seperatorCombo.setLayoutData(gridData);
-		seperatorCombo.addModifyListener(new ModifyListener() {
+		separatorCombo.setLayoutData(gridData);
+		separatorCombo.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
 				getContainer().updateButtons();
 			}
 		});
 
-		seperatorCombo.addKeyListener(new KeyAdapter() {
+		separatorCombo.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (seperatorCombo.getText() != null && !seperatorCombo.getText().equals("")) {
-					String seperatorString = Character.toString(seperatorCombo.getText().charAt(0));
-					seperatorCombo.setText(seperatorString);
+				if (separatorCombo.getText() != null && !separatorCombo.getText().equals("")) {
+					String seperatorString = Character.toString(separatorCombo.getText().charAt(0));
+					separatorCombo.setText(seperatorString);
 				}
 			}
 		});
@@ -137,7 +137,7 @@ extends WizardPage
 		boolean result = true;
 		setErrorMessage(null);
 
-		if (getSeperator() == ' ') { //$NON-NLS-1$
+		if (getSeparator() == ' ') { //$NON-NLS-1$
 			result = false;
 			setErrorMessage("Please enter a seperator character.");
 		}
@@ -150,19 +150,19 @@ extends WizardPage
 		return result;
 	}
 
-	@Override
-	public boolean canFlipToNextPage() {
-		boolean result = true;
-		if (showPreviewDataButton.getSelection() == false) {
-			result = false;
-		}
+//	@Override
+//	public boolean canFlipToNextPage() {
+//		boolean result = true;
+//		if (showPreviewDataButton.getSelection() == false) {
+//			result = false;
+//		}
+//
+//		return result;
+//	}
 
-		return result;
-	}
-
-	public char getSeperator() {
-		if (seperatorCombo.getSelectionIndex() > 0)
-			return DEFAULT_SEPERATORS[seperatorCombo.getSelectionIndex()];
+	public char getSeparator() {
+		if (separatorCombo.getSelectionIndex() > 0)
+			return DEFAULT_SEPARATORS[separatorCombo.getSelectionIndex()];
 		return COMMA;
 	}
 

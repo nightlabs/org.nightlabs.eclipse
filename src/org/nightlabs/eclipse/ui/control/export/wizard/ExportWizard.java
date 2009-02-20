@@ -40,7 +40,7 @@ public class ExportWizard extends Wizard
 	 */
 	@Override
 	public boolean performFinish() {
-		OpenCSVUtil.exportControlToCSV(optionPage.getFilePath(), (Control)FocusHistory.sharedInstance().getLastItem().getWidget(), optionPage.getSeperator());
+		OpenCSVUtil.exportControlToCSV(optionPage.getFilePath(), (Control)FocusHistory.sharedInstance().getLastItem().getWidget(), optionPage.getSeparator());
 		return true;
 	}
 }

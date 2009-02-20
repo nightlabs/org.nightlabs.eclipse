@@ -16,7 +16,8 @@ import au.com.bytecode.opencsv.CSVWriter;
  * @author Chairat Kongarayawetchakun - chairat[at]nightlabs[dot]de
  *
  */
-public class OpenCSVUtil {
+public class OpenCSVUtil
+{
 	public static void exportControlToCSV(String fileName, Control control, char seperator) {
 		try {
 			String[] columnNames = extractColumnNames(control);
@@ -73,6 +74,7 @@ public class OpenCSVUtil {
 		}
 	}
 
+	//For Tree
 	private static void generateSubTreeItems(TreeItem treeItem, Tree tree, CSVWriter writer) {
 		String[] item = new String[tree.getColumnCount()];
 		for (int i = 0; i < tree.getColumnCount(); i++) {

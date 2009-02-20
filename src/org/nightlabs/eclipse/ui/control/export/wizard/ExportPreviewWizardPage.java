@@ -33,17 +33,21 @@ public class ExportPreviewWizardPage extends WizardPage {
 		 container.setLayout(gridLayout);
 
 		 Widget widget = FocusHistory.sharedInstance().getLastItem().getWidget();
+//		 Text previewText = new Text(container, SWT.MULTI);
+//		 previewText.setText(OpenCSVUtil.exportControlToCSV(fileName, control, seperator))
+//		 previewText.setLayoutData(new GridData(GridData.FILL_BOTH));
 		 if (widget instanceof Table) {
 			 Table table = (Table)widget;
 
-			 Table newTable = WidgetCopyUtil.createCopy(container, table);
+			 Table newTable = WidgetCopyUtil.copyTable(container, table);
 			 newTable.setLayoutData(new GridData(GridData.FILL_BOTH));
 		 }
 
 		 else if (widget instanceof Tree) {
 			 Tree tree = (Tree)widget;
 
-			 Tree newTree = WidgetCopyUtil.createCopy(container, tree);
+
+			 Tree newTree = WidgetCopyUtil.copyTree(container, tree);
 			 newTree.setLayoutData(new GridData(GridData.FILL_BOTH));
 		 }
 
