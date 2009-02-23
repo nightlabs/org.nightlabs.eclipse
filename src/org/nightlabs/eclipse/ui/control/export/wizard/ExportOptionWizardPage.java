@@ -86,6 +86,7 @@ extends WizardPage
 					String seperatorString = Character.toString(separatorCombo.getText().charAt(0));
 					separatorCombo.setText(seperatorString);
 				}
+				getContainer().updateButtons();
 			}
 		});
 
@@ -113,6 +114,13 @@ extends WizardPage
 		fileText.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
+				getContainer().updateButtons();
+			}
+		});
+
+		fileText.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
 				getContainer().updateButtons();
 			}
 		});

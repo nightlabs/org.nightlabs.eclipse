@@ -71,13 +71,6 @@ public class Container
 		} else if (control instanceof Tree) {
 			Tree tree = (Tree) control;
 			for (TreeItem treeItem : tree.getItems()) {
-//				Item item = new Item(null);
-//				for (int i = 0; i < columns.size(); i++) {
-//					Image image = treeItem.getImage(i);
-//					String itemText = treeItem.getText(i);
-//					item.addCell(new Cell(itemText, image == null?null:image.getImageData()));
-//				}
-//				items.add(item);
 				generateSubTreeItems(treeItem, tree, null);
 			}
 		}
