@@ -42,9 +42,6 @@ extends WizardPage
 
 	private Text fileText;
 
-	//Data
-	private String filePath;
-
 	protected ExportOptionWizardPage(String pageName) {
 		super(pageName);
 		setTitle("Option");
@@ -132,8 +129,7 @@ extends WizardPage
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				FileDialog dialog = new FileDialog(getShell(), SWT.NULL);
-				filePath = dialog.open();
-				fileText.setText(filePath);
+				fileText.setText(dialog.open());
 			}
 		});
 
@@ -150,7 +146,7 @@ extends WizardPage
 			setErrorMessage("Please enter a seperator character.");
 		}
 
-		if (filePath == null || filePath.equals("")) {
+		if (fileText.getText() == null || fileText.getText().equals("")) {
 			result = false;
 			setErrorMessage("Please select the location & name the file you want to save.");
 		}
@@ -169,12 +165,12 @@ extends WizardPage
 //	}
 
 	public Character getSeparator() {
-		if (separatorCombo.getSelectionIndex() > 0)
-			return DEFAULT_SEPARATORS[separatorCombo.getSelectionIndex()];
-		return null;
+		if (separatorCombo.getText() == null || separatorCombo.getText().equals(""))
+			return DEFAULT_SEPARATORS[0];
+		return separatorCombo.getText().toCharArray()[0];
 	}
 
 	public String getFilePath() {
-		return filePath;
+		return fileText.getText();
 	}
 }
