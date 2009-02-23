@@ -25,34 +25,44 @@ public class Container
 
 	private void generateContainer(Control control) {
 		extractColumnNames(control);
-		exportElements(control);
+		extractElements(control);
 	}
 
+	private static Column VIRTUAL_COLUMN = new Column("Virtual Column", null);
 	private void extractColumnNames(Control control) {
 		if (control instanceof Table) {
 			Table table = (Table) control;
 			TableColumn[] tableColumns = table.getColumns();
-			for (int i = 0; i < tableColumns.length; i++) {
-				Image image = tableColumns[i].getImage();
-				columns.add(new Column(tableColumns[i].getText(), image == null?null:image.getImageData()));
+			if (table.getColumnCount() == 0) {
+				columns.add(VIRTUAL_COLUMN);
+			}
+			else {
+				for (int i = 0; i < tableColumns.length; i++) {
+					Image image = tableColumns[i].getImage();
+					columns.add(new Column(tableColumns[i].getText(), image == null?null:image.getImageData()));
+				}
 			}
 		} else if (control instanceof Tree) {
 			Tree tree = (Tree) control;
-			java.util.List<String> columnNames = new ArrayList<String>();
-			for (int i = 0; i < tree.getColumnCount(); i++) {
-				Image image = tree.getColumn(i).getImage();
-				columnNames.add(tree.getColumn(i).getText());
-				columns.add(new Column(tree.getColumn(i).getText(), image == null?null:image.getImageData()));
+
+			if (tree.getColumnCount() == 0) {
+				columns.add(VIRTUAL_COLUMN);
+			}
+			else {
+				for (int i = 0; i < tree.getColumnCount(); i++) {
+					Image image = tree.getColumn(i).getImage();
+					columns.add(new Column(tree.getColumn(i).getText(), image == null?null:image.getImageData()));
+				}
 			}
 		}
 	}
 
-	private void exportElements(Control control) {
+	private void extractElements(Control control) {
 		if (control instanceof Table) {
 			Table table = (Table) control;
 			for (TableItem tableItem : table.getItems()) {
 				Item item = new Item(null);
-				for (int i = 0; i < table.getColumnCount(); i++) {
+				for (int i = 0; i < columns.size(); i++) {
 					Image image = tableItem.getImage(i);
 					item.addCell(new Cell(tableItem.getText(i), image == null?null:image.getImageData()));
 				}
@@ -61,13 +71,14 @@ public class Container
 		} else if (control instanceof Tree) {
 			Tree tree = (Tree) control;
 			for (TreeItem treeItem : tree.getItems()) {
-				Item item = new Item(null);
-				for (int i = 0; i < tree.getColumnCount(); i++) {
-					Image image = treeItem.getImage(i);
-					item.addCell(new Cell(treeItem.getText(i), image == null?null:image.getImageData()));
-				}
-				items.add(item);
-				generateSubTreeItems(treeItem, tree, item);
+//				Item item = new Item(null);
+//				for (int i = 0; i < columns.size(); i++) {
+//					Image image = treeItem.getImage(i);
+//					String itemText = treeItem.getText(i);
+//					item.addCell(new Cell(itemText, image == null?null:image.getImageData()));
+//				}
+//				items.add(item);
+				generateSubTreeItems(treeItem, tree, null);
 			}
 		}
 	}
@@ -75,8 +86,10 @@ public class Container
 	//For Tree
 	private void generateSubTreeItems(TreeItem treeItem, Tree tree, Item parentItem) {
 		Item item = new Item(parentItem);
-		for (int i = 0; i < tree.getColumnCount(); i++) {
-			item.addCell(new Cell(treeItem.getText(), treeItem.getImage().getImageData()));
+		for (int i = 0; i < columns.size(); i++) {
+			Image image = treeItem.getImage(i);
+			String itemText = treeItem.getText(i);
+			item.addCell(new Cell(itemText, image == null?null:image.getImageData()));
 		}
 		items.add(item);
 		for (TreeItem subTreeItem : treeItem.getItems())
