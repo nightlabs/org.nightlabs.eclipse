@@ -24,4 +24,23 @@ public class Item
 	public List<Cell> getCells() {
 		return Collections.unmodifiableList(cells);
 	}
+
+	public boolean isEmpty() {
+		for (Cell cell : cells) {
+			if (cell.getImageData() != null || (cell.getText() != null && !cell.getText().isEmpty()))
+				return false;
+		}
+		return true;
+	}
+
+	public int getLevel()
+	{
+		int level = 0;
+		Item parent = this.getParentItem();
+		while (parent != null) {
+			++level;
+			parent = parent.getParentItem();
+		}
+		return level;
+	}
 }

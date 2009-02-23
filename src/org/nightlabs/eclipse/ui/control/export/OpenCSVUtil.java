@@ -1,9 +1,11 @@
 package org.nightlabs.eclipse.ui.control.export;
 
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Tree;
 import org.nightlabs.eclipse.ui.control.export.model.Cell;
 import org.nightlabs.eclipse.ui.control.export.model.Column;
 import org.nightlabs.eclipse.ui.control.export.model.Container;
@@ -23,27 +25,49 @@ public class OpenCSVUtil
 			List<Column> columns = container.getColumns();
 			List<Item> items = container.getItems();
 
-			String[] columnNames = new String[columns.size()];
-			for (int i = 0; i < columns.size(); i++) {
-				columnNames[i] = columns.get(i).getName();
-			}
-
 			CSVWriter writer = new CSVWriter(new FileWriter(fileName), seperator);
-			writer.writeNext(columnNames);
 
-			for (Item item : items) {
-				List<Cell> cells = item.getCells();
-				String[] cellDatas = new String[cells.size()];
-				for (int i = 0; i < cells.size(); i++ ) {
-					cellDatas[i] = cells.get(i).getText();
-				}
-				writer.writeNext(cellDatas);
-			}
+			exportColumnNames(control, columns, writer);
+			exportItems(control, items, writer);
 
 			//Closes writer
 			writer.close();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
+		}
+	}
+
+	private static void exportColumnNames(Control control, List<Column> columns, CSVWriter writer) {
+		List<String> columnNames = new ArrayList();
+
+		if (control instanceof Tree) {
+			columnNames.add("Level");
+		}
+
+		for (Column column : columns) {
+			columnNames.add(column.getName());
+		}
+
+		writer.writeNext(columnNames.toArray(new String[0]));
+	}
+
+	private static void exportItems(Control control, List<Item> items, CSVWriter writer) {
+		boolean isTree = false;
+		if (control instanceof Tree)
+			isTree = true;
+
+		for (Item item : items) {
+			List<Cell> cells = item.getCells();
+			List<String> cellDatas = new ArrayList();
+
+			if (isTree) {
+				cellDatas.add(Integer.toString(item.getLevel()));
+			}
+
+			for (int i = 0; i < cells.size(); i++ ) {
+				cellDatas.add(cells.get(i).getText());
+			}
+			writer.writeNext(cellDatas.toArray(new String[0]));
 		}
 	}
 }

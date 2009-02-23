@@ -67,6 +67,8 @@ extends WizardPage
 				separatorCombo.add(Character.toString(c));
 		}
 
+		separatorCombo.select(0);
+
 		GridData gridData = new GridData();
 		separatorCombo.setLayoutData(gridData);
 		separatorCombo.addModifyListener(new ModifyListener() {

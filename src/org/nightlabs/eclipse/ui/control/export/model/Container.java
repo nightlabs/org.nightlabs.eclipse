@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
 
 public class Container
@@ -24,37 +25,32 @@ public class Container
 	}
 
 	private void generateContainer(Control control) {
-		extractColumnNames(control);
+		extractColumns(control);
 		extractElements(control);
 	}
 
-	private static Column VIRTUAL_COLUMN = new Column("Virtual Column", null);
-	private void extractColumnNames(Control control) {
+	private static Column DEFAULT_COLUMN = new Column("Default", null);
+	private void extractColumns(Control control) {
+		columns.clear();
+
 		if (control instanceof Table) {
 			Table table = (Table) control;
 			TableColumn[] tableColumns = table.getColumns();
-			if (table.getColumnCount() == 0) {
-				columns.add(VIRTUAL_COLUMN);
-			}
-			else {
-				for (int i = 0; i < tableColumns.length; i++) {
-					Image image = tableColumns[i].getImage();
-					columns.add(new Column(tableColumns[i].getText(), image == null?null:image.getImageData()));
-				}
+			for (TableColumn tableColumn : tableColumns) {
+				Image image = tableColumn.getImage();
+				columns.add(new Column(tableColumn.getText(), image == null ? null : image.getImageData()));
 			}
 		} else if (control instanceof Tree) {
 			Tree tree = (Tree) control;
-
-			if (tree.getColumnCount() == 0) {
-				columns.add(VIRTUAL_COLUMN);
-			}
-			else {
-				for (int i = 0; i < tree.getColumnCount(); i++) {
-					Image image = tree.getColumn(i).getImage();
-					columns.add(new Column(tree.getColumn(i).getText(), image == null?null:image.getImageData()));
-				}
+			TreeColumn[] treeColumns = tree.getColumns();
+			for (TreeColumn treeColumn : treeColumns) {
+				Image image = treeColumn.getImage();
+				columns.add(new Column(treeColumn.getText(), image == null ? null : image.getImageData()));
 			}
 		}
+
+		if (columns.isEmpty())
+			columns.add(DEFAULT_COLUMN);
 	}
 
 	private void extractElements(Control control) {
@@ -84,7 +80,12 @@ public class Container
 			String itemText = treeItem.getText(i);
 			item.addCell(new Cell(itemText, image == null?null:image.getImageData()));
 		}
-		items.add(item);
+
+		//Filter
+		if (!item.isEmpty()) {
+			items.add(item);
+		}
+
 		for (TreeItem subTreeItem : treeItem.getItems())
 			generateSubTreeItems(subTreeItem, tree, item);
 	}
