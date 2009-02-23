@@ -3,6 +3,7 @@ package org.nightlabs.eclipse.ui.control.export.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -32,14 +33,16 @@ public class Container
 			Table table = (Table) control;
 			TableColumn[] tableColumns = table.getColumns();
 			for (int i = 0; i < tableColumns.length; i++) {
-				columns.add(new Column(tableColumns[i].getText(), tableColumns[i].getImage().getImageData()));
+				Image image = tableColumns[i].getImage();
+				columns.add(new Column(tableColumns[i].getText(), image == null?null:image.getImageData()));
 			}
 		} else if (control instanceof Tree) {
 			Tree tree = (Tree) control;
 			java.util.List<String> columnNames = new ArrayList<String>();
 			for (int i = 0; i < tree.getColumnCount(); i++) {
+				Image image = tree.getColumn(i).getImage();
 				columnNames.add(tree.getColumn(i).getText());
-				columns.add(new Column(tree.getColumn(i).getText(), tree.getColumn(i).getImage().getImageData()));
+				columns.add(new Column(tree.getColumn(i).getText(), image == null?null:image.getImageData()));
 			}
 		}
 	}
@@ -50,7 +53,8 @@ public class Container
 			for (TableItem tableItem : table.getItems()) {
 				Item item = new Item(null);
 				for (int i = 0; i < table.getColumnCount(); i++) {
-					item.addCell(new Cell(tableItem.getText(i), tableItem.getImage(i).getImageData()));
+					Image image = tableItem.getImage(i);
+					item.addCell(new Cell(tableItem.getText(i), image == null?null:image.getImageData()));
 				}
 				items.add(item);
 			}
@@ -59,7 +63,8 @@ public class Container
 			for (TreeItem treeItem : tree.getItems()) {
 				Item item = new Item(null);
 				for (int i = 0; i < tree.getColumnCount(); i++) {
-					item.addCell(new Cell(treeItem.getText(i), treeItem.getImage(i).getImageData()));
+					Image image = treeItem.getImage(i);
+					item.addCell(new Cell(treeItem.getText(i), image == null?null:image.getImageData()));
 				}
 				items.add(item);
 				generateSubTreeItems(treeItem, tree, item);
