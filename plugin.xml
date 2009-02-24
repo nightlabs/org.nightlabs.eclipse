@@ -208,7 +208,7 @@
    <extension
          point="org.nightlabs.editor2d.viewer.ui.renderModeRegistry">
       <registry
-            drawComponentClass="org.nightlabs.editor2d.ui.ShapeDrawComponent"
+            drawComponentClass="org.nightlabs.editor2d.ShapeDrawComponent"
             mode="default"
             name="Default"
             renderer="org.nightlabs.editor2d.ui.render.ShapeDefaultRenderer">
@@ -217,7 +217,7 @@
                renderContextType="Draw2D"/>
       </registry>
       <registry
-            drawComponentClass="org.nightlabs.editor2d.ui.ImageDrawComponent"
+            drawComponentClass="org.nightlabs.editor2d.ImageDrawComponent"
             mode="default"
             name="Default"
             renderer="org.nightlabs.editor2d.ui.render.ImageDefaultRenderer">
@@ -226,7 +226,7 @@
                renderContextType="Draw2D"/>
       </registry>
       <registry
-            drawComponentClass="org.nightlabs.editor2d.ui.DrawComponentContainer"
+            drawComponentClass="org.nightlabs.editor2d.DrawComponentContainer"
             mode="default"
             name="Default"
             renderer="org.nightlabs.editor2d.ui.render.BaseRenderer">
@@ -235,7 +235,7 @@
                renderContextType="Draw2D"/>
       </registry>
       <registry
-            drawComponentClass="org.nightlabs.editor2d.ui.PageDrawComponent"
+            drawComponentClass="org.nightlabs.editor2d.PageDrawComponent"
             mode="default"
             name="Default"
             renderer="org.nightlabs.editor2d.ui.render.PageRenderer">
