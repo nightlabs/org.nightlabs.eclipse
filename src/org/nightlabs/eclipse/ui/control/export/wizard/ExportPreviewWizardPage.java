@@ -46,7 +46,6 @@ public class ExportPreviewWizardPage extends WizardPage {
 		 else if (widget instanceof Tree) {
 			 Tree tree = (Tree)widget;
 
-
 			 Tree newTree = WidgetCopyUtil.copyTree(container, tree, true);
 			 newTree.setLayoutData(new GridData(GridData.FILL_BOTH));
 		 }

@@ -66,29 +66,32 @@ public class WidgetCopyUtil
 			newTreeColumn.setText(column.getName());
 			if (column.getImageData() != null)
 				newTreeColumn.setImage(new Image(composite.getDisplay(), column.getImageData()));
+
+			newTreeColumn.pack();
 		}
 
 		Map<Integer, TreeItem> lastParentTreeItemMap = new HashMap<Integer, TreeItem>();
 		for (Item item : items) {
-			cLevel = 0;
+			cLevel = item.getLevel();
 			TreeItem treeItem = null;
 			if (cLevel == 0) {
 				treeItem = new TreeItem(newTree, SWT.NONE);
 			}
 			else {
-				TreeItem lastParentTreeItem = lastParentTreeItemMap.get(item.getLevel());
+				TreeItem lastParentTreeItem = lastParentTreeItemMap.get(cLevel - 1);
 				treeItem = new TreeItem(lastParentTreeItem, SWT.NONE);
 			}
 
 			//create cells
 			List<Cell> cells = item.getCells();
-			for (int i = 0; i < cells.size(); i++) {
+			for (int i = 0; i < columns.size(); i++) {
 				treeItem.setText(i, cells.get(i).getText());
-				treeItem.setImage(i, new Image(composite.getDisplay(), cells.get(i).getImageData()));
+				if (cells.get(i).getImageData() != null)
+					treeItem.setImage(i, new Image(composite.getDisplay(), cells.get(i).getImageData()));
 			}
 
-			//find parent
-
+			//put current parent
+			lastParentTreeItemMap.put(cLevel, treeItem);
 		}
 
 		//expand tree
