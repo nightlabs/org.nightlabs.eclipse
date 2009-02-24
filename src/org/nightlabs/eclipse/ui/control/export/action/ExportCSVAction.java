@@ -4,6 +4,7 @@
 package org.nightlabs.eclipse.ui.control.export.action;
 
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -24,7 +25,6 @@ public class ExportCSVAction implements IWorkbenchWindowActionDelegate {
 
 	}
 
-
 	private IWorkbenchWindow window;
 
 	@Override
@@ -38,6 +38,9 @@ public class ExportCSVAction implements IWorkbenchWindowActionDelegate {
 			ExportWizard wizard = new ExportWizard();
 			WizardDialog dialog = new WizardDialog(window.getShell(), wizard);
 			dialog.open();
+		}
+		else {
+			MessageDialog.openWarning(window.getShell(), "Error", "No selected tree/table");
 		}
 	}
 
