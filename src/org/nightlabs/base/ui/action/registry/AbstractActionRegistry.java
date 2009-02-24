@@ -483,8 +483,15 @@ extends AbstractEPProcessor
 			coolBarManager.add(contributionItem);
 		}
 
-//		coolBarManager.update(true);
-		coolBarManager.update(true);
+		try {
+			coolBarManager.update(true);	
+		} catch (Exception e) {
+			// TODO WORKAROUND
+			// sometimes at first startup an ArrayIndexOutOfBounds occurs, because  
+			// CoolBarManager.adjustContributionList removes first an separator and 
+			// afterwards also the first element, of an now empty list 
+			// this is an workaround for this bug
+		}
 
 //		if (coolBarManager instanceof CoolBarManager)
 //			((CoolBarManager)coolBarManager).refresh();
