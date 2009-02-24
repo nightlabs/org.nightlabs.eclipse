@@ -491,6 +491,7 @@ extends AbstractEPProcessor
 			// CoolBarManager.adjustContributionList removes first an separator and 
 			// afterwards also the first element, of an now empty list 
 			// this is an workaround for this bug
+			logger.warn("Eclipse bug in coolBarManager.update(true) occured", e);
 		}
 
 //		if (coolBarManager instanceof CoolBarManager)
