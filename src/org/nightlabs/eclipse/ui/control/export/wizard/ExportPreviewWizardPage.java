@@ -39,7 +39,7 @@ public class ExportPreviewWizardPage extends WizardPage {
 		 if (widget instanceof Table) {
 			 Table table = (Table)widget;
 
-			 Table newTable = WidgetCopyUtil.copyTable(container, table);
+			 Table newTable = WidgetCopyUtil.copyTable(container, table, true);
 			 newTable.setLayoutData(new GridData(GridData.FILL_BOTH));
 		 }
 
@@ -47,7 +47,7 @@ public class ExportPreviewWizardPage extends WizardPage {
 			 Tree tree = (Tree)widget;
 
 
-			 Tree newTree = WidgetCopyUtil.copyTree(container, tree);
+			 Tree newTree = WidgetCopyUtil.copyTree(container, tree, true);
 			 newTree.setLayoutData(new GridData(GridData.FILL_BOTH));
 		 }
 

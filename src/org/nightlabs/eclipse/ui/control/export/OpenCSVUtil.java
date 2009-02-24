@@ -38,7 +38,7 @@ public class OpenCSVUtil
 	}
 
 	private static void exportColumnNames(Control control, List<Column> columns, CSVWriter writer) {
-		List<String> columnNames = new ArrayList();
+		List<String> columnNames = new ArrayList<String>();
 
 		if (control instanceof Tree) {
 			columnNames.add("Level");
@@ -48,7 +48,7 @@ public class OpenCSVUtil
 			columnNames.add(column.getName());
 		}
 
-		writer.writeNext(columnNames.toArray(new String[0]));
+		writer.writeNext(columnNames.toArray(new String[columnNames.size()]));
 	}
 
 	private static void exportItems(Control control, List<Item> items, CSVWriter writer) {
@@ -58,7 +58,7 @@ public class OpenCSVUtil
 
 		for (Item item : items) {
 			List<Cell> cells = item.getCells();
-			List<String> cellDatas = new ArrayList();
+			List<String> cellDatas = new ArrayList<String>();
 
 			if (isTree) {
 				cellDatas.add(Integer.toString(item.getLevel()));
@@ -67,7 +67,7 @@ public class OpenCSVUtil
 			for (int i = 0; i < cells.size(); i++ ) {
 				cellDatas.add(cells.get(i).getText());
 			}
-			writer.writeNext(cellDatas.toArray(new String[0]));
+			writer.writeNext(cellDatas.toArray(new String[cellDatas.size()]));
 		}
 	}
 }
