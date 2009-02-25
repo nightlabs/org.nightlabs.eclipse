@@ -25,10 +25,12 @@
  ******************************************************************************/
 package org.nightlabs.editor2d.ui.render;
 
+import java.awt.Color;
 import java.awt.Shape;
 
 import org.apache.log4j.Logger;
 import org.eclipse.draw2d.Graphics;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Path;
 import org.nightlabs.base.ui.util.ColorUtil;
 import org.nightlabs.editor2d.DrawComponent;
@@ -46,6 +48,10 @@ extends Draw2DBaseRenderer
 	 * LOG4J logger used by this class
 	 */
 	private static final Logger logger = Logger.getLogger(Draw2DShapeDefaultRenderer.class);
+
+	public static final org.eclipse.swt.graphics.Color TEMPLATE_COLOR = new org.eclipse.swt.graphics.Color(null,
+			Color.GRAY.getRed(), Color.GRAY.getGreen(), Color.GRAY.getBlue());
+	
 	
 	public Draw2DShapeDefaultRenderer() {
 		super();
@@ -54,42 +60,55 @@ extends Draw2DBaseRenderer
 	@Override
 	public void paint(DrawComponent dc, Graphics g)
 	{
-    ShapeDrawComponent sdc = (ShapeDrawComponent) dc;
-    Path path = convertShape(sdc.getGeneralShape());
-    if (sdc.isFill()) {
-      g.setBackgroundColor(ColorUtil.toSWTColor(sdc.getFillColor()));
-      g.fillPath(path);
-    }
-    g.setForegroundColor(ColorUtil.toSWTColor(sdc.getLineColor()));
-//    g.setLineWidth(sdc.getLineWidth());
-    g.setLineWidth((int)sdc.getLineWidth());
-    g.setLineStyle(convertLineStyle(sdc.getLineStyle()));
-    g.drawPath(path);
-    
-    logger.debug("shape painted!"); //$NON-NLS-1$
+		ShapeDrawComponent sdc = (ShapeDrawComponent) dc;		
+		Path path = convertShape(sdc.getGeneralShape());
+		g.setAntialias(SWT.ON);
+		if (sdc.isFill()) {
+			g.setBackgroundColor(getFillColor(sdc));
+			g.fillPath(path);
+		}
+		if (sdc.isShowStroke()) {
+			g.setForegroundColor(getLineColor(sdc));
+			g.setLineWidth((int)sdc.getLineWidth());
+			g.setLineStyle(convertLineStyle(sdc.getLineStyle()));
+			g.drawPath(path);	
+		}
+		if (sdc.isTemplate()) {
+			g.setBackgroundColor(TEMPLATE_COLOR);
+			g.fillPath(path);
+		}
+		logger.debug("shape painted!"); //$NON-NLS-1$
 	}
-	
+
 	protected Path convertShape(Shape s)
 	{
 		return AWTSWTUtil.convertShape(s, null, null);
 	}
-	 
+
 	protected int convertLineStyle(LineStyle lineStyle)
 	{
 		switch (lineStyle)
 		{
-			case SOLID:
-				return 1;
-			case DASHED_1:
-				return 2;
-			case DASHED_2:
-				return 3;
-			case DASHED_3:
-				return 4;
-			case DASHED_4:
-				return 5;
-			default:
-				return 1;
+		case SOLID:
+			return 1;
+		case DASHED_1:
+			return 2;
+		case DASHED_2:
+			return 3;
+		case DASHED_3:
+			return 4;
+		case DASHED_4:
+			return 5;
+		default:
+			return 1;
 		}
 	}
+	
+	protected org.eclipse.swt.graphics.Color getFillColor(ShapeDrawComponent sdc) {
+		return ColorUtil.toSWTColor(sdc.getFillColor());
+	}
+
+	protected org.eclipse.swt.graphics.Color getLineColor(ShapeDrawComponent sdc) {
+		return ColorUtil.toSWTColor(sdc.getLineColor());
+	}	
 }

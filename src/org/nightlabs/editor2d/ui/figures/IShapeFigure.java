@@ -27,18 +27,24 @@
 
 package org.nightlabs.editor2d.ui.figures;
 
-import org.eclipse.draw2d.geometry.Rectangle;
-import org.nightlabs.editor2d.ui.util.J2DUtil;
+import java.awt.geom.AffineTransform;
+
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Translatable;
+import org.nightlabs.editor2d.j2d.GeneralShape;
+import org.nightlabs.editor2d.ui.handle.HandleShape;
 
 
-public class FeedbackShapeFigure
-extends ShapeFigure
+public interface IShapeFigure
+extends IFigure, Translatable, HandleShape
 {
-	@Override
-	public void setBounds(Rectangle newBounds)
-	{
-		Rectangle oldBounds = getBounds();
-		J2DUtil.transformGeneralShape(getGeneralShape(), oldBounds, newBounds);
-		super.repaint();
-	}
+	public GeneralShape getGeneralShape();
+	public void setGeneralShape(GeneralShape generalShape);
+	public void transform(AffineTransform at);
+	public void setXOR(boolean b);
+	public void setFill(boolean b);
+	public int getLineWidth();
+	public void setLineWidth(int lineWidth);
+	public int getLineStyle();
+	public void setLineStyle(int lineStyle);
 }

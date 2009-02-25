@@ -27,7 +27,7 @@ package org.nightlabs.editor2d.ui.editpolicy;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.nightlabs.editor2d.ui.figures.ShapeFigure;
+import org.nightlabs.editor2d.ui.figures.IShapeFigure;
 import org.nightlabs.editor2d.ui.util.feedback.FeedbackUtil;
 
 /**
@@ -78,7 +78,7 @@ extends EditorConstrainedEditPolicy
   	return figure;
   }
   
-  protected ShapeFigure getCustomFeedbackFigure(Object modelPart)
+  protected IShapeFigure getCustomFeedbackFigure(Object modelPart)
   {
   	return FeedbackUtil.getCustomFeedbackFigure(modelPart);
   }

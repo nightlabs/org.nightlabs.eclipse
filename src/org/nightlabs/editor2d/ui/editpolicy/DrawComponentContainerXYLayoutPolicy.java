@@ -71,9 +71,9 @@ import org.nightlabs.editor2d.ui.command.SetConstraintCommand;
 import org.nightlabs.editor2d.ui.command.ShearCommand;
 import org.nightlabs.editor2d.ui.command.shape.EditShapeCommand;
 import org.nightlabs.editor2d.ui.edit.ShapeDrawComponentEditPart;
-import org.nightlabs.editor2d.ui.figures.AbstractShapeFigure;
-import org.nightlabs.editor2d.ui.figures.FeedbackShapeFigure;
 import org.nightlabs.editor2d.ui.figures.ShapeFigure;
+import org.nightlabs.editor2d.ui.figures.FeedbackShapeFigure;
+import org.nightlabs.editor2d.ui.figures.IShapeFigure;
 import org.nightlabs.editor2d.ui.request.EditorBoundsRequest;
 import org.nightlabs.editor2d.ui.request.EditorCreateShapeRequest;
 import org.nightlabs.editor2d.ui.request.EditorEditShapeRequest;
@@ -516,7 +516,7 @@ implements EditorRequestConstants
 	    {
 	      if (editorRequest.getMode() == EditorCreateShapeRequest.BOUNDS_FIX_MODE)
 	      {
-			    ShapeFigure shapeFigure = new AbstractShapeFigure();
+			    IShapeFigure shapeFigure = new ShapeFigure();
 			    shapeFigure.setGeneralShape(gp);
 			    shapeFigure.setFill(false);
 			    shapeFigure.setForegroundColor(getOutlineColor());

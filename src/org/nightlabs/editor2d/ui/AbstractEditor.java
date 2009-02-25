@@ -131,6 +131,7 @@ import org.nightlabs.editor2d.NameProvider;
 import org.nightlabs.editor2d.RootDrawComponent;
 import org.nightlabs.editor2d.impl.LayerImpl;
 import org.nightlabs.editor2d.render.RenderModeManager;
+import org.nightlabs.editor2d.render.j2d.J2DRenderContext;
 import org.nightlabs.editor2d.ui.actions.DeleteAction;
 import org.nightlabs.editor2d.ui.actions.EditShapeAction;
 import org.nightlabs.editor2d.ui.actions.NormalSelectionAction;
@@ -442,6 +443,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	{
 		if (rootEditPart == null)
 			rootEditPart = new J2DScalableFreeformRootEditPart();
+//			rootEditPart = new ScalableFreeformRootEditPart();
 
 		return rootEditPart;
 	}
@@ -808,7 +810,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 
 	protected void configureRenderModeManager()
 	{
-//		getRenderModeManager().setCurrentRenderContextType(J2DRenderContext.RENDER_CONTEXT_TYPE_JAVA2D);
+		getRenderModeManager().setCurrentRenderContextType(J2DRenderContext.RENDER_CONTEXT_TYPE_JAVA2D);
 //		getRenderModeManager().setCurrentRenderContextType(Draw2DRenderContext.RENDER_CONTEXT_TYPE);
 	}
 
@@ -993,7 +995,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 //		registry.registerAction(action);
 //		getPropertyActions().add(action.getId());
 
-		// Print Page Setup Action
+//		// Print Page Setup Action
 		action = new EditorPrintSetupAction(this);
 		registry.registerAction(action);
 		getPropertyActions().add(action.getId());
@@ -1041,6 +1043,7 @@ extends J2DGraphicalEditorWithFlyoutPalette
 
 	protected IAction createPrintAction() {
 		return new EditorPrintAction(this);
+//		return new PrintAction(this);
 	}
 
 	/**

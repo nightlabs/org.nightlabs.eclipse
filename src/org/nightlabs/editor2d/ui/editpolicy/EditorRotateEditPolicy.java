@@ -38,7 +38,7 @@ import org.eclipse.gef.commands.Command;
 import org.nightlabs.editor2d.j2d.GeneralShape;
 import org.nightlabs.editor2d.ui.command.RotateCenterCommand;
 import org.nightlabs.editor2d.ui.command.RotateCommand;
-import org.nightlabs.editor2d.ui.figures.ShapeFigure;
+import org.nightlabs.editor2d.ui.figures.IShapeFigure;
 import org.nightlabs.editor2d.ui.handle.RotateCenterHandle;
 import org.nightlabs.editor2d.ui.request.EditorRotateCenterRequest;
 import org.nightlabs.editor2d.ui.request.EditorRotateRequest;
@@ -111,7 +111,7 @@ extends EditorFeedbackPolicy
   protected double rotationOffset = Double.MAX_VALUE;
   protected void showRotateFeedback(EditorRotateRequest request)
   {
-    ShapeFigure rotationFeedback = getRotateFeedbackFigure();
+    IShapeFigure rotationFeedback = getRotateFeedbackFigure();
       	
     if (unrotatedShape == null)
       unrotatedShape = (GeneralShape) rotationFeedback.getGeneralShape().clone();
@@ -172,14 +172,14 @@ extends EditorFeedbackPolicy
     return feedback;
   }
 
-  protected ShapeFigure getRotateFeedbackFigure()
+  protected IShapeFigure getRotateFeedbackFigure()
   {
     if (feedback == null) {
       feedback = createDragSourceFeedbackFigure();
     	PrecisionRectangle rect = new PrecisionRectangle(getInitialFeedbackBounds().getCopy());
     	feedback.setBounds(getConstraintFor(rect));
     }
-    return (ShapeFigure) feedback;
+    return (IShapeFigure) feedback;
   }
   
   @Override

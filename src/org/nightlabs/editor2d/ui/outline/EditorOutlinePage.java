@@ -43,6 +43,7 @@ import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.RootEditPart;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
+import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.parts.ContentOutlinePage;
 import org.eclipse.jface.action.Action;
@@ -59,13 +60,11 @@ import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.PageBook;
-import org.holongate.j2d.J2DCanvas;
 import org.nightlabs.base.ui.resource.SharedImages;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.ui.AbstractEditor;
 import org.nightlabs.editor2d.ui.EditorContextMenuProvider;
 import org.nightlabs.editor2d.ui.EditorPlugin;
-import org.nightlabs.editor2d.ui.j2dswt.DrawComponentPaintable;
 import org.nightlabs.editor2d.ui.outline.filter.FilterManager;
 import org.nightlabs.editor2d.ui.resource.Messages;
 
@@ -74,288 +73,288 @@ public class EditorOutlinePage
 extends ContentOutlinePage
 implements IAdaptable
 {
-  static final int ID_OUTLINE  = 0;
-  static final int ID_OVERVIEW = 1;
-  static final int ID_FILTER 	 = 3;
-  
-  private AbstractEditor editor;
-  private FilterManager filterMan;
-//  private IAction showFilterAction;
-  
-  private PageBook pageBook;
-  private Control outline;
-  private IAction showOutlineAction;
-  private IAction showOverviewAction;
-//  private IAction filterOutlineAction;
-  private DisposeListener disposeListener;
-      
-  public EditorOutlinePage(AbstractEditor editor, EditPartViewer viewer){
-    super(viewer);
-    this.editor = editor;
-    this.filterMan = editor.getFilterManager();
-    filterMan.addPropertyChangeListener(filterListener);
-  }
-    
-  @Override
+	static final int ID_OUTLINE  = 0;
+	static final int ID_OVERVIEW = 1;
+	static final int ID_FILTER 	 = 3;
+
+	private AbstractEditor editor;
+	private FilterManager filterMan;
+	//  private IAction showFilterAction;
+
+	private PageBook pageBook;
+	private Control outline;
+	private IAction showOutlineAction;
+	private IAction showOverviewAction;
+	//  private IAction filterOutlineAction;
+	private DisposeListener disposeListener;
+
+	public EditorOutlinePage(AbstractEditor editor, EditPartViewer viewer){
+		super(viewer);
+		this.editor = editor;
+		this.filterMan = editor.getFilterManager();
+		filterMan.addPropertyChangeListener(filterListener);
+	}
+
+	@Override
 	public void init(IPageSite pageSite)
-  {
-    super.init(pageSite);
-    ActionRegistry registry = editor.getOutlineActionRegistry();
-    IActionBars bars = pageSite.getActionBars();
-    String id = ActionFactory.UNDO.getId();
-    bars.setGlobalActionHandler(id, registry.getAction(id));
-    id = ActionFactory.REDO.getId();
-    bars.setGlobalActionHandler(id, registry.getAction(id));
-    id = ActionFactory.DELETE.getId();
-    bars.setGlobalActionHandler(id, registry.getAction(id));
-    bars.updateActionBars();
-  }
+	{
+		super.init(pageSite);
+		ActionRegistry registry = editor.getOutlineActionRegistry();
+		IActionBars bars = pageSite.getActionBars();
+		String id = ActionFactory.UNDO.getId();
+		bars.setGlobalActionHandler(id, registry.getAction(id));
+		id = ActionFactory.REDO.getId();
+		bars.setGlobalActionHandler(id, registry.getAction(id));
+		id = ActionFactory.DELETE.getId();
+		bars.setGlobalActionHandler(id, registry.getAction(id));
+		bars.updateActionBars();
+	}
 
-  protected void configureOutlineViewer()
-  {
-    getViewer().setEditDomain(editor.getOutlineEditDomain());
-    getViewer().setEditPartFactory(editor.getOutlineEditPartFactory());
-    ContextMenuProvider provider = editor.getContextMenuProvider();
-    getViewer().setContextMenu(provider);
-    // TODO: ContextMenu ID Problem
-    getSite().registerContextMenu(
-      EditorContextMenuProvider.CONTEXT_MENU_ID,
-      provider, getSite().getSelectionProvider());
-    getViewer().setKeyHandler(editor.getCommonKeyHandler());
-//    getViewer().addDropTargetListener(
-//      new EditorTemplateTransferDropTargetListener(getViewer()));
+	protected void configureOutlineViewer()
+	{
+		getViewer().setEditDomain(editor.getOutlineEditDomain());
+		getViewer().setEditPartFactory(editor.getOutlineEditPartFactory());
+		ContextMenuProvider provider = editor.getContextMenuProvider();
+		getViewer().setContextMenu(provider);
+		// TODO: ContextMenu ID Problem
+		getSite().registerContextMenu(
+				EditorContextMenuProvider.CONTEXT_MENU_ID,
+				provider, getSite().getSelectionProvider());
+		getViewer().setKeyHandler(editor.getCommonKeyHandler());
+		//    getViewer().addDropTargetListener(
+		//      new EditorTemplateTransferDropTargetListener(getViewer()));
 
-    createActions();
-        
-    showPage(ID_OUTLINE);
-  }
-    
-  protected void createActions()
-  {
-    IToolBarManager tbm = getSite().getActionBars().getToolBarManager();
-    
-    // create Filter entries
-    IMenuManager menuMan = getSite().getActionBars().getMenuManager();
-    createFilterEntries(menuMan);
-    
-    // Show Outline
-    showOutlineAction = new Action() {
-      @Override
+		createActions();
+
+		showPage(ID_OUTLINE);
+	}
+
+	protected void createActions()
+	{
+		IToolBarManager tbm = getSite().getActionBars().getToolBarManager();
+
+		// create Filter entries
+		IMenuManager menuMan = getSite().getActionBars().getMenuManager();
+		createFilterEntries(menuMan);
+
+		// Show Outline
+		showOutlineAction = new Action() {
+			@Override
 			public void run() {
-        showPage(ID_OUTLINE);
-      }
-    };
-    showOutlineAction.setImageDescriptor(SharedImages.getSharedImageDescriptor(
-    		EditorPlugin.getDefault(), EditorOutlinePage.class, "Outline"));     //$NON-NLS-1$
-    tbm.add(showOutlineAction);
-    
-    // Show Overview
-    showOverviewAction = new Action() {
-      @Override
+				showPage(ID_OUTLINE);
+			}
+		};
+		showOutlineAction.setImageDescriptor(SharedImages.getSharedImageDescriptor(
+				EditorPlugin.getDefault(), EditorOutlinePage.class, "Outline"));     //$NON-NLS-1$
+		tbm.add(showOutlineAction);
+
+		// Show Overview
+		showOverviewAction = new Action() {
+			@Override
 			public void run() {
-        showPage(ID_OVERVIEW);
-      }
-    };
-    showOverviewAction.setImageDescriptor(SharedImages.getSharedImageDescriptor(
-    		EditorPlugin.getDefault(), EditorOutlinePage.class, "Overview")); //$NON-NLS-1$
-    tbm.add(showOverviewAction);
-    
-//    // Add Page
-//    newPageAction = new NewPageAction(editor);
-//    tbm.add(newPageAction);
-//
-//    // Delete Page
-//    deletePageAction = new DeletePageAction(editor);
-//    tbm.add(deletePageAction);
-  }
-  
-//  private IAction newPageAction;
-//  private IAction deletePageAction;
-  
-  private IAction createFilterAction(final Class<? extends DrawComponent> c)
-  {
+				showPage(ID_OVERVIEW);
+			}
+		};
+		showOverviewAction.setImageDescriptor(SharedImages.getSharedImageDescriptor(
+				EditorPlugin.getDefault(), EditorOutlinePage.class, "Overview")); //$NON-NLS-1$
+		tbm.add(showOverviewAction);
+
+		//    // Add Page
+		//    newPageAction = new NewPageAction(editor);
+		//    tbm.add(newPageAction);
+		//
+		//    // Delete Page
+		//    deletePageAction = new DeletePageAction(editor);
+		//    tbm.add(deletePageAction);
+	}
+
+	//  private IAction newPageAction;
+	//  private IAction deletePageAction;
+
+	private IAction createFilterAction(final Class<? extends DrawComponent> c)
+	{
 		IAction filterAction = new Action() {
-      @Override
+			@Override
 			public void run() {
-        filterMan.setFilter(c);
-      }
+				filterMan.setFilter(c);
+			}
 		};
 		filterAction.setText(filterMan.getTypeName(c));
 		return filterAction;
-  }
-  
-  private void createFilterEntries(IMenuManager menuMan)
-  {
+	}
+
+	private void createFilterEntries(IMenuManager menuMan)
+	{
 		IAction filterNoneAction = new Action() {
-      @Override
+			@Override
 			public void run() {
-        filterMan.setAllFiltersAvailable();
-      }
+				filterMan.setAllFiltersAvailable();
+			}
 		};
 		filterNoneAction.setText(Messages.getString("org.nightlabs.editor2d.ui.outline.EditorOutlinePage.label.filterNone")); //$NON-NLS-1$
 		menuMan.add(filterNoneAction);
-		
-  	for (Iterator<Class<? extends DrawComponent>> it = filterMan.getAllFilters().iterator(); it.hasNext(); )
-  	{
-  		Class<? extends DrawComponent> c = it.next();
+
+		for (Iterator<Class<? extends DrawComponent>> it = filterMan.getAllFilters().iterator(); it.hasNext(); )
+		{
+			Class<? extends DrawComponent> c = it.next();
 			IAction filterAction = createFilterAction(c);
 			menuMan.add(filterAction);
-  	}
-  }
-  
-  private Canvas overview;
-  private Thumbnail thumbnail;
-//  private PreviewComposite overview;
-  @Override
+		}
+	}
+
+	private Canvas overview;
+	private Thumbnail thumbnail;
+	//  private PreviewComposite overview;
+	@Override
 	public void createControl(Composite parent){
-    pageBook = new PageBook(parent, SWT.NONE);
-    outline = getViewer().createControl(pageBook);
-    
-//    overview = new Canvas(pageBook, SWT.NONE);
-//    overview = new J2DCanvas(pageBook, SWT.NONE, new J2DSamplePaintable("TestMessage"));
-    overview = new J2DCanvas(pageBook, SWT.NONE,
-    		new DrawComponentPaintable(editor.getRootDrawComponent()));
-    
-//    RootEditPart rep = editor.getOutlineGraphicalViewer().getRootEditPart();
-//    ScalableFreeformRootEditPart root = (ScalableFreeformRootEditPart) rep;
-//    Viewport viewport = ((Viewport)root.getFigure());
-//    PreviewViewport previewViewport = new PreviewViewport(viewport);
-//    overview = new PreviewComposite(editor.getRootDrawComponent(), previewViewport, pageBook, SWT.NONE);
-    
-    pageBook.showPage(outline);
-    configureOutlineViewer();
-    hookOutlineViewer();
-    initializeOutlineViewer();
-  }
-  
-  @Override
+		pageBook = new PageBook(parent, SWT.NONE);
+		outline = getViewer().createControl(pageBook);
+
+		overview = new Canvas(pageBook, SWT.NONE);
+		//    overview = new J2DCanvas(pageBook, SWT.NONE, new J2DSamplePaintable("TestMessage"));
+		//    overview = new J2DCanvas(pageBook, SWT.NONE,
+		//    		new DrawComponentPaintable(editor.getRootDrawComponent()));
+
+		//    RootEditPart rep = editor.getOutlineGraphicalViewer().getRootEditPart();
+		//    ScalableFreeformRootEditPart root = (ScalableFreeformRootEditPart) rep;
+		//    Viewport viewport = ((Viewport)root.getFigure());
+		//    PreviewViewport previewViewport = new PreviewViewport(viewport);
+		//    overview = new PreviewComposite(editor.getRootDrawComponent(), previewViewport, pageBook, SWT.NONE);
+
+		pageBook.showPage(outline);
+		configureOutlineViewer();
+		hookOutlineViewer();
+		initializeOutlineViewer();
+	}
+
+	@Override
 	public void dispose(){
-    unhookOutlineViewer();
-    if (thumbnail != null) {
-      thumbnail.deactivate();
-      thumbnail = null;
-    }
-    super.dispose();
-//    outlinePage = null;
-  }
-  
-//  public Object getAdapter(Class type) {
-//    if (type == ZoomManager.class)
-//      return editor.getOutlineGraphicalViewer().getProperty(ZoomManager.class.toString());
-//    return null;
-//  }
-  @SuppressWarnings("unchecked") //$NON-NLS-1$
-	public Object getAdapter(Class type) {
-    return null;
-  }
+		unhookOutlineViewer();
+		if (thumbnail != null) {
+			thumbnail.deactivate();
+			thumbnail = null;
+		}
+		super.dispose();
+		//    outlinePage = null;
+	}
 
-  @Override
+	  public Object getAdapter(Class type) {
+	    if (type == ZoomManager.class)
+	      return editor.getOutlineGraphicalViewer().getProperty(ZoomManager.class.toString());
+	    return null;
+	  }
+//	@SuppressWarnings("unchecked") //$NON-NLS-1$
+//	public Object getAdapter(Class type) {
+//		return null;
+//	}
+
+	@Override
 	public Control getControl() {
-    return pageBook;
-  }
+		return pageBook;
+	}
 
-  protected void hookOutlineViewer(){
-    editor.getOutlineSelectionSynchronizer().addViewer(getViewer());
-  }
+	protected void hookOutlineViewer(){
+		editor.getOutlineSelectionSynchronizer().addViewer(getViewer());
+	}
 
-  protected void initializeOutlineViewer(){
-    setContents(editor.getRootDrawComponent());
-    
-//    if (getViewer() instanceof TreeViewer) {
-//    	TreeViewer tv = (TreeViewer) getViewer();
-//    	tv.getTreeViewer().addFilter(new ViewerFilter(){
-//				@Override
-//				public boolean select(Viewer viewer, Object parentElement, Object element)
-//				{
-//					if (element instanceof DrawComponentTreeEditPart) {
-//						DrawComponentTreeEditPart dctep = (DrawComponentTreeEditPart) element;
-//						if (dctep.getDrawComponent().isTemplate())
-//							return false;
-//					}
-//					return true;
-//				}
-//			});
-//    }
-  }
-  
-  protected void initializeOverview()
-  {
-    LightweightSystem lws = new LightweightSystem(overview);
-    RootEditPart rep = editor.getOutlineGraphicalViewer().getRootEditPart();
-    if (rep instanceof ScalableFreeformRootEditPart) {
-      ScalableFreeformRootEditPart root = (ScalableFreeformRootEditPart)rep;
-      thumbnail = new ScrollableThumbnail((Viewport)root.getFigure());
-      thumbnail.setBorder(new MarginBorder(3));
-      thumbnail.setSource(root.getLayer(LayerConstants.PRINTABLE_LAYERS));
-//      thumbnail.setSource(root.getFigure());
-      lws.setContents(thumbnail);
-      disposeListener = new DisposeListener() {
-        public void widgetDisposed(DisposeEvent e) {
-          if (thumbnail != null) {
-            thumbnail.deactivate();
-            thumbnail = null;
-          }
-        }
-      };
-      editor.getEditor().addDisposeListener(disposeListener);
-    }
-  }
-  
-//  protected void initializeOverview()
-//  {
-//    LightweightSystem lws = new J2DLightweightSystem(overview);
-////  	LightweightSystem lws = new J2DLightweightSystem();
-//    RootEditPart rep = editor.getOutlineGraphicalViewer().getRootEditPart();
-//    if (rep instanceof J2DScalableFreeformRootEditPart) {
-//    	J2DScalableFreeformRootEditPart root = (J2DScalableFreeformRootEditPart)rep;
-////      thumbnail = new J2DScrollableThumbnail((Viewport)root.getFigure());
-//      thumbnail = new ScrollableThumbnail((Viewport)root.getFigure());
-//      thumbnail.setBorder(new MarginBorder(3));
-//      thumbnail.setSource(root.getLayer(LayerConstants.PRINTABLE_LAYERS));
-//      lws.setContents(thumbnail);
-//      disposeListener = new DisposeListener() {
-//        public void widgetDisposed(DisposeEvent e) {
-//          if (thumbnail != null) {
-//            thumbnail.deactivate();
-//            thumbnail = null;
-//          }
-//        }
-//      };
-//      editor.getEditor().addDisposeListener(disposeListener);
-//    }
-//  }
-  
-  public void setContents(Object contents) {
-    getViewer().setContents(contents);
-  }
-  
-  protected void showPage(int id) {
-    if (id == ID_OUTLINE) {
-      showOutlineAction.setChecked(true);
-      showOverviewAction.setChecked(false);
-      pageBook.showPage(outline);
-      if (thumbnail != null)
-        thumbnail.setVisible(false);
-    }
-    else if (id == ID_OVERVIEW) {
-      if (thumbnail == null)
-        initializeOverview();
-      showOutlineAction.setChecked(false);
-      showOverviewAction.setChecked(true);
-      pageBook.showPage(overview);
-      if (thumbnail != null)
-      	thumbnail.setVisible(true);
-    }
-  }
-  
-  protected void unhookOutlineViewer(){
-    editor.getOutlineSelectionSynchronizer().removeViewer(getViewer());
-    if (disposeListener != null && editor.getEditor() != null && !editor.getEditor().isDisposed())
-      editor.getEditor().removeDisposeListener(disposeListener);
-  }
- 
-  private PropertyChangeListener filterListener = new PropertyChangeListener()
-  {
+	protected void initializeOutlineViewer(){
+		setContents(editor.getRootDrawComponent());
+
+		//    if (getViewer() instanceof TreeViewer) {
+		//    	TreeViewer tv = (TreeViewer) getViewer();
+		//    	tv.getTreeViewer().addFilter(new ViewerFilter(){
+		//				@Override
+		//				public boolean select(Viewer viewer, Object parentElement, Object element)
+		//				{
+		//					if (element instanceof DrawComponentTreeEditPart) {
+		//						DrawComponentTreeEditPart dctep = (DrawComponentTreeEditPart) element;
+		//						if (dctep.getDrawComponent().isTemplate())
+		//							return false;
+		//					}
+		//					return true;
+		//				}
+		//			});
+		//    }
+	}
+
+	protected void initializeOverview()
+	{
+		LightweightSystem lws = new LightweightSystem(overview);
+		RootEditPart rep = editor.getOutlineGraphicalViewer().getRootEditPart();
+		if (rep instanceof ScalableFreeformRootEditPart) {
+			ScalableFreeformRootEditPart root = (ScalableFreeformRootEditPart)rep;
+			thumbnail = new ScrollableThumbnail((Viewport)root.getFigure());
+			thumbnail.setBorder(new MarginBorder(3));
+			thumbnail.setSource(root.getLayer(LayerConstants.PRINTABLE_LAYERS));
+			//      thumbnail.setSource(root.getFigure());
+			lws.setContents(thumbnail);
+			disposeListener = new DisposeListener() {
+				public void widgetDisposed(DisposeEvent e) {
+					if (thumbnail != null) {
+						thumbnail.deactivate();
+						thumbnail = null;
+					}
+				}
+			};
+			editor.getEditor().addDisposeListener(disposeListener);
+		}
+	}
+
+	//  protected void initializeOverview()
+	//  {
+	//    LightweightSystem lws = new J2DLightweightSystem(overview);
+	////  	LightweightSystem lws = new J2DLightweightSystem();
+	//    RootEditPart rep = editor.getOutlineGraphicalViewer().getRootEditPart();
+	//    if (rep instanceof J2DScalableFreeformRootEditPart) {
+	//    	J2DScalableFreeformRootEditPart root = (J2DScalableFreeformRootEditPart)rep;
+	////      thumbnail = new J2DScrollableThumbnail((Viewport)root.getFigure());
+	//      thumbnail = new ScrollableThumbnail((Viewport)root.getFigure());
+	//      thumbnail.setBorder(new MarginBorder(3));
+	//      thumbnail.setSource(root.getLayer(LayerConstants.PRINTABLE_LAYERS));
+	//      lws.setContents(thumbnail);
+	//      disposeListener = new DisposeListener() {
+	//        public void widgetDisposed(DisposeEvent e) {
+	//          if (thumbnail != null) {
+	//            thumbnail.deactivate();
+	//            thumbnail = null;
+	//          }
+	//        }
+	//      };
+	//      editor.getEditor().addDisposeListener(disposeListener);
+	//    }
+	//  }
+
+	public void setContents(Object contents) {
+		getViewer().setContents(contents);
+	}
+
+	protected void showPage(int id) {
+		if (id == ID_OUTLINE) {
+			showOutlineAction.setChecked(true);
+			showOverviewAction.setChecked(false);
+			pageBook.showPage(outline);
+			if (thumbnail != null)
+				thumbnail.setVisible(false);
+		}
+		else if (id == ID_OVERVIEW) {
+			if (thumbnail == null)
+				initializeOverview();
+			showOutlineAction.setChecked(false);
+			showOverviewAction.setChecked(true);
+			pageBook.showPage(overview);
+			if (thumbnail != null)
+				thumbnail.setVisible(true);
+		}
+	}
+
+	protected void unhookOutlineViewer(){
+		editor.getOutlineSelectionSynchronizer().removeViewer(getViewer());
+		if (disposeListener != null && editor.getEditor() != null && !editor.getEditor().isDisposed())
+			editor.getEditor().removeDisposeListener(disposeListener);
+	}
+
+	private PropertyChangeListener filterListener = new PropertyChangeListener()
+	{
 		@SuppressWarnings("unchecked") //$NON-NLS-1$
 		public void propertyChange(PropertyChangeEvent pce)
 		{
@@ -388,5 +387,5 @@ implements IAdaptable
 			}
 		}
 	};
-	
+
 }

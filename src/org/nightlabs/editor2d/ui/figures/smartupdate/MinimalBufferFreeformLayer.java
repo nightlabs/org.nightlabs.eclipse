@@ -27,24 +27,19 @@
 
 package org.nightlabs.editor2d.ui.figures.smartupdate;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
 
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FreeformLayer;
-import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.J2DGraphics;
-import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.swt.widgets.Control;
 import org.nightlabs.editor2d.ui.figures.BufferedFreeformLayer;
-import org.nightlabs.editor2d.ui.resource.Messages;
 import org.nightlabs.editor2d.ui.util.EditorUtil;
 
 /**
@@ -183,47 +178,47 @@ public class MinimalBufferFreeformLayer
 		bufferRegion.setBounds(regionToPaint);
 	}
 	
-	/**
-	 */
-	@Override
-	public void paint(Graphics graphics) {
-		if (!(graphics instanceof J2DGraphics)) {
-			super.paint(graphics);
-			return;
-		}
-		J2DGraphics j2dGraphics = (J2DGraphics)graphics;
-		// create the Graphics where the buffer is drawn on
-		Graphics2D g2d = j2dGraphics.createGraphics2D();
-		try {
-			// TODO: implement Minimal ... paint
-			// check if bufferRegion changed
-			Rectangle regionToPaint = EditorUtil.toAbsolute(editPart, viewerRegion);
-			if (!bufferRegion.equals(regionToPaint)) {
-				// if so, merge actual buffer with the new bufferRegion copyArea ... Smart ...
-			}
-			
-			// do drawImage(bufferedImage);
-			double currentZoom = EditorUtil.getZoom(editPart);
-			// scale it invers of the current zoom ...
-			g2d.scale(1/currentZoom, 1/currentZoom);
-			// and translate it with the current scroll offset
-			// so 0,0 will be drawn on top left of the control
-			Point scrollOffset = EditorUtil.getScrollOffset(editPart);
-			g2d.translate(scrollOffset.x, scrollOffset.y);
-			// now copy the buffer region
-			g2d.setPaint(Color.WHITE);
-			g2d.fillRect(-2, -2, viewerRegion.width+2, viewerRegion.height+2);
-			g2d.drawImage(
-					bufferedImage,
-					0, 0, viewerRegion.width, viewerRegion.height,
-					0, 0, viewerRegion.width, viewerRegion.height,
-					null
-				);
-		} finally {
-			g2d.dispose();
-		}
-		
-	}
+//	/**
+//	 */
+//	@Override
+//	public void paint(Graphics graphics) {
+//		if (!(graphics instanceof J2DGraphics)) {
+//			super.paint(graphics);
+//			return;
+//		}
+//		J2DGraphics j2dGraphics = (J2DGraphics)graphics;
+//		// create the Graphics where the buffer is drawn on
+//		Graphics2D g2d = j2dGraphics.createGraphics2D();
+//		try {
+//			// TODO: implement Minimal ... paint
+//			// check if bufferRegion changed
+//			Rectangle regionToPaint = EditorUtil.toAbsolute(editPart, viewerRegion);
+//			if (!bufferRegion.equals(regionToPaint)) {
+//				// if so, merge actual buffer with the new bufferRegion copyArea ... Smart ...
+//			}
+//			
+//			// do drawImage(bufferedImage);
+//			double currentZoom = EditorUtil.getZoom(editPart);
+//			// scale it invers of the current zoom ...
+//			g2d.scale(1/currentZoom, 1/currentZoom);
+//			// and translate it with the current scroll offset
+//			// so 0,0 will be drawn on top left of the control
+//			Point scrollOffset = EditorUtil.getScrollOffset(editPart);
+//			g2d.translate(scrollOffset.x, scrollOffset.y);
+//			// now copy the buffer region
+//			g2d.setPaint(Color.WHITE);
+//			g2d.fillRect(-2, -2, viewerRegion.width+2, viewerRegion.height+2);
+//			g2d.drawImage(
+//					bufferedImage,
+//					0, 0, viewerRegion.width, viewerRegion.height,
+//					0, 0, viewerRegion.width, viewerRegion.height,
+//					null
+//				);
+//		} finally {
+//			g2d.dispose();
+//		}
+//		
+//	}
 
 	/**
 	 * @see org.nightlabs.editor2d.ui.figures.BufferedFreeformLayer#refresh()

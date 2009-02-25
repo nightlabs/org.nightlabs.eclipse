@@ -36,7 +36,6 @@ import org.eclipse.swt.graphics.Path;
 public class PathShapeFigure
 extends Shape
 {
-
 	public PathShapeFigure(Path path) {
 		super();
 		this.path = path;

@@ -34,77 +34,77 @@ import org.nightlabs.editor2d.ShapeDrawComponent;
 import org.nightlabs.editor2d.j2d.GeneralShape;
 import org.nightlabs.editor2d.j2d.GeneralShapeFactory;
 import org.nightlabs.editor2d.ui.figures.FeedbackShapeFigure;
-import org.nightlabs.editor2d.ui.figures.ShapeFigure;
+import org.nightlabs.editor2d.ui.figures.IShapeFigure;
 
 
 public class FeedbackUtil
 {
-  public FeedbackUtil()
-  {
-    super();
-  }
-    
-  public static final PaintDescriptor DEFAULT_PAINT_DESCRIPTOR = new PaintDescriptor();
-  
-  public static ShapeFigure getCustomFeedbackFigure(Object modelPart)
+	public FeedbackUtil()
+	{
+		super();
+	}
+
+	public static final PaintDescriptor DEFAULT_PAINT_DESCRIPTOR = new PaintDescriptor();
+
+	public static IShapeFigure getCustomFeedbackFigure(Object modelPart)
 	//protected IFigure getCustomFeedbackFigure(Object modelPart)
 	{
-  	return getCustomFeedbackFigure(modelPart, DEFAULT_PAINT_DESCRIPTOR);
+		return getCustomFeedbackFigure(modelPart, DEFAULT_PAINT_DESCRIPTOR);
 	}
-       
-  public static ShapeFigure getCustomFeedbackFigure(Object modelPart, PaintDescriptor pd)
+
+	public static IShapeFigure getCustomFeedbackFigure(Object modelPart, PaintDescriptor pd)
 	//protected IFigure getCustomFeedbackFigure(Object modelPart)
 	{
-	  GeneralShape gs = null;
-	  ShapeFigure shapeFigure = new FeedbackShapeFigure();
-	  if (modelPart instanceof ShapeDrawComponent) {
-	    ShapeDrawComponent sdc = (ShapeDrawComponent) modelPart;
-	    gs = (GeneralShape)sdc.getGeneralShape().clone();
-	  }
-	  else if (modelPart instanceof ImageDrawComponent) {
-	    ImageDrawComponent idc = (ImageDrawComponent) modelPart;
-	    gs = (GeneralShape) idc.getImageShape().clone();
-	  }
-	  else if (modelPart instanceof DrawComponentContainer)
-	  {
-//	    DrawComponentContainer container = (DrawComponentContainer) modelPart;
-	    gs = GeneralShapeFactory.createRectangle(1,1,1,1);
-	//    for (Iterator it = container.getDrawComponents().iterator(); it.hasNext(); ) {
-	//      DrawComponent dc = (DrawComponent) it.next();
-	//      ShapeFigure figure = getCustomFeedbackFigure(dc);
-	//      shapeFigure.add(figure);
-	//    }
-	  }
-	  else {
-	    gs = GeneralShapeFactory.createRectangle(0, 0, 10, 10);
-	  }
-	  shapeFigure.setGeneralShape(gs);
-	  shapeFigure.setXOR(pd.isXor());
-	  shapeFigure.setFill(pd.isFill());
-	  shapeFigure.setBackgroundColor(pd.getBackgroundColor());
-	  shapeFigure.setForegroundColor(pd.getForegroundColor());
-	  return shapeFigure;
+		GeneralShape gs = null;
+		IShapeFigure shapeFigure = new FeedbackShapeFigure();
+		if (modelPart instanceof ShapeDrawComponent) {
+			ShapeDrawComponent sdc = (ShapeDrawComponent) modelPart;
+			gs = (GeneralShape)sdc.getGeneralShape().clone();
+		}
+		else if (modelPart instanceof ImageDrawComponent) {
+			ImageDrawComponent idc = (ImageDrawComponent) modelPart;
+			gs = (GeneralShape) idc.getImageShape().clone();
+		}
+		else if (modelPart instanceof DrawComponentContainer)
+		{
+			//	    DrawComponentContainer container = (DrawComponentContainer) modelPart;
+			gs = GeneralShapeFactory.createRectangle(1,1,1,1);
+			//    for (Iterator it = container.getDrawComponents().iterator(); it.hasNext(); ) {
+			//      DrawComponent dc = (DrawComponent) it.next();
+			//      ShapeFigure figure = getCustomFeedbackFigure(dc);
+			//      shapeFigure.add(figure);
+			//    }
+		}
+		else {
+			gs = GeneralShapeFactory.createRectangle(0, 0, 10, 10);
+		}
+		shapeFigure.setGeneralShape(gs);
+		shapeFigure.setXOR(pd.isXor());
+		shapeFigure.setFill(pd.isFill());
+		shapeFigure.setBackgroundColor(pd.getBackgroundColor());
+		shapeFigure.setForegroundColor(pd.getForegroundColor());
+		return shapeFigure;
 	}
-  
-  protected static PaintDescriptor pd = new PaintDescriptor();
-  
-  public static ShapeFigure getCustomFeedbackFigure(Object modelPart, Color bgColor, Color fgColor,
-  		boolean fill, boolean outline, boolean xor, int lineStyle, int lineWidth)
-  {
-  	pd.setFill(fill);
-  	pd.setOutline(outline);
-  	pd.setXor(xor);
-  	pd.setLineStyle(lineStyle);
-  	pd.setLineWidth(lineWidth);
-  	pd.setBackgroundColor(bgColor);
-  	pd.setForegroundColor(fgColor);
-  	return getCustomFeedbackFigure(modelPart, pd);
-  }
-  
-  public static ShapeFigure getCustomFeedbackFigure(Object modelPart, Color bgColor, Color fgColor)
-  {
-  	return getCustomFeedbackFigure(modelPart, bgColor, fgColor, PaintDescriptor.DEFAULT_FILL,
-  			PaintDescriptor.DEFAULT_OUTLINE, PaintDescriptor.DEFAULT_XOR, PaintDescriptor.DEFAULT_LINE_STYLE,
-  			PaintDescriptor.DEFAULT_LINE_WIDTH);
-  }
+
+	protected static PaintDescriptor pd = new PaintDescriptor();
+
+	public static IShapeFigure getCustomFeedbackFigure(Object modelPart, Color bgColor, Color fgColor,
+			boolean fill, boolean outline, boolean xor, int lineStyle, int lineWidth)
+	{
+		pd.setFill(fill);
+		pd.setOutline(outline);
+		pd.setXor(xor);
+		pd.setLineStyle(lineStyle);
+		pd.setLineWidth(lineWidth);
+		pd.setBackgroundColor(bgColor);
+		pd.setForegroundColor(fgColor);
+		return getCustomFeedbackFigure(modelPart, pd);
+	}
+
+	public static IShapeFigure getCustomFeedbackFigure(Object modelPart, Color bgColor, Color fgColor)
+	{
+		return getCustomFeedbackFigure(modelPart, bgColor, fgColor, PaintDescriptor.DEFAULT_FILL,
+				PaintDescriptor.DEFAULT_OUTLINE, PaintDescriptor.DEFAULT_XOR, PaintDescriptor.DEFAULT_LINE_STYLE,
+				PaintDescriptor.DEFAULT_LINE_WIDTH);
+	}
 }

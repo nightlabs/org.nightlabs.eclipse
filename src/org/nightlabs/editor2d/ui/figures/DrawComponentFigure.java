@@ -31,6 +31,7 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Area;
 
+import org.apache.log4j.Logger;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.J2DGraphics;
@@ -52,14 +53,21 @@ public class DrawComponentFigure
 extends Figure
 implements RendererFigure
 {
-//	/**
-//	 * LOG4J logger used by this class
-//	 */
-//	private static final Logger logger = Logger.getLogger(DrawComponentFigure.class.getName());
+	public static final double DEFAULT_HIT_TOLERANCE = 5;
+	/**
+	 * LOG4J logger used by this class
+	 */
+	private static final Logger logger = Logger.getLogger(DrawComponentFigure.class.getName());
 
 	private J2DGraphics j2d;
 	private Graphics2D g2d;
-
+	private double hitTolerance = DEFAULT_HIT_TOLERANCE;
+	private boolean accurateContains = true;
+	private Renderer renderer;
+	private DrawComponent drawComponent;
+	private boolean contains = true;
+	private Shape hitTestArea = null;
+	
 	public void paint(Graphics2D graphics)
 	{
 		paintJ2D(graphics, drawComponent, renderer);
@@ -74,19 +82,6 @@ implements RendererFigure
 	{
 		RenderContextFinder<Graphics> rcf = new RenderContextFinder<Graphics>();
 		rcf.paintRenderContext(g, dc, r, Draw2DRenderContext.RENDER_CONTEXT_TYPE);
-//		if (r != null && dc != null && g != null) {
-//		RenderContext rc = r.getRenderContext(Draw2DRenderContext.RENDER_CONTEXT_TYPE);
-//		if (rc != null) {
-//		((Draw2DRenderContext) rc).paint(dc, g);
-//		}
-//		else {
-//		r = dc.getRenderModeManager().getDefaultRenderer(dc.getClass());
-//		rc = r.getRenderContext(Draw2DRenderContext.RENDER_CONTEXT_TYPE);
-//		if (rc != null) {
-//		((Draw2DRenderContext) rc).paint(dc, g);
-//		}
-//		}
-//		}
 	}
 
 	@Override
@@ -107,18 +102,16 @@ implements RendererFigure
 		}
 	}
 
-	private Renderer renderer;
+
 	public void setRenderer(Renderer renderer) {
 		this.renderer = renderer;
 	}
 
-	private DrawComponent drawComponent;
 	public void setDrawComponent(DrawComponent drawComponent) {
 		this.drawComponent = drawComponent;
 //		clearHitTestArea();
 	}
 
-	private boolean contains = true;
 	/**
 	 * determins if the {@link Figure#containsPoint(int, int)} should return the right
 	 * value of always false
@@ -141,7 +134,6 @@ implements RendererFigure
 		return contains;
 	}
 
-	private boolean accurateContains = true;
 	/**
 	 * determines if the {@link Figure#containsPoint(int, int)} should be calculated accurately
 	 * e.g. only the interior of a {@link Shape} including the {@link DrawComponentFigure#getHitTolerance()}
@@ -159,6 +151,7 @@ implements RendererFigure
 	public void setAccurateContains(boolean containBounds) {
 		this.accurateContains = containBounds;
 	}
+	
 	/**
 	 * returns true if an accurate hitTesting is performed or false if the {@link Figure#getBounds()}
 	 * should are used for hitTesting
@@ -236,41 +229,6 @@ implements RendererFigure
 		return false;
 	}
 
-//	private Area outlineArea = null;
-//	public boolean containsPoint(int x, int y)
-//	{
-//	if (contains) {
-//	if (accurateContains && drawComponent != null) {
-//	if (drawComponent instanceof ShapeDrawComponent) {
-//	ShapeDrawComponent sdc = (ShapeDrawComponent) drawComponent;
-//	if (sdc.isFill())
-//	return sdc.getGeneralShape().contains(x,y);
-//	else {
-//	if (outlineArea == null) {
-//	Rectangle outerBounds = getBounds().getCopy();
-//	Rectangle innerBounds = getBounds().getCopy();
-//	outerBounds.expand((int)hitTolerance, (int)hitTolerance);
-//	innerBounds.shrink((int)hitTolerance, (int)hitTolerance);
-//	GeneralShape outerGS = (GeneralShape) sdc.getGeneralShape().clone();
-//	GeneralShape innerGS = (GeneralShape) sdc.getGeneralShape().clone();
-//	J2DUtil.transformGeneralShape(outerGS, getBounds(), outerBounds);
-//	J2DUtil.transformGeneralShape(innerGS, getBounds(), innerBounds);
-//	outlineArea = new Area(outerGS);
-//	Area innerArea = new Area(innerGS);
-//	outlineArea.exclusiveOr(innerArea);
-//	}
-//	boolean contains = outlineArea.contains(x,y);
-//	outlineArea = null;
-//	return contains;
-//	}
-//	}
-//	}
-//	return super.containsPoint(x, y);
-//	}
-//	return false;
-//	}
-
-	private Shape hitTestArea = null;
 	public void clearHitTestArea() {
 		hitTestArea = null;
 	}
@@ -310,8 +268,6 @@ implements RendererFigure
 		return hitTestArea;
 	}
 
-	public static final double DEFAULT_HIT_TOLERANCE = 5;
-	private double hitTolerance = DEFAULT_HIT_TOLERANCE;
 	/**
 	 * return the hitTolerance which is used when accurate hittesting
 	 * {@link DrawComponentFigure#isAccurateContains()} is used when
@@ -324,6 +280,7 @@ implements RendererFigure
 	public double getHitTolerance() {
 		return hitTolerance;
 	}
+	
 	/**
 	 * determines the amount of tolerance when accurate hitTesting {@link DrawComponentFigure#isAccurateContains()}
 	 * is performed. This value is given in User Space Coordinates.
@@ -348,6 +305,7 @@ implements RendererFigure
 //			logger.debug("hitTolerance = "+hitTolerance);
 		}
 	};
+	
 	public ZoomListener getZoomListener() {
 		return zoomListener;
 	}
@@ -363,7 +321,6 @@ implements RendererFigure
 
 	public void dispose()
 	{
-//		outlineArea = null;
 		hitTestArea = null;
 		if (j2d != null)
 			j2d.dispose();

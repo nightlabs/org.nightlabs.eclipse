@@ -52,7 +52,7 @@ extends AbstractUIPlugin
 	private static EditorPlugin plugin;
 	//Resource bundle.
 	private static ResourceBundle resourceBundle;
-	
+
 	/**
 	 * The constructor.
 	 */
@@ -70,20 +70,20 @@ extends AbstractUIPlugin
 	{
 		super.start(context);
 		resourceBundle = Platform.getResourceBundle(getBundle());
-		
+
 		// init System Fonts
-    FontUtil.getSystemFonts();
-    
-    // TODO: Holongate Draw2D-PreferencePage does not store values
-    Map hints = new HashMap();
-    hints.put(J2DGraphics.KEY_USE_JAVA2D, Boolean.TRUE);
-	  J2DRegistry.setHints(hints);
-	  
-	  // register additional ImageReader + ImageWriter
-	  IIORegistry.getDefaultInstance().registerServiceProvider(new PCXImageReaderSPI());
-	  IIORegistry.getDefaultInstance().registerServiceProvider(new PCXImageWriterSPI());
-	  
-//	  ImageUtil.logAvailableFileFormats();
+		FontUtil.getSystemFonts();
+
+//		// TODO: Holongate Draw2D-PreferencePage does not store values
+		Map hints = new HashMap();
+		hints.put(J2DGraphics.KEY_USE_JAVA2D, Boolean.TRUE);
+		J2DRegistry.setHints(hints);
+
+		// register additional ImageReader + ImageWriter
+		IIORegistry.getDefaultInstance().registerServiceProvider(new PCXImageReaderSPI());
+		IIORegistry.getDefaultInstance().registerServiceProvider(new PCXImageWriterSPI());
+
+		//	  ImageUtil.logAvailableFileFormats();
 	}
 	/**
 	 * This method is called when the plug-in is stopped
@@ -128,5 +128,5 @@ extends AbstractUIPlugin
 	public ResourceBundle getResourceBundle() {
 		return resourceBundle;
 	}
-	
+
 }

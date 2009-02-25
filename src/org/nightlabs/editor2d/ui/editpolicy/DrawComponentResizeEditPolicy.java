@@ -51,7 +51,7 @@ import org.eclipse.swt.graphics.Color;
 import org.nightlabs.editor2d.j2d.GeneralShape;
 import org.nightlabs.editor2d.ui.EditorStateManager;
 import org.nightlabs.editor2d.ui.edit.ShapeDrawComponentEditPart;
-import org.nightlabs.editor2d.ui.figures.ShapeFigure;
+import org.nightlabs.editor2d.ui.figures.IShapeFigure;
 import org.nightlabs.editor2d.ui.handle.EditorNonResizableHandleKit;
 import org.nightlabs.editor2d.ui.handle.EditorResizableHandleKit;
 import org.nightlabs.editor2d.ui.handle.RotateCenterHandle;
@@ -133,7 +133,7 @@ implements EditorRequestConstants
   	return polyline;
   }
       
-  protected ShapeFigure getCustomFeedbackFigure(Object modelPart)
+  protected IShapeFigure getCustomFeedbackFigure(Object modelPart)
   {
   	return FeedbackUtil.getCustomFeedbackFigure(modelPart);
   }
@@ -449,7 +449,7 @@ implements EditorRequestConstants
   
   protected void showRotateFeedback(EditorRotateRequest request)
   {
-    ShapeFigure rotationFeedback = getRotateFeedbackFigure();
+    IShapeFigure rotationFeedback = getRotateFeedbackFigure();
       	
     if (unrotatedShape == null)
       unrotatedShape = (GeneralShape) rotationFeedback.getGeneralShape().clone();
@@ -586,14 +586,14 @@ implements EditorRequestConstants
 //    return at;
 //  }
   
-  protected ShapeFigure getRotateFeedbackFigure()
+  protected IShapeFigure getRotateFeedbackFigure()
   {
     if (feedback == null) {
       feedback = createDragSourceFeedbackFigure();
     	PrecisionRectangle rect = new PrecisionRectangle(getInitialFeedbackBounds().getCopy());
     	feedback.setBounds(getConstraintFor(rect));
     }
-    return (ShapeFigure) feedback;
+    return (IShapeFigure) feedback;
   }
     
   protected void showEditShapeFeedback(EditorEditShapeRequest request)
@@ -604,11 +604,11 @@ implements EditorRequestConstants
   	polyline.setPoint(newPoint, request.getPathSegmentIndex());
   }
   
-  protected ShapeFigure getEditShapeFeedbackFigure()
+  protected IShapeFigure getEditShapeFeedbackFigure()
   {
   	if (feedback == null)
   		feedback = createEditShapeFeedbackFigure();
-  	return (ShapeFigure) feedback;
+  	return (IShapeFigure) feedback;
   }
   
 //  protected ShapeFigure createEditShapeFeedbackFigure()

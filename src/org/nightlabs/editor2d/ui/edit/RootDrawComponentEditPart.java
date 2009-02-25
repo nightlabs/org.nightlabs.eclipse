@@ -50,7 +50,6 @@ import org.nightlabs.editor2d.ui.config.PreferencesConfigModule;
 import org.nightlabs.editor2d.ui.figures.BufferedFreeformLayer;
 import org.nightlabs.editor2d.ui.figures.OversizedBufferFreeformLayer;
 import org.nightlabs.editor2d.ui.model.RootDrawComponentPropertySource;
-import org.nightlabs.editor2d.ui.resource.Messages;
 import org.nightlabs.editor2d.viewer.ui.descriptor.DescriptorManager;
 
 public class RootDrawComponentEditPart
@@ -58,9 +57,9 @@ extends AbstractDrawComponentContainerEditPart
 {
 	public RootDrawComponentEditPart(RootDrawComponent root)
 	{
-	  super(root);
-	  setModel(root);
-	  initConfigModule();
+		super(root);
+		setModel(root);
+		initConfigModule();
 	}
 
 	protected DescriptorManager descriptorManager = new DescriptorManager();
@@ -71,52 +70,52 @@ extends AbstractDrawComponentContainerEditPart
 		this.descriptorManager = descriptorManager;
 	}
 
-  protected void initConfigModule()
-  {
-  	try {
-    	prefConfMod = Config.sharedInstance().createConfigModule(PreferencesConfigModule.class);
-  	} catch (ConfigException ce) {
-  		throw new RuntimeException(ce);
-  	}
-  }
-	
-  protected PreferencesConfigModule prefConfMod = null;
-  public PreferencesConfigModule getPreferencesConfigModule() {
-  	return prefConfMod;
-  }
-  
-//  public static UpdateManager updateManager = null;
+	protected void initConfigModule()
+	{
+		try {
+			prefConfMod = Config.sharedInstance().createConfigModule(PreferencesConfigModule.class);
+		} catch (ConfigException ce) {
+			throw new RuntimeException(ce);
+		}
+	}
+
+	protected PreferencesConfigModule prefConfMod = null;
+	public PreferencesConfigModule getPreferencesConfigModule() {
+		return prefConfMod;
+	}
+
+	//  public static UpdateManager updateManager = null;
 	@Override
 	protected IFigure createFigure()
 	{
-//	  SmartUpdateFreeformLayer f = new SmartUpdateFreeformLayer(this);
-//	  f.setMldcEditPart(this);
-//	  EditPartViewer viewer = getRoot().getViewer();
-//	  if (viewer instanceof J2DScrollingGraphicalViewer) {
-//	    J2DScrollingGraphicalViewer j2DViewer = (J2DScrollingGraphicalViewer) viewer;
-//	    FigureCanvas figureCanvas = (FigureCanvas)j2DViewer.getControl();
-//	    updateManager = figureCanvas.getLightweightSystem().getUpdateManager();
-//	    f.registerOnDeferredUpdateManager(updateManager);
-//	  }
-		
-	  Figure f = new OversizedBufferFreeformLayer();
-	  ((BufferedFreeformLayer)f).init(this);
-	  
-//	  addScrollListener();
+		//	  SmartUpdateFreeformLayer f = new SmartUpdateFreeformLayer(this);
+		//	  f.setMldcEditPart(this);
+		//	  EditPartViewer viewer = getRoot().getViewer();
+		//	  if (viewer instanceof J2DScrollingGraphicalViewer) {
+		//	    J2DScrollingGraphicalViewer j2DViewer = (J2DScrollingGraphicalViewer) viewer;
+		//	    FigureCanvas figureCanvas = (FigureCanvas)j2DViewer.getControl();
+		//	    updateManager = figureCanvas.getLightweightSystem().getUpdateManager();
+		//	    f.registerOnDeferredUpdateManager(updateManager);
+		//	  }
+
+		Figure f = new OversizedBufferFreeformLayer();
+		((BufferedFreeformLayer)f).init(this);
+
+		//	  addScrollListener();
 //		Figure f = new FreeformLayer();
-		
+
 		f.setLayoutManager(new FreeformLayout());
 		return f;
 	}
-	
+
 	public BufferedFreeformLayer getBufferedFreeformLayer()
 	{
 		if (getFigure() instanceof BufferedFreeformLayer)
 			return (BufferedFreeformLayer) getFigure();
-		
+
 		return null;
 	}
-	
+
 	@Override
 	protected void createEditPolicies()
 	{
@@ -128,60 +127,60 @@ extends AbstractDrawComponentContainerEditPart
 	public RootDrawComponent getRootDrawComponent() {
 		return (RootDrawComponent) getModel();
 	}
-		
-  /**
-   * @return a List of all Layers
-   */
-  @SuppressWarnings("unchecked") //$NON-NLS-1$
+
+	/**
+	 * @return a List of all Layers
+	 */
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	protected List getModelChildren()
-  {
-    return getRootDrawComponent().getDrawComponents();
-  }
-	
-  /**
-   * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
-   */
-  @SuppressWarnings("unchecked") //$NON-NLS-1$
+	{
+		return getRootDrawComponent().getDrawComponents();
+	}
+
+	/**
+	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
+	 */
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	public Object getAdapter(Class adapter)
-  {
-  	if (adapter == SnapToHelper.class) {
-  		List snapStrategies = new ArrayList();
-  		Boolean val = (Boolean)getViewer().getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY);
-  		if (val != null && val.booleanValue())
-  			snapStrategies.add(new SnapToGuides(this));
-  		val = (Boolean)getViewer().getProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED);
-  		if (val != null && val.booleanValue())
-  			snapStrategies.add(new SnapToGeometry(this));
-  		val = (Boolean)getViewer().getProperty(SnapToGrid.PROPERTY_GRID_ENABLED);
-  		if (val != null && val.booleanValue())
-  			snapStrategies.add(new SnapToGrid(this));
-  		
-  		if (snapStrategies.size() == 0)
-  			return null;
-  		if (snapStrategies.size() == 1)
-  			return snapStrategies.get(0);
+	{
+		if (adapter == SnapToHelper.class) {
+			List snapStrategies = new ArrayList();
+			Boolean val = (Boolean)getViewer().getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY);
+			if (val != null && val.booleanValue())
+				snapStrategies.add(new SnapToGuides(this));
+			val = (Boolean)getViewer().getProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED);
+			if (val != null && val.booleanValue())
+				snapStrategies.add(new SnapToGeometry(this));
+			val = (Boolean)getViewer().getProperty(SnapToGrid.PROPERTY_GRID_ENABLED);
+			if (val != null && val.booleanValue())
+				snapStrategies.add(new SnapToGrid(this));
 
-  		SnapToHelper ss[] = new SnapToHelper[snapStrategies.size()];
-  		for (int i = 0; i < snapStrategies.size(); i++)
-  			ss[i] = (SnapToHelper)snapStrategies.get(i);
-  		return new CompoundSnapToHelper(ss);
-  	}
-  	return super.getAdapter(adapter);
-  }
-  
-  @Override
+			if (snapStrategies.size() == 0)
+				return null;
+			if (snapStrategies.size() == 1)
+				return snapStrategies.get(0);
+
+			SnapToHelper ss[] = new SnapToHelper[snapStrategies.size()];
+			for (int i = 0; i < snapStrategies.size(); i++)
+				ss[i] = (SnapToHelper)snapStrategies.get(i);
+			return new CompoundSnapToHelper(ss);
+		}
+		return super.getAdapter(adapter);
+	}
+
+	@Override
 	public IPropertySource getPropertySource()
-  {
-    if (propertySource == null)
-    {
-      propertySource =
-        new RootDrawComponentPropertySource(getRootDrawComponent());
-    }
-    return propertySource;
-  }
-  
+	{
+		if (propertySource == null)
+		{
+			propertySource =
+				new RootDrawComponentPropertySource(getRootDrawComponent());
+		}
+		return propertySource;
+	}
+
 	@Override
 	protected void propertyChanged(PropertyChangeEvent evt)
 	{
@@ -192,7 +191,7 @@ extends AbstractDrawComponentContainerEditPart
 		}
 		super.propertyChanged(evt);
 	}
-	
+
 	@Override
 	public void deactivate()
 	{
@@ -200,6 +199,6 @@ extends AbstractDrawComponentContainerEditPart
 		if (getBufferedFreeformLayer() != null)
 			getBufferedFreeformLayer().dispose();
 	}
-    
-	
+
+
 }
