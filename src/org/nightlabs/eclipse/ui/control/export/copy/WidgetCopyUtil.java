@@ -74,6 +74,7 @@ public class WidgetCopyUtil
 		for (Item item : items) {
 			cLevel = item.getLevel();
 			TreeItem treeItem = null;
+			//check for the parent
 			if (cLevel == 0) {
 				treeItem = new TreeItem(newTree, SWT.NONE);
 			}

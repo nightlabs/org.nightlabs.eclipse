@@ -156,15 +156,15 @@ extends WizardPage
 		return result;
 	}
 
-//	@Override
-//	public boolean canFlipToNextPage() {
-//		boolean result = true;
-//		if (showPreviewDataButton.getSelection() == false) {
-//			result = false;
-//		}
-//
-//		return result;
-//	}
+	@Override
+	public boolean canFlipToNextPage() {
+		boolean result = true;
+		if (showPreviewDataButton.getSelection() == false) {
+			result = false;
+		}
+
+		return result;
+	}
 
 	public Character getSeparator() {
 		if (separatorCombo.getText() == null || separatorCombo.getText().equals(""))
