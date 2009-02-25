@@ -38,52 +38,51 @@ import org.nightlabs.editor2d.IVisible;
 import org.nightlabs.editor2d.Layer;
 import org.nightlabs.editor2d.ui.figures.ContainerFreeformLayer;
 import org.nightlabs.editor2d.ui.model.LayerPropertySource;
-import org.nightlabs.editor2d.ui.resource.Messages;
 
 public class LayerEditPart
 extends AbstractDrawComponentContainerEditPart
 {
-  /**
-   * @param layer the Layer for the LayerEditPart
-   * @see org.nightlabs.editor2d.ui.Layer
-   */
-  public LayerEditPart(Layer layer) {
-    super(layer);
-  }
-	
-  @Override
-	protected IFigure createFigure()
-  {
-//    IFigure f = new FreeformLayer();
-  	
-//  	Figure f = new OversizedBufferFreeformLayer();
-//    ((BufferedFreeformLayer)f).init(this);
-  	
-//  	DrawComponentFigure f = new ContainerDrawComponentFigure();
-//    f.setDrawComponent(getDrawComponent());
-//    addRenderer(f);
-//    addZoomListener(f);
+	/**
+	 * @param layer the Layer for the LayerEditPart
+	 * @see org.nightlabs.editor2d.ui.Layer
+	 */
+	public LayerEditPart(Layer layer) {
+		super(layer);
+	}
 
-  	IFigure f = new ContainerFreeformLayer();
+	@Override
+	protected IFigure createFigure()
+	{
+//		    IFigure f = new FreeformLayer();
+
+		//  	Figure f = new OversizedBufferFreeformLayer();
+		//    ((BufferedFreeformLayer)f).init(this);
+
+		//  	DrawComponentFigure f = new ContainerDrawComponentFigure();
+		//    f.setDrawComponent(getDrawComponent());
+		//    addRenderer(f);
+		//    addZoomListener(f);
+
+		IFigure f = new ContainerFreeformLayer();
 		f.setLayoutManager(new FreeformLayout());
 		return f;
-  }
-    
-  public Layer getLayer() {
-    return (Layer) getModel();
-  }
-  
-  @SuppressWarnings("unchecked") //$NON-NLS-1$
+	}
+
+	public Layer getLayer() {
+		return (Layer) getModel();
+	}
+
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	protected List getModelChildren()
-  {
-    if (getLayer().isVisible()) {
-      return getLayer().getDrawComponents();
-    } else {
-      return Collections.EMPTY_LIST;
-    }
-  }
-      
+	{
+		if (getLayer().isVisible()) {
+			return getLayer().getDrawComponents();
+		} else {
+			return Collections.EMPTY_LIST;
+		}
+	}
+
 	@Override
 	protected void propertyChanged(PropertyChangeEvent evt)
 	{
@@ -95,13 +94,13 @@ extends AbstractDrawComponentContainerEditPart
 		}
 		// TODO: implement Layer.PROP_EDITABLE
 	}
-	
-  @Override
+
+	@Override
 	public IPropertySource getPropertySource()
-  {
-    if (propertySource == null){
-      propertySource = new LayerPropertySource(getLayer());
-    }
-    return propertySource;
-  }
+	{
+		if (propertySource == null){
+			propertySource = new LayerPropertySource(getLayer());
+		}
+		return propertySource;
+	}
 }
