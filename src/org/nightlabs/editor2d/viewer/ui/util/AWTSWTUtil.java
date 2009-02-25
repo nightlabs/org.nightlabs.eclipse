@@ -48,42 +48,42 @@ import org.eclipse.swt.widgets.Display;
 public class AWTSWTUtil
 {
 	public static Rectangle toAWTRectangle(org.eclipse.swt.graphics.Rectangle rectangle) {
-	  return new Rectangle(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+		return new Rectangle(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
 	}
-	
+
 	public static org.eclipse.swt.graphics.Rectangle toSWTRectangle(Rectangle rect) {
 		return new org.eclipse.swt.graphics.Rectangle(rect.x, rect.y, rect.width, rect.height);
 	}
-	 
+
 	public static Path convertShape(Shape s, AffineTransform at, Device device)
 	{
 		float[] coords = new float[6];
 		Path path = new Path(device);
-    for (PathIterator pi = s.getPathIterator(at); !pi.isDone(); pi.next())
-    {
-      int segType = pi.currentSegment(coords);
-      switch (segType)
-      {
-        case (PathIterator.SEG_MOVETO):
-        	path.moveTo(coords[0], coords[1]);
-          break;
-        case (PathIterator.SEG_LINETO):
-        	path.lineTo(coords[0], coords[1]);
-          break;
-        case (PathIterator.SEG_QUADTO):
-        	path.quadTo(coords[0], coords[1], coords[2], coords[3]);
-          break;
-        case (PathIterator.SEG_CUBICTO):
-        	path.cubicTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
-          break;
-        case (PathIterator.SEG_CLOSE):
-        	path.close();
-          break;
-      }
-    }
+		for (PathIterator pi = s.getPathIterator(at); !pi.isDone(); pi.next())
+		{
+			int segType = pi.currentSegment(coords);
+			switch (segType)
+			{
+			case (PathIterator.SEG_MOVETO):
+				path.moveTo(coords[0], coords[1]);
+			break;
+			case (PathIterator.SEG_LINETO):
+				path.lineTo(coords[0], coords[1]);
+			break;
+			case (PathIterator.SEG_QUADTO):
+				path.quadTo(coords[0], coords[1], coords[2], coords[3]);
+			break;
+			case (PathIterator.SEG_CUBICTO):
+				path.cubicTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+			break;
+			case (PathIterator.SEG_CLOSE):
+				path.close();
+			break;
+			}
+		}
 		return path;
 	}
-	
+
 	/**
 	 * converts an AWT BufferedImage to an SWT ImageData
 	 * taken from http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.swt.snippets/src/org/eclipse/swt/snippets/Snippet156.java
@@ -136,47 +136,35 @@ public class AWTSWTUtil
 		else
 			return convertToSWTImageData(bufferedImage, Display.getDefault());
 	}
-	
+
 	public static Image toSWTImage(BufferedImage img, Device dev)
 	{
 		return new Image(dev, toSWTImageData(img));
 	}
-	
+
 	public static Image convertToSWTImage(java.awt.Image ai, Device display)
 	{
-	  int width = ai.getWidth(null);
-	  int height = ai.getHeight(null);
-	  BufferedImage bufferedImage =
-	    new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-	  Graphics2D g2d = bufferedImage.createGraphics();
-	  g2d.drawImage(ai, 0, 0, null);
-	  g2d.dispose();
-	  int[] data =
-	    ((DataBufferInt)bufferedImage.getData().getDataBuffer())
-	    .getData();
-	  ImageData imageData =
-	    new ImageData(width, height, 24,
-	      new PaletteData(0xFF0000, 0x00FF00, 0x0000FF));
-	  imageData.setPixels(0, 0, data.length, data, 0);
-	  Image swtImage = new Image(display, imageData);
-	  return swtImage;
+		ImageData imageData = convertToSWTImageData(ai, display);
+		Image swtImage = new Image(display, imageData);
+		return swtImage;
 	}
-	
+
 	public static ImageData convertToSWTImageData(java.awt.Image ai, Device display)
 	{
-	  int width = ai.getWidth(null);
-	  int height = ai.getHeight(null);
-	  BufferedImage bufferedImage =
-	    new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-	  Graphics2D g2d = bufferedImage.createGraphics();
-	  g2d.drawImage(ai, 0, 0, null);
-	  g2d.dispose();
-//	  int[] data =
-//	    ((DataBufferInt)bufferedImage.getData().getDataBuffer())
-//	    .getData();
-	  ImageData imageData =
-	    new ImageData(width, height, 24,
-	      new PaletteData(0xFF0000, 0x00FF00, 0x0000FF));
-	  return imageData;
+		int width = ai.getWidth(null);
+		int height = ai.getHeight(null);
+		BufferedImage bufferedImage =
+			new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		Graphics2D g2d = bufferedImage.createGraphics();
+		g2d.drawImage(ai, 0, 0, null);
+		g2d.dispose();
+		int[] data =
+			((DataBufferInt)bufferedImage.getData().getDataBuffer())
+			.getData();
+		ImageData imageData =
+			new ImageData(width, height, 24,
+					new PaletteData(0xFF0000, 0x00FF00, 0x0000FF));
+		imageData.setPixels(0, 0, data.length, data, 0);
+		return imageData;
 	}
 }

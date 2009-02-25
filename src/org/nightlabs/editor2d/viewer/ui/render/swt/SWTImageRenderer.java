@@ -27,13 +27,13 @@ extends SWTBaseRenderer
 	@Override
 	public void paint(DrawComponent dc, GC gc)
 	{
-    ImageDrawComponent image = (ImageDrawComponent) dc;
-    if (image.getImage() != null) {
-    	Image img = convertImage(image.getImage());
-      gc.drawImage(img, image.getX(), image.getY());
-    }
+		ImageDrawComponent image = (ImageDrawComponent) dc;
+		if (image.getImage() != null) {
+			Image img = convertImage(image.getImage());
+			gc.drawImage(img, image.getX(), image.getY());
+		}
 	}
-	
+
 	protected Image convertImage(BufferedImage img)
 	{
 		return AWTSWTUtil.toSWTImage(img, null);
