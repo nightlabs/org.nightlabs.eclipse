@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nightlybuild PUBLIC "-//NightLabs//DTD NightlyBuild V 0.20//EN" "http://www.nightlabs.de/dtd/nightlybuild_0_20.dtd">
+
+<nightlybuild>
+  <project name="org.nightlabs.eclipse.ui.control.export">
+    <plugin/>
+    <ant path="org.nightlabs.eclipse.ui.control.export" file="build-nightlabs.xml" target="deploy"/>
+    <requires/>
+    <provides/>
+    <javadoc path="org.nightlabs.eclipse.ui.control.export/src"/>
+  </project>
+</nightlybuild>

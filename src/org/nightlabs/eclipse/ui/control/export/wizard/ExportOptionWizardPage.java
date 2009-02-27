@@ -131,7 +131,8 @@ extends WizardPage
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				FileDialog dialog = new FileDialog(getShell(), SWT.NULL);
-				fileText.setText(dialog.open());
+				String result = dialog.open();
+				fileText.setText(result == null? "": result);
 			}
 		});
 

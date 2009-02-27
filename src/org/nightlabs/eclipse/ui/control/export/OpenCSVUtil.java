@@ -21,7 +21,7 @@ public class OpenCSVUtil
 {
 	public static void exportControlToCSV(String fileName, Control control, char seperator) {
 		try {
-			Container container = new Container(control);
+			Container container = new Container(control, false);
 			List<Column> columns = container.getColumns();
 			List<Item> items = container.getItems();
 

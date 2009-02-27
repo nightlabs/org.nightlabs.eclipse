@@ -26,7 +26,7 @@ public class WidgetCopyUtil
 	//Table
 	public static Table copyTable(Composite composite, Table oldTable, boolean isCopyStyle) {
 		Table newTable = new Table(composite, oldTable.getStyle());
-		Container container = new Container(oldTable);
+		Container container = new Container(oldTable, true);
 
 		List<Column> columns = container.getColumns();
 		List<Item> items = container.getItems();
@@ -56,7 +56,7 @@ public class WidgetCopyUtil
 	private static int cLevel;
 	public static Tree copyTree(Composite composite, Tree oldTree, boolean isCopyStyle) {
 		Tree newTree = new Tree(composite, oldTree.getStyle());
-		Container container = new Container(oldTree);
+		Container container = new Container(oldTree, false);
 
 		List<Column> columns = container.getColumns();
 		List<Item> items = container.getItems();

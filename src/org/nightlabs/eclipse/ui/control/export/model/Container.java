@@ -16,8 +16,9 @@ public class Container
 {
 	private List<Column> columns;
 	private List<Item> items;
-
-	public Container(Control control) {
+	private boolean isExtractedAllData;
+	public Container(Control control, boolean isExtractedAllData) {
+		this.isExtractedAllData = isExtractedAllData;
 		columns = new ArrayList<Column>();
 		items = new ArrayList<Item>();
 
@@ -105,5 +106,9 @@ public class Container
 
 	public List<Item> getItems() {
 		return items;
+	}
+
+	public boolean isExtractedAllData() {
+		return isExtractedAllData;
 	}
 }
