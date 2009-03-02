@@ -57,6 +57,8 @@ import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.table.GenericInvertViewerSorter;
+import org.nightlabs.eclipse.ui.treestate.StatableTree;
+import org.nightlabs.eclipse.ui.treestate.TreeStateController;
 
 /**
  * A composite with a {@link TreeViewer} to be used as base for tree-composites.
@@ -68,7 +70,7 @@ import org.nightlabs.base.ui.table.GenericInvertViewerSorter;
  */
 public abstract class AbstractTreeComposite<ElementType>
 extends XComposite
-implements ISelectionProvider
+implements ISelectionProvider, StatableTree
 {
 
 	private TreeViewer treeViewer;
@@ -150,6 +152,7 @@ implements ISelectionProvider
 		treeViewer = createTreeViewer(style);
 		treeViewer.getTree().setLayoutData(new GridData(GridData.FILL_BOTH));
 		treeViewer.getTree().setHeaderVisible(headerVisible);
+		TreeStateController.sharedInstance().registerTree(this);
 		this.sortColumns = sortColumns;
 		if (init)
 			init();
@@ -379,6 +382,8 @@ implements ISelectionProvider
 		// we only set the input when the viewers control is there and not disposed
 		if (treeViewer != null && treeViewer.getControl() != null && !treeViewer.getControl().isDisposed())
 			treeViewer.setInput(input);
+
+		TreeStateController.sharedInstance().loadTreeState(getTree());
 	}
 
 	public void setSelection(ISelection selection)
@@ -689,5 +694,10 @@ implements ISelectionProvider
 	public void removeDoubleClickListener(IDoubleClickListener listener)
 	{
 		doubleClickListeners.remove(listener);
+	}
+
+	@Override
+	public String getID() {
+		return this.getClass().getName();
 	}
 }
