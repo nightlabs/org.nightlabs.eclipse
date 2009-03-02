@@ -187,6 +187,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.log4j;visibility:=reexport,
  org.nightlabs.eclipse.ui.dialog,
  org.nightlabs.eclipse.preference.ui;visibility:=reexport,
- org.nightlabs.eclipse.ui.treestate;bundle-version="1.0.0";visibility:=reexport
+ org.nightlabs.eclipse.ui.treestate;visibility:=reexport
 Eclipse-LazyStart: true
 Eclipse-BuddyPolicy: registered
