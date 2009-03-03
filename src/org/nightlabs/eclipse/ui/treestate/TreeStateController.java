@@ -2,8 +2,11 @@ package org.nightlabs.eclipse.ui.treestate;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IPreferencesService;
 import org.eclipse.core.runtime.preferences.IScopeContext;
@@ -62,7 +65,7 @@ public class TreeStateController
 	private void saveTreeState(Tree tree) {
 		StatableTree statableTree = statableTreeMap.get(tree);
 
-		IScopeContext context = new InstanceScope();
+		IScopeContext context = new ConfigurationScope();
 		IEclipsePreferences rootNode = context.getNode(statableTree.getID());
 		if (rootNode != null) {
 			for (TreeItem treeItem : tree.getItems()) {
@@ -96,31 +99,50 @@ public class TreeStateController
 		}
 		else {
 			try {
-				 parentNode.node(treeItem.getText()).removeNode();
+				parentNode.node(treeItem.getText()).removeNode();
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 		}
 	}
 
-	public void loadTreeState(Tree tree) {
-		StatableTree statableTree = statableTreeMap.get(tree);
+	private static final long ABSOLUTE_TIMEOUT = 30 * 1000;
+	private static final long RELATIVE_TIMEOUT = 5 * 1000;
+	private long currentTime;
+	public void loadTreeState(final Tree tree) {
+		final StatableTree statableTree = statableTreeMap.get(tree);
 
-		IPreferencesService preferencesService = Platform.getPreferencesService();
-		IEclipsePreferences rootNode = preferencesService.getRootNode();
-		for (TreeItem treeItem : statableTree.getTree().getItems()) {
-			try {
-				if (rootNode.nodeExists(treeItem.getText())) {
-					Preferences node = rootNode.node(treeItem.getText());
-					boolean isExpanded = node.getInt(treeItem.getText(), 0) == 1?true:false;
-					treeItem.setExpanded(isExpanded);
+		final IPreferencesService preferencesService = Platform.getPreferencesService();
+		final Preferences startNode = preferencesService.getRootNode().node(InstanceScope.SCOPE).node(statableTree.getID());
 
-					loadSubTreeState(treeItem, node);
-				}
-			} catch (Exception e) {
-				throw new RuntimeException(e);
+		Timer timer = new Timer("TreeStateController", false);
+		timer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				if (currentTime < ABSOLUTE_TIMEOUT)
+					tree.getDisplay().asyncExec(new Runnable() {
+						@Override
+						public void run() {
+							for (TreeItem treeItem : statableTree.getTree().getItems()) {
+								try {
+									String[] childrenNames = startNode.childrenNames();
+									if (startNode.nodeExists(treeItem.getText())) {
+										Preferences node = startNode.node(treeItem.getText());
+										boolean isExpanded = node.getInt(treeItem.getText(), 0) == 1?true:false;
+										treeItem.setExpanded(isExpanded);
+
+										loadSubTreeState(treeItem, node);
+									}
+								} catch (Exception e) {
+									throw new RuntimeException(e);
+								}
+							}
+
+							currentTime += RELATIVE_TIMEOUT;
+						}
+					});
 			}
-		}
+		}, 0, RELATIVE_TIMEOUT);
 	}
 
 	private void loadSubTreeState(TreeItem treeItem, Preferences parentNode) {
