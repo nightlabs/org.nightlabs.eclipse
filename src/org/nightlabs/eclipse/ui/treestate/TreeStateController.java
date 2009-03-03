@@ -65,7 +65,6 @@ public class TreeStateController
 		IScopeContext context = new InstanceScope();
 		IEclipsePreferences rootNode = context.getNode(statableTree.getID());
 		if (rootNode != null) {
-//			Preferences node = rootNode.node(statableTree.getID());
 			for (TreeItem treeItem : tree.getItems()) {
 				rootNode.put(treeItem.getText(), treeItem.getExpanded()?"1":"0");
 
@@ -81,27 +80,56 @@ public class TreeStateController
 	}
 
 	private void createSubTreeState(TreeItem treeItem, Preferences parentNode) {
-		for (TreeItem subTreeItem : treeItem.getItems()) {
-			Preferences node = parentNode.node(treeItem.getText());
-			node.put(subTreeItem.getText(), subTreeItem.getExpanded()?"1":"0");
+		if (treeItem.getExpanded()) {
+			for (TreeItem subTreeItem : treeItem.getItems()) {
+				Preferences node = parentNode.node(treeItem.getText());
+				node.put(subTreeItem.getText(), subTreeItem.getExpanded()?"1":"0");
 
+				try {
+					node.flush();
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+
+				createSubTreeState(subTreeItem, node);
+			}
+		}
+		else {
 			try {
-				node.flush();
+				 parentNode.node(treeItem.getText()).removeNode();
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
-
-			createSubTreeState(subTreeItem, node);
 		}
 	}
 
 	public void loadTreeState(Tree tree) {
 		StatableTree statableTree = statableTreeMap.get(tree);
 
-		IPreferencesService service = Platform.getPreferencesService();
+		IPreferencesService preferencesService = Platform.getPreferencesService();
+		IEclipsePreferences rootNode = preferencesService.getRootNode();
 		for (TreeItem treeItem : statableTree.getTree().getItems()) {
-			boolean isExpanded = service.getInt(TreeStatePlugin.PLUGIN_ID, treeItem.getText(), 0, null) == 1?true:false;
-			treeItem.setExpanded(isExpanded);
+			try {
+				if (rootNode.nodeExists(treeItem.getText())) {
+					Preferences node = rootNode.node(treeItem.getText());
+					boolean isExpanded = node.getInt(treeItem.getText(), 0) == 1?true:false;
+					treeItem.setExpanded(isExpanded);
+
+					loadSubTreeState(treeItem, node);
+				}
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+
+	private void loadSubTreeState(TreeItem treeItem, Preferences parentNode) {
+		for (TreeItem subTreeItem : treeItem.getItems()) {
+			Preferences node = parentNode.node(treeItem.getText());
+			boolean isExpanded = node.getInt(treeItem.getText(), 0) == 1?true:false;
+			subTreeItem.setExpanded(isExpanded);
+
+			loadSubTreeState(subTreeItem, node);
 		}
 	}
 }
