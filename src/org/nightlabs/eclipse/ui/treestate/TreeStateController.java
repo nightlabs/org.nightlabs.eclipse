@@ -63,26 +63,26 @@ public class TreeStateController
 		StatableTree statableTree = statableTreeMap.get(tree);
 
 		IScopeContext context = new InstanceScope();
-		IEclipsePreferences rootNode = context.getNode("org.nightlabs.eclipse.ui.treestate");
+		IEclipsePreferences rootNode = context.getNode(statableTree.getID());
 		if (rootNode != null) {
-			Preferences node = rootNode.node(statableTree.getID());
+//			Preferences node = rootNode.node(statableTree.getID());
 			for (TreeItem treeItem : tree.getItems()) {
-				node.put(treeItem.getText(), treeItem.getExpanded()?"1":"0");
+				rootNode.put(treeItem.getText(), treeItem.getExpanded()?"1":"0");
 
 				try {
-					node.flush();
+					rootNode.flush();
 				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}
 
-				createSubTreeState(treeItem, node);
+				createSubTreeState(treeItem, rootNode);
 			}
 		}
 	}
 
 	private void createSubTreeState(TreeItem treeItem, Preferences parentNode) {
 		for (TreeItem subTreeItem : treeItem.getItems()) {
-			Preferences node = parentNode.node(parentNode.absolutePath());
+			Preferences node = parentNode.node(treeItem.getText());
 			node.put(subTreeItem.getText(), subTreeItem.getExpanded()?"1":"0");
 
 			try {
