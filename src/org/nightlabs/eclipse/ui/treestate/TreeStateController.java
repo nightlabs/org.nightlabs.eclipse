@@ -1,5 +1,6 @@
 package org.nightlabs.eclipse.ui.treestate;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
@@ -10,11 +11,15 @@ import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IPreferencesService;
 import org.eclipse.core.runtime.preferences.IScopeContext;
-import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.osgi.service.datalocation.Location;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.TreeEvent;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.swt.widgets.Widget;
 import org.osgi.service.prefs.Preferences;
 
 /**
@@ -109,29 +114,35 @@ public class TreeStateController
 	private static final long ABSOLUTE_TIMEOUT = 30 * 1000;
 	private static final long RELATIVE_TIMEOUT = 5 * 1000;
 	private long currentTime;
+	private TimerTask timerTask;
+	
 	public void loadTreeState(final Tree tree) {
 		final StatableTree statableTree = statableTreeMap.get(tree);
 
 		final IPreferencesService preferencesService = Platform.getPreferencesService();
-		final Preferences startNode = preferencesService.getRootNode().node(InstanceScope.SCOPE).node(statableTree.getID());
+		final Preferences startNode = preferencesService.getRootNode().node(ConfigurationScope.SCOPE).node(statableTree.getID());
 
-		Timer timer = new Timer("TreeStateController", false);
-		timer.scheduleAtFixedRate(new TimerTask() {
+		final Timer timer = new Timer();
+		timerTask = new TimerTask() {
 			@Override
 			public void run() {
-				if (currentTime < ABSOLUTE_TIMEOUT)
+				if (currentTime < ABSOLUTE_TIMEOUT) {
 					tree.getDisplay().asyncExec(new Runnable() {
 						@Override
 						public void run() {
 							for (TreeItem treeItem : statableTree.getTree().getItems()) {
 								try {
-									String[] childrenNames = startNode.childrenNames();
-									if (startNode.nodeExists(treeItem.getText())) {
-										Preferences node = startNode.node(treeItem.getText());
-										boolean isExpanded = node.getInt(treeItem.getText(), 0) == 1?true:false;
-										treeItem.setExpanded(isExpanded);
-
-										loadSubTreeState(treeItem, node);
+									if (startNode.getInt(treeItem.getText(), 0) == 1) {
+										Event e = new Event();
+										e.type = SWT.Expand;
+										e.item = treeItem;
+										e.widget = tree;
+										Method m = Widget.class.getDeclaredMethod("sendEvent", new Class[] {int.class, Event.class});
+										m.setAccessible(true);
+										m.invoke(tree, e.type, e);
+										
+										treeItem.setExpanded(true);
+										loadSubTreeState(treeItem, startNode);
 									}
 								} catch (Exception e) {
 									throw new RuntimeException(e);
@@ -139,10 +150,16 @@ public class TreeStateController
 							}
 
 							currentTime += RELATIVE_TIMEOUT;
+							loadTreeState(tree);
 						}
 					});
+				}
+				else
+					timer.cancel();
 			}
-		}, 0, RELATIVE_TIMEOUT);
+		};
+		
+		timer.schedule(timerTask, 10000);
 	}
 
 	private void loadSubTreeState(TreeItem treeItem, Preferences parentNode) {
@@ -150,8 +167,16 @@ public class TreeStateController
 			Preferences node = parentNode.node(treeItem.getText());
 			boolean isExpanded = node.getInt(treeItem.getText(), 0) == 1?true:false;
 			subTreeItem.setExpanded(isExpanded);
-
+			updateItem(subTreeItem);
+			System.out.println("isExpanded = "+isExpanded+" for treeItem "+subTreeItem.getText());
 			loadSubTreeState(subTreeItem, node);
 		}
+	}
+	
+	private void updateItem(TreeItem treeItem) {
+		treeItem.getText();
+		treeItem.getImage();
+		treeItem.getParent().update();
+		treeItem.getParent().layout(true, true);
 	}
 }
