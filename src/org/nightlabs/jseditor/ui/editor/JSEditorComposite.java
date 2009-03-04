@@ -43,14 +43,14 @@ public class JSEditorComposite extends XComposite{
 //	}
 
 	public JSEditorComposite(Composite parent) {
-		this(parent, null);
+		this(parent, SWT.NONE);
 	}
 
-	public JSEditorComposite(Composite parent, String title) {
-		this(parent, title, SWT.NONE);
-	}
+//	public JSEditorComposite(Composite parent, String title) {
+//		this(parent, title, SWT.NONE);
+//	}
 		
-	public JSEditorComposite(Composite parent, String title, int style) {
+	public JSEditorComposite(Composite parent, int style) {
 		super(parent, style, LayoutMode.TIGHT_WRAPPER);
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 1;
