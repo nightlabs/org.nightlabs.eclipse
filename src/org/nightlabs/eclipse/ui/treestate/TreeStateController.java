@@ -112,7 +112,7 @@ public class TreeStateController
 	}
 
 	private static final long ABSOLUTE_TIMEOUT = 20 * 1000;
-	private static final long RELATIVE_TIMEOUT = 2 * 1000;
+	private static final long RELATIVE_TIMEOUT = 1 * 1000;
 	private long currentTime;
 	private TimerTask timerTask;
 
@@ -131,9 +131,10 @@ public class TreeStateController
 						tree.getDisplay().asyncExec(new Runnable() {
 							@Override
 							public void run() {
-								for (TreeItem treeItem : statableTree.getTree().getItems()) {
+								for (TreeItem treeItem : tree.getItems()) {
 									try {
-										if (startNode.getInt(treeItem.getText(), 0) == 1) {
+										boolean isExpanded = startNode.getInt(treeItem.getText(), 0) == 1;
+										if (isExpanded) {
 											Event e = new Event();
 											e.type = SWT.Expand;
 											e.item = treeItem;
@@ -143,7 +144,9 @@ public class TreeStateController
 											m.invoke(tree, e.type, e);
 
 											treeItem.setExpanded(true);
-											loadSubTreeState(treeItem, startNode);
+
+											Preferences node = startNode.node(treeItem.getText());
+											loadSubTreeState(treeItem, node);
 										}
 									} catch (Exception e) {
 										throw new RuntimeException(e);
@@ -167,7 +170,7 @@ public class TreeStateController
 	private void loadSubTreeState(TreeItem parentItem, Preferences parentNode) {
 		for (TreeItem subTreeItem : parentItem.getItems()) {
 			Preferences subNode = parentNode.node(subTreeItem.getText());
-			boolean isExpanded = subNode.getInt(subTreeItem.getText(), 0) == 1?true:false;
+			boolean isExpanded = parentNode.getInt(subTreeItem.getText(), 0) == 1;
 			if (isExpanded) {
 				Event event = new Event();
 				event.type = SWT.Expand;
