@@ -111,11 +111,11 @@ public class TreeStateController
 		}
 	}
 
-	private static final long ABSOLUTE_TIMEOUT = 30 * 1000;
-	private static final long RELATIVE_TIMEOUT = 5 * 1000;
+	private static final long ABSOLUTE_TIMEOUT = 20 * 1000;
+	private static final long RELATIVE_TIMEOUT = 2 * 1000;
 	private long currentTime;
 	private TimerTask timerTask;
-	
+
 	public void loadTreeState(final Tree tree) {
 		final StatableTree statableTree = statableTreeMap.get(tree);
 
@@ -127,70 +127,65 @@ public class TreeStateController
 			@Override
 			public void run() {
 				if (currentTime < ABSOLUTE_TIMEOUT) {
-					tree.getDisplay().asyncExec(new Runnable() {
-						@Override
-						public void run() {
-							for (TreeItem treeItem : statableTree.getTree().getItems()) {
-								try {
-									if (startNode.getInt(treeItem.getText(), 0) == 1) {
-										Event e = new Event();
-										e.type = SWT.Expand;
-										e.item = treeItem;
-										e.widget = tree;
-										Method m = Widget.class.getDeclaredMethod("sendEvent", new Class[] {int.class, Event.class});
-										m.setAccessible(true);
-										m.invoke(tree, e.type, e);
-										
-										treeItem.setExpanded(true);
-										loadSubTreeState(treeItem, startNode);
-									}
-								} catch (Exception e) {
-									throw new RuntimeException(e);
-								}
-							}
+					if (tree != null && !tree.isDisposed()) {
+						tree.getDisplay().asyncExec(new Runnable() {
+							@Override
+							public void run() {
+								for (TreeItem treeItem : statableTree.getTree().getItems()) {
+									try {
+										if (startNode.getInt(treeItem.getText(), 0) == 1) {
+											Event e = new Event();
+											e.type = SWT.Expand;
+											e.item = treeItem;
+											e.widget = tree;
+											Method m = Widget.class.getDeclaredMethod("sendEvent", new Class[] {int.class, Event.class});
+											m.setAccessible(true);
+											m.invoke(tree, e.type, e);
 
-							currentTime += RELATIVE_TIMEOUT;
-							loadTreeState(tree);
-						}
-					});
+											treeItem.setExpanded(true);
+											loadSubTreeState(treeItem, startNode);
+										}
+									} catch (Exception e) {
+										throw new RuntimeException(e);
+									}
+								}
+
+								currentTime += RELATIVE_TIMEOUT;
+								loadTreeState(tree);
+							}
+						});
+					}
 				}
 				else
 					timer.cancel();
 			}
 		};
-		
-		timer.schedule(timerTask, 10000);
+
+		timer.schedule(timerTask, RELATIVE_TIMEOUT);
 	}
 
-	private void loadSubTreeState(TreeItem treeItem, Preferences parentNode) {
-		for (TreeItem subTreeItem : treeItem.getItems()) {
-			Preferences node = parentNode.node(subTreeItem.getText());
-			boolean isExpanded = parentNode.getInt(subTreeItem.getText(), 0) == 1?true:false;
+	private void loadSubTreeState(TreeItem parentItem, Preferences parentNode) {
+		for (TreeItem subTreeItem : parentItem.getItems()) {
+			Preferences subNode = parentNode.node(subTreeItem.getText());
+			boolean isExpanded = subNode.getInt(subTreeItem.getText(), 0) == 1?true:false;
 			if (isExpanded) {
 				Event event = new Event();
 				event.type = SWT.Expand;
-				event.item = treeItem;
-				event.widget = treeItem.getParent();
+				event.item = subTreeItem;
+				event.widget = subTreeItem.getParent();
 				Method method;
 				try {
 					method = Widget.class.getDeclaredMethod("sendEvent", new Class[] {int.class, Event.class});
 
 					method.setAccessible(true);
-					method.invoke(treeItem.getParent(), event.type, event);
+					method.invoke(subTreeItem.getParent(), event.type, event);
 				} catch (Exception ex) {
 					throw new RuntimeException(ex);
 				}
-				
-				treeItem.setExpanded(true);
-				loadSubTreeState(treeItem, node);
+
+				subTreeItem.setExpanded(true);
+				loadSubTreeState(subTreeItem, subNode);
 			}
 		}
-	}
-	
-	private void updateItem(TreeItem treeItem) {
-		treeItem.getText();
-		treeItem.getImage();
-		treeItem.getParent().update();
-		treeItem.getParent().layout(true, true);
 	}
 }
