@@ -164,12 +164,26 @@ public class TreeStateController
 
 	private void loadSubTreeState(TreeItem treeItem, Preferences parentNode) {
 		for (TreeItem subTreeItem : treeItem.getItems()) {
-			Preferences node = parentNode.node(treeItem.getText());
-			boolean isExpanded = node.getInt(treeItem.getText(), 0) == 1?true:false;
-			subTreeItem.setExpanded(isExpanded);
-			updateItem(subTreeItem);
-			System.out.println("isExpanded = "+isExpanded+" for treeItem "+subTreeItem.getText());
-			loadSubTreeState(subTreeItem, node);
+			Preferences node = parentNode.node(subTreeItem.getText());
+			boolean isExpanded = parentNode.getInt(subTreeItem.getText(), 0) == 1?true:false;
+			if (isExpanded) {
+				Event event = new Event();
+				event.type = SWT.Expand;
+				event.item = treeItem;
+				event.widget = treeItem.getParent();
+				Method method;
+				try {
+					method = Widget.class.getDeclaredMethod("sendEvent", new Class[] {int.class, Event.class});
+
+					method.setAccessible(true);
+					method.invoke(treeItem.getParent(), event.type, event);
+				} catch (Exception ex) {
+					throw new RuntimeException(ex);
+				}
+				
+				treeItem.setExpanded(true);
+				loadSubTreeState(treeItem, node);
+			}
 		}
 	}
 	
