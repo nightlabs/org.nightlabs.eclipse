@@ -11,6 +11,7 @@ import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IPreferencesService;
 import org.eclipse.core.runtime.preferences.IScopeContext;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.osgi.service.datalocation.Location;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
@@ -57,8 +58,13 @@ public class TreeStateController
 		statableTree.getTree().addDisposeListener(new DisposeListener() {
 			@Override
 			public void widgetDisposed(DisposeEvent e) {
-				Tree sourceTree = (Tree)e.getSource();
-				saveTreeState(sourceTree);
+				IPreferenceStore preferenceStore = org.nightlabs.eclipse.ui.treestate.preferences.Preferences.getPreferenceStore();
+				boolean isEnable = preferenceStore.getBoolean(org.nightlabs.eclipse.ui.treestate.preferences.Preferences.PREFERENCE_ENABLE_STATE);
+
+				if (isEnable) {
+					Tree sourceTree = (Tree)e.getSource();
+					saveTreeState(sourceTree);
+				}
 			}
 		});
 	}
@@ -111,60 +117,59 @@ public class TreeStateController
 		}
 	}
 
-	private static final long ABSOLUTE_TIMEOUT = 20 * 1000;
-	private static final long RELATIVE_TIMEOUT = 1 * 1000;
 	private long currentTime;
 	private TimerTask timerTask;
 
 	public void loadTreeState(final Tree tree) {
-		final StatableTree statableTree = statableTreeMap.get(tree);
+		IPreferenceStore preferenceStore = org.nightlabs.eclipse.ui.treestate.preferences.Preferences.getPreferenceStore();
+		boolean isEnable = preferenceStore.getBoolean(org.nightlabs.eclipse.ui.treestate.preferences.Preferences.PREFERENCE_ENABLE_STATE);
 
-		final IPreferencesService preferencesService = Platform.getPreferencesService();
-		final Preferences startNode = preferencesService.getRootNode().node(ConfigurationScope.SCOPE).node(statableTree.getID());
+		if (isEnable) {
+			final long relativeTime = 
+				preferenceStore.getLong(org.nightlabs.eclipse.ui.treestate.preferences.Preferences.PREFERENCE_RELATIVE_TIME) * 1000;
+			final long absoluteTime = 
+				preferenceStore.getLong(org.nightlabs.eclipse.ui.treestate.preferences.Preferences.PREFERENCE_ABSOLUTE_TIME) * 1000;
+			
+			final StatableTree statableTree = statableTreeMap.get(tree);
 
-		final Timer timer = new Timer();
-		timerTask = new TimerTask() {
-			@Override
-			public void run() {
-				if (currentTime < ABSOLUTE_TIMEOUT) {
-					if (tree != null && !tree.isDisposed()) {
-						tree.getDisplay().asyncExec(new Runnable() {
-							@Override
-							public void run() {
-								for (TreeItem treeItem : tree.getItems()) {
-									try {
+			final IPreferencesService preferencesService = Platform.getPreferencesService();
+			final Preferences startNode = preferencesService.getRootNode().node(ConfigurationScope.SCOPE).node(statableTree.getID());
+
+			final Timer timer = new Timer();
+			timerTask = new TimerTask() {
+				@Override
+				public void run() {
+					if (currentTime < absoluteTime) {
+						if (tree != null && !tree.isDisposed()) {
+							tree.getDisplay().asyncExec(new Runnable() {
+								@Override
+								public void run() {
+									for (TreeItem treeItem : tree.getItems()) {
 										boolean isExpanded = startNode.getInt(treeItem.getText(), 0) == 1;
 										if (isExpanded) {
-											Event e = new Event();
-											e.type = SWT.Expand;
-											e.item = treeItem;
-											e.widget = tree;
-											Method m = Widget.class.getDeclaredMethod("sendEvent", new Class[] {int.class, Event.class});
-											m.setAccessible(true);
-											m.invoke(tree, e.type, e);
-
+											sendEventExpandTreeItem(treeItem);
 											treeItem.setExpanded(true);
 
 											Preferences node = startNode.node(treeItem.getText());
 											loadSubTreeState(treeItem, node);
 										}
-									} catch (Exception e) {
-										throw new RuntimeException(e);
 									}
-								}
 
-								currentTime += RELATIVE_TIMEOUT;
-								loadTreeState(tree);
-							}
-						});
+									currentTime += relativeTime;
+									loadTreeState(tree);
+								}
+							});
+						}
+					}
+					else {
+						timer.cancel();
+						currentTime = 0;
 					}
 				}
-				else
-					timer.cancel();
-			}
-		};
+			};
 
-		timer.schedule(timerTask, RELATIVE_TIMEOUT);
+			timer.schedule(timerTask, relativeTime);
+		}
 	}
 
 	private void loadSubTreeState(TreeItem parentItem, Preferences parentNode) {
@@ -172,23 +177,25 @@ public class TreeStateController
 			Preferences subNode = parentNode.node(subTreeItem.getText());
 			boolean isExpanded = parentNode.getInt(subTreeItem.getText(), 0) == 1;
 			if (isExpanded) {
-				Event event = new Event();
-				event.type = SWT.Expand;
-				event.item = subTreeItem;
-				event.widget = subTreeItem.getParent();
-				Method method;
-				try {
-					method = Widget.class.getDeclaredMethod("sendEvent", new Class[] {int.class, Event.class});
-
-					method.setAccessible(true);
-					method.invoke(subTreeItem.getParent(), event.type, event);
-				} catch (Exception ex) {
-					throw new RuntimeException(ex);
-				}
-
+				sendEventExpandTreeItem(subTreeItem);
 				subTreeItem.setExpanded(true);
 				loadSubTreeState(subTreeItem, subNode);
 			}
+		}
+	}
+
+	private void sendEventExpandTreeItem(TreeItem item) {
+		Event event = new Event();
+		event.type = SWT.Expand;
+		event.item = item;
+		event.widget = item.getParent();
+		Method method;
+		try {
+			method = Widget.class.getDeclaredMethod("sendEvent", new Class[] {int.class, Event.class});
+			method.setAccessible(true);
+			method.invoke(item.getParent(), event.type, event);
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
 		}
 	}
 }

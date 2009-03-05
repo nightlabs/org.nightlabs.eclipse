@@ -3,9 +3,9 @@ package org.nightlabs.eclipse.ui.treestate.preferences;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-
 
 public class TreeStatePreferencePage 
 extends FieldEditorPreferencePage
@@ -26,19 +26,17 @@ implements IWorkbenchPreferencePage
 		enableState = new BooleanFieldEditor(Preferences.PREFERENCE_ENABLE_STATE,
 				"Enable",
 				getFieldEditorParent());
-		enableState.setEnabled(Preferences.getPreferenceStore().getBoolean(Preferences.PREFERENCE_ENABLE_STATE)
-				, getFieldEditorParent());
-
+		
 		relativeTime = new IntegerFieldEditor(Preferences.PREFERENCE_RELATIVE_TIME,
-				"Relative Time",
+				"Relative Time(seconds)",
 				getFieldEditorParent());
 		relativeTime.setValidRange(1, 100);
 		relativeTime.setTextLimit(3);
 		relativeTime.setStringValue(Preferences.getPreferenceStore().getString(
 				Preferences.PREFERENCE_RELATIVE_TIME));
 	
-		absoluteTime = new IntegerFieldEditor(Preferences.PREFERENCE_RELATIVE_TIME,
-				"Relative Time",
+		absoluteTime = new IntegerFieldEditor(Preferences.PREFERENCE_ABSOLUTE_TIME,
+				"Absolute Time(seconds)",
 				getFieldEditorParent());
 		absoluteTime.setValidRange(1, 100);
 		absoluteTime.setTextLimit(3);
@@ -51,5 +49,7 @@ implements IWorkbenchPreferencePage
 	}
 
 	@Override
-	public void init(IWorkbench w) {}
+	public void init(IWorkbench workbench) {
+		
+	}
 }

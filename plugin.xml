@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.nightlabs.base.ui.preference.UIPreferencePage"
+            class="org.nightlabs.eclipse.ui.treestate.preferences.TreeStatePreferencePage"
+            id="org.nightlabs.eclipse.ui.treestate.preferences.TreeStatePreferencePage"
+            name="Save tree expansion states">
+      </page>
+   </extension>
 </plugin>
