@@ -52,6 +52,8 @@ public class TreeStateController
 	/**
 	 * Adds a {@link StatableTree} for storing and restoring its expansion states.
 	 * 
+	 * This method uses the {@link ConfigurationScope} to get the workspaces' shared preferences.
+	 * 
 	 * @param statableTree
 	 */
 	public void registerTree(StatableTree statableTree) {
