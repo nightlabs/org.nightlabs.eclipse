@@ -62,6 +62,7 @@ import org.eclipse.ui.internal.handlers.ShowKeyAssistHandler;
 import org.nightlabs.base.ui.action.ContributionItemSetRegistry;
 import org.nightlabs.base.ui.action.INewFileAction;
 import org.nightlabs.base.ui.action.NewFileRegistry;
+import org.nightlabs.base.ui.action.NewWizardAction;
 import org.nightlabs.base.ui.action.OpenFileAction;
 import org.nightlabs.base.ui.action.ReOpenFileAction;
 import org.nightlabs.base.ui.action.registry.ActionDescriptor;
@@ -210,10 +211,10 @@ extends ActionBarAdvisor
 //		}
 		if (menuBarItems.contains(ActionBarItem.New))
 		{
-//			newWizardAction = ActionFactory.NEW.create(window);
 //			newWizardAction = ActionFactory.NEW_WIZARD_DROP_DOWN.create(window);
 //			newWizardAction = NEW_WIZARD_DROP_DOWN.create(window);
-			IWorkbenchAction newAction = ActionFactory.NEW.create(window);
+//			IWorkbenchAction newAction = ActionFactory.NEW.create(window);
+			IWorkbenchAction newAction = new NewWizardAction(window);
 			newAction.setText(Messages.getString("org.nightlabs.base.ui.app.DefaultActionBuilder.action.new.name")); //$NON-NLS-1$
 			newWizardAction = new ActionContributionItem(newAction);
 			actions.put(ActionBarItem.New, newAction);

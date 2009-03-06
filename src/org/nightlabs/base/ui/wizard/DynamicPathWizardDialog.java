@@ -52,7 +52,8 @@ import org.nightlabs.config.Config;
  */
 public class DynamicPathWizardDialog extends WizardDialog
 {
-	private DynamicPathWizard dynamicWizard;
+//	private DynamicPathWizard dynamicWizard;
+	private IWizard dynamicWizard;
 
 	private ListenerList buttonListeners;
 
@@ -60,7 +61,7 @@ public class DynamicPathWizardDialog extends WizardDialog
 	 * Create a new DynamicPathWizardDialog.
 	 * @param wizard The wizard to show
 	 */
-	public DynamicPathWizardDialog(DynamicPathWizard wizard)
+	public DynamicPathWizardDialog(IWizard wizard)
 	{
 		this(RCPUtil.getActiveShell(), wizard);
 	}
@@ -70,11 +71,13 @@ public class DynamicPathWizardDialog extends WizardDialog
 	 * @param shell The parent shell
 	 * @param wizard The wizard to show
 	 */
-	public DynamicPathWizardDialog(Shell shell, DynamicPathWizard wizard)
+	public DynamicPathWizardDialog(Shell shell, IWizard wizard)
 	{
 		super(shell, wizard);
 		dynamicWizard = wizard;
-		dynamicWizard.setDynamicWizardDialog(this);
+		if (dynamicWizard instanceof DynamicPathWizard) {
+			((DynamicPathWizard)dynamicWizard).setDynamicWizardDialog(this);	
+		}
 	}
 
 	/**
@@ -149,11 +152,15 @@ public class DynamicPathWizardDialog extends WizardDialog
 	@Override
 	protected Control createContents(Composite parent) {
 		Control result = super.createContents(parent);
-		if (dynamicWizard.getFirstPage() instanceof IDynamicPathWizardPage)
-			((IDynamicPathWizardPage)dynamicWizard.getFirstPage()).onShow();
-		for (Object o : getDynamicPathWizardListeners().getListeners()) {
-			IDynamicPathWizardListener l = (IDynamicPathWizardListener) o;
-			l.pageChanged(dynamicWizard.getFirstPage());
+		if (dynamicWizard instanceof DynamicPathWizard) 
+		{
+			DynamicPathWizard dynamicPathWizard = (DynamicPathWizard) dynamicWizard;
+			if (dynamicPathWizard.getFirstPage() instanceof IDynamicPathWizardPage)
+				((IDynamicPathWizardPage)dynamicPathWizard.getFirstPage()).onShow();
+			for (Object o : getDynamicPathWizardListeners().getListeners()) {
+				IDynamicPathWizardListener l = (IDynamicPathWizardListener) o;
+				l.pageChanged(dynamicPathWizard.getFirstPage());
+			}
 		}
 		return result;
 	}
