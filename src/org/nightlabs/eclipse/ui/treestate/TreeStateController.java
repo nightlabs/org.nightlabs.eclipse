@@ -124,8 +124,10 @@ public class TreeStateController
 	private TimerTask timerTask;
 
 	/**
-	 * Restores the tree's expansion states. This method uses values from {@link PreferenceStore}
-	 * and {@link org.nightlabs.eclipse.ui.treestate.preferences.Preferences} for specifying the time 
+	 * Restores the tree's expansion states. 
+	 * 
+	 * This method uses values from {@link PreferenceStore} and 
+	 * {@link org.nightlabs.eclipse.ui.treestate.preferences.Preferences} for specifying the time 
 	 * for trying to get the tree items and the total time to try getting them because 
 	 * the tree loads its items lazily.
 	 * 
