@@ -124,8 +124,10 @@ public class TreeStateController
 	/**
 	 * Restores the tree's expansion states. This method uses values from {@link PreferenceStore}
 	 * and {@link org.nightlabs.eclipse.ui.treestate.preferences.Preferences} for specifying the time 
-	 * for trying to get the tree items and the total time to try getting them because the tree loads its
-	 * items lazily.
+	 * for trying to get the tree items and the total time to try getting them because 
+	 * the tree loads its items lazily.
+	 * 
+	 * Calling this method after setting input to the tree is a suggestion.
 	 * 
 	 * @param tree
 	 */
