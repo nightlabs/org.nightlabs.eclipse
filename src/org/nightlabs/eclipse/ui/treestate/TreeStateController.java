@@ -12,11 +12,10 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IPreferencesService;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.osgi.service.datalocation.Location;
+import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.TreeEvent;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
@@ -24,6 +23,12 @@ import org.eclipse.swt.widgets.Widget;
 import org.osgi.service.prefs.Preferences;
 
 /**
+ * This class is used for storing and restoring any trees' expansion states.
+ * <p>
+ * To use this controller, the tree has to implement the {@link StatableTree} interface
+ * ,so that the controller will be able to identify the tree by its ID.
+ * </p>
+ *
  * @author Chairat Kongarayawetchakun - chairat[at]nightlabs[dot]de
  */
 public class TreeStateController
@@ -35,7 +40,6 @@ public class TreeStateController
 	private TreeStateController() {}
 
 	/**
-	 *
 	 * @return a shared instance of the controller
 	 */
 	public static TreeStateController sharedInstance() {
@@ -46,7 +50,8 @@ public class TreeStateController
 	}
 
 	/**
-	 *
+	 * Adds a {@link StatableTree} for storing and restoring its expansion states.
+	 * 
 	 * @param statableTree
 	 */
 	public void registerTree(StatableTree statableTree) {
@@ -69,10 +74,6 @@ public class TreeStateController
 		});
 	}
 
-	/**
-	 *
-	 * @param tree
-	 */
 	private void saveTreeState(Tree tree) {
 		StatableTree statableTree = statableTreeMap.get(tree);
 
@@ -120,6 +121,14 @@ public class TreeStateController
 	private long currentTime;
 	private TimerTask timerTask;
 
+	/**
+	 * Restores the tree's expansion states. This method uses values from {@link PreferenceStore}
+	 * and {@link org.nightlabs.eclipse.ui.treestate.preferences.Preferences} for specifying the time 
+	 * for trying to get the tree items and the total time to try getting them because the tree loads its
+	 * items lazily.
+	 * 
+	 * @param tree
+	 */
 	public void loadTreeState(final Tree tree) {
 		IPreferenceStore preferenceStore = org.nightlabs.eclipse.ui.treestate.preferences.Preferences.getPreferenceStore();
 		boolean isEnable = preferenceStore.getBoolean(org.nightlabs.eclipse.ui.treestate.preferences.Preferences.PREFERENCE_ENABLE_STATE);
