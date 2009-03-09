@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 
@@ -500,4 +501,11 @@ public abstract class DynamicPathWizard extends Wizard implements IDynamicPathWi
 			dynamicWizardDialog.cancelPressed();
 	}
 
+	@Override
+	public void setContainer(IWizardContainer wizardContainer) {
+		super.setContainer(wizardContainer);
+		if (wizardContainer instanceof DynamicPathWizardDialog) {
+			setDynamicWizardDialog((DynamicPathWizardDialog)wizardContainer);
+		}
+	}
 }
