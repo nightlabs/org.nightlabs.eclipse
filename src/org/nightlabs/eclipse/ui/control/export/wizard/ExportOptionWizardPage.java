@@ -107,7 +107,7 @@ extends WizardPage
 
 		new Label(fileLocationComposite, SWT.NONE).setText("Save Location: ");
 
-		fileText = new Text(fileLocationComposite, SWT.SINGLE);
+		fileText = new Text(fileLocationComposite, SWT.BORDER);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		fileText.setLayoutData(gridData);
 		fileText.addModifyListener(new ModifyListener() {
