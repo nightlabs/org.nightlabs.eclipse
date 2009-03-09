@@ -141,9 +141,9 @@ public class TreeStateController
 
 		if (isEnable) {
 			final long relativeTime = 
-				preferenceStore.getLong(org.nightlabs.eclipse.ui.treestate.preferences.Preferences.PREFERENCE_RELATIVE_TIME) * 1000;
+				preferenceStore.getLong(org.nightlabs.eclipse.ui.treestate.preferences.Preferences.PREFERENCE_RELATIVE_TIME);
 			final long absoluteTime = 
-				preferenceStore.getLong(org.nightlabs.eclipse.ui.treestate.preferences.Preferences.PREFERENCE_ABSOLUTE_TIME) * 1000;
+				preferenceStore.getLong(org.nightlabs.eclipse.ui.treestate.preferences.Preferences.PREFERENCE_ABSOLUTE_TIME);
 			
 			final StatableTree statableTree = statableTreeMap.get(tree);
 
