@@ -3,6 +3,8 @@
  */
 package org.nightlabs.base.ui.action;
 
+import javax.security.auth.login.LoginException;
+
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -20,6 +22,7 @@ import org.eclipse.ui.internal.LegacyResourceSupport;
 import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.eclipse.ui.internal.dialogs.NewWizard;
 import org.eclipse.ui.internal.util.Util;
+import org.nightlabs.base.ui.login.Login;
 import org.nightlabs.base.ui.wizard.DynamicPathWizardDialog;
 
 /**
@@ -51,8 +54,37 @@ public class NewWizardAction extends org.eclipse.ui.actions.NewWizardAction {
 	/* (non-Javadoc)
      * Method declared on IAction.
      */
-    public void run() {
-        if (window == null) {
+    public void run() 
+    {
+    	try {
+			Login.login();
+			doRun();
+		} catch (LoginException e) {
+			// if not logged in do nothing, because it could lead to NoClassDefFoundError, 
+			// when instantiating Wizard classes which need remote classes (e.g. have imports) 
+		} catch (IllegalStateException e2) {
+			// if no ILoginDelegate is registered the application has no login, 
+			// then also just open the newWizard dialog
+			doRun();
+		}
+    }
+    
+//	/* (non-Javadoc)
+//     * Method declared on IAction.
+//     */
+//    public void run() 
+//    {
+//    	doRun();
+//    }
+    
+    /**
+     * This method is copied from org.eclipse.ui.actions.NewWizardAction.run() 
+     * but it uses an DynamicPathWizardDialog for the wizards instead of an "normal"
+     * WizardDialog.
+     */
+    protected void doRun() 
+    {
+    	if (window == null) {
             // action has been disposed
             return;
         }
@@ -101,6 +133,6 @@ public class NewWizardAction extends org.eclipse.ui.actions.NewWizardAction {
                 SIZING_WIZARD_HEIGHT);
         PlatformUI.getWorkbench().getHelpSystem().setHelp(dialog.getShell(),
 				IWorkbenchHelpContextIds.NEW_WIZARD);
-        dialog.open();
-    }	
+        dialog.open();	
+    }
 }
