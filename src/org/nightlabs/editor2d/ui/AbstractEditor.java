@@ -43,6 +43,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EventObject;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -52,6 +53,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.draw2d.FigureCanvas;
+import org.eclipse.draw2d.J2DGraphics;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.DefaultEditDomain;
@@ -82,7 +84,8 @@ import org.eclipse.gef.ui.palette.FlyoutPaletteComposite;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.PaletteViewerProvider;
 import org.eclipse.gef.ui.palette.FlyoutPaletteComposite.FlyoutPreferences;
-import org.eclipse.gef.ui.parts.J2DGraphicalEditorWithFlyoutPalette;
+import org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette;
+import org.eclipse.gef.ui.parts.J2DScrollingGraphicalViewer;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.gef.ui.parts.SelectionSynchronizer;
 import org.eclipse.gef.ui.parts.TreeViewer;
@@ -113,6 +116,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.PropertySheetPage;
+import org.holongate.j2d.J2DRegistry;
 import org.nightlabs.base.ui.i18n.ResolutionUnitEP;
 import org.nightlabs.base.ui.i18n.UnitRegistryEP;
 import org.nightlabs.base.ui.io.FileEditorInput;
@@ -170,6 +174,7 @@ import org.nightlabs.editor2d.ui.print.EditorPrintAction;
 import org.nightlabs.editor2d.ui.print.EditorPrintSetupAction;
 import org.nightlabs.editor2d.ui.properties.EditorPropertyPage;
 import org.nightlabs.editor2d.ui.properties.UnitManager;
+import org.nightlabs.editor2d.ui.render.Draw2DRenderContext;
 import org.nightlabs.editor2d.ui.resource.Messages;
 import org.nightlabs.editor2d.ui.rulers.EditorRulerProvider;
 import org.nightlabs.editor2d.unit.DotUnit;
@@ -195,8 +200,8 @@ import org.nightlabs.util.NLLocale;
 
 
 public abstract class AbstractEditor
-extends J2DGraphicalEditorWithFlyoutPalette
-//extends GraphicalEditorWithFlyoutPalette
+//extends J2DGraphicalEditorWithFlyoutPalette
+extends GraphicalEditorWithFlyoutPalette
 {
 	/**
 	 * LOG4J logger used by this class
@@ -205,15 +210,24 @@ extends J2DGraphicalEditorWithFlyoutPalette
 
 	private boolean savePreviouslyNeeded = false;
 	private RulerComposite rulerComp;
-
 	private TreeViewer treeViewer;
 	private EditorOutlinePage outlinePage;
 	private boolean editorSaving = false;
+	private boolean useJava2D = true;
+	
+	/** Create a new Editor instance. This is called by the Workspace. */
+	public AbstractEditor()
+	{
+		init();
+		if (useJava2D) {
+			initJ2DRegistry();
+		}
+	}
 
 	protected void closeEditor(boolean save)
 	{
 		getSite().getPage().closeEditor(AbstractEditor.this, save);
-		System.gc();
+//		System.gc();
 	}
 
 	public Object getModel() {
@@ -333,13 +347,6 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		return langMan;
 	}
 
-	/** Create a new Editor instance. This is called by the Workspace. */
-	public AbstractEditor()
-	{
-		init();
-//		initJ2DRegistry();
-	}
-
 	protected void init()
 	{
 		getPalettePreferences().setPaletteState(FlyoutPaletteComposite.STATE_PINNED_OPEN);
@@ -357,13 +364,14 @@ extends J2DGraphicalEditorWithFlyoutPalette
 		 return super.getEditDomain();
 	}
 
-//	protected void initJ2DRegistry()
-//	{
-//	Map hints = new HashMap();
-//	hints.put(J2DGraphics.KEY_FIXED_LINEWIDTH, true);
-//	hints.put(J2DGraphics.KEY_USE_JAVA2D, true);
-//	J2DRegistry.setHints(hints);
-//	}
+	@SuppressWarnings("unchecked")
+	protected void initJ2DRegistry()
+	{
+		// TODO: Holongate Draw2D-PreferencePage does not store values
+		Map hints = new HashMap();
+		hints.put(J2DGraphics.KEY_USE_JAVA2D, Boolean.TRUE);
+		J2DRegistry.setHints(hints);
+	}
 
 	protected RootDrawComponent load(IOFilter ioFilter, InputStream input)
 	{
@@ -441,10 +449,15 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	private ScalableFreeformRootEditPart rootEditPart;
 	public ScalableFreeformRootEditPart getRootEditPart()
 	{
-		if (rootEditPart == null)
-			rootEditPart = new J2DScalableFreeformRootEditPart();
-//			rootEditPart = new ScalableFreeformRootEditPart();
-
+		if (rootEditPart == null) 
+		{
+			if (useJava2D) {
+				rootEditPart = new J2DScalableFreeformRootEditPart();					
+			}
+			else {
+				rootEditPart = new ScalableFreeformRootEditPart();
+			}
+		}
 		return rootEditPart;
 	}
 
@@ -810,8 +823,12 @@ extends J2DGraphicalEditorWithFlyoutPalette
 
 	protected void configureRenderModeManager()
 	{
-		getRenderModeManager().setCurrentRenderContextType(J2DRenderContext.RENDER_CONTEXT_TYPE_JAVA2D);
-//		getRenderModeManager().setCurrentRenderContextType(Draw2DRenderContext.RENDER_CONTEXT_TYPE);
+		if (useJava2D) {
+			getRenderModeManager().setCurrentRenderContextType(J2DRenderContext.RENDER_CONTEXT_TYPE_JAVA2D);	
+		}
+		else {
+			getRenderModeManager().setCurrentRenderContextType(Draw2DRenderContext.RENDER_CONTEXT_TYPE);	
+		}
 	}
 
 	protected EditorActionBarContributor getEditorActionBarContributor()
@@ -1054,7 +1071,20 @@ extends J2DGraphicalEditorWithFlyoutPalette
 	{
 		long start = System.currentTimeMillis();
 		rulerComp = new RulerComposite(parent, SWT.NONE);
-		super.createGraphicalViewer(rulerComp);
+		
+//		super.createGraphicalViewer(rulerComp);
+		GraphicalViewer viewer = null;
+		if (useJava2D) {
+			viewer = new J2DScrollingGraphicalViewer();			
+		} else {
+			viewer = new ScrollingGraphicalViewer();
+		}
+		viewer.createControl(rulerComp);
+		setGraphicalViewer(viewer);
+		configureGraphicalViewer();
+		hookGraphicalViewer();
+		initializeGraphicalViewer();
+		
 		rulerComp.setGraphicalViewer((ScrollingGraphicalViewer) getGraphicalViewer());
 		if (logger.isDebugEnabled()) {
 			long duration = System.currentTimeMillis() - start;

@@ -27,16 +27,12 @@
 
 package org.nightlabs.editor2d.ui;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 import javax.imageio.spi.IIORegistry;
 
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.draw2d.J2DGraphics;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.holongate.j2d.J2DRegistry;
 import org.nightlabs.io.pcx.PCXImageReaderSPI;
 import org.nightlabs.io.pcx.PCXImageWriterSPI;
 import org.nightlabs.util.FontUtil;
@@ -75,9 +71,9 @@ extends AbstractUIPlugin
 		FontUtil.getSystemFonts();
 
 //		// TODO: Holongate Draw2D-PreferencePage does not store values
-		Map hints = new HashMap();
-		hints.put(J2DGraphics.KEY_USE_JAVA2D, Boolean.TRUE);
-		J2DRegistry.setHints(hints);
+//		Map hints = new HashMap();
+//		hints.put(J2DGraphics.KEY_USE_JAVA2D, Boolean.TRUE);
+//		J2DRegistry.setHints(hints);
 
 		// register additional ImageReader + ImageWriter
 		IIORegistry.getDefaultInstance().registerServiceProvider(new PCXImageReaderSPI());
