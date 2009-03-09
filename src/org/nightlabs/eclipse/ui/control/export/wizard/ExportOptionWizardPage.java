@@ -124,7 +124,8 @@ extends WizardPage
 			}
 		});
 
-
+		fileText.setFocus();
+		
 		Button browseButton = new Button(fileLocationComposite, SWT.PUSH);
 		browseButton.setText("Browse");
 		browseButton.addSelectionListener(new SelectionAdapter() {
