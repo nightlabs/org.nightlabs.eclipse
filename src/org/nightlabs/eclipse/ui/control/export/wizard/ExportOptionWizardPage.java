@@ -161,7 +161,7 @@ extends WizardPage
 	@Override
 	public boolean canFlipToNextPage() {
 		boolean result = true;
-		if (showPreviewDataButton.getSelection() == false) {
+		if (showPreviewDataButton.getSelection() == false || fileText.getText() == null || fileText.getText().equals("")) {
 			result = false;
 		}
 
