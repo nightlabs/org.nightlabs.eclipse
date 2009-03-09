@@ -238,15 +238,15 @@ implements IAdaptable
 		//    outlinePage = null;
 	}
 
-	  public Object getAdapter(Class type) {
-	    if (type == ZoomManager.class)
-	      return editor.getOutlineGraphicalViewer().getProperty(ZoomManager.class.toString());
-	    return null;
-	  }
-//	@SuppressWarnings("unchecked") //$NON-NLS-1$
-//	public Object getAdapter(Class type) {
-//		return null;
-//	}
+	@SuppressWarnings("unchecked")
+	public Object getAdapter(Class type) 
+	{
+		if (type == ZoomManager.class) {
+			if (editor != null && editor.getOutlineGraphicalViewer() != null)
+				return editor.getOutlineGraphicalViewer().getProperty(ZoomManager.class.toString());	
+		}
+		return null;
+	}
 
 	@Override
 	public Control getControl() {
@@ -280,23 +280,25 @@ implements IAdaptable
 	protected void initializeOverview()
 	{
 		LightweightSystem lws = new LightweightSystem(overview);
-		RootEditPart rep = editor.getOutlineGraphicalViewer().getRootEditPart();
-		if (rep instanceof ScalableFreeformRootEditPart) {
-			ScalableFreeformRootEditPart root = (ScalableFreeformRootEditPart)rep;
-			thumbnail = new ScrollableThumbnail((Viewport)root.getFigure());
-			thumbnail.setBorder(new MarginBorder(3));
-			thumbnail.setSource(root.getLayer(LayerConstants.PRINTABLE_LAYERS));
-			//      thumbnail.setSource(root.getFigure());
-			lws.setContents(thumbnail);
-			disposeListener = new DisposeListener() {
-				public void widgetDisposed(DisposeEvent e) {
-					if (thumbnail != null) {
-						thumbnail.deactivate();
-						thumbnail = null;
+		if (editor != null && editor.getOutlineGraphicalViewer() != null) {
+			RootEditPart rep = editor.getOutlineGraphicalViewer().getRootEditPart();
+			if (rep instanceof ScalableFreeformRootEditPart) {
+				ScalableFreeformRootEditPart root = (ScalableFreeformRootEditPart)rep;
+				thumbnail = new ScrollableThumbnail((Viewport)root.getFigure());
+				thumbnail.setBorder(new MarginBorder(3));
+				thumbnail.setSource(root.getLayer(LayerConstants.PRINTABLE_LAYERS));
+				//      thumbnail.setSource(root.getFigure());
+				lws.setContents(thumbnail);
+				disposeListener = new DisposeListener() {
+					public void widgetDisposed(DisposeEvent e) {
+						if (thumbnail != null) {
+							thumbnail.deactivate();
+							thumbnail = null;
+						}
 					}
-				}
-			};
-			editor.getEditor().addDisposeListener(disposeListener);
+				};
+				editor.getEditor().addDisposeListener(disposeListener);
+			}			
 		}
 	}
 
