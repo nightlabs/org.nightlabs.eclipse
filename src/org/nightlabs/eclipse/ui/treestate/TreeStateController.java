@@ -2,7 +2,9 @@ package org.nightlabs.eclipse.ui.treestate;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -16,7 +18,10 @@ import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.TreeAdapter;
+import org.eclipse.swt.events.TreeEvent;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.swt.widgets.Widget;
@@ -36,6 +41,8 @@ public class TreeStateController
 	private static TreeStateController sharedInstance;
 
 	private Map<Tree, StatableTree> statableTreeMap;
+
+	private Set<TreeItem> collapsedItems = new HashSet<TreeItem>();
 
 	private TreeStateController() {}
 
@@ -72,6 +79,15 @@ public class TreeStateController
 					Tree sourceTree = (Tree)e.getSource();
 					saveTreeState(sourceTree);
 				}
+			}
+		});
+
+		statableTree.getTree().addTreeListener(new TreeAdapter() {
+			@Override
+			public void treeCollapsed(TreeEvent e) {
+				Tree tree = (Tree)e.getSource();
+				TreeItem collapsedTreeItem = tree.getSelection()[0];
+				collapsedItems.add(collapsedTreeItem);
 			}
 		});
 	}
@@ -144,7 +160,7 @@ public class TreeStateController
 				preferenceStore.getLong(org.nightlabs.eclipse.ui.treestate.preferences.Preferences.PREFERENCE_RELATIVE_TIME);
 			final long absoluteTime = 
 				preferenceStore.getLong(org.nightlabs.eclipse.ui.treestate.preferences.Preferences.PREFERENCE_ABSOLUTE_TIME);
-			
+
 			final StatableTree statableTree = statableTreeMap.get(tree);
 
 			final IPreferencesService preferencesService = Platform.getPreferencesService();
@@ -159,19 +175,20 @@ public class TreeStateController
 							tree.getDisplay().asyncExec(new Runnable() {
 								@Override
 								public void run() {
-									for (TreeItem treeItem : tree.getItems()) {
-										boolean isExpanded = startNode.getInt(treeItem.getText(), 0) == 1;
-										if (isExpanded) {
-											sendEventExpandTreeItem(treeItem);
-											treeItem.setExpanded(true);
+									if (tree != null && !tree.isDisposed()) {
+										for (TreeItem treeItem : tree.getItems()) {
+											boolean isExpanded = startNode.getInt(treeItem.getText(), 0) == 1;
+											if (isExpanded) {
+												sendEventExpandTreeItem(treeItem);
 
-											Preferences node = startNode.node(treeItem.getText());
-											loadSubTreeState(treeItem, node);
+												Preferences node = startNode.node(treeItem.getText());
+												loadSubTreeState(treeItem, node);
+											}
 										}
-									}
 
-									currentTime += relativeTime;
-									loadTreeState(tree);
+										currentTime += relativeTime;
+										loadTreeState(tree);
+									}
 								}
 							});
 						}
@@ -188,29 +205,34 @@ public class TreeStateController
 	}
 
 	private void loadSubTreeState(TreeItem parentItem, Preferences parentNode) {
-		for (TreeItem subTreeItem : parentItem.getItems()) {
-			Preferences subNode = parentNode.node(subTreeItem.getText());
-			boolean isExpanded = parentNode.getInt(subTreeItem.getText(), 0) == 1;
-			if (isExpanded) {
-				sendEventExpandTreeItem(subTreeItem);
-				subTreeItem.setExpanded(true);
-				loadSubTreeState(subTreeItem, subNode);
+		if (!parentItem.isDisposed()) {
+			for (TreeItem subTreeItem : parentItem.getItems()) {
+				Preferences subNode = parentNode.node(subTreeItem.getText());
+				boolean isExpanded = parentNode.getInt(subTreeItem.getText(), 0) == 1;
+				if (isExpanded) {
+					sendEventExpandTreeItem(subTreeItem);
+					loadSubTreeState(subTreeItem, subNode);
+				}
 			}
 		}
 	}
 
 	private void sendEventExpandTreeItem(TreeItem item) {
-		Event event = new Event();
-		event.type = SWT.Expand;
-		event.item = item;
-		event.widget = item.getParent();
-		Method method;
-		try {
-			method = Widget.class.getDeclaredMethod("sendEvent", new Class[] {int.class, Event.class});
-			method.setAccessible(true);
-			method.invoke(item.getParent(), event.type, event);
-		} catch (Exception ex) {
-			throw new RuntimeException(ex);
+		if (!collapsedItems.contains(item)) {
+			Event event = new Event();
+			event.type = SWT.Expand;
+			event.item = item;
+			event.widget = item.getParent();
+			Method method;
+			try {
+				method = Widget.class.getDeclaredMethod("sendEvent", new Class[] {int.class, Event.class});
+				method.setAccessible(true);
+				method.invoke(item.getParent(), event.type, event);
+			} catch (Exception ex) {
+				throw new RuntimeException(ex);
+			}
+
+			item.setExpanded(true);
 		}
 	}
 }

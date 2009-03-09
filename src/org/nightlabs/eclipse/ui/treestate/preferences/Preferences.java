@@ -18,8 +18,8 @@ public class Preferences
 
 	public static void initDefaultValues(IPreferenceStore store)
 	{
-		store.setDefault(PREFERENCE_RELATIVE_TIME, 1);
-		store.setDefault(PREFERENCE_ABSOLUTE_TIME, 20);
+		store.setDefault(PREFERENCE_RELATIVE_TIME, 1000);
+		store.setDefault(PREFERENCE_ABSOLUTE_TIME, 20000);
 		store.setDefault(PREFERENCE_ENABLE_STATE, false);
 	}
 }
