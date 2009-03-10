@@ -99,41 +99,33 @@ public class TreeStateController
 		IScopeContext context = new ConfigurationScope();
 		IEclipsePreferences rootNode = context.getNode(statableTree.getID());
 		if (rootNode != null) {
-			for (TreeItem treeItem : tree.getItems()) {
-				rootNode.put(treeItem.getText(), treeItem.getExpanded()?"1":"0");
-
-				try {
-					rootNode.flush();
-				} catch (Exception e) {
-					throw new RuntimeException(e);
+			try {
+				rootNode.clear();
+//				rootNode.flush();
+//				
+//				if (true)
+//					return;
+				
+				for (TreeItem treeItem : tree.getItems()) {
+					saveTreeItemState(treeItem, rootNode);
 				}
-
-				createSubTreeState(treeItem, rootNode);
+				rootNode.flush();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
 			}
 		}
 	}
 
-	private void createSubTreeState(TreeItem treeItem, Preferences parentNode) {
-		if (treeItem.getExpanded()) {
-			for (TreeItem subTreeItem : treeItem.getItems()) {
-				Preferences node = parentNode.node(treeItem.getText());
-				node.put(subTreeItem.getText(), subTreeItem.getExpanded()?"1":"0");
+	private void saveTreeItemState(TreeItem treeItem, Preferences parentNode) {
+		if (!treeItem.getExpanded())
+			return;
 
-				try {
-					node.flush();
-				} catch (Exception e) {
-					throw new RuntimeException(e);
-				}
+		parentNode.put(treeItem.getText(), "1"); // treeItem.getExpanded()?"1":"0");
 
-				createSubTreeState(subTreeItem, node);
-			}
-		}
-		else {
-			try {
-				parentNode.node(treeItem.getText()).removeNode();
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
+		for (TreeItem subTreeItem : treeItem.getItems()) {
+			Preferences node = parentNode.node(treeItem.getText());
+
+			saveTreeItemState(subTreeItem, node);
 		}
 	}
 
