@@ -31,7 +31,7 @@ implements IWorkbenchPreferencePage
 				"Relative time(1-100000 milliseconds)",
 				getFieldEditorParent());
 		relativeTime.setValidRange(1, 100000);
-		relativeTime.setTextLimit(3);
+		relativeTime.setTextLimit(6);
 		relativeTime.setStringValue(Preferences.getPreferenceStore().getString(
 				Preferences.PREFERENCE_RELATIVE_TIME));
 
@@ -39,7 +39,7 @@ implements IWorkbenchPreferencePage
 				"Absolute time(1-100000 milliseconds)",
 				getFieldEditorParent());
 		absoluteTime.setValidRange(1, 100000);
-		absoluteTime.setTextLimit(3);
+		absoluteTime.setTextLimit(6);
 		absoluteTime.setStringValue(Preferences.getPreferenceStore().getString(
 				Preferences.PREFERENCE_RELATIVE_TIME));
 
