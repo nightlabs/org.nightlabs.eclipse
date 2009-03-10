@@ -82,6 +82,7 @@ public class TreeStateController
 			}
 		});
 
+		//Adds a tree listener for recording the collapsed tree items and these items will not be auto-expanded
 		statableTree.getTree().addTreeListener(new TreeAdapter() {
 			@Override
 			public void treeCollapsed(TreeEvent e) {
@@ -136,8 +137,8 @@ public class TreeStateController
 		}
 	}
 
-	private long currentTime;
-	private TimerTask timerTask;
+	private long totalTryingTime;
+	private TimerTask expandTreeItemTimerTask;
 
 	/**
 	 * Restores the tree's expansion states. 
@@ -156,9 +157,9 @@ public class TreeStateController
 		boolean isEnable = preferenceStore.getBoolean(org.nightlabs.eclipse.ui.treestate.preferences.Preferences.PREFERENCE_ENABLE_STATE);
 
 		if (isEnable) {
-			final long relativeTime = 
+			final long nextTryingToGetTreeItemTime = 
 				preferenceStore.getLong(org.nightlabs.eclipse.ui.treestate.preferences.Preferences.PREFERENCE_RELATIVE_TIME);
-			final long absoluteTime = 
+			final long totalTryingToGetTreeItemTime = 
 				preferenceStore.getLong(org.nightlabs.eclipse.ui.treestate.preferences.Preferences.PREFERENCE_ABSOLUTE_TIME);
 
 			final StatableTree statableTree = statableTreeMap.get(tree);
@@ -166,11 +167,11 @@ public class TreeStateController
 			final IPreferencesService preferencesService = Platform.getPreferencesService();
 			final Preferences startNode = preferencesService.getRootNode().node(ConfigurationScope.SCOPE).node(statableTree.getID());
 
-			final Timer timer = new Timer();
-			timerTask = new TimerTask() {
+			final Timer expandTreeItemTimer = new Timer();
+			expandTreeItemTimerTask = new TimerTask() {
 				@Override
 				public void run() {
-					if (currentTime < absoluteTime) {
+					if (totalTryingTime < totalTryingToGetTreeItemTime) {
 						if (tree != null && !tree.isDisposed()) {
 							tree.getDisplay().asyncExec(new Runnable() {
 								@Override
@@ -186,7 +187,7 @@ public class TreeStateController
 											}
 										}
 
-										currentTime += relativeTime;
+										totalTryingTime += nextTryingToGetTreeItemTime;
 										loadTreeState(tree);
 									}
 								}
@@ -194,13 +195,13 @@ public class TreeStateController
 						}
 					}
 					else {
-						timer.cancel();
-						currentTime = 0;
+						expandTreeItemTimer.cancel();
+						totalTryingTime = 0;
 					}
 				}
 			};
 
-			timer.schedule(timerTask, relativeTime);
+			expandTreeItemTimer.schedule(expandTreeItemTimerTask, nextTryingToGetTreeItemTime);
 		}
 	}
 
@@ -218,6 +219,7 @@ public class TreeStateController
 	}
 
 	private void sendEventExpandTreeItem(TreeItem item) {
+		//Checks whether the item's already collapsed
 		if (!collapsedItems.contains(item)) {
 			Event event = new Event();
 			event.type = SWT.Expand;
