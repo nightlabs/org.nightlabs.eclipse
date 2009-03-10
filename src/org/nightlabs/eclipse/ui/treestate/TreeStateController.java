@@ -101,14 +101,11 @@ public class TreeStateController
 		if (rootNode != null) {
 			try {
 				rootNode.clear();
-//				rootNode.flush();
-//				
-//				if (true)
-//					return;
 				
 				for (TreeItem treeItem : tree.getItems()) {
 					saveTreeItemState(treeItem, rootNode);
 				}
+				
 				rootNode.flush();
 			} catch (Exception e) {
 				throw new RuntimeException(e);
