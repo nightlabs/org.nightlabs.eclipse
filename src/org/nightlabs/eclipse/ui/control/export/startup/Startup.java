@@ -34,8 +34,6 @@ implements IStartup
 
 	@Override
 	public void earlyStartup() {
-//		sharedInstance = this;
-
 		workbench = PlatformUI.getWorkbench();
 		final Display display = workbench.getDisplay();
 		display.asyncExec(new Runnable(){
@@ -49,14 +47,4 @@ implements IStartup
 	public Control getSelectedControl() {
 		return selectedControl;
 	}
-
-//	//The shared instance.
-//	private static Startup sharedInstance;
-//
-//	public static Startup sharedInstance() {
-//		if (sharedInstance == null)
-//			throw new IllegalStateException("Shared instance not yet created!");
-//
-//		return sharedInstance;
-//	}
 }
