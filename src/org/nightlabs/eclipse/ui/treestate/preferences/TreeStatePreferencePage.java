@@ -30,7 +30,7 @@ implements IWorkbenchPreferencePage
 		relativeTime = new IntegerFieldEditor(Preferences.PREFERENCE_RELATIVE_TIME,
 				"Relative time(1-100000 milliseconds)",
 				getFieldEditorParent());
-		relativeTime.setValidRange(1, 100);
+		relativeTime.setValidRange(1, 100000);
 		relativeTime.setTextLimit(3);
 		relativeTime.setStringValue(Preferences.getPreferenceStore().getString(
 				Preferences.PREFERENCE_RELATIVE_TIME));
@@ -38,7 +38,7 @@ implements IWorkbenchPreferencePage
 		absoluteTime = new IntegerFieldEditor(Preferences.PREFERENCE_ABSOLUTE_TIME,
 				"Absolute time(1-100000 milliseconds)",
 				getFieldEditorParent());
-		absoluteTime.setValidRange(1, 100);
+		absoluteTime.setValidRange(1, 100000);
 		absoluteTime.setTextLimit(3);
 		absoluteTime.setStringValue(Preferences.getPreferenceStore().getString(
 				Preferences.PREFERENCE_RELATIVE_TIME));
