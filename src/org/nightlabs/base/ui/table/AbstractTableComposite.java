@@ -647,6 +647,13 @@ public abstract class AbstractTableComposite<ElementType>
 		tableViewer.setSelection(selection);
 	}
 
+	/**
+	 * Delegating method for {@link TableViewer}
+	 */
+	public void setSelection(ISelection selection, boolean reveal) {
+		tableViewer.setSelection(selection, reveal);
+	}
+	
 	@Override
 	public Menu getMenu() {
 		return table.getMenu();
