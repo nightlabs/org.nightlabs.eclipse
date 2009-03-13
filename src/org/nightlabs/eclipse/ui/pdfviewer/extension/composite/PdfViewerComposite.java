@@ -197,7 +197,8 @@ public class PdfViewerComposite extends Composite
 
 			leftComp.getDisplay().asyncExec(new Runnable() {
 				public void run() {
-					sashForm.setWeights(weights);
+					if (!sashForm.isDisposed())
+						sashForm.setWeights(weights);
 				}
 			});
 		}
