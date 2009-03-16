@@ -352,7 +352,7 @@ implements ISelectionProvider, StatableTree
 	 * Selects the given elements in the list if they exist.
 	 * @param elements the elements to be selected.
 	 */
-	public void setSelection(List elements, boolean reveal)
+	public void setSelection(List<ElementType> elements, boolean reveal)
 	{
 		if (elements == null || elements.size() == 0)
 			return;
@@ -365,7 +365,7 @@ implements ISelectionProvider, StatableTree
 	 * @param elements The elements to select.
 	 * @see #setSelection(List, boolean)
 	 */
-	public void setSelection(List elements) {
+	public void setSelection(List<ElementType> elements) {
 		setSelection(elements, true);
 	}
 
@@ -415,7 +415,8 @@ implements ISelectionProvider, StatableTree
 		// TODO maybe we should make this method abstract, since the tree holds almost always nodes and not the managed objects directly. Marco.
 		// I think the base implementation is ok, as there are now already many usages that do not override this method, Alex
 		try {
-			return (ElementType) obj;
+			ElementType elem = null;
+			return this.naiveCast(elem, obj);
 		} catch (ClassCastException e) {
 			return null;
 		}
@@ -699,5 +700,10 @@ implements ISelectionProvider, StatableTree
 	@Override
 	public String getID() {
 		return this.getClass().getName();
+	}
+
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
+	private <T> T naiveCast(T t, Object obj) {
+		return (T) obj;
 	}
 }
