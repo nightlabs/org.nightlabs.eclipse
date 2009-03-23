@@ -47,7 +47,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReport;
 import org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportWizardDialog;
-import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.util.RCPUtil;
 
 /**
@@ -299,7 +298,7 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 	protected void createButtonsForButtonBar(Composite parent)
 	{
 		super.createButtonsForButtonBar(parent);
-		createButton(parent, SEND_ERROR_REPORT_ID, "", false); //$NON-NLS-1$
+		createButton(parent, SEND_ERROR_REPORT_ID, org.nightlabs.base.ui.resource.JFaceResources.getString("org.nightlabs.base.ui.exceptionhandler.DefaultErrorDialog.button.sendErrorReport.text"), false); //$NON-NLS-1$
 		detailsButton = createButton(parent, IDialogConstants.DETAILS_ID, IDialogConstants.SHOW_DETAILS_LABEL, false);
 	}
 }
