@@ -3,12 +3,9 @@
  */
 package org.nightlabs.base.ui.timepattern.builder;
 
-import java.util.Iterator;
-
 import org.eclipse.jface.window.Window;
 import org.nightlabs.base.ui.wizard.DynamicPathWizard;
 import org.nightlabs.base.ui.wizard.DynamicPathWizardDialog;
-import org.nightlabs.timepattern.TimePattern;
 import org.nightlabs.timepattern.TimePatternFormatException;
 import org.nightlabs.timepattern.TimePatternSet;
 

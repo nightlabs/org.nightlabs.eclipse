@@ -33,7 +33,6 @@ import java.util.List;
 import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
-import org.nightlabs.base.ui.resource.Messages;
 
 /* OLD JAVADOC:
  *

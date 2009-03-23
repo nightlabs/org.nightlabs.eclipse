@@ -60,7 +60,6 @@ import javax.xml.transform.stream.StreamResult;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.graphics.ImageData;
 import org.nightlabs.base.ui.NLBasePlugin;
-import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.io.DataBuffer;
 import org.nightlabs.util.IOUtil;
 import org.osgi.framework.Bundle;

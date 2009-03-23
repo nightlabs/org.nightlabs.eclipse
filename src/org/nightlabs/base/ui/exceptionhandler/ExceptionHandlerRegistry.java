@@ -39,7 +39,6 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.swt.widgets.Display;
 import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
-import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.util.RCPUtil;
 
 /**

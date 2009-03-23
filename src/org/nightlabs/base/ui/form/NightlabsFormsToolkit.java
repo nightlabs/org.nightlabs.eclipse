@@ -23,7 +23,6 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.nightlabs.base.ui.composite.XComposite;
-import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.toolkit.AbstractToolkit;
 
 /**

@@ -6,7 +6,6 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.DateTime;
-import org.nightlabs.base.ui.resource.Messages;
 
 /**
  * Utility methods for working with {@link DateTime}s. 

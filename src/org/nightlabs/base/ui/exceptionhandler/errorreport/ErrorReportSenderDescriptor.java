@@ -2,7 +2,6 @@ package org.nightlabs.base.ui.exceptionhandler.errorreport;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.nightlabs.base.ui.resource.Messages;
 
 public class ErrorReportSenderDescriptor 
 {

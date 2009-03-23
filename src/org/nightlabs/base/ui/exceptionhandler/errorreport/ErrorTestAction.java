@@ -4,7 +4,6 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.nightlabs.base.ui.resource.Messages;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de

@@ -3,7 +3,6 @@
  */
 package org.nightlabs.base.ui.preference;
 
-import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.eclipse.preferences.ui.OverviewPage;
 
 /**

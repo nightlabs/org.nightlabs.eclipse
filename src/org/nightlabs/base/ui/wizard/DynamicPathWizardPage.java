@@ -33,7 +33,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.util.CollectionUtil;
 
 /**

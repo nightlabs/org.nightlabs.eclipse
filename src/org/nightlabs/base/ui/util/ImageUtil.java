@@ -46,7 +46,6 @@ import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
-import org.nightlabs.base.ui.resource.Messages;
 
 /**
  * Utility class for working with AWT and SWT images.

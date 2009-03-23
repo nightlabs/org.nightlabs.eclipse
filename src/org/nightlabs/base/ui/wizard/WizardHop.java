@@ -33,7 +33,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.IWizardPage;
-import org.nightlabs.base.ui.resource.Messages;
 
 /**
  * This class enables a wizard to support multiple local hops. A local hop means a

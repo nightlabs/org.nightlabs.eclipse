@@ -32,7 +32,6 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.swt.widgets.Composite;
 import org.nightlabs.base.ui.celleditor.AWTColorCellEditor;
 import org.nightlabs.base.ui.labelprovider.AWTColorLabelProvider;
-import org.nightlabs.base.ui.resource.Messages;
 
 /**
  * @author unascribed (probably Daniel Mazurek)

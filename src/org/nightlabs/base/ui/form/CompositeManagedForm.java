@@ -16,7 +16,6 @@ import org.eclipse.ui.forms.IPartSelectionListener;
 import org.eclipse.ui.forms.ManagedForm;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
-import org.nightlabs.base.ui.resource.Messages;
 
 /**
  * This class accompanies {@link CompositeFormPage} and provides its {@link IManagedForm} implementation. 

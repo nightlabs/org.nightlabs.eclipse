@@ -41,7 +41,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.config.LanguageCfMod;
-import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.config.Config;
 import org.nightlabs.config.ConfigException;
 import org.nightlabs.l10n.GlobalL10nSettings;
