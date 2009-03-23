@@ -23,6 +23,7 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.nightlabs.base.ui.composite.XComposite;
+import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.toolkit.AbstractToolkit;
 
 /**
@@ -179,7 +180,7 @@ public class NightlabsFormsToolkit extends AbstractToolkit
 			if (wrapLayout.bottomMargin < minBorderSpace)				wrapLayout.bottomMargin = minBorderSpace;
 		}
 		else {
-			logger.warn("The encountered layout is unkown " + layout + ", the margins can therefore not be set correctly"+ //$NON-NLS-1$
+			logger.warn("The encountered layout is unkown " + layout + ", the margins can therefore not be set correctly"+ //$NON-NLS-1$ //$NON-NLS-2$
 					" to be able to draw a flat looking border around the given Control: " + child); //$NON-NLS-1$
 		}
 	}

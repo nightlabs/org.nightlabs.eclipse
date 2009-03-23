@@ -136,7 +136,7 @@ extends Dialog
 					
 					if(getDate().after(cal) && !allowPast)
 					{
-						MessageDialog.openError(getShell(), "Past date", "You are not allowed to set a date in the past - only future ones!"); 
+						MessageDialog.openError(getShell(), Messages.getString("org.nightlabs.base.ui.composite.CalendarDateTimeEditLookupDialog.errorDialog.title"), Messages.getString("org.nightlabs.base.ui.composite.CalendarDateTimeEditLookupDialog.errorDialog.message"));  //$NON-NLS-1$ //$NON-NLS-2$
 						DateTimeUtil.setDate(getDate(), calendarDateTime);
 					}		
 					else

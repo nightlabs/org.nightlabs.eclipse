@@ -13,6 +13,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.nightlabs.base.ui.composite.XComposite;
+import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.util.CollectionUtil;
 
 public class TimeLengthComposite extends XComposite
@@ -127,10 +128,10 @@ public class TimeLengthComposite extends XComposite
 	public long getTimeLength()
 	{
 		// parse the string
-		String[] _fields = text.getText().split("\\s");
+		String[] _fields = text.getText().split("\\s"); //$NON-NLS-1$
 		List<String> fieldList = new ArrayList<String>(_fields.length);
 		for (int i = 0; i < _fields.length; i++) {
-			if (!"".equals(_fields[i]))
+			if (!"".equals(_fields[i])) //$NON-NLS-1$
 				fieldList.add(_fields[i]);
 		}
 		String[] fields = CollectionUtil.collection2TypedArray(fieldList, String.class);
@@ -160,7 +161,7 @@ public class TimeLengthComposite extends XComposite
 				valueStr = field;
 				field = field + ' ' + symbol;
 				if (timeUnit == null) {
-					MessageDialog.openError(getShell(), "Invalid format!", String.format("The time unit symbol \"%2$s\" after the value \"%1$s\" inside the field \"%s\" is not a known time unit!", valueStr, symbol, field));
+					MessageDialog.openError(getShell(), Messages.getString("org.nightlabs.base.ui.timelength.TimeLengthComposite.errorDialog.invalidFormat.title"), String.format(Messages.getString("org.nightlabs.base.ui.timelength.TimeLengthComposite.errorDialog.invalidFormat.message"), valueStr, symbol, field)); //$NON-NLS-1$ //$NON-NLS-2$
 					return timeLength;
 				}
 			}
@@ -169,7 +170,7 @@ public class TimeLengthComposite extends XComposite
 			try {
 				value = Long.parseLong(valueStr);
 			} catch (NumberFormatException x) {
-				MessageDialog.openError(getShell(), "Invalid value!", String.format("The value \"%s\" before the time unit \"%s\" inside the field \"%s\" is not a valid number!", valueStr, symbol, field));
+				MessageDialog.openError(getShell(), Messages.getString("org.nightlabs.base.ui.timelength.TimeLengthComposite.errorDialog.invalidValue.title"), String.format(Messages.getString("org.nightlabs.base.ui.timelength.TimeLengthComposite.errorDialog.invalidValue.message"), valueStr, symbol, field)); //$NON-NLS-1$ //$NON-NLS-2$
 				return timeLength;
 			}
 			lengthMap.put(timeUnit, value);

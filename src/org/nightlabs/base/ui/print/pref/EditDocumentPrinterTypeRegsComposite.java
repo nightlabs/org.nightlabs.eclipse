@@ -215,7 +215,7 @@ public class EditDocumentPrinterTypeRegsComposite extends XComposite {
 			IStructuredSelection structuredSelection = (IStructuredSelection) fileExtListViewer.getSelection();
 			if (structuredSelection.getFirstElement() instanceof String) {
 				String selection = (String)structuredSelection.getFirstElement();
-				System.out.println("selected entry: " + selection);
+				System.out.println("selected entry: " + selection); //$NON-NLS-1$
 				return selection;
 			}
 		}

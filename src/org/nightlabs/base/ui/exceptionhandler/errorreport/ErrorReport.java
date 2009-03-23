@@ -60,6 +60,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.graphics.ImageData;
 import org.nightlabs.base.ui.NLBasePlugin;
+import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.io.DataBuffer;
 import org.nightlabs.util.IOUtil;
 import org.osgi.framework.Bundle;
@@ -317,21 +318,21 @@ implements Serializable
 		}
 		Document doc = db.newDocument();
 		
-		Element errorReport = (Element)doc.appendChild(doc.createElement("errorreport"));
+		Element errorReport = (Element)doc.appendChild(doc.createElement("errorreport")); //$NON-NLS-1$
 		
 		// time
-		Element time =  (Element)errorReport.appendChild(doc.createElement("time"));
+		Element time =  (Element)errorReport.appendChild(doc.createElement("time")); //$NON-NLS-1$
 		time.appendChild(doc.createTextNode(getTimeAsString()));
 		
 		// user comment
 		if(userComment != null && !userComment.isEmpty()) {
-			Element comment =  (Element)errorReport.appendChild(doc.createElement("usercomment"));
+			Element comment =  (Element)errorReport.appendChild(doc.createElement("usercomment")); //$NON-NLS-1$
 			comment.appendChild(doc.createTextNode(userComment));
 		}
 		
 		// exceptions
 		if(throwablePairList != null && !throwablePairList.isEmpty()) {
-			Element exceptions =  (Element)errorReport.appendChild(doc.createElement("exceptions"));
+			Element exceptions =  (Element)errorReport.appendChild(doc.createElement("exceptions")); //$NON-NLS-1$
 			for (CauseEffectThrowablePair causeEffectThrowablePair : throwablePairList) {
 				Throwable throwable = causeEffectThrowablePair.getEffectThrowable();
 				appendThrowable(doc, exceptions, throwable);
@@ -341,20 +342,20 @@ implements Serializable
 		// bundles
 		List<Bundle> bundles = getOrderedBundles();
 		if(bundles != null && !bundles.isEmpty()) {
-			Element bundlesEl =  (Element)errorReport.appendChild(doc.createElement("bundles"));
+			Element bundlesEl =  (Element)errorReport.appendChild(doc.createElement("bundles")); //$NON-NLS-1$
 			for (Bundle bundle : bundles)
 				appendBundle(doc, bundlesEl, bundle);
 		}
 		
 		// system properties
 		if(systemProperties != null && !systemProperties.isEmpty()) {
-			Element properties =  (Element)errorReport.appendChild(doc.createElement("systemproperties"));
+			Element properties =  (Element)errorReport.appendChild(doc.createElement("systemproperties")); //$NON-NLS-1$
 			Set<Object> keys = systemProperties.keySet();
 			Iterator<Object> i = keys.iterator();
 			while(i.hasNext()) {
 				String key = (String)i.next();
-				Element entry = (Element)properties.appendChild(doc.createElement("entry"));
-				entry.setAttribute("key", key);
+				Element entry = (Element)properties.appendChild(doc.createElement("entry")); //$NON-NLS-1$
+				entry.setAttribute("key", key); //$NON-NLS-1$
 				entry.appendChild(doc.createTextNode(systemProperties.getProperty(key)));
 			}
 		}
@@ -364,7 +365,7 @@ implements Serializable
 
 	private void appendBundleHeader(Document doc, Element bundleEl, Bundle bundle, String headerEntry)
 	{
-		String elementName = headerEntry.toLowerCase().replaceAll("[^a-z0-9]", "");
+		String elementName = headerEntry.toLowerCase().replaceAll("[^a-z0-9]", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		Element symbolicName =  (Element)bundleEl.appendChild(doc.createElement(elementName));
 		Dictionary<?, ?> headers = bundle.getHeaders();
 		if(headers == null)
@@ -377,7 +378,7 @@ implements Serializable
 	
 	private void appendBundle(Document doc, Element bundlesEl, Bundle bundle)
 	{
-		Element bundleEl =  (Element)bundlesEl.appendChild(doc.createElement("bundle"));
+		Element bundleEl =  (Element)bundlesEl.appendChild(doc.createElement("bundle")); //$NON-NLS-1$
 		appendBundleHeader(doc, bundleEl, bundle, Constants.BUNDLE_SYMBOLICNAME);
 		appendBundleHeader(doc, bundleEl, bundle, Constants.BUNDLE_VERSION);
 		appendBundleHeader(doc, bundleEl, bundle, Constants.BUNDLE_NAME);
@@ -392,9 +393,9 @@ implements Serializable
 		try {
 			t = tf.newTransformer();
 			//t.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, PROPS_DTD_URI);
-			t.setOutputProperty(OutputKeys.STANDALONE, "yes");
-			t.setOutputProperty(OutputKeys.INDENT, "yes");
-			t.setOutputProperty(OutputKeys.METHOD, "xml");
+			t.setOutputProperty(OutputKeys.STANDALONE, "yes"); //$NON-NLS-1$
+			t.setOutputProperty(OutputKeys.INDENT, "yes"); //$NON-NLS-1$
+			t.setOutputProperty(OutputKeys.METHOD, "xml"); //$NON-NLS-1$
 			t.setOutputProperty(OutputKeys.ENCODING, encoding);
 		} catch (TransformerConfigurationException tce) {
 			assert(false);
@@ -424,10 +425,10 @@ implements Serializable
 	
 	private static void appendThrowable(Document doc, Element exceptions, Throwable throwable)
 	{
-		Element exception =  (Element)exceptions.appendChild(doc.createElement("exception"));
-		Element className =  (Element)exception.appendChild(doc.createElement("classname"));
+		Element exception =  (Element)exceptions.appendChild(doc.createElement("exception")); //$NON-NLS-1$
+		Element className =  (Element)exception.appendChild(doc.createElement("classname")); //$NON-NLS-1$
 		className.appendChild(doc.createTextNode(throwable.getClass().getName()));
-		Element stackTrace =  (Element)exception.appendChild(doc.createElement("stacktrace"));
+		Element stackTrace =  (Element)exception.appendChild(doc.createElement("stacktrace")); //$NON-NLS-1$
 		stackTrace.appendChild(doc.createTextNode(getExceptionStackTraceAsString(throwable)));
 	}
 

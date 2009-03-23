@@ -16,6 +16,7 @@ import org.eclipse.ui.forms.IPartSelectionListener;
 import org.eclipse.ui.forms.ManagedForm;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
+import org.nightlabs.base.ui.resource.Messages;
 
 /**
  * This class accompanies {@link CompositeFormPage} and provides its {@link IManagedForm} implementation. 
@@ -95,7 +96,7 @@ class CompositeManagedForm implements IManagedForm {
 	 */
 	@Override
 	public ScrolledForm getForm() {
-		throw new UnsupportedOperationException("This implementation of ManagedForm (" + this.getClass().getSimpleName() + ") does not support this method");
+		throw new UnsupportedOperationException("This implementation of ManagedForm (" + this.getClass().getSimpleName() + ") does not support this method"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/* (non-Javadoc)
@@ -111,7 +112,7 @@ class CompositeManagedForm implements IManagedForm {
 	 */
 	@Override
 	public IMessageManager getMessageManager() {
-		throw new UnsupportedOperationException("This implementation of ManagedForm (" + this.getClass().getSimpleName() + ") does not support this method");
+		throw new UnsupportedOperationException("This implementation of ManagedForm (" + this.getClass().getSimpleName() + ") does not support this method"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/* (non-Javadoc)

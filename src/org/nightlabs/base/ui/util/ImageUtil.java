@@ -46,6 +46,7 @@ import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
+import org.nightlabs.base.ui.resource.Messages;
 
 /**
  * Utility class for working with AWT and SWT images.
@@ -174,10 +175,10 @@ public class ImageUtil
 
 		public ImageColorEntry(Image image, org.eclipse.swt.graphics.Color color) {
 			if (image == null)
-				throw new IllegalArgumentException("image == null");
+				throw new IllegalArgumentException("image == null"); //$NON-NLS-1$
 
 			if (color == null)
-				throw new IllegalArgumentException("color == null");
+				throw new IllegalArgumentException("color == null"); //$NON-NLS-1$
 
 			this.image = image;
 			this.color = color;
@@ -198,7 +199,7 @@ public class ImageUtil
 				ImageColorEntry imageColorEntry = it.next();
 				if (imageColorEntry.image.isDisposed()) {
 					if (logger.isTraceEnabled())
-						logger.trace("disposeUnusedTemporaryColors: image=" + Integer.toHexString(System.identityHashCode(imageColorEntry.image)) + " color=" + Integer.toHexString(System.identityHashCode(imageColorEntry.color)));
+						logger.trace("disposeUnusedTemporaryColors: image=" + Integer.toHexString(System.identityHashCode(imageColorEntry.image)) + " color=" + Integer.toHexString(System.identityHashCode(imageColorEntry.color))); //$NON-NLS-1$ //$NON-NLS-2$
 
 					imageColorsToDispose.add(imageColorEntry);
 					it.remove();
@@ -219,7 +220,7 @@ public class ImageUtil
 		}
 
 		if (logger.isDebugEnabled())
-			logger.debug("disposeUnusedTemporaryColors: Disposed " + imageColorsToDispose.size() + " unused temporary colors. Still non-disposed are " + nondisposedColorCount + " colors.");
+			logger.debug("disposeUnusedTemporaryColors: Disposed " + imageColorsToDispose.size() + " unused temporary colors. Still non-disposed are " + nondisposedColorCount + " colors."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	private static void registerTemporaryColor(Image image, org.eclipse.swt.graphics.Color color)
@@ -228,7 +229,7 @@ public class ImageUtil
 			temporaryImageColors.add(new ImageColorEntry(image, color));
 
 			if (disposeTemporaryColorsTimer == null) {
-				disposeTemporaryColorsTimer = new Timer("DisposeTemporaryColors", true);
+				disposeTemporaryColorsTimer = new Timer("DisposeTemporaryColors", true); //$NON-NLS-1$
 				disposeTemporaryColorsTimer.schedule(new TimerTask() {
 					@Override
 					public void run() {
@@ -239,7 +240,7 @@ public class ImageUtil
 		} // synchronized (temporaryImageColors) {
 
 		if (logger.isTraceEnabled())
-			logger.trace("registerTemporaryColor: image=" + Integer.toHexString(System.identityHashCode(image)) + " color=" + Integer.toHexString(System.identityHashCode(color)));
+			logger.trace("registerTemporaryColor: image=" + Integer.toHexString(System.identityHashCode(image)) + " color=" + Integer.toHexString(System.identityHashCode(color))); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**

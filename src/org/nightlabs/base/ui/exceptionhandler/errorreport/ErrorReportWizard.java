@@ -57,7 +57,7 @@ public class ErrorReportWizard extends DynamicPathWizard
 	public ErrorReportWizard(ErrorReport errorReport)
 	{
 		if (errorReport == null)
-			throw new IllegalArgumentException("errorReport is null!");
+			throw new IllegalArgumentException("errorReport is null!"); //$NON-NLS-1$
 
 		this.errorReport = errorReport;
 		entryPage = new ErrorReportWizardEntryPage();
@@ -91,11 +91,11 @@ public class ErrorReportWizard extends DynamicPathWizard
 				ErrorReportSenderDescriptor selectedSender = ErrorReportSenderRegistry.getRegistry().getSenders().get(errorReportSenderId);
 				if(selectedSender != null) {
 					sender = selectedSender.getInstance();
-					logger.info("Using selected error report sender: "+selectedSender.getId());
+					logger.info("Using selected error report sender: "+selectedSender.getId()); //$NON-NLS-1$
 				}
 			}
 		} catch(Throwable e) {
-			logger.error("Error getting selected error report sender", e);
+			logger.error("Error getting selected error report sender", e); //$NON-NLS-1$
 		}
 
 
@@ -105,16 +105,16 @@ public class ErrorReportWizard extends DynamicPathWizard
 				ErrorReportSenderDescriptor defaultSender = ErrorReportSenderRegistry.getRegistry().getDefaultSender();
 				if(defaultSender != null)
 					sender = defaultSender.getInstance();
-				logger.info("Using default error report sender: "+defaultSender.getId());
+				logger.info("Using default error report sender: "+defaultSender.getId()); //$NON-NLS-1$
 			} catch(Throwable e) {
-				logger.error("Error getting default error report sender", e);
+				logger.error("Error getting default error report sender", e); //$NON-NLS-1$
 			}
 		}
 
 		if(sender == null) {
 			// fall back to email
 			sender = new ErrorReportSenderEMail();
-			logger.info("Using fall-back EMail error report sender");
+			logger.info("Using fall-back EMail error report sender"); //$NON-NLS-1$
 		}
 
 		return sender;

@@ -32,6 +32,7 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.swt.widgets.Composite;
 import org.nightlabs.base.ui.celleditor.AWTColorCellEditor;
 import org.nightlabs.base.ui.labelprovider.AWTColorLabelProvider;
+import org.nightlabs.base.ui.resource.Messages;
 
 /**
  * @author unascribed (probably Daniel Mazurek)
@@ -69,7 +70,7 @@ extends XPropertyDescriptor
 	@Override
 	public void onActivate() {
 		if (logger.isDebugEnabled())
-			logger.debug("onActivate: this=" + this);
+			logger.debug("onActivate: this=" + this); //$NON-NLS-1$
 
 		setLabelProvider(new AWTColorLabelProvider());
 
@@ -79,7 +80,7 @@ extends XPropertyDescriptor
 	@Override
 	public void onDeactivate() {
 		if (logger.isDebugEnabled())
-			logger.debug("onDeactivate: this=" + this);
+			logger.debug("onDeactivate: this=" + this); //$NON-NLS-1$
 
 //		((AWTColorLabelProvider)getLabelProvider()).onDeactivate();
 		getLabelProvider().dispose();

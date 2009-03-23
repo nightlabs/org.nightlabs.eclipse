@@ -10,6 +10,7 @@ import org.eclipse.ui.statushandlers.StatusAdapter;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.ui.statushandlers.WorkbenchErrorHandler;
 import org.nightlabs.base.ui.app.AbstractWorkbenchAdvisor;
+import org.nightlabs.base.ui.resource.Messages;
 
 /**
  * A {@link WorkbenchErrorHandler} invoked by the Workbench to handle {@link IStatus} results.
@@ -50,7 +51,7 @@ public class ErrorStatusHandler extends WorkbenchErrorHandler {
 			}			
 		}
 		else if ((style & StatusManager.LOG) > 0) {
-			logger.error("Exception with style StatusManager.LOG", status.getException());
+			logger.error("Exception with style StatusManager.LOG", status.getException()); //$NON-NLS-1$
 		}
 		super.handle(statusAdapter, style);
 	}

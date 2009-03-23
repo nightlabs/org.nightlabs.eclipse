@@ -167,7 +167,7 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 			}
 
 			if (errorReport == null) {
-				Exception xxx = new IllegalStateException("There was no error in the errorList!!! How can this happen?!");
+				Exception xxx = new IllegalStateException("There was no error in the errorList!!! How can this happen?!"); //$NON-NLS-1$
 				errorReport = new ErrorReport(xxx, xxx);
 			}
 
@@ -299,7 +299,7 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 	protected void createButtonsForButtonBar(Composite parent)
 	{
 		super.createButtonsForButtonBar(parent);
-		createButton(parent, SEND_ERROR_REPORT_ID, Messages.getString("org.nightlabs.base.ui.exceptionhandler.DefaultErrorDialog.errorReportButton.text"), false); //$NON-NLS-1$
+		createButton(parent, SEND_ERROR_REPORT_ID, "", false); //$NON-NLS-1$
 		detailsButton = createButton(parent, IDialogConstants.DETAILS_ID, IDialogConstants.SHOW_DETAILS_LABEL, false);
 	}
 }

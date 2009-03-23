@@ -33,6 +33,7 @@ import java.util.List;
 import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
+import org.nightlabs.base.ui.resource.Messages;
 
 /* OLD JAVADOC:
  *
@@ -307,9 +308,9 @@ public abstract class DynamicPathWizard extends Wizard implements IDynamicPathWi
 		for (IWizardPage existingPage : dynamicWizardPages) {
 			if (existingPage.getName().equals(page.getName())) {
 				if (existingPage == page)
-					throw new IllegalStateException("Trying to add the same page instance (named \"" + page.getName() + "\") multiple times!");
+					throw new IllegalStateException("Trying to add the same page instance (named \"" + page.getName() + "\") multiple times!"); //$NON-NLS-1$ //$NON-NLS-2$
 				else
-					throw new IllegalStateException("Another page with the same name (\"" + page.getName() + "\") already exists!");
+					throw new IllegalStateException("Another page with the same name (\"" + page.getName() + "\") already exists!"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 	}
@@ -402,7 +403,7 @@ public abstract class DynamicPathWizard extends Wizard implements IDynamicPathWi
 			lastPage = page;
 			page = page.getNextPage();
 			if (lastPage == page)
-				throw new IllegalStateException("Page \"" + page.getName() + "\" returned itself as next page!");
+				throw new IllegalStateException("Page \"" + page.getName() + "\" returned itself as next page!"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		if (!(lastPage instanceof IDynamicPathWizardPage))
 			return true;

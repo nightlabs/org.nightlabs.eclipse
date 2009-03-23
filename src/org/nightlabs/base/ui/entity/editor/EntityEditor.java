@@ -89,7 +89,7 @@ public class EntityEditor extends CommitableFormEditor
 	 */
 	private EntityEditorStaleHandler staleHandler;
 	
-	private String LAST_ACTIVE_PAGE_KEY_PREFIX = EntityEditor.class.getSimpleName() + ".lastPage.";
+	private String LAST_ACTIVE_PAGE_KEY_PREFIX = EntityEditor.class.getSimpleName() + ".lastPage."; //$NON-NLS-1$
 	private String lastPageId = null;
 	private IPageChangedListener pageChangedListener = new IPageChangedListener() {
 		@Override

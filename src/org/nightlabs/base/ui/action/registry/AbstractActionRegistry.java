@@ -59,6 +59,7 @@ import org.eclipse.swt.widgets.Display;
 import org.nightlabs.base.ui.action.IXContributionItem;
 import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
 import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
+import org.nightlabs.base.ui.resource.Messages;
 
 /**
  * This class can be used to easily create an own extension-point for the management of actions.
@@ -365,7 +366,7 @@ extends AbstractEPProcessor
 			coolBarContributionManager.update(true);
 		} catch (Exception x) {
 			// https://bugs.eclipse.org/bugs/show_bug.cgi?id=239945
-			logger.error("CoolBarManager.update failed: " + x.getLocalizedMessage(), x);
+			logger.error("CoolBarManager.update failed: " + x.getLocalizedMessage(), x); //$NON-NLS-1$
 		}
 	}
 
@@ -491,7 +492,7 @@ extends AbstractEPProcessor
 			// CoolBarManager.adjustContributionList removes first an separator and 
 			// afterwards also the first element, of an now empty list 
 			// this is an workaround for this bug
-			logger.warn("Eclipse bug in coolBarManager.update(true) occured", e);
+			logger.warn("Eclipse bug in coolBarManager.update(true) occured", e); //$NON-NLS-1$
 		}
 
 //		if (coolBarManager instanceof CoolBarManager)

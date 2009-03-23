@@ -2,6 +2,7 @@ package org.nightlabs.base.ui.exceptionhandler.errorreport;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.nightlabs.base.ui.resource.Messages;
 
 public class ErrorReportSenderDescriptor 
 {
@@ -23,7 +24,7 @@ public class ErrorReportSenderDescriptor
 	 */
 	public String getId()
 	{
-		return configurationElement.getAttribute("id");
+		return configurationElement.getAttribute("id"); //$NON-NLS-1$
 	}
 
 	/**
@@ -33,7 +34,7 @@ public class ErrorReportSenderDescriptor
 	public int getPriority()
 	{
 		if(priority == null) {
-			String p = configurationElement.getAttribute("priority");
+			String p = configurationElement.getAttribute("priority"); //$NON-NLS-1$
 			if(p == null)
 				priority = 0;
 			try {
@@ -51,7 +52,7 @@ public class ErrorReportSenderDescriptor
 	 */
 	public String getName()
 	{
-		String name = configurationElement.getAttribute("name");
+		String name = configurationElement.getAttribute("name"); //$NON-NLS-1$
 		return name == null ? getId() : name;
 	}
 
@@ -62,7 +63,7 @@ public class ErrorReportSenderDescriptor
 	 */
 	public String getPreferencePageId()
 	{
-		return configurationElement.getAttribute("preferencePageId");
+		return configurationElement.getAttribute("preferencePageId"); //$NON-NLS-1$
 	}
 	
 	/**
@@ -73,7 +74,7 @@ public class ErrorReportSenderDescriptor
 	public synchronized IErrorReportSender getInstance() throws CoreException
 	{
 		if(instance == null)
-			instance = (IErrorReportSender) configurationElement.createExecutableExtension("class");
+			instance = (IErrorReportSender) configurationElement.createExecutableExtension("class"); //$NON-NLS-1$
 		return instance;
 	}
 }

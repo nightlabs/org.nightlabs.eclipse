@@ -251,7 +251,7 @@ public class EditDocumentPrinterConfigComposite extends XComposite {
 			result = new SystemCallDelegateConfig();
 
 			int expectedReturnValueInt;
-			if (expectedReturnValue.getText().equals(""))
+			if (expectedReturnValue.getText().equals("")) //$NON-NLS-1$
 			 	expectedReturnValueInt = 0;
 			else
 				expectedReturnValueInt = Integer.parseInt(expectedReturnValue.getText());

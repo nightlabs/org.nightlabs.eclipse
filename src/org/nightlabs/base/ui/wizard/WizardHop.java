@@ -33,6 +33,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.IWizardPage;
+import org.nightlabs.base.ui.resource.Messages;
 
 /**
  * This class enables a wizard to support multiple local hops. A local hop means a
@@ -163,7 +164,7 @@ public class WizardHop implements IWizardHop
 //				if (page == hopPage) // the given page already exists => silently exit
 //					return;
 
-				throw new IllegalStateException("Another page with the same name (\"" + page.getName() + "\") already exists in this WizardHop!");
+				throw new IllegalStateException("Another page with the same name (\"" + page.getName() + "\") already exists in this WizardHop!"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 
