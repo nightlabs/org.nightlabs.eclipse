@@ -33,6 +33,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.nightlabs.base.ui.message.IMessageDisplayer;
 import org.nightlabs.util.CollectionUtil;
 
 /**
@@ -45,7 +46,7 @@ import org.nightlabs.util.CollectionUtil;
  */
 public abstract class DynamicPathWizardPage
 extends WizardPage
-implements IDynamicPathWizardPage
+implements IDynamicPathWizardPage, IMessageDisplayer
 {
 	private static final Logger logger = Logger.getLogger(DynamicPathWizardPage.class);
 
