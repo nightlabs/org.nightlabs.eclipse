@@ -21,7 +21,6 @@ import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.TreeAdapter;
 import org.eclipse.swt.events.TreeEvent;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.swt.widgets.Widget;
@@ -87,8 +86,10 @@ public class TreeStateController
 			@Override
 			public void treeCollapsed(TreeEvent e) {
 				Tree tree = (Tree)e.getSource();
-				TreeItem collapsedTreeItem = tree.getSelection()[0];
-				collapsedItems.add(collapsedTreeItem);
+				if (tree.getSelection().length > 0) {
+					TreeItem collapsedTreeItem = tree.getSelection()[0];
+					collapsedItems.add(collapsedTreeItem);					
+				}
 			}
 		});
 	}
