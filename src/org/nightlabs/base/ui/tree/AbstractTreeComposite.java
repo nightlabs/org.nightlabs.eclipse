@@ -72,9 +72,10 @@ public abstract class AbstractTreeComposite<ElementType>
 extends XComposite
 implements ISelectionProvider, StatableTree
 {
-
+	/**
+	 * The internally used {@link TreeViewer}.
+	 */
 	private TreeViewer treeViewer;
-
 	/**
 	 * Default set of styles to use when constructing a single-selection viewer.
 	 */
@@ -83,7 +84,26 @@ implements ISelectionProvider, StatableTree
 	 * Default set of styles to use when constructing a multi-selection viewer.
 	 */
 	public static int DEFAULT_STYLE_MULTI = SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL  | SWT.FULL_SELECTION;
+	/**
+	 * Default set of styles to use when constructing a single-selection viewer.
+	 */
+	public static int DEFAULT_STYLE_SINGLE_BORDER = SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER;
+	/**
+	 * Default set of styles to use when constructing a multi-selection viewer.
+	 */
+	public static int DEFAULT_STYLE_MULTI_BORDEER = SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL  | SWT.FULL_SELECTION | SWT.BORDER;
 
+	private boolean editable = true;
+	private ListenerList doubleClickListenerBackup;
+	private ListenerList selectionChangedListenerBackup;
+	private ListenerList postSelectionListenerBackup;
+	private CellEditor[] cellEditors;
+	private static final ListenerList emptyList = new ListenerList();
+	private boolean sortColumns = true;
+	private ListenerList postSelectionChangedListeners = new ListenerList();
+	private ListenerList selectionChangedListeners = new ListenerList();
+	private ListenerList doubleClickListeners = new ListenerList();
+	
 	/**
 	 * Convenience parameter with {@link #DEFAULT_STYLE_SINGLE}, a GridData,
 	 * directly initialised and visible headers for the tree.
@@ -158,15 +178,6 @@ implements ISelectionProvider, StatableTree
 			init();
 	}
 
-//	/**
-//	 * Init calls {@link #setTreeProvider(TreeViewer)} and {@link #createTreeColumns(Tree)}
-//	 * with the appropriate parameters.
-//	 */
-//	public void init() {
-//		setTreeProvider(treeViewer);
-//		createTreeColumns(treeViewer.getTree());
-//	}
-
 	/**
 	 * Init calls {@link #setTreeProvider(TreeViewer)} and {@link #createTreeColumns(Tree)}
 	 * with the appropriate parameters.
@@ -175,16 +186,6 @@ implements ISelectionProvider, StatableTree
 	{
 		setTreeProvider(treeViewer);
 		createTreeColumns(treeViewer.getTree());
-
-//		if (sortColumns)
-//		{
-//			for (int i=0; i<treeViewer.getTree().getColumns().length; i++) {
-//				TreeColumn treeColumn = treeViewer.getTree().getColumn(i);
-//				treeViewer.getTree().setSortColumn(treeColumn);
-//				treeColumn.addListener(SWT.Selection, sortListener);
-//			}
-//			treeViewer.getTree().setSortDirection(SWT.UP);
-//		}
 
 		if (sortColumns)
 		{
@@ -216,98 +217,18 @@ implements ISelectionProvider, StatableTree
 		return new TreeViewer(this, style);
 	}
 
-	private boolean sortColumns = true;
-//	private Listener sortListener = new Listener()
-//	{
-//		private int sortDirection = SWT.UP;
-//    public void handleEvent(Event e)
-//    {
-//    	if (e.widget instanceof TreeColumn) {
-//        TreeItem[] items = treeViewer.getTree().getItems();
-//        Collator collator = Collator.getInstance(NLLocale.getDefault());
-//        TreeColumn column = (TreeColumn)e.widget;
-//        int index = column == treeViewer.getTree().getColumns()[0] ? 0 : 1;
-//        for (int i = 1; i < items.length; i++) {
-//            String value1 = items[i].getText(index);
-//            for (int j = 0; j < i; j++){
-//                String value2 = items[j].getText(index);
-//                if (collator.compare(value1, value2) < 0) {
-//                    String[] values = {items[i].getText(0), items[i].getText(1)};
-//                    items[i].dispose();
-//                    TreeItem item = new TreeItem(treeViewer.getTree(), SWT.NONE, j);
-//                    item.setText(values);
-//                    items = treeViewer.getTree().getItems();
-//                    break;
-//                }
-//            }
-//        }
-//        if (sortDirection == SWT.UP)
-//        	sortDirection = SWT.DOWN;
-//        if (sortDirection == SWT.DOWN)
-//        	sortDirection = SWT.UP;
-//
-//        treeViewer.getTree().setSortDirection(sortDirection);
-//        treeViewer.getTree().setSortColumn(column);
-//    	}
-//    }
-//	};
-
-	// Add sort indicator and sort data when column selected
-//	private Listener sortListener = new Listener() {
-//		public void handleEvent(Event e) {
-//			// determine new sort column and direction
-//			TreeColumn sortColumn = treeViewer.getTree().getSortColumn();
-//			TreeColumn currentColumn = (TreeColumn) e.widget;
-//			int dir = treeViewer.getTree().getSortDirection();
-//			if (sortColumn == currentColumn) {
-//				dir = dir == SWT.UP ? SWT.DOWN : SWT.UP;
-//			} else {
-//				treeViewer.getTree().setSortColumn(currentColumn);
-//				dir = SWT.UP;
-//			}
-//			// sort the data based on column and direction
-//			final int index = currentColumn == treeViewer.getTree().getColumns()[0] ? 0 : 1;
-//			TreeItem[] items = treeViewer.getTree().getItems();
-//			Collator collator = Collator.getInstance(NLLocale.getDefault());
-//      for (int i = 1; i < items.length; i++) {
-//        String value1 = items[i].getText(index);
-//        for (int j = 0; j < i; j++){
-//            String value2 = items[j].getText(index);
-//            if (collator.compare(value1, value2) < 0) {
-//                String[] values = {items[i].getText(0), items[i].getText(1)};
-//                items[i].dispose();
-//                TreeItem item = new TreeItem(treeViewer.getTree(), SWT.NONE, j);
-//                item.setText(values);
-//                items = treeViewer.getTree().getItems();
-//                break;
-//            }
-//        }
-//      }
-//			// update data displayed in table
-//			treeViewer.getTree().setSortDirection(dir);
-//		}
-//	};
-
-//	private Listener sortListener = new Listener() {
-//		public void handleEvent(Event e) {
-//			// determine new sort column and direction
-//			TreeColumn sortColumn = treeViewer.getTree().getSortColumn();
-//			TreeColumn currentColumn = (TreeColumn) e.widget;
-//			int dir = treeViewer.getTree().getSortDirection();
-//			if (sortColumn == currentColumn) {
-//				dir = dir == SWT.UP ? SWT.DOWN : SWT.UP;
-//			} else {
-//				treeViewer.getTree().setSortColumn(currentColumn);
-//				dir = SWT.UP;
-//			}
-//			treeViewer.getTree().setSortDirection(dir);
-//			treeViewer.getTree().setSortColumn(currentColumn);
-////			treeViewer.setSorter(new ViewerSorter());
-//		}
-//	};
-
+	/**
+	 * Set your content and label provider for the {@link TreeViewer}.
+	 *
+	 * @param treeViewer the TreeViewer which is internally used.
+	 */
 	public abstract void setTreeProvider(TreeViewer treeViewer);
 
+	/**
+	 * Add your columns here to the {@link Tree}.
+	 * 
+	 * @param tree the SWT tree.
+	 */
 	public abstract void createTreeColumns(Tree tree);
 
 	public TreeViewer getTreeViewer() {
@@ -460,14 +381,6 @@ implements ISelectionProvider, StatableTree
 		return result;
 	}
 
-	private boolean editable = true;
-
-	private ListenerList doubleClickListenerBackup;
-	private ListenerList selectionChangedListenerBackup;
-	private ListenerList postSelectionListenerBackup;
-	private CellEditor[] cellEditors;
-	private static final ListenerList emptyList = new ListenerList();
-
 	/**
 	 * Sets the flag whether the table may actively be modified or if it is "read-only".
 	 * @param editable shall table be modifiable?
@@ -514,7 +427,6 @@ implements ISelectionProvider, StatableTree
 		return editable;
 	}
 
-	private ListenerList postSelectionChangedListeners = new ListenerList();
 	private ISelectionChangedListener postSelectionChangedListener = new ISelectionChangedListener()
 	{
 		@Override
@@ -617,23 +529,22 @@ implements ISelectionProvider, StatableTree
 		}
 	}
 
-  private ListenerList selectionChangedListeners = new ListenerList();
-  private ISelectionChangedListener selectionChangedListener = new ISelectionChangedListener()
-  {
+	private ISelectionChangedListener selectionChangedListener = new ISelectionChangedListener()
+	{
 		@Override
 		public void selectionChanged(final SelectionChangedEvent event)
 		{
-      Object[] listeners = selectionChangedListeners.getListeners();
-      for (int i = 0; i < listeners.length; ++i) {
-          final ISelectionChangedListener l = (ISelectionChangedListener) listeners[i];
-          SafeRunnable.run(new SafeRunnable() {
-              public void run() {
-                  l.selectionChanged(event);
-              }
-          });
-      }
+			Object[] listeners = selectionChangedListeners.getListeners();
+			for (int i = 0; i < listeners.length; ++i) {
+				final ISelectionChangedListener l = (ISelectionChangedListener) listeners[i];
+				SafeRunnable.run(new SafeRunnable() {
+					public void run() {
+						l.selectionChanged(event);
+					}
+				});
+			}
 		}
-  };
+	};
 
 	/**
 	 * @see {@link TreeViewer#addSelectionChangedListener(ISelectionChangedListener)}.
@@ -656,7 +567,6 @@ implements ISelectionProvider, StatableTree
 		selectionChangedListeners.remove(listener);
 	}
 
-	private ListenerList doubleClickListeners = new ListenerList();
 	private IDoubleClickListener doubleClickListener = new IDoubleClickListener()
 	{
 		@Override

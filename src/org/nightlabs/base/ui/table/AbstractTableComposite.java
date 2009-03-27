@@ -117,7 +117,6 @@ public abstract class AbstractTableComposite<ElementType>
 
 	private TableViewer tableViewer;
 	private Table table;
-
 	private boolean editable = true;
 
 	public AbstractTableComposite(Composite parent, int style) {
