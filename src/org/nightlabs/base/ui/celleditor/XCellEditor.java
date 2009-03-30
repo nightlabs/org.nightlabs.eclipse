@@ -30,6 +30,9 @@ import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.widgets.Composite;
 
 /**
+ * Abstract base class for {@link CellEditor}s which implement the {@link IReadOnlyCellEditor},
+ * and provide therefore read only functionality.
+ * 
  * @author Daniel.Mazurek <at> NightLabs <dot> de
  *
  */
@@ -37,7 +40,8 @@ public abstract class XCellEditor
 extends CellEditor
 implements IReadOnlyCellEditor
 {
-
+	private boolean readOnly = false;
+	
 	public XCellEditor() {
 		super();
 	}
@@ -65,11 +69,13 @@ implements IReadOnlyCellEditor
 		super(parent, style);
 		setReadOnly(readOnly);
 	}
-
-	private boolean readOnly = false;
+	
+	@Override
 	public boolean isReadOnly() {
 		return readOnly;
 	}
+	
+	@Override
 	public void setReadOnly(boolean readOnly) {
 		this.readOnly = readOnly;
 		getControl().setEnabled(!readOnly);

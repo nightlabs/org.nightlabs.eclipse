@@ -26,11 +26,14 @@
 
 package org.nightlabs.base.ui.celleditor;
 
+import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
-
+/**
+ * ComboBox based {@link CellEditor}. 
+ */
 public class ComboBoxCellEditor
 extends AbstractComboBoxCellEditor
 {

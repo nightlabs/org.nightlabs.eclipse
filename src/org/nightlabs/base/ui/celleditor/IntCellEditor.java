@@ -26,78 +26,81 @@
 
 package org.nightlabs.base.ui.celleditor;
 
+import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
-
+/**
+ * {@link CellEditor} for editing {@link Integer} objects.
+ *
+ */
 public class IntCellEditor
-//extends CellEditor
 extends XCellEditor
 {
-  protected Text text;
-  
-  /**
-   * @param parent
-   */
-  public IntCellEditor(Composite parent) {
-    super(parent);
-  }
+	private Text text;
 
-  /**
-   * @param parent
-   * @param style
-   */
-  public IntCellEditor(Composite parent, int style) {
-    super(parent, style);
-  }
+	/**
+	 * @param parent
+	 */
+	public IntCellEditor(Composite parent) {
+		super(parent);
+	}
 
-  /**
-   * @param parent
-   * @param style
-   * @param readOnly
-   */
-  public IntCellEditor(Composite parent, int style, boolean readOnly) {
-    super(parent, style, readOnly);
-  }
-  
-  @Override
+	/**
+	 * @param parent
+	 * @param style
+	 */
+	public IntCellEditor(Composite parent, int style) {
+		super(parent, style);
+	}
+
+	/**
+	 * @param parent
+	 * @param style
+	 * @param readOnly
+	 */
+	public IntCellEditor(Composite parent, int style, boolean readOnly) {
+		super(parent, style, readOnly);
+	}
+
+	@Override
 	protected Control createControl(Composite parent) {
-  	text = new Text(parent, getStyle());
-  	return text;
-  }
+		text = new Text(parent, getStyle());
+		return text;
+	}
 
-  @Override
+	@Override
 	protected Object doGetValue()
-  {
-    String stringVal = text.getText();
-    if (stringVal != null && !stringVal.trim().equals("")) { //$NON-NLS-1$
-      return new Integer(stringVal);
-    }
-    return null;
-  }
+	{
+		String stringVal = text.getText();
+		if (stringVal != null && !stringVal.trim().equals("")) { //$NON-NLS-1$
+			return new Integer(stringVal);
+		}
+		return null;
+	}
 
-  @Override
+	@Override
 	protected void doSetFocus()
-  {
-  	if (text != null) {
-  		text.selectAll();
-  		text.setFocus();
-  	}
-  }
+	{
+		if (text != null) {
+			text.selectAll();
+			text.setFocus();
+		}
+	}
 
-  @Override
+	@Override
 	protected void doSetValue(Object value)
-  {
+	{
 		if (isReadOnly())
 			return;
-		
-//  	Assert.isTrue(text != null && (value instanceof Integer));
+
+		//  	Assert.isTrue(text != null && (value instanceof Integer));
 		if (value != null) {
-	  	Integer val = (Integer) value;
-	  	String stringVal = Integer.toString(val.intValue());
-	  	text.setText(stringVal);
+			Integer val = (Integer) value;
+			String stringVal = Integer.toString(val.intValue());
+			text.setText(stringVal);
 		}
-  }
+	}
 
 }

@@ -27,12 +27,14 @@ package org.nightlabs.base.ui.celleditor;
 
 import java.util.List;
 
+import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.nightlabs.base.ui.composite.XComboComposite;
 
 /**
+ * {@link CellEditor} which uses a {@link XComboComposite} internally.
  * @author Daniel.Mazurek <at> Nightlabs <dot> de
  *
  */
@@ -42,7 +44,8 @@ extends XCellEditor
 	private List<T> types = null;
 	private ILabelProvider labelProvider = null;
 	private XComboComposite<T> comboComposite = null;
-
+	private int comboStyle;
+	
 	public GenericComboBoxCellEditor(Composite parent, List<T> types, ILabelProvider labelProvider)
 	{
 		if (types == null)
@@ -72,9 +75,7 @@ extends XCellEditor
 		this.comboStyle = comboStyle;
 		create(parent);
 	}
-	
-	private int comboStyle;
-	
+		
 	@Override
 	protected Control createControl(Composite parent) {
 		comboComposite = new XComboComposite<T>(parent, comboStyle,(String)null, labelProvider);

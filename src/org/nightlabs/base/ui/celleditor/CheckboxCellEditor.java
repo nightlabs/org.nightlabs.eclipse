@@ -26,43 +26,47 @@
 
 package org.nightlabs.base.ui.celleditor;
 
+import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-
+/**
+ * @deprecated use {@link org.eclipse.jface.viewers.CheckboxCellEditor} instead.
+ * Base class for {@link CellEditor}s which use a Checkbox for editing Boolean values. 
+ */
 public class CheckboxCellEditor
 extends XCellEditor
 {
-  protected Button checkbox;
-	
-  public CheckboxCellEditor() {
-    super();
-  }
+	protected Button checkbox;
 
-  /**
-   * @param parent
-   */
-  public CheckboxCellEditor(Composite parent) {
-    super(parent);
-  }
+	public CheckboxCellEditor() {
+		super();
+	}
 
-  /**
-   * @param parent
-   * @param style
-   */
-  public CheckboxCellEditor(Composite parent, int style) {
-    super(parent, style);
-  }
-  
-  /**
-   * @param parent
-   * @param style
-   */
-  public CheckboxCellEditor(Composite parent, int style, boolean readOnly) {
-    super(parent, style, readOnly);
-  }
+	/**
+	 * @param parent
+	 */
+	public CheckboxCellEditor(Composite parent) {
+		super(parent);
+	}
+
+	/**
+	 * @param parent
+	 * @param style
+	 */
+	public CheckboxCellEditor(Composite parent, int style) {
+		super(parent, style);
+	}
+
+	/**
+	 * @param parent
+	 * @param style
+	 */
+	public CheckboxCellEditor(Composite parent, int style, boolean readOnly) {
+		super(parent, style, readOnly);
+	}
   
 	/**
 	 * The <code>CheckboxCellEditor</code> implementation of

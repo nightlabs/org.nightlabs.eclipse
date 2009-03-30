@@ -26,34 +26,40 @@
 
 package org.nightlabs.base.ui.celleditor;
 
+import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.widgets.Composite;
 
+/**
+ * {@link CellEditor} for editing {@link Double} objects. 
+ */
 public class DoubleCellEditor
 extends XTextCellEditor
 {
-  public DoubleCellEditor() {
-    super();
-  }
+	private Object oldValue;
+	
+	public DoubleCellEditor() {
+		super();
+	}
 
-  public DoubleCellEditor(Composite parent) {
-    super(parent);
-  }
+	public DoubleCellEditor(Composite parent) {
+		super(parent);
+	}
 
-  public DoubleCellEditor(Composite parent, int style) {
-    super(parent, style);
-  }
+	public DoubleCellEditor(Composite parent, int style) {
+		super(parent, style);
+	}
 
-  public DoubleCellEditor(Composite parent, int style, boolean readOnly) {
-    super(parent, style, readOnly);
-  }
-  
+	public DoubleCellEditor(Composite parent, int style, boolean readOnly) {
+		super(parent, style, readOnly);
+	}
+
 	/**
 	 *
-	* returns the string of the text as double or the oldValue if
-	* the string is no double
-	*
-	* @return the text as double
-	*/
+	 * returns the string of the text as double or the oldValue if
+	 * the string is no double
+	 *
+	 * @return the text as double
+	 */
 	@Override
 	protected Object doGetValue()
 	{
@@ -68,8 +74,6 @@ extends XTextCellEditor
 		return d;
 	}
 
-  private Object oldValue;
- 
 	@Override
 	protected void doSetValue(Object value) {
 		oldValue = value;
@@ -79,35 +83,5 @@ extends XTextCellEditor
 		else if (value instanceof String)
 			super.doSetValue(value);
 	}
-	
-// protected Text text;
-//
-//  protected Control createControl(Composite parent) {
-//    text = new Text(parent, getStyle());
-//    return text;
-//  }
-//
-//  protected Object doGetValue() {
-//    String stringVal = text.getText();
-//    Double d = new Double(stringVal);
-//    return d;
-//  }
-//
-//  protected void doSetFocus() {
-//    if (text != null) {
-//      text.selectAll();
-//      text.setFocus();
-//    }
-//  }
-//
-//  protected void doSetValue(Object value)
-//  {
-//  	checkReadOnly();
-//    Assert.isTrue(text != null && (value instanceof Double));
-//    Double val = (Double) value;
-//    String stringVal = Double.toString(val.doubleValue());
-//    text.setText(stringVal);
-//    fireApplyEditorValue();
-//  }
 
 }

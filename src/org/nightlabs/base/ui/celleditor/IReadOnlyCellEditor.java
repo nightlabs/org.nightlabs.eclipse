@@ -26,12 +26,24 @@
 
 package org.nightlabs.base.ui.celleditor;
 
+import org.eclipse.jface.viewers.CellEditor;
+
 /**
+ * Interface for {@link CellEditor}s which support a read only mode.
+ * 
  * @author Daniel.Mazurek <at> NightLabs <dot> de
- *
  */
 public interface IReadOnlyCellEditor
 {
+	/**
+	 * Enable or disable the read only mode.
+	 * @param readOnly true if set to read only, false if not.
+	 */
 	void setReadOnly(boolean readOnly);
+	
+	/**
+	 * Returns the read only state.
+	 * @return true if read only, false if not.
+	 */
 	boolean isReadOnly();
 }

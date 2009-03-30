@@ -25,6 +25,7 @@
  ******************************************************************************/
 package org.nightlabs.base.ui.celleditor;
 
+import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.nightlabs.base.ui.language.I18nTextEditor;
@@ -34,13 +35,14 @@ import org.nightlabs.i18n.I18nText;
 import org.nightlabs.i18n.I18nTextBuffer;
 
 /**
+ * {@link CellEditor} for editing {@link I18nText} objects.
  * @author Daniel.Mazurek [at] NightLabs [dot] de
- *
  */
 public class XI18nTextCellEditor
 extends XCellEditor
 {
-
+	private I18nTextEditor i18nTextEditor;
+	
 	public XI18nTextCellEditor() {
 		super();
 	}
@@ -69,7 +71,6 @@ extends XCellEditor
 		super(parent, style, readOnly);
 	}
 
-	private I18nTextEditor i18nTextEditor;
 	@Override
 	protected Control createControl(Composite parent) {
 		i18nTextEditor = new I18nTextEditor(parent);
@@ -87,7 +88,6 @@ extends XCellEditor
 		I18nText copy = new I18nTextBuffer();
 		copy.copyFrom(i18nTextEditor.getI18nText());
 		return copy;
-//		return i18nTextEditor.getI18nText();
 	}
 
 	@Override

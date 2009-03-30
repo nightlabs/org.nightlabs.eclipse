@@ -31,13 +31,15 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 /**
+ * Subclass of {@link TextCellEditor} which implements the {@link IReadOnlyCellEditor} interface.  
  * @author Daniel.Mazurek <at> NightLabs <dot> de
- *
  */
 public class XTextCellEditor
 extends TextCellEditor
 implements IReadOnlyCellEditor
 {
+	private boolean readOnly = false;
+	
 	public XTextCellEditor() {
 		super();
 	}
@@ -87,20 +89,13 @@ implements IReadOnlyCellEditor
 		super.doSetValue(value);
 	}
 
-	protected boolean readOnly = false;
 	public boolean isReadOnly() {
 		return readOnly;
 	}
 	
 	public void setReadOnly(boolean readOnly)
 	{
-		if (this.readOnly != readOnly) {
-			this.readOnly = readOnly;
-			// its unsafe to dispose the control as it might be referenced by someone
-			// we simply don't do anything here.
-//			Composite parent = getControl().getParent();
-//			getControl().dispose();
-//			createControl(parent);
-		}
+		this.readOnly = readOnly;
+		getControl().setEnabled(readOnly);
 	}
 }

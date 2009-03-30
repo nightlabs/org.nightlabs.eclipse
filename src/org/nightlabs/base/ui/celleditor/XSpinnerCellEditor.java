@@ -25,22 +25,22 @@
  ******************************************************************************/
 package org.nightlabs.base.ui.celleditor;
 
+import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Spinner;
 
 /**
+ * {@link CellEditor} which uses a {@link Spinner} for editing {@link Integer}, {@link Float} and {@link Double} values.
+ * All values are converted to {@link Integer}.
+ * 
  * @author Daniel.Mazurek <at> Nightlabs <dot> de
  *
  */
 public class XSpinnerCellEditor
 extends XCellEditor
 {
-//	public XSpinnerCellEditor() {
-//		super();
-//	}
-
 	public XSpinnerCellEditor(Composite parent) {
 		this(parent, SWT.NONE, false);
 	}

@@ -154,8 +154,8 @@ public class VersionRangeCellEditor
 		if (isReadOnly())
 			return;
 		
-  	Assert.isTrue(checkBox != null &&  text != null && (value instanceof VersionRangeEndPoint));
-  	final VersionRangeEndPoint endPoint = (VersionRangeEndPoint) value;
+		Assert.isTrue(checkBox != null &&  text != null && (value instanceof VersionRangeEndPoint));
+		final VersionRangeEndPoint endPoint = (VersionRangeEndPoint) value;
 		checkBox.setSelection(endPoint.isInclusive());
 		text.setText(endPoint.getEndPoint().toString());
 		location = endPoint.getLocation();

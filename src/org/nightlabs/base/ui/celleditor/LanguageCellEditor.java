@@ -37,42 +37,42 @@ import org.nightlabs.i18n.I18nText;
 public class LanguageCellEditor
 extends CellEditor
 {
-	protected I18nText text;
+	private I18nText text;
+	private LanguageChooserImageCombo comboBox;
+	private I18nTextEditor textEditor;
+	
 	public LanguageCellEditor(I18nText text, Composite parent)
 	{
 		super(parent, SWT.DEFAULT);
 		this.text = text;
 	}
 
-	protected LanguageChooserImageCombo comboBox;
 	public LanguageChooserImageCombo getLanguageChooser() {
 		return comboBox;
 	}
-	
-	protected I18nTextEditor textEditor;
-		
-  /**
-   * Creates a XCombo and adds some listener to it
-   */
-  @Override
+			
+	/**
+	 * Creates a XCombo and adds some listener to it
+	 */
+	@Override
 	protected Control createControl(Composite parent)
-  {
-  	Composite panel = new Composite(parent, SWT.DEFAULT);
-	  comboBox = new LanguageChooserImageCombo(panel);
-	  textEditor = new I18nTextEditor(panel, getLanguageChooser());
-	  
-	  return panel;
+	{
+		Composite panel = new Composite(parent, SWT.DEFAULT);
+		comboBox = new LanguageChooserImageCombo(panel);
+		textEditor = new I18nTextEditor(panel, getLanguageChooser());
+
+		return panel;
 	}
-	
-  /**
-   * sets the focus to the ComboBox
-   */
-  @Override
+
+	/**
+	 * sets the focus to the ComboBox
+	 */
+	@Override
 	protected void doSetFocus() {
-    if (textEditor != null) {
-    	textEditor.setFocus();
-    }
-  }
+		if (textEditor != null) {
+			textEditor.setFocus();
+		}
+	}
 
 	@Override
 	protected Object doGetValue() {
@@ -84,6 +84,4 @@ extends CellEditor
 		if (value instanceof I18nText)
 			textEditor.setI18nText((I18nText)value);
 	}
-    
-  
 }

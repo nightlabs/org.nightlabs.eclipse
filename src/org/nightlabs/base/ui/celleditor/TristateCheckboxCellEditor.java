@@ -10,11 +10,11 @@ import org.eclipse.swt.widgets.Control;
  *
  */
 public class TristateCheckboxCellEditor
-		extends CellEditor
+extends CellEditor
 {
-  private Boolean state;
+	private Boolean state;
 
-  /**
+	/**
 	 *
 	 */
 	public TristateCheckboxCellEditor()
@@ -39,39 +39,39 @@ public class TristateCheckboxCellEditor
 	}
 
 	@Override
-  protected Control createControl(Composite parent)
-  {
-//  	Control checkboxControl = super.createControl(parent);
-//	   checkbox.addSelectionListener(new SelectionAdapter()
-//	   {
-//	  	 @Override
-//	  	 public void widgetSelected(SelectionEvent e)
-//	  	 {
-//	  		 Boolean newState;
-//	  		 if (checkbox.isEnabled())
-//	  			 newState = checkbox.getSelection();
-//	  		 else
-//	  			 newState = Boolean.FALSE;
-//
-//	  		 if (checkbox.isEnabled())
-//	  		 {
-//	  			 if (!state && newState)
-//	  				 state = newState;
-//	  			 else if (state && ! newState)
-//	  			 {
-//	  				 checkbox.setEnabled(false);
-//	  				 state = null;
-//	  			 }
-//	  		 }
-//	  		 else
-//	  		 {
-//	  			 checkbox.setEnabled(true);
-//	  			 state = Boolean.FALSE;
-//	  		 }
-//	  	 }
-//	   });
-	   return null;
-  }
+	protected Control createControl(Composite parent)
+	{
+		//  	Control checkboxControl = super.createControl(parent);
+		//	   checkbox.addSelectionListener(new SelectionAdapter()
+		//	   {
+		//	  	 @Override
+		//	  	 public void widgetSelected(SelectionEvent e)
+		//	  	 {
+		//	  		 Boolean newState;
+		//	  		 if (checkbox.isEnabled())
+		//	  			 newState = checkbox.getSelection();
+		//	  		 else
+		//	  			 newState = Boolean.FALSE;
+		//
+		//	  		 if (checkbox.isEnabled())
+		//	  		 {
+		//	  			 if (!state && newState)
+		//	  				 state = newState;
+		//	  			 else if (state && ! newState)
+		//	  			 {
+		//	  				 checkbox.setEnabled(false);
+		//	  				 state = null;
+		//	  			 }
+		//	  		 }
+		//	  		 else
+		//	  		 {
+		//	  			 checkbox.setEnabled(true);
+		//	  			 state = Boolean.FALSE;
+		//	  		 }
+		//	  	 }
+		//	   });
+		return null;
+	}
 
 	@Override
 	protected Object doGetValue()

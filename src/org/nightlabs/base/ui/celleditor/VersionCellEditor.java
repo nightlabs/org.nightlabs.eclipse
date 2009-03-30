@@ -92,10 +92,10 @@ public class VersionCellEditor
 	 */
 	@Override
 	protected void doSetFocus() {
-  	if (text != null) {
-  		text.selectAll();
-  		text.setFocus();
-  	}
+		if (text != null) {
+			text.selectAll();
+			text.setFocus();
+		}
 	}
 
 	/* (non-Javadoc)
@@ -105,8 +105,8 @@ public class VersionCellEditor
 	protected void doSetValue(Object value) {
 		if (isReadOnly())
 			return;
-		
-  	Assert.isTrue(text != null && (value instanceof Version));
+
+		Assert.isTrue(text != null && (value instanceof Version));
 		final Version version = (Version) value;
 		text.setText(version.toString());
 	}

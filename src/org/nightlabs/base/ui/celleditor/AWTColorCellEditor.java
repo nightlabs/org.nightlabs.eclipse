@@ -42,7 +42,9 @@ import org.eclipse.swt.widgets.Layout;
 import org.nightlabs.base.ui.util.ColorUtil;
 import org.nightlabs.base.ui.util.ImageUtil;
 
-
+/**
+ * Cell editor which can edit AWT {@link java.awt.Color} objects. 
+ */
 public class AWTColorCellEditor
 extends DialogCellEditor
 {
