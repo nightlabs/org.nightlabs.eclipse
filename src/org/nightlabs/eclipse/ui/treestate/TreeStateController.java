@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.swt.widgets.Widget;
+import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
 /**
@@ -115,14 +116,20 @@ public class TreeStateController
 		}
 	}
 
-	private void saveTreeItemState(TreeItem treeItem, Preferences parentNode) {
+	private void saveTreeItemState(TreeItem treeItem, Preferences currentNode) {
+		try {
+			currentNode.clear();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		
 		if (!treeItem.getExpanded())
 			return;
 
-		parentNode.put(treeItem.getText(), "1"); // treeItem.getExpanded()?"1":"0");
-
+		currentNode.put(treeItem.getText(), "1"); // treeItem.getExpanded()?"1":"0");
+		
 		for (TreeItem subTreeItem : treeItem.getItems()) {
-			Preferences node = parentNode.node(treeItem.getText());
+			Preferences node = currentNode.node(treeItem.getText());
 
 			saveTreeItemState(subTreeItem, node);
 		}
@@ -148,9 +155,9 @@ public class TreeStateController
 		boolean isEnable = preferenceStore.getBoolean(org.nightlabs.eclipse.ui.treestate.preferences.Preferences.PREFERENCE_ENABLE_STATE);
 
 		if (isEnable) {
-			final long nextTryingToGetTreeItemTime = 
+			final long nextTryingToGetTreeItemsTime = 
 				preferenceStore.getLong(org.nightlabs.eclipse.ui.treestate.preferences.Preferences.PREFERENCE_RELATIVE_TIME);
-			final long totalTryingToGetTreeItemTime = 
+			final long totalTryingToGetTreeItemsTime = 
 				preferenceStore.getLong(org.nightlabs.eclipse.ui.treestate.preferences.Preferences.PREFERENCE_ABSOLUTE_TIME);
 
 			final StatableTree statableTree = statableTreeMap.get(tree);
@@ -162,7 +169,7 @@ public class TreeStateController
 			expandTreeItemTimerTask = new TimerTask() {
 				@Override
 				public void run() {
-					if (totalTryingTime < totalTryingToGetTreeItemTime) {
+					if (totalTryingTime < totalTryingToGetTreeItemsTime) {
 						if (tree != null && !tree.isDisposed()) {
 							tree.getDisplay().asyncExec(new Runnable() {
 								@Override
@@ -178,7 +185,7 @@ public class TreeStateController
 											}
 										}
 
-										totalTryingTime += nextTryingToGetTreeItemTime;
+										totalTryingTime += nextTryingToGetTreeItemsTime;
 										loadTreeState(tree);
 									}
 								}
@@ -192,7 +199,7 @@ public class TreeStateController
 				}
 			};
 
-			expandTreeItemTimer.schedule(expandTreeItemTimerTask, nextTryingToGetTreeItemTime);
+			expandTreeItemTimer.schedule(expandTreeItemTimerTask, nextTryingToGetTreeItemsTime);
 		}
 	}
 
