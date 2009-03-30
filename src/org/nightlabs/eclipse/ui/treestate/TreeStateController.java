@@ -26,6 +26,8 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.swt.widgets.Widget;
 import org.osgi.service.prefs.Preferences;
 
+import com.sun.xml.internal.bind.v2.TODO;
+
 /**
  * This class is used for storing and restoring any trees' expansion states.
  * <p>
@@ -88,12 +90,22 @@ public class TreeStateController
 				Tree tree = (Tree)e.getSource();
 				if (tree.getSelection().length > 0) {
 					TreeItem collapsedTreeItem = tree.getSelection()[0];
-					collapsedItems.add(collapsedTreeItem);					
+					collapsedItems.add(collapsedTreeItem);
+					
+					//TODO Checking collapsed item's child items
+					addAllCollapsedItemChildItems(collapsedTreeItem);
 				}
 			}
 		});
 	}
 
+	private void addAllCollapsedItemChildItems(TreeItem item) {
+		for (TreeItem i : item.getItems()) {
+			collapsedItems.add(i);
+			addAllCollapsedItemChildItems(i);
+		}
+	}
+	
 	private void saveTreeState(Tree tree) {
 		StatableTree statableTree = statableTreeMap.get(tree);
 
