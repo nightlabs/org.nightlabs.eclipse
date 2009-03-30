@@ -42,7 +42,6 @@ import org.eclipse.swt.widgets.Control;
  */
 public class ChildStatusController
 {
-
 	private Map<Control, ChildStatus> childStatusByControl = new HashMap<Control, ChildStatus>();
 
 	private static class ChildStatus

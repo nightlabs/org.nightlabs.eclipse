@@ -32,9 +32,13 @@ import java.awt.geom.Rectangle2D;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 
+/**
+ * Util class which provides methods for working with geometrical objects.
+ * E.g. it provides methods for converting different kinds of points or rectangles between SWT and AWT/Swing. 
+ * @author Daniel Mazurek - Daniel.Mazurek [dot] nightlabs [dot] de
+ */
 public class GeomUtil
 {
-
 	public GeomUtil() {
 		super();
 	}

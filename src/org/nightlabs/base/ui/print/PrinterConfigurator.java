@@ -54,6 +54,7 @@ public interface PrinterConfigurator {
 	 * @return The newly created {@link Composite}.
 	 */
 	public Composite showComposite(Composite parent);
+	
 	/**
 	 * Read the current {@link PrinterConfiguration} from the UI. 
 	 * @return The configured {@link PrinterConfiguration}.

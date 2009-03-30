@@ -7,6 +7,13 @@ import org.eclipse.core.runtime.IExtension;
 import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
 import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
 
+/**
+ * Base class for handling login authentication in applications.
+ * You can register an implementation of {@link ILoginDelegate} via the extension-point "org.nightlabs.base.ui.login",
+ * which will be processed by this class.
+ * Per application only one registered {@link ILoginDelegate} is allowed, otherwise an exception is thrown.
+ * You can trigger login or logout via the static methods {@link #login()} or {@link #logout()}.
+ */
 public final class Login
 extends AbstractEPProcessor
 {

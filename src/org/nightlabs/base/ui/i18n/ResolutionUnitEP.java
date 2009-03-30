@@ -37,7 +37,8 @@ import org.nightlabs.i18n.unit.resolution.ResolutionUnit;
 import org.nightlabs.i18n.unit.resolution.ResolutionUnitRegistry;
 
 /**
- * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de </p>
+ * 
+ * @author Daniel Mazurek - Daniel.Mazurek [dot] nightlabs [dot] de
  */
 public class ResolutionUnitEP
 extends AbstractEPProcessor

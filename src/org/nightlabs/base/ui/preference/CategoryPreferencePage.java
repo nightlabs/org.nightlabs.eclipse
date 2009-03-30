@@ -14,7 +14,7 @@ public class CategoryPreferencePage
 extends OverviewPage
 {
 	/**
-	 *
+	 * Creates a CategoryPreferencePage.
 	 */
 	public CategoryPreferencePage() {
 		super();

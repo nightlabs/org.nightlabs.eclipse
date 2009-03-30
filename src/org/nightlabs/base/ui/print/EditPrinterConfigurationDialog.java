@@ -54,7 +54,6 @@ public class EditPrinterConfigurationDialog extends Dialog {
 	private Button useConfigOnlyForNextRun;
 	private PrinterConfiguration printerConfiguration;
 	
-	
 	/**
 	 * @param parentShell
 	 */

@@ -39,13 +39,12 @@ import org.nightlabs.base.ui.resource.SharedImages.ImageFormat;
 public class SearchCompositeImage
 extends CompositeImageDescriptor
 {
-
+	private Image image;
+	
 	public SearchCompositeImage(Image image) {
 		this.image = image;
 	}
-	
-	private Image image;
-	
+		
 	@Override
 	protected void drawCompositeImage(int width, int height)
 	{
@@ -56,7 +55,6 @@ extends CompositeImageDescriptor
 			int imageWidth = image.getBounds().width;
 			int imageHeight = image.getBounds().height;
 			drawImage(image.getImageData(), 16-imageWidth, 16-imageHeight);
-//		drawImage(image.getImageData(), 8, 8);
 		}
 	}
 

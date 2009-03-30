@@ -35,7 +35,6 @@ import org.eclipse.jface.viewers.StructuredSelection;
 
 public class SelectionUtil
 {
-
 	public SelectionUtil() {
 		super();
 	}

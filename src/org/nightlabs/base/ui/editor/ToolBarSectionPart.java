@@ -36,12 +36,16 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.ui.forms.SectionPart;
 import org.eclipse.ui.forms.editor.IFormPage;
 import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.forms.widgets.Section;
 import org.nightlabs.base.ui.action.IUpdateActionOrContributionItem;
 import org.nightlabs.base.ui.action.SelectionAction;
 
 /**
+ * A {@link SectionPart} which has a {@link ToolBarManager} and shows its {@link ToolBar} 
+ * as text client for the {@link Section}.
  * 
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  */

@@ -37,7 +37,6 @@ import org.nightlabs.base.ui.labelprovider.I18nTextLabelProvider;
 public class XI18nTextPropertyDescriptor
 extends XPropertyDescriptor
 {
-
 	/**
 	 * @param id
 	 * @param displayName

@@ -40,6 +40,8 @@ import org.nightlabs.base.ui.celleditor.XSpinnerCellEditor;
 public class SpinnerPropertyDescriptor
 extends XPropertyDescriptor
 {
+	private int minimum = 0;
+	private int maximum = Integer.MAX_VALUE;
 
 	public SpinnerPropertyDescriptor(Object id, String displayName) {
 		super(id, displayName);
@@ -56,9 +58,6 @@ extends XPropertyDescriptor
 		this.minimum = minimum;
 		this.maximum = maximum;
 	}
-
-	private int minimum = 0;
-	private int maximum = Integer.MAX_VALUE;
 
 	@Override
 	public CellEditor createPropertyEditor(Composite parent) {

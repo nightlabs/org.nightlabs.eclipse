@@ -35,7 +35,6 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 public class XPropertyDescriptor
 extends PropertyDescriptor implements IXPropertyDescriptor
 {
-
 	/**
 	 * @param id the ID of the PropertyDescriptor
 	 * @param displayName the DisplayName of the PropertyDescriptor

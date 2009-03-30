@@ -53,10 +53,8 @@ public class EditPrinterConfigurationComposite extends XComposite {
 	private PrinterConfiguratorFactory configuratorFactory;
 	private PrinterConfigurator configurator;
 	private Composite configuratorComposite;
-	
 	private XComposite configuratorWrapper;
 	private ConfiguratorCombo configuratorCombo;
-	
 	private ConfiguratorFactoryEntry selectedConfiguratorFactoryEntry;
 	
 	public EditPrinterConfigurationComposite(Composite parent, int style, XComposite.LayoutMode layoutMode, String printerUseCaseID) {

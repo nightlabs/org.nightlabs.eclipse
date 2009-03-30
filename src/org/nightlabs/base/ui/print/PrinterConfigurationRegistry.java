@@ -89,9 +89,6 @@ public class PrinterConfigurationRegistry extends AbstractEPProcessor {
 		public void setName(String name) {
 			this.name = name;
 		}
-		
-		
-		
 	}
 	
 	private Map<String, PrinterUseCase> printerUseCases = new HashMap<String, PrinterUseCase>();

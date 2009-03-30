@@ -38,32 +38,18 @@ import org.nightlabs.io.IOFilterInformationProvider;
 import org.nightlabs.io.IOFilterMan;
 import org.nightlabs.util.NLLocale;
 
+/**
+ * Registry class for registering implementations of {@link IOFilter} via the extension-point "org.nightlabs.base.ui.iofilter".
+ * It populates the registered {@link IOFilter}s into an {@link IOFilterMan} which is then accessible via {@link #getIOFilterMan()}.
+ *  
+ * @author Daniel Mazurek - Daniel.Mazurek [dot] nightlabs [dot] de
+ */
 public class IOFilterRegistry
 extends AbstractEPProcessor
 {
 	public static final Logger logger = Logger.getLogger(IOFilterRegistry.class);
 	
 	public static final String EXTENSION_POINT_ID = "org.nightlabs.base.ui.iofilter"; //$NON-NLS-1$
-	
-	@Override
-	public String getExtensionPointID() {
-		return EXTENSION_POINT_ID;
-	}
-
-	protected static IOFilterRegistry _sharedInstance;
-	public static IOFilterRegistry sharedInstance()
-	{
-		if (_sharedInstance == null) {
-			_sharedInstance = new IOFilterRegistry();
-//			_sharedInstance.process();
-		}
-		return _sharedInstance;
-	}
-	
-	protected IOFilterRegistry() {
-		super();
-	}
-	
 	public static final String ELEMENT_IOFILTER = "ioFilter"; //$NON-NLS-1$
 	public static final String ELEMENT_FILE_EXTENSION = "fileExtension"; //$NON-NLS-1$
 	public static final String ATTRIBUTE_NAME = "name"; //$NON-NLS-1$
@@ -71,8 +57,27 @@ extends AbstractEPProcessor
 	public static final String ATTRIBUTE_CLASS = "class"; //$NON-NLS-1$
 	public static final String ATTRIBUTE_INFORMATION_PROVIDER = "informationProvider"; //$NON-NLS-1$
 	public static final String ATTRIBUTE_FILE_EXTENSION = "fileExtension"; //$NON-NLS-1$
+
+	private static IOFilterRegistry _sharedInstance;
+	public static IOFilterRegistry sharedInstance()
+	{
+		if (_sharedInstance == null) {
+			_sharedInstance = new IOFilterRegistry();
+		}
+		return _sharedInstance;
+	}
 	
-	
+	protected IOFilterRegistry() {
+		super();
+	}
+
+	private IOFilterMan ioFilterMan = null;
+
+	@Override
+	public String getExtensionPointID() {
+		return EXTENSION_POINT_ID;
+	}
+
 	@Override
 	public void processElement(IExtension extension, IConfigurationElement element)
 	throws Exception
@@ -149,7 +154,6 @@ extends AbstractEPProcessor
 		}
 	}
 	
-	protected IOFilterMan ioFilterMan = null;
 	public IOFilterMan getIOFilterMan()
 	{
 		checkProcessing();

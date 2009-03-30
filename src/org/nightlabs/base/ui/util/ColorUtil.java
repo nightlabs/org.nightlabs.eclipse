@@ -32,11 +32,13 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
 /**
+ * Util class for working with color objects. 
+ * It provides e.g. methods for converting different color objects.
+ * 
  * @author Marco Schulze - marco at nightlabs dot de
  */
 public class ColorUtil extends org.nightlabs.util.ColorUtil
 {
-
 	protected ColorUtil()
 	{
 	}

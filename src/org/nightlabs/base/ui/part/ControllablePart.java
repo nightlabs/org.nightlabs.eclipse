@@ -42,9 +42,7 @@ import org.eclipse.swt.widgets.Composite;
  *
  */
 public interface ControllablePart
-//extends IWorkbenchPart
 {
-
 	/**
 	 * Create the real contents of a {@link org.eclipse.ui.part.WorkbenchPart}
 	 * here. Delegate the WorkbenchParts
@@ -64,6 +62,4 @@ public interface ControllablePart
 	 * @return Whether this Part can be displayed.
 	 */
 	boolean canDisplayPart();
-		
-//	void createPartControl(Composite parent);
 }

@@ -41,7 +41,26 @@ extends AbstractEPProcessor
 {
 	public static final String EXTENSION_POINT_ID = "org.nightlabs.base.ui.editorfilefilter"; //$NON-NLS-1$
 
+	private static EditorFileFilterRegistry sharedInstance;
+	
+	/**
+	 * @deprecated Use {@link #sharedInstance()} instead
+	 */
+	@Deprecated
+	public static EditorFileFilterRegistry getSharedInstance() {
+		if (sharedInstance == null)
+			sharedInstance = new EditorFileFilterRegistry();
+		return sharedInstance;
+	}
+	
+	public static EditorFileFilterRegistry sharedInstance() {
+		if (sharedInstance == null)
+			sharedInstance = new EditorFileFilterRegistry();
+		return sharedInstance;
+	}
+
 	private List<String> patterns = new ArrayList<String>();
+	private String globalPattern;
 	
 	@Override
 	public String getExtensionPointID() {
@@ -59,8 +78,6 @@ extends AbstractEPProcessor
 			patterns.add(pattern);
 		}
 	}
-
-	private String globalPattern;
 	
 	public String getGlobalPattern()
 	{
@@ -93,23 +110,5 @@ extends AbstractEPProcessor
 	{
 		checkProcessing();
 		return patterns;
-	}
-	
-	private static EditorFileFilterRegistry sharedInstance;
-	
-	/**
-	 * @deprecated Use {@link #sharedInstance()} instead
-	 */
-	@Deprecated
-	public static EditorFileFilterRegistry getSharedInstance() {
-		if (sharedInstance == null)
-			sharedInstance = new EditorFileFilterRegistry();
-		return sharedInstance;
-	}
-	
-	public static EditorFileFilterRegistry sharedInstance() {
-		if (sharedInstance == null)
-			sharedInstance = new EditorFileFilterRegistry();
-		return sharedInstance;
-	}
+	}	
 }

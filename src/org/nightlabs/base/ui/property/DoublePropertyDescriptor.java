@@ -38,7 +38,6 @@ import org.nightlabs.base.ui.celleditor.DoubleCellEditor;
 public class DoublePropertyDescriptor
 extends XPropertyDescriptor
 {
-
 	public DoublePropertyDescriptor(Object id, String displayName)
 	{
 		super(id, displayName);

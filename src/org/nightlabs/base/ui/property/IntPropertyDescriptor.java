@@ -38,7 +38,6 @@ import org.nightlabs.base.ui.celleditor.IntCellEditor;
 public class IntPropertyDescriptor
 extends XPropertyDescriptor
 {
-
 	/**
 	 * @param id
 	 * @param displayName
@@ -46,7 +45,6 @@ extends XPropertyDescriptor
 	public IntPropertyDescriptor(Object id, String displayName) {
 		super(id, displayName);
 	}
-
 
 	/**
 	 * @param id

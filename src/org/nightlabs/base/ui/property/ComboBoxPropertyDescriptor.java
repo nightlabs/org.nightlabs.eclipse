@@ -36,33 +36,33 @@ import org.nightlabs.base.ui.labelprovider.ComboBoxLabelProvider;
 public class ComboBoxPropertyDescriptor
 extends PropertyDescriptor
 {
-  /**
-   * The list of possible values to display in the combo box
-   */
-  protected String[] values;
-  
-  public ComboBoxPropertyDescriptor(Object id, String displayName, String[] valuesArray)
-  {
-    super(id, displayName);
-    values = valuesArray;
-    setLabelProvider(new ComboBoxLabelProvider(values));
-  }
-  
-  /**
-   * The <code>ComboBoxPropertyDescriptor</code> implementation of this
-   * <code>IPropertyDescriptor</code> method creates and returns a new
-   * <code>ComboBoxCellEditor</code>.
-   * <p>
-   * The editor is configured with the current validator if there is one.
-   * </p>
-   */
-  @Override
+	/**
+	 * The list of possible values to display in the combo box
+	 */
+	protected String[] values;
+
+	public ComboBoxPropertyDescriptor(Object id, String displayName, String[] valuesArray)
+	{
+		super(id, displayName);
+		values = valuesArray;
+		setLabelProvider(new ComboBoxLabelProvider(values));
+	}
+
+	/**
+	 * The <code>ComboBoxPropertyDescriptor</code> implementation of this
+	 * <code>IPropertyDescriptor</code> method creates and returns a new
+	 * <code>ComboBoxCellEditor</code>.
+	 * <p>
+	 * The editor is configured with the current validator if there is one.
+	 * </p>
+	 */
+	@Override
 	public CellEditor createPropertyEditor(Composite parent)
-  {
-    CellEditor editor = new ComboBoxCellEditor(parent, values, SWT.READ_ONLY);
-    if (getValidator() != null)
-      editor.setValidator(getValidator());
-    return editor;
-  }
+	{
+		CellEditor editor = new ComboBoxCellEditor(parent, values, SWT.READ_ONLY);
+		if (getValidator() != null)
+			editor.setValidator(getValidator());
+		return editor;
+	}
 
 }

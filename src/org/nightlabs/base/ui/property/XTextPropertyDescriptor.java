@@ -41,10 +41,8 @@ import org.nightlabs.base.ui.celleditor.XTextCellEditor;
  * @author Marco Schulze - marco at nightlabs dot de
  */
 public class XTextPropertyDescriptor
-//extends TextPropertyDescriptor
 extends XPropertyDescriptor
 {
-
 	public XTextPropertyDescriptor(Object id, String displayName) {
 		super(id, displayName);
 	}

@@ -39,7 +39,6 @@ import org.nightlabs.base.ui.composite.XComposite;
 public class XSection
 extends Section
 {
-
 	/**
 	 * @param parent
 	 * @param style

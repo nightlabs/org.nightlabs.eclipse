@@ -37,25 +37,26 @@ import org.nightlabs.i18n.I18nText;
 public class LanguagePropertyDescriptor
 extends PropertyDescriptor
 {
-	protected I18nText text;
+	private I18nText text;
+	
 	public LanguagePropertyDescriptor(I18nText text, Object id, String displayName) {
 		super(id, displayName);
 		this.text = text;
 	}
-	
-  @Override
+
+	@Override
 	public ILabelProvider getLabelProvider()
-  {
-  	return new LanguageLabelProvider(text);
+	{
+		return new LanguageLabelProvider(text);
 	}
 
 	@Override
 	public CellEditor createPropertyEditor(Composite parent)
-  {
-    CellEditor editor = new LanguageCellEditor(text, parent);
-    if (getValidator() != null)
-      editor.setValidator(getValidator());
-    return editor;
-  }
+	{
+		CellEditor editor = new LanguageCellEditor(text, parent);
+		if (getValidator() != null)
+			editor.setValidator(getValidator());
+		return editor;
+	}
 
 }

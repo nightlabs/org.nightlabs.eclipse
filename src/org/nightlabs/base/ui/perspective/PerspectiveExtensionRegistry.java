@@ -58,7 +58,6 @@ extends AbstractEPProcessor
 	}
 
 	protected PerspectiveExtensionRegistry() {
-
 	}
 
 	public static final String EXTENSION_POINT_ID = "org.nightlabs.base.ui.perspectiveExtension"; //$NON-NLS-1$

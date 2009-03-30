@@ -48,6 +48,14 @@ import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
 import org.nightlabs.base.ui.io.FileEditorInput;
 import org.nightlabs.base.ui.util.RCPUtil;
 
+/**
+ * Registry which processes the extension-point "org.nightlabs.base.ui.editor2perspective", 
+ * where you can connect a certain editorID to an perspectiveID, 
+ * which means that when an Editor opens the corresponding perspective will be opened too. 
+ * To achieve this use the method {@link #openEditor(IEditorInput, String).
+ *  
+ * @author Daniel Mazurek - Daniel.Mazurek [dot] nightlabs [dot] de
+ */
 public class Editor2PerspectiveRegistry
 extends AbstractEPProcessor
 {

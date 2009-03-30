@@ -1,6 +1,7 @@
 package org.nightlabs.base.ui.composite;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -20,6 +21,8 @@ import org.nightlabs.base.ui.util.DateTimeUtil;
 import org.nightlabs.l10n.DateFormatProvider;
 
 /**
+ * Dialog which lets the user choose and {@link Date} from a calendar.
+ * 
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  */
@@ -33,7 +36,6 @@ extends Dialog
 	private Calendar date;
 	private Point initialLocation;
 	private Boolean allowPast;
-
 
 	/**
 	 * Create a new CalendarDateTimeEditLookupDialog instance.
@@ -56,9 +58,6 @@ extends Dialog
 		this(parentShell, true , flags, null);
 	}
 
-	
-	
-	
 	/**
 	 * Create a new CalendarDateTimeEditLookupDialog instance.
 	 * @param parentShell The parent shell
@@ -73,10 +72,7 @@ extends Dialog
 		this.flags = flags;
 		this.initialLocation = initialLocation;
 		this.allowPast = allowPast;
-
 	}
-	
-	
 	
 	/**
 	 * Set the initial date to show in this dialog. This must be called
@@ -215,7 +211,6 @@ extends Dialog
 	@Override
 	protected void okPressed()
 	{
-				
 		if (calendarDateTime != null)
 		{
 			date.set(Calendar.YEAR, calendarDateTime.getYear());

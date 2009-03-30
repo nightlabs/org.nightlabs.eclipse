@@ -28,7 +28,6 @@ package org.nightlabs.base.ui.dnd;
 
 public class DNDUtil
 {
-
 	public DNDUtil() {
 		super();
 	}
