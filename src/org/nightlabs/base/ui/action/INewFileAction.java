@@ -27,7 +27,12 @@
 package org.nightlabs.base.ui.action;
 
 import org.eclipse.jface.action.IAction;
+import org.eclipse.ui.INewWizard;
 
+/**
+ * @deprecated use {@link INewWizard} instead.
+ * @author Daniel Mazurek - Daniel.Mazurek [dot] nightlabs [dot] de
+ */
 public interface INewFileAction
 extends IAction
 {

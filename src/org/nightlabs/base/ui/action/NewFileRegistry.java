@@ -35,10 +35,15 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.INewWizard;
 import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
 import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
 
+/**
+ * @deprecated Use {@link INewWizard} and org.eclipse.ui.newWizard extension-point instead. 
+ * @author Daniel Mazurek - Daniel.Mazurek [dot] nightlabs [dot] de
+ */
 public class NewFileRegistry
 extends AbstractEPProcessor
 {

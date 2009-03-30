@@ -9,10 +9,12 @@ import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
@@ -26,8 +28,16 @@ import org.nightlabs.base.ui.login.Login;
 import org.nightlabs.base.ui.wizard.DynamicPathWizardDialog;
 
 /**
+ * This class is a subclass of {@link org.eclipse.ui.actions.NewWizardAction}, 
+ * to provide to more things.
+ * 1. It uses an {@link DynamicPathWizardDialog} instead of normal {@link WizardDialog}
+ * so that the {@link IWizardContainer} for all implementations of {@link INewWizard}
+ * which are registered at the extension-point org.eclipse.ui.newWizard have it.
+ * 2. It performs a {@link Login.login()} before the new wizard dialog opens, to avoid 
+ * ClassNotFoundExceptions when some implementations of {@link INewWizard} have imports
+ * of remote classes.
+ * 
  * @author Daniel Mazurek - Daniel.Mazurek [dot] nightlabs [dot] de
- *
  */
 public class NewWizardAction extends org.eclipse.ui.actions.NewWizardAction {
 
@@ -68,14 +78,6 @@ public class NewWizardAction extends org.eclipse.ui.actions.NewWizardAction {
 			doRun();
 		}
     }
-    
-//	/* (non-Javadoc)
-//     * Method declared on IAction.
-//     */
-//    public void run() 
-//    {
-//    	doRun();
-//    }
     
     /**
      * This method is copied from org.eclipse.ui.actions.NewWizardAction.run() 

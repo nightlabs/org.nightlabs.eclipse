@@ -29,11 +29,16 @@ package org.nightlabs.base.ui.action;
 import java.io.File;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.PartInitException;
 import org.nightlabs.base.ui.editor.Editor2PerspectiveRegistry;
 import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.util.IOUtil;
 
+/**
+ * @deprecated use {@link INewWizard} instead.
+ * @author Daniel Mazurek - Daniel.Mazurek [dot] nightlabs [dot] de
+ */
 public class NewFileAction
 extends Action
 implements INewFileAction
