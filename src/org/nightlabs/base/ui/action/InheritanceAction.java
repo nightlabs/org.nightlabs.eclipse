@@ -33,8 +33,11 @@ import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.resource.SharedImages;
 
 /**
+ * Abstract base class for all Inheritance action, whih are used to visualize the inheritance.
+ * It automatically changes the icon, dependent on the checked state.
+ * Subclasses must implement {@link IAction#run()}.  
+ * 
  * @author Daniel.Mazurek [at] NightLabs [dot] de
- *
  */
 public abstract class InheritanceAction
 extends Action implements IUpdateActionOrContributionItem
@@ -48,36 +51,6 @@ extends Action implements IUpdateActionOrContributionItem
 		setImageDescriptor(SharedImages.getSharedImageDescriptor(
 				NLBasePlugin.getDefault(), InheritanceToggleButton.class, InheritanceToggleButton.IMAGE_SUFFIX_UNLINKED));
 	}
-
-//	/**
-//	 * @param text
-//	 * @param style
-//	 */
-//	public InheritanceAction(String text, int style) {
-//		super(text, style);
-//	}
-
-//	private boolean selection = false;
-
-//	/**
-//	 * @deprecated Use {@link #isChecked()} instead!
-//	 */
-//	public boolean isSelection() {
-//		return isChecked();
-////		return selection;
-//	}
-//
-//	/**
-//	 * @deprecated Use {@link #setChecked(boolean)} instead!
-//	 */
-//	public void setSelection(boolean selection) {
-//		setChecked(selection);
-////		this.selection = selection;
-////		if (selection)
-////			setImageDescriptor(SharedImages.getSharedImageDescriptor(NLBasePlugin.getDefault(), InheritanceToggleButton.class, InheritanceToggleButton.IMAGE_SUFFIX_LINKED));
-////		else
-////			setImageDescriptor(SharedImages.getSharedImageDescriptor(NLBasePlugin.getDefault(), InheritanceToggleButton.class, InheritanceToggleButton.IMAGE_SUFFIX_UNLINKED));
-//	}
 
 	@Override
 	public void setChecked(boolean checked)

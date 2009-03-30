@@ -77,6 +77,11 @@ import org.nightlabs.config.ConfigException;
 import org.nightlabs.util.CollectionUtil;
 
 /**
+ * This class is a subclass of {@link ActionBarAdvisor} which provides some functionality for defining, 
+ * which actions should be available by default in the main menu and coolbar of an RCP application.  
+ * It is recommended to use this class instead of an own subclass of {@link ActionBarAdvisor},
+ * because it integrates some features, like the {@link NewWizardAction} and the recent file menu entries
+ * by default.
  * 
  * @author Daniel Mazurek Daniel.Mazurek[AT]NightLabs[DOT]de
  * @author Alexander Bieber Alex[AT]NightLabs[DOT]de

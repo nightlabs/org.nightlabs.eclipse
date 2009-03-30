@@ -32,6 +32,9 @@ import org.eclipse.core.runtime.IExtension;
 import org.nightlabs.base.ui.action.registry.AbstractActionRegistry;
 import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
 
+/**
+ * @deprecated This class seems not be used anywhere and {@link SelectionAction} is deprecated as well. 
+ */
 public class SelectionActionRegistry
 extends AbstractActionRegistry
 {

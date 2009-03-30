@@ -29,7 +29,7 @@ import org.nightlabs.base.ui.wizard.DynamicPathWizardDialog;
 
 /**
  * This class is a subclass of {@link org.eclipse.ui.actions.NewWizardAction}, 
- * to provide to more things.
+ * to provide 2 more things.
  * 1. It uses an {@link DynamicPathWizardDialog} instead of normal {@link WizardDialog}
  * so that the {@link IWizardContainer} for all implementations of {@link INewWizard}
  * which are registered at the extension-point org.eclipse.ui.newWizard have it.

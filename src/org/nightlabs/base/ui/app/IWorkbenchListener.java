@@ -27,8 +27,11 @@ package org.nightlabs.base.ui.app;
 
 
 /**
+ * Listener which can be used to be notified about certain lifetime cycles on a application.
+ * Implementations of this interface can be registered via the {@link WorkbenchListenerRegistry}.
+ * The listeners will be triggered when your application extends {@link AbstractWorkbenchAdvisor}.  
+ *  
  * @author Daniel.Mazurek [at] NightLabs [dot] de
- *
  */
 public interface IWorkbenchListener
 {

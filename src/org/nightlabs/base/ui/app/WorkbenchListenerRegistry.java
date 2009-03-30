@@ -35,8 +35,11 @@ import org.eclipse.core.runtime.IExtension;
 import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
 
 /**
+ * Registry for registering {@link IWorkbenchListener}.
+ * Implementations of {@link IWorkbenchListener} can be registered via the extension-point "org.nightlabs.base.ui.workbenchListener"
+ * and will be automatically processed by this class can can then be accessed by the method {@link #getListener()}.
+ * 
  * @author Daniel.Mazurek [at] NightLabs [dot] de
- *
  */
 public class WorkbenchListenerRegistry
 extends AbstractEPProcessor

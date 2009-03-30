@@ -35,8 +35,10 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 
 /**
+ * Abstract implementation of {@link ISelectionAction}.
+ * It is recommended to subclass this class instead of implementing {@link ISelectionAction} directly.s
+ * 
  * @author Daniel.Mazurek [at] NightLabs [dot] de
- *
  */
 public abstract class SelectionAction
 extends Action

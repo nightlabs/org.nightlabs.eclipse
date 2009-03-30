@@ -40,9 +40,8 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 import org.nightlabs.base.ui.app.DefaultActionBuilder.ActionBarItem;
 
 /**
- * 
- * <p> Author: Daniel.Mazurek[AT]NightLabs[DOT]de, <p>
- *
+ * Default implementation of {@link WorkbenchWindowAdvisor}.
+ * @author Daniel Mazurek Daniel.Mazurek[AT]NightLabs[DOT]de
  */
 public class DefaultWorkbenchWindowAdvisor
 extends WorkbenchWindowAdvisor
@@ -55,9 +54,7 @@ extends WorkbenchWindowAdvisor
 	public DefaultWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) // , String applicationTitle)
 	{
 		super(configurer);
-//		this.applicationName = applicationTitle;
 	}
-//	protected String applicationName = "Application"; //$NON-NLS-1$
 
 	@Override
 	public ActionBarAdvisor createActionBarAdvisor(IActionBarConfigurer configurer) {

@@ -27,14 +27,18 @@
 package org.nightlabs.base.ui.action.selection;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.viewers.ISelection;
 import org.nightlabs.base.ui.notification.NotificationAdapterSWTThreadAsync;
 import org.nightlabs.base.ui.notification.SelectionManager;
 import org.nightlabs.notification.NotificationEvent;
 import org.nightlabs.notification.NotificationListener;
 
+/**
+ * @deprecated This class seems not be used anywhere. 
+ * If you need an {@link Action} which can receive an {@link ISelection} use {@link org.nightlabs.base.ui.action.SelectionAction} instead.  
+ */
 public abstract class SelectionAction
 extends Action
-//implements IUpdateAction
 {
 	public SelectionAction() { }
 
@@ -50,35 +54,4 @@ extends Action
 	};
 
 	public abstract boolean calculateEnabled(NotificationEvent evt);
-		
-//	/**
-//	 * updates the UpdateAction when the selection changed
-//	 *
-//	 */
-//	public void update()
-//	{
-//		setEnabled(calculateEnabled());
-//	}
-	
-//	/**
-//	 * Gets the current selection.
-//	 *
-//	 * @return The current selection.
-//	 */
-//	protected ISelection getSelection() {
-//		return selection;
-//	}
-	
-//	/**
-//	 * Returns a <code>List</code> containing the currently
-//	 * selected objects.
-//	 *
-//	 * @return A List containing the currently selected objects.
-//	 */
-//	protected List getSelectedObjects() {
-//		if (!(getSelection() instanceof IStructuredSelection))
-//			return Collections.EMPTY_LIST;
-//		return ((IStructuredSelection)getSelection()).toList();
-//	}
-
 }

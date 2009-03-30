@@ -28,8 +28,9 @@ package org.nightlabs.base.ui.action;
 import org.eclipse.jface.viewers.ISelection;
 
 /**
+ * Interface for Actions which have the ability to react on {@link ISelection}s.
+ * 
  * @author Daniel.Mazurek [at] NightLabs [dot] de
- *
  */
 public interface ISelectionAction
 extends IUpdateActionOrContributionItem
