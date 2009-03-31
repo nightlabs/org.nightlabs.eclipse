@@ -91,12 +91,23 @@ public class TreeStateController
 				if (tree.getSelection().length > 0) {
 					TreeItem collapsedTreeItem = tree.getSelection()[0];
 					collapsedItems.add(collapsedTreeItem);
-					//TODO Checking all collapsed items
+					
+					for (TreeItem item : collapsedTreeItem.getItems()) {
+						collapsedItems.add(item);
+						addCollapsedChildItems(item);
+					}
 				}
 			}
 		});
 	}
 
+	private void addCollapsedChildItems(TreeItem item) {
+		for (TreeItem i : item.getItems()) {
+			collapsedItems.add(i);
+			addCollapsedChildItems(i);
+		} 
+	}
+	
 	private void saveTreeState(Tree tree) {
 		StatableTree statableTree = statableTreeMap.get(tree);
 
@@ -110,6 +121,7 @@ public class TreeStateController
 		if (rootNode != null) {
 			try {
 				rootNode.clear();
+				rootNode.flush();
 				
 				for (TreeItem treeItem : tree.getItems()) {
 					saveTreeItemState(treeItem, rootNode);
@@ -122,9 +134,9 @@ public class TreeStateController
 		}
 	}
 
-	private void saveTreeItemState(TreeItem currentTreeItem, Preferences currentNode) {
+	private void saveTreeItemState(TreeItem currentTreeItem, Preferences parentNode) {
 		try {
-			currentNode.clear();
+			parentNode.node(currentTreeItem.getText()).clear();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -133,21 +145,19 @@ public class TreeStateController
 			return;
 		}
 		
-		currentNode.put(currentTreeItem.getText(), "1"); // treeItem.getExpanded()?"1":"0");
+		parentNode.put(currentTreeItem.getText(), "1"); // treeItem.getExpanded()?"1":"0");
 		try {
-			currentNode.sync();
+			parentNode.flush();
+			parentNode.sync();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 		
 		for (TreeItem subTreeItem : currentTreeItem.getItems()) {
-			Preferences newNode = currentNode.node(currentTreeItem.getText());			
+			Preferences newNode = parentNode.node(currentTreeItem.getText());			
 			saveTreeItemState(subTreeItem, newNode);
 		}
 	}
-
-	private long totalTryingTime;
-	private TimerTask expandTreeItemTimerTask;
 
 	/**
 	 * Restores the tree's expansion states. 
@@ -166,9 +176,9 @@ public class TreeStateController
 		boolean isEnable = preferenceStore.getBoolean(org.nightlabs.eclipse.ui.treestate.preferences.Preferences.PREFERENCE_ENABLE_STATE);
 
 		if (isEnable) {
-			final long nextTryingToGetTreeItemsTime = 
+			nextTryingToGetTreeItemsTime = 
 				preferenceStore.getLong(org.nightlabs.eclipse.ui.treestate.preferences.Preferences.PREFERENCE_RELATIVE_TIME);
-			final long totalTryingToGetTreeItemsTime = 
+			totalTryingToGetTreeItemsTime = 
 				preferenceStore.getLong(org.nightlabs.eclipse.ui.treestate.preferences.Preferences.PREFERENCE_ABSOLUTE_TIME);
 
 			final StatableTree statableTree = statableTreeMap.get(tree);
@@ -177,6 +187,7 @@ public class TreeStateController
 			final Preferences startNode = preferencesService.getRootNode().node(ConfigurationScope.SCOPE).node(statableTree.getID());
 
 			final Timer expandTreeItemTimer = new Timer();
+
 			expandTreeItemTimerTask = new TimerTask() {
 				@Override
 				public void run() {
@@ -187,17 +198,10 @@ public class TreeStateController
 								public void run() {
 									if (tree != null && !tree.isDisposed()) {
 										for (TreeItem treeItem : tree.getItems()) {
-											boolean isExpanded = startNode.getInt(treeItem.getText(), 0) == 1;
-											if (isExpanded) {
-												sendEventExpandTreeItem(treeItem);
-
-												Preferences node = startNode.node(treeItem.getText());
-												loadSubTreeState(treeItem, node);
-											}
+											loadTreeItemState(treeItem, startNode);
 										}
-
+										
 										totalTryingTime += nextTryingToGetTreeItemsTime;
-										loadTreeState(tree);
 									}
 								}
 							});
@@ -210,18 +214,34 @@ public class TreeStateController
 				}
 			};
 
-			expandTreeItemTimer.schedule(expandTreeItemTimerTask, nextTryingToGetTreeItemsTime);
+			expandTreeItemTimer.scheduleAtFixedRate(expandTreeItemTimerTask, 0, nextTryingToGetTreeItemsTime);
 		}
 	}
 
-	private void loadSubTreeState(TreeItem parentItem, Preferences parentNode) {
+	private long totalTryingTime;
+	private TimerTask expandTreeItemTimerTask;
+	private long nextTryingToGetTreeItemsTime; 
+	private long totalTryingToGetTreeItemsTime;
+	private void loadTreeItemState(TreeItem treeItem, Preferences parentNode) {
+		boolean isExpanded = parentNode.getInt(treeItem.getText(), 0) == 1;
+		if (isExpanded) {
+			sendEventExpandTreeItem(treeItem);
+
+			Preferences subNode = parentNode.node(treeItem.getText());
+			loadSubTreeItemState(treeItem, subNode);
+		}
+	}
+	
+	private void loadSubTreeItemState(TreeItem parentItem, Preferences parentNode) {
 		if (!parentItem.isDisposed()) {
 			for (TreeItem subTreeItem : parentItem.getItems()) {
 				Preferences subNode = parentNode.node(subTreeItem.getText());
 				boolean isExpanded = parentNode.getInt(subTreeItem.getText(), 0) == 1;
 				if (isExpanded) {
 					sendEventExpandTreeItem(subTreeItem);
-					loadSubTreeState(subTreeItem, subNode);
+					
+					if (!collapsedItems.contains(subTreeItem))
+						loadSubTreeItemState(subTreeItem, subNode);
 				}
 			}
 		}
@@ -233,7 +253,7 @@ public class TreeStateController
 			Event event = new Event();
 			event.type = SWT.Expand;
 			event.item = item;
-			event.widget = item.getParent();
+			event.widget = item;
 			Method method;
 			try {
 				method = Widget.class.getDeclaredMethod("sendEvent", new Class[] {int.class, Event.class});
