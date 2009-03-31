@@ -1,5 +1,6 @@
 package org.nightlabs.eclipse.ui.treestate;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -101,6 +102,11 @@ public class TreeStateController
 
 		IScopeContext context = new ConfigurationScope();
 		IEclipsePreferences rootNode = context.getNode(statableTree.getID());
+		File file = new File(rootNode.absolutePath());
+		if (file.exists()) {
+			file.delete();
+		}
+		
 		if (rootNode != null) {
 			try {
 				rootNode.clear();
