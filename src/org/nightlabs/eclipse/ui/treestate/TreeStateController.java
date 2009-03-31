@@ -86,12 +86,10 @@ public class TreeStateController
 		statableTree.getTree().addTreeListener(new TreeAdapter() {
 			@Override
 			public void treeCollapsed(TreeEvent e) {
-				Tree tree = (Tree)e.getSource();
 				TreeItem item = (TreeItem) e.item;
 				collapsedItems.add(item);
 				for (TreeItem child : item.getItems()) {
-					collapsedItems.add(item);
-					addCollapsedChildItems(item);
+					addCollapsedChildItems(child);
 				}
 			}
 		});
