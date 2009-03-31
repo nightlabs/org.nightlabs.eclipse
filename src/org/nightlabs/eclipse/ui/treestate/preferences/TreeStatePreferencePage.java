@@ -7,6 +7,7 @@ import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.nightlabs.eclipse.ui.treestate.resource.Messages;
 
 public class TreeStatePreferencePage 
 extends FieldEditorPreferencePage
@@ -24,11 +25,11 @@ implements IWorkbenchPreferencePage
 	@Override
 	protected void createFieldEditors() {
 		enableState = new BooleanFieldEditor(Preferences.PREFERENCE_ENABLE_STATE,
-				"Enable",
+				Messages.getString("org.nightlabs.eclipse.ui.treestate.preferences.TreeStatePreferencePage.button.enable.text"), //$NON-NLS-1$
 				getFieldEditorParent());
 
 		relativeTime = new IntegerFieldEditor(Preferences.PREFERENCE_RELATIVE_TIME,
-				"Relative time(1-100000 milliseconds)",
+				Messages.getString("org.nightlabs.eclipse.ui.treestate.preferences.TreeStatePreferencePage.field.relativeTime.text"), //$NON-NLS-1$
 				getFieldEditorParent());
 		relativeTime.setValidRange(1, 100000);
 		relativeTime.setTextLimit(6);
@@ -36,7 +37,7 @@ implements IWorkbenchPreferencePage
 				Preferences.PREFERENCE_RELATIVE_TIME));
 
 		absoluteTime = new IntegerFieldEditor(Preferences.PREFERENCE_ABSOLUTE_TIME,
-				"Absolute time(1-100000 milliseconds)",
+				Messages.getString("org.nightlabs.eclipse.ui.treestate.preferences.TreeStatePreferencePage.field.absoluteTime.text"), //$NON-NLS-1$
 				getFieldEditorParent());
 		absoluteTime.setValidRange(1, 100000);
 		absoluteTime.setTextLimit(6);
@@ -61,7 +62,7 @@ implements IWorkbenchPreferencePage
 	protected void checkState() {
 		super.checkState();
 		if (absoluteTime.getIntValue() < relativeTime.getIntValue()) {
-			setErrorMessage("The absolute time should have value greater than the relative time.");       
+			setErrorMessage(Messages.getString("org.nightlabs.eclipse.ui.treestate.preferences.TreeStatePreferencePage.errorMessage.relativeTimeBiggerThanAbsoluteTime"));        //$NON-NLS-1$
 			setValid(false); 
 		} 
 		else { 
