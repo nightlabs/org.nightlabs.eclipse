@@ -116,22 +116,27 @@ public class TreeStateController
 		}
 	}
 
-	private void saveTreeItemState(TreeItem treeItem, Preferences currentNode) {
+	private void saveTreeItemState(TreeItem currentTreeItem, Preferences currentNode) {
 		try {
 			currentNode.clear();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 		
-		if (!treeItem.getExpanded())
+		if (!currentTreeItem.getExpanded()) {
 			return;
-
-		currentNode.put(treeItem.getText(), "1"); // treeItem.getExpanded()?"1":"0");
+		}
 		
-		for (TreeItem subTreeItem : treeItem.getItems()) {
-			Preferences node = currentNode.node(treeItem.getText());
-
-			saveTreeItemState(subTreeItem, node);
+		currentNode.put(currentTreeItem.getText(), "1"); // treeItem.getExpanded()?"1":"0");
+		try {
+			currentNode.sync();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		
+		for (TreeItem subTreeItem : currentTreeItem.getItems()) {
+			Preferences newNode = currentNode.node(currentTreeItem.getText());			
+			saveTreeItemState(subTreeItem, newNode);
 		}
 	}
 
