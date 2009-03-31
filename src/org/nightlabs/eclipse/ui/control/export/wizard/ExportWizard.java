@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbench;
 import org.nightlabs.eclipse.ui.control.export.FocusHistory;
 import org.nightlabs.eclipse.ui.control.export.OpenCSVUtil;
+import org.nightlabs.eclipse.ui.control.export.resource.Messages;
 
 /**
  * @author Chairat Kongarayawetchakun - chairat [AT] nightlabs [DOT] de
@@ -26,12 +27,12 @@ public class ExportWizard extends Wizard
 
 	@Override
 	public void addPages() {
-		setWindowTitle("Export");
+		setWindowTitle(Messages.getString("org.nightlabs.eclipse.ui.control.export.wizard.ExportWizard.wizard.windowTitle")); //$NON-NLS-1$
 
-		optionPage = new ExportOptionWizardPage("Option Page");
+		optionPage = new ExportOptionWizardPage(Messages.getString("org.nightlabs.eclipse.ui.control.export.wizard.ExportWizard.optionPage.title")); //$NON-NLS-1$
 		addPage(optionPage);
 
-		previewPage = new ExportPreviewWizardPage("Preview Page");
+		previewPage = new ExportPreviewWizardPage(Messages.getString("org.nightlabs.eclipse.ui.control.export.wizard.ExportWizard.previewPage.title")); //$NON-NLS-1$
 		addPage(previewPage);
 	}
 

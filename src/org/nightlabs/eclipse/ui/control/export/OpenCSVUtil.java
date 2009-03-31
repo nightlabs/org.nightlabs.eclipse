@@ -10,6 +10,7 @@ import org.nightlabs.eclipse.ui.control.export.model.Cell;
 import org.nightlabs.eclipse.ui.control.export.model.Column;
 import org.nightlabs.eclipse.ui.control.export.model.Container;
 import org.nightlabs.eclipse.ui.control.export.model.Item;
+import org.nightlabs.eclipse.ui.control.export.resource.Messages;
 
 import au.com.bytecode.opencsv.CSVWriter;
 
@@ -41,7 +42,7 @@ public class OpenCSVUtil
 		List<String> columnNames = new ArrayList<String>();
 
 		if (control instanceof Tree) {
-			columnNames.add("Level");
+			columnNames.add(Messages.getString("org.nightlabs.eclipse.ui.control.export.OpenCSVUtil.column.level.name")); //$NON-NLS-1$
 		}
 
 		for (Column column : columns) {

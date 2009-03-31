@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.Widget;
+import org.nightlabs.eclipse.ui.control.export.resource.Messages;
 
 public class FocusHistory {
 	private static volatile FocusHistory _sharedInstance = null;
@@ -33,7 +34,7 @@ public class FocusHistory {
 	protected static void assertUIThread()
 	{
 		if (Display.getCurrent() == null)
-			throw new IllegalStateException("Wrong thread! This method must be called on the SWT UI thread!!!");
+			throw new IllegalStateException("Wrong thread! This method must be called on the SWT UI thread!!!"); //$NON-NLS-1$
 	}
 
 	public void addFocusedWidget(Widget widget) {

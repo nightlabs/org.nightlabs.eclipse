@@ -13,3 +13,4 @@ Bundle-ClassPath: lib/opencsv-1.8.jar,
 Export-Package: org.nightlabs.eclipse.ui.control.export,
  org.nightlabs.eclipse.ui.control.export.copy,
  org.nightlabs.eclipse.ui.control.export.model
+Bundle-Localization: plugin

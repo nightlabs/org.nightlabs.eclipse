@@ -10,6 +10,7 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.nightlabs.eclipse.ui.control.export.FocusHistory;
+import org.nightlabs.eclipse.ui.control.export.resource.Messages;
 import org.nightlabs.eclipse.ui.control.export.wizard.ExportWizard;
 
 /**
@@ -40,7 +41,7 @@ public class ExportCSVAction implements IWorkbenchWindowActionDelegate {
 			dialog.open();
 		}
 		else {
-			MessageDialog.openWarning(window.getShell(), "Error", "No selected tree/table");
+			MessageDialog.openWarning(window.getShell(), Messages.getString("org.nightlabs.eclipse.ui.control.export.action.ExportCSVAction.errorDialog.title"), Messages.getString("org.nightlabs.eclipse.ui.control.export.action.ExportCSVAction.errorDialog.message")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 

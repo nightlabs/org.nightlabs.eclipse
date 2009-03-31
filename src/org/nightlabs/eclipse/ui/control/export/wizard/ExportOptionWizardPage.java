@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.nightlabs.eclipse.ui.control.export.resource.Messages;
 
 /**
  * @author Chairat Kongarayawetchakun - chairat [AT] nightlabs [DOT] de
@@ -44,8 +45,8 @@ extends WizardPage
 
 	protected ExportOptionWizardPage(String pageName) {
 		super(pageName);
-		setTitle("Option");
-		setDescription("Description");
+		setTitle(Messages.getString("org.nightlabs.eclipse.ui.control.export.wizard.ExportOptionWizardPage.page.title")); //$NON-NLS-1$
+		setDescription(Messages.getString("org.nightlabs.eclipse.ui.control.export.wizard.ExportOptionWizardPage.page.description")); //$NON-NLS-1$
 	}
 
 	@Override
@@ -54,21 +55,20 @@ extends WizardPage
 		final GridLayout gridLayout = new GridLayout();
 		container.setLayout(gridLayout);
 
-		new Label(container, SWT.NONE).setText("Selected separator:");
+		Composite wrapper = new Composite(container, SWT.NONE);
+		wrapper.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		wrapper.setLayout(new GridLayout(2, false));
 
-		separatorCombo = new Combo(container, SWT.DROP_DOWN);
-
+		separatorCombo = new Combo(wrapper, SWT.DROP_DOWN);
 		for (char c : DEFAULT_SEPARATORS) {
 			if (c == TAB)
-				separatorCombo.add("[TAB]");
+				separatorCombo.add(Messages.getString("org.nightlabs.eclipse.ui.control.export.wizard.ExportOptionWizardPage.3")); //$NON-NLS-1$
 			else if (c == SPACE)
-				separatorCombo.add("[SPACE]");
+				separatorCombo.add(Messages.getString("org.nightlabs.eclipse.ui.control.export.wizard.ExportOptionWizardPage.4")); //$NON-NLS-1$
 			else
 				separatorCombo.add(Character.toString(c));
 		}
-
 		separatorCombo.select(0);
-
 		GridData gridData = new GridData();
 		separatorCombo.setLayoutData(gridData);
 		separatorCombo.addModifyListener(new ModifyListener() {
@@ -77,11 +77,10 @@ extends WizardPage
 				getContainer().updateButtons();
 			}
 		});
-
 		separatorCombo.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (separatorCombo.getText() != null && !separatorCombo.getText().equals("")) {
+				if (separatorCombo.getText() != null && !separatorCombo.getText().equals("")) { //$NON-NLS-1$
 					String seperatorString = Character.toString(separatorCombo.getText().charAt(0));
 					separatorCombo.setText(seperatorString);
 				}
@@ -89,8 +88,13 @@ extends WizardPage
 			}
 		});
 
-		showPreviewDataButton = new Button(container, SWT.CHECK);
-		showPreviewDataButton.setText("Show exported preview data");
+		new Label(wrapper, SWT.NONE).setText(Messages.getString("org.nightlabs.eclipse.ui.control.export.wizard.ExportOptionWizardPage.label.separator.text")); //$NON-NLS-1$
+
+		Composite previewWrapper = new Composite(container, SWT.NONE);
+		previewWrapper.setLayout(new GridLayout());
+		previewWrapper.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		showPreviewDataButton = new Button(previewWrapper, SWT.CHECK);
+		showPreviewDataButton.setText(Messages.getString("org.nightlabs.eclipse.ui.control.export.wizard.ExportOptionWizardPage.button.showPreviewData.text")); //$NON-NLS-1$
 		showPreviewDataButton.setSelection(true);
 		showPreviewDataButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -105,7 +109,7 @@ extends WizardPage
 		fileLocationComposite.setLayout(gridLayout2);
 		fileLocationComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		new Label(fileLocationComposite, SWT.NONE).setText("Save Location: ");
+		new Label(fileLocationComposite, SWT.NONE).setText(Messages.getString("org.nightlabs.eclipse.ui.control.export.wizard.ExportOptionWizardPage.label.saveLocation.text")); //$NON-NLS-1$
 
 		fileText = new Text(fileLocationComposite, SWT.BORDER);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
@@ -127,13 +131,13 @@ extends WizardPage
 		fileText.setFocus();
 		
 		Button browseButton = new Button(fileLocationComposite, SWT.PUSH);
-		browseButton.setText("Browse");
+		browseButton.setText(Messages.getString("org.nightlabs.eclipse.ui.control.export.wizard.ExportOptionWizardPage.button.browse.text")); //$NON-NLS-1$
 		browseButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				FileDialog dialog = new FileDialog(getShell(), SWT.NULL);
 				String result = dialog.open();
-				fileText.setText(result == null? "": result);
+				fileText.setText(result == null? "": result); //$NON-NLS-1$
 			}
 		});
 
@@ -147,12 +151,12 @@ extends WizardPage
 
 		if (getSeparator() == null) { //$NON-NLS-1$
 			result = false;
-			setErrorMessage("Please enter a seperator character.");
+			setErrorMessage(Messages.getString("org.nightlabs.eclipse.ui.control.export.wizard.ExportOptionWizardPage.errorMessage.noSeparator")); //$NON-NLS-1$
 		}
 
-		if (fileText.getText() == null || fileText.getText().equals("")) {
+		if (fileText.getText() == null || fileText.getText().equals("")) { //$NON-NLS-1$
 			result = false;
-			setErrorMessage("Please select the location & name the file you want to save.");
+			setErrorMessage(Messages.getString("org.nightlabs.eclipse.ui.control.export.wizard.ExportOptionWizardPage.errorMessage.noLocation")); //$NON-NLS-1$
 		}
 
 		return result;
@@ -161,7 +165,7 @@ extends WizardPage
 	@Override
 	public boolean canFlipToNextPage() {
 		boolean result = true;
-		if (showPreviewDataButton.getSelection() == false || fileText.getText() == null || fileText.getText().equals("")) {
+		if (showPreviewDataButton.getSelection() == false || fileText.getText() == null || fileText.getText().equals("")) { //$NON-NLS-1$
 			result = false;
 		}
 
@@ -169,7 +173,7 @@ extends WizardPage
 	}
 
 	public Character getSeparator() {
-		if (separatorCombo.getText() == null || separatorCombo.getText().equals(""))
+		if (separatorCombo.getText() == null || separatorCombo.getText().equals("")) //$NON-NLS-1$
 			return DEFAULT_SEPARATORS[0];
 		return separatorCombo.getText().toCharArray()[0];
 	}

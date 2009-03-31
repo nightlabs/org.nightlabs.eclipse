@@ -7,6 +7,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
+import org.nightlabs.eclipse.ui.control.export.resource.Messages;
 
 /**
  * @author Chairat Kongarayawetchakun - chairat[at]nightlabs[dot]de
@@ -39,7 +40,7 @@ public class ExportPrinterAction implements IWorkbenchWindowActionDelegate {
 	 */
 	@Override
 	public void run(IAction action) {
-		System.out.println("Print");
+		System.out.println("Print"); //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)

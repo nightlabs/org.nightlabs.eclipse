@@ -11,6 +11,7 @@ import org.eclipse.ui.IStartup;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.nightlabs.eclipse.ui.control.export.FocusHistory;
+import org.nightlabs.eclipse.ui.control.export.resource.Messages;
 
 public class Startup
 implements IStartup
@@ -26,7 +27,7 @@ implements IStartup
 		public void handleEvent(Event e) {
 			Widget widget = e.widget;
 			if (logger.isDebugEnabled())
-				logger.debug("focusInListener.run: widgetClass="+ (widget == null ? null : widget.getClass().getName()) +" widgetIdentity=" + Integer.toHexString(System.identityHashCode(widget)) + " widget=" + widget);
+				logger.debug("focusInListener.run: widgetClass="+ (widget == null ? null : widget.getClass().getName()) +" widgetIdentity=" + Integer.toHexString(System.identityHashCode(widget)) + " widget=" + widget); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 			FocusHistory.sharedInstance().addFocusedWidget(widget);
 		}

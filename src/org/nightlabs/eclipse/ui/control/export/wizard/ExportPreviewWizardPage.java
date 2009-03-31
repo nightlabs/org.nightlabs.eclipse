@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.Widget;
 import org.nightlabs.eclipse.ui.control.export.FocusHistory;
 import org.nightlabs.eclipse.ui.control.export.copy.WidgetCopyUtil;
+import org.nightlabs.eclipse.ui.control.export.resource.Messages;
 
 /**
  * @author Chairat Kongarayawetchakun - chairat [AT] nightlabs [DOT] de
@@ -22,8 +23,8 @@ public class ExportPreviewWizardPage extends WizardPage {
 
 	protected ExportPreviewWizardPage(String pageName) {
 		super(pageName);
-		setTitle("Preview");
-		setDescription("Description");
+		setTitle(Messages.getString("org.nightlabs.eclipse.ui.control.export.wizard.ExportPreviewWizardPage.title")); //$NON-NLS-1$
+		setDescription(Messages.getString("org.nightlabs.eclipse.ui.control.export.wizard.ExportPreviewWizardPage.description")); //$NON-NLS-1$
 	}
 
 	@Override
