@@ -25,7 +25,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.swt.widgets.Widget;
-import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
 /**
@@ -88,14 +87,11 @@ public class TreeStateController
 			@Override
 			public void treeCollapsed(TreeEvent e) {
 				Tree tree = (Tree)e.getSource();
-				if (tree.getSelection().length > 0) {
-					TreeItem collapsedTreeItem = tree.getSelection()[0];
-					collapsedItems.add(collapsedTreeItem);
-					
-					for (TreeItem item : collapsedTreeItem.getItems()) {
-						collapsedItems.add(item);
-						addCollapsedChildItems(item);
-					}
+				TreeItem item = (TreeItem) e.item;
+				collapsedItems.add(item);
+				for (TreeItem child : item.getItems()) {
+					collapsedItems.add(item);
+					addCollapsedChildItems(item);
 				}
 			}
 		});
@@ -198,9 +194,12 @@ public class TreeStateController
 								public void run() {
 									if (tree != null && !tree.isDisposed()) {
 										for (TreeItem treeItem : tree.getItems()) {
-											loadTreeItemState(treeItem, startNode);
+											if (!collapsedItems.contains(treeItem)) {
+												loadTreeItemState(treeItem, startNode);	
+											} else {
+//												System.out.println("Skipped TreeItem "+treeItem+" because already collapsed by the user");
+											}
 										}
-										
 										totalTryingTime += nextTryingToGetTreeItemsTime;
 									}
 								}
@@ -222,11 +221,11 @@ public class TreeStateController
 	private TimerTask expandTreeItemTimerTask;
 	private long nextTryingToGetTreeItemsTime; 
 	private long totalTryingToGetTreeItemsTime;
+	
 	private void loadTreeItemState(TreeItem treeItem, Preferences parentNode) {
 		boolean isExpanded = parentNode.getInt(treeItem.getText(), 0) == 1;
 		if (isExpanded) {
 			sendEventExpandTreeItem(treeItem);
-
 			Preferences subNode = parentNode.node(treeItem.getText());
 			loadSubTreeItemState(treeItem, subNode);
 		}
@@ -240,8 +239,11 @@ public class TreeStateController
 				if (isExpanded) {
 					sendEventExpandTreeItem(subTreeItem);
 					
-					if (!collapsedItems.contains(subTreeItem))
-						loadSubTreeItemState(subTreeItem, subNode);
+					if (!collapsedItems.contains(subTreeItem)) {
+						loadSubTreeItemState(subTreeItem, subNode);	
+					} else {
+//						System.out.println("Skipped TreeItem "+subTreeItem+" because already collapsed by the user");
+					}
 				}
 			}
 		}
