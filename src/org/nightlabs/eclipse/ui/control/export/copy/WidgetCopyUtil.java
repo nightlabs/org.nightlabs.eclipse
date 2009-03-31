@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jface.viewers.ColumnLayoutData;
+import org.eclipse.jface.viewers.ColumnWeightData;
+import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
@@ -31,13 +34,17 @@ public class WidgetCopyUtil
 		List<Column> columns = container.getColumns();
 		List<Item> items = container.getItems();
 
+		TableLayout layout = new TableLayout();
 		for (Column column : columns) {
 			TableColumn tc = new TableColumn(newTable, SWT.NONE);
 			tc.setText(column.getName());
 			if (column.getImageData() != null)
 				tc.setImage(new Image(composite.getDisplay(), column.getImageData()));
-			tc.pack();
+//			tc.pack();
+			ColumnLayoutData data = new ColumnWeightData(1, true);
+			layout.addColumnData(data);
 		}
+		newTable.setLayout(layout);
 
 		for (Item item : items) {
 			TableItem ti = new TableItem(newTable, SWT.NONE);
@@ -48,7 +55,8 @@ public class WidgetCopyUtil
 					ti.setImage(i, new Image(composite.getDisplay(), cells.get(i).getImageData()));
 			}
 		}
-		newTable.setHeaderVisible(true);
+		newTable.setHeaderVisible(oldTable.getHeaderVisible());
+		newTable.setLinesVisible(oldTable.getLinesVisible());
 		return newTable;
 	}
 
@@ -61,14 +69,19 @@ public class WidgetCopyUtil
 		List<Column> columns = container.getColumns();
 		List<Item> items = container.getItems();
 
+		TableLayout layout = new TableLayout();
 		for (Column column : columns) {
 			TreeColumn newTreeColumn = new TreeColumn(newTree, SWT.NONE);
 			newTreeColumn.setText(column.getName());
 			if (column.getImageData() != null)
 				newTreeColumn.setImage(new Image(composite.getDisplay(), column.getImageData()));
 
-			newTreeColumn.pack();
+			ColumnLayoutData columnData = new ColumnWeightData(1, true);
+			layout.addColumnData(columnData);
 		}
+		newTree.setHeaderVisible(oldTree.getHeaderVisible());
+		newTree.setLinesVisible(oldTree.getLinesVisible());
+		newTree.setLayout(layout);
 
 		Map<Integer, TreeItem> lastParentTreeItemMap = new HashMap<Integer, TreeItem>();
 		for (Item item : items) {

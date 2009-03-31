@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
+import org.nightlabs.eclipse.ui.control.export.resource.Messages;
 
 public class Container
 {
@@ -30,7 +31,7 @@ public class Container
 		extractElements(control);
 	}
 
-	private static Column DEFAULT_COLUMN = new Column("Default", null);
+	private static Column DEFAULT_COLUMN = new Column(Messages.getString("org.nightlabs.eclipse.ui.control.export.model.Container.column.default.name"), null); //$NON-NLS-1$
 	private void extractColumns(Control control) {
 		columns.clear();
 
