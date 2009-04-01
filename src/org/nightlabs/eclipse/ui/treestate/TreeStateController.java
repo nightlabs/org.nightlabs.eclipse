@@ -2,6 +2,7 @@ package org.nightlabs.eclipse.ui.treestate;
 
 import java.io.File;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -9,6 +10,7 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.eclipse.core.internal.preferences.PreferencesOSGiUtils;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
@@ -107,10 +109,6 @@ public class TreeStateController
 
 		IScopeContext context = new ConfigurationScope();
 		IEclipsePreferences rootNode = context.getNode(statableTree.getID());
-		File file = new File(rootNode.absolutePath());
-		if (file.exists()) {
-			file.delete();
-		}
 		
 		if (rootNode != null) {
 			try {
@@ -131,6 +129,7 @@ public class TreeStateController
 	private void saveTreeItemState(TreeItem currentTreeItem, Preferences parentNode) {
 		try {
 			parentNode.node(currentTreeItem.getText()).clear();
+			parentNode.flush();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
