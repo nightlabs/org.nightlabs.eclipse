@@ -128,7 +128,10 @@ public class TreeStateController
 
 	private void saveTreeItemState(TreeItem currentTreeItem, Preferences parentNode) {
 		try {
-			parentNode.node(currentTreeItem.getText()).clear();
+			Preferences node = parentNode.node(currentTreeItem.getText());
+			if (node != null) {
+				node.removeNode();
+			}
 			parentNode.flush();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
