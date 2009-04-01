@@ -110,6 +110,11 @@ public class TreeStateController
 		IScopeContext context = new ConfigurationScope();
 		IEclipsePreferences rootNode = context.getNode(statableTree.getID());
 		
+		File preferencesFile = context.getLocation().append("/.settings").append(statableTree.getID()).addFileExtension("prefs").toFile();
+		if (preferencesFile.exists()) {
+			preferencesFile.delete();
+		}
+		
 		if (rootNode != null) {
 			try {
 				rootNode.clear();
