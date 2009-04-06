@@ -32,6 +32,7 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -523,4 +524,15 @@ public class I18nTextEditor extends XComposite implements II18nTextEditor
 			listener.modificationFinished(event);
 		}
 	}
+	
+	@Override
+	public void addFocusListener(FocusListener listener) {
+		text.addFocusListener(listener);
+	}
+	
+	@Override
+	public void removeFocusListener(FocusListener listener) {
+		text.removeFocusListener(listener);
+	}
+
 }
