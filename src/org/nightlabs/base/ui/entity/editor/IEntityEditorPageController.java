@@ -58,7 +58,6 @@ import org.nightlabs.progress.ProgressMonitor;
 public interface IEntityEditorPageController
 extends IDirtyStateManager
 {
-
 	/**
 	 * Get the identifier of the controller.
 	 *
@@ -134,7 +133,6 @@ extends IDirtyStateManager
 	 * Called when the editor of this controller gets the focus.
 	 */
 	void editorFocussed();
-	
 	
 	/**
 	 * Adds a new {@link IEntityEditorPageControllerModifyListener} to this controller.
