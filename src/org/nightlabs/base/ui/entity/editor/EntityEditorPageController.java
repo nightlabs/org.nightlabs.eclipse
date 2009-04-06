@@ -41,6 +41,9 @@ import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.forms.AbstractFormPart;
+import org.eclipse.ui.forms.IFormPart;
 import org.eclipse.ui.forms.editor.IFormPage;
 import org.nightlabs.base.ui.exceptionhandler.ExceptionHandlerRegistry;
 import org.nightlabs.base.ui.job.Job;
@@ -57,18 +60,18 @@ import org.nightlabs.progress.ProgressMonitor;
  * This base class allows to schedule a job when the controller is created, so that when the
  * page is shown and needs to access the controller's data it might be
  * already (partially) loaded.</p>
- * 
+ *
  * <p>The loading job can be started at any time via {@link #startLoadJob()}
  * or you can use the constructor {@link #EntityEditorPageController(boolean)}</p>
- * 
+ *
  * <p>If a thread needs to access this controllers data it should
  * use the {@link #load(ProgressMonitor)} method instead of invoking
  * {@link IEntityEditorPageController#doLoad(ProgressMonitor)} directly.</p>
- * 
+ *
  * <p>{@link EntityEditorPageController} extends {@link PropertyChangeSupport} and will
  * pass the {@link EntityEditor} this controller was created with as source to
  * all property change listeners.</p>
- * 
+ *
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  *
  */
@@ -76,13 +79,13 @@ public abstract class EntityEditorPageController
 implements IEntityEditorPageController
 {
 	private static final Logger logger = Logger.getLogger(EntityEditorPageController.class);
-	
+
 	/**
 	 * The entityEditor controller this page controller is registered to.
 	 * Used to put the loadJob in the entityEditor controllers job pool.
 	 */
 	private EntityEditorController editorController;
-	
+
 	private ListenerList listeners = new ListenerList();
 
 	/**
@@ -92,12 +95,12 @@ implements IEntityEditorPageController
 	 * of its end by the controller's {@link EntityEditorPageController#mutex}.
 	 */
 	public static class LoadJob extends Job {
-		
+
 		private EntityEditorPageController controller;
 		private CompoundProgressMonitor cMonitor;
 		private Throwable loadException;
 		private boolean loaded = false;
-		
+
 		public LoadJob(EntityEditorPageController controller) {
 			super(Messages.getString("org.nightlabs.base.ui.entity.editor.EntityEditorPageController.LoadJob.name")); //$NON-NLS-1$
 			this.controller = controller;
@@ -110,6 +113,26 @@ implements IEntityEditorPageController
 				controller.doLoad(cMonitor);
 				controller.setLoaded(true);
 				this.loaded = true;
+
+				// TODO is it clean to call refresh here? Before, it wasn't called at all, but in order to make the load process symmetric to the save process (when commit is called),
+				// we should call refresh, too. Kai & Marco.
+				// Maybe we should be even more Eclipse-complient and work with IManagedForm.setInput(...) additionally to refresh() and commit(...). Daniel.
+				// Needs further thoughts and discussions. For example, the EntityEditorPageController (or an interface/superclass of it) should return the input-object for this purpose. Marco.
+				Display.getDefault().syncExec(new Runnable() {
+					public void run() {
+						for (IFormPage page : controller.getPages()) {
+							for (IFormPart part : page.getManagedForm().getParts()) {
+								if (part instanceof AbstractFormPart)
+									((AbstractFormPart)part).markStale();
+							}
+
+							page.getManagedForm().refresh(); // This checks whether the part is stale and of course it isn't.
+//							for (IFormPart part : page.getManagedForm().getParts()) {
+//								part.refresh();
+//							}
+						}
+					}
+				});
 			} catch (Throwable t) {
 				logger.error("LoadJob failed!", t); //$NON-NLS-1$
 				// Workaround as we can not get a grip of exceptions within jobs
@@ -125,15 +148,15 @@ implements IEntityEditorPageController
 			}
 			return Status.OK_STATUS;
 		}
-		
+
 		public CompoundProgressMonitor getCompoundProgressMonitor() {
 			return cMonitor;
 		}
-		
+
 		public Throwable getLoadException() {
 			return loadException;
 		}
-		
+
 		public boolean isLoaded() {
 			return loaded;
 		}
@@ -152,34 +175,34 @@ implements IEntityEditorPageController
 	{
 		return this.getClass().getName() + '@' + System.identityHashCode(this);
 	}
-	
+
 	@Override
 	public String getName() {
 		return this.getClass().getSimpleName();
 	}
-	
+
 //	/**
 //	 * The page this controller is associated with
 //	 */
 //	private IFormPage page;
-	
+
 	/**
 	 * Stores the loading status
 	 */
 	private boolean loaded = false;
-	
+
 	/**
 	 * Mutex used to synchronise the background load with
 	 * other threads that have to wait for its end.
 	 */
 	private Object mutex = new Object();
-	
+
 	/**
 	 * The load job member. If null, its assumed that no background
 	 * loading will be done by this controller.
 	 */
 	private LoadJob loadJob = null;
-	
+
 	/**
 	 * Whether the load job is currently running
 	 */
@@ -188,14 +211,14 @@ implements IEntityEditorPageController
 	 * Whether the load job is already finished
 	 */
 	private boolean loadJobDone = false;
-	
+
 	/**
 	 * if the controller is dirty or not
 	 */
 	private boolean dirty = false;
 
 	private EntityEditor entityEditor;
-	
+
 	/**
 	 * Create a new page controller that
 	 * will not do background loading.
@@ -203,11 +226,11 @@ implements IEntityEditorPageController
 	public EntityEditorPageController(EntityEditor editor) {
 		this(editor, false);
 	}
-	
+
 	/**
 	 * Create a new {@link EntityEditorController} and
 	 * decide whether to start background loading instantly.
-	 * 
+	 *
 	 * @param startBackgroundLoading Whether to start the load job instantly.
 	 */
 	public EntityEditorPageController(EntityEditor editor, boolean startBackgroundLoading) {
@@ -221,7 +244,7 @@ implements IEntityEditorPageController
 	{
 		return entityEditor;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.nightlabs.base.ui.entity.editor.IEntityEditorPageController#setEntityEditorController(org.nightlabs.base.ui.entity.editor.EntityEditorController)
@@ -241,7 +264,7 @@ implements IEntityEditorPageController
 	public void addPage(IFormPage page) {
 		pages.add(page);
 	}
-	
+
 	/**
 	 * Returns the entityEditor controller this page controller is linked to.
 	 * @return Tthe entityEditor controller this page controller is linked to.
@@ -314,7 +337,7 @@ implements IEntityEditorPageController
 				}
 		}
 	};
-	
+
 //	/**
 //	 * Resets the loaded flag and calls {@link #load(IProgressMonitor)}.
 //	 * @param monitor The monitor to report progress to.
@@ -324,15 +347,15 @@ implements IEntityEditorPageController
 //		load(monitor);
 //		markUndirty();
 //	}
-	
+
 	/**
 	 * <p>Ensures that this controller's {@link IEntityEditorPageController#doLoad(ProgressMonitor)}
 	 * method has fully run and thus the controller is ready for use.</p>
-	 * 
+	 *
 	 * <p>
 	 * This method will first check, if the data already began to load in the
 	 * background. If so, it will 'join' the loading job and wait until its finished.</p>
-	 * 
+	 *
 	 * <p>If the background job was not created or started yet, the data will
 	 * be loaded on the current thread.
 	 * <p>Note that invoking this form the gui thread will cause a blocking
@@ -377,7 +400,7 @@ implements IEntityEditorPageController
 			throw new RuntimeException("Loading entity failed", e); //$NON-NLS-1$
 		}
 	}
-	
+
 	/**
 	 * Determines if the controller is dirty,
 	 * once the page or one of the pages were dirty the controller
@@ -398,12 +421,12 @@ implements IEntityEditorPageController
 	/**
 	 * removes the dirty state, after calling this method
 	 * {@link #isDirty()} returns false
-	 * 
+	 *
 	 */
 	public void markUndirty() {
 		dirty = false;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 * <p>
@@ -460,7 +483,7 @@ implements IEntityEditorPageController
 
 	/**
 	 * Remove the given {@link IEntityEditorPageControllerModifyListener} from this controller.
-	 * 
+	 *
 	 * @param listener The listener to remove.
 	 */
 	public void removeModifyListener(IEntityEditorPageControllerModifyListener listener) {
@@ -471,7 +494,7 @@ implements IEntityEditorPageController
 
 	/**
 	 * Use this to notify all listeners of a changed object.
-	 * 
+	 *
 	 * @param oldObject The old object value.
 	 * @param newObject The new object value.
 	 */
@@ -479,13 +502,13 @@ implements IEntityEditorPageController
 	{
 		fireModifyEvent(oldObject, newObject, true);
 	}
-	
+
 	/**
 	 * The <code>resetDirtyState</code> is set to <code>true</code> when a new Object has been loaded
 	 * (fetched form the Cache /server) and <code>false</code> if local changes have been made to the
 	 * model from another page or another section, which needs the GUI to reflect these changes and
 	 * still keep the old dirty state.
-	 * 
+	 *
 	 * @param oldObject The old object value.
 	 * @param newObject The new object value.
 	 * @param resetDirtyState whether or not the UI elements (page, sections) should reset their dirty
@@ -502,6 +525,6 @@ implements IEntityEditorPageController
 			((IEntityEditorPageControllerModifyListener) listener).controllerObjectModified(lastModifyEvent);
 		}
 	}
-	
+
 }
-	
+
