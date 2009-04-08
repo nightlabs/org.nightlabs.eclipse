@@ -121,15 +121,13 @@ implements IEntityEditorPageController
 				Display.getDefault().syncExec(new Runnable() {
 					public void run() {
 						for (IFormPage page : controller.getPages()) {
-							for (IFormPart part : page.getManagedForm().getParts()) {
-								if (part instanceof AbstractFormPart)
-									((AbstractFormPart)part).markStale();
+							if (page != null && page.getManagedForm() != null) {
+								for (IFormPart part : page.getManagedForm().getParts()) {
+									if (part instanceof AbstractFormPart)
+										((AbstractFormPart)part).markStale();
+								}
+								page.getManagedForm().refresh(); // This checks whether the part is stale and of course it isn't.
 							}
-
-							page.getManagedForm().refresh(); // This checks whether the part is stale and of course it isn't.
-//							for (IFormPart part : page.getManagedForm().getParts()) {
-//								part.refresh();
-//							}
 						}
 					}
 				});
