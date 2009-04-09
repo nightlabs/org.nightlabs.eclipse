@@ -58,6 +58,8 @@ public class GroupedContentComposite extends XComposite {
 	private List<GroupedContentProvider> groupedContentProviders = new ArrayList<GroupedContentProvider>();
 	private Map<GroupedContentProvider, Composite> providerComposites = new HashMap<GroupedContentProvider, Composite>();
 	
+	private GroupedContentProvider selectedContentProvider;
+	
 	private ISelectionChangedListener switcherListener = new ISelectionChangedListener() {
 		public void selectionChanged(SelectionChangedEvent event) {
 			IStructuredSelection selection = (IStructuredSelection)switcherTable.getSelection();
@@ -132,6 +134,7 @@ public class GroupedContentComposite extends XComposite {
 		}
 		contentStackLayout.topControl = providerComp;
 		contentWrapper.layout(true, true); // TODO true, true necessary?
+		selectedContentProvider = contentProvider;
 	}
 	
 	/**
@@ -147,5 +150,12 @@ public class GroupedContentComposite extends XComposite {
 			switcherTable.select(0);
 			selectContentProvider(groupedContentProviders.get(0));
 		}
+	}
+	
+	/**
+	 * @return The currently selected {@link GroupedContentProvider} from the switcher table.
+	 */
+	public GroupedContentProvider getSelectedContentProvider() {
+		return selectedContentProvider;
 	}
 }
