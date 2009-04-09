@@ -179,13 +179,14 @@ public class OverviewPage extends PreferencePage implements IWorkbenchPreference
 			return new String[0];
 		String myPageId = getMyPageId();
 		PreferenceDialog dlg = (PreferenceDialog)getContainer();
-		IPreferenceNode myNode = dlg.getPreferenceManager().find(myPageId);
+//		IPreferenceNode myNode = dlg.getPreferenceManager().find(myPageId);
+		IPreferenceNode myNode = findNodeMatching(myPageId);
 		if(myNode == null)
 			return new String[0];
 		IPreferenceNode[] subNodes = myNode.getSubNodes();
 		String[] result = new String[subNodes.length];
 		for (int i = 0; i < subNodes.length; i++)
-	    result[i] = subNodes[i].getId();
+			result[i] = subNodes[i].getId();
 		return result;
 	}
 
@@ -201,7 +202,7 @@ public class OverviewPage extends PreferencePage implements IWorkbenchPreference
 	}
 
 	@SuppressWarnings("unchecked")
-  private String getMyPageId()
+	private String getMyPageId()
 	{
 		if(!(getContainer() instanceof PreferenceDialog))
 			return null;
