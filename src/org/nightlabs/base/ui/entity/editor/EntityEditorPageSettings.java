@@ -58,6 +58,12 @@ public class EntityEditorPageSettings implements Comparable<EntityEditorPageSett
 	 */
 	private int indexHint;
 	
+	public EntityEditorPageSettings(String editorID, int indexHint, IEntityEditorPageFactory factory) {
+		this.editorID = editorID;
+		this.indexHint = indexHint;
+		this.pageFactory = factory;
+	}
+	
 	/**
 	 * Create an instance of EntityEditorPageSettings for
 	 * an extension point entry.

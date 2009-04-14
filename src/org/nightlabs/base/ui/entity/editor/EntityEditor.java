@@ -27,7 +27,7 @@
 package org.nightlabs.base.ui.entity.editor;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.LinkedList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -45,6 +45,7 @@ import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.composite.Fadeable;
 import org.nightlabs.base.ui.editor.CommitableFormEditor;
 import org.nightlabs.base.ui.entity.EntityEditorRegistry;
+import org.nightlabs.base.ui.entity.editor.overview.OverviewPageFactory;
 import org.nightlabs.base.ui.job.FadeableCompositeJob;
 import org.nightlabs.base.ui.job.Job;
 import org.nightlabs.base.ui.progress.ProgressMonitorWrapper;
@@ -101,6 +102,8 @@ public class EntityEditor extends CommitableFormEditor
 		}
 	};
 	
+	private boolean showOverviewPage = false;
+	
 	public EntityEditor()
 	{	}
 	
@@ -130,7 +133,6 @@ public class EntityEditor extends CommitableFormEditor
 		}
 		addPageChangedListener(pageChangedListener);
 		selectLastActivePage();
-		
 	}
 	
 	/**
@@ -146,7 +148,13 @@ public class EntityEditor extends CommitableFormEditor
 	 *         for the pages to be displayed in this editor.
 	 */
 	protected List<EntityEditorPageSettings> getPageSettingsOrdered() {
-		return EntityEditorRegistry.sharedInstance().getPageSettingsOrdered(getEditorID());
+		List<EntityEditorPageSettings> pageSettingsOrdered = EntityEditorRegistry.sharedInstance().getPageSettingsOrdered(getEditorID());
+		if (showOverviewPage) {
+			EntityEditorPageSettings overviewPageSettings = new EntityEditorPageSettings(getEditorID(), 
+					0, new OverviewPageFactory());
+			pageSettingsOrdered.add(0, overviewPageSettings);
+		}
+		return pageSettingsOrdered;
 	}
 	
 	/**
@@ -371,13 +379,31 @@ public class EntityEditor extends CommitableFormEditor
 	 * @return all IFormPages attached to this editor.
 	 */
 	public List<IFormPage> getPages() {
-		List<IFormPage> pages = new LinkedList<IFormPage>();
-		for (IEntityEditorPageController pageController : controller.getPageControllers()) {
-			for (IFormPage pageControllerPage : pageController.getPages()) {
-				if (this == pageControllerPage.getEditor())
-					pages.add(pageControllerPage);
-			}
-		}
-		return pages;
+//		List<IFormPage> pages = new LinkedList<IFormPage>();
+//		for (IEntityEditorPageController pageController : controller.getPageControllers()) {
+//			for (IFormPage pageControllerPage : pageController.getPages()) {
+//				if (this == pageControllerPage.getEditor())
+//					pages.add(pageControllerPage);
+//			}
+//		}
+//		return pages;
+		return Arrays.asList(getFormPages());
 	}
+	
+	/**
+	 * Returns the showOverviewPage.
+	 * @return the showOverviewPage
+	 */
+	public boolean isShowOverviewPage() {
+		return showOverviewPage;
+	}
+
+	/**
+	 * Sets the showOverviewPage.
+	 * @param showOverviewPage the showOverviewPage to set
+	 */
+	public void setShowOverviewPage(boolean showOverviewPage) {
+		this.showOverviewPage = showOverviewPage;
+	}
+	
 }
