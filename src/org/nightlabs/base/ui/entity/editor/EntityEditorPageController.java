@@ -121,7 +121,7 @@ implements IEntityEditorPageController
 				Display.getDefault().syncExec(new Runnable() {
 					public void run() {
 						for (IFormPage page : controller.getPages()) {
-							if (page != null && page.getManagedForm() != null) {
+							if (page != null && page.getManagedForm() != null && page.getManagedForm().getToolkit() != null) {
 								for (IFormPart part : page.getManagedForm().getParts()) {
 									if (part instanceof AbstractFormPart)
 										((AbstractFormPart)part).markStale();
