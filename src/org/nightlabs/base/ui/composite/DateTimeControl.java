@@ -388,4 +388,12 @@ public class DateTimeControl extends XComposite {
 		text.setEditable(editable);
 		lookupButton.setEnabled(editable);
 	}
+	
+	/**
+	 * Clears the text & sets date = null
+	 */
+	public void clearDate() {
+		text.setText("");
+		date = null;
+	}
 }
