@@ -63,6 +63,14 @@ public class TimeLengthComposite extends XComposite
 	private long timeLength;
 
 	private boolean displayZeroValues = true;
+	
+	public boolean isDisplayZeroValues() {
+		return displayZeroValues;
+	}
+
+	public void setDisplayZeroValues(boolean displayZeroValues) {
+		this.displayZeroValues = displayZeroValues;
+	}
 
 	/**
 	 * Set the time length in milliseconds.
@@ -95,10 +103,10 @@ public class TimeLengthComposite extends XComposite
 			}
 		}
 
-		if (sb.length() == 0) {
-			sb.append(0);
-			sb.append(timeUnitSymbolMap.get(TimeUnit.msec));
-		}
+//		if (sb.length() == 0) {
+//			sb.append(0);
+//			sb.append(timeUnitSymbolMap.get(TimeUnit.msec));
+//		}
 
 		text.setText(sb.toString());
 	}
