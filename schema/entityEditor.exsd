@@ -1,21 +1,27 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.nightlabs.base.ui">
+<schema targetNamespace="org.nightlabs.base.ui" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
-      <appInfo>
+      <appinfo>
          <meta.schema plugin="org.nightlabs.base.ui" id="entityEditor" name="org.nightlabs.base.ui.entityEditor"/>
-      </appInfo>
+      </appinfo>
       <documentation>
-         [Enter description of this extension point.]
+         Extension Point for adding pages to an EntityEditor. Your register implementations of IEntityEditorPageFactory which provide a page for a certain editorID.
       </documentation>
    </annotation>
 
    <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+      </annotation>
       <complexType>
          <sequence>
             <element ref="category" minOccurs="0" maxOccurs="unbounded"/>
             <element ref="pageFactory" minOccurs="0" maxOccurs="unbounded"/>
             <element ref="viewBinding" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="overviewPageStatusProvider" minOccurs="0" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -36,9 +42,9 @@
                <documentation>
                   
                </documentation>
-               <appInfo>
+               <appinfo>
                   <meta.attribute translatable="true"/>
-               </appInfo>
+               </appinfo>
             </annotation>
          </attribute>
       </complexType>
@@ -46,9 +52,9 @@
 
    <element name="category">
       <annotation>
-         <appInfo>
+         <appinfo>
             <meta.element labelAttribute="name" icon="icon"/>
-         </appInfo>
+         </appinfo>
          <documentation>
             By this element categories can be defined that can be bound to Views.
 There is one required attributes for this element: class. The others are optional as they are also defined by IEntityTreeCategory and the implementations are responsible of returning correct values. 
@@ -79,9 +85,9 @@ the values defined in the extension will automatically set for this category.
                <documentation>
                   An icon for this category.
                </documentation>
-               <appInfo>
+               <appinfo>
                   <meta.attribute kind="resource"/>
-               </appInfo>
+               </appinfo>
             </annotation>
          </attribute>
          <attribute name="class" type="string" use="required">
@@ -89,9 +95,9 @@ the values defined in the extension will automatically set for this category.
                <documentation>
                   The fully qualified class-name of an implementation of IEntityTreeCategory
                </documentation>
-               <appInfo>
+               <appinfo>
                   <meta.attribute kind="java" basedOn="org.nightlabs.base.ui.entity.tree.IEntityTreeCategory"/>
-               </appInfo>
+               </appinfo>
             </annotation>
          </attribute>
       </complexType>
@@ -109,9 +115,9 @@ the values defined in the extension will automatically set for this category.
                <documentation>
                   The fully qualified class-name of an implementation of IEntityEditorPageFactory the factory that will create an IFormPage when necessary.
                </documentation>
-               <appInfo>
+               <appinfo>
                   <meta.attribute kind="java" basedOn="org.nightlabs.base.ui.entity.editor.IEntityEditorPageFactory"/>
-               </appInfo>
+               </appinfo>
             </annotation>
          </attribute>
          <attribute name="editorID" type="string" use="required">
@@ -126,6 +132,36 @@ the values defined in the extension will automatically set for this category.
                <documentation>
                   A hint for positioning this page in the editor&apos;s tab-order.
                </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="icon16x16" type="string">
+            <annotation>
+               <documentation>
+                  The (optional) small 16x16 icon for the page
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="resource"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="icon32x32" type="string">
+            <annotation>
+               <documentation>
+                  The (optional) bigger icon for the page
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="resource"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="description" type="string">
+            <annotation>
+               <documentation>
+                  The (optional) description of the page
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
             </annotation>
          </attribute>
       </complexType>
@@ -143,9 +179,9 @@ the values defined in the extension will automatically set for this category.
                <documentation>
                   Optional implementation of IEntityTreeCategoryViewBinding. If omitted, a default implementation will be instantiated that delegates its work to the category it is bound to.
                </documentation>
-               <appInfo>
+               <appinfo>
                   <meta.attribute kind="java" basedOn="org.nightlabs.base.ui.entity.tree.IEntityTreeCategoryViewBinding"/>
-               </appInfo>
+               </appinfo>
             </annotation>
          </attribute>
          <attribute name="category" type="string">
@@ -188,57 +224,74 @@ the values defined in the extension will automatically set for this category.
                <documentation>
                   Optional icon. Can be used to overwrite the icon of the category for this binding.
                </documentation>
-               <appInfo>
+               <appinfo>
                   <meta.attribute kind="resource"/>
-               </appInfo>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="overviewPageStatusProvider">
+      <complexType>
+         <attribute name="pageFactoryClass" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The fully qualified class-name of an implementation of IEntityEditorPageFactory the factory that will create an IFormPage when necessary.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":org.nightlabs.base.ui.entity.editor.IEntityEditorPageFactory"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The fully qualified class-name of an implementation of IOverviewPageStatusProviderFactory the factory that will create an IOverviewPageStatusProvider for a certain form page.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":org.nightlabs.base.ui.entity.editor.overview.IOverviewPageStatusProviderFactory"/>
+               </appinfo>
             </annotation>
          </attribute>
       </complexType>
    </element>
 
    <annotation>
-      <appInfo>
+      <appinfo>
          <meta.section type="since"/>
-      </appInfo>
+      </appinfo>
       <documentation>
          [Enter the first release in which this extension point appears.]
       </documentation>
    </annotation>
 
    <annotation>
-      <appInfo>
+      <appinfo>
          <meta.section type="examples"/>
-      </appInfo>
+      </appinfo>
       <documentation>
          [Enter extension point usage example here.]
       </documentation>
    </annotation>
 
    <annotation>
-      <appInfo>
+      <appinfo>
          <meta.section type="apiInfo"/>
-      </appInfo>
+      </appinfo>
       <documentation>
          [Enter API information here.]
       </documentation>
    </annotation>
 
    <annotation>
-      <appInfo>
+      <appinfo>
          <meta.section type="implementation"/>
-      </appInfo>
+      </appinfo>
       <documentation>
          [Enter information about supplied implementation of this extension point.]
       </documentation>
    </annotation>
 
-   <annotation>
-      <appInfo>
-         <meta.section type="copyright"/>
-      </appInfo>
-      <documentation>
-         
-      </documentation>
-   </annotation>
 
 </schema>

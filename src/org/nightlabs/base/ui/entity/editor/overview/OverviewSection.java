@@ -1,25 +1,26 @@
 package org.nightlabs.base.ui.entity.editor.overview;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.IFormPage;
+import org.eclipse.ui.forms.events.HyperlinkAdapter;
 import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.forms.events.IHyperlinkListener;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
-import org.nightlabs.base.ui.NLBasePlugin;
+import org.eclipse.ui.forms.widgets.ImageHyperlink;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.editor.MessageSectionPart;
+import org.nightlabs.base.ui.entity.EntityEditorRegistry;
 import org.nightlabs.base.ui.entity.editor.EntityEditor;
+import org.nightlabs.base.ui.entity.editor.EntityEditorPageSettings;
+import org.nightlabs.base.ui.entity.editor.IEntityEditorPageFactory;
 import org.nightlabs.base.ui.form.NightlabsFormsToolkit;
-import org.nightlabs.base.ui.resource.SharedImages;
-import org.nightlabs.base.ui.toolkit.IToolkit;
 
 /**
  * @author Daniel Mazurek - Daniel.Mazurek [dot] nightlabs [dot] de
@@ -28,7 +29,7 @@ import org.nightlabs.base.ui.toolkit.IToolkit;
 public class OverviewSection extends MessageSectionPart {
 
 	private FormEditor formEditor;
-	
+
 	/**
 	 * @param page
 	 * @param parent
@@ -45,64 +46,98 @@ public class OverviewSection extends MessageSectionPart {
 	protected void createComposite(Composite parent) {
 		if (formEditor instanceof EntityEditor) {
 			EntityEditor entityEditor = (EntityEditor) formEditor;
-			for (IFormPage page : entityEditor.getPages()) {
-				if (!OverviewPage.PAGE_ID.equals(page.getId()))
-					createHyperLink(parent, page);
+			EntityEditorRegistry registry = EntityEditorRegistry.sharedInstance();
+			for (EntityEditorPageSettings pageSettings : registry.getPageSettingsOrdered(entityEditor.getEditorID())) {
+				IEntityEditorPageFactory pageFactory = pageSettings.getPageFactory();
+				IOverviewPageStatusProvider statusProvider = registry.createOverviewPageStatusProvider(pageFactory);
+				if (statusProvider != null) {
+					statusProvider.setEntityEditor(entityEditor);
+				}
+				IFormPage page = entityEditor.getController().getPage(pageFactory);
+				createEntry(parent, pageSettings, statusProvider, page);				
 			}
 		}
 	}
-	
-	protected void createHyperLink(Composite parent, final IFormPage page) {
+
+	protected void createEntry(Composite parent, final EntityEditorPageSettings pageSettings, 
+			final IOverviewPageStatusProvider statusProvider, final IFormPage page) 
+	{
 		Composite wrapper = new XComposite(parent, SWT.NONE);
 		wrapper.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		wrapper.setLayout(new GridLayout(2, false));
-		String message = null;
-		if (page instanceof IStatusFormPage) {
-			wrapper.setLayout(new GridLayout(3, false));
-			IStatusFormPage statusFormPage = (IStatusFormPage) page;
-			message = statusFormPage.isComplete();
-			Label statusImageLabel = new Label(wrapper, SWT.NONE);
-			Image statusImage = null;
-			if (message == null) {
-				statusImage = SharedImages.getSharedImage(NLBasePlugin.getDefault(), OverviewSection.class, "Complete");
-			}
-			else {
-				statusImage = SharedImages.getSharedImage(NLBasePlugin.getDefault(), OverviewSection.class, "Incomplete");
-			}
-			statusImageLabel.setImage(statusImage);
-//			getManagedForm().getMessageManager().addMessage(message, message, message, IMessageProvider.ERROR, wrapper);
-		}
-		Hyperlink hyperlink = getToolkit().createHyperlink(wrapper, page.getTitle(), SWT.NONE);
-//		hyperlink.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		hyperlink.addHyperlinkListener(new IHyperlinkListener(){
-			@Override
-			public void linkExited(HyperlinkEvent e) {
-				// do nothing
-			}
-			@Override
-			public void linkEntered(HyperlinkEvent e) {
-				// do nothing
-			}
+		wrapper.setLayout(new GridLayout(4, false));
+		
+		IHyperlinkListener hyperlinkListener = new HyperlinkAdapter() {
 			@Override
 			public void linkActivated(HyperlinkEvent e) {
 				formEditor.setActivePage(page.getId());
 			}
-		});
+		};
 		
-		Label messageLabel = new Label(wrapper, SWT.NONE);
-		messageLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		if (message != null) {
-			messageLabel.setText(message);
+		ImageHyperlink imageHyperlink = getToolkit().createImageHyperlink(wrapper, SWT.LEFT);
+		if (pageSettings.getIconDesc() != null) {
+			imageHyperlink.setImage(pageSettings.getIconDesc().createImage());	
 		}
+		imageHyperlink.addHyperlinkListener(hyperlinkListener);
+		GridData imageData = new GridData(64, 64);
+		imageHyperlink.setLayoutData(imageData);
+		
+		Composite textWrapper = new XComposite(wrapper, SWT.NONE);
+		GridData textWrapperData = new GridData(250, SWT.DEFAULT);
+		textWrapper.setLayoutData(textWrapperData);
+		Hyperlink hyperlink = getToolkit().createHyperlink(textWrapper, page.getTitle(), SWT.NONE);
+		hyperlink.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		hyperlink.addHyperlinkListener(hyperlinkListener);				
+		Label descriptionLabel = new Label(textWrapper, SWT.NONE);
+		descriptionLabel.setLayoutData(new GridData(GridData.FILL_BOTH));
+		if (pageSettings.getDescription() != null) {
+			descriptionLabel.setText(pageSettings.getDescription());
+		}
+
+//		getToolkit().createSeparator(wrapper, SWT.NONE);
+
+		StatusComposite statusComposite = new StatusComposite(wrapper, SWT.NONE, statusProvider);
 	}
 	
-	protected IToolkit getToolkit() {
+//	protected void createComposite(Composite parent) {
+//		if (formEditor instanceof EntityEditor) {
+//			EntityEditor entityEditor = (EntityEditor) formEditor;
+//			for (IFormPage page : entityEditor.getPages()) {
+//				if (!OverviewPage.PAGE_ID.equals(page.getId()))
+//					createEntry(parent, page);
+//			}
+//		}
+//	}
+//
+//	protected void createEntry(Composite parent, final IFormPage page) {
+//		Composite wrapper = new XComposite(parent, SWT.NONE);
+//		wrapper.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+//		wrapper.setLayout(new GridLayout(2, false));
+//		String message = null;
+//		Hyperlink hyperlink = getToolkit().createHyperlink(wrapper, page.getTitle(), SWT.NONE);
+//		hyperlink.addHyperlinkListener(new IHyperlinkListener(){
+//			@Override
+//			public void linkExited(HyperlinkEvent e) {
+//				// do nothing
+//			}
+//			@Override
+//			public void linkEntered(HyperlinkEvent e) {
+//				// do nothing
+//			}
+//			@Override
+//			public void linkActivated(HyperlinkEvent e) {
+//				formEditor.setActivePage(page.getId());
+//			}
+//		});
+//		
+//		Label messageLabel = new Label(wrapper, SWT.NONE);
+//		messageLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+//		if (message != null) {
+//			messageLabel.setText(message);
+//		}
+//	}
+
+	protected FormToolkit getToolkit() {
 		return new NightlabsFormsToolkit(getSection().getDisplay());
 	}
-	
-	@Override
-	public void initialize(IManagedForm form) {
-		super.initialize(form);
-//		createComposite(getContainer());
-	}
+
 }

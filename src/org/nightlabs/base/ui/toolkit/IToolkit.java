@@ -3,6 +3,7 @@ package org.nightlabs.base.ui.toolkit;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormText;
 import org.eclipse.ui.forms.widgets.Hyperlink;
@@ -135,6 +136,19 @@ public interface IToolkit {
 	 */
 	public Hyperlink createHyperlink(Composite parent, String text, int style);
 
+	/**
+	 * Creates a label as a part of the form.
+	 * 
+	 * @param parent
+	 *            the label parent
+	 * @param text
+	 *            the label text
+	 * @param style
+	 *            the label style
+	 * @return the label widget
+	 */	
+	public Label createLabel(Composite parent, String text, int style);
+	
 //	/**
 //	* Creates an image hyperlink as a part of the form. The hyperlink will be
 //	* added to the hyperlink group that belongs to this toolkit.

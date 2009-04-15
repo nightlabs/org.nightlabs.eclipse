@@ -86,7 +86,7 @@ public class EntityEditorController
 	 * value: IEntityEditorPageController controller
 	 * </p>
 	 */
-	private Map<String, IEntityEditorPageController> pageID2pageController = new HashMap<String, IEntityEditorPageController>();
+	private Map<String, IEntityEditorPageController> pageID2pageController = null;
 
 	/**
 	 * Map to hold the controllers organized by their IDs.
@@ -95,17 +95,15 @@ public class EntityEditorController
 	 * value: IEntityEditorPageController controller
 	 * </p>
 	 */
-	private Map<String, IEntityEditorPageController> controllerID2pageController = new HashMap<String, IEntityEditorPageController>();
+	private Map<String, IEntityEditorPageController> controllerID2pageController = null;
 
-	private Map<Class<?>, Set<IEntityEditorPageController>> class2pageControllers = new HashMap<Class<?>, Set<IEntityEditorPageController>>();
+	private Map<Class<?>, Set<IEntityEditorPageController>> class2pageControllers = null;
 
-//	/**
-//	 * Reverse lookup map for {@link #pageID2pageController}.
-//	 */
-//	private Map<IEntityEditorPageController, Collection<IFormPage>> controllerPages = new HashMap<IEntityEditorPageController, Collection<IFormPage>>();
+	private List<IEntityEditorPageController> dirtyPageControllers = null;
 
-	private List<IEntityEditorPageController> dirtyPageControllers = new LinkedList<IEntityEditorPageController>();
-
+//	private Map<IFormPage, IEntityEditorPageFactory> page2PageFactory = null;
+	private Map<IEntityEditorPageFactory, IFormPage> pageFactory2Page = null;
+	
 	/**
 	 * Currently the maximum number of simultaneously running jobs is configured with this constant.
 	 * The current value is 3.
@@ -148,8 +146,11 @@ public class EntityEditorController
 	public EntityEditorController(EntityEditor editor)
 	{
 		this.editor = editor;
-		// Removed the dirtyState listener as it did nothing, Alex.
-//		this.editor.addPropertyListener(dirtyStateListener);
+		dirtyPageControllers = new LinkedList<IEntityEditorPageController>();
+		class2pageControllers = new HashMap<Class<?>, Set<IEntityEditorPageController>>();
+		controllerID2pageController = new HashMap<String, IEntityEditorPageController>();
+		pageID2pageController = new HashMap<String, IEntityEditorPageController>();
+		pageFactory2Page = new HashMap<IEntityEditorPageFactory, IFormPage>();
 	}
 
 	/**
@@ -166,21 +167,12 @@ public class EntityEditorController
 		if (pageController == null || page == null)
 			return;
 		pageController.addPage(page);
-//		editor.addPropertyListener(dirtyStateListener);
-//		page.addPropertyListener(dirtyStateListener);
 
 		pageController.setEntityEditorController(this);
 		pageID2pageController.put(page.getId(), pageController);
 		controllerID2pageController.put(pageController.getControllerID(), pageController);
-
 		addPageControllerToClassMap(pageController.getClass(), pageController);
-
-//		Collection<IFormPage> controllerPageCollection = controllerPages.get(pageController);
-//		if (controllerPageCollection == null) {
-//			controllerPageCollection = new HashSet<IFormPage>();
-//			controllerPages.put(pageController, controllerPageCollection);
-//		}
-//		controllerPageCollection.add(page);
+		pageFactory2Page.put(pageFactory, page);
 	}
 
 	private void addPageControllerToClassMap(Class<?> clazz, IEntityEditorPageController pageController)
@@ -252,16 +244,6 @@ public class EntityEditorController
 		return controllerID2pageController.get(controllerID);
 	}
 
-//	/**
-//	 * Return the pages the given controller is linked to.
-//	 *
-//	 * @param pageController The page controller to search a page for.
-//	 * @return The pages the given controller is linked to.
-//	 */
-//	protected Collection<IFormPage> getPages(IEntityEditorPageController pageController) {
-//		return controllerPages.get(pageController);
-//	}
-
 	/**
 	 * Returns a collection of all pageControllers associated with this'
 	 * editor {@link EntityEditorController}.
@@ -271,15 +253,6 @@ public class EntityEditorController
 	public Collection<IEntityEditorPageController> getPageControllers() {
 		return controllerID2pageController.values();
 	}
-
-//	/**
-//	 * Returns the current pageID2pageController for this editorControllers.
-//	 *
-//	 * @return The current pageID2pageController for this editorControllers.
-//	 */
-//	protected Map<String, IEntityEditorPageController> getPageID2pageController() {
-//		return pageID2pageController;
-//	}
 
 	/**
 	 * Adds a new job to the pool, that might be scheduled instantly or
@@ -382,8 +355,6 @@ public class EntityEditorController
 	public void populateDirtyPageControllers()
 	{
 		this.dirtyPageControllers.clear();
-//		for (Entry<IEntityEditorPageController, Collection<IFormPage>> entry : controllerPages.entrySet()) {
-//			IEntityEditorPageController controller = entry.getKey();
 		for (IEntityEditorPageController controller : getPageControllers()) {
 			if (controller.isDirty()) {
 				dirtyPageControllers.add(controller);
@@ -396,7 +367,6 @@ public class EntityEditorController
 	 * with this controller is dirty, <code>false</code> otherwise.
 	 */
 	public boolean hasDirtyPageControllers() {
-//		for (IEntityEditorPageController controller : controllerPages.keySet()) {
 		for (IEntityEditorPageController controller : getPageControllers()) {
 			if (controller.isDirty())
 				return true;
@@ -448,7 +418,6 @@ public class EntityEditorController
 	 *
 	 */
 	public void editorFocussed() {
-//		for (IEntityEditorPageController controller : controllerPages.keySet()) {
 		for (IEntityEditorPageController controller : getPageControllers()) {
 			controller.editorFocussed();
 		}
@@ -459,7 +428,6 @@ public class EntityEditorController
 	 * calls {@link IEntityEditorPageController#editorFocussed()}.
 	 */
 	public void dispose() {
-//		for (IEntityEditorPageController controller : controllerPages.keySet()) {
 		for (IEntityEditorPageController controller : getPageControllers()) {
 			controller.dispose();
 		}
@@ -505,5 +473,9 @@ public class EntityEditorController
 			return (T) res.iterator().next();
 		else
 			return null;
+	}
+	
+	public IFormPage getPage(IEntityEditorPageFactory pageFactory) {
+		return pageFactory2Page.get(pageFactory);
 	}
 }

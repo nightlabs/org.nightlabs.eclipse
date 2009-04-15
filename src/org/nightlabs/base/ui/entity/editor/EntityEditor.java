@@ -151,7 +151,7 @@ public class EntityEditor extends CommitableFormEditor
 		List<EntityEditorPageSettings> pageSettingsOrdered = EntityEditorRegistry.sharedInstance().getPageSettingsOrdered(getEditorID());
 		if (showOverviewPage) {
 			EntityEditorPageSettings overviewPageSettings = new EntityEditorPageSettings(getEditorID(), 
-					0, new OverviewPageFactory());
+					0, new OverviewPageFactory(), null, null, "Overview");
 			pageSettingsOrdered.add(0, overviewPageSettings);
 		}
 		return pageSettingsOrdered;

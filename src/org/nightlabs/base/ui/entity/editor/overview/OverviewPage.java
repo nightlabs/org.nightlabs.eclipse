@@ -26,15 +26,6 @@ public class OverviewPage extends EntityEditorPageWithProgress {
 	protected void addSections(Composite parent) {
 		OverviewSection overviewSection = new OverviewSection(this, parent, getEditor());
 		getManagedForm().addPart(overviewSection);
-//		FormEditor formEditor = getEditor();
-//		if (formEditor instanceof EntityEditor) {
-//			EntityEditor entityEditor = (EntityEditor) formEditor;
-//			for (IFormPage page : entityEditor.getPages()) {
-//				DefaultOverviewPageSection section = new DefaultOverviewPageSection(this, parent, 
-//					RestorableSectionPart.DEFAULT_SECTION_STYLE, page.getTitle(), entityEditor, page.getId());
-//				getManagedForm().addPart(section);
-//			}
-//		}
 	}
 
 	/* (non-Javadoc)

@@ -37,6 +37,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.nightlabs.base.ui.entity.editor.EntityEditorPageSettings;
+import org.nightlabs.base.ui.entity.editor.IEntityEditorPageFactory;
+import org.nightlabs.base.ui.entity.editor.overview.IOverviewPageStatusProvider;
+import org.nightlabs.base.ui.entity.editor.overview.IOverviewPageStatusProviderFactory;
 import org.nightlabs.base.ui.entity.tree.EntityTreeCategoryViewBinding;
 import org.nightlabs.base.ui.entity.tree.IEntityTreeCategory;
 import org.nightlabs.base.ui.entity.tree.IEntityTreeCategoryBinding;
@@ -51,6 +54,7 @@ import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
  * @version $Revision$ - $Date$
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
+ * @author Daniel Mazurek - daniel[at]nightlabs[dot]de
  */
 public class EntityEditorRegistry extends AbstractEPProcessor
 {
@@ -77,6 +81,11 @@ public class EntityEditorRegistry extends AbstractEPProcessor
 		return sharedInstance;
 	}
 
+	private EntityEditorRegistry() {
+		categories = new HashMap<String, IEntityTreeCategory>();
+//		categoriesByViewID = new HashMap<String, List<BindingCarrier>>();
+	}
+	
 	/**
 	 * BindingCarrier used to store and sort references/uses
 	 * of {@link IEntityTreeCategory}s.
@@ -110,20 +119,25 @@ public class EntityEditorRegistry extends AbstractEPProcessor
 	/**
 	 * All registered categories by their id.
 	 */
-	private Map<String, IEntityTreeCategory> categories = new HashMap<String, IEntityTreeCategory>();
+	private Map<String, IEntityTreeCategory> categories = null;
 	
 	/**
 	 * Category extensions.
 	 */
-	private Map<String, List<BindingCarrier>> categoriesByViewID = new HashMap<String, List<BindingCarrier>>();
+	private Map<String, List<BindingCarrier>> categoriesByViewID = null;
 	
-	private Map<IEntityTreeCategory, Collection<IEntityTreeCategoryBinding>> category2Bindings;
+	private Map<IEntityTreeCategory, Collection<IEntityTreeCategoryBinding>> category2Bindings = null;
 
 	/**
 	 * Editor page extensions.
 	 */
 	private Map<String, Set<EntityEditorPageSettings>> pageSettings;
-	
+		
+	/**
+	 * OverviewPageStatusProvider extensions.
+	 */
+//	private Map<IEntityEditorPageFactory, IOverviewPageStatusProviderFactory> pageFactory2StatusProviderFactory = null;
+	private Map<Class<? extends IEntityEditorPageFactory>, IOverviewPageStatusProviderFactory> pageFactoryClass2StatusProviderFactory = null;
 	
 	public void addPage(String editorID, EntityEditorPageSettings settings)
 	{
@@ -195,6 +209,14 @@ public class EntityEditorRegistry extends AbstractEPProcessor
 				if (!checkString(categoryID))
 					throw new EPProcessorException("Category attribute must be defined for viewBinding when not wrapped in category-element", extension); //$NON-NLS-1$
 				processViewBinding(extension, element, categoryID, null);
+			}
+			else if ("overviewPageStatusProvider".equals(element.getName())) { //$NON-NLS-1$
+				if (pageFactoryClass2StatusProviderFactory == null)
+					pageFactoryClass2StatusProviderFactory = new HashMap<Class<? extends IEntityEditorPageFactory>, IOverviewPageStatusProviderFactory>();
+				
+				IOverviewPageStatusProviderFactory statusFactory = (IOverviewPageStatusProviderFactory) element.createExecutableExtension("class"); //$NON-NLS-1$
+				IEntityEditorPageFactory pageFactory = (IEntityEditorPageFactory) element.createExecutableExtension("pageFactoryClass"); //$NON-NLS-1$
+				pageFactoryClass2StatusProviderFactory.put(pageFactory.getClass(), statusFactory);
 			}
 		} catch (CoreException e) {
 			throw new EPProcessorException("processElement failed", extension, e); //$NON-NLS-1$
@@ -288,4 +310,12 @@ public class EntityEditorRegistry extends AbstractEPProcessor
 		return new HashSet<IEntityTreeCategoryBinding>(category2Bindings.get(category));
 	}
 	
+	public IOverviewPageStatusProvider createOverviewPageStatusProvider(IEntityEditorPageFactory pageFactory) {
+		checkProcessing();
+		IOverviewPageStatusProviderFactory factory = pageFactoryClass2StatusProviderFactory.get(pageFactory.getClass());
+		if (factory != null) {
+			return factory.createStatusProvider();	
+		}
+		return null;
+	}
 }

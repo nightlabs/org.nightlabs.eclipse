@@ -28,6 +28,8 @@ package org.nightlabs.base.ui.entity.editor;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
 import org.nightlabs.util.Util;
 
@@ -40,7 +42,6 @@ import org.nightlabs.util.Util;
  */
 public class EntityEditorPageSettings implements Comparable<EntityEditorPageSettings>
 {
-
 	/**
 	 * Page factory implementation
 	 */
@@ -58,10 +59,39 @@ public class EntityEditorPageSettings implements Comparable<EntityEditorPageSett
 	 */
 	private int indexHint;
 	
-	public EntityEditorPageSettings(String editorID, int indexHint, IEntityEditorPageFactory factory) {
+	/**
+	 * The {@link ImageDescriptor} for the small (16x16) icon.
+	 */
+	private ImageDescriptor smallIconDesc;
+	
+	/**
+	 * The {@link ImageDescriptor} for the (32x32) icon.
+	 */
+	private ImageDescriptor iconDesc;
+	
+	/**
+	 * The description of the page
+	 */
+	private String description;
+	
+	/**
+	 * 
+	 * @param editorID
+	 * @param indexHint
+	 * @param factory
+	 * @param smallIconDesc
+	 * @param iconDesc
+	 * @param description
+	 */
+	public EntityEditorPageSettings(String editorID, int indexHint, IEntityEditorPageFactory factory, 
+			ImageDescriptor smallIconDesc, ImageDescriptor iconDesc, String description) 
+	{
 		this.editorID = editorID;
 		this.indexHint = indexHint;
 		this.pageFactory = factory;
+		this.smallIconDesc = smallIconDesc;
+		this.iconDesc = iconDesc;
+		this.description = description;
 	}
 	
 	/**
@@ -91,6 +121,18 @@ public class EntityEditorPageSettings implements Comparable<EntityEditorPageSett
 			}
 		else
 			this.indexHint = Integer.MAX_VALUE / 2;
+		
+		String smallIconPath = cfg.getAttribute("icon16x16");
+		if (smallIconPath != null) {
+			this.smallIconDesc = AbstractUIPlugin.imageDescriptorFromPlugin(
+					cfg.getNamespaceIdentifier(), smallIconPath);			
+		}
+		String iconPath = cfg.getAttribute("icon32x32");
+		if (iconPath != null) {
+			this.iconDesc = AbstractUIPlugin.imageDescriptorFromPlugin(
+					cfg.getNamespaceIdentifier(), iconPath);			
+		}
+		this.description = cfg.getAttribute("description");
 	}
 
 //	/**
@@ -168,6 +210,54 @@ public class EntityEditorPageSettings implements Comparable<EntityEditorPageSett
 		this.pageFactory = pageFactory;
 	}
 	
+	/**
+	 * Returns the smallIconDesc.
+	 * @return the smallIconDesc
+	 */
+	public ImageDescriptor getSmallIconDesc() {
+		return smallIconDesc;
+	}
+
+	/**
+	 * Sets the smallIconDesc.
+	 * @param smallIconDesc the smallIconDesc to set
+	 */
+	public void setSmallIconDesc(ImageDescriptor smallIconDesc) {
+		this.smallIconDesc = smallIconDesc;
+	}
+
+	/**
+	 * Returns the iconDesc.
+	 * @return the iconDesc
+	 */
+	public ImageDescriptor getIconDesc() {
+		return iconDesc;
+	}
+
+	/**
+	 * Sets the iconDesc.
+	 * @param iconDesc the iconDesc to set
+	 */
+	public void setIconDesc(ImageDescriptor iconDesc) {
+		this.iconDesc = iconDesc;
+	}
+
+	/**
+	 * Returns the description.
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * Sets the description.
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	@Override
 	public String toString() {
 		return 
