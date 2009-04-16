@@ -65,7 +65,7 @@ public class EntityEditorPageSettings implements Comparable<EntityEditorPageSett
 	private ImageDescriptor smallIconDesc;
 	
 	/**
-	 * The {@link ImageDescriptor} for the (32x32) icon.
+	 * The {@link ImageDescriptor} for the (48x48) icon.
 	 */
 	private ImageDescriptor iconDesc;
 	
@@ -127,7 +127,7 @@ public class EntityEditorPageSettings implements Comparable<EntityEditorPageSett
 			this.smallIconDesc = AbstractUIPlugin.imageDescriptorFromPlugin(
 					cfg.getNamespaceIdentifier(), smallIconPath);			
 		}
-		String iconPath = cfg.getAttribute("icon32x32");
+		String iconPath = cfg.getAttribute("icon48x48");
 		if (iconPath != null) {
 			this.iconDesc = AbstractUIPlugin.imageDescriptorFromPlugin(
 					cfg.getNamespaceIdentifier(), iconPath);			

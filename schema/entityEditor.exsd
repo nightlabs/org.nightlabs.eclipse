@@ -144,7 +144,7 @@ the values defined in the extension will automatically set for this category.
                </appinfo>
             </annotation>
          </attribute>
-         <attribute name="icon32x32" type="string">
+         <attribute name="icon48x48" type="string">
             <annotation>
                <documentation>
                   The (optional) bigger icon for the page

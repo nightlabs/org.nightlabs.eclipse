@@ -14,6 +14,7 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.ImageHyperlink;
+import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.editor.MessageSectionPart;
 import org.nightlabs.base.ui.entity.EntityEditorRegistry;
@@ -38,10 +39,16 @@ public class OverviewSection extends MessageSectionPart {
 	 */
 	public OverviewSection(IFormPage page, Composite parent, FormEditor formEditor) 
 	{
-//		super(page, parent, ExpandableComposite.TITLE_BAR | ExpandableComposite.EXPANDED, "Overview");
 		super(page, parent, ExpandableComposite.EXPANDED, "");
 		this.formEditor = formEditor;
-		createComposite(getContainer());
+		
+//		createComposite(getContainer());
+		
+		ScrolledForm form = getToolkit().createScrolledForm(getContainer());
+		form.getBody().setLayout(new GridLayout());
+		form.getBody().setLayoutData(new GridData(GridData.FILL_BOTH));
+		createComposite(form.getBody());
+		form.getBody().layout(true, true);
 	}
 
 	protected void createComposite(Composite parent) {

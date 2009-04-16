@@ -42,4 +42,8 @@ public class OverviewPage extends EntityEditorPageWithProgress {
 		super.createFormContent(managedForm);
 		managedForm.getToolkit().decorateFormHeading(managedForm.getForm().getForm());
 	}
+	
+	protected boolean includeFixForVerticalScrolling() {
+		return false;
+	}
 }
