@@ -17,6 +17,7 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.ImageHyperlink;
+import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.editor.MessageSectionPart;
 import org.nightlabs.base.ui.entity.EntityEditorRegistry;
@@ -46,12 +47,11 @@ public class OverviewSection extends MessageSectionPart {
 		this.formEditor = formEditor;
 	
 		statusComposites = new ArrayList<StatusComposite>();
-		createComposite(getContainer());
-//		ScrolledForm form = getToolkit().createScrolledForm(getContainer());
-//		form.getBody().setLayout(new GridLayout());
-//		form.getBody().setLayoutData(new GridData(GridData.FILL_BOTH));
-//		createComposite(form.getBody());
-//		form.getBody().layout(true, true);
+//		createComposite(getContainer());
+		ScrolledForm form = getToolkit().createScrolledForm(getContainer());
+		form.getBody().setLayout(new GridLayout());
+		form.getBody().setLayoutData(new GridData(GridData.FILL_BOTH));
+		createComposite(form.getBody());
 	}
 
 	protected void createComposite(Composite parent) {
@@ -65,7 +65,8 @@ public class OverviewSection extends MessageSectionPart {
 					statusProvider.setEntityEditor(entityEditor);
 				}
 				IFormPage page = entityEditor.getController().getPage(pageFactory);
-				createEntry(parent, pageSettings, statusProvider, page);				
+				if (!(page instanceof OverviewPage))
+					createEntry(parent, pageSettings, statusProvider, page);				
 			}
 		}
 	}
@@ -122,5 +123,6 @@ public class OverviewSection extends MessageSectionPart {
 				statusComposite.refresh();
 			}
 		}
+		getContainer().layout(true, true);
 	}
 }

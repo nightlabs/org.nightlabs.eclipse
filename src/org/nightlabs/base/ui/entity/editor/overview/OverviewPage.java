@@ -54,8 +54,25 @@ public class OverviewPage extends EntityEditorPageWithProgress {
 	 * @see org.nightlabs.base.ui.entity.editor.EntityEditorPageWithProgress#handleControllerObjectModified(org.nightlabs.base.ui.entity.editor.EntityEditorPageControllerModifyEvent)
 	 */
 	@Override
-	protected void handleControllerObjectModified(EntityEditorPageControllerModifyEvent modifyEvent) {
-		overviewSection.refresh();
+	protected void handleControllerObjectModified(EntityEditorPageControllerModifyEvent modifyEvent) 
+	{
+		if (!getPartControl().isDisposed()) {
+			getPartControl().getDisplay().asyncExec(new Runnable(){
+				@Override
+				public void run() {					
+					overviewSection.refresh();	
+				}
+			});			
+		}
 	}
 	
+	@Override
+	public void setActive(boolean active) {
+		if (active) {
+			// mark stale when getting active, to make the overview section refresh, 
+			// so that (potential) changes are reflected 
+			overviewSection.markStale();
+		}
+		super.setActive(active);
+	}
 }
