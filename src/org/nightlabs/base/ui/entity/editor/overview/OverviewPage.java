@@ -3,6 +3,7 @@ package org.nightlabs.base.ui.entity.editor.overview;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
+import org.nightlabs.base.ui.entity.editor.EntityEditorPageControllerModifyEvent;
 import org.nightlabs.base.ui.entity.editor.EntityEditorPageWithProgress;
 
 /**
@@ -12,7 +13,9 @@ import org.nightlabs.base.ui.entity.editor.EntityEditorPageWithProgress;
 public class OverviewPage extends EntityEditorPageWithProgress {
 
 	public static final String PAGE_ID = OverviewPage.class.getName();
-
+	
+	private OverviewSection overviewSection;
+	
 	/**
 	 * @param editor
 	 */
@@ -25,7 +28,7 @@ public class OverviewPage extends EntityEditorPageWithProgress {
 	 */
 	@Override
 	protected void addSections(Composite parent) {
-		OverviewSection overviewSection = new OverviewSection(this, parent, getEditor());
+		overviewSection = new OverviewSection(this, parent, getEditor());
 		getManagedForm().addPart(overviewSection);
 	}
 
@@ -46,4 +49,13 @@ public class OverviewPage extends EntityEditorPageWithProgress {
 	protected boolean includeFixForVerticalScrolling() {
 		return false;
 	}
+
+	/* (non-Javadoc)
+	 * @see org.nightlabs.base.ui.entity.editor.EntityEditorPageWithProgress#handleControllerObjectModified(org.nightlabs.base.ui.entity.editor.EntityEditorPageControllerModifyEvent)
+	 */
+	@Override
+	protected void handleControllerObjectModified(EntityEditorPageControllerModifyEvent modifyEvent) {
+		overviewSection.refresh();
+	}
+	
 }

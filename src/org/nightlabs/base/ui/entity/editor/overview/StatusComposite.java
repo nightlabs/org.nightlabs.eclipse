@@ -22,6 +22,8 @@ public class StatusComposite extends XComposite
 {
 	private IOverviewPageStatusProvider statusProvider;
 	private ProgressMonitorPart progressMonitorPart;
+	private Label messageLabel;
+	private Label statusImageLabel;
 	
 	/**
 	 * @param parent
@@ -31,13 +33,15 @@ public class StatusComposite extends XComposite
 	public StatusComposite(Composite parent, int style, IOverviewPageStatusProvider statusProvider) {
 		super(parent, style);
 		this.statusProvider = statusProvider;
-
 		setLayout(new GridLayout(2, false));
-		
-		Label statusImageLabel = getToolkit().createLabel(this, "", SWT.NONE);
+		statusImageLabel = getToolkit().createLabel(this, "", SWT.NONE);
 		GridData statusImageData = new GridData(48, 48);
 		statusImageLabel.setLayoutData(statusImageData);
-		String message = "";
+		messageLabel = getToolkit().createLabel(this, "", SWT.NONE);
+		refresh();
+	}
+
+	public void refresh() {
 		if (statusProvider != null) {
 			statusProvider.resolveStatus(new NullProgressMonitor());
 			IStatus status = statusProvider.getStatus();
@@ -61,10 +65,8 @@ public class StatusComposite extends XComposite
 				if (statusImage != null)
 					statusImageLabel.setImage(statusImage);	
 				
-				message = status.getMessage();				
+				messageLabel.setText(status.getMessage());				
 			}
-		}
-		getToolkit().createLabel(this, message, SWT.NONE);	
+		}		
 	}
-
 }

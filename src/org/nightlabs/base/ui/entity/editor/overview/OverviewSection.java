@@ -1,5 +1,8 @@
 package org.nightlabs.base.ui.entity.editor.overview;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -14,7 +17,6 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.ImageHyperlink;
-import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.editor.MessageSectionPart;
 import org.nightlabs.base.ui.entity.EntityEditorRegistry;
@@ -30,7 +32,8 @@ import org.nightlabs.base.ui.form.NightlabsFormsToolkit;
 public class OverviewSection extends MessageSectionPart {
 
 	private FormEditor formEditor;
-
+	private List<StatusComposite>  statusComposites;
+	
 	/**
 	 * @param page
 	 * @param parent
@@ -41,14 +44,14 @@ public class OverviewSection extends MessageSectionPart {
 	{
 		super(page, parent, ExpandableComposite.EXPANDED, "");
 		this.formEditor = formEditor;
-		
-//		createComposite(getContainer());
-		
-		ScrolledForm form = getToolkit().createScrolledForm(getContainer());
-		form.getBody().setLayout(new GridLayout());
-		form.getBody().setLayoutData(new GridData(GridData.FILL_BOTH));
-		createComposite(form.getBody());
-		form.getBody().layout(true, true);
+	
+		statusComposites = new ArrayList<StatusComposite>();
+		createComposite(getContainer());
+//		ScrolledForm form = getToolkit().createScrolledForm(getContainer());
+//		form.getBody().setLayout(new GridLayout());
+//		form.getBody().setLayoutData(new GridData(GridData.FILL_BOTH));
+//		createComposite(form.getBody());
+//		form.getBody().layout(true, true);
 	}
 
 	protected void createComposite(Composite parent) {
@@ -104,10 +107,20 @@ public class OverviewSection extends MessageSectionPart {
 //		getToolkit().createSeparator(wrapper, SWT.NONE);
 
 		StatusComposite statusComposite = new StatusComposite(wrapper, SWT.NONE, statusProvider);
+		statusComposites.add(statusComposite);
 	}
 	
 	protected FormToolkit getToolkit() {
 		return new NightlabsFormsToolkit(getSection().getDisplay());
 	}
 
+	@Override
+	public void refresh() {
+		super.refresh();
+		for (StatusComposite statusComposite : statusComposites) {
+			if (!statusComposite.isDisposed()) {
+				statusComposite.refresh();
+			}
+		}
+	}
 }
