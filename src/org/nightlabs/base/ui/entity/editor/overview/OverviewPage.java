@@ -1,18 +1,38 @@
 package org.nightlabs.base.ui.entity.editor.overview;
 
+import org.eclipse.jface.action.Action;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
+import org.eclipse.ui.forms.widgets.Form;
+import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.entity.editor.EntityEditorPageControllerModifyEvent;
 import org.nightlabs.base.ui.entity.editor.EntityEditorPageWithProgress;
+import org.nightlabs.base.ui.resource.SharedImages;
 
 /**
  * @author Daniel Mazurek - Daniel.Mazurek [dot] nightlabs [dot] de
  *
  */
-public class OverviewPage extends EntityEditorPageWithProgress {
-
+public class OverviewPage extends EntityEditorPageWithProgress 
+{
 	public static final String PAGE_ID = OverviewPage.class.getName();
+	
+	class RefreshAction extends Action 
+	{
+		public RefreshAction() {
+			setId(RefreshAction.class.getName());
+			setText("Refresh");
+			setToolTipText("Refresh");
+			setImageDescriptor(SharedImages.getSharedImageDescriptor(NLBasePlugin.getDefault(), 
+					RefreshAction.class));
+		}
+		
+		@Override
+		public void run() {
+			overviewSection.refresh();
+		}
+	}
 	
 	private OverviewSection overviewSection;
 	
@@ -43,7 +63,10 @@ public class OverviewPage extends EntityEditorPageWithProgress {
 	@Override
 	protected void createFormContent(IManagedForm managedForm) {
 		super.createFormContent(managedForm);
-		managedForm.getToolkit().decorateFormHeading(managedForm.getForm().getForm());
+		Form form = managedForm.getForm().getForm();
+		managedForm.getToolkit().decorateFormHeading(form);
+		form.getToolBarManager().add(new RefreshAction());
+		form.getToolBarManager().update(true);
 	}
 	
 	protected boolean includeFixForVerticalScrolling() {
