@@ -247,6 +247,7 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 		String formText = getPageFormTitle();
 		form.setText(formText == null ? "" : formText);  //$NON-NLS-1$
 		fillBody(managedForm, toolkit);
+//		getEditor().getToolkit().decorateFormHeading(form.getForm());
 	}
 
 	/**

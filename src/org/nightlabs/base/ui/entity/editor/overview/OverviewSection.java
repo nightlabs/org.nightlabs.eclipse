@@ -38,7 +38,8 @@ public class OverviewSection extends MessageSectionPart {
 	 */
 	public OverviewSection(IFormPage page, Composite parent, FormEditor formEditor) 
 	{
-		super(page, parent, ExpandableComposite.TITLE_BAR | ExpandableComposite.EXPANDED, "Overview");
+//		super(page, parent, ExpandableComposite.TITLE_BAR | ExpandableComposite.EXPANDED, "Overview");
+		super(page, parent, ExpandableComposite.EXPANDED, "");
 		this.formEditor = formEditor;
 		createComposite(getContainer());
 	}
@@ -98,44 +99,6 @@ public class OverviewSection extends MessageSectionPart {
 		StatusComposite statusComposite = new StatusComposite(wrapper, SWT.NONE, statusProvider);
 	}
 	
-//	protected void createComposite(Composite parent) {
-//		if (formEditor instanceof EntityEditor) {
-//			EntityEditor entityEditor = (EntityEditor) formEditor;
-//			for (IFormPage page : entityEditor.getPages()) {
-//				if (!OverviewPage.PAGE_ID.equals(page.getId()))
-//					createEntry(parent, page);
-//			}
-//		}
-//	}
-//
-//	protected void createEntry(Composite parent, final IFormPage page) {
-//		Composite wrapper = new XComposite(parent, SWT.NONE);
-//		wrapper.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-//		wrapper.setLayout(new GridLayout(2, false));
-//		String message = null;
-//		Hyperlink hyperlink = getToolkit().createHyperlink(wrapper, page.getTitle(), SWT.NONE);
-//		hyperlink.addHyperlinkListener(new IHyperlinkListener(){
-//			@Override
-//			public void linkExited(HyperlinkEvent e) {
-//				// do nothing
-//			}
-//			@Override
-//			public void linkEntered(HyperlinkEvent e) {
-//				// do nothing
-//			}
-//			@Override
-//			public void linkActivated(HyperlinkEvent e) {
-//				formEditor.setActivePage(page.getId());
-//			}
-//		});
-//		
-//		Label messageLabel = new Label(wrapper, SWT.NONE);
-//		messageLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-//		if (message != null) {
-//			messageLabel.setText(message);
-//		}
-//	}
-
 	protected FormToolkit getToolkit() {
 		return new NightlabsFormsToolkit(getSection().getDisplay());
 	}

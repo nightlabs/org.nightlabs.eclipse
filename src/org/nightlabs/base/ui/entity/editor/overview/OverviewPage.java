@@ -1,6 +1,7 @@
 package org.nightlabs.base.ui.entity.editor.overview;
 
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.nightlabs.base.ui.entity.editor.EntityEditorPageWithProgress;
 
@@ -36,4 +37,9 @@ public class OverviewPage extends EntityEditorPageWithProgress {
 		return "Overview";
 	}
 
+	@Override
+	protected void createFormContent(IManagedForm managedForm) {
+		super.createFormContent(managedForm);
+		managedForm.getToolkit().decorateFormHeading(managedForm.getForm().getForm());
+	}
 }
