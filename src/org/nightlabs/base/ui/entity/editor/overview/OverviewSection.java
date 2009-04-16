@@ -25,6 +25,7 @@ import org.nightlabs.base.ui.entity.editor.EntityEditor;
 import org.nightlabs.base.ui.entity.editor.EntityEditorPageSettings;
 import org.nightlabs.base.ui.entity.editor.IEntityEditorPageFactory;
 import org.nightlabs.base.ui.form.NightlabsFormsToolkit;
+import org.nightlabs.base.ui.resource.Messages;
 
 /**
  * @author Daniel Mazurek - Daniel.Mazurek [dot] nightlabs [dot] de
@@ -43,7 +44,7 @@ public class OverviewSection extends MessageSectionPart {
 	 */
 	public OverviewSection(IFormPage page, Composite parent, FormEditor formEditor) 
 	{
-		super(page, parent, ExpandableComposite.EXPANDED, "");
+		super(page, parent, ExpandableComposite.EXPANDED, ""); //$NON-NLS-1$
 		this.formEditor = formEditor;
 	
 		statusComposites = new ArrayList<StatusComposite>();

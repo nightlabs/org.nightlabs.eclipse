@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
 import org.nightlabs.base.ui.form.NightlabsFormsToolkit;
+import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.l10n.DateFormatter;
 import org.nightlabs.l10n.DateParseException;
 
@@ -393,7 +394,7 @@ public class DateTimeControl extends XComposite {
 	 * Clears the text & sets date = null
 	 */
 	public void clearDate() {
-		text.setText("");
+		text.setText(""); //$NON-NLS-1$
 		date = null;
 	}
 }

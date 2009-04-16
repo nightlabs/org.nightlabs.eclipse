@@ -31,6 +31,7 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
+import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.util.Util;
 
 /**
@@ -122,17 +123,17 @@ public class EntityEditorPageSettings implements Comparable<EntityEditorPageSett
 		else
 			this.indexHint = Integer.MAX_VALUE / 2;
 		
-		String smallIconPath = cfg.getAttribute("icon16x16");
+		String smallIconPath = cfg.getAttribute("icon16x16"); //$NON-NLS-1$
 		if (smallIconPath != null) {
 			this.smallIconDesc = AbstractUIPlugin.imageDescriptorFromPlugin(
 					cfg.getNamespaceIdentifier(), smallIconPath);			
 		}
-		String iconPath = cfg.getAttribute("icon48x48");
+		String iconPath = cfg.getAttribute("icon48x48"); //$NON-NLS-1$
 		if (iconPath != null) {
 			this.iconDesc = AbstractUIPlugin.imageDescriptorFromPlugin(
 					cfg.getNamespaceIdentifier(), iconPath);			
 		}
-		this.description = cfg.getAttribute("description");
+		this.description = cfg.getAttribute("description"); //$NON-NLS-1$
 	}
 
 //	/**
@@ -262,8 +263,8 @@ public class EntityEditorPageSettings implements Comparable<EntityEditorPageSett
 	public String toString() {
 		return 
 			this.getClass().getName() + '@' + Integer.toHexString(System.identityHashCode(this)) + 
-			"[" + (pageFactory != null ? pageFactory.getClass().getName() : "no-page-factory") + "," + 
-			editorID + ", " + indexHint + "]";
+			"[" + (pageFactory != null ? pageFactory.getClass().getName() : "no-page-factory") + "," +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			editorID + ", " + indexHint + "]"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**

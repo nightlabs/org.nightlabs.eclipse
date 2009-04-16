@@ -8,6 +8,7 @@ import org.eclipse.ui.forms.widgets.Form;
 import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.entity.editor.EntityEditorPageControllerModifyEvent;
 import org.nightlabs.base.ui.entity.editor.EntityEditorPageWithProgress;
+import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.resource.SharedImages;
 
 /**
@@ -22,8 +23,8 @@ public class OverviewPage extends EntityEditorPageWithProgress
 	{
 		public RefreshAction() {
 			setId(RefreshAction.class.getName());
-			setText("Refresh");
-			setToolTipText("Refresh");
+			setText(Messages.getString("org.nightlabs.base.ui.entity.editor.overview.OverviewPage.action.refresh.text")); //$NON-NLS-1$
+			setToolTipText(Messages.getString("org.nightlabs.base.ui.entity.editor.overview.OverviewPage.action.refresh.tooltip")); //$NON-NLS-1$
 			setImageDescriptor(SharedImages.getSharedImageDescriptor(NLBasePlugin.getDefault(), 
 					RefreshAction.class));
 		}
@@ -40,7 +41,7 @@ public class OverviewPage extends EntityEditorPageWithProgress
 	 * @param editor
 	 */
 	public OverviewPage(FormEditor editor) {
-		super(editor, PAGE_ID, "Overview");
+		super(editor, PAGE_ID, Messages.getString("org.nightlabs.base.ui.entity.editor.overview.OverviewPage.page.name")); //$NON-NLS-1$
 	}
 	
 	/* (non-Javadoc)
@@ -57,7 +58,7 @@ public class OverviewPage extends EntityEditorPageWithProgress
 	 */
 	@Override
 	protected String getPageFormTitle() {
-		return "Overview";
+		return Messages.getString("org.nightlabs.base.ui.entity.editor.overview.OverviewPage.page.title"); //$NON-NLS-1$
 	}
 
 	@Override

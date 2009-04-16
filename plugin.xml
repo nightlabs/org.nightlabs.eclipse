@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.0"?>
 <plugin>
     <extension-point id="exceptionhandler"
         name="Defines handler for uncaught exception within the workbench." schema="schema/exceptionhandler.exsd"/>
@@ -39,32 +38,30 @@
     <extension-point id="errorReportSender" name="Error Report Sender" schema="schema/errorReportSender.exsd"/>
     <extension point="org.nightlabs.base.ui.exceptionhandler">
         <exceptionHandler
-              class="org.nightlabs.base.ui.exceptionhandler.ThrowableHandler"
-              name="Default Handler for all Throwables"
-              priority="999"
-              targetType="java.lang.Throwable"/>
+            class="org.nightlabs.base.ui.exceptionhandler.ThrowableHandler"
+            name="Default Handler for all Throwables" priority="999" targetType="java.lang.Throwable"/>
         <exceptionHandler
-              class="org.nightlabs.base.ui.exceptionhandler.OutOfMemoryHandler"
-              name="Handler for OutOfMemoryError"
-              priority="100"
-              targetType="java.lang.OutOfMemoryError"/>
+            class="org.nightlabs.base.ui.exceptionhandler.OutOfMemoryHandler"
+            name="Handler for OutOfMemoryError" priority="100" targetType="java.lang.OutOfMemoryError"/>
     </extension>
     <extension point="org.eclipse.ui.elementFactories">
         <factory class="org.nightlabs.base.ui.io.FileEditorInputFactory" id="org.nightlabs.base.ui.io.FileEditorInputFactory"/>
     </extension>
     <extension point="org.eclipse.ui.preferencePages">
-        <page category="org.nightlabs.base.ui.preference.UIPreferencePage"
+        <page
+            category="org.nightlabs.base.ui.preference.UIPreferencePage"
             class="org.eclipse.ui.internal.keys.KeysPreferencePage"
             id="org.eclipse.ui.internal.keys.KeysPreferencePage" name="%preferencePage.keys.label"/>
-<!--            
+        <!--            
         <page category="%category.general"
             class="org.eclipse.ui.internal.themes.ColorsAndFontsPreferencePage"
             id="org.eclipse.ui.internal.themes.ColorsAndFontsPreferencePage" name="%preferencePage.colorAndFonts.label"/>
         <page category="%category.general"
             class="org.eclipse.ui.internal.dialogs.ContentTypesPreferencePage"
             id="org.eclipse.ui.internal.dialogs.ContentTypesPreferencePage" name="%preferencePage.contentTypes.label"/>
--->            
-        <page category="org.nightlabs.base.ui.preference.UIPreferencePage"
+-->
+        <page
+            category="org.nightlabs.base.ui.preference.UIPreferencePage"
             class="org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportSenderPreferencePage"
             id="org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportSenderPreferencePage" name="%preferencePage.errorReportSender.label"/>
         <page category=""
@@ -78,15 +75,12 @@
             category="org.nightlabs.base.ui.print.pref.PrinterPreferencePage"
             class="org.nightlabs.base.ui.print.pref.DocumentPrinterPreferencePage"
             id="org.nightlabs.base.ui.print.pref.DocumentPrinterPreferencePage" name="%preferencePage.documentPrinter.label"/>
-        <page
-              class="org.nightlabs.base.ui.preference.UIPreferencePage"
-              id="org.nightlabs.base.ui.preference.UIPreferencePage"
-              name="%org.nightlabs.base.ui.preference.UIPreferencePage.name">
-        </page>
+        <page class="org.nightlabs.base.ui.preference.UIPreferencePage"
+            id="org.nightlabs.base.ui.preference.UIPreferencePage" name="%org.nightlabs.base.ui.preference.UIPreferencePage.name"/>
     </extension>
     <extension point="org.eclipse.ui.actionSets">
         <actionSet id="org.nightlabs.base.ui.KeyAssistantActionSet"
-            label="org.nightlabs.base.ui.KeyAssistantActionSet" visible="true">
+            label="%org.nightlabs.base.ui.KeyAssistantActionSet.label" visible="true">
             <action
                 class="org.eclipse.ui.internal.handlers.ShowKeyAssistHandler"
                 definitionId="org.eclipse.ui.window.showKeyAssist"
@@ -94,7 +88,7 @@
                 label="%menu.help.showKeyAssistant.label"
                 menubarPath="help/group.assist" style="push"/>
         </actionSet>
-<!--        
+        <!--        
         <actionSet
               id="org.nightlabs.base.ui.actionSet1"
               label="Error Test"
@@ -107,7 +101,7 @@
                  style="push">
            </action>
         </actionSet>
--->        
+-->
     </extension>
     <extension point="org.nightlabs.base.ui.printerConfiguration">
         <printerConfiguratorFactory
@@ -185,16 +179,12 @@
     <extension point="org.nightlabs.base.ui.cache">
         <cacheFactory class="org.nightlabs.base.ui.cache.DummyCacheFactory"/>
     </extension>
-    <extension
-          point="org.nightlabs.base.ui.errorReportSender">
-       <errorReportSender
-             class="org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportSenderEMail"
-             id="org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportSenderEMail"
-             name="EMail to JFire developers"
-             priority="-1000">
-       </errorReportSender>
+    <extension point="org.nightlabs.base.ui.errorReportSender">
+        <errorReportSender
+            class="org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportSenderEMail"
+            id="org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportSenderEMail"
+            name="%org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportSenderEMail.name" priority="-1000"/>
     </extension>
-
     <!--   
    <extension
          point="org.nightlabs.base.ui.removeExtension">

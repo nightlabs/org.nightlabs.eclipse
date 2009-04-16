@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.composite.XComposite;
+import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.resource.SharedImages;
 import org.nightlabs.base.ui.resource.SharedImages.ImageFormat;
 import org.nightlabs.progress.NullProgressMonitor;
@@ -34,10 +35,10 @@ public class StatusComposite extends XComposite
 		super(parent, style);
 		this.statusProvider = statusProvider;
 		setLayout(new GridLayout(2, false));
-		statusImageLabel = getToolkit().createLabel(this, "", SWT.NONE);
+		statusImageLabel = getToolkit().createLabel(this, "", SWT.NONE); //$NON-NLS-1$
 		GridData statusImageData = new GridData(48, 48);
 		statusImageLabel.setLayoutData(statusImageData);
-		messageLabel = getToolkit().createLabel(this, "", SWT.NONE);
+		messageLabel = getToolkit().createLabel(this, "", SWT.NONE); //$NON-NLS-1$
 		refresh();
 	}
 
@@ -51,15 +52,15 @@ public class StatusComposite extends XComposite
 				switch (code) {
 					case IStatus.OK:
 						statusImage = SharedImages.getSharedImage(NLBasePlugin.getDefault(), 
-								OverviewSection.class, "OK", "48x48", ImageFormat.png);
+								OverviewSection.class, "OK", "48x48", ImageFormat.png); //$NON-NLS-1$ //$NON-NLS-2$
 						break;
 					case IStatus.ERROR:
 						statusImage = SharedImages.getSharedImage(NLBasePlugin.getDefault(), 
-								OverviewSection.class, "Error", "48x48", ImageFormat.png);
+								OverviewSection.class, "Error", "48x48", ImageFormat.png); //$NON-NLS-1$ //$NON-NLS-2$
 						break;
 					case IStatus.WARNING:
 						statusImage = SharedImages.getSharedImage(NLBasePlugin.getDefault(), 
-								OverviewSection.class, "Warning", "48x48", ImageFormat.png);
+								OverviewSection.class, "Warning", "48x48", ImageFormat.png); //$NON-NLS-1$ //$NON-NLS-2$
 						break;										
 				}
 				if (statusImage != null)
