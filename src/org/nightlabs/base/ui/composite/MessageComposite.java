@@ -84,7 +84,7 @@ extends XComposite
 	{
 		if (image != null)
 			image.dispose();
-		
+		this.message = message;
 		image = getImageForMessageType(messageType);
 		imageLabel.setImage(image);
 		label.setText(message);
