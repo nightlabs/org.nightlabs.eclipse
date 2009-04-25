@@ -4,8 +4,8 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/NightLabsEditor2D"/>
-	<classpathentry sourcepath="/WORKSPACE/org.holongate.gef/src" kind="var" path="ECLIPSE_HOME/plugins/org.holongate.gef_2.3.0/holongate-gef.jar"/>
-	<classpathentry sourcepath="/WORKSPACE/org.holongate.draw2d/src" kind="var" path="ECLIPSE_HOME/plugins/org.holongate.draw2d_2.3.0/holongate-draw2d.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/NightLabsBase"/>
+	<classpathentry kind="var" path="ECLIPSE_HOME/plugins/org.holongate.gef_2.3.0/holongate-gef.jar" sourcepath="/WORKSPACE/org.holongate.gef/src"/>
+	<classpathentry kind="var" path="ECLIPSE_HOME/plugins/org.holongate.draw2d_2.3.0/holongate-draw2d.jar" sourcepath="/WORKSPACE/org.holongate.draw2d/src"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.nightlabs.base"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
