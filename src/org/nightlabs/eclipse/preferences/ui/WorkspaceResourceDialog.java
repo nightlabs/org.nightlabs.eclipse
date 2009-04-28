@@ -6,8 +6,8 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors: 
+ *
+ * Contributors:
  *   IBM - Initial API and implementation
  *
  * </copyright>
@@ -31,18 +31,13 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -125,10 +120,10 @@ public class WorkspaceResourceDialog extends ElementTreeSelectionDialog implemen
   }
 
   public static IFile openNewFile(
-    Shell parent, 
-    String title, 
-    String message, 
-    IPath suggestedFile, 
+    Shell parent,
+    String title,
+    String message,
+    IPath suggestedFile,
     List<ViewerFilter> viewerFilters)
   {
     WorkspaceResourceDialog dialog = new WorkspaceResourceDialog(parent, new WorkbenchLabelProvider(), new WorkbenchContentProvider());
@@ -171,7 +166,7 @@ public class WorkspaceResourceDialog extends ElementTreeSelectionDialog implemen
   protected boolean showNewFolderControl = false;
   protected boolean showFileControl = false;
   protected boolean showFiles = true;
-  
+
   protected Button newFolderButton;
   protected Text fileText;
   protected String fileTextContent = "";
@@ -227,7 +222,7 @@ public class WorkspaceResourceDialog extends ElementTreeSelectionDialog implemen
     applyDialogFont(composite);
     return composite;
   }
-  
+
   protected void createNewFolderControl(Composite parent)
   {
 	  // TODO: add new folder support
@@ -311,7 +306,7 @@ public class WorkspaceResourceDialog extends ElementTreeSelectionDialog implemen
   {
     fileTextContent = text;
   }
-  
+
   public IStatus validate(Object[] selectedElements)
   {
     if (isShowNewFolderControl())
@@ -336,12 +331,12 @@ public class WorkspaceResourceDialog extends ElementTreeSelectionDialog implemen
       }
       if (enableOK) break;
     }
-    
-    return enableOK ? 
-      new Status(IStatus.OK, "org.eclipse.emf.common.ui", 0, "", null) : 
+
+    return enableOK ?
+      new Status(IStatus.OK, "org.eclipse.emf.common.ui", 0, "", null) :
       new Status(IStatus.ERROR, "org.eclipse.emf.common.ui", 0, "", null);
   }
-  
+
   public IContainer[] getSelectedContainers()
   {
     List<IContainer> containers = new ArrayList<IContainer>();
