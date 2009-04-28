@@ -16,6 +16,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/NightLabsEditor2D.jar" sourcepath="/NightLabsEditor2D/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/NightLabsEditor2D"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.nightlabs.base"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
