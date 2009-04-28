@@ -35,7 +35,6 @@ import org.eclipse.draw2d.FreeformListener;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.nightlabs.editor2d.ui.resource.Messages;
 
 
 public class LayerFreeformHelper
@@ -119,7 +118,7 @@ implements FreeformListener
   	  else {
     		host.revalidate();
   	  }
-    
+
 //  	freeformExtent = null;
 //  	host.fireExtentChanged();
 //  	if (host.getParent() != null)

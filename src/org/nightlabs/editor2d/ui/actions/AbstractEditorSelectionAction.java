@@ -64,7 +64,6 @@ import org.nightlabs.editor2d.ui.edit.RectangleEditPart;
 import org.nightlabs.editor2d.ui.edit.RootDrawComponentEditPart;
 import org.nightlabs.editor2d.ui.edit.ShapeDrawComponentEditPart;
 import org.nightlabs.editor2d.ui.edit.TextEditPart;
-import org.nightlabs.editor2d.ui.resource.Messages;
 
 public abstract class AbstractEditorSelectionAction
 extends SelectionAction
@@ -91,29 +90,29 @@ extends SelectionAction
 		}
 		return false;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return the AbstractEditor
 	 * @see org.nightlabs.editor2d.ui.AbstractEditor
 	 */
 	public AbstractEditor getEditor() {
 		return (AbstractEditor) getWorkbenchPart();
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return the RootDrawComponent of the AbstractEditor
 	 * @see org.nightlabs.editor2d.ui.RootDrawComponent
 	 */
 	public RootDrawComponent getRootDrawComponent() {
 		return getEditor().getRootDrawComponent();
 	}
-	
+
 	/**
 	 * checks if the selected objects contain minimum so many EditPart or EditPart-Models
 	 * as the given amount of the given class
-	 * 
+	 *
 	 * @param clazz the Class to search for
 	 * @param amount the minimum amount of occurrences of the given class
 	 * in the selected objects
@@ -130,7 +129,7 @@ extends SelectionAction
 	/**
 	 * checks if the selected objects contain minimum so many EditPart or EditPart-Models
 	 * as the given amount of the given classes
-	 * 
+	 *
 	 * @param clazzes an Array of classes to search for
 	 * @param amount the minimum amount of occurrences of the given class
 	 * in the selected objects
@@ -153,7 +152,7 @@ extends SelectionAction
 					c = editPart.getClass();
 				else
 					c = editPart.getModel().getClass();
-				
+
 				for (int i=0; i<clazzes.length; i++)
 				{
 					Class<?> clazz = clazzes[i];
@@ -167,7 +166,7 @@ extends SelectionAction
 		}
 		return false;
 	}
-		
+
 	/**
 	 * A Convenience Method which calls selectionContains with the amount 1
 	 * @param clazz the Class to search for
@@ -178,11 +177,11 @@ extends SelectionAction
 	public boolean selectionContains(Class<?> clazz, boolean model) {
 		return selectionContains(clazz, 1, model);
 	}
-	
+
 	private static List<Object> EMPTY_LIST = Collections.emptyList();
-			
+
 	/**
-	 * 
+	 *
 	 * @param clazz the Class to search for
 	 * @param model determines if the Class-Check should be performed on the
 	 * selected EditParts or the model (DrawComponent) of the EditParts
@@ -191,11 +190,11 @@ extends SelectionAction
 	 */
 	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public <T extends Object> Collection<T> getSelection(Class<T> clazz, boolean model) {
-		return (Collection<T>) getSelection(new Class[] {clazz}, model);
+		return getSelection(new Class[] {clazz}, model);
 	}
 
 	/**
-	 * 
+	 *
 	 * @param clazzes the Class[] to search for
 	 * @param model determines if the Class-Check should be performed on the
 	 * selected EditParts or the model (DrawComponent) of the EditParts
@@ -216,7 +215,7 @@ extends SelectionAction
 					c = editPart.getClass();
 				else
 					c = editPart.getModel().getClass();
-				
+
 				for (int i=0; i<clazzes.length; i++)
 				{
 					Class clazz = clazzes[i];
@@ -233,9 +232,9 @@ extends SelectionAction
 		}
 		return EMPTY_LIST;
 	}
-			
+
 	/**
-	 * 
+	 *
 	 * @param clazz the Class to search for
 	 * @param model determines if the Class-Check should be performed on the
 	 * selected EditParts or the model (DrawComponent) of the EditParts
@@ -247,9 +246,9 @@ extends SelectionAction
 	{
 		return (List<T>) getSelectionAsList(new Class[] {clazz}, model);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param clazzes the Class[] to search for
 	 * @param model determines if the Class-Check should be performed on the
 	 * selected EditParts or the model (DrawComponent) of the EditParts
@@ -270,7 +269,7 @@ extends SelectionAction
 					c = editPart.getClass();
 				else
 					c = editPart.getModel().getClass();
-				
+
 				for (int i=0; i<clazzes.length; i++)
 				{
 					Class clazz = clazzes[i];
@@ -281,7 +280,7 @@ extends SelectionAction
 							o = clazz.cast(editPart);
 						else
 							o = clazz.cast(editPart.getModel());
-							
+
 						if (!selection.contains(o))
 							selection.add(o);
 					}
@@ -291,16 +290,16 @@ extends SelectionAction
 		}
 		return EMPTY_LIST;
 	}
-	
+
 	private Class<? extends EditPart>[] defaultEditPartExcludes = null;
 	private Class<? extends DrawComponent>[] defaultModelExcludes = null;
-	
-	@SuppressWarnings({ "unchecked", "unchecked" }) //$NON-NLS-1$ //$NON-NLS-2$
+
+	@SuppressWarnings({ "unchecked"}) //$NON-NLS-1$
 	public Class<?>[] getDefaultExcludes(boolean model)
 	{
 		if (!model) {
 			if (defaultEditPartExcludes == null) {
-				defaultEditPartExcludes = new Class[4];				
+				defaultEditPartExcludes = new Class[4];
 				defaultEditPartExcludes[0] = RootEditPart.class;
 				defaultEditPartExcludes[1] = LayerEditPart.class;
 				defaultEditPartExcludes[2] = PageEditPart.class;
@@ -318,7 +317,7 @@ extends SelectionAction
 			return defaultModelExcludes;
 		}
 	}
-		
+
 	private Collection<Class<? extends Object>> defaultExcludeList = null;
 	public Collection<Class<? extends Object>> getDefaultExcludeList(boolean model)
 	{
@@ -332,10 +331,10 @@ extends SelectionAction
 		}
 		return defaultExcludeList;
 	}
-	
+
 	private Class<? extends EditPart>[] defaultEditPartIncludes = null;
 	private Class<? extends DrawComponent>[] defaultModelIncludes = null;
-	@SuppressWarnings({ "unchecked", "unchecked" }) //$NON-NLS-1$ //$NON-NLS-2$
+	@SuppressWarnings({ "unchecked" }) //$NON-NLS-1$
 	public Class<?>[] getDefaultIncludes(boolean model)
 	{
 		if (!model) {
@@ -365,7 +364,7 @@ extends SelectionAction
 			return defaultModelIncludes;
 		}
 	}
-	
+
 	private Collection<Class<? extends Object>> defaultIncludeList = null;
 	public Collection<Class<? extends Object>> getDefaultIncludeList(boolean model)
 	{
@@ -378,40 +377,40 @@ extends SelectionAction
 		}
 		return defaultIncludeList;
 	}
-	
+
 	public Collection<Object> getDefaultSelection(boolean model) {
 		return getSelection(getDefaultIncludes(model), model);
 	}
-	
+
 	public IStructuredSelection getStructuredSelection() {
 		return (IStructuredSelection) getSelection();
 	}
-	
+
 	public EditPart getPrimarySelected() {
 		return (EditPart) getStructuredSelection().getFirstElement();
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return the GraphicalViewer of the AbstractEditor
 	 * @see org.eclipse.gef.GraphicalViewer
 	 */
 	public GraphicalViewer getGraphicalViewer() {
 		return getEditor().getOutlineGraphicalViewer();
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param model the DrawComponent to find its EditPart
 	 * @return the corresponding EditPart
-	 * 
+	 *
 	 */
 	public EditPart getEditPart(DrawComponent model) {
 		return (EditPart) getGraphicalViewer().getEditPartRegistry().get(model);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param drawComponents a List of DrawComponents to find a EditParts for
 	 * @return a List of the corresponding EditParts
 	 */
@@ -426,7 +425,7 @@ extends SelectionAction
 		}
 		return editParts;
 	}
-	
+
 	/**
 	 * selects the EditParts in the GraphicalViewer for the the given List
 	 * of drawComponents
@@ -448,15 +447,15 @@ extends SelectionAction
 		EditPart ep = getEditPart(dc);
 		getGraphicalViewer().setSelection(new StructuredSelection(ep));
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return the Shell of the Site for the AbstractEditor
 	 */
 	public Shell getShell() {
 		return getEditor().getSite().getShell();
 	}
-		
+
 	public void clearSelection() {
 		getGraphicalViewer().setSelection(new StructuredSelection());
 	}

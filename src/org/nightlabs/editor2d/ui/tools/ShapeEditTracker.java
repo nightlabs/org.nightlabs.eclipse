@@ -34,7 +34,6 @@ import org.eclipse.gef.Request;
 import org.nightlabs.editor2d.j2d.GeneralShape;
 import org.nightlabs.editor2d.ui.edit.ShapeDrawComponentEditPart;
 import org.nightlabs.editor2d.ui.request.EditorEditShapeRequest;
-import org.nightlabs.editor2d.ui.resource.Messages;
 
 // TODO; Use SelectEditPartTracker instead to avoid multiple Selections
 public class ShapeEditTracker
@@ -48,18 +47,18 @@ extends AbstractDragTracker
   }
 //  protected ShapeFigure sourceFigure;
   protected int pathSegmentIndex;
-  
+
   public ShapeEditTracker(ShapeDrawComponentEditPart owner, int pathSegmentIndex)
   {
     super(owner);
     this.pathSegmentIndex = pathSegmentIndex;
   }
-  
+
   @Override
 	protected String getCommandName() {
     return REQ_EDIT_SHAPE;
   }
-  
+
   /**
    * @see org.eclipse.gef.tools.AbstractTool#deactivate()
    */
@@ -69,7 +68,7 @@ extends AbstractDragTracker
   	super.deactivate();
 //  	sourceFigure = null;
   }
-        
+
   /**
    * @see org.eclipse.gef.tools.AbstractTool#getDebugName()
    */
@@ -78,7 +77,7 @@ extends AbstractDragTracker
   {
   	return "Edit Shape Handle Tracker";//$NON-NLS-1$
   }
-        
+
   /**
    * @see org.eclipse.gef.tools.SimpleDragTracker#createSourceRequest()
    */
@@ -97,7 +96,7 @@ extends AbstractDragTracker
   	}
   	return request;
   }
-        
+
   /**
    * @see org.eclipse.gef.tools.SimpleDragTracker#updateSourceRequest()
    */
@@ -107,5 +106,5 @@ extends AbstractDragTracker
     EditorEditShapeRequest request = (EditorEditShapeRequest) getSourceRequest();
 	  request.setLocation(getLocation());
   }
-    
+
 }

@@ -40,7 +40,6 @@ import org.nightlabs.editor2d.ui.editpolicy.DrawComponentContainerXYLayoutPolicy
 import org.nightlabs.editor2d.ui.editpolicy.DrawComponentEditPolicy;
 import org.nightlabs.editor2d.ui.editpolicy.EditorEditPolicy;
 import org.nightlabs.editor2d.ui.figures.ContainerDrawComponentFigure;
-import org.nightlabs.editor2d.ui.resource.Messages;
 
 
 public abstract class AbstractDrawComponentContainerEditPart
@@ -63,18 +62,18 @@ extends AbstractDrawComponentEditPart
 //    addZoomListener(figure);
     return figure;
   }
-  
+
   public DrawComponentContainer getDrawComponentContainer() {
   	return (DrawComponentContainer) getModel();
   }
-  
+
   @Override
   protected void createEditPolicies()
   {
   	// generic delete policy
     installEditPolicy(EditPolicy.COMPONENT_ROLE, new DrawComponentEditPolicy());
 //		installEditPolicy(EditPolicy.CONTAINER_ROLE, new DrawComponentContainerEditPolicy());
-    
+
 		// handles constraint changes (e.g. moving and/or resizing) of model elements
 		// and creation of new model elements
 		XYLayout layout = (XYLayout) getContentPane().getLayoutManager();
@@ -83,10 +82,10 @@ extends AbstractDrawComponentEditPart
 		installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, null);
 		// show snap feedback
 		installEditPolicy(EditorEditPolicy.SNAP_FEEDBACK_ROLE, new SnapFeedbackPolicy());
-		
+
 //		installEditPolicy(EditorEditPolicy.ROTATE_ROLE, new EditorRotateEditPolicy());
   }
-    
+
   @Override
 	protected void propertyChanged(PropertyChangeEvent evt)
 	{
@@ -101,7 +100,7 @@ extends AbstractDrawComponentEditPart
 			return;
 		}
 	}
-	
+
   @SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
   protected List getModelChildren()

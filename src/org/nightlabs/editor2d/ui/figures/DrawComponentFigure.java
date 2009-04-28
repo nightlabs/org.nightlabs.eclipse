@@ -31,7 +31,6 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Area;
 
-import org.apache.log4j.Logger;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.J2DGraphics;
@@ -54,10 +53,10 @@ extends Figure
 implements RendererFigure
 {
 	public static final double DEFAULT_HIT_TOLERANCE = 5;
-	/**
-	 * LOG4J logger used by this class
-	 */
-	private static final Logger logger = Logger.getLogger(DrawComponentFigure.class.getName());
+//	/**
+//	 * LOG4J logger used by this class
+//	 */
+//	private static final Logger logger = Logger.getLogger(DrawComponentFigure.class.getName());
 
 	private J2DGraphics j2d;
 	private Graphics2D g2d;
@@ -67,7 +66,7 @@ implements RendererFigure
 	private DrawComponent drawComponent;
 	private boolean contains = true;
 	private Shape hitTestArea = null;
-	
+
 	public void paint(Graphics2D graphics)
 	{
 		paintJ2D(graphics, drawComponent, renderer);
@@ -116,7 +115,7 @@ implements RendererFigure
 	 * determins if the {@link Figure#containsPoint(int, int)} should return the right
 	 * value of always false
 	 * This can be used to remove a Figure from HitTesting of the {@link GraphicalViewer}
-	 * 
+	 *
 	 * @param contains determins if {@link Figure#containsPoint(int, int)} should be
 	 * done or always false is returned
 	 */
@@ -127,7 +126,7 @@ implements RendererFigure
 	/**
 	 * true if the {@link Figure#containsPoint(int, int)} is activated or false if hitTesting is off,
 	 * then {@link Figure#containsPoint(int, int)} always return false
-	 * 
+	 *
 	 * @return true if the "normal" {@link Figure#containsPoint(int, int)} is activated or false if hitTesting is off
 	 */
 	public boolean isContains() {
@@ -139,26 +138,26 @@ implements RendererFigure
 	 * e.g. only the interior of a {@link Shape} including the {@link DrawComponentFigure#getHitTolerance()}
 	 * would return true or if the {@link Figure#containsPoint(int, int)} should be calculated
 	 * on the basis of the {@link Figure#getBounds()}
-	 * 
+	 *
 	 * @param containBounds determine if an accurate hitTesting should be performed or the
 	 * {@link Figure#getBounds()} should be used
-	 * 
+	 *
 	 * @see DrawComponentFigure#isContains()
 	 * @see DrawComponentFigure#getHitTolerance()
 	 * @see Figure#containsPoint(int, int)
-	 * 
+	 *
 	 */
 	public void setAccurateContains(boolean containBounds) {
 		this.accurateContains = containBounds;
 	}
-	
+
 	/**
 	 * returns true if an accurate hitTesting is performed or false if the {@link Figure#getBounds()}
 	 * should are used for hitTesting
-	 * 
+	 *
 	 * @return true if an accurate hitTesting is performed or false if the {@link Figure#getBounds()}
 	 * should are used for hitTesting
-	 * 
+	 *
 	 * @see DrawComponentFigure#setAccurateContains(boolean)
 	 * @see DrawComponentFigure#isContains()
 	 * @see DrawComponentFigure#getHitTolerance()
@@ -272,7 +271,7 @@ implements RendererFigure
 	 * return the hitTolerance which is used when accurate hittesting
 	 * {@link DrawComponentFigure#isAccurateContains()} is used when
 	 * {@link Figure#containsPoint(int, int)} is called
-	 * 
+	 *
 	 * @return the hitTolerance for accurate hitTesting
 	 * @see Figure#containsPoint(int, int)
 	 * @see DrawComponentFigure#isAccurateContains()
@@ -280,7 +279,7 @@ implements RendererFigure
 	public double getHitTolerance() {
 		return hitTolerance;
 	}
-	
+
 	/**
 	 * determines the amount of tolerance when accurate hitTesting {@link DrawComponentFigure#isAccurateContains()}
 	 * is performed. This value is given in User Space Coordinates.
@@ -288,7 +287,7 @@ implements RendererFigure
 	 * distance is smaller than the hitTolerance {@link Figure#containsPoint(int, int)} will
 	 * still return true. Thia occurs only if {@link DrawComponentFigure#isContains()} and
 	 * {@link DrawComponentFigure#isAccurateContains()} both return true
-	 * 
+	 *
 	 * @param hitTolerance the amount of the hitTolernace for accurate hittesting
 	 * @see Figure#containsPoint(int, int)
 	 * @see DrawComponentFigure#isAccurateContains()
@@ -305,7 +304,7 @@ implements RendererFigure
 //			logger.debug("hitTolerance = "+hitTolerance);
 		}
 	};
-	
+
 	public ZoomListener getZoomListener() {
 		return zoomListener;
 	}

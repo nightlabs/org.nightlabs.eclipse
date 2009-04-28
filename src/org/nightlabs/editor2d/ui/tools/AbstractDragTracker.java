@@ -41,7 +41,6 @@ import org.eclipse.gef.tools.ResizeTracker;
 import org.eclipse.gef.tools.SimpleDragTracker;
 import org.eclipse.gef.tools.ToolUtilities;
 import org.nightlabs.editor2d.ui.request.EditorRequestConstants;
-import org.nightlabs.editor2d.ui.resource.Messages;
 import org.nightlabs.editor2d.ui.util.EditorUtil;
 
 
@@ -51,11 +50,11 @@ implements EditorRequestConstants
 {
   protected static int FLAG_TARGET_FEEDBACK = SimpleDragTracker.MAX_FLAG << 1;
   protected static final int MAX_FLAG = FLAG_TARGET_FEEDBACK;
-  
+
   protected GraphicalEditPart owner;
   protected PrecisionRectangle sourceRect;
   protected SnapToHelper snapToHelper;
-  
+
   public AbstractDragTracker(GraphicalEditPart owner)
   {
     super();
@@ -71,7 +70,7 @@ implements EditorRequestConstants
     {
       if (getTargetEditPart() != null)
         snapToHelper = (SnapToHelper)getTargetEditPart().getAdapter(SnapToHelper.class);
-    
+
       IFigure figure = owner.getFigure();
       if (figure instanceof HandleBounds)
         sourceRect = new PrecisionRectangle(((HandleBounds)figure).getHandleBounds());
@@ -80,7 +79,7 @@ implements EditorRequestConstants
       figure.translateToAbsolute(sourceRect);
     }
   }
-  
+
   @SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	protected List createOperationSet()
@@ -89,10 +88,10 @@ implements EditorRequestConstants
     ToolUtilities.filterEditPartsUnderstanding(list, getSourceRequest());
     return list;
   }
-  
+
   /**
    * The TargetEditPart is the parent of the EditPart being dragged.
-   * 
+   *
    * @return  The target EditPart; may be <code>null</code> in 2.1 applications that use
    * the now deprecated {@link ResizeTracker#ResizeTracker(int) constructor}.
    */
@@ -105,7 +104,7 @@ implements EditorRequestConstants
     }
     return null;
   }
-  
+
   protected void eraseTargetFeedback()
   {
     if (!getFlag(FLAG_TARGET_FEEDBACK))
@@ -114,7 +113,7 @@ implements EditorRequestConstants
       getTargetEditPart().eraseTargetFeedback(getSourceRequest());
     setFlag(FLAG_TARGET_FEEDBACK, false);
   }
-     
+
   @Override
 	public void deactivate()
   {
@@ -123,7 +122,7 @@ implements EditorRequestConstants
     snapToHelper = null;
     super.deactivate();
   }
-  
+
   /**
    * @see org.eclipse.gef.tools.AbstractTool#getCommand()
    */
@@ -132,7 +131,7 @@ implements EditorRequestConstants
   {
     return getTargetEditPart().getCommand(getSourceRequest());
   }
-  
+
   @Override
 	protected boolean handleButtonUp(int button)
   {
@@ -145,7 +144,7 @@ implements EditorRequestConstants
     }
     return true;
   }
-  
+
   @Override
 	protected boolean handleDragInProgress()
   {
@@ -158,24 +157,24 @@ implements EditorRequestConstants
     }
     return true;
   }
-  
+
   protected void showTargetFeedback()
   {
     setFlag(FLAG_TARGET_FEEDBACK, true);
     if (getTargetEditPart() != null)
       getTargetEditPart().showTargetFeedback(getSourceRequest());
   }
-  
+
   protected boolean isInDragInProgress() {
     return isInState(STATE_DRAG_IN_PROGRESS | STATE_ACCESSIBLE_DRAG_IN_PROGRESS);
   }
-  
+
   @Override
 	protected String getDebugName()
   {
     return "Debug "+getCommandName(); //$NON-NLS-1$
   }
-  
+
   @Override
 	protected abstract Request createSourceRequest();
   @Override
@@ -187,5 +186,5 @@ implements EditorRequestConstants
   {
   	EditorUtil.selectEditPart(owner);
   }
-   
+
 }

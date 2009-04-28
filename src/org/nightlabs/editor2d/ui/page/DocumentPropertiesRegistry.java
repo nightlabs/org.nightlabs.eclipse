@@ -34,7 +34,6 @@ import org.nightlabs.base.ui.print.page.PredefinedPageEP;
 import org.nightlabs.config.Config;
 import org.nightlabs.editor2d.PageDrawComponent;
 import org.nightlabs.editor2d.ui.config.DocumentConfigModule;
-import org.nightlabs.editor2d.ui.resource.Messages;
 import org.nightlabs.i18n.unit.resolution.IResolutionUnit;
 import org.nightlabs.print.page.IPredefinedPage;
 import org.osgi.framework.Bundle;
@@ -46,7 +45,7 @@ public class DocumentPropertiesRegistry
 extends AbstractEPProcessor
 {
 	public static final String EXTENSION_POINT_ID = "org.nightlabs.editor2d.ui.documentProperties"; //$NON-NLS-1$
-	
+
 	public static final String ELEMENT_DOCUMENT_PROPERTIES = "documentProperties"; //$NON-NLS-1$
 	public static final String ATTRIBUTE_EDITOR_CLASS = "editorClass"; //$NON-NLS-1$
 	public static final String ATTRIBUTE_EDITOR_ID = "editorID";	 //$NON-NLS-1$
@@ -67,7 +66,7 @@ extends AbstractEPProcessor
 		}
 		return sharedInstance;
 	}
-	
+
 	protected DocumentPropertiesRegistry() {
 
 	}
@@ -95,13 +94,13 @@ extends AbstractEPProcessor
 					throw new RuntimeException(e);
 				}
 			}
-			
+
 			String pageID = element.getAttribute(ATTRIBUTE_PREDEFINED_PAGE);
 			IPredefinedPage page = null;
 			if (checkString(pageID)) {
 				page = PredefinedPageEP.sharedInstance().getPageRegistry().getPage(pageID);
 			}
-			
+
 			String resolutionUnitString = element.getAttribute(ATTRIBUTE_RESOLUTION_UNIT);
 			IResolutionUnit resolutionUnit = null;
 			if (checkString(resolutionUnitString)) {
@@ -111,17 +110,17 @@ extends AbstractEPProcessor
 					throw new RuntimeException(e);
 				}
 			}
-			
+
 			String resolutionString = element.getAttribute(ATTRIBUTE_RESOLUTION);
 			double resolution = 72;
 			if (checkString(resolutionString)) {
 				try {
 					resolution = Double.parseDouble(resolutionString);
 				} catch (NumberFormatException e) {
-					
+
 				}
 			}
-			
+
 			String orientationString = element.getAttribute(ATTRIBUTE_ORIENTATION);
 			int orientation = PageDrawComponent.ORIENTATION_VERTICAL;
 			if (checkString(orientationString)) {
@@ -130,15 +129,15 @@ extends AbstractEPProcessor
 				else if (orientationString.equalsIgnoreCase(ATTRIBUTE_ORIENTATION_VERTICAL))
 					orientation = PageDrawComponent.ORIENTATION_VERTICAL;
 			}
-			
+
 			String editorID = element.getAttribute(ATTRIBUTE_EDITOR_ID);
 			if (checkString(editorID)) {
 				getDocumentConfigModule().getEditorClass2EditorID().put(editorClass, editorID);
 			}
-			
+
 			DocumentProperties documentProperties = new DocumentProperties(page, orientation,
 					resolutionUnit, resolution);
-			
+
 			getDocumentConfigModule().getEditorClass2DocumentProperties().put(editorClass, documentProperties);
 		}
 	}
@@ -149,7 +148,7 @@ extends AbstractEPProcessor
 			documentConfigModule = Config.sharedInstance().createConfigModule(DocumentConfigModule.class);
 		return documentConfigModule;
 	}
-		
+
 	public DocumentConfigModule getDocumentConfModule() {
 		checkProcessing();
 		return getDocumentConfigModule();

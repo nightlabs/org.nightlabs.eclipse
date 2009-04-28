@@ -37,7 +37,6 @@ import org.eclipse.swt.graphics.Cursor;
 import org.nightlabs.editor2d.ui.custom.EditorCursors;
 import org.nightlabs.editor2d.ui.edit.AbstractDrawComponentEditPart;
 import org.nightlabs.editor2d.ui.request.EditorShearRequest;
-import org.nightlabs.editor2d.ui.resource.Messages;
 import org.nightlabs.editor2d.ui.util.J2DUtil;
 
 
@@ -45,7 +44,7 @@ public class ShearTracker
 extends AbstractDragTracker
 {
   protected int direction;
-  
+
   /**
    * @param owner
    */
@@ -85,11 +84,11 @@ extends AbstractDragTracker
 //    getEditorShearRequest().setLocation(loq);
     getEditorShearRequest().setLocation(getLocation());
   }
- 
+
   protected EditorShearRequest getEditorShearRequest() {
     return (EditorShearRequest) getSourceRequest();
   }
-  
+
   /* (non-Javadoc)
    * @see org.eclipse.gef.tools.AbstractTool#getCommandName()
    */

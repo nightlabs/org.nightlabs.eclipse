@@ -32,19 +32,18 @@ import java.util.Iterator;
 
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
-import org.nightlabs.editor2d.ui.resource.Messages;
 
 /**
  * Overrides paint methods of DrawComponentFigures
  * and paints only its children instead.
- * 
+ *
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
  *
  */
 public class ContainerDrawComponentFigure
 extends DrawComponentFigure
 {
-	
+
 	/**
 	 * Overridden to paint only children
 	 */
@@ -58,7 +57,7 @@ extends DrawComponentFigure
 			}
 		}
 	}
-	
+
 	/**
 	 * Overridden to paint only children
 	 */
@@ -70,5 +69,5 @@ extends DrawComponentFigure
 			figure.paint(graphics);
 		}
 	}
-	
+
 }

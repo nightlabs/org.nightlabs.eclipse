@@ -43,14 +43,13 @@ import org.nightlabs.editor2d.IVisible;
 import org.nightlabs.editor2d.ui.editpolicy.DrawComponentEditPolicy;
 import org.nightlabs.editor2d.ui.editpolicy.tree.DrawComponentTreeEditPolicy;
 import org.nightlabs.editor2d.ui.model.DrawComponentPropertySource;
-import org.nightlabs.editor2d.ui.resource.Messages;
 
 
 public abstract class DrawComponentTreeEditPart
 extends AbstractTreeEditPart
 {
   protected IPropertySource propertySource = null;
-    
+
   /**
    * Creates a new DrawComponentTreeEditPart instance.
    * @param drawComponent the {@link DrawComponent}
@@ -58,7 +57,7 @@ extends AbstractTreeEditPart
   public DrawComponentTreeEditPart(DrawComponent drawComponent) {
     super(drawComponent);
   }
-  
+
   @SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	public Object getAdapter(Class key)
@@ -73,17 +72,17 @@ extends AbstractTreeEditPart
     }
     return super.getAdapter(key);
   }
-  
+
 //  protected abstract Image getImage();
   protected abstract Image getOutlineImage();
-  
+
 //  private Image image;
 //  public void setImage(Image image) {
 //  	image.dispose();
 //  	this.image = image;
 //  	refreshVisuals();
 //  }
-  
+
 //  protected Image getImage()
 //  {
 //  	if (image == null) {
@@ -96,20 +95,20 @@ extends AbstractTreeEditPart
 //  	}
 //  	return image;
 //  }
-  
+
   public Image getTreeImage() {
   	return getOutlineImage();
   }
-  
+
   public String getTreeText() {
   	return getText();
   }
-  
+
   @Override
 	protected Image getImage() {
   	return getOutlineImage();
   }
-  
+
   public IPropertySource getPropertySource()
   {
     if (propertySource == null)
@@ -119,7 +118,7 @@ extends AbstractTreeEditPart
     }
     return propertySource;
   }
-  
+
   @Override
 	protected String getText()
   {
@@ -133,7 +132,7 @@ extends AbstractTreeEditPart
   public DrawComponent getDrawComponent() {
     return (DrawComponent) getModel();
   }
-    
+
   @Override
 	public void activate()
   {
@@ -161,7 +160,7 @@ extends AbstractTreeEditPart
   /**
    * Registers this edit part as a listener for change notifications
    * to the specified workflow element.
-   * 
+   *
    * @param element the drawComponent element that should be observed
    * for change notifications
    */
@@ -174,7 +173,7 @@ extends AbstractTreeEditPart
   /**
    * Removes this edit part from the specified drawComponent element.
    * Thus, it will no longe receive change notifications.
-   * 
+   *
    * @param element the drawComponent element that should not be observed
    * any more
    */
@@ -183,7 +182,7 @@ extends AbstractTreeEditPart
     if (element != null)
       element.removePropertyChangeListener(listener);
   }
-  
+
   /**
    * Creates and installs pertinent EditPolicies
    * for this.
@@ -195,17 +194,17 @@ extends AbstractTreeEditPart
 //  	installEditPolicy(EditPolicy.COMPONENT_ROLE, new DrawComponentTreeComponentEditPolicy());
   	installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE, new DrawComponentTreeEditPolicy());
   }
-  
+
   protected PropertyChangeListener listener = new PropertyChangeListener(){
 		public void propertyChange(PropertyChangeEvent evt) {
 			propertyChanged(evt);
 		}
 	};
-  
+
 	protected void propertyChanged(PropertyChangeEvent evt)
 	{
 //		notifyLabelDecorator();
-		
+
 		String propertyName = evt.getPropertyName();
 		if (propertyName.equals(DrawComponent.PROP_BOUNDS)) {
 			refreshVisuals();
@@ -269,7 +268,7 @@ extends AbstractTreeEditPart
 			return;
 		}
 	}
-			
+
 	@SuppressWarnings("restriction") //$NON-NLS-1$
 	public void notifyLabelDecorator()
 	{
@@ -282,5 +281,5 @@ extends AbstractTreeEditPart
 			}
 		}
 	}
-	
+
 }

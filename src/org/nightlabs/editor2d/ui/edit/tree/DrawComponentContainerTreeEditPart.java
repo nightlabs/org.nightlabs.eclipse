@@ -35,11 +35,10 @@ import org.eclipse.gef.RootEditPart;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
 import org.nightlabs.editor2d.DrawComponentContainer;
 import org.nightlabs.editor2d.ui.editpolicy.tree.DrawComponentTreeContainerEditPolicy;
-import org.nightlabs.editor2d.ui.resource.Messages;
 
 public abstract class DrawComponentContainerTreeEditPart
 extends DrawComponentTreeEditPart
-{	
+{
   /**
    * Constructor initializes this with the given model.
    *
@@ -48,7 +47,7 @@ extends DrawComponentTreeEditPart
   public DrawComponentContainerTreeEditPart(DrawComponentContainer model) {
   	super(model);
   }
-    
+
   /**
    * Creates and installs pertinent EditPolicies.
    */
@@ -84,7 +83,7 @@ extends DrawComponentTreeEditPart
   {
   	return getDrawComponentContainer().getDrawComponents();
   }
-  
+
 	@Override
 	protected void propertyChanged(PropertyChangeEvent evt)
 	{
@@ -99,5 +98,5 @@ extends DrawComponentTreeEditPart
 			refreshChildren();
 		}
 	}
-    
+
 }

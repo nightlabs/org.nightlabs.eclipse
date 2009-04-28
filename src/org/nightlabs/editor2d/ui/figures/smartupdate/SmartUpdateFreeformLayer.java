@@ -43,7 +43,6 @@ import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.swt.widgets.Control;
 import org.nightlabs.editor2d.ui.figures.BufferedFreeformLayer;
-import org.nightlabs.editor2d.ui.resource.Messages;
 import org.nightlabs.editor2d.ui.util.EditorUtil;
 
 /**
@@ -56,11 +55,11 @@ public class SmartUpdateFreeformLayer
 {
 	public static final int TYPE_SMART_UPDATE_ONLY = 1;
 	public static final int TYPE_USE_OFFSCREEN_BUFFER = 2;
-	
+
 	private Rectangle notifiedDamage;
 	private EditPart editPart;
 	private UpdateManager updateManager;
-	
+
 	private UpdateListener updateListener = new UpdateListener() {
 		public void notifyPainting(Rectangle damage, Map dirtyRegions) {
 		  	if (editPart == null)
@@ -71,14 +70,14 @@ public class SmartUpdateFreeformLayer
 		public void notifyValidating() {
 		}
 	};
-	
-	
+
+
 	/**
 	 */
 	public SmartUpdateFreeformLayer() {
 		super();
 	}
-	
+
 	public void init(EditPart editPart) {
 		this.editPart = editPart;
 		EditPartViewer viewer = editPart.getRoot().getViewer();
@@ -93,11 +92,11 @@ public class SmartUpdateFreeformLayer
 			}
 		}
 	}
-	
+
 	/**
 	 * Registers this Figures updateListener to the given
 	 * updateManager.
-	 * 
+	 *
 	 * @param updateManager The updateManager to register to.
 	 */
 	protected void registerOnDeferredUpdateManager(UpdateManager updateManager) {
@@ -106,7 +105,7 @@ public class SmartUpdateFreeformLayer
 		updateManager.removeUpdateListener(updateListener);
 		updateManager.addUpdateListener(updateListener);
 	}
-	
+
 	/**
 	 * Overrides Figure's paint as this will always
 	 * paint all its children even if not neccessary.
@@ -119,13 +118,13 @@ public class SmartUpdateFreeformLayer
 	 * {@link ISmartUpdateFigure} its {@link ISmartUpdateFigure#paintRegion(Rectangle)}
 	 * method will be invoked instead of the default
 	 * {@link Figure#paint(Graphics)} method.
-	 * 
+	 *
 	 * @param graphics the graphics to paint on
 	 */
 	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	public void paint(Graphics graphics) {
-		
+
 		if (notifiedDamage == null) {
 			// no update notification was done
 			// before this call
@@ -133,7 +132,7 @@ public class SmartUpdateFreeformLayer
 			super.paint(graphics);
 			return;
 		}
-		
+
 		// synchronous notification was done right before paint
 		try
 		// make sure the temporary Damage is reset in finally
@@ -190,6 +189,6 @@ public class SmartUpdateFreeformLayer
 	}
 
 	public void dispose() {
-		
+
 	}
 }

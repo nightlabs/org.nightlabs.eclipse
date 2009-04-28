@@ -10,7 +10,6 @@ import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.render.Renderer;
-import org.nightlabs.editor2d.ui.resource.Messages;
 
 public class ContainerFreeformLayer
 extends FreeformLayer
@@ -20,7 +19,7 @@ implements RendererFigure
 	{
 		super.setBounds(new Rectangle(-Integer.MAX_VALUE / 2, -Integer.MAX_VALUE / 2, Integer.MAX_VALUE, Integer.MAX_VALUE));
 	}
-	
+
 	/**
 	 * Overridden to paint only children
 	 */
@@ -34,7 +33,7 @@ implements RendererFigure
 			}
 		}
 	}
-	
+
 	/**
 	 * Overridden to paint only children
 	 */
@@ -47,17 +46,17 @@ implements RendererFigure
 			figure.paint(graphics);
 		}
 	}
-	
+
 	protected Renderer renderer;
 	public void setRenderer(Renderer renderer) {
 		this.renderer = renderer;
 	}
-	
+
 	protected DrawComponent drawComponent;
 	public void setDrawComponent(DrawComponent drawComponent) {
 		this.drawComponent = drawComponent;
 	}
-	
+
 	/**
 	 * @see FreeformFigure#setFreeformBounds(Rectangle)
 	 */
@@ -68,7 +67,7 @@ implements RendererFigure
 //    LOGGER.debug("setFreeformBounds("+bounds+")");
 //  	helper.setFreeformBounds(bounds);
 	}
-	
+
 	@Override
 	public void setBounds(Rectangle rect)
 	{
@@ -76,5 +75,5 @@ implements RendererFigure
 //  LOGGER.debug("setFreeformBounds("+bounds+")");
 //	helper.setFreeformBounds(bounds);
 	}
-  	
+
 }

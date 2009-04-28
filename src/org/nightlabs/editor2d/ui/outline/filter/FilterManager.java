@@ -38,7 +38,6 @@ import java.util.List;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.NameProvider;
 import org.nightlabs.editor2d.RootDrawComponent;
-import org.nightlabs.editor2d.ui.resource.Messages;
 
 /**
  * Used to set Filters in the Outline Page
@@ -48,11 +47,11 @@ public class FilterManager
   public static final String FILTER_CHANGED = "Filter changed"; //$NON-NLS-1$
   public static final String FILTER_ADDED = "Filter added"; //$NON-NLS-1$
   public static final String FILTERS_ADDED = "Filters added"; //$NON-NLS-1$
-	    
+
   public String getTypeName(Class<?> c) {
   	return nameProvider.getTypeName(c);
   }
-  
+
   protected List<Class<? extends DrawComponent>> filters;
   protected List<Class<? extends DrawComponent>> allFilters;
   protected NameProvider nameProvider = null;
@@ -61,71 +60,71 @@ public class FilterManager
     super();
     this.nameProvider = nameProvider;
   }
-    
+
   public void addFilter(Class<? extends DrawComponent> clazz)
   {
   	if (clazz == null)
 			throw new IllegalArgumentException("Param clazz must not be null!"); //$NON-NLS-1$
-  	
+
     getFilters().add(clazz);
     getAllFilters().add(clazz);
-    
+
     checkIgnore();
     pcs.firePropertyChange(FILTER_ADDED, null, clazz);
   }
-  
+
   public void addFilters(Collection<Class<? extends DrawComponent>> classes)
   {
   	if (classes == null)
 			throw new IllegalArgumentException("Param classes must not be null!"); //$NON-NLS-1$
-  	
+
     getFilters().addAll(classes);
     getAllFilters().addAll(classes);
-    
+
     checkIgnore();
     pcs.firePropertyChange(FILTERS_ADDED, null, classes);
   }
-  
+
   public List<Class<? extends DrawComponent>> getFilters()
   {
     if (filters == null)
       filters = new ArrayList<Class<? extends DrawComponent>>();
-    
+
     return filters;
   }
-  
+
   public List<Class<? extends DrawComponent>> getAllFilters()
   {
     if (allFilters == null)
       allFilters = new ArrayList<Class<? extends DrawComponent>>();
-    
+
     return allFilters;
   }
-  
+
   public void setFilter(Class<? extends DrawComponent> clazz)
   {
   	if (clazz == null)
 			throw new IllegalArgumentException("Param clazz must not be null!"); //$NON-NLS-1$
-  	
+
     getFilters().clear();
     getFilters().add(clazz);
     pcs.firePropertyChange(FILTER_CHANGED, null, getFilters());
   }
-  
+
   public void setFilter(Collection<Class<? extends DrawComponent>> classes)
   {
   	if (classes == null)
 			throw new IllegalArgumentException("Param classes must not be null!"); //$NON-NLS-1$
-  	
+
     getFilters().clear();
     getFilters().addAll(classes);
     pcs.firePropertyChange(FILTER_CHANGED, null, getFilters());
   }
-  
+
   public void setAllFiltersAvailable() {
     setFilter(getAllFilters());
   }
-    
+
   public boolean isAllFilterSet() {
   	if (filters != null && allFilters != null) {
     	if (filters.size() == allFilters.size())
@@ -135,7 +134,7 @@ public class FilterManager
   	}
   	return true;
   }
-  
+
   protected PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	public void addPropertyChangeListener(PropertyChangeListener pcl) {
 		pcs.addPropertyChangeListener(pcl);
@@ -143,7 +142,7 @@ public class FilterManager
 	public void removePropertyChangeListener(PropertyChangeListener pcl) {
 		pcs.removePropertyChangeListener(pcl);
 	}
-	
+
 	protected PropertyChangeListener newTypeListener = new PropertyChangeListener()
 	{
 		@SuppressWarnings("unchecked") //$NON-NLS-1$
@@ -155,18 +154,18 @@ public class FilterManager
 			}
 		}
 	};
-	
+
 	public PropertyChangeListener getTypeListener() {
 		return newTypeListener;
 	}
-	
+
 	protected List<Class<? extends DrawComponent>> ignoreClasses = new ArrayList<Class<? extends DrawComponent>>();
 	public void ignoreClass(Class<? extends DrawComponent> c)
 	{
 		ignoreClasses.add(c);
 		checkIgnore();
 	}
-	
+
 	protected void checkIgnore()
 	{
 		for (Iterator<Class<? extends DrawComponent>> it = ignoreClasses.iterator(); it.hasNext(); ) {
@@ -178,5 +177,5 @@ public class FilterManager
 			}
 		}
 	}
-	
+
 }

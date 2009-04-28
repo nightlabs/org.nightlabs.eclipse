@@ -36,7 +36,6 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseEvent;
 import org.nightlabs.editor2d.ui.EditorStateManager;
 import org.nightlabs.editor2d.ui.request.EditorRequestConstants;
-import org.nightlabs.editor2d.ui.resource.Messages;
 
 
 public class EditorSelectionTool
@@ -46,11 +45,11 @@ implements EditorRequestConstants
   protected static final int STATE_ROTATE = PanningSelectionTool.MAX_STATE << 1;
   protected static final int STATE_ROTATE_IN_PROGRESS = STATE_ROTATE << 1;
   protected static final int MAX_STATE = STATE_ROTATE;
- 
+
   public EditorSelectionTool() {
     super();
   }
-  
+
   @SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	protected boolean handleDoubleClick(int button)
@@ -73,23 +72,23 @@ implements EditorRequestConstants
     }
     return true;
   }
-    
+
   @Override
 	protected String getCommandName()
   {
     if (isInState(STATE_ROTATE) || isInState(STATE_ROTATE_IN_PROGRESS))
       return REQ_ROTATE;
-  
+
     return super.getCommandName();
   }
-     
+
   @Override
 	public void activate()
   {
     EditorStateManager.setCurrentState(EditorStateManager.STATE_NORMAL_SELECTION);
     super.activate();
   }
-    
+
   @Override
 	protected boolean handleKeyDown(KeyEvent e)
   {
@@ -98,7 +97,7 @@ implements EditorRequestConstants
       EditorStateManager.setCurrentState(EditorStateManager.STATE_NORMAL_SELECTION);
       getCurrentViewer().deselectAll();
     }
-      
+
     return super.handleKeyDown(e);
   }
 
@@ -118,5 +117,5 @@ implements EditorRequestConstants
 		handleHover();
 //		LOGGER.debug("mouseMove!");
 	}
-      
+
 }

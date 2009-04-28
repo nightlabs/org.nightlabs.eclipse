@@ -38,7 +38,6 @@ import org.nightlabs.editor2d.DrawComponentContainer;
 import org.nightlabs.editor2d.RootDrawComponent;
 import org.nightlabs.editor2d.ui.model.RootDrawComponentPropertySource;
 import org.nightlabs.editor2d.ui.outline.filter.FilterManager;
-import org.nightlabs.editor2d.ui.resource.Messages;
 
 
 public class RootDrawComponentTreeEditPart
@@ -51,16 +50,16 @@ extends DrawComponentContainerTreeEditPart
     super(model);
     this.filterMan = filterMan;
   }
-  
+
   protected FilterManager filterMan;
   public FilterManager getFilterMan() {
   	return filterMan;
   }
-  
+
   public RootDrawComponent getRootDrawComponent() {
   	return (RootDrawComponent) getModel();
   }
-  
+
 //  public Image getImage() {
 //    return null;
 //  }
@@ -76,7 +75,7 @@ extends DrawComponentContainerTreeEditPart
 //  	installEditPolicy(EditPolicy.TREE_CONTAINER_ROLE, new RootDrawComponentTreeEditPolicy());
 //  	installEditPolicy(EditPolicy.COMPONENT_ROLE, new RootComponentEditPolicy());
 //  }
-  
+
   @SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	protected List getModelChildren()
@@ -90,7 +89,7 @@ extends DrawComponentContainerTreeEditPart
       return filterChildren;
   	}
   }
-    
+
   protected List<DrawComponent> getModelChildren(DrawComponentContainer dcc)
   {
     List<DrawComponent> filterChildren = new ArrayList<DrawComponent>();
@@ -111,7 +110,7 @@ extends DrawComponentContainerTreeEditPart
   	}
     return filterChildren;
   }
-  
+
   @Override
 	public IPropertySource getPropertySource()
   {
