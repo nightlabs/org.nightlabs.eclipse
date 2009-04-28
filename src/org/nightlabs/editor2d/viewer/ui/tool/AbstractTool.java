@@ -31,7 +31,6 @@ import java.awt.geom.Rectangle2D;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.viewer.ui.IDrawComponentConditional;
 import org.nightlabs.editor2d.viewer.ui.IViewer;
@@ -43,7 +42,7 @@ import org.nightlabs.editor2d.viewer.ui.preferences.Preferences;
 public abstract class AbstractTool
 implements ITool, MouseListener, MouseMoveListener
 {
-	private static final Logger logger = Logger.getLogger(AbstractTool.class);
+//	private static final Logger logger = Logger.getLogger(AbstractTool.class);
 
 	public static final String ID_DEFAULT = "DefaultToolID";  //$NON-NLS-1$
 	private String id = ID_DEFAULT;
