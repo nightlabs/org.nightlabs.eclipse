@@ -144,7 +144,7 @@ Require-Bundle: org.eclipse.ui,
  org.nightlabs.base.ui,
  org.nightlabs.jfire.base.j2ee;resolution:=optional,
  org.nightlabs.eclipse.ui.dialog;visibility:=reexport,
- org.nightlabs.xstream;resolution:=optional;visibility:=reexport
+ org.nightlabs.xstream;bundle-version="0.9.7"
 Eclipse-LazyStart: true
 Eclipse-BuddyPolicy: registered
 Eclipse-RegisterBuddy: org.nightlabs.jfire.base.j2ee,org.nightlabs.xstream 

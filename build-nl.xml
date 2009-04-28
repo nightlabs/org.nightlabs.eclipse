@@ -1,0 +1,22 @@
+<project default="build">
+	<target name="build">
+		<delete file="lib/*"/>
+    <copy file="../NightLabsEditor2D/dist/lib/batik-awt-util.jar" todir="lib/" failonerror="true" verbose="true"/>
+    <copy file="../NightLabsEditor2D/dist/lib/batik-dom.jar" todir="lib/" failonerror="true" verbose="true"/>
+    <copy file="../NightLabsEditor2D/dist/lib/batik-svggen.jar" todir="lib/" failonerror="true" verbose="true"/>
+    <copy file="../NightLabsEditor2D/dist/lib/batik-util.jar" todir="lib/" failonerror="true" verbose="true"/>
+    <copy file="../NightLabsEditor2D/dist/lib/batik-xml.jar" todir="lib/" failonerror="true" verbose="true"/>
+    <copy file="../NightLabsEditor2D/dist/lib/batik-extension.jar" todir="lib/" failonerror="true" verbose="true"/>
+    <copy file="../NightLabsEditor2D/dist/lib/batik-css.jar" todir="lib/" failonerror="true" verbose="true"/>		
+    <copy file="../NightLabsEditor2D/dist/lib/batik-ext.jar" todir="lib/" failonerror="true" verbose="true"/>				
+    <copy file="../NightLabsEditor2D/dist/lib/batik-svg-dom.jar" todir="lib/" failonerror="true" verbose="true"/>								
+    <copy file="../NightLabsEditor2D/dist/lib/jai_core.jar" todir="lib/" failonerror="true" verbose="true"/>
+    <copy file="../NightLabsEditor2D/dist/lib/jai_codec.jar" todir="lib/" failonerror="true" verbose="true"/>
+    <copy file="../NightLabsEditor2D/dist/lib/itext-1.4.8.jar" todir="lib/" failonerror="true" verbose="true"/>
+
+		<jar destfile="lib/NightLabsEditor2D.jar">
+			<fileset dir="../NightLabsEditor2D/bin" includes="**/*">
+			</fileset>
+		</jar>
+	</target>
+</project>
