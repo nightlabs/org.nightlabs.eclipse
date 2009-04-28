@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/NightLabsEditor2D"/>
 	<classpathentry kind="var" path="ECLIPSE_HOME/plugins/org.holongate.gef_2.3.0/holongate-gef.jar" sourcepath="/WORKSPACE/org.holongate.gef/src"/>
 	<classpathentry kind="var" path="ECLIPSE_HOME/plugins/org.holongate.draw2d_2.3.0/holongate-draw2d.jar" sourcepath="/WORKSPACE/org.holongate.draw2d/src"/>
