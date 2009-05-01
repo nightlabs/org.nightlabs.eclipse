@@ -56,6 +56,7 @@
       </actionSet>
    </extension>
 -->
+   <extension-point id="contentFileWizard" name="Content file wizard" schema="schema/contentFileWizard.exsd" />
    <extension
          point="org.nightlabs.eclipse.ui.fckeditor.contentFileWizard">
       <typeBinding
