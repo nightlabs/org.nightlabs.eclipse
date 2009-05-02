@@ -11,7 +11,7 @@
 			<arguments>
 				<dictionary>
 					<key>buildfile</key>
-					<value>build-copylibs.xml</value>
+					<value>build-nl.xml</value>
 				</dictionary>
 			</arguments>
 		</buildCommand>
