@@ -6,12 +6,12 @@
 	</projects>
 	<buildSpec>
 		<buildCommand>
-			<name>org.eclipse.ui.externaltools.ExternalToolBuilder</name>
+			<name>org.nightlabs.eclipse.antbuilder.AntBuilder</name>
 			<triggers>full,incremental,</triggers>
 			<arguments>
 				<dictionary>
-					<key>LaunchConfigHandle</key>
-					<value>&lt;project&gt;/.externalToolBuilders/copylibs org.nightlabs.base.ui.launch</value>
+					<key>buildfile</key>
+					<value>build-copylibs.xml</value>
 				</dictionary>
 			</arguments>
 		</buildCommand>
