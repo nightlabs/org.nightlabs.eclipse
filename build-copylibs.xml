@@ -1,0 +1,8 @@
+<project default="copylibs">
+	<target name="copylibs">
+		<mkdir dir="lib"/>
+		<jar destfile="lib/org.nightlabs.base.jar">
+			<fileset dir="../org.nightlabs.base/bin" includes="**/*"/>
+		</jar>
+	</target>
+</project>
