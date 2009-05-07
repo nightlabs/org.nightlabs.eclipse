@@ -179,7 +179,12 @@ extends InvertableSorter<Object>
 		if (comp2 == null) {
 			return comp1 != null ? 1 : 0;
 		}
+
+		if (comp1 instanceof String && comp2 instanceof String) {
+			return collator.compare(comp1, comp2);
+		}
 		return comp1.compareTo(comp2);
 	}
 
+	private java.text.Collator collator = java.text.Collator.getInstance();
 }
