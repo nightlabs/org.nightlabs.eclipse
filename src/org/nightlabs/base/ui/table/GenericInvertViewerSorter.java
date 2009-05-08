@@ -80,18 +80,18 @@ extends InvertableSorter<Object>
 	}
 
 	@Override
-	public InvertableSorter getInverseSorter() {
+	public InvertableSorter<Object> getInverseSorter() {
 		return inverse;
 	}
 
-	private InvertableSorter inverse = new InvertableSorter<Object>(){
+	private InvertableSorter<Object> inverse = new InvertableSorter<Object>(){
 		@Override
 		public int getSortDirection() {
 			return SWT.DOWN;
 		}
 
 		@Override
-		public InvertableSorter getInverseSorter() {
+		public InvertableSorter<Object> getInverseSorter() {
 			return GenericInvertViewerSorter.this;
 		}
 

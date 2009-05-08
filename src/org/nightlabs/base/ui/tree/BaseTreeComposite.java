@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.nightlabs.base.ui.tree;
 
@@ -10,8 +10,9 @@ import org.eclipse.swt.widgets.Composite;
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  *
  */
-public abstract class BaseTreeComposite extends AbstractTreeComposite {
-
+public abstract class BaseTreeComposite<ElementType>
+extends AbstractTreeComposite<ElementType>
+{
 	/**
 	 * @param parent
 	 */

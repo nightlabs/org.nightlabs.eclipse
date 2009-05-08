@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.nightlabs.base.ui.action;
 
@@ -28,15 +28,15 @@ import org.nightlabs.base.ui.login.Login;
 import org.nightlabs.base.ui.wizard.DynamicPathWizardDialog;
 
 /**
- * This class is a subclass of {@link org.eclipse.ui.actions.NewWizardAction}, 
+ * This class is a subclass of {@link org.eclipse.ui.actions.NewWizardAction},
  * to provide 2 more things.
  * 1. It uses an {@link DynamicPathWizardDialog} instead of normal {@link WizardDialog}
  * so that the {@link IWizardContainer} for all implementations of {@link INewWizard}
  * which are registered at the extension-point org.eclipse.ui.newWizard have it.
- * 2. It performs a {@link Login.login()} before the new wizard dialog opens, to avoid 
+ * 2. It performs a {@link Login.login()} before the new wizard dialog opens, to avoid
  * ClassNotFoundExceptions when some implementations of {@link INewWizard} have imports
  * of remote classes.
- * 
+ *
  * @author Daniel Mazurek - Daniel.Mazurek [dot] nightlabs [dot] de
  */
 public class NewWizardAction extends org.eclipse.ui.actions.NewWizardAction {
@@ -51,7 +51,7 @@ public class NewWizardAction extends org.eclipse.ui.actions.NewWizardAction {
      * The wizard dialog height
      */
     private static final int SIZING_WIZARD_HEIGHT = 500;
-    
+
 	/**
 	 * @param window
 	 */
@@ -64,27 +64,29 @@ public class NewWizardAction extends org.eclipse.ui.actions.NewWizardAction {
 	/* (non-Javadoc)
      * Method declared on IAction.
      */
-    public void run() 
+    @Override
+	public void run()
     {
     	try {
 			Login.login();
 			doRun();
 		} catch (LoginException e) {
-			// if not logged in do nothing, because it could lead to NoClassDefFoundError, 
-			// when instantiating Wizard classes which need remote classes (e.g. have imports) 
+			// if not logged in do nothing, because it could lead to NoClassDefFoundError,
+			// when instantiating Wizard classes which need remote classes (e.g. have imports)
 		} catch (IllegalStateException e2) {
-			// if no ILoginDelegate is registered the application has no login, 
+			// if no ILoginDelegate is registered the application has no login,
 			// then also just open the newWizard dialog
 			doRun();
 		}
     }
-    
+
     /**
-     * This method is copied from org.eclipse.ui.actions.NewWizardAction.run() 
+     * This method is copied from org.eclipse.ui.actions.NewWizardAction.run()
      * but it uses an DynamicPathWizardDialog for the wizards instead of an "normal"
      * WizardDialog.
      */
-    protected void doRun() 
+    @SuppressWarnings("restriction")
+	protected void doRun()
     {
     	if (window == null) {
             // action has been disposed
@@ -101,7 +103,7 @@ public class NewWizardAction extends org.eclipse.ui.actions.NewWizardAction {
         } else {
             // @issue the following is resource-specific legacy code
             // Build the selection from the IFile of the editor
-            Class resourceClass = LegacyResourceSupport.getResourceClass();
+            Class<?> resourceClass = LegacyResourceSupport.getResourceClass();
             if (resourceClass != null) {
                 IWorkbenchPart part = window.getPartService()
                         .getActivePart();
@@ -135,6 +137,6 @@ public class NewWizardAction extends org.eclipse.ui.actions.NewWizardAction {
                 SIZING_WIZARD_HEIGHT);
         PlatformUI.getWorkbench().getHelpSystem().setHelp(dialog.getShell(),
 				IWorkbenchHelpContextIds.NEW_WIZARD);
-        dialog.open();	
+        dialog.open();
     }
 }

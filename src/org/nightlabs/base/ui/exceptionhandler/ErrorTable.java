@@ -29,6 +29,7 @@ package org.nightlabs.base.ui.exceptionhandler;
 
 import java.util.Collection;
 
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -38,18 +39,17 @@ import org.eclipse.swt.widgets.TableItem;
 import org.nightlabs.base.ui.layout.WeightedTableLayout;
 import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.table.AbstractTableComposite;
-import org.nightlabs.base.ui.table.TableContentProvider;
 import org.nightlabs.base.ui.table.TableLabelProvider;
 
 /**
  * This class is supposed to display a Collection of <code>ErrorItem</code>s
  * using two columns.
- * 
+ *
  * @author Tobias Langner <!-- tobias[dot]langner[at]nightlabs[dot]de -->
  */
 public class ErrorTable extends AbstractTableComposite
 {
-	private static class ContentProvider extends TableContentProvider
+	private static class ContentProvider extends ArrayContentProvider
 	{
 		@Override
 		public Object[] getElements(Object inputElement)
@@ -59,8 +59,8 @@ public class ErrorTable extends AbstractTableComposite
 			return super.getElements(inputElement);
 		}
 	}
-	
-	
+
+
 	private static class LabelProvider extends TableLabelProvider
 	{
 		public String getColumnText(Object element, int columnIndex)
@@ -77,7 +77,7 @@ public class ErrorTable extends AbstractTableComposite
 						return error.getMessage();
 				}
 			}
-			
+
 			return ""; //$NON-NLS-1$
 		}
 	}
@@ -107,14 +107,14 @@ public class ErrorTable extends AbstractTableComposite
 		tableViewer.setContentProvider(new ContentProvider());
 		tableViewer.setLabelProvider(new LabelProvider());
 	}
-	
+
 	public void setInput(Collection input)
 	{
 		getTableViewer().setInput(input);
 		if (input.size() == 1)
 			getTable().setSelection(0);
 	}
-	
+
 	public ErrorItem getSelectedItem() {
 		TableItem[] selection = getTable().getSelection();
 		if (selection.length > 0)

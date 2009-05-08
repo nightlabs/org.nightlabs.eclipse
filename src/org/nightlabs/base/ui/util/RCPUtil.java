@@ -91,7 +91,7 @@ import org.nightlabs.util.IOUtil;
  */
 public class RCPUtil
 {
-	private static final Logger logger = Logger.getLogger( RCPUtil.class);
+//	private static final Logger logger = Logger.getLogger( RCPUtil.class);
 
 	/**
 	 * Recursively sets the enabled flag for the given Composite and all its children.
@@ -102,7 +102,7 @@ public class RCPUtil
 	 * like other NightLabs-UI elements as well). In order to implement this behaviour yourself,
 	 * you should use a {@link ChildStatusController}.
 	 * </p>
-	 * 
+	 *
 	 * @param comp The parent control
 	 * @param enabled The enabled flag to set
 	 */
@@ -118,7 +118,7 @@ public class RCPUtil
 	/**
 	 * Sets the given button selected if it is contained in the given parent Composite,
 	 * and deselects all other buttons in this Composite
-	 * 
+	 *
 	 * @param parent the parent Composite
 	 * @param button a Button with style Param SWT.TOGGLE or SWT.RADIO which should be selected
 	 */
@@ -140,14 +140,14 @@ public class RCPUtil
 	/**
 	 * Take a screen shot of the application. This method tries to only include windows of the current
 	 * application (and not to include any information from other apps).
-	 * <p> 
+	 * <p>
 	 * If there are {@link Shell}s (= windows) existing, the screen shot is taken for the
 	 * smallest rectangle that contains all of the application's windows. If there is no {@link Shell} existing,
 	 * the complete screen will be taken.
 	 * </p>
 	 * <p>
 	 * In the future, this method should overwrite areas inbetween different shells (where other applications' windows
-	 * are [partially] visible) with black. At the moment, this information is not yet cut out. 
+	 * are [partially] visible) with black. At the moment, this information is not yet cut out.
 	 * </p>
 	 *
 	 * @return image of the current screen.
@@ -191,7 +191,7 @@ public class RCPUtil
 		}
 
 		// ensure everything has been redrawn
-		display.readAndDispatch();		
+		display.readAndDispatch();
 
 		// Taking the screen shot with AWT is a bit complicated since AWT manages a multi-screen-environment
 		// really separated - hence we would need to put our screen shot together ourselves. Thus, we use SWT now.
@@ -220,7 +220,7 @@ public class RCPUtil
 	 * Returns whether the ViewPart with the given id is currently visible in
 	 * one of the pages of the active Workbench window. Will also return
 	 * true when the page-book containing this view is minimized.
-	 * 
+	 *
 	 * @param viewID The id of the view to be queried
 	 * @return Whether the view is visible
 	 */
@@ -238,7 +238,7 @@ public class RCPUtil
 
 	/**
 	 * Show/Hide all ViewActions of the given View.
-	 * 
+	 *
 	 * @param view The View which ViewActions should be shown/hidden
 	 * @param visible true to show all Actions, fals to hide them
 	 */
@@ -263,7 +263,7 @@ public class RCPUtil
 	 * Returns wether the given IWorkbenchPart is currently visble in
 	 * one of the pages of the active Workbench window. Will also return
 	 * true when the page-book containing this view is minimized.
-	 * 
+	 *
 	 * @param part The part to check
 	 * @return Wether the view is visible
 	 */
@@ -281,7 +281,7 @@ public class RCPUtil
 
 	/**
 	 * Shows the view with the given viewID in all workbench-pages
-	 * 
+	 *
 	 * @param viewID The id of the view to be queried
 	 * @return Wether the view is visible
 	 */
@@ -299,7 +299,7 @@ public class RCPUtil
 	/**
 	 * Shows the view with the given viewID and
 	 * gives it focus.
-	 * 
+	 *
 	 * @param viewID The id of the view to be queried
 	 * @return Wether the view is visible
 	 */
@@ -393,7 +393,7 @@ public class RCPUtil
 
 	/**
 	 * opens a ErrorDialog with the given message
-	 * 
+	 *
 	 * @param message the message to display
 	 * @param buttonStyle the buttonStyle
 	 * @return the returnCode of the Dialog
@@ -406,7 +406,7 @@ public class RCPUtil
 	/**
 	 * opens a MessageBox which asks the user if he want to overwrite the file,
 	 * with the given fileName
-	 * 
+	 *
 	 * @param fileName the name of the file
 	 * @return the returnCode of the Dialog
 	 */
@@ -421,7 +421,7 @@ public class RCPUtil
 
 	/**
 	 * disposes the given Composite with all of its children
-	 * 
+	 *
 	 * @param comp the Composite to dispose with all of its children
 	 */
 	public static void disposeAllChildren(Composite comp)
@@ -440,7 +440,7 @@ public class RCPUtil
 
 	/**
 	 * Opens an editor with the given input and editorID and returns it.
-	 * 
+	 *
 	 * @param input The editors input
 	 * @param editorID The editors id
 	 * @return The editor opened
@@ -454,7 +454,7 @@ public class RCPUtil
 
 	/**
 	 * Opens an editor with the given input and editorID and returns it.
-	 * 
+	 *
 	 * @param input The editors input
 	 * @param editorID The editors id
 	 * @return The editor opened
@@ -510,7 +510,7 @@ public class RCPUtil
 	}
 
 	/**
-	 * 
+	 *
 	 * @param bounds the bounds of a Control
 	 * @return the Point which determines the Location so that the given Bounds are
 	 * centered on the screen
@@ -543,7 +543,7 @@ public class RCPUtil
 	}
 
 	/**
-	 * 
+	 *
 	 * @param comp the Composite to set the Form Border for
 	 * @see FormToolkit#paintBordersFor(Composite)
 	 */
@@ -568,7 +568,7 @@ public class RCPUtil
 	/**
 	 * checks if a IMenuManager with the given ID is contained in
 	 * the given IMenuManager and returns it.
-	 * 
+	 *
 	 * @param id the ID of the ContributionItem
 	 * @param menuMan the MenuManager to search in
 	 * @return the ContributionItem with the given ID or null if not contained
@@ -592,7 +592,7 @@ public class RCPUtil
 	 * Returns the either the active {@link IWorkbenchPage}
 	 * or the first found. If none can be found <code>null</code>
 	 * will be returned.
-	 * 
+	 *
 	 * @return An {@link IWorkbenchPage} or null
 	 */
 	public static IWorkbenchPage searchWorkbenchPage() {
@@ -609,7 +609,7 @@ public class RCPUtil
 	/**
 	 * Tries to find a reference for the given part somewhere in the Workbench and returns it.
 	 * If a reference can not be found <code>null</code> will be returned.
-	 * 
+	 *
 	 * @param part The part to search a reference for
 	 */
 	public static IWorkbenchPartReference searchPartReference(IWorkbenchPart part) {
@@ -627,7 +627,7 @@ public class RCPUtil
 
 	/**
 	 * logs all parents and its layoutData of the given control to the given logger
-	 * 
+	 *
 	 * @param control the {@link Control} to log its parents
 	 * @param logger the logger to log
 	 * @param logLevel the logLevel to use
@@ -652,7 +652,7 @@ public class RCPUtil
 	 * Checks the given monitor and returns it if not <code>null</code>. If
 	 * the given monitor is null an instance of {@link NullProgressMonitor}
 	 * will be returned.
-	 * 
+	 *
 	 * @param monitor The monitor to check
 	 */
 	public static IProgressMonitor getSaveProgressMonitor(IProgressMonitor monitor) {
@@ -678,7 +678,7 @@ public class RCPUtil
 
 	/**
 	 * Returns a {@link File} representation of the given {@link IResource}.
-	 * 
+	 *
 	 * @param resource The resource to get the {@link File} from.
 	 * @return A {@link File} representation of the given {@link IResource}.
 	 */
@@ -693,7 +693,7 @@ public class RCPUtil
 	 * RCPUtil.setControlFontStyle(myControl, SWT.BOLD, 0);
 	 * </pre>
 	 * Styles are first added then removed.
-	 * 
+	 *
 	 * @param control The {@link Control} to change the font of.
 	 * @param addStyle The style flag(s that should be added to the controls actual font.
 	 * @param removeStyle The style flag(s) that should be removed from the contros actual font.
@@ -727,9 +727,9 @@ public class RCPUtil
 		} finally {
 			gc.dispose();
 		}
-		return fontHeight;		
+		return fontHeight;
 	}
-	
+
 	/**
 	 * clears the workspace folder
 	 * @param ask determines if the user should be asked before
@@ -751,7 +751,7 @@ public class RCPUtil
 	 * to the {@link org.eclipse.ui.internal.layout.TrimLayout} of the given shell
 	 * and prepends it to the the trim with the given id (pependTo).
 	 * The new trim  will be filled with the contents of the given contributionItem.
-	 * 
+	 *
 	 * @param shell The shell to add the trim to.
 	 * @param contributionItem The contributionItem to fill the trim with.
 	 * @param prependTo The id of the trim the new trim should be prepended to.
@@ -816,7 +816,7 @@ public class RCPUtil
 				final ColumnPixelData pData = new ColumnPixelData(10);
 				pixelData.add(pData);
 				addColumnData(pData);
-			}				
+			}
 		}
 
 		public List<ColumnLayoutData> getOriginalData()
@@ -830,9 +830,9 @@ public class RCPUtil
 			// check if there is currently a vertical scroll bar visible in the composite tree where
 			// the given tree of table is used in. If so reduce the available width.
 			// Note: The weird thing is, that the ScrollBar is always set and the width is always > 0,
-			//       BUT with this fix, the table width always matches perfectly. (marius) 
+			//       BUT with this fix, the table width always matches perfectly. (marius)
 			final int verticalScrollBarWidth = c.getVerticalBar().getSize().y;
-			final int width = c.getClientArea().width - verticalScrollBarWidth; 
+			final int width = c.getClientArea().width - verticalScrollBarWidth;
 
 			if (width > 1)
 			{
@@ -845,7 +845,7 @@ public class RCPUtil
 	/**
 	 * Performs {@link RCPUtil#workaroundFormTableLayout(Table, boolean)} for every Table found
 	 * in the Composite graph of the given parent.
-	 * 
+	 *
 	 * @param parent The parent to replace layouts for.
 	 * @param doLayout Whether the tables should be re-layouted.
 	 * @deprecated this shouldn't be needed anymore see {@link AbstractBaseFormPage}.
@@ -864,9 +864,9 @@ public class RCPUtil
 	}
 
 	/**
-	 * Delegates to {@link #workaroundFormTableLayout(Table, boolean)} with 
+	 * Delegates to {@link #workaroundFormTableLayout(Table, boolean)} with
 	 * <code>doLayout = false</code>.
-	 * 
+	 *
 	 * @param table The table to layout that has already a TableLayout set.
 	 * @deprecated this shouldn't be needed anymore see {@link AbstractBaseFormPage}.
 	 */
@@ -879,7 +879,7 @@ public class RCPUtil
 	/**
 	 * Workaround method to apply normal {@link ColumnLayoutData}s to a table used in a {@link org.eclipse.ui.forms.widgets.Form} with GridLayout.
 	 * This prevents the table to calculate a wrong size in a {@link org.eclipse.ui.forms.widgets.Form} and to let the Section grow on every resize.
-	 * 
+	 *
 	 * @param table The table to layout that has already a TableLayout set.
 	 * @param layoutData The layout data to apply to the table.
 	 * @deprecated this shouldn't be needed anymore see {@link AbstractBaseFormPage}.
@@ -930,12 +930,12 @@ public class RCPUtil
 //		pixelData.add(pData);
 //		tableLayout.addColumnData(pData);
 //		}
-//		// in case the table hasn't been layouted yet, this width is 0 and the WorkaroundTableLayout 
-//		// has to set correct pixel datas on layout call. 
+//		// in case the table hasn't been layouted yet, this width is 0 and the WorkaroundTableLayout
+//		// has to set correct pixel datas on layout call.
 //		final int clientWidth = table.getClientArea().width;
 //		if (clientWidth != 0)
 //		{
-//		setPixelData(layoutData, pixelData, clientWidth);			
+//		setPixelData(layoutData, pixelData, clientWidth);
 //		}
 //		table.addControlListener(new ControlAdapter() {
 //		public void controlResized(final ControlEvent e) {

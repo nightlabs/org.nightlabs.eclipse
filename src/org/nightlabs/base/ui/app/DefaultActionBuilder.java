@@ -77,12 +77,12 @@ import org.nightlabs.config.ConfigException;
 import org.nightlabs.util.CollectionUtil;
 
 /**
- * This class is a subclass of {@link ActionBarAdvisor} which provides some functionality for defining, 
- * which actions should be available by default in the main menu and coolbar of an RCP application.  
+ * This class is a subclass of {@link ActionBarAdvisor} which provides some functionality for defining,
+ * which actions should be available by default in the main menu and coolbar of an RCP application.
  * It is recommended to use this class instead of an own subclass of {@link ActionBarAdvisor},
  * because it integrates some features, like the {@link NewWizardAction} and the recent file menu entries
  * by default.
- * 
+ *
  * @author Daniel Mazurek Daniel.Mazurek[AT]NightLabs[DOT]de
  * @author Alexander Bieber Alex[AT]NightLabs[DOT]de
  */
@@ -115,20 +115,20 @@ extends ActionBarAdvisor
 		Update,
 		Views;
 	}
-	
+
 //	public static enum ActionGroup
 //	{
 //		Save,
 //		Print,
 //		Close;
 //	}
-	
+
 	protected IActionBarConfigurer configurer;
-	
+
 	// Actions
 	protected Map<ActionBarItem, IWorkbenchAction> actions;
 	protected Map<IContributionItem, String> groupNames;
-	
+
 	// File-Menu
 //	protected IMenuManager newMenu;
 //	protected ActionFactory.IWorkbenchAction newWizardAction;
@@ -145,21 +145,21 @@ extends ActionBarAdvisor
 //	private ActionFactory.IWorkbenchAction newAction;
 	protected ActionFactory.IWorkbenchAction closeAction;
 	protected ActionFactory.IWorkbenchAction closeAllAction;
-		
+
 	// Help-Menu
 	protected ActionFactory.IWorkbenchAction introAction;
 	protected ActionFactory.IWorkbenchAction helpAction;
 //	protected ActionFactory.IWorkbenchAction updateAction;
 	protected IAction updateAction;
 	protected ActionFactory.IWorkbenchAction aboutAction;
-	
+
 	protected ShowKeyAssistHandler keyAssistHandler;
-	
+
 	// Window-Menu
 	protected IContributionItem openPerspectiveMenu;
 	protected IContributionItem showViewMenu;
 	protected ActionFactory.IWorkbenchAction preferencesAction;
-	
+
 	protected Collection<ActionBarItem> menuBarItems;
 	protected Collection<ActionBarItem> coolBarItems;
 
@@ -169,21 +169,21 @@ extends ActionBarAdvisor
 		super(configurer);
 		menuBarItems = showInMenuBar == null ? new HashSet<ActionBarItem>() : showInMenuBar;
 		coolBarItems = showInCoolBar == null ? new HashSet<ActionBarItem>() : showInCoolBar;
-		
+
 		actions = new HashMap<ActionBarItem, IWorkbenchAction>();
 		groupNames = new HashMap<IContributionItem, String>();
-		
+
 		if (menuBarItems.contains(ActionBarItem.RecentFiles))
 			initRecentFileConfig();
 	}
-	
+
 	public DefaultActionBuilder(IActionBarConfigurer configurer)
 	{
 //		this(configurer, Arrays.asList(ActionBarItem.values()), null);
 		// changed this to make it possible to remove something from the list
 		this(configurer, CollectionUtil.array2ArrayList(ActionBarItem.values()), null);
 	}
-		
+
 	protected void initRecentFileConfig()
 	{
 		try {
@@ -192,7 +192,7 @@ extends ActionBarAdvisor
 			throw new RuntimeException(e);
 		}
 	}
-		
+
 	/**
 	 * @see org.eclipse.ui.application.ActionBarAdvisor#makeActions(org.eclipse.ui.IWorkbenchWindow)
 	 */
@@ -224,7 +224,7 @@ extends ActionBarAdvisor
 			newWizardAction = new ActionContributionItem(newAction);
 			actions.put(ActionBarItem.New, newAction);
 		}
-		
+
 		if (menuBarItems.contains(ActionBarItem.Open))
 			openAction = new OpenFileAction();
 		if (menuBarItems.contains(ActionBarItem.RecentFiles))
@@ -264,10 +264,10 @@ extends ActionBarAdvisor
 			propertiesAction = ActionFactory.PROPERTIES.create(window);
 			actions.put(ActionBarItem.Properties, propertiesAction);
 		}
-				 
+
 		quitAction = ActionFactory.QUIT.create(window);
 		actions.put(ActionBarItem.Quit, quitAction);
-		
+
 		// Window-Menu
 		if (menuBarItems.contains(ActionBarItem.Perspectives))
 			openPerspectiveMenu = ContributionItemFactory.PERSPECTIVES_SHORTLIST.create(window);
@@ -277,7 +277,7 @@ extends ActionBarAdvisor
 			preferencesAction = ActionFactory.PREFERENCES.create(window);
 			actions.put(ActionBarItem.Preferences, preferencesAction);
 		}
-				
+
 		// Help-Menu
 		if (menuBarItems.contains(ActionBarItem.Help)) {
 			helpAction = ActionFactory.HELP_CONTENTS.create(window);
@@ -300,7 +300,7 @@ extends ActionBarAdvisor
 //		updateAction = new UpdateAction();
 		aboutAction = ActionFactory.ABOUT.create(window);
 		actions.put(ActionBarItem.About, aboutAction);
-		
+
 		for(IWorkbenchAction action : actions.values())
 			getActionBarConfigurer().registerGlobalAction(action);
 	}
@@ -309,24 +309,24 @@ extends ActionBarAdvisor
 	public IMenuManager getFileMenu() {
 		return fileMenu;
 	}
-	
+
 	protected IMenuManager windowMenu = null;
 	public IMenuManager getWindowMenu() {
 		return windowMenu;
 	}
-	
+
 	protected IMenuManager helpMenu = null;
 	public IMenuManager getHelpMenu() {
 		return helpMenu;
 	}
-	
+
 	public void addToMenuGroup(IMenuManager menu, IContributionItem contribItem, String groupName)
 	{
 		if (groupName != null)
 		{
 			if (menu.find(groupName) == null)
 				menu.add(new GroupMarker(groupName));
-			
+
 			menu.appendToGroup(groupName, contribItem);
 			groupNames.put(contribItem, groupName);
 		}
@@ -335,14 +335,14 @@ extends ActionBarAdvisor
 			menu.add(contribItem);
 		}
 	}
-	
+
 	public void addToMenuGroup(IMenuManager menu, IAction action, String groupName)
 	{
 		this.addToMenuGroup(menu, new ActionContributionItem(action), groupName);
 	}
 
 	private IMenuManager menuBar;
-	
+
 	/**
 	 * @see org.eclipse.ui.application.ActionBarAdvisor#fillMenuBar(org.eclipse.jface.action.IMenuManager)
 	 */
@@ -354,7 +354,7 @@ extends ActionBarAdvisor
 	  // File-Menu
 		fileMenu = new MenuManager(Messages.getString("org.nightlabs.base.ui.app.DefaultActionBuilder.fileMenu.text"),  //$NON-NLS-1$
 				IWorkbenchActionConstants.M_FILE);
-		
+
 		menuBar.add(fileMenu);
 
 		fileMenu.add(new GroupMarker(IWorkbenchActionConstants.FILE_START));
@@ -366,9 +366,9 @@ extends ActionBarAdvisor
 //			fileMenu.add(newWizardAction);
 //			fileMenu.add(new Separator());
 //		}
-//				
+//
 //		// New (NightLabs New File Extension Point)
-//		if (menuBarItems.contains(ActionBarItem.New)) 
+//		if (menuBarItems.contains(ActionBarItem.New))
 //		{
 //			addToMenuGroup(fileMenu, newMenu, IWorkbenchActionConstants.NEW_EXT);
 //			fileMenu.add(newWizardAction);
@@ -401,7 +401,7 @@ extends ActionBarAdvisor
 			createHistoryEntries(historyFileMenuManager);
 			fileMenu.add(new Separator());
 		}
-		
+
 		// Close
 		if (menuBarItems.contains(ActionBarItem.Close) && menuBarItems.contains(ActionBarItem.CloseAll)) {
 			addToMenuGroup(fileMenu, closeAction, IWorkbenchActionConstants.CLOSE_EXT);
@@ -416,20 +416,20 @@ extends ActionBarAdvisor
 			addToMenuGroup(fileMenu, closeAllAction, IWorkbenchActionConstants.CLOSE_EXT);
 			fileMenu.add(new Separator());
 		}
-			
+
 		// Save
 		if (menuBarItems.contains(ActionBarItem.Save)) {
 			addToMenuGroup(fileMenu, saveAction, IWorkbenchActionConstants.SAVE_EXT);
 			addToMenuGroup(fileMenu, saveAsAction, IWorkbenchActionConstants.SAVE_EXT);
 			fileMenu.add(new Separator());
 		}
-		
+
 		// Print
 		if (menuBarItems.contains(ActionBarItem.Print)) {
 			addToMenuGroup(fileMenu, printAction, IWorkbenchActionConstants.PRINT_EXT);
 			fileMenu.add(new Separator());
 		}
-		
+
 		// Import / Export
 		if (menuBarItems.contains(ActionBarItem.Import) && menuBarItems.contains(ActionBarItem.Export)) {
 			addToMenuGroup(fileMenu, importAction, IWorkbenchActionConstants.IMPORT_EXT);
@@ -444,20 +444,20 @@ extends ActionBarAdvisor
 			addToMenuGroup(fileMenu, exportAction, IWorkbenchActionConstants.IMPORT_EXT);
 			fileMenu.add(new Separator());
 		}
-		
+
 		// Properties
 		if (menuBarItems.contains(ActionBarItem.Properties)) {
 			addToMenuGroup(fileMenu, propertiesAction, null);
 			fileMenu.add(new Separator());
 		}
-		
+
 		addToMenuGroup(fileMenu, quitAction, null);
-		
+
     fileMenu.add(new GroupMarker(IWorkbenchActionConstants.FILE_END));
     menuBar.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
-        
+
 		createContributionItemSetRegistry();
-    
+
     // Window-Menu
 		windowMenu = new MenuManager(Messages.getString("org.nightlabs.base.ui.app.DefaultActionBuilder.windowMenu.text"),  //$NON-NLS-1$
 				IWorkbenchActionConstants.M_WINDOW);
@@ -497,7 +497,7 @@ extends ActionBarAdvisor
 
 			helpMenu.add(new Separator());
 		}
-		
+
 		if (updateAction != null)
 			helpMenu.add(updateAction);
 		helpMenu.add(aboutAction);
@@ -525,7 +525,7 @@ extends ActionBarAdvisor
 							return false;
 						}
 					}
-					
+
 					return true;
 				}
 			});
@@ -584,12 +584,12 @@ extends ActionBarAdvisor
 		contributionItemSetRegistry.removeAllFromMenuBar(menu);
 		contributionItemSetRegistry.contributeToMenuBar(menu);
 	}
-	
+
 	private void contributeToCoolBar(ICoolBarManager coolBarManager) {
 		contributionItemSetRegistry.removeAllFromCoolBar(coolBarManager);
-		contributionItemSetRegistry.contributeToCoolBar(coolBarManager);		
+		contributionItemSetRegistry.contributeToCoolBar(coolBarManager);
 	}
- 
+
 	@Override
 	public void fillCoolBar(ICoolBarManager coolBar)
 	{
@@ -597,17 +597,17 @@ extends ActionBarAdvisor
 		createContributionItemSetRegistry();
 //		contributeToCoolBar(coolBar);
 	}
-	
+
 	@Override
 	public void dispose()
 	{
 	  aboutAction.dispose();
 	  quitAction.dispose();
-	    
+
 	  for (IWorkbenchAction action : actions.values())
 	  		action.dispose();
 	}
-	
+
 	protected RecentFileCfMod fileHistory;
 	protected IMenuManager historyFileMenuManager;
 	protected int historyEntries = 0;
@@ -624,7 +624,7 @@ extends ActionBarAdvisor
 			}
 		}
 	};
-		
+
 	protected void addHistoryFile(IMenuManager menuMan, String fileName, boolean append)
 	{
 		ReOpenFileAction action = new ReOpenFileAction(fileName);
@@ -641,24 +641,24 @@ extends ActionBarAdvisor
 			else
 				menuMan.add(action);
 		}
-		
+
 		historyEntries++;
-		
+
 		if (maxHistoryLength == historyEntries)
 			lastHistoryID = action.getId();
-		
+
 		if (maxHistoryLength < historyEntries)
 		{
 			menuMan.remove(lastHistoryID);
 			if (!fileHistory.getRecentFileNames().contains(fileName))
 				fileHistory.getRecentFileNames().add(fileName);
-			
+
 			for (int i=0; i<fileHistory.getRecentFileNames().size()-maxHistoryLength; i++) {
 				fileHistory.getRecentFileNames().remove(i);
 			}
 		}
 	}
-	
+
 	/**
 	 * creates the MenuEntries of all previous opened files
 	 * @param menuMan The IMenuManager to which the entries should be added
@@ -670,20 +670,20 @@ extends ActionBarAdvisor
 			maxHistoryLength = fileHistory.getMaxHistoryLength();
 			if (fileNames.size() != 0) {
 				for (int i=fileNames.size()-1; i!=0; i--) {
-					String fileName = (String) fileNames.get(i);
+					String fileName = fileNames.get(i);
 					addHistoryFile(menuMan, fileName, true);
 				}
 			}
 		}
 	}
-		
+
 	/**
 	 * adds entries registered in the {@link NewFileRegistry}-ExtensionPoint
 	 * to the given {@link MenuManager}
-	 * 
+	 *
 	 * @param menuMan the IMenuManager to add new entries to
 	 */
-//	protected void createNewEntries(IMenuManager menuMan)
+	@SuppressWarnings("deprecation")
 	protected void createNewEntries(IContributionManager menuMan)
 	{
 		NewFileRegistry newFileRegistry = NewFileRegistry.sharedInstance();
@@ -712,7 +712,7 @@ extends ActionBarAdvisor
 			menuMan.add(itDefault.next());
 		}
 	}
-	
+
 //	/**
 //     * JFire-specific workbench action: Opens the "new" wizard drop down, including
 //     * specific items from the newFile extension point
@@ -730,9 +730,9 @@ extends ActionBarAdvisor
 ////            newWizardMenu newWizardMenu = new NewWizardMenu(window);
 ////            IWorkbenchAction action = new NewWizardDropDownAction(window,
 ////                    innerAction, newWizardMenu);
-//            IWorkbenchAction action = new NewWizardDropDownAction(window);            
+//            IWorkbenchAction action = new NewWizardDropDownAction(window);
 //            action.setId(getId());
 //            return action;
 //        }
-//    };	
+//    };
 }

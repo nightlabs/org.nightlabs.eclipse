@@ -27,6 +27,7 @@ import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.FormColors;
+import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.SectionPart;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
@@ -111,7 +112,7 @@ implements IDirtyStateManager, IFormPartDirtyStateProxy
 
 			// needs to check if global state was dirty, otherwise this would change the state to dirty,
 			// which contradicts the method name and declaration! (marius)
-			
+
 			// TODO: I don't know whether the following check is still necessary... Removing it yields better behaviour in most cases. Tobias.
 //			if (getManagedForm().isDirty())
 			getManagedForm().dirtyStateChanged();
@@ -149,12 +150,12 @@ implements IDirtyStateManager, IFormPartDirtyStateProxy
 		if ((sectionStyle & ExpandableComposite.TITLE_BAR) != 0
 				|| (sectionStyle & ExpandableComposite.SHORT_TITLE_BAR) != 0) {
 			colors.initializeSectionToolBarColors();
-			section.setTitleBarBackground(colors.getColor(FormColors.TB_GBG));
+			section.setTitleBarBackground(colors.getColor(IFormColors.TB_GBG));
 			section.setTitleBarBorderColor(colors
-					.getColor(FormColors.TB_BORDER));
+					.getColor(IFormColors.TB_BORDER));
 			section.setTitleBarGradientBackground(colors
-					.getColor(FormColors.TB_GBG));
-			section.setTitleBarForeground(colors.getColor(FormColors.TB_FG));
+					.getColor(IFormColors.TB_GBG));
+			section.setTitleBarForeground(colors.getColor(IFormColors.TB_FG));
 		}
 		getSection().setBackgroundMode(SWT.INHERIT_FORCE);
 	}

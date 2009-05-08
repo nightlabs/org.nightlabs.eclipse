@@ -46,10 +46,10 @@ extends ViewerSorter
 	{
 		return super.compare(viewer, e1, e2);
 	}
-	
+
 	protected abstract int _compare(Viewer viewer, T e1, T e2);
 
-	public abstract InvertableSorter getInverseSorter();
+	public abstract InvertableSorter<T> getInverseSorter();
 
 	public abstract int getSortDirection();
 }

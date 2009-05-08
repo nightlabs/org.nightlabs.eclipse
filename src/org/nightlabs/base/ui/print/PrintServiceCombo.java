@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.nightlabs.base.ui.print;
 
@@ -12,8 +12,8 @@ import org.nightlabs.base.ui.table.TableLabelProvider;
 import org.nightlabs.print.PrintUtil;
 
 /**
- * {@link Combo} showing all {@link PrintService}s that can be found in the system. 
- * 
+ * {@link Combo} showing all {@link PrintService}s that can be found in the system.
+ *
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  */
 public class PrintServiceCombo extends XComboComposite<PrintService> {
@@ -27,12 +27,11 @@ public class PrintServiceCombo extends XComboComposite<PrintService> {
 	/**
 	 * Create a new {@link PrintServiceCombo}.
 	 * @param parent The parent for the new combo.
-	 * @param comboStyle The to use for the combo. 
+	 * @param comboStyle The to use for the combo.
 	 */
-	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public PrintServiceCombo(Composite parent, int comboStyle) {
 		super(parent, comboStyle, (String) null, new LabelProvider());
 		setInput( PrintUtil.lookupPrintServices() );
 	}
-	
+
 }

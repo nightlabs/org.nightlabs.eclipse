@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.nightlabs.base.ui.cache;
 
@@ -8,7 +8,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 
 /**
  * A factory providing a cache that isn't able to cache anything yet.
- * 
+ *
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  *
  */
@@ -29,12 +29,12 @@ public class DummyCacheFactory implements ICacheFactory {
 		}
 		public void removeAll() {
 		}
-		public void removeByKeyClass(Class keyClass) {
+		public void removeByKeyClass(Class<?> keyClass) {
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public DummyCacheFactory() {
 		// TODO Auto-generated constructor stub

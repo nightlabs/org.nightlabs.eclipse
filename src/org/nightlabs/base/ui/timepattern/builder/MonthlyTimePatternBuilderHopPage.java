@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.nightlabs.base.ui.timepattern.builder;
 
@@ -79,7 +79,7 @@ public class MonthlyTimePatternBuilderHopPage extends WizardHopPage {
 	public boolean isPageComplete() {
 		return getControl() != null && !getControl().isDisposed();
 	}
-	
+
 	private SelectionListener daySelectListner = new SelectionListener () {
 		public void widgetDefaultSelected(SelectionEvent arg0) {
 		}
@@ -92,9 +92,9 @@ public class MonthlyTimePatternBuilderHopPage extends WizardHopPage {
 					selectedDays.remove(dayButton.getData());
 			}
 		}
-		
+
 	};
-	
+
 	private SelectionListener monthSelectListner = new SelectionListener () {
 		public void widgetDefaultSelected(SelectionEvent arg0) {
 		}
@@ -107,9 +107,9 @@ public class MonthlyTimePatternBuilderHopPage extends WizardHopPage {
 					selectedMonths.remove(dayButton.getData());
 			}
 		}
-		
+
 	};
-	
+
 	public void configurePattern(TimePattern timePattern)
 	throws TimePatternFormatException
 	{
@@ -119,23 +119,23 @@ public class MonthlyTimePatternBuilderHopPage extends WizardHopPage {
 			timePattern.setDay("*"); //$NON-NLS-1$
 		else
 			timePattern.setDay(getNumSelectionString(selectedDays));
-		
+
 		timePattern.setDayOfWeek("*"); //$NON-NLS-1$
-		
+
 		if (selectedMonths.size() == 12)
 			timePattern.setMonth("*"); //$NON-NLS-1$
 		else
 			timePattern.setMonth(getNumSelectionString(selectedMonths));
-		
+
 	}
-	
+
 	private String getNumSelectionString(SortedSet<Integer> selected){
 		int lastValue = -1;
 		int lastWritten = -1;
 		boolean addInterval = false;
 		String selString = ""; //$NON-NLS-1$
-		for (Iterator it = selected.iterator(); it.hasNext();) {
-			Integer selValue = (Integer) it.next();
+		for (Iterator<Integer> it = selected.iterator(); it.hasNext();) {
+			Integer selValue = it.next();
 			if ((lastValue+1) == selValue) {
 				addInterval = true;
 				lastValue = selValue;

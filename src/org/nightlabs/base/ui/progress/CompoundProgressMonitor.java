@@ -39,11 +39,11 @@ import org.nightlabs.progress.ProgressMonitor;
 /**
  * An implementation of {@link IProgressMonitor} that takes
  * a list of monitors and dipatches all calls to all of them.
- * 
+ *
  * A compound progress monitor remembers all operations invoked to it
  * and is able to integrate a new monitor by invoking all past actions
  * on it see ({@link #addProgressMonitor(IProgressMonitor)}).
- * 
+ *
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  *
  */
@@ -53,7 +53,7 @@ public class CompoundProgressMonitor implements ProgressMonitor {
 	 * Logger used by this class.
 	 */
 	private static final Logger logger = Logger.getLogger(CompoundProgressMonitor.class);
-	
+
 	private Collection<ProgressMonitor> monitors = Collections.synchronizedList(new LinkedList<ProgressMonitor>());
 	private List<MonitorInvocation> invocations = Collections.synchronizedList(new LinkedList<MonitorInvocation>());
 
@@ -69,7 +69,7 @@ public class CompoundProgressMonitor implements ProgressMonitor {
 			this.params = params;
 		}
 		public void invoke(ProgressMonitor monitor) {
-			Class[] paramTypes = new Class[params.length];
+			Class<?>[] paramTypes = new Class[params.length];
 			for (int i = 0; i < params.length; i++) {
 				paramTypes[i] = params[i].getClass();
 				if (paramTypes[i] == Integer.class)
@@ -91,7 +91,7 @@ public class CompoundProgressMonitor implements ProgressMonitor {
 	/**
 	 * Create a new compound progress monitor for the given
 	 * list of monitors.
-	 * 
+	 *
 	 * @param monitors The list of monitors to dispatch to.
 	 */
 	public CompoundProgressMonitor(ProgressMonitor... monitors) {
@@ -106,7 +106,7 @@ public class CompoundProgressMonitor implements ProgressMonitor {
 	private void addInvocation(String methodName, Object... params) {
 		invocations.add(new MonitorInvocation(methodName, params));
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.runtime.IProgressMonitor#beginTask(java.lang.String, int)
 	 */
@@ -142,9 +142,9 @@ public class CompoundProgressMonitor implements ProgressMonitor {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * Will combine the cancelled flag of all monitors with logical or.
-	 * 
+	 *
 	 * @see org.eclipse.core.runtime.IProgressMonitor#isCanceled()
 	 */
 	@Override
@@ -203,11 +203,11 @@ public class CompoundProgressMonitor implements ProgressMonitor {
 	/**
 	 * Adds the given progress monitor the of monitors known to this instance,
 	 * so that further calls to this monitor will be dispatched to the new one, too.
-	 * 
+	 *
 	 * Prior to adding all former invokations performed on this monitor will be
 	 * invoked for the new one as well, so it will (in most cases) be in the same
 	 * state as all others managed by this one.
-	 * 
+	 *
 	 * @param monitor The monitor to integrate.
 	 */
 	public void addProgressMonitor(ProgressMonitor monitor) {

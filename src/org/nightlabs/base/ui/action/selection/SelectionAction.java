@@ -34,15 +34,16 @@ import org.nightlabs.notification.NotificationEvent;
 import org.nightlabs.notification.NotificationListener;
 
 /**
- * @deprecated This class seems not be used anywhere. 
- * If you need an {@link Action} which can receive an {@link ISelection} use {@link org.nightlabs.base.ui.action.SelectionAction} instead.  
+ * @deprecated This class seems not be used anywhere.
+ * If you need an {@link Action} which can receive an {@link ISelection} use {@link org.nightlabs.base.ui.action.SelectionAction} instead.
  */
+@Deprecated
 public abstract class SelectionAction
 extends Action
 {
 	public SelectionAction() { }
 
-	public void init(String zone, Class selectionClass, String text)
+	public void init(String zone, Class<?> selectionClass, String text)
 	{
 		SelectionManager.sharedInstance().addNotificationListener(zone, selectionClass, selectionListener);
 	}

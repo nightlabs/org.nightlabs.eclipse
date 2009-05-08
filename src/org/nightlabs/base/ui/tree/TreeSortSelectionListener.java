@@ -41,10 +41,10 @@ implements SelectionListener
 {
 	private final TreeViewer viewer;
 	private final TreeColumn column;
-	private final InvertableSorter sorter;
+	private final InvertableSorter<?> sorter;
 	private final boolean keepDirection;
-	private InvertableSorter currentSorter;
-	
+	private InvertableSorter<?> currentSorter;
+
 	/**
 	 * The constructor of this listener.
 	 *
@@ -59,10 +59,10 @@ implements SelectionListener
 	 *						values are {@link SWT#UP} and {@link SWT#DOWN}
 	 */
 	public TreeSortSelectionListener(TreeViewer viewer, TreeColumn column,
-			InvertableSorter sorter, int defaultDirection) {
+			InvertableSorter<?> sorter, int defaultDirection) {
 		this(viewer, column, sorter, defaultDirection, false);
 	}
-	
+
 	/**
 	 * The constructor of this listener.
 	 *
@@ -86,7 +86,7 @@ implements SelectionListener
 	 */
 	@Deprecated
 	public TreeSortSelectionListener(TreeViewer viewer, TreeColumn column,
-			InvertableSorter sorter, int defaultDirection,
+			InvertableSorter<?> sorter, int defaultDirection,
 			boolean keepDirection) {
 		this.viewer = viewer;
 		this.column = column;
@@ -97,7 +97,7 @@ implements SelectionListener
 
 		this.column.addSelectionListener(this);
 	}
-	
+
 	/**
 	 * Chooses the colum of this listener for sorting of the table. Mainly used
 	 * when first initialising the table.
@@ -108,15 +108,15 @@ implements SelectionListener
 		viewer.getTree().setSortDirection(currentSorter.getSortDirection());
 		viewer.setSorter(currentSorter);
 	}
-	
+
 	public void widgetDefaultSelected(SelectionEvent e) {
 		widgetSelected(e);
 	}
 
 	public void widgetSelected(SelectionEvent e) {
-		InvertableSorter newSorter;
+		InvertableSorter<?> newSorter;
 		if (viewer.getTree().getSortColumn() == column) {
-			newSorter = ((InvertableSorter) viewer.getSorter()).getInverseSorter();
+			newSorter = ((InvertableSorter<?>) viewer.getSorter()).getInverseSorter();
 		} else {
 			if (keepDirection) {
 				newSorter = currentSorter;
@@ -127,5 +127,5 @@ implements SelectionListener
 		currentSorter = newSorter;
 		chooseColumnForSorting();
 	}
-	
+
 }

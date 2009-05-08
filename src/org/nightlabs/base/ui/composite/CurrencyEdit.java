@@ -142,8 +142,8 @@ public class CurrencyEdit extends XComposite
 				event.time = e.time;
 				event.data = e.data;
 				ModifyEvent me = new ModifyEvent(event);
-				for (Iterator it = modifyListeners.iterator(); it.hasNext(); ) {
-					ModifyListener l = (ModifyListener) it.next();
+				for (Iterator<ModifyListener> it = modifyListeners.iterator(); it.hasNext(); ) {
+					ModifyListener l = it.next();
 					l.modifyText(me);
 				}
 			}
@@ -243,7 +243,7 @@ public class CurrencyEdit extends XComposite
 	{
 		return value;
 	}
-	
+
 	/**
 	 * @return Returns the currency.
 	 */
@@ -265,7 +265,7 @@ public class CurrencyEdit extends XComposite
 		this.active.setSelection(active);
 		activeSelected();
 	}
-	
+
 	public void addVerifyListener(VerifyListener listener){
 		numberText.addVerifyListener(listener);
 	}

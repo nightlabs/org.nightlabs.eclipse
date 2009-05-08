@@ -63,17 +63,18 @@ import org.nightlabs.base.ui.util.RCPUtil;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
+@SuppressWarnings("unchecked")
 public class SearchContributionItem
 //extends AbstractSearchContributionItem
 extends XContributionItem
 {
 	private static final Logger logger = Logger.getLogger(SearchContributionItem.class);
-	
+
 	private ISearchResultProviderFactory selectedFactory = null;
-	private Map<MenuItem, ISearchResultProviderFactory> menuItem2Factory = new HashMap<MenuItem, ISearchResultProviderFactory>();	
+	private Map<MenuItem, ISearchResultProviderFactory> menuItem2Factory = new HashMap<MenuItem, ISearchResultProviderFactory>();
 	private Text searchText = null;
 	private ToolItem selectedItem = null;
-	
+
 	public SearchContributionItem() {
 		super(SearchContributionItem.class.getName());
 	}
@@ -94,7 +95,7 @@ extends XContributionItem
 			widgetSelected(e);
 		}
 	};
-	
+
 	private ToolItem createSearchItem(final ToolBar toolBar, final Menu menu) {
 		ToolItem searchItem = new ToolItem(toolBar, SWT.DROP_DOWN);
 		searchItem.setImage(SharedImages.getSharedImage(NLBasePlugin.getDefault(),
@@ -108,7 +109,7 @@ extends XContributionItem
 						Point p = new Point(rect.x, rect.y + rect.height);
 						p = toolBar.toDisplay(p);
 						menu.setLocation(p.x, p.y);
-						menu.setVisible(true);						
+						menu.setVisible(true);
 				}
 				if (event.detail == SWT.NONE) {
 					searchPressed();
@@ -118,7 +119,7 @@ extends XContributionItem
 		searchItem.setImage(getSelectedFactory().getComposedDecoratorImage());
 		return searchItem;
 	}
-	
+
 	@Override
 	public void fill(ToolBar parent, int index)
 	{
@@ -129,11 +130,11 @@ extends XContributionItem
 		toolBarManager.remove(id1);
 		toolBarManager.add(new ToolBarContributionItemText(id1));
 
-		String id2 = ToolBarContributionItemButton.class.getName();		
+		String id2 = ToolBarContributionItemButton.class.getName();
 		toolBarManager.remove(id2);
 		toolBarManager.add(new ToolBarContributionItemButton(id2));
 	}
-	
+
 	private void fillToolBar(ToolBar parent, int index)
 	{
 		final ToolBar toolBar = parent;
@@ -142,8 +143,8 @@ extends XContributionItem
 		toolItem.setControl(createText(toolBar));
 		toolItem.setWidth(100);
 //		toolItem.setData(new SubContributionItem(this));
-		
-		final Menu menu = createMenu(new Menu(RCPUtil.getActiveShell(), SWT.POP_UP));		
+
+		final Menu menu = createMenu(new Menu(RCPUtil.getActiveShell(), SWT.POP_UP));
 		setSelectedItem(createSearchItem(toolBar, menu));
 //		selectedItem.setData(new SubContributionItem(this));
 		getSelectedItem().addDisposeListener(new DisposeListener(){
@@ -151,7 +152,7 @@ extends XContributionItem
 			public void widgetDisposed(DisposeEvent e) {
 				logger.debug("selectedItem DISPOSE!!!"); //$NON-NLS-1$
 			}
-		});		
+		});
 
 		toolBar.pack();
 	}
@@ -176,12 +177,12 @@ extends XContributionItem
 		coolItem.setPreferredSize(coolSize.x - diffX, coolSize.y);
 //		toolBar.layout(true, true);
 //		coolBar.layout(true, true);
-		
+
 		coolBar.pack();
 	}
-	
+
 	class ToolBarContributionItemText extends ContributionItem
-	{				
+	{
 		public ToolBarContributionItemText(String id) {
 			super(id);
 		}
@@ -193,7 +194,7 @@ extends XContributionItem
 			toolItem.setWidth(100);
 		}
 	}
-	
+
 	class ToolBarContributionItemButton extends ContributionItem
 	{
 		public ToolBarContributionItemButton(String id) {
@@ -202,7 +203,7 @@ extends XContributionItem
 
 		@Override
 		public void fill(ToolBar parent, int index) {
-			final Menu menu = createMenu(new Menu(RCPUtil.getActiveShell(), SWT.POP_UP));		
+			final Menu menu = createMenu(new Menu(RCPUtil.getActiveShell(), SWT.POP_UP));
 			setSelectedItem(createSearchItem(parent, menu));
 			getSelectedItem().addDisposeListener(new DisposeListener(){
 				@Override
@@ -216,11 +217,11 @@ extends XContributionItem
 	/* (non-Javadoc)
 	 * @see org.nightlabs.base.ui.search.AbstractSearchContributionItem#getSearchText()
 	 */
-	protected String getSearchText() 
+	protected String getSearchText()
 	{
 		if (searchText != null && !searchText.isDisposed())
 			return searchText.getText();
-		
+
 		return null;
 	}
 
@@ -229,7 +230,7 @@ extends XContributionItem
 	{
 		if (logger.isDebugEnabled())
 			logger.debug("fill called for menu "+menu); //$NON-NLS-1$
-		
+
 		String id = SearchContributionItem.class.getName();
 		if (getParent() != null) {
 			IContributionManager parent = getParent();
@@ -258,7 +259,7 @@ extends XContributionItem
 					parent.add(menuManager);
 					if (logger.isDebugEnabled())
 						logger.debug("added contribution to the end of the contributionManager "+getParent()); //$NON-NLS-1$
-				}				
+				}
 			}
 			else {
 				if (logger.isDebugEnabled())
@@ -269,7 +270,7 @@ extends XContributionItem
 			logger.info("getParent() == null, nothing contributed"); //$NON-NLS-1$
 //		createMenu(menu);
 	}
-	
+
 	class MenuContributionItem extends ContributionItem
 	{
 		private ISearchResultProviderFactory factory;
@@ -292,12 +293,12 @@ extends XContributionItem
 			if (logger.isDebugEnabled())
 				logger.debug("dispose called for MenuContributionItem "+this); //$NON-NLS-1$
 		}
-	}	
-	
+	}
+
 	private SelectionListener menuSelectionListener = new SelectionListener(){
-		public void widgetSelected(SelectionEvent e) 
+		public void widgetSelected(SelectionEvent e)
 		{
-			selectedFactory = menuItem2Factory.get((MenuItem) e.getSource());
+			selectedFactory = menuItem2Factory.get(e.getSource());
 			if (selectedItem != null && !selectedItem.isDisposed())
 				selectedItem.setImage(getSelectedFactory().getComposedDecoratorImage());
 			searchPressed();
@@ -320,7 +321,7 @@ extends XContributionItem
 				menuItem2Factory.remove(menuItem);
 			}
 		});
-				
+
 		return menuItem;
 	}
 
@@ -336,7 +337,7 @@ extends XContributionItem
 		if (useCase == null) {
 			useCase = new SearchResultProviderRegistryUseCase();
 			ISearchResultProviderFactory factory = useCase.getFactory2Instance().keySet().iterator().next();
-			useCase.setCurrentSearchResultProviderFactory(factory);			
+			useCase.setCurrentSearchResultProviderFactory(factory);
 		}
 		return useCase;
 	}
@@ -352,8 +353,8 @@ extends XContributionItem
 
 	protected String getUseCaseKey() {
 		return SearchContributionItem.class.getName() + RCPUtil.getActivePerspectiveID();
-	}	
-	
+	}
+
 	protected void searchPressed()
 	{
 		if (getSelectedFactory() != null) {
@@ -368,7 +369,7 @@ extends XContributionItem
 			}
 		}
 	}
-	
+
 	protected Menu createMenu(Menu menu)
 	{
 		Map<ISearchResultProviderFactory, ISearchResultProvider> factory2Instance = getUseCase().getFactory2Instance();
@@ -393,5 +394,5 @@ extends XContributionItem
 	 */
 	protected void setSelectedItem(ToolItem selectedItem) {
 		this.selectedItem = selectedItem;
-	}	
+	}
 }

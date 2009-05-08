@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.eclipse.core.runtime.ListenerList;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.ColumnViewerEditor;
@@ -39,7 +40,6 @@ import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.language.I18nTextEditor.EditMode;
 import org.nightlabs.base.ui.layout.WeightedTableLayout;
 import org.nightlabs.base.ui.resource.Messages;
-import org.nightlabs.base.ui.table.TableContentProvider;
 import org.nightlabs.i18n.I18nText;
 import org.nightlabs.i18n.I18nTextBuffer;
 import org.nightlabs.language.LanguageCf;
@@ -504,7 +504,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 		}
 	}
 
-	private static class I18nTextEditorTableContentProvider extends TableContentProvider
+	private static class I18nTextEditorTableContentProvider extends ArrayContentProvider
 	{
 		private I18nText i18nText = null;
 
@@ -517,7 +517,6 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 		}
 
 		// Return the i18nText as an array of Objects
-		@SuppressWarnings("unchecked") //$NON-NLS-1$
 		@Override
 		public Object[] getElements(Object parent) {
 			if (i18nText == null)

@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
  * <p>
  * Error dialogs should never be opened directly, but only
  * by using this class.
- * 
+ *
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  */
 public abstract class ErrorDialogFactory
@@ -22,11 +22,11 @@ public abstract class ErrorDialogFactory
 	 * LOG4J logger used by this class
 	 */
 	private static final Logger logger = Logger.getLogger(ErrorDialogFactory.class);
-	
+
 	/**
 	 * The error dialog registry.
 	 */
-	private static Map<Class, IErrorDialog> errorDialogs = null;
+	private static Map<Class<? extends IErrorDialog>, IErrorDialog> errorDialogs = null;
 
 	/**
 	 * Get an error dialog instance from the registry.
@@ -70,7 +70,7 @@ public abstract class ErrorDialogFactory
 		dialog.open();
 		return true;
 	}
-	
+
 //	/**
 //	 * Show an error using the given {@link IErrorDialog} implementation.
 //	 * If there is an instance of the given error dialog class already
@@ -86,7 +86,7 @@ public abstract class ErrorDialogFactory
 //	{
 //		return showError(dialogClass, null, null, errorReport.getThrownException(), errorReport.getTriggerException());
 //	}
-	
+
 	/**
 	 * {@link IErrorDialog} implementations that want to be re-used for
 	 * error message should register themselfs using this method.
@@ -95,7 +95,7 @@ public abstract class ErrorDialogFactory
 	public static void addDialog(IErrorDialog errorDialog)
 	{
 		if(errorDialogs == null)
-			errorDialogs = new HashMap<Class, IErrorDialog>(1);
+			errorDialogs = new HashMap<Class<? extends IErrorDialog>, IErrorDialog>(1);
 		errorDialogs.put(errorDialog.getClass(), errorDialog);
 	}
 

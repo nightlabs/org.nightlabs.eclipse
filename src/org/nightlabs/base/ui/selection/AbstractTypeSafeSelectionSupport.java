@@ -40,25 +40,25 @@ implements ISelectionSupport
 	public AbstractTypeSafeSelectionSupport() {
 		super();
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @see org.eclipse.jface.viewers.ISelectionProvider#setSelection(org.eclipse.jface.viewers.ISelection)
 	 */
 	@Override
 	public void setSelection(ISelection arg0) {
 		setSelection(SelectionUtil.checkSelection(arg0, getSelectionClass()));
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return the Base Class which determines which objects are allowed
 	 * in the selection
 	 */
 	public abstract Class<? extends Object> getSelectionClass();
-	
+
 	/**
-	 * 
+	 *
 	 * @see org.nightlabs.base.ui.selection.ISelectionSupport#addSelectedObject(java.lang.Object)
 	 */
 	@Override
@@ -68,7 +68,7 @@ implements ISelectionSupport
 			super.addSelectedObject(o);
 		}
 	}
-		
+
 	/**
 	 * @see org.nightlabs.base.ui.selection.ISelectionSupport#addSelectedObjects(java.util.Collection)
 	 */
@@ -102,12 +102,12 @@ implements ISelectionSupport
 	}
 
 	/**
-	 * 
+	 *
 	 * @see org.nightlabs.base.ui.selection.ISelectionSupport#setSelection(java.util.List)
 	 */
 	public void setSelection(List selectedObjects)
 	{
 		super.setSelection(SelectionUtil.checkList(selectedObjects, getSelectionClass()));
 	}
-	
+
 }

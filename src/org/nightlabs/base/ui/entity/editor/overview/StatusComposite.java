@@ -10,7 +10,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.composite.XComposite;
-import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.resource.SharedImages;
 import org.nightlabs.base.ui.resource.SharedImages.ImageFormat;
 import org.nightlabs.progress.NullProgressMonitor;
@@ -19,13 +18,13 @@ import org.nightlabs.progress.NullProgressMonitor;
  * @author Daniel Mazurek - Daniel.Mazurek [dot] nightlabs [dot] de
  *
  */
-public class StatusComposite extends XComposite 
+public class StatusComposite extends XComposite
 {
 	private IOverviewPageStatusProvider statusProvider;
 	private ProgressMonitorPart progressMonitorPart;
 	private Label messageLabel;
 	private Label statusImageLabel;
-	
+
 	/**
 	 * @param parent
 	 * @param style
@@ -51,23 +50,23 @@ public class StatusComposite extends XComposite
 				int code = status.getSeverity();
 				switch (code) {
 					case IStatus.OK:
-						statusImage = SharedImages.getSharedImage(NLBasePlugin.getDefault(), 
+						statusImage = SharedImages.getSharedImage(NLBasePlugin.getDefault(),
 								OverviewSection.class, "OK", "48x48", ImageFormat.png); //$NON-NLS-1$ //$NON-NLS-2$
 						break;
 					case IStatus.ERROR:
-						statusImage = SharedImages.getSharedImage(NLBasePlugin.getDefault(), 
+						statusImage = SharedImages.getSharedImage(NLBasePlugin.getDefault(),
 								OverviewSection.class, "Error", "48x48", ImageFormat.png); //$NON-NLS-1$ //$NON-NLS-2$
 						break;
 					case IStatus.WARNING:
-						statusImage = SharedImages.getSharedImage(NLBasePlugin.getDefault(), 
+						statusImage = SharedImages.getSharedImage(NLBasePlugin.getDefault(),
 								OverviewSection.class, "Warning", "48x48", ImageFormat.png); //$NON-NLS-1$ //$NON-NLS-2$
-						break;										
+						break;
 				}
 				if (statusImage != null)
-					statusImageLabel.setImage(statusImage);	
-				
-				messageLabel.setText(status.getMessage());				
+					statusImageLabel.setImage(statusImage);
+
+				messageLabel.setText(status.getMessage());
 			}
-		}		
+		}
 	}
 }

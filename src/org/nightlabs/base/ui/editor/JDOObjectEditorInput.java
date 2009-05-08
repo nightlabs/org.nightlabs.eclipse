@@ -41,13 +41,13 @@ public class JDOObjectEditorInput<ID extends ObjectID> implements IEditorInput
 	 * The JDO Object ID.
 	 */
 	ID jdoObjectID;
-	
+
 	long secondaryId;
-	
+
 	String name;
-	
+
 	String toolTipText;
-	
+
 	/**
 	 * Create an instance of this editor input for a
 	 * JDO Object ID.
@@ -57,7 +57,7 @@ public class JDOObjectEditorInput<ID extends ObjectID> implements IEditorInput
 	{
 		this(jdoObjectID, false);
 	}
-	
+
 	/**
 	 * Create an instance of this editor input for a
 	 * JDO Object ID.
@@ -72,7 +72,7 @@ public class JDOObjectEditorInput<ID extends ObjectID> implements IEditorInput
 		else
 			secondaryId = 0L;
 	}
-	
+
 	/**
 	 * Get the JDO Object ID
 	 * @return The JDO Object ID
@@ -81,7 +81,7 @@ public class JDOObjectEditorInput<ID extends ObjectID> implements IEditorInput
 	{
 		return jdoObjectID;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IEditorInput#exists()
 	 */
@@ -105,7 +105,7 @@ public class JDOObjectEditorInput<ID extends ObjectID> implements IEditorInput
 	{
 		return name == null ? "" : name; //$NON-NLS-1$
 	}
-	
+
 	/**
 	 * Set the name.
 	 * @param name the name to set
@@ -139,7 +139,7 @@ public class JDOObjectEditorInput<ID extends ObjectID> implements IEditorInput
 	{
 		this.toolTipText = tooltipText;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
 	 */
@@ -147,7 +147,7 @@ public class JDOObjectEditorInput<ID extends ObjectID> implements IEditorInput
 	{
 		return null;
 	}
-	
+
 	/**
 	 * Check for equality using the JDO Object ID
 	 * equals method.

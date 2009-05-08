@@ -37,7 +37,7 @@ implements LanguageChooser
 {
 	protected List<LanguageChangeListener> languageChangeListeners = new LinkedList<LanguageChangeListener>();
 	protected LanguageCf oldLanguage = null;
-	
+
 	public AbstractSimpleLanguageChooser() {
 		super();
 	}
@@ -61,8 +61,8 @@ implements LanguageChooser
 			return;
 
 		LanguageChangeEvent languageChangeEvent = new LanguageChangeEvent(this, oldLanguage, getLanguage());
-		for (Iterator it = languageChangeListeners.iterator(); it.hasNext(); ) {
-			((LanguageChangeListener)it.next()).languageChanged(languageChangeEvent);
+		for (Iterator<LanguageChangeListener> it = languageChangeListeners.iterator(); it.hasNext(); ) {
+			it.next().languageChanged(languageChangeEvent);
 		}
 
 		oldLanguage = getLanguage();

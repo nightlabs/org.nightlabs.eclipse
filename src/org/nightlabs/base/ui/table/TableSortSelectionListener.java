@@ -38,9 +38,9 @@ import org.eclipse.swt.widgets.TableColumn;
 public class TableSortSelectionListener implements SelectionListener {
 	private final TableViewer viewer;
 	private final TableColumn column;
-	private final InvertableSorter sorter;
+	private final InvertableSorter<?> sorter;
 	private final boolean keepDirection;
-	private InvertableSorter currentSorter;
+	private InvertableSorter<?> currentSorter;
 
 	/**
 	 * The constructor of this listener.
@@ -57,7 +57,7 @@ public class TableSortSelectionListener implements SelectionListener {
 	 */
 	public TableSortSelectionListener(TableViewer viewer, TableColumn column,
 //			AbstractInvertableTableSorter sorter, int defaultDirection) {
-			InvertableSorter sorter, int defaultDirection) {
+			InvertableSorter<?> sorter, int defaultDirection) {
 		this(viewer, column, sorter, defaultDirection, false);
 	}
 
@@ -85,7 +85,7 @@ public class TableSortSelectionListener implements SelectionListener {
 	@Deprecated
 	public TableSortSelectionListener(TableViewer viewer, TableColumn column,
 //			AbstractInvertableTableSorter sorter, int defaultDirection,
-			InvertableSorter sorter, int defaultDirection,
+			InvertableSorter<?> sorter, int defaultDirection,
 			boolean keepDirection) {
 		this.viewer = viewer;
 		this.column = column;
@@ -108,7 +108,7 @@ public class TableSortSelectionListener implements SelectionListener {
 	}
 
 	public void widgetSelected(SelectionEvent e) {
-		InvertableSorter newSorter;
+		InvertableSorter<?> newSorter;
 		if (viewer.getTable().getSortColumn() == column) {
 			newSorter = ((InvertableSorter) viewer.getSorter()).getInverseSorter();
 		} else {

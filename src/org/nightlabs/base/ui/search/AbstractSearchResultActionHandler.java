@@ -29,14 +29,14 @@ package org.nightlabs.base.ui.search;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
-public abstract class AbstractSearchResultActionHandler
-implements ISearchResultActionHandler
+public abstract class AbstractSearchResultActionHandler<T>
+implements ISearchResultActionHandler<T>
 {
-	private ISearchResultProvider searchResultProvider = null;
-	public ISearchResultProvider getSearchResultProvider() {
+	private ISearchResultProvider<T> searchResultProvider = null;
+	public ISearchResultProvider<T> getSearchResultProvider() {
 		return searchResultProvider;
 	}
-	public void setSearchResultProvider(ISearchResultProvider searchResultProvider) {
+	public void setSearchResultProvider(ISearchResultProvider<T> searchResultProvider) {
 		this.searchResultProvider = searchResultProvider;
 	}
 

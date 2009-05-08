@@ -70,7 +70,7 @@ import org.nightlabs.base.ui.util.RCPUtil;
  * on all registrations that implement {@link PartVisibilityListener}. {@link PartVisibilityListener#partHidden(org.eclipse.ui.IWorkbenchPartReference)}
  * is called accordingly when the "ConditionUnsatisfiedComposite" is created. Both times the
  * partReference parameter for the listeners callback method might be null.
- * 
+ *
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
  * @see #createNewConditionUnsatisfiedComposite(Composite)
  * @see org.nightlabs.base.ui.part.ControllablePart
@@ -78,17 +78,17 @@ import org.nightlabs.base.ui.util.RCPUtil;
 public abstract class PartController {
 
 	protected class ControlledPart {
-		
+
 		private ControllablePart part;
-		
+
 		private StackLayout stackLayout;
 		private XComposite wrapper;
 		private FadeableComposite fadeableWrapper;
 		private XComposite conditionWrapper;
-		
+
 		private boolean contentsCreated = false;
 		private boolean internalPartsCreated = false;
-		
+
 		public ControlledPart(ControllablePart part) {
 			this.part = part;
 		}
@@ -98,11 +98,11 @@ public abstract class PartController {
 			this.part = part;
 			this.fadableLayout = layout;
 		}
-				
+
 		/**
 		 * Creates the internal Controls hosting the real part
 		 * content.
-		 * 
+		 *
 		 * @param parent
 		 */
 		public void createPartControl(Composite parent) {
@@ -114,17 +114,17 @@ public abstract class PartController {
 			createFadeableWrapper();
 			internalPartsCreated = true;
 		}
-		
+
 		public XComposite getWrapper() {
 			return wrapper;
 		}
-		
+
 		protected void createFadeableWrapper() {
 			fadeableWrapper = new FadeableComposite(wrapper, SWT.NONE);
 //			fadeableWrapper.setLayout(new GridLayout());
 			fadeableWrapper.setLayout(fadableLayout);
 		}
-		
+
 		/**
 		 * Updates the part according to the current login-state.
 		 */
@@ -145,11 +145,11 @@ public abstract class PartController {
 						callPartVisibilityListener(part, PartVisibilityListenerMethod.partHidden);
 					}
 					wrapper.layout(true, true);
-					
+
 				}
 			});
 		}
-		
+
 		/**
 		 * Creates the View contents if possible
 		 * and neccesary
@@ -162,7 +162,7 @@ public abstract class PartController {
 				}
 			}
 		}
-		
+
 		/**
 		 * Disposes and recreates the fadeable
 		 * wrapper for the real part content.
@@ -174,7 +174,7 @@ public abstract class PartController {
 			createFadeableWrapper();
 			contentsCreated = false;
 		}
-		
+
 		/**
 		 * Show/Hide all Viewactions of a View if the {@link ControllablePart} is a {@link IViewPart}
 		 * @param visible
@@ -185,29 +185,29 @@ public abstract class PartController {
 				RCPUtil.setViewActionsVisible((IViewPart)part, visible);
 			}
 		}
-		
-		
+
+
 	}
-	
+
 	/**
 	 * Sublcasses should create a new Composite indicating that the conditions
 	 * neccessary to show a View were not satisfied.
-	 * 
+	 *
 	 * @param parent The parent the Composite shoulb be created for
 	 * @return A new Composite
 	 */
 	protected abstract Composite createNewConditionUnsatisfiedComposite(Composite parent);
-	
+
 	/**
 	 * key: ControllablePart part
 	 * value: ControllePart controlledView
 	 */
 	private Map<ControllablePart, ControlledPart> controlledParts = new HashMap<ControllablePart, ControlledPart>();
-	
+
 	/**
 	 * Update all registered Views according to their satus returned by
 	 * {@link ControllablePart#canDisplayPart()}.
-	 * 
+	 *
 	 * @param part
 	 */
 	public void updatePart(ControllablePart part) {
@@ -228,12 +228,12 @@ public abstract class PartController {
 	 * {@link ControllablePart#canDisplayPart()}
 	 */
 	public void updateParts() {
-		for (Iterator iter = controlledParts.keySet().iterator(); iter.hasNext();) {
-			ControllablePart part = (ControllablePart) iter.next();
+		for (Iterator<ControllablePart> iter = controlledParts.keySet().iterator(); iter.hasNext();) {
+			ControllablePart part = iter.next();
 			updatePart(part);
 		}
 	}
-	
+
 	/**
 	 * Dispose the real contents of the given WorkbenchPart.
 	 */
@@ -242,27 +242,27 @@ public abstract class PartController {
 		if (controlledPart != null)
 			controlledPart.disposePartContents();
 	}
-	
+
 	/**
 	 * Dispose the real contents of all registered WorkbenchParts.
 	 */
 	protected void disposePartContents() {
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
-				for (Iterator iter = controlledParts.keySet().iterator(); iter.hasNext();) {
-					ControllablePart part = (ControllablePart) iter.next();
+				for (Iterator<ControllablePart> iter = controlledParts.keySet().iterator(); iter.hasNext();) {
+					ControllablePart part = iter.next();
 					disposePartContents(part);
 				}
 			}
 		});
 	}
-	
+
 	/**
 	 * Register a part to this controller.
 	 * When done so make sure that the createPartControl(Composite)
 	 * method of the passed WorkbenchPart is delegated to
 	 * this Controllers {@link #createPartControl(ControllablePart, Composite)} method.
-	 * 
+	 *
 	 * @param part The part to be controlled by this Controller.
 	 */
 	public void registerPart(ControllablePart part) {
@@ -275,27 +275,27 @@ public abstract class PartController {
 	 * When done so make sure that the createPartControl(Composite)
 	 * method of the passed WorkbenchPart is delegated to
 	 * this Controllers {@link #createPartControl(ControllablePart, Composite)} method.
-	 * 
+	 *
 	 * @param part The part to be controlled by this Controller.
 	 */
 	public void registerPart(ControllablePart part, Layout layout) {
 		ControlledPart controlledPart = new ControlledPart(part, layout);
 		controlledParts.put(part, controlledPart);
 	}
-	
+
 	/**
 	 * Unregister a controlled WorkbenchPart from the Controller.
-	 * 
+	 *
 	 * @param part The WorkbenchPart to unregister.
 	 */
 	public void unregisterPart(ControllablePart part) {
 		controlledParts.remove(part);
 	}
-	
+
 	/**
 	 * Should be called by controlled WorkbenchPart in their
 	 * createPartControl(Composite) method.
-	 * 
+	 *
 	 * @param part The controlled part.
 	 * @param parent The parent passed to the createPartControl() method.
 	 */
@@ -315,12 +315,12 @@ public abstract class PartController {
 			controlledPart.updatePart();
 		}
 	}
-	
+
 	private enum PartVisibilityListenerMethod {
 		partVisible,
 		partHidden
 	}
-	
+
 	private void callPartVisibilityListener(ControllablePart listenerPart, PartVisibilityListenerMethod listenerMethod) {
 		if (listenerPart instanceof IWorkbenchPart) {
 			int partStatus = PartVisibilityTracker.sharedInstance().getPartVisibilityStatus((IWorkbenchPart)listenerPart);

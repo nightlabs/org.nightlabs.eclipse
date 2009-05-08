@@ -38,7 +38,7 @@ public class FileEditorInputFactory implements IElementFactory {
 
 	public static final String CLASSNAME_KEY = "org.nightlabs.base.ui.io.fileeditorinput.classname"; //$NON-NLS-1$
 	public static final String FILENAME_KEY = "org.nightlabs.base.ui.io.fileeditorinput.fileName"; //$NON-NLS-1$
-	
+
 	public FileEditorInputFactory() {
 		super();
 	}
@@ -46,21 +46,21 @@ public class FileEditorInputFactory implements IElementFactory {
 	public IAdaptable createElement(IMemento memento) {
 		try {
 			String className = memento.getString(CLASSNAME_KEY);
-			Class clazz = Class.forName(className);
-			Constructor constructor = clazz.getConstructor(new Class[] {File.class});
+			Class<?> clazz = Class.forName(className);
+			Constructor<?> constructor = clazz.getConstructor(new Class[] {File.class});
 			String fileName = memento.getString(FILENAME_KEY);
 			return (IAdaptable)constructor.newInstance(new Object[] {new File(fileName)});
-			
+
 		} catch (Throwable t) {
 			t.printStackTrace();
-			
+
 			// fallback to FileEditorInput
 			String fileName = memento.getString(FILENAME_KEY);
 //			if (fileName != null) {
 			File file = new File(fileName);
 			FileEditorInput input = new FileEditorInput(file);
 			return input;
-			
+
 		}
 	}
 

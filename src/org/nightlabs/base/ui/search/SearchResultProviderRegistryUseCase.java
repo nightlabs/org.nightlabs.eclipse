@@ -33,10 +33,11 @@ import java.util.TreeMap;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
+@SuppressWarnings("unchecked")
 public class SearchResultProviderRegistryUseCase {
 
 	public SearchResultProviderRegistryUseCase() {}
- 
+
 	private ISearchResultProviderFactory currentSearchResultProviderFactory = null;
 	/**
 	 * @return the currentSearchResultProviderFactory
@@ -51,7 +52,7 @@ public class SearchResultProviderRegistryUseCase {
 			ISearchResultProviderFactory currentSearchResultProviderFactory) {
 		this.currentSearchResultProviderFactory = currentSearchResultProviderFactory;
 	}
-	
+
 	private String currentSearchText = null;
 	/**
 	 * @return the currentSearchText
@@ -79,7 +80,7 @@ public class SearchResultProviderRegistryUseCase {
 	public void setUseCase(String useCase) {
 		this.useCase = useCase;
 	}
-	
+
 	private SortedMap<ISearchResultProviderFactory, ISearchResultProvider> factory2Instance = null;
 	public SortedMap<ISearchResultProviderFactory, ISearchResultProvider> getFactory2Instance() {
 		if (factory2Instance == null) {
@@ -92,6 +93,6 @@ public class SearchResultProviderRegistryUseCase {
 		}
 		return factory2Instance;
 	}
-	
-	
+
+
 }

@@ -35,7 +35,7 @@ import org.nightlabs.base.ui.table.TableLabelProvider;
  * Combo with a list of all Registered {@link PrinterConfiguratorFactory}.
  * As registrations are held as {@link ConfiguratorFactoryEntry}s this is
  * the actual type of entries in this combo.
- * 
+ *
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  *
  */
@@ -46,13 +46,12 @@ public class ConfiguratorCombo extends XComboComposite<ConfiguratorFactoryEntry>
 			return ((ConfiguratorFactoryEntry)arg0).getName();
 		}
 	}
-	
+
 	/**
 	 * @param types
 	 * @param parent
 	 * @param style
 	 */
-	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public ConfiguratorCombo(Composite parent, int style) {
 		super(parent,	style, (String) null, new LabelProvider());
 		setInput(	PrinterConfigurationRegistry.sharedInstance().getPrinterConfiguratorEntries() );

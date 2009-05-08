@@ -41,7 +41,6 @@ implements TimePatternSetEdit
 			this.timePatternSetComposite = timePatternSetComposite;
 		}
 
-		@SuppressWarnings("unchecked") //$NON-NLS-1$
 		public Object[] getElements(Object inputElement)
 		{
 			TimePatternSet timePatternSet = (TimePatternSet) inputElement;
@@ -221,8 +220,8 @@ implements TimePatternSetEdit
 		l.addColumnData(new ColumnWeightData(1, 50));
 		l.addColumnData(new ColumnWeightData(1, 50));
 		table.setLayout(l);
-		
-		
+
+
 
 		tableViewer.setColumnProperties(new String[] {
 				COLUMN_PROPERTY_YEAR,
@@ -275,7 +274,7 @@ implements TimePatternSetEdit
 	}
 
 	private TimePatternSet timePatternSet;
-	
+
 	@Override
 	public void setInput(Object input)
 	{

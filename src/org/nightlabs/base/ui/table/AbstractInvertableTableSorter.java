@@ -33,7 +33,7 @@ import org.eclipse.swt.SWT;
  * @author Christian Soltenborn - http://www.eclipsezone.com/eclipse/forums/t59401.html
  */
 public abstract class AbstractInvertableTableSorter<T> extends InvertableSorter<T> {
-	private final InvertableSorter inverse = new InvertableSorter<T>() {
+	private final InvertableSorter<T> inverse = new InvertableSorter<T>() {
 
 		@Override
 		public int _compare(Viewer viewer, T e1, T e2) {
@@ -41,7 +41,7 @@ public abstract class AbstractInvertableTableSorter<T> extends InvertableSorter<
 		}
 
 		@Override
-		public InvertableSorter getInverseSorter() {
+		public InvertableSorter<T> getInverseSorter() {
 			return AbstractInvertableTableSorter.this;
 		}
 
@@ -52,7 +52,7 @@ public abstract class AbstractInvertableTableSorter<T> extends InvertableSorter<
 	};
 
 	@Override
-	public InvertableSorter getInverseSorter() {
+	public InvertableSorter<T> getInverseSorter() {
 		return inverse;
 	}
 

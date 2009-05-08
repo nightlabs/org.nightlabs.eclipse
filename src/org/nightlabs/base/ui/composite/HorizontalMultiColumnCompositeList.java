@@ -55,7 +55,7 @@ import org.nightlabs.base.ui.composite.XComposite.LayoutMode;
  * A column number can be defined for the viewport.
  * All composites will be set to the width needed
  * to fill the whole column but keep their height.
- * 
+ *
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
  *
  */
@@ -90,7 +90,7 @@ public class HorizontalMultiColumnCompositeList extends Composite implements ISe
 			}
 		}
 	};
-	
+
 	/**
 	 * SelectionListener to the slider.
 	 */
@@ -102,8 +102,8 @@ public class HorizontalMultiColumnCompositeList extends Composite implements ISe
 			// not called
 		}
 	};
-	
-	
+
+
 	private ControlListener coltrolListener = new ControlListener(){
 		public void controlMoved(ControlEvent arg0) {
 			// don't care
@@ -113,7 +113,7 @@ public class HorizontalMultiColumnCompositeList extends Composite implements ISe
 			refreshList();
 		}
 	};
-	
+
 	private Set<Integer> keySet = new HashSet<Integer>();
 	private KeyListener keyListener = new KeyListener() {
 		public void keyPressed(KeyEvent evt) {
@@ -124,7 +124,7 @@ public class HorizontalMultiColumnCompositeList extends Composite implements ISe
 			keySet.remove(new Integer(evt.keyCode));
 		}
 	};
-	
+
 	private int numColumns = 1;
 	private int verticalSpacing = 5;
 	private int verticalMargin = 5;
@@ -135,8 +135,8 @@ public class HorizontalMultiColumnCompositeList extends Composite implements ISe
 	private XComposite wrapper;
 	private Composite carrierWrapper;
 	private Slider slider;
-	
-	
+
+
 	public HorizontalMultiColumnCompositeList(Composite parent, int style) {
 		super(parent, style);
 		this.setLayout(new GridLayout());
@@ -150,10 +150,10 @@ public class HorizontalMultiColumnCompositeList extends Composite implements ISe
 		gd.horizontalAlignment = GridData.FILL;
 		gd.verticalAlignment = GridData.FILL;
 		carrierWrapper.setLayoutData(gd);
-		
+
 		carrier = new Composite(carrierWrapper,SWT.NONE);
 		carrier.setLayout(null);
-		
+
 		slider = new Slider(wrapper,SWT.HORIZONTAL);
 		GridData sliderGD = new GridData();
 		sliderGD.grabExcessHorizontalSpace = true;
@@ -164,7 +164,7 @@ public class HorizontalMultiColumnCompositeList extends Composite implements ISe
 		this.addControlListener(coltrolListener);
 		this.addKeyListener(keyListener);
 	}
-	
+
 	/**
 	 * Create and add a SelectableComposite
 	 * @param style The style - see {@link SelectableComposite}
@@ -175,7 +175,7 @@ public class HorizontalMultiColumnCompositeList extends Composite implements ISe
 		addChild(child);
 		return child;
 	}
-	
+
 	/**
 	 * Add a child.
 	 * @param child The child to add
@@ -185,10 +185,10 @@ public class HorizontalMultiColumnCompositeList extends Composite implements ISe
 		child.addSelectionChangeListener(selectionChangeListener);
 		children.add(child);
 	}
-	
+
 	/**
 	 * Add a child at the specified position.
-	 * 
+	 *
 	 * @param child The child to add
 	 * @param idx The position to add the child at
 	 */
@@ -201,11 +201,11 @@ public class HorizontalMultiColumnCompositeList extends Composite implements ISe
 			comp.compositeListIdx = i;
 		}
 	}
-	
+
 	/**
 	 * Remove the child at the specified index.
 	 * If dispose id true the Composite will be disposed as well.
-	 * 
+	 *
 	 * @param idx Which child to remove
 	 * @param dispose the Composite will be disposed as well if <code>true</code>
 	 */
@@ -221,29 +221,29 @@ public class HorizontalMultiColumnCompositeList extends Composite implements ISe
 			comp.compositeListIdx = i;
 		}
 	}
-	
+
 	/**
 	 * Will remove and dispose the child.
-	 * 
+	 *
 	 * @param idx
 	 */
 	public void removeChild(int idx) {
 		removeChild(idx,true);
 	}
-	
+
 	/**
 	 * Remove the given child and dispose it if dispose is true.
-	 * 
+	 *
 	 * @param child The child to remove
 	 * @param dispose Whether to dispose the child
 	 */
 	public void removeChild(SelectableComposite child, boolean dispose) {
 		removeChild(child.getCompositeListIdx(), dispose);
 	}
-	
+
 	/**
 	 * Remove the first child with the given selectionObject and dispose it if dispose it true.
-	 * 
+	 *
 	 * @param selectionObject
 	 * @param dispose
 	 */
@@ -251,8 +251,8 @@ public class HorizontalMultiColumnCompositeList extends Composite implements ISe
 		SelectableComposite childToRemove = null;
 		if (selectionObject == null)
 			return;
-		for (Iterator iter = children.iterator(); iter.hasNext();) {
-			SelectableComposite child = (SelectableComposite) iter.next();
+		for (Iterator<SelectableComposite> iter = children.iterator(); iter.hasNext();) {
+			SelectableComposite child = iter.next();
 			if (selectionObject.equals(child.getSelectionObject())) {
 				childToRemove = child;
 				break;
@@ -265,7 +265,7 @@ public class HorizontalMultiColumnCompositeList extends Composite implements ISe
 	/**
 	 * Remove all children. If dispose is true
 	 * they will be disposed as well.
-	 * 
+	 *
 	 * @param dispose Whether to dispose the children
 	 */
 	public void removeAll(boolean dispose) {
@@ -273,19 +273,19 @@ public class HorizontalMultiColumnCompositeList extends Composite implements ISe
 			removeChild(i,dispose);
 		}
 	}
-	
+
 	/**
 	 * Remove and dispose all children.
 	 */
 	public void removeAll() {
 		removeAll(true);
 	}
-	
+
 	/**
 	 * Replace the child at replacedIdx with the Composite
 	 * passed. If disposeReplaced is true the replaced Composite
 	 * will be disposed.
-	 * 
+	 *
 	 * @param replacedIdx
 	 * @param replacing
 	 * @param disposeReplaced
@@ -299,11 +299,11 @@ public class HorizontalMultiColumnCompositeList extends Composite implements ISe
 		replacing.addSelectionChangeListener(selectionChangeListener);
 		children.set(replacedIdx,replacing);
 	}
-	
+
 	/**
 	 * Replace the child replaced with the Composite replacing.
 	 * If disposeReplaced is true replaced will be disposed.
-	 * 
+	 *
 	 * @param replaced
 	 * @param replacing
 	 * @param disposeReplaced
@@ -311,7 +311,7 @@ public class HorizontalMultiColumnCompositeList extends Composite implements ISe
 	public void replaceChild(SelectableComposite replaced, SelectableComposite replacing, boolean disposeReplaced) {
 		replaceChild(replaced.getCompositeListIdx(),replacing,disposeReplaced);
 	}
-	
+
 	/**
 	 * Get the current set number of columns.
 	 * @return the current set number of columns
@@ -326,42 +326,42 @@ public class HorizontalMultiColumnCompositeList extends Composite implements ISe
 	public void setNumColumns(int numColumns) {
 		this.numColumns = numColumns;
 	}
-	
+
 	/**
 	 * Check if items in this list are
 	 * multiselectable.
-	 * 
+	 *
 	 * @return <code>true</code> if items in this list are
 	 * multiselectable
 	 */
 	public boolean isMultiSelect() {
 		return multiSelect;
 	}
-	
+
 	/**
 	 * Set if items in this list are multiselectable.
-	 * 
+	 *
 	 * @param multiSelect
 	 */
 	public void setMultiSelect(boolean multiSelect) {
 		this.multiSelect = multiSelect;
 	}
-	
+
 	/**
 	 * Returns the carrier for all children.
 	 * A child should be created with this
 	 * as a parent or use {@link #createChild(int)}.
-	 * 
+	 *
 	 * @return the carrier
 	 */
 	public Composite getCarrier() {
 		return carrier;
 	}
-	
+
 	private int columnScrollInc;
 	private int currentScrollColumn;
 	private int totalNumColumns;
-	
+
 	/**
 	 * Rearranges the children of this list
 	 * and redraws the composite.
@@ -376,12 +376,12 @@ public class HorizontalMultiColumnCompositeList extends Composite implements ISe
 		int xRun = horizontalSpacing;
 		totalNumColumns = 1;
 		carrier.setSize(0,carrierHeight);
-		
-		for (Iterator iter = children.iterator(); iter.hasNext();) {
-			SelectableComposite comp = (SelectableComposite) iter.next();
+
+		for (Iterator<SelectableComposite> iter = children.iterator(); iter.hasNext();) {
+			SelectableComposite comp = iter.next();
 			int compHeight = comp.getSize().y;
 			int compWidth = columnWidth - 2 * horizontalSpacing;
-			
+
 			if ((yRun+compHeight > carrierHeight-(2*verticalMargin)) && (yRun != verticalMargin)) {
 				// if composite doesn't fit into column and
 				// is not the first comp in this column then
@@ -403,11 +403,11 @@ public class HorizontalMultiColumnCompositeList extends Composite implements ISe
 		scrollTo(currentScrollColumn);
 		this.redraw();
 	}
-	
+
 	/**
 	 * Scrolls the List to the given columnIndex but
 	 * only until (totalColumnCount - numColumns) is reached.
-	 * 
+	 *
 	 * @param columnScrollIdx
 	 */
 	protected void scrollTo(int columnScrollIdx) {
@@ -417,24 +417,24 @@ public class HorizontalMultiColumnCompositeList extends Composite implements ISe
 		}
 		else
 			currentScrollColumn = columnScrollIdx;
-	
+
 		if (currentScrollColumn < 0)
 			currentScrollColumn = 0;
 		carrier.setLocation(0-(currentScrollColumn*columnScrollInc),0);
-		
+
 		if ((slider.getSelection()) != currentScrollColumn) {
 			slider.setSelection(currentScrollColumn);
 		}
 		this.redraw();
 	}
-	
+
 	/**
 	 * Rearranges the children and the scrollbar.
 	 */
 	public void refreshList() {
 		arrangeChildren();
 	}
-	
+
 	private boolean preserveRecursion = false;
 	/**
 	 * Clears the Map of selected Composites
@@ -444,8 +444,8 @@ public class HorizontalMultiColumnCompositeList extends Composite implements ISe
 	private void clearSelectionMap(SelectableComposite causingComposite) {
 		preserveRecursion = true;
 		try {
-			for (Iterator iter = selectedChildren.iterator(); iter.hasNext();) {
-				SelectableComposite comp = (SelectableComposite) iter.next();
+			for (Iterator<SelectableComposite> iter = selectedChildren.iterator(); iter.hasNext();) {
+				SelectableComposite comp = iter.next();
 				if (comp != causingComposite)
 					comp.setSelected(false);
 			}
@@ -454,7 +454,7 @@ public class HorizontalMultiColumnCompositeList extends Composite implements ISe
 			preserveRecursion = false;
 		}
 	}
-	
+
 	private void exclusiveSelect(SelectableComposite selection, boolean selected) {
 		clearSelectionMap(selection);
 		if (selected)

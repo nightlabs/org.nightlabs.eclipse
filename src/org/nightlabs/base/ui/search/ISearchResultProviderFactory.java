@@ -33,7 +33,7 @@ import org.nightlabs.i18n.I18nText;
 /**
  * Factory which creates instances of {@link ISearchResultProvider}
  * and holds the describing data like name, image etc
- * 
+ *
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  */
 public interface ISearchResultProviderFactory<T>
@@ -47,58 +47,58 @@ extends IExecutableExtension
 	 * @return the ISearchResultProvider
 	 */
 	ISearchResultProvider<T> createSearchResultProvider();
-	
+
 	/**
 	 * returns the multilanguage capable name of the type of search
 	 * @return the multilanguage capable name of the type of search
 	 * @see I18nText
 	 */
 	I18nText getName();
-	
+
 	/**
 	 * @return the class of the results of the search
 	 */
 	Class<T> getResultTypeClass();
-	
+
 	/**
 	 * returns the {@link ISearchResultActionHandler} which should be used
-	 * 
+	 *
 	 * @return {@link ISearchResultActionHandler}
 	 */
 	ISearchResultActionHandler getActionHandler();
-	
+
 	/**
 	 * registers a ISearchResultActionHandler for a perspectiveID
-	 * 
+	 *
 	 * @param actionHandler the ISearchResultActionHandler to add
 	 * @param perspectiveID the perspectiveID of the ISearchResultActionHandler
 	 */
 	void addActionHandler(ISearchResultActionHandler actionHandler, String perspectiveID);
-		
+
 	/**
 	 * returns the decorator image (usally 8x8 pixels)
 	 * @return the decorator image
 	 */
 	Image getDecoratorImage();
-	
+
 	/**
 	 * returns the image (usally 16x16 pixels)
 	 * @return the image
 	 */
 	Image getImage();
-	
+
 	/**
 	 * returns the id
 	 * @return the id
 	 */
 	String getID();
-	
+
 	/**
 	 * returns the priority
 	 * @return the priority
 	 */
 	int getPriority();
-	
+
 	/**
 	 * returns the composed decorator image {@link SearchCompositeImage}
 	 * @return the composed decorator image

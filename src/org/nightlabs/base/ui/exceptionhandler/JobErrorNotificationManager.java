@@ -52,13 +52,13 @@ public class JobErrorNotificationManager
 	}
 
 	private List errors = new ArrayList();
-	
+
 	public void addError(IStatus status, Job job) {
 		errors.add(new ErrorInfo(status, job));
 		ExceptionHandlerRegistry.asyncHandleException(status.getException());
 //		clearAllErrors();
 	}
-	
+
 	public Collection getErrors() {
 		return errors;
 	}

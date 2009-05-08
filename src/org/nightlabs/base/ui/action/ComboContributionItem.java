@@ -50,7 +50,7 @@ public abstract class ComboContributionItem extends XContributionItem {
 
 //	private XComposite wrapper;
 	private XCombo combo;
-	private List entries;
+	private List<Object> entries;
 
 	private boolean updating;
 	/**
@@ -72,7 +72,7 @@ public abstract class ComboContributionItem extends XContributionItem {
 	/**
 	 * Returns a list of keys that should be made selectable.
 	 */
-	protected abstract List getEntries();
+	protected abstract List<Object> getEntries();
 
 	/**
 	 * Returns a short description for a given entry (key).
@@ -94,12 +94,12 @@ public abstract class ComboContributionItem extends XContributionItem {
 		combo = new XCombo(parent, SWT.READ_ONLY);
 		combo.setSize(200, 30);
 
-		for (Iterator iter = nullAddedSelListener.iterator(); iter.hasNext();) {
-			combo.addSelectionListener((SelectionListener) iter.next());
+		for (Iterator<SelectionListener> iter = nullAddedSelListener.iterator(); iter.hasNext();) {
+			combo.addSelectionListener(iter.next());
 		}
 		nullAddedSelListener.clear();
 
-		for (Iterator iter = entries.iterator(); iter.hasNext();) {
+		for (Iterator<Object> iter = entries.iterator(); iter.hasNext();) {
 			Object entry = iter.next();
 			combo.add(getImage(entry), getText(entry));
 		}

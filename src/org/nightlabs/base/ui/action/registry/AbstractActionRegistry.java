@@ -484,12 +484,12 @@ extends AbstractEPProcessor
 		}
 
 		try {
-			coolBarManager.update(true);	
+			coolBarManager.update(true);
 		} catch (Exception e) {
 			// TODO WORKAROUND
-			// sometimes at first startup an ArrayIndexOutOfBounds occurs, because  
-			// CoolBarManager.adjustContributionList removes first an separator and 
-			// afterwards also the first element, of an now empty list 
+			// sometimes at first startup an ArrayIndexOutOfBounds occurs, because
+			// CoolBarManager.adjustContributionList removes first an separator and
+			// afterwards also the first element, of an now empty list
 			// this is an workaround for this bug
 			logger.warn("Eclipse bug in coolBarManager.update(true) occured", e); //$NON-NLS-1$
 		}
@@ -1252,15 +1252,15 @@ extends AbstractEPProcessor
 
 				if (icon != null && !"".equals(icon)) //$NON-NLS-1$
 					action.setImageDescriptor(
-							ImageDescriptor.createFromURL(Platform.getBundle(extension.getNamespace()).getEntry(icon)));
+							ImageDescriptor.createFromURL(Platform.getBundle(extension.getNamespaceIdentifier()).getEntry(icon)));
 
 				if (disabledIcon != null && !"".equals(disabledIcon)) //$NON-NLS-1$
 					action.setDisabledImageDescriptor(
-							ImageDescriptor.createFromURL(Platform.getBundle(extension.getNamespace()).getEntry(disabledIcon)));
+							ImageDescriptor.createFromURL(Platform.getBundle(extension.getNamespaceIdentifier()).getEntry(disabledIcon)));
 
 				if (hoverIcon != null && !"".equals(hoverIcon)) //$NON-NLS-1$
 					action.setHoverImageDescriptor(
-							ImageDescriptor.createFromURL(Platform.getBundle(extension.getNamespace()).getEntry(hoverIcon)));
+							ImageDescriptor.createFromURL(Platform.getBundle(extension.getNamespaceIdentifier()).getEntry(hoverIcon)));
 
 				initAction(action, extension, element);
 			}
@@ -1272,7 +1272,7 @@ extends AbstractEPProcessor
 //				throw new EPProcessorException("Your IContribution, which you created for the ActionDescriptor defined in extension " + extension.getNamespace() + " with id=" + id + " does have the wrong id (\"" + contributionItem.getId() + "\") set! Check your method " + this.getClass().getName() + ".createActionOrContributionItem(...)!");
 			}
 			else
-				throw new EPProcessorException("Action class defined in extension " + extension.getNamespace() + " with id=" + id + " does neither implement IAction nor IXContributionItem! It must implement ONE of them!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				throw new EPProcessorException("Action class defined in extension " + extension.getNamespaceIdentifier() + " with id=" + id + " does neither implement IAction nor IXContributionItem! It must implement ONE of them!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 			ActionDescriptor actionDescriptor = createActionDescriptor();
 			actionDescriptor.init(

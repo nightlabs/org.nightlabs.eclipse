@@ -25,7 +25,6 @@ import org.nightlabs.base.ui.entity.editor.EntityEditor;
 import org.nightlabs.base.ui.entity.editor.EntityEditorPageSettings;
 import org.nightlabs.base.ui.entity.editor.IEntityEditorPageFactory;
 import org.nightlabs.base.ui.form.NightlabsFormsToolkit;
-import org.nightlabs.base.ui.resource.Messages;
 
 /**
  * @author Daniel Mazurek - Daniel.Mazurek [dot] nightlabs [dot] de
@@ -35,18 +34,18 @@ public class OverviewSection extends MessageSectionPart {
 
 	private FormEditor formEditor;
 	private List<StatusComposite>  statusComposites;
-	
+
 	/**
 	 * @param page
 	 * @param parent
 	 * @param style
 	 * @param title
 	 */
-	public OverviewSection(IFormPage page, Composite parent, FormEditor formEditor) 
+	public OverviewSection(IFormPage page, Composite parent, FormEditor formEditor)
 	{
 		super(page, parent, ExpandableComposite.EXPANDED, ""); //$NON-NLS-1$
 		this.formEditor = formEditor;
-	
+
 		statusComposites = new ArrayList<StatusComposite>();
 //		createComposite(getContainer());
 		ScrolledForm form = getToolkit().createScrolledForm(getContainer());
@@ -67,39 +66,39 @@ public class OverviewSection extends MessageSectionPart {
 				}
 				IFormPage page = entityEditor.getController().getPage(pageFactory);
 				if (!(page instanceof OverviewPage))
-					createEntry(parent, pageSettings, statusProvider, page);				
+					createEntry(parent, pageSettings, statusProvider, page);
 			}
 		}
 	}
 
-	protected void createEntry(Composite parent, final EntityEditorPageSettings pageSettings, 
-			final IOverviewPageStatusProvider statusProvider, final IFormPage page) 
+	protected void createEntry(Composite parent, final EntityEditorPageSettings pageSettings,
+			final IOverviewPageStatusProvider statusProvider, final IFormPage page)
 	{
 		Composite wrapper = new XComposite(parent, SWT.NONE);
 		wrapper.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		wrapper.setLayout(new GridLayout(4, false));
-		
+
 		IHyperlinkListener hyperlinkListener = new HyperlinkAdapter() {
 			@Override
 			public void linkActivated(HyperlinkEvent e) {
 				formEditor.setActivePage(page.getId());
 			}
 		};
-		
+
 		ImageHyperlink imageHyperlink = getToolkit().createImageHyperlink(wrapper, SWT.LEFT);
 		if (pageSettings.getIconDesc() != null) {
-			imageHyperlink.setImage(pageSettings.getIconDesc().createImage());	
+			imageHyperlink.setImage(pageSettings.getIconDesc().createImage());
 		}
 		imageHyperlink.addHyperlinkListener(hyperlinkListener);
 		GridData imageData = new GridData(64, 64);
 		imageHyperlink.setLayoutData(imageData);
-		
+
 		Composite textWrapper = new XComposite(wrapper, SWT.NONE);
 		GridData textWrapperData = new GridData(250, SWT.DEFAULT);
 		textWrapper.setLayoutData(textWrapperData);
 		Hyperlink hyperlink = getToolkit().createHyperlink(textWrapper, page.getTitle(), SWT.NONE);
 		hyperlink.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		hyperlink.addHyperlinkListener(hyperlinkListener);				
+		hyperlink.addHyperlinkListener(hyperlinkListener);
 		Label descriptionLabel = new Label(textWrapper, SWT.NONE);
 		descriptionLabel.setLayoutData(new GridData(GridData.FILL_BOTH));
 		if (pageSettings.getDescription() != null) {
@@ -111,7 +110,7 @@ public class OverviewSection extends MessageSectionPart {
 		StatusComposite statusComposite = new StatusComposite(wrapper, SWT.NONE, statusProvider);
 		statusComposites.add(statusComposite);
 	}
-	
+
 	protected FormToolkit getToolkit() {
 		return new NightlabsFormsToolkit(getSection().getDisplay());
 	}

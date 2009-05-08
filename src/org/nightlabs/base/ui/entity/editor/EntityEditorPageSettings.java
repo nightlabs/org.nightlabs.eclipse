@@ -31,12 +31,11 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
-import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.util.Util;
 
 /**
  * Extension point settings for an entity page extension.
- * 
+ *
  * @version $Revision$ - $Date$
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
@@ -47,36 +46,36 @@ public class EntityEditorPageSettings implements Comparable<EntityEditorPageSett
 	 * Page factory implementation
 	 */
 	private IEntityEditorPageFactory pageFactory;
-	
+
 	/**
 	 * The editor ID for this entity editor page.
 	 */
 	private String editorID;
-	
+
 	/**
 	 * The index hint for this entity editor page telling
 	 * the system where to position this page in the multi
 	 * page editor.
 	 */
 	private int indexHint;
-	
+
 	/**
 	 * The {@link ImageDescriptor} for the small (16x16) icon.
 	 */
 	private ImageDescriptor smallIconDesc;
-	
+
 	/**
 	 * The {@link ImageDescriptor} for the (48x48) icon.
 	 */
 	private ImageDescriptor iconDesc;
-	
+
 	/**
 	 * The description of the page
 	 */
 	private String description;
-	
+
 	/**
-	 * 
+	 *
 	 * @param editorID
 	 * @param indexHint
 	 * @param factory
@@ -84,8 +83,8 @@ public class EntityEditorPageSettings implements Comparable<EntityEditorPageSett
 	 * @param iconDesc
 	 * @param description
 	 */
-	public EntityEditorPageSettings(String editorID, int indexHint, IEntityEditorPageFactory factory, 
-			ImageDescriptor smallIconDesc, ImageDescriptor iconDesc, String description) 
+	public EntityEditorPageSettings(String editorID, int indexHint, IEntityEditorPageFactory factory,
+			ImageDescriptor smallIconDesc, ImageDescriptor iconDesc, String description)
 	{
 		this.editorID = editorID;
 		this.indexHint = indexHint;
@@ -94,7 +93,7 @@ public class EntityEditorPageSettings implements Comparable<EntityEditorPageSett
 		this.iconDesc = iconDesc;
 		this.description = description;
 	}
-	
+
 	/**
 	 * Create an instance of EntityEditorPageSettings for
 	 * an extension point entry.
@@ -108,7 +107,7 @@ public class EntityEditorPageSettings implements Comparable<EntityEditorPageSett
 		} catch (Exception e) {
 			throw new EPProcessorException("The class attribute was not valid ", extension); //$NON-NLS-1$
 		}
-		
+
 //		this.pageClass = cfg.getAttribute("class");
 		this.editorID = cfg.getAttribute("editorID"); //$NON-NLS-1$
 		if (editorID == null || "".equals(editorID)) //$NON-NLS-1$
@@ -122,16 +121,16 @@ public class EntityEditorPageSettings implements Comparable<EntityEditorPageSett
 			}
 		else
 			this.indexHint = Integer.MAX_VALUE / 2;
-		
+
 		String smallIconPath = cfg.getAttribute("icon16x16"); //$NON-NLS-1$
 		if (smallIconPath != null) {
 			this.smallIconDesc = AbstractUIPlugin.imageDescriptorFromPlugin(
-					cfg.getNamespaceIdentifier(), smallIconPath);			
+					cfg.getNamespaceIdentifier(), smallIconPath);
 		}
 		String iconPath = cfg.getAttribute("icon48x48"); //$NON-NLS-1$
 		if (iconPath != null) {
 			this.iconDesc = AbstractUIPlugin.imageDescriptorFromPlugin(
-					cfg.getNamespaceIdentifier(), iconPath);			
+					cfg.getNamespaceIdentifier(), iconPath);
 		}
 		this.description = cfg.getAttribute("description"); //$NON-NLS-1$
 	}
@@ -152,7 +151,7 @@ public class EntityEditorPageSettings implements Comparable<EntityEditorPageSett
 //			throw new RuntimeException("Creation of editor page failed", e);
 //		}
 //	}
-	
+
 	/**
 	 * Get the editorID.
 	 * @return the editorID
@@ -194,7 +193,7 @@ public class EntityEditorPageSettings implements Comparable<EntityEditorPageSett
 	/**
 	 * Returns the implementation of {@link IEntityEditorPageFactory}
 	 * registered with this extension.
-	 * 
+	 *
 	 * @return the pageFactory The implementation of {@link IEntityEditorPageFactory}
 	 * registered with this extension.
 	 */
@@ -210,7 +209,7 @@ public class EntityEditorPageSettings implements Comparable<EntityEditorPageSett
 	public void setPageFactory(IEntityEditorPageFactory pageFactory) {
 		this.pageFactory = pageFactory;
 	}
-	
+
 	/**
 	 * Returns the smallIconDesc.
 	 * @return the smallIconDesc
@@ -261,15 +260,15 @@ public class EntityEditorPageSettings implements Comparable<EntityEditorPageSett
 
 	@Override
 	public String toString() {
-		return 
-			this.getClass().getName() + '@' + Integer.toHexString(System.identityHashCode(this)) + 
+		return
+			this.getClass().getName() + '@' + Integer.toHexString(System.identityHashCode(this)) +
 			"[" + (pageFactory != null ? pageFactory.getClass().getName() : "no-page-factory") + "," +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			editorID + ", " + indexHint + "]"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
-	 * Sorts using first the editorID (alphabetically) then the  indexHint 
-	 * and finally the class-name of the pageFactory. 
+	 * Sorts using first the editorID (alphabetically) then the  indexHint
+	 * and finally the class-name of the pageFactory.
 	 */
 	@Override
 	public int compareTo(EntityEditorPageSettings o) {

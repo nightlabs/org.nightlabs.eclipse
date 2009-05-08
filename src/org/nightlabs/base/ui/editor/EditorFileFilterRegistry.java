@@ -42,7 +42,7 @@ extends AbstractEPProcessor
 	public static final String EXTENSION_POINT_ID = "org.nightlabs.base.ui.editorfilefilter"; //$NON-NLS-1$
 
 	private static EditorFileFilterRegistry sharedInstance;
-	
+
 	/**
 	 * @deprecated Use {@link #sharedInstance()} instead
 	 */
@@ -52,7 +52,7 @@ extends AbstractEPProcessor
 			sharedInstance = new EditorFileFilterRegistry();
 		return sharedInstance;
 	}
-	
+
 	public static EditorFileFilterRegistry sharedInstance() {
 		if (sharedInstance == null)
 			sharedInstance = new EditorFileFilterRegistry();
@@ -61,7 +61,7 @@ extends AbstractEPProcessor
 
 	private List<String> patterns = new ArrayList<String>();
 	private String globalPattern;
-	
+
 	@Override
 	public String getExtensionPointID() {
 		return EXTENSION_POINT_ID;
@@ -78,14 +78,14 @@ extends AbstractEPProcessor
 			patterns.add(pattern);
 		}
 	}
-	
+
 	public String getGlobalPattern()
 	{
 		checkProcessing();
-		
+
 		if (globalPattern == null){
 			StringBuffer globalPatternSB = new StringBuffer("^"); //$NON-NLS-1$
-			for (Iterator it = patterns.iterator(); it.hasNext(); ) {
+			for (Iterator<String> it = patterns.iterator(); it.hasNext(); ) {
 				globalPatternSB.append('(');
 				globalPatternSB.append(it.next());
 				globalPatternSB.append(')');
@@ -97,7 +97,7 @@ extends AbstractEPProcessor
 		}
 		return globalPattern;
 	}
-	
+
 	public boolean doesMatchEditorID(String id)
 	{
 		checkProcessing();
@@ -106,9 +106,9 @@ extends AbstractEPProcessor
 		return Pattern.matches(getGlobalPattern(), id);
 	}
 
-	public List getPatterns()
+	public List<String> getPatterns()
 	{
 		checkProcessing();
 		return patterns;
-	}	
+	}
 }

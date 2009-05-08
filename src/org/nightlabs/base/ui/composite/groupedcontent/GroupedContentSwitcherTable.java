@@ -28,6 +28,7 @@ package org.nightlabs.base.ui.composite.groupedcontent;
 
 import java.util.Collection;
 
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -36,26 +37,25 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.nightlabs.base.ui.table.AbstractTableComposite;
-import org.nightlabs.base.ui.table.TableContentProvider;
 import org.nightlabs.base.ui.table.TableLabelProvider;
 
 /**
  * Table used in {@link GroupedContentComposite} to show entries
  * of {@link GroupedContentProvider}.
- * 
+ *
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  */
 public class GroupedContentSwitcherTable extends AbstractTableComposite<GroupedContentProvider> {
-	
+
 	private String groupTitle;
 //	private TableColumn column;
-	
+
 	// TODO: dispose sometime
 	private static final Color COLOR_HIGHLIGHT = new Color(null, 200, 200, 200);
 	private static final Color COLOR_SELECTED = new Color(null, 11, 5, 180);
 	private static final Color COLOR_BACKGROUND = new Color(null, 111, 111, 111);
 
-	private class ContentProvider extends TableContentProvider  {
+	private class ContentProvider extends ArrayContentProvider  {
 		/**
 		 * @see org.nightlabs.base.ui.table.TableContentProvider#getElements(java.lang.Object)
 		 */
@@ -66,7 +66,7 @@ public class GroupedContentSwitcherTable extends AbstractTableComposite<GroupedC
 			return super.getElements(inputElement);
 		}
 	}
-	
+
 	private class LabelProvider extends TableLabelProvider {
 		@Override
 		public Image getColumnImage(Object element, int columnIndex) {
@@ -80,7 +80,7 @@ public class GroupedContentSwitcherTable extends AbstractTableComposite<GroupedC
 			throw new IllegalArgumentException("LabelProvider for GroupedContentSwitcherTable is restricted to GroupedContentProvider elements."); //$NON-NLS-1$
 		}
 	}
-	
+
 	public GroupedContentSwitcherTable(Composite parent, int style) {
 		super(parent, style, true, getBorderStyle(parent) | SWT.FULL_SELECTION | SWT.V_SCROLL);
 		getGridLayout().marginHeight = 2;
@@ -116,7 +116,7 @@ public class GroupedContentSwitcherTable extends AbstractTableComposite<GroupedC
 //			layout();
 //		}
 	}
-	
+
 	protected void selectItem(TableItem item) {
 		TableItem[] items = getTable().getItems();
 		for (int i = 0; i < items.length; i++) {
@@ -125,7 +125,7 @@ public class GroupedContentSwitcherTable extends AbstractTableComposite<GroupedC
 		if (item != null)
 			item.setBackground(COLOR_SELECTED);
 	}
-	
+
 	protected void highLightItem(TableItem item) {
 		TableItem[] items = getTable().getItems();
 		for (int i = 0; i < items.length; i++) {

@@ -32,7 +32,7 @@ import java.util.Collection;
  * Implementations get a search string and must return a Collection of
  * objects
  * Instances of ISearchResultProvider are created by an {@link ISearchResultProviderFactory}
- * 
+ *
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
@@ -43,16 +43,16 @@ public interface ISearchResultProvider<T>
 	 * @return a Collection which contains the result of the search
 	 */
 	Collection<T> getSelectedObjects();
-		
+
 	/**
 	 * sets the search text
 	 * @param text the searchText to set
 	 */
 	void setSearchText(String text);
-	
+
 	/**
 	 * returns the factory
 	 * @return the factory
 	 */
-	ISearchResultProviderFactory getFactory();
+	ISearchResultProviderFactory<T> getFactory();
 }

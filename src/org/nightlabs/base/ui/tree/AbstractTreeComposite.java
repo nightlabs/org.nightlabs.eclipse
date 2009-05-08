@@ -35,7 +35,6 @@ import java.util.Set;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.util.SafeRunnable;
 import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -103,7 +102,7 @@ implements ISelectionProvider, StatableTree
 	private ListenerList postSelectionChangedListeners = new ListenerList();
 	private ListenerList selectionChangedListeners = new ListenerList();
 	private ListenerList doubleClickListeners = new ListenerList();
-	
+
 	/**
 	 * Convenience parameter with {@link #DEFAULT_STYLE_SINGLE}, a GridData,
 	 * directly initialised and visible headers for the tree.
@@ -226,7 +225,7 @@ implements ISelectionProvider, StatableTree
 
 	/**
 	 * Add your columns here to the {@link Tree}.
-	 * 
+	 *
 	 * @param tree the SWT tree.
 	 */
 	public abstract void createTreeColumns(Tree tree);
@@ -567,25 +566,25 @@ implements ISelectionProvider, StatableTree
 		selectionChangedListeners.remove(listener);
 	}
 
-	private IDoubleClickListener doubleClickListener = new IDoubleClickListener()
-	{
-		@Override
-		public void doubleClick(final DoubleClickEvent event)
-		{
-			for (Object listener : doubleClickListeners.getListeners())
-			{
-				Object[] listeners = doubleClickListeners.getListeners();
-				for (int i = 0; i < listeners.length; ++i) {
-					final IDoubleClickListener l = (IDoubleClickListener) listeners[i];
-					SafeRunnable.run(new SafeRunnable() {
-						public void run() {
-							l.doubleClick(event);
-						}
-					});
-				}
-			}
-		}
-	};
+//	private IDoubleClickListener doubleClickListener = new IDoubleClickListener()
+//	{
+//		@Override
+//		public void doubleClick(final DoubleClickEvent event)
+//		{
+//			for (Object listener : doubleClickListeners.getListeners())
+//			{
+//				Object[] listeners = doubleClickListeners.getListeners();
+//				for (int i = 0; i < listeners.length; ++i) {
+//					final IDoubleClickListener l = (IDoubleClickListener) listeners[i];
+//					SafeRunnable.run(new SafeRunnable() {
+//						public void run() {
+//							l.doubleClick(event);
+//						}
+//					});
+//				}
+//			}
+//		}
+//	};
 
 	/**
 	 * Delegating method for {@link TableViewer}

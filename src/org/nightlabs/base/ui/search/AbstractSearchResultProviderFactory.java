@@ -70,6 +70,7 @@ implements ISearchResultProviderFactory<T>
 		return name;
 	}
 
+	@SuppressWarnings("unchecked")
 	public ISearchResultActionHandler getActionHandler()
 	{
 		String perspectiveID = RCPUtil.getActivePerspectiveID();
@@ -79,17 +80,19 @@ implements ISearchResultProviderFactory<T>
 		}
 		return actionHandler;
 	}
-	
+
+	@SuppressWarnings("unchecked")
 	private Map<String, ISearchResultActionHandler> perspectiveID2ActionHandler = new HashMap<String, ISearchResultActionHandler>();
+	@SuppressWarnings("unchecked")
 	public void addActionHandler(ISearchResultActionHandler actionHandler, String perspectiveID) {
 		perspectiveID2ActionHandler.put(perspectiveID, actionHandler);
 	}
-	
+
 	private int priority = DEFAULT_PRIORITY;
 	public int getPriority() {
 		return priority;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement, java.lang.String, java.lang.Object)
 	 */
@@ -122,7 +125,7 @@ implements ISearchResultProviderFactory<T>
 				try {
 					this.priority = Integer.valueOf(priority);
 				} catch (NumberFormatException e) {
-					
+
 				}
 			}
 			if (AbstractEPProcessor.checkString(idString)) {
@@ -139,5 +142,5 @@ implements ISearchResultProviderFactory<T>
 		}
 		return composedDecoratorImage;
 	}
-	
+
 }

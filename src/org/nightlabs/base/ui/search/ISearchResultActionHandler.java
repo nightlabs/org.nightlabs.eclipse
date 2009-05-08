@@ -29,24 +29,24 @@ package org.nightlabs.base.ui.search;
 /**
  * An ISearchResultActionHandler can perform a certain action
  * with the search results provided by an {@link ISearchResultProvider}
- * 
+ *
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
-public interface ISearchResultActionHandler
+public interface ISearchResultActionHandler<T>
 {
 	/**
 	 * returns the ISearchResultProvider
 	 * @return the ISearchResultProvider
 	 */
-	ISearchResultProvider getSearchResultProvider();
-	
+	ISearchResultProvider<T> getSearchResultProvider();
+
 	/**
 	 * sets the {@link ISearchResultProvider}
 	 * @param searchResultProvider the ISearchResultProvider to set
 	 */
-	void setSearchResultProvider(ISearchResultProvider searchResultProvider);
-	
+	void setSearchResultProvider(ISearchResultProvider<T> searchResultProvider);
+
 	/**
 	 * performs the action
 	 */

@@ -55,7 +55,7 @@ public class SelectableComposite extends XComposite {
 	private boolean selected = false;
 	private Color normalBGColor;
 	private Color selectedBGColor;
-	
+
 	private MouseListener mouseListener = new MouseAdapter()
 	{
 		@Override
@@ -68,7 +68,7 @@ public class SelectableComposite extends XComposite {
 			setSelected(true,evt.stateMask);
 		}
 	};
-	
+
 	Listener shellMouseListener = new Listener() {
 		public void handleEvent (Event event) {
 			switch (event.type) {
@@ -86,7 +86,7 @@ public class SelectableComposite extends XComposite {
 			}
 		}
 	};
-		
+
 	/**
 	 * @param parent
 	 * @param style
@@ -111,34 +111,34 @@ public class SelectableComposite extends XComposite {
 			}
 		});
 	}
-	
+
 
 	/**
 	 * Checks if this Composite is selected or not.
-	 * 
+	 *
 	 * @return <code>true</code> if this Composite is selected - <code>false</code> otherwise
 	 */
 	public boolean isSelected() {
 		return selected;
 	}
-	
+
 	/**
 	 * Sets the selection state of this composite
 	 * to the passed value and sets its
 	 * Backgroundcolor accordingly.
-	 * 
+	 *
 	 * @param selected
 	 */
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 		notifySelectionListeners();
 	}
-	
+
 	/**
 	 * Sets the selection state of this composite
 	 * to the passed value and sets its
 	 * Backgroundcolor accordingly.
-	 * 
+	 *
 	 * @param selected
 	 * @param stateMask
 	 */
@@ -153,8 +153,8 @@ public class SelectableComposite extends XComposite {
 	protected void toggleSelected(){
 		setSelected(!isSelected());
 	}
-	
-	
+
+
 	/**
 	 * A package visible int to
 	 * store the list idx of this
@@ -170,13 +170,13 @@ public class SelectableComposite extends XComposite {
 	public int getCompositeListIdx() {
 		return compositeListIdx;
 	}
-	
+
 	private Set<SelectableCompositeListener> selectionListeners = new HashSet<SelectableCompositeListener>();
-	
+
 	protected void notifySelectionListeners() {
 		notifySelectionListeners(0);
 	}
-	
+
 	/**
 	 * Nofify all selectionChangeListener
 	 */
@@ -185,34 +185,34 @@ public class SelectableComposite extends XComposite {
 		evt.setSource(this);
 		evt.setSelected(isSelected());
 		evt.setStateMask(stateMask);
-		for (Iterator iter = selectionListeners.iterator(); iter.hasNext();) {
-			SelectableCompositeListener listener = (SelectableCompositeListener) iter.next();
+		for (Iterator<SelectableCompositeListener> iter = selectionListeners.iterator(); iter.hasNext();) {
+			SelectableCompositeListener listener = iter.next();
 			listener.selectionStateChanged(evt);
 		}
 	}
-	
+
 	private Object selectionObject;
-	
-	
+
+
 	public Object getSelectionObject() {
 		return selectionObject;
 	}
 	public void setSelectionObject(Object selectionObject) {
 		this.selectionObject = selectionObject;
 	}
-	
+
 	public void removeSelectionListener(SelectionListener listener) {
 //		if (eventTable == null) return;
 //		eventTable.unhook (SWT.Selection, listener);
 //		eventTable.unhook (SWT.DefaultSelection,listener);
 	}
-	
+
 	public void addSelectionListener(SelectionListener listener) {
 //		TypedListener typedListener = new TypedListener (listener);
 //		addListener (SWT.Selection,typedListener);
 //		addListener (SWT.DefaultSelection,typedListener);
 	}
-	
+
 	/**
 	 * Add a listener to this selectable Composite.
 	 * @param listener
@@ -227,5 +227,5 @@ public class SelectableComposite extends XComposite {
 	public void removeSelectionChangeListener(SelectableCompositeListener selectionListener) {
 		selectionListeners.remove(selectionListener);
 	}
-	
+
 }

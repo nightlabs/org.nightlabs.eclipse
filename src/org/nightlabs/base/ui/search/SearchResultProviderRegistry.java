@@ -40,11 +40,12 @@ import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  *
  */
+@SuppressWarnings("unchecked")
 public class SearchResultProviderRegistry
 extends AbstractEPProcessor
 {
 	private static final Logger logger = Logger.getLogger(SearchResultProviderRegistry.class);
-	
+
 	public static final String EXTENSION_POINT_ID = "org.nightlabs.base.ui.searchResultProvider"; //$NON-NLS-1$
 	public static final String ELEMENT_SEARCH_RESULT_PROVIDER_FACTORY = "searchResultProviderFactory"; //$NON-NLS-1$
 	public static final String ELEMENT_SEARCH_RESULT_HANDLER = "searchResultActionHandler"; //$NON-NLS-1$
@@ -74,11 +75,11 @@ extends AbstractEPProcessor
 		}
 		return sharedInstance;
 	}
-	
+
 	private boolean checked = false;
-	
+
 	protected SearchResultProviderRegistry() {}
-	
+
 	@Override
 	public String getExtensionPointID() {
 		return EXTENSION_POINT_ID;
@@ -113,7 +114,7 @@ extends AbstractEPProcessor
 
 					if (!checkString(perspectiveID))
 						perspectiveID = ISearchResultProviderFactory.WILDCARD_PERSPECTIVE_ID;
-					
+
 					if (perspectiveID2ActionHandler.get(perspectiveID) != null) {
 							ISearchResultActionHandler oldActionHandler = perspectiveID2ActionHandler.get(perspectiveID);
 							logger.warn("There already exists an actionHandler for the perspectiveID "+perspectiveID+" and the factoryID "+factoryID); //$NON-NLS-1$ //$NON-NLS-2$
@@ -127,13 +128,13 @@ extends AbstractEPProcessor
 			}
 		}
 	}
-		
+
 	private SortedSet<ISearchResultProviderFactory> factories = new TreeSet<ISearchResultProviderFactory>(FactoryComparator);
 	public SortedSet<ISearchResultProviderFactory> getFactories() {
 		check();
 		return factories;
 	}
-	
+
 	private Map<String, Map<String, ISearchResultActionHandler>> factoryID2PerspectiveID2ActionHandler = new HashMap<String, Map<String, ISearchResultActionHandler>>();
 	private Map<String, SearchResultProviderRegistryUseCase> useCase2RegistryUse = new HashMap<String, SearchResultProviderRegistryUseCase>();
 	public SearchResultProviderRegistryUseCase getUseCase(String useCase) {
@@ -143,7 +144,7 @@ extends AbstractEPProcessor
 	public void addUseCase(String useCaseString, SearchResultProviderRegistryUseCase useCase) {
 		useCase2RegistryUse.put(useCaseString, useCase);
 	}
-	
+
 	protected void check()
 	{
 		if (!checked) {
@@ -159,5 +160,5 @@ extends AbstractEPProcessor
 			checked = true;
 		}
 	}
-	
+
 }

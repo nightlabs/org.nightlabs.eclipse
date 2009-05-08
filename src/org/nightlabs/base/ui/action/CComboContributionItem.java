@@ -197,7 +197,7 @@ extends XContributionItem
 		menuItem.setText(name);
 		for (int i=0; i<elements.size(); i++)
 		{
-			Object element = elements.get(i);
+//			Object element = elements.get(i);
 			// TODO create MenuItems for each entry
 //			MenuItem item = new MenuItem();
 		}

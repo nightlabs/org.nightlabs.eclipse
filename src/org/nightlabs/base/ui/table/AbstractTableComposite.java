@@ -39,9 +39,9 @@ import javax.swing.text.TableView;
 
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.util.SafeRunnable;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ContentViewer;
-import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -282,7 +282,6 @@ public abstract class AbstractTableComposite<ElementType>
 	 *
 	 * @return The first selected element.
 	 */
-	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public ElementType getFirstSelectedElement() {
 		return getSelectionObject(getFirstSelectedElementUnchecked());
 	}
@@ -365,7 +364,7 @@ public abstract class AbstractTableComposite<ElementType>
 					return ""; //$NON-NLS-1$
 				}
 			});
-			tableViewer.setContentProvider(new TableContentProvider());
+			tableViewer.setContentProvider(new ArrayContentProvider());
 		}
 		tableViewer.setInput(new String[] { message });
 	}
@@ -438,7 +437,6 @@ public abstract class AbstractTableComposite<ElementType>
 	 *
 	 * @return a list of all checked Elements.
 	 */
-	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public List<ElementType> getCheckedElements() {
 		if ((table.getStyle() & SWT.CHECK) == 0)
 			throw new IllegalStateException("Table is not of type SWT.CHECK, can't return checked Items!"); //$NON-NLS-1$
@@ -479,14 +477,14 @@ public abstract class AbstractTableComposite<ElementType>
 
 	/**
 	 * Should check if the given element (out of the selection of the underlying viewer)
-	 * is a valid selection for this {@link AbstractTableComposite}, i.e. if it is of 
+	 * is a valid selection for this {@link AbstractTableComposite}, i.e. if it is of
 	 * the expected class. If the element is valid the element itself should be returned,
-	 * if not <code>null</code> should be returned. 
+	 * if not <code>null</code> should be returned.
 	 * <p>
 	 * This implementation tries to cast the element to the parameterized ElementType
 	 * and returns <code>null</code> if this fails.
 	 * </p>
-	 * 
+	 *
 	 * @param element The element to check.
 	 * @return The given element if its a valid selection, <code>null</code> otherwise.
 	 */
@@ -498,7 +496,7 @@ public abstract class AbstractTableComposite<ElementType>
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Set the viewers selection.
 	 *
@@ -608,7 +606,7 @@ public abstract class AbstractTableComposite<ElementType>
 			IStructuredSelection structuredSel = (IStructuredSelection) viewerSelection;
 			List<Object> newSelection = new ArrayList<Object>(structuredSel.size());
 			for (Iterator it = structuredSel.iterator(); it.hasNext();) {
-				Object element = (Object) it.next();
+				Object element = it.next();
 				Object el = getSelectionObject(element);
 				if (el != null)
 					newSelection.add(el);
@@ -652,7 +650,7 @@ public abstract class AbstractTableComposite<ElementType>
 	public void setSelection(ISelection selection, boolean reveal) {
 		tableViewer.setSelection(selection, reveal);
 	}
-	
+
 	@Override
 	public Menu getMenu() {
 		return table.getMenu();
@@ -681,25 +679,25 @@ public abstract class AbstractTableComposite<ElementType>
 	}
 
 	private ListenerList doubleClickListeners = new ListenerList();
-	private IDoubleClickListener doubleClickListener = new IDoubleClickListener()
-	{
-		@Override
-		public void doubleClick(final DoubleClickEvent event)
-		{
-			for (Object listener : doubleClickListeners.getListeners())
-			{
-				Object[] listeners = doubleClickListeners.getListeners();
-				for (int i = 0; i < listeners.length; ++i) {
-					final IDoubleClickListener l = (IDoubleClickListener) listeners[i];
-					SafeRunnable.run(new SafeRunnable() {
-						public void run() {
-							l.doubleClick(event);
-						}
-					});
-				}
-			}
-		}
-	};
+//	private IDoubleClickListener doubleClickListener = new IDoubleClickListener()
+//	{
+//		@Override
+//		public void doubleClick(final DoubleClickEvent event)
+//		{
+//			for (Object listener : doubleClickListeners.getListeners())
+//			{
+//				Object[] listeners = doubleClickListeners.getListeners();
+//				for (int i = 0; i < listeners.length; ++i) {
+//					final IDoubleClickListener l = (IDoubleClickListener) listeners[i];
+//					SafeRunnable.run(new SafeRunnable() {
+//						public void run() {
+//							l.doubleClick(event);
+//						}
+//					});
+//				}
+//			}
+//		}
+//	};
 
 	/**
 	 * Delegating method for {@link TableViewer}

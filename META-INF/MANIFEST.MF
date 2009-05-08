@@ -177,7 +177,6 @@ Export-Package: com.sun.activation.registries,
  org.nightlabs.version,
  org.nightlabs.webapp,
  org.nightlabs.xml,
- org.vafada.swtcalendar,
  org.w3c.dom.html,
  org.w3c.dom.ls
 Require-Bundle: org.eclipse.core.runtime,

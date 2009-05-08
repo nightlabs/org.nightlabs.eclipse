@@ -63,7 +63,7 @@ public class SelectionManager extends NotificationManager
 	 *		value: NotificationEvent event<br/>
 	 * }
 	 */
-	private Map<String, Map<Class, NotificationEvent>> eventsByZone = new HashMap<String, Map<Class,NotificationEvent>>();
+	private Map<String, Map<Class<?>, NotificationEvent>> eventsByZone = new HashMap<String, Map<Class<?>, NotificationEvent>>();
 	private RWLock eventsByZoneMutex = new RWLock("eventsByZoneMutex"); //$NON-NLS-1$
 
 	protected void registerEvent(NotificationEvent event)
@@ -81,20 +81,20 @@ public class SelectionManager extends NotificationManager
 				zones.addAll(eventsByZone.keySet());
 			}
 
-			for (Iterator itZones = zones.iterator(); itZones.hasNext(); ) {
-				zone = (String)itZones.next();
+			for (Iterator<String> itZones = zones.iterator(); itZones.hasNext(); ) {
+				zone = itZones.next();
 
-				Map<Class, NotificationEvent> eventsByClass = eventsByZone.get(zone);
+				Map<Class<?>, NotificationEvent> eventsByClass = eventsByZone.get(zone);
 				if (eventsByClass == null) {
-					eventsByClass = new HashMap<Class, NotificationEvent>();
+					eventsByClass = new HashMap<Class<?>, NotificationEvent>();
 					eventsByZone.put(zone, eventsByClass);
 				}
 
-				for (Iterator itSubjectCarriers = event.getSubjectCarriers().iterator(); itSubjectCarriers.hasNext(); ) {
-					SubjectCarrier carrier = (SubjectCarrier) itSubjectCarriers.next();
-					for (Iterator itClasses = carrier.getSubjectClasses().iterator(); itClasses.hasNext(); ) {
-						Class clazz = (Class) itClasses.next();
-						
+				for (Iterator<SubjectCarrier> itSubjectCarriers = event.getSubjectCarriers().iterator(); itSubjectCarriers.hasNext(); ) {
+					SubjectCarrier carrier = itSubjectCarriers.next();
+					for (Iterator<Class<?>> itClasses = carrier.getSubjectClasses().iterator(); itClasses.hasNext(); ) {
+						Class<?> clazz = itClasses.next();
+
 						if (carrier.isInheritanceIgnored())
 							eventsByClass.put(clazz, event);
 						else {
@@ -134,13 +134,13 @@ public class SelectionManager extends NotificationManager
 	 */
 	@Override
 	public void addNotificationListener(
-			String zone, Class subjectClass, final NotificationListener listener)
+			String zone, Class<?> subjectClass, final NotificationListener listener)
 	{
 		super.addNotificationListener(zone, subjectClass, listener);
 
 		eventsByZoneMutex.acquireReadLock();
 		try {
-			Map eventsByClass = eventsByZone.get(zone);
+			Map<Class<?>, NotificationEvent> eventsByClass = eventsByZone.get(zone);
 			if (eventsByClass == null) {
 				if (zone != null) {
 					eventsByClass = eventsByZone.get(null);
@@ -151,7 +151,7 @@ public class SelectionManager extends NotificationManager
 					return;
 			}
 
-			final NotificationEvent event = (NotificationEvent) eventsByClass.get(subjectClass);
+			final NotificationEvent event = eventsByClass.get(subjectClass);
 			if (event == null)
 				return;
 
