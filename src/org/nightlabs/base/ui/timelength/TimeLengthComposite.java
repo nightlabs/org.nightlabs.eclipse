@@ -1,16 +1,20 @@
 package org.nightlabs.base.ui.timelength;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.resource.Messages;
@@ -20,12 +24,49 @@ public class TimeLengthComposite extends XComposite
 {
 	private Text text;
 
-	private enum TimeUnit {
-		day,
-		hour,
-		minute,
-		second,
-		msec
+	private List<TimeUnit> timeUnits = new ArrayList<TimeUnit>(TimeUnit.values().length);
+	{
+		timeUnits.add(TimeUnit.day);
+		timeUnits.add(TimeUnit.hour);
+		timeUnits.add(TimeUnit.minute);
+		timeUnits.add(TimeUnit.second);
+		timeUnits.add(TimeUnit.msec);
+	}
+
+	/**
+	 * Get the time units displayed by this {@link TimeLengthComposite} instance.
+	 * @return the time units.
+	 */
+	public List<TimeUnit> getTimeUnits() {
+		assertSwtThread();
+		return Collections.unmodifiableList(timeUnits);
+	}
+
+	protected void assertSwtThread()
+	{
+		if (Display.getCurrent() == null)
+			throw new IllegalStateException("Thread mismatch! This method must be called on the SWT UI thread!");
+	}
+
+	public void setTimeUnits(TimeUnit[] newTimeUnits) {
+		setTimeUnits(CollectionUtil.array2ArrayList(newTimeUnits));
+	}
+
+	public void setTimeUnits(Collection<TimeUnit> newTimeUnits) {
+		assertSwtThread();
+
+		if (newTimeUnits == null)
+			throw new IllegalArgumentException("newTimeUnits must not be null!");
+
+		if (newTimeUnits.isEmpty())
+			throw new IllegalArgumentException("newTimeUnits must not be empty!");
+
+		Set<TimeUnit> s = new HashSet<TimeUnit>(newTimeUnits);
+		this.timeUnits.clear();
+		for (TimeUnit timeUnit : TimeUnit.values()) {
+			if (s.contains(timeUnit))
+				this.timeUnits.add(timeUnit);
+		}
 	}
 
 	// we might later l10n it from properties - in this case we should convert it to an object-field (rather than a class field - i.e. non-static)
@@ -35,6 +76,8 @@ public class TimeLengthComposite extends XComposite
 		for (TimeUnit timeUnit : TimeUnit.values()) {
 			if (timeUnit == TimeUnit.msec)
 				m.put(timeUnit, timeUnit.name());
+			else if (timeUnit == TimeUnit.month)
+				m.put(timeUnit, "M");
 			else
 				m.put(timeUnit, timeUnit.name().substring(0, 1));
 		}
@@ -44,6 +87,8 @@ public class TimeLengthComposite extends XComposite
 	private static final Map<TimeUnit, Long> timeUnit2lengthMSec;
 	static {
 		Map<TimeUnit, Long> m = new HashMap<TimeUnit, Long>();
+		m.put(TimeUnit.year,   1000L * 60L * 60L * 24L * 365);
+		m.put(TimeUnit.month,  1000L * 60L * 60L * 24L * 30);
 		m.put(TimeUnit.day,    1000L * 60L * 60L * 24L);
 		m.put(TimeUnit.hour,   1000L * 60L * 60L);
 		m.put(TimeUnit.minute, 1000L * 60L);
@@ -63,7 +108,7 @@ public class TimeLengthComposite extends XComposite
 	private long timeLength;
 
 	private boolean displayZeroValues = true;
-	
+
 	public boolean isDisplayZeroValues() {
 		return displayZeroValues;
 	}
@@ -83,7 +128,7 @@ public class TimeLengthComposite extends XComposite
 
 		long rest = timeLength;
 		Map<TimeUnit, Long> lengthMap = new HashMap<TimeUnit, Long>();
-		for (TimeUnit timeUnit : TimeUnit.values()) {
+		for (TimeUnit timeUnit : timeUnits) {
 			Long lengthOfOneTimeUnit = timeUnit2lengthMSec.get(timeUnit);
 			long value = rest / lengthOfOneTimeUnit;
 			lengthMap.put(timeUnit, value);
@@ -91,7 +136,7 @@ public class TimeLengthComposite extends XComposite
 		}
 
 		StringBuilder sb = new StringBuilder();
-		for (TimeUnit timeUnit : TimeUnit.values()) {
+		for (TimeUnit timeUnit : timeUnits) {
 			String symbol = timeUnitSymbolMap.get(timeUnit);
 			Long length = lengthMap.get(timeUnit);
 			if (displayZeroValues || length.longValue() != 0) {
