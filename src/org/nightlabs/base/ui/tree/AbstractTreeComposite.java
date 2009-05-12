@@ -213,7 +213,11 @@ implements ISelectionProvider, StatableTree
 	}
 
 	protected TreeViewer createTreeViewer(int style) {
-		return new TreeViewer(this, style);
+		TreeViewer tv = new TreeViewer(this, style);
+		if ((style & SWT.VIRTUAL) != 0)
+			tv.setUseHashlookup(true);
+
+		return tv;
 	}
 
 	/**
