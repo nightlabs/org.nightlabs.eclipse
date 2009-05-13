@@ -18,4 +18,4 @@ Export-Package: org.nightlabs.eclipse.ui.fckeditor,
  org.nightlabs.eclipse.ui.fckeditor.server,
  org.nightlabs.eclipse.ui.fckeditor.test
 Eclipse-BuddyPolicy: registered
-Eclipse-RegisterBuddy: org.nightlabs.jfire.base.j2ee 
+XXX-Eclipse-RegisterBuddy: org.nightlabs.jfire.base.j2ee 
