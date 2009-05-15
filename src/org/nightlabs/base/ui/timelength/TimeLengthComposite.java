@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -250,5 +251,15 @@ public class TimeLengthComposite extends XComposite
 
 	public void removeModifyListener(ModifyListener listener) {
 		text.removeModifyListener(listener);
+	}
+
+	@Override
+	public void addFocusListener(FocusListener listener) {
+		text.addFocusListener(listener);
+	}
+
+	@Override
+	public void removeFocusListener(FocusListener listener) {
+		text.removeFocusListener(listener);
 	}
 }

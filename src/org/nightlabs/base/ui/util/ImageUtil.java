@@ -130,7 +130,8 @@ public class ImageUtil
 			PaletteData palette = new PaletteData(colorModel.getRedMask(), colorModel.getGreenMask(), colorModel.getBlueMask());
 			ImageData data = new ImageData(bufferedImage.getWidth(), bufferedImage.getHeight(), colorModel.getPixelSize(), palette);
 			WritableRaster raster = bufferedImage.getRaster();
-			int[] pixelArray = new int[3];
+			int numComponents = colorModel.getNumComponents();
+			int[] pixelArray = new int[numComponents]; // was hardcoded 3 before, but I just needed 4 (incl. alpha). I hope that numComponents will always be correct. Marco.
 			for (int y = 0; y < data.height; y++) {
 				for (int x = 0; x < data.width; x++) {
 					raster.getPixel(x, y, pixelArray);
