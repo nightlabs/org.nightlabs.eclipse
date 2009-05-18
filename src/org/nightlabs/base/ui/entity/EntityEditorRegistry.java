@@ -50,7 +50,7 @@ import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
 /**
  * An extension point registry for entity tree categories
  * and editor pages.
- * 
+ *
  * @version $Revision$ - $Date$
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
@@ -81,11 +81,8 @@ public class EntityEditorRegistry extends AbstractEPProcessor
 		return sharedInstance;
 	}
 
-	private EntityEditorRegistry() {
-		categories = new HashMap<String, IEntityTreeCategory>();
-//		categoriesByViewID = new HashMap<String, List<BindingCarrier>>();
-	}
-	
+	private EntityEditorRegistry() { }
+
 	/**
 	 * BindingCarrier used to store and sort references/uses
 	 * of {@link IEntityTreeCategory}s.
@@ -114,35 +111,33 @@ public class EntityEditorRegistry extends AbstractEPProcessor
 			binding.setEntityTreeCategory(category);
 		}
 	}
-	
+
 
 	/**
 	 * All registered categories by their id.
 	 */
-	private Map<String, IEntityTreeCategory> categories = null;
-	
+	private Map<String, IEntityTreeCategory> categories = new HashMap<String, IEntityTreeCategory>();
+
 	/**
 	 * Category extensions.
 	 */
-	private Map<String, List<BindingCarrier>> categoriesByViewID = null;
-	
-	private Map<IEntityTreeCategory, Collection<IEntityTreeCategoryBinding>> category2Bindings = null;
+	private Map<String, List<BindingCarrier>> categoriesByViewID = new HashMap<String, List<BindingCarrier>>();
+
+	private Map<IEntityTreeCategory, Collection<IEntityTreeCategoryBinding>> category2Bindings = new HashMap<IEntityTreeCategory, Collection<IEntityTreeCategoryBinding>>();
 
 	/**
 	 * Editor page extensions.
 	 */
-	private Map<String, Set<EntityEditorPageSettings>> pageSettings;
-		
+	private Map<String, Set<EntityEditorPageSettings>> pageSettings = new HashMap<String, Set<EntityEditorPageSettings>>();
+
 	/**
 	 * OverviewPageStatusProvider extensions.
 	 */
 //	private Map<IEntityEditorPageFactory, IOverviewPageStatusProviderFactory> pageFactory2StatusProviderFactory = null;
-	private Map<Class<? extends IEntityEditorPageFactory>, IOverviewPageStatusProviderFactory> pageFactoryClass2StatusProviderFactory = null;
-	
+	private Map<Class<? extends IEntityEditorPageFactory>, IOverviewPageStatusProviderFactory> pageFactoryClass2StatusProviderFactory = new HashMap<Class<? extends IEntityEditorPageFactory>, IOverviewPageStatusProviderFactory>();
+
 	public void addPage(String editorID, EntityEditorPageSettings settings)
 	{
-		if(pageSettings == null)
-			pageSettings = new HashMap<String, Set<EntityEditorPageSettings>>();
 		Set<EntityEditorPageSettings> editorPages = pageSettings.get(editorID);
 		if(editorPages == null) {
 			editorPages = new HashSet<EntityEditorPageSettings>();
@@ -150,13 +145,13 @@ public class EntityEditorRegistry extends AbstractEPProcessor
 		}
 		editorPages.add(settings);
 	}
-	
+
 	public Set<EntityEditorPageSettings> getPageSettings(String editorID)
 	{
 		checkProcessing();
 		return pageSettings==null ? null : pageSettings.get(editorID);
 	}
-	
+
 	public List<EntityEditorPageSettings> getPageSettingsOrdered(String editorID)
 	{
 		checkProcessing();
@@ -164,7 +159,7 @@ public class EntityEditorRegistry extends AbstractEPProcessor
 		if(pagesUnordered == null)
 			return new ArrayList<EntityEditorPageSettings>(0);
 		List<EntityEditorPageSettings> pagesOrdered = new ArrayList<EntityEditorPageSettings>(pagesUnordered);
-		Collections.sort(pagesOrdered); // EntityEditorPageSettings implements Comparable 
+		Collections.sort(pagesOrdered); // EntityEditorPageSettings implements Comparable
 		return pagesOrdered;
 	}
 
@@ -186,11 +181,8 @@ public class EntityEditorRegistry extends AbstractEPProcessor
 	{
 		try {
 			if("category".equalsIgnoreCase(element.getName())) { //$NON-NLS-1$
-				if(categoriesByViewID == null)
-					categoriesByViewID = new HashMap<String, List<BindingCarrier>>();
-
 				IEntityTreeCategory category = (IEntityTreeCategory)element.createExecutableExtension("class"); //$NON-NLS-1$
-				
+
 				categories.put(category.getId(), category);
 
 				IConfigurationElement[] children = element.getChildren();
@@ -211,9 +203,7 @@ public class EntityEditorRegistry extends AbstractEPProcessor
 				processViewBinding(extension, element, categoryID, null);
 			}
 			else if ("overviewPageStatusProvider".equals(element.getName())) { //$NON-NLS-1$
-				if (pageFactoryClass2StatusProviderFactory == null)
-					pageFactoryClass2StatusProviderFactory = new HashMap<Class<? extends IEntityEditorPageFactory>, IOverviewPageStatusProviderFactory>();
-				
+
 				IOverviewPageStatusProviderFactory statusFactory = (IOverviewPageStatusProviderFactory) element.createExecutableExtension("class"); //$NON-NLS-1$
 				IEntityEditorPageFactory pageFactory = (IEntityEditorPageFactory) element.createExecutableExtension("pageFactoryClass"); //$NON-NLS-1$
 				pageFactoryClass2StatusProviderFactory.put(pageFactory.getClass(), statusFactory);
@@ -222,7 +212,7 @@ public class EntityEditorRegistry extends AbstractEPProcessor
 			throw new EPProcessorException("processElement failed", extension, e); //$NON-NLS-1$
 		}
 	}
-	
+
 	protected void processViewBinding(
 			IExtension extension, IConfigurationElement element,
 			String categoryID, IEntityTreeCategory category
@@ -241,7 +231,7 @@ public class EntityEditorRegistry extends AbstractEPProcessor
 			// and let it initialize
 			viewBinding.setInitializationData(element, "class", null); //$NON-NLS-1$
 		}
-				
+
 		List<BindingCarrier> categories = categoriesByViewID.get(viewBinding.getViewID());
 		if (categories == null) {
 			categories = new ArrayList<BindingCarrier>();
@@ -261,11 +251,10 @@ public class EntityEditorRegistry extends AbstractEPProcessor
 	public synchronized void process()
 	{
 		super.process();
-		category2Bindings = new HashMap<IEntityTreeCategory, Collection<IEntityTreeCategoryBinding>>();
 		for (List<BindingCarrier> bindings : categoriesByViewID.values()) {
 			for (BindingCarrier binding : bindings) {
 				binding.resolve();
-				
+
 				Collection<IEntityTreeCategoryBinding> catBindings = category2Bindings.get(binding.getBinding().getEntityTreeCategory());
 				if (catBindings == null) {
 					catBindings = new HashSet<IEntityTreeCategoryBinding>();
@@ -279,7 +268,7 @@ public class EntityEditorRegistry extends AbstractEPProcessor
 
 	/**
 	 * Get the category bindings to the given viewID.
-	 * 
+	 *
 	 * @param viewID The id of the view registered categories should be searched for.
 	 * @return The view bindings for the given viewID.
 	 */
@@ -302,19 +291,19 @@ public class EntityEditorRegistry extends AbstractEPProcessor
 	/**
 	 * Returns all bindings of the given category in a new Set
 	 * (which can be modified, without changing the registration)
-	 * 
+	 *
 	 * @param category The category all bindings should be searched for.
 	 * @return All bindings of the given category.
 	 */
 	public Set<IEntityTreeCategoryBinding> getCategoryBindings(IEntityTreeCategory category) {
 		return new HashSet<IEntityTreeCategoryBinding>(category2Bindings.get(category));
 	}
-	
+
 	public IOverviewPageStatusProvider createOverviewPageStatusProvider(IEntityEditorPageFactory pageFactory) {
 		checkProcessing();
 		IOverviewPageStatusProviderFactory factory = pageFactoryClass2StatusProviderFactory.get(pageFactory.getClass());
 		if (factory != null) {
-			return factory.createStatusProvider();	
+			return factory.createStatusProvider();
 		}
 		return null;
 	}
