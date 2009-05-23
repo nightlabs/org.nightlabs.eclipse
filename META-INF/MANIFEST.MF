@@ -8,6 +8,7 @@ Bundle-Vendor: NightLabs.com
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
+ org.nightlabs.config,
  org.nightlabs.base.ui;visibility:=reexport,
  org.nightlabs.jfire.base.j2ee;resolution:=optional
 Eclipse-LazyStart: true
@@ -16,5 +17,5 @@ Export-Package: org.nightlabs.connection.ui,
  org.nightlabs.connection.ui.parallel,
  org.nightlabs.connection.ui.serial,
  org.nightlabs.connection.ui.tcp
-Eclipse-RegisterBuddy: org.nightlabs.base.ui,
+Eclipse-RegisterBuddy: org.nightlabs.config,
  org.nightlabs.jfire.base.j2ee
