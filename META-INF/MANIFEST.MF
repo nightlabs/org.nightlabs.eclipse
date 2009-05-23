@@ -8,6 +8,7 @@ Bundle-Vendor: NightLabs.com
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
+ org.nightlabs.config,
  org.nightlabs.base.ui;visibility:=reexport,
  org.nightlabs.connection.ui;visibility:=reexport,
  org.nightlabs.jfire.base.j2ee;resolution:=optional,
@@ -16,6 +17,6 @@ Eclipse-LazyStart: true
 Export-Package: org.nightlabs.keyreader.ui,
  org.nightlabs.keyreader.ui.preference
 XEclipse-BuddyPolicy: registered
-XEclipse-RegisterBuddy: org.nightlabs.base.ui,
+XEclipse-RegisterBuddy: org.nightlabs.config,
  org.nightlabs.jfire.base.j2ee
 Bundle-ClassPath: .
