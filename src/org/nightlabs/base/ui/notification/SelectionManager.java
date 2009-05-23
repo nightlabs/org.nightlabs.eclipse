@@ -32,10 +32,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.nightlabs.concurrent.RWLock;
 import org.nightlabs.notification.NotificationEvent;
 import org.nightlabs.notification.NotificationListener;
 import org.nightlabs.notification.SubjectCarrier;
-import org.nightlabs.util.RWLock;
 
 /**
  * @author Marco Schulze - marco at nightlabs dot de

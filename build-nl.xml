@@ -1,9 +1,11 @@
 <project default="build">
 	<target name="build">
 		<delete file="lib/org.nightlabs.base.jar"/>
+<!--
 		<jar destfile="lib/org.nightlabs.base.jar">
 			<fileset dir="../org.nightlabs.base/bin" includes="**/*">
 			</fileset>
 		</jar>
+-->
 	</target>
 </project>
