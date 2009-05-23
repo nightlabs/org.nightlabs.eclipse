@@ -7,6 +7,7 @@ Bundle-Activator: org.nightlabs.eclipse.ui.pdfviewer.extension.PdfViewerExtensio
 Bundle-Vendor: nightlabs.org
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
+ org.nightlabs.config,
  org.nightlabs.base.ui;visibility:=reexport,
  org.nightlabs.eclipse.ui.pdfviewer;visibility:=reexport
 Eclipse-LazyStart: true
@@ -21,4 +22,4 @@ Export-Package: org.nightlabs.eclipse.ui.pdfviewer.extension,
  org.nightlabs.eclipse.ui.pdfviewer.extension.editor,
  org.nightlabs.eclipse.ui.pdfviewer.extension.printer
 Bundle-Localization: plugin
-Eclipse-RegisterBuddy: org.nightlabs.base.ui
+Eclipse-RegisterBuddy: org.nightlabs.config
