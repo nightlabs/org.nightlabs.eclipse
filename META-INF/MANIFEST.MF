@@ -11,6 +11,8 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.3.0",
 Bundle-ClassPath: lib/opencsv-1.8.jar,
  .
 Export-Package: org.nightlabs.eclipse.ui.control.export,
+ org.nightlabs.eclipse.ui.control.export.action,
  org.nightlabs.eclipse.ui.control.export.copy,
- org.nightlabs.eclipse.ui.control.export.model
+ org.nightlabs.eclipse.ui.control.export.model,
+ org.nightlabs.eclipse.ui.control.export.wizard
 Bundle-Localization: plugin

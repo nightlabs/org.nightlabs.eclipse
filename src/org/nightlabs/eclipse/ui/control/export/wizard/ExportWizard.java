@@ -24,6 +24,7 @@ public class ExportWizard extends Wizard
 
 	private ExportOptionWizardPage optionPage;
 	private ExportPreviewWizardPage previewPage;
+	private Control control;
 
 	@Override
 	public void addPages() {
@@ -40,8 +41,30 @@ public class ExportWizard extends Wizard
 	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
 	 */
 	@Override
-	public boolean performFinish() {
-		OpenCSVUtil.exportControlToCSV(optionPage.getFilePath(), (Control)FocusHistory.sharedInstance().getLastItem().getWidget(), optionPage.getSeparator());
+	public boolean performFinish()
+	{
+		Control c = control;
+		if (c == null) {
+			c = (Control) FocusHistory.sharedInstance().getLastItem().getWidget();
+		}
+		OpenCSVUtil.exportControlToCSV(optionPage.getFilePath(), c, optionPage.getSeparator());
 		return true;
 	}
+
+	/**
+	 * Returns the control.
+	 * @return the control
+	 */
+	public Control getControl() {
+		return control;
+	}
+
+	/**
+	 * Sets the (optional) control, otherwise it will take the control which got the last focus automatically.
+	 * @param control the control to set
+	 */
+	public void setControl(Control control) {
+		this.control = control;
+	}
+
 }
