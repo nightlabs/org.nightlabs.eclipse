@@ -177,8 +177,8 @@ implements ISelectionProvider
 	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	protected void setSelection(Collection selectedObjects)
 	{
-		selectedObjects.clear();
-		selectedObjects.addAll(selectedObjects);
+		this.selectedObjects.clear();
+		this.selectedObjects.addAll(selectedObjects);
 		structuredSelection = null;
 		fireSelectionChangedEvent();
 	}
