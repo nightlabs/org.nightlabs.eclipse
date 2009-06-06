@@ -188,11 +188,11 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 		String message = errorItem.getMessage();
 		String exMsg = errorItem.getThrownException().toString();
 		this.message = (message == null || "".equals(message)) ? exMsg : message; //$NON-NLS-1$
-		if(messageLabel != null)
+		if(messageLabel != null && !messageLabel.isDisposed())
 			messageLabel.setText(this.message.replace("&", "&&")); //$NON-NLS-1$ //$NON-NLS-2$
-		if(errorTable != null)
+		if(errorTable != null && !errorTable.isDisposed())
 			errorTable.setSelectedItem(errorItem);
-		if(stackTraceText != null)
+		if(stackTraceText != null && !stackTraceText.isDisposed())
 			stackTraceText.setText(ErrorReport.getExceptionStackTraceAsString(errorItem.getThrownException()));
 	}
 
