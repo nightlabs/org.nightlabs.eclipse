@@ -533,6 +533,7 @@ implements ISelectionProvider
 		if (internal_getSelectionIndex() < 0)
 			internal_setSelection(Math.min(index, elements.size()-1));
 
+		fireSelectionChangedEvent((IStructuredSelection) getSelection());
 		return toReturn;
 	}
 
@@ -549,6 +550,7 @@ implements ISelectionProvider
 			res.add(elements.remove(selectionIndices[i]));
 			removeElementFromGui(selectionIndices[i]);
 		}
+		fireSelectionChangedEvent((IStructuredSelection) getSelection());
 		return res;
 	}
 
