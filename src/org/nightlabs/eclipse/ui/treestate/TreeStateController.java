@@ -42,7 +42,7 @@ public class TreeStateController
 
 	private Map<Tree, StatableTree> statableTreeMap;
 
-	private Set<TreeItem> collapsedItems = new HashSet<TreeItem>();
+	private final Set<TreeItem> collapsedItems = new HashSet<TreeItem>();
 
 	private TreeStateController() {}
 
