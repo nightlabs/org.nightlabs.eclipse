@@ -396,4 +396,7 @@ public class SharedImages
 
 	public static final ImageDescriptor DOWN_16x16 =
 		getSharedImageDescriptor(NLBasePlugin.getDefault(), NLBasePlugin.class, "Down"); //$NON-NLS-1$
+	
+	public static final ImageDescriptor RESET_16x16 =
+		getSharedImageDescriptor(NLBasePlugin.getDefault(), NLBasePlugin.class, "Reset");	 //$NON-NLS-1$
 }
