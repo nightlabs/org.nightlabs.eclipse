@@ -353,20 +353,22 @@ public abstract class AbstractTableComposite<ElementType>
 	 * @param message The message to be shown.
 	 */
 	public void setLoadingMessage(String message) {
-		if (tmpLabelProvider == null) {
-			// Set the label and content provider only they are not already set.
-			tmpLabelProvider = tableViewer.getLabelProvider();
-			tmpContentProvider = tableViewer.getContentProvider();
-			tableViewer.setLabelProvider(new TableLabelProvider() {
-				public String getColumnText(Object element, int columnIndex) {
-					if (columnIndex == 0 && element != null)
-						return element.toString();
-					return ""; //$NON-NLS-1$
-				}
-			});
-			tableViewer.setContentProvider(new ArrayContentProvider());
+		if (!tableViewer.getTable().isDisposed()) {
+			if (tmpLabelProvider == null) {
+				// Set the label and content provider only they are not already set.
+				tmpLabelProvider = tableViewer.getLabelProvider();
+				tmpContentProvider = tableViewer.getContentProvider();
+				tableViewer.setLabelProvider(new TableLabelProvider() {
+					public String getColumnText(Object element, int columnIndex) {
+						if (columnIndex == 0 && element != null)
+							return element.toString();
+						return ""; //$NON-NLS-1$
+					}
+				});
+				tableViewer.setContentProvider(new ArrayContentProvider());
+			}
+			tableViewer.setInput(new String[] { message });
 		}
-		tableViewer.setInput(new String[] { message });
 	}
 
 	/**
