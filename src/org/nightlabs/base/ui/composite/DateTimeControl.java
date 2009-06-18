@@ -396,4 +396,12 @@ public class DateTimeControl extends XComposite {
 		text.setText(""); //$NON-NLS-1$
 		date = null;
 	}
+
+	/**
+	 * Sets the text of the lookup button
+	 * @param text the text to set for the lookup button.
+	 */
+	public void setButtonText(String text) {
+		lookupButton.setText(text);
+	}
 }

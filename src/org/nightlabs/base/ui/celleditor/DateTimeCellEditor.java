@@ -33,13 +33,19 @@ public class DateTimeCellEditor extends DialogCellEditor
 	 * @param flags One of the "FLAGS_"-constants in {@link DateFormatter}.
 	 */
 	public DateTimeCellEditor(Composite parent, long flags) {
-		super(parent);
-		this.flags = flags;
+		this(parent, flags, true);
 	}
 
-//	public DateTimeCellEditor(Composite parent, int style) {
-//		super(parent, style);
-//	}
+	/**
+	 *
+	 * @param parent
+	 * @param flags One of the "FLAGS_"-constants in {@link DateFormatter}.
+	 */
+	public DateTimeCellEditor(Composite parent, long flags, boolean allowPast) {
+		super(parent);
+		this.flags = flags;
+		this.allowPast = allowPast;
+	}
 
 	@Override
 	protected Object doGetValue() {
