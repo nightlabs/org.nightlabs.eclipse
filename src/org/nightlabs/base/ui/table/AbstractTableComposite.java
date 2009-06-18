@@ -42,6 +42,7 @@ import org.eclipse.jface.util.SafeRunnable;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ContentViewer;
+import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -185,6 +186,7 @@ public abstract class AbstractTableComposite<ElementType>
 				}
 			}
 		});
+		getTableViewer().addDoubleClickListener(doubleClickListener);
 	}
 
 	private boolean sortColumns = true;
@@ -681,34 +683,35 @@ public abstract class AbstractTableComposite<ElementType>
 	}
 
 	private ListenerList doubleClickListeners = new ListenerList();
-//	private IDoubleClickListener doubleClickListener = new IDoubleClickListener()
-//	{
-//		@Override
-//		public void doubleClick(final DoubleClickEvent event)
-//		{
-//			for (Object listener : doubleClickListeners.getListeners())
-//			{
-//				Object[] listeners = doubleClickListeners.getListeners();
-//				for (int i = 0; i < listeners.length; ++i) {
-//					final IDoubleClickListener l = (IDoubleClickListener) listeners[i];
-//					SafeRunnable.run(new SafeRunnable() {
-//						public void run() {
-//							l.doubleClick(event);
-//						}
-//					});
-//				}
-//			}
-//		}
-//	};
+	private IDoubleClickListener doubleClickListener = new IDoubleClickListener()
+	{
+		@Override
+		public void doubleClick(final DoubleClickEvent event)
+		{
+			for (Object listener : doubleClickListeners.getListeners())
+			{
+				Object[] listeners = doubleClickListeners.getListeners();
+				for (int i = 0; i < listeners.length; ++i) {
+					final IDoubleClickListener l = (IDoubleClickListener) listeners[i];
+					SafeRunnable.run(new SafeRunnable() {
+						public void run() {
+							l.doubleClick(event);
+						}
+					});
+				}
+			}
+		}
+	};
 
 	/**
 	 * Delegating method for {@link TableViewer}
 	 */
 	public void addDoubleClickListener(IDoubleClickListener listener) {
-		if (doubleClickListeners.isEmpty() && isEditable())
-		{
-			tableViewer.addDoubleClickListener(listener);
-		}
+//	What is this supposed to do?? No comments nothing, whoever wrote this please explain (marius, marco, khai)
+//		if (doubleClickListeners.isEmpty() && isEditable())
+//		{
+//			tableViewer.addDoubleClickListener(listener);
+//		}
 
 		doubleClickListeners.add(listener);
 	}
@@ -763,7 +766,7 @@ public abstract class AbstractTableComposite<ElementType>
 		tableViewer.remove(element);
 	}
 
-	private ListenerList doubleClickListenerBackup;
+//	private ListenerList doubleClickListenerBackup;
 	private ListenerList selectionChangedListenerBackup;
 	private ListenerList postSelectionListenerBackup;
 	private CellEditor[] cellEditors;
@@ -782,25 +785,25 @@ public abstract class AbstractTableComposite<ElementType>
 
 		if (editable)
 		{ // getting active again
-			doubleClickListeners = doubleClickListenerBackup;
+//			doubleClickListeners = doubleClickListenerBackup;
 			selectionChangedListeners = selectionChangedListenerBackup;
 			postSelectionChangedListeners = postSelectionListenerBackup;
 			getTableViewer().setCellEditors(cellEditors);
 			cellEditors = null;
-			doubleClickListenerBackup = null;
+//			doubleClickListenerBackup = null;
 			selectionChangedListenerBackup = null;
 			postSelectionListenerBackup = null;
 		}
 		else
 		{ // becoming inactive
-			doubleClickListenerBackup = doubleClickListeners;
+//			doubleClickListenerBackup = doubleClickListeners;
 			selectionChangedListenerBackup = selectionChangedListeners;
 			postSelectionListenerBackup = postSelectionChangedListeners;
 			cellEditors = getTableViewer().getCellEditors();
 			if (cellEditors != null)
 				getTableViewer().setCellEditors(new CellEditor[cellEditors.length]);
 
-			doubleClickListeners = emptyList;
+//			doubleClickListeners = emptyList;
 			selectionChangedListeners = emptyList;
 			postSelectionChangedListeners = emptyList;
 		}
