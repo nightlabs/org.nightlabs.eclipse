@@ -58,9 +58,9 @@ public class TreeStateController
 
 	/**
 	 * Adds a {@link StatableTree} for storing and restoring its expansion states.
-	 * 
+	 *
 	 * This method uses the {@link ConfigurationScope} to get the workspaces' shared preferences.
-	 * 
+	 *
 	 * @param statableTree
 	 */
 	public void registerTree(StatableTree statableTree) {
@@ -99,29 +99,29 @@ public class TreeStateController
 		for (TreeItem i : item.getItems()) {
 			collapsedItems.add(i);
 			addCollapsedChildItems(i);
-		} 
+		}
 	}
-	
+
 	private void saveTreeState(Tree tree) {
 		StatableTree statableTree = statableTreeMap.get(tree);
 
 		IScopeContext context = new ConfigurationScope();
 		IEclipsePreferences rootNode = context.getNode(statableTree.getID());
-		
+
 		File preferencesFile = context.getLocation().append(File.separator+".settings").append(statableTree.getID()).addFileExtension("prefs").toFile();
 		if (preferencesFile.exists()) {
 			preferencesFile.delete();
 		}
-		
+
 		if (rootNode != null) {
 			try {
 				rootNode.clear();
 				rootNode.flush();
-				
+
 				for (TreeItem treeItem : tree.getItems()) {
 					saveTreeItemState(treeItem, rootNode);
 				}
-				
+
 				rootNode.flush();
 			} catch (Exception e) {
 				throw new RuntimeException(e);
@@ -139,11 +139,11 @@ public class TreeStateController
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-		
+
 		if (!currentTreeItem.getExpanded()) {
 			return;
 		}
-		
+
 		parentNode.put(currentTreeItem.getText(), "1"); // treeItem.getExpanded()?"1":"0");
 		try {
 			parentNode.flush();
@@ -151,23 +151,23 @@ public class TreeStateController
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-		
+
 		for (TreeItem subTreeItem : currentTreeItem.getItems()) {
-			Preferences newNode = parentNode.node(currentTreeItem.getText());			
+			Preferences newNode = parentNode.node(currentTreeItem.getText());
 			saveTreeItemState(subTreeItem, newNode);
 		}
 	}
 
 	/**
-	 * Restores the tree's expansion states. 
-	 * 
-	 * This method uses values from {@link PreferenceStore} and 
-	 * {@link org.nightlabs.eclipse.ui.treestate.preferences.Preferences} for specifying the time 
-	 * for trying to get the tree items and the total time to try getting them because 
+	 * Restores the tree's expansion states.
+	 *
+	 * This method uses values from {@link PreferenceStore} and
+	 * {@link org.nightlabs.eclipse.ui.treestate.preferences.Preferences} for specifying the time
+	 * for trying to get the tree items and the total time to try getting them because
 	 * the tree loads its items lazily.
-	 * 
+	 *
 	 * Calling this method after setting input to the tree is a suggestion.
-	 * 
+	 *
 	 * @param tree
 	 */
 	public void loadTreeState(final Tree tree) {
@@ -175,9 +175,9 @@ public class TreeStateController
 		boolean isEnable = preferenceStore.getBoolean(org.nightlabs.eclipse.ui.treestate.preferences.Preferences.PREFERENCE_ENABLE_STATE);
 
 		if (isEnable) {
-			nextTryingToGetTreeItemsTime = 
+			nextTryingToGetTreeItemsTime =
 				preferenceStore.getLong(org.nightlabs.eclipse.ui.treestate.preferences.Preferences.PREFERENCE_RELATIVE_TIME);
-			totalTryingToGetTreeItemsTime = 
+			totalTryingToGetTreeItemsTime =
 				preferenceStore.getLong(org.nightlabs.eclipse.ui.treestate.preferences.Preferences.PREFERENCE_ABSOLUTE_TIME);
 
 			final StatableTree statableTree = statableTreeMap.get(tree);
@@ -195,10 +195,13 @@ public class TreeStateController
 							tree.getDisplay().asyncExec(new Runnable() {
 								@Override
 								public void run() {
+									if (tree.isDisposed())
+										return;
+
 									if (tree != null && !tree.isDisposed()) {
 										for (TreeItem treeItem : tree.getItems()) {
 											if (!collapsedItems.contains(treeItem)) {
-												loadTreeItemState(treeItem, startNode);	
+												loadTreeItemState(treeItem, startNode);
 											} else {
 //												System.out.println("Skipped TreeItem "+treeItem+" because already collapsed by the user");
 											}
@@ -222,9 +225,9 @@ public class TreeStateController
 
 	private long totalTryingTime;
 	private TimerTask expandTreeItemTimerTask;
-	private long nextTryingToGetTreeItemsTime; 
+	private long nextTryingToGetTreeItemsTime;
 	private long totalTryingToGetTreeItemsTime;
-	
+
 	private void loadTreeItemState(TreeItem treeItem, Preferences parentNode) {
 		boolean isExpanded = parentNode.getInt(treeItem.getText(), 0) == 1;
 		if (isExpanded) {
@@ -233,7 +236,7 @@ public class TreeStateController
 			loadSubTreeItemState(treeItem, subNode);
 		}
 	}
-	
+
 	private void loadSubTreeItemState(TreeItem parentItem, Preferences parentNode) {
 		if (!parentItem.isDisposed()) {
 			for (TreeItem subTreeItem : parentItem.getItems()) {
@@ -241,9 +244,9 @@ public class TreeStateController
 				boolean isExpanded = parentNode.getInt(subTreeItem.getText(), 0) == 1;
 				if (isExpanded) {
 					sendEventExpandTreeItem(subTreeItem);
-					
+
 					if (!collapsedItems.contains(subTreeItem)) {
-						loadSubTreeItemState(subTreeItem, subNode);	
+						loadSubTreeItemState(subTreeItem, subNode);
 					} else {
 //						System.out.println("Skipped TreeItem "+subTreeItem+" because already collapsed by the user");
 					}
