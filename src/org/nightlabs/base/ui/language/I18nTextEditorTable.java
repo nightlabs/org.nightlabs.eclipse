@@ -178,7 +178,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 		translationColumn.setEditingSupport(new EditingSupport(tableViewer) {
 			@Override
 			protected boolean canEdit(Object element) {
-				return true;
+				return editable;
 			}
 			@Override
 			protected CellEditor getCellEditor(Object element) {
@@ -339,12 +339,15 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 			work.copyFrom(original);
 	}
 
+	private boolean editable = true;
+
 	/*
 	 * (non-Javadoc)
 	 *
 	 * @see org.nightlabs.base.ui.language.II18nTextEditor#setEditable(boolean)
 	 */
 	public void setEditable(boolean editable) {
+		this.editable = editable;
 //		text.setEditable(editable);
 	}
 
