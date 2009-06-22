@@ -90,7 +90,7 @@ implements ISelectionProvider, StatableTree
 	/**
 	 * Default set of styles to use when constructing a multi-selection viewer.
 	 */
-	public static int DEFAULT_STYLE_MULTI_BORDEER = SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL  | SWT.FULL_SELECTION | SWT.BORDER;
+	public static int DEFAULT_STYLE_MULTI_BORDER = SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL  | SWT.FULL_SELECTION | SWT.BORDER;
 
 	private boolean editable = true;
 	private ListenerList doubleClickListenerBackup;
