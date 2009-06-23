@@ -106,15 +106,16 @@ public class TreeStateController
 		StatableTree statableTree = statableTreeMap.get(tree);
 
 		IScopeContext context = new ConfigurationScope();
-		IEclipsePreferences rootNode = context.getNode(statableTree.getID());
 
 		File preferencesFile = context.getLocation().append(File.separator+".settings").append(statableTree.getID()).addFileExtension("prefs").toFile();
 		if (preferencesFile.exists()) {
 			preferencesFile.delete();
 		}
 
+		IEclipsePreferences rootNode = context.getNode(statableTree.getID());
 		if (rootNode != null) {
 			try {
+//				rootNode.sync();
 				rootNode.clear();
 				rootNode.flush();
 
@@ -131,13 +132,13 @@ public class TreeStateController
 
 	private void saveTreeItemState(TreeItem currentTreeItem, Preferences parentNode) {
 		try {
-			Preferences node = parentNode.node(currentTreeItem.getText());
-			if (node != null) {
+			Preferences node = parentNode.node(currentTreeItem.getText()); // TODO use the complete item with all cells (not only the main text)! Marco.
+			if (node != null && node != parentNode) { // currently this might happen sometimes - when currentTreeItem.getText() == "".
 				node.removeNode();
 			}
 			parentNode.flush();
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException("saveTreeItemState failed for currentTreeItem="+currentTreeItem + " parentNode=" + parentNode, e);
 		}
 
 		if (!currentTreeItem.getExpanded()) {
@@ -154,6 +155,11 @@ public class TreeStateController
 
 		for (TreeItem subTreeItem : currentTreeItem.getItems()) {
 			Preferences newNode = parentNode.node(currentTreeItem.getText());
+//			try {
+//				newNode.sync();
+//			} catch (Exception e) {
+//				throw new RuntimeException(e);
+//			}
 			saveTreeItemState(subTreeItem, newNode);
 		}
 	}
