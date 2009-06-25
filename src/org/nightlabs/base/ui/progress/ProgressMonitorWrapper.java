@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.nightlabs.base.ui.progress;
 
@@ -12,14 +12,26 @@ import org.nightlabs.progress.ProgressMonitor;
  * <br> <br>
  * Note: Try to not wrap a monitor too many times! Try an <b>instanceof</b> and use the getter to
  * 	extract the wrapped monitor.
- * 
+ *
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  * @author Marius Heinzmann [marius<at>NightLabs<dot>de]
  */
 public class ProgressMonitorWrapper implements ProgressMonitor {
 
 	private IProgressMonitor monitor;
-	
+
+	/**
+	 * @deprecated This constructor exists for downward compatibility only! If you use this constructor
+	 * anywhere in your code, you can simply stop using this class completely there - you already have
+	 * a {@link ProgressMonitor} and don't need to wrap it!!!
+	 */
+	@Deprecated
+	public ProgressMonitorWrapper(ProgressMonitor monitor) {
+		if (monitor == null)
+			throw new IllegalArgumentException("The wrapped monitor must not be null."); //$NON-NLS-1$
+		this.monitor = new RCPProgressMonitor(monitor);
+	}
+
 	public ProgressMonitorWrapper(IProgressMonitor monitor) {
 		if (monitor == null)
 			throw new IllegalArgumentException("The wrapped monitor must not be null."); //$NON-NLS-1$
@@ -72,7 +84,7 @@ public class ProgressMonitorWrapper implements ProgressMonitor {
 	public void internalWorked(double worked) {
 		monitor.internalWorked(worked);
 	}
-	
+
 	/**
 	 * Returns the wrapped {@link IProgressMonitor}.
 	 * @return the wrapped {@link IProgressMonitor}.

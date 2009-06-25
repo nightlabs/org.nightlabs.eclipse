@@ -26,11 +26,11 @@
 
 package org.nightlabs.base.ui.notification;
 
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
-import org.eclipse.core.runtime.jobs.Job;
+import org.nightlabs.base.ui.job.Job;
 import org.nightlabs.notification.NotificationEvent;
 import org.nightlabs.notification.NotificationListener;
+import org.nightlabs.progress.ProgressMonitor;
 
 /**
  * Notification will be done by unsing an Eclipse {@link org.eclipse.core.runtime.jobs.Job}.
@@ -61,13 +61,13 @@ public interface NotificationListenerJob extends NotificationListener
 	 *
 	 * @param progressMonitor
 	 */
-	void setProgressMonitor(IProgressMonitor progressMonitor);
+	void setProgressMonitor(ProgressMonitor progressMonitor);
 
 	/**
-	 * @return The progressMonitor that was passed to {@link #setProgressMonitor(IProgressMonitor)}
+	 * @return The progressMonitor that was passed to {@link #setProgressMonitor(ProgressMonitor)}
 	 */
-	IProgressMonitor getProgressMonitor();
-	
+	ProgressMonitor getProgressMonitor();
+
 	/**
 	 * @return Returns the name of the job.
 	 */

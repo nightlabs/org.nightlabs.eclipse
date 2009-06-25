@@ -29,7 +29,7 @@ package org.nightlabs.base.ui.notification;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.Job;
-import org.nightlabs.base.ui.progress.ProgressMonitorWrapper;
+import org.nightlabs.base.ui.progress.RCPProgressMonitor;
 import org.nightlabs.notification.NotificationAdapter;
 import org.nightlabs.notification.NotificationEvent;
 import org.nightlabs.progress.ProgressMonitor;
@@ -51,7 +51,7 @@ implements NotificationListenerJob
 	/**
 	 * @see org.nightlabs.base.ui.notification.NotificationListenerJob#createJob(NotificationEvent)
 	 */
-	public Job createJob(NotificationEvent event)
+	public org.nightlabs.base.ui.job.Job createJob(NotificationEvent event)
 	{
 		return null;
 	}
@@ -60,33 +60,46 @@ implements NotificationListenerJob
 	{
 		return jobName;
 	}
-	
-	private IProgressMonitor progressMonitor;
-	private ProgressMonitor progressMonitorWrapper;
 
-	/**
-	 * @see org.nightlabs.base.ui.notification.NotificationListenerJob#setProgressMonitor(org.eclipse.core.runtime.IProgressMonitor)
-	 */
-	public void setProgressMonitor(IProgressMonitor progressMonitor) {
+	private ProgressMonitor progressMonitor;
+//	private ProgressMonitor progressMonitorWrapper;
+	private IProgressMonitor rcpProgressMonitor;
+
+	@Override
+	public void setProgressMonitor(ProgressMonitor progressMonitor) {
 		this.progressMonitor = progressMonitor;
 	}
 
-	/**
-	 * @see org.nightlabs.base.ui.notification.NotificationListenerJob#getProgressMonitor()
-	 */
-	public IProgressMonitor getProgressMonitor() {
+	@Override
+	public ProgressMonitor getProgressMonitor() {
 		return progressMonitor;
 	}
 
-	public ProgressMonitor getProgressMonitorWrapper() {
-		if (progressMonitorWrapper == null) {
+	public IProgressMonitor getRCPProgressMonitor() {
+		if (rcpProgressMonitor == null) {
 			if (progressMonitor == null)
-				throw new IllegalStateException("getProgressMonitorWrapper() must not be called before setProgressMonitor(IProgressMonitor)."); //$NON-NLS-1$
-			progressMonitorWrapper = new ProgressMonitorWrapper(progressMonitor);
+				throw new IllegalStateException("getRCPProgressMonitor() must not be called before setProgressMonitor(ProgressMonitor)."); //$NON-NLS-1$
+			rcpProgressMonitor = new RCPProgressMonitor(progressMonitor);
 		}
-		return progressMonitorWrapper;
+		return rcpProgressMonitor;
 	}
-	
+
+	/**
+	 * @deprecated Use {@link #getProgressMonitor()} instead! This method exists only for downward compatibility!
+	 */
+	@Deprecated
+	public ProgressMonitor getProgressMonitorWrapper() {
+		return getProgressMonitor();
+	}
+//	public ProgressMonitor getProgressMonitorWrapper() {
+//		if (progressMonitorWrapper == null) {
+//			if (progressMonitor == null)
+//				throw new IllegalStateException("getProgressMonitorWrapper() must not be called before setProgressMonitor(IProgressMonitor)."); //$NON-NLS-1$
+//			progressMonitorWrapper = new ProgressMonitorWrapper(progressMonitor);
+//		}
+//		return progressMonitorWrapper;
+//	}
+
 	/**
 	 * @see org.nightlabs.base.ui.notification.NotificationListenerJob#getRule()
 	 */

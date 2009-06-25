@@ -26,14 +26,14 @@
 
 package org.nightlabs.base.ui.notification;
 
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.Display;
+import org.nightlabs.base.ui.job.Job;
 import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.notification.NotificationEvent;
 import org.nightlabs.notification.NotificationListener;
+import org.nightlabs.progress.ProgressMonitor;
 
 /**
  * @author Marco Schulze - marco at nightlabs dot de
@@ -83,7 +83,7 @@ extends org.nightlabs.notification.NotificationManager
 
 				job = new Job(jobName) {
 					@Override
-					protected IStatus run(IProgressMonitor monitor)
+					protected IStatus run(ProgressMonitor monitor)
 					{
 						((NotificationListenerJob)listener).setProgressMonitor(monitor);
 						((NotificationListenerJob)listener).notify(event);
