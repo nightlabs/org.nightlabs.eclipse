@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tableprovider Plug-in
+Bundle-SymbolicName: org.nightlabs.tableprovider.ui;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.nightlabs.base,
+ org.eclipse.core.runtime,
+ org.apache.log4j,
+ org.eclipse.ui,
+ org.nightlabs.base.ui
+Export-Package: org.nightlabs.tableprovider.ui
