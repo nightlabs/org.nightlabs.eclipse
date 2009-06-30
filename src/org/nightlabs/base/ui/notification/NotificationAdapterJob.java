@@ -48,14 +48,13 @@ implements NotificationListenerJob
 		this.jobName = jobName;
 	}
 
-	/**
-	 * @see org.nightlabs.base.ui.notification.NotificationListenerJob#createJob(NotificationEvent)
-	 */
+	@Override
 	public org.nightlabs.base.ui.job.Job createJob(NotificationEvent event)
 	{
 		return null;
 	}
 
+	@Override
 	public String getJobName()
 	{
 		return jobName;
@@ -100,49 +99,85 @@ implements NotificationListenerJob
 //		return progressMonitorWrapper;
 //	}
 
+	private static class SelfConflictingSchedulingRule implements ISchedulingRule
+	{
+		@Override
+		public boolean contains(ISchedulingRule rule) {
+			return this == rule;
+		}
+		@Override
+		public boolean isConflicting(ISchedulingRule rule) {
+			return this == rule;
+		}
+	}
+
+	private ISchedulingRule rule;
+
 	/**
-	 * @see org.nightlabs.base.ui.notification.NotificationListenerJob#getRule()
+	 * <p>
+	 * The default implementation of this method returns a rule that makes sure no two jobs for the same
+	 * {@link NotificationAdapterJob}-instance run concurrently.
+	 * </p>
+	 * {@inheritDoc}
 	 */
+	@Override
 	public ISchedulingRule getRule()
 	{
-		return null;
+		if (rule == null) {
+			synchronized (this) {
+				if (rule == null)
+					rule = new SelfConflictingSchedulingRule();
+
+				return rule;
+			}
+		}
+
+		return rule;
 	}
 
 	/**
+	 * <p>
 	 * The default implementation of this method returns {@link Job#SHORT}.
-	 *
-	 * @see org.nightlabs.base.ui.notification.NotificationListenerJob#getPriority()
+	 * </p>
+	 * {@inheritDoc}
 	 */
+	@Override
 	public int getPriority()
 	{
 		return Job.SHORT;
 	}
 
 	/**
+	 * <p>
 	 * The default implementation of this method returns 0.
-	 *
-	 * @see org.nightlabs.base.ui.notification.NotificationListenerJob#getDelay()
+	 * </p>
+	 * {@inheritDoc}
 	 */
+	@Override
 	public long getDelay()
 	{
 		return 0;
 	}
 
 	/**
+	 * <p>
 	 * The default implementation of this method returns false.
-	 *
-	 * @see org.nightlabs.base.ui.notification.NotificationListenerJob#isUser()
+	 * </p>
+	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean isUser()
 	{
 		return false;
 	}
 
 	/**
+	 * <p>
 	 * The default implementation of this method returns false.
-	 *
-	 * @see org.nightlabs.base.ui.notification.NotificationListenerJob#isSystem()
+	 * </p>
+	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean isSystem()
 	{
 		return false;
