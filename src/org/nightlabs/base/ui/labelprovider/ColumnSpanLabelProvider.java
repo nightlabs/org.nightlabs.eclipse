@@ -7,6 +7,7 @@ import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.OwnerDrawLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Event;
@@ -56,6 +57,19 @@ public abstract class ColumnSpanLabelProvider extends OwnerDrawLabelProvider {
 	 */
 	protected abstract String getColumnText(Object element, int spanColIndex);
 	
+	/**
+	 * Get the image to display for the given element at begining of the column with the given index.
+	 * The index of the column here is the index in the array of intervals returned
+	 * by {@link #getColumnSpan(Object)} for the same element.
+	 * 
+	 * @param element The element the image to display is queried for.
+	 * @param spanColIndex The index of the column-group the image is queried for.
+	 * @return The image to be displayed for the given column-group.
+	 */
+	protected Image getColumnImage(Object element, int spanColIndex) {
+		return null;
+	}
+	
 	@Override
 	protected void measure(Event event, Object element) {
 		int spanColIdx = getSpanColumnIndex(element, event.index);
@@ -65,7 +79,7 @@ public abstract class ColumnSpanLabelProvider extends OwnerDrawLabelProvider {
 			String string = getColumnText(element, spanColIdx);
 			int[][] colSpans = internalGetColumnSpan(element);
 			Point extent = event.gc.stringExtent(string);
-			event.setBounds(new Rectangle(event.x , event.y, extent.x / colSpans[spanColIdx].length  , extent.y / colSpans[spanColIdx].length));
+			event.setBounds(new Rectangle(event.x , event.y, extent.x / colSpans[spanColIdx].length  , extent.y));
 		}
 	}
 
@@ -80,12 +94,16 @@ public abstract class ColumnSpanLabelProvider extends OwnerDrawLabelProvider {
 		int spanColIdx = getSpanColumnIndex(element, event.index);
         if (spanColIdx >= 0 & spanColIdx <= spanCols.length) {
             String string = getColumnText(element, spanColIdx);
+            Image image = getColumnImage(element, spanColIdx);
+            int imageWidth = 0; 
+            if (image != null)
+            	imageWidth = image.getBounds().width;
 //            Point extent = event.gc.stringExtent(string);
 //            int y = event.y + (event.height - extent.y) / 2;
             int y = event.y;
         	if (spanCols[spanColIdx].length > 0) {
         		if (spanCols[spanColIdx].length != 1) {
-        			int offset = - (firstColOffset + 5);
+        			int offset = - (firstColOffset + imageWidth + 5);
         			if (event.index == 0) {
         				offset = offset + firstColOffset;
         			}
@@ -94,9 +112,14 @@ public abstract class ColumnSpanLabelProvider extends OwnerDrawLabelProvider {
         					offset += getColumnWidth(i - 1);
         				}
         			}
+        			if (event.index == spanCols[spanColIdx][0] && image != null) {
+        				event.gc.drawImage(image, event.x, event.y);
+        			}
         			event.gc.drawString(string, event.x - offset, y, true);
         		} else {
-        			event.gc.drawString(string, event.x + 5, y, true);
+        			if (image != null)
+        				event.gc.drawImage(image, event.x, event.y);
+        			event.gc.drawString(string, event.x + 5 + imageWidth, y, true);
         		}
         	} else {
         		throw new IllegalStateException("Span column " + spanColIdx + " out of " + spanCols + " is empty");
