@@ -1,6 +1,7 @@
 package org.nightlabs.base.ui.toolkit;
 
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -14,7 +15,7 @@ import org.eclipse.ui.forms.widgets.Section;
  * @author Marius Heinzmann [marius<at>NightLabs<dot>de]
  */
 public interface IToolkit {
-	
+
 	/**
 	 * Key for the {@link Control#setData(String, Object)} which should be used with {@link #TABLE_BORDER}
 	 * or {@link #TEXT_BORDER} to enforce a border for a certain element.
@@ -32,12 +33,12 @@ public interface IToolkit {
 	 * @param composite the composite to adapt.
 	 */
 	public void adapt(Composite composite);
-	
+
 	/**
 	 * Adapts a control to be used in a context that is associated with this
 	 * toolkit. This involves adjusting colors and optionally adding handlers to
 	 * ensure focus tracking and keyboard management.
-	 * 
+	 *
 	 * @param control
 	 *            a control to adapt
 	 * @param trackFocus
@@ -55,30 +56,30 @@ public interface IToolkit {
 	 *            control.
 	 */
 	public void adapt(Control control, boolean trackFocus, boolean trackKeyboard);
-	
+
 	/**
 	 * Checks the given Control and if necessary adds a {@link PaintListener} to the parent, so that the parent
 	 * will paint the border for the element.
-	 * 
+	 *
 	 * @param element the element to check if a border painter is needed.
 	 * @return <code>true</code> if a {@link PaintListener} has been added to the parent of the given
 	 * 					control, <code>false</code> otherwise.
 	 */
 	public boolean checkForBorders(Control element);
-	
+
 	/**
 	 * Returns the bitmask for the border style. The Toolkit can therefore exchange the standard borders,
 	 * if the elements use this method to determine the border style.
-	 * 
+	 *
 	 * @return the bitmask for the border style.
 	 */
 	public int getBorderStyle();
-	
+
 	/**
 	 * Creates a scrolled form widget in the provided parent. If you do not
 	 * require scrolling because there is already a scrolled composite up the
 	 * parent chain, use 'createForm' instead.
-	 * 
+	 *
 	 * @param parent
 	 *            the scrolled form parent
 	 * @return the form that can scroll itself
@@ -90,7 +91,7 @@ public interface IToolkit {
 	 * Creates a form widget in the provided parent. Note that this widget does
 	 * not scroll its content, so make sure there is a scrolled composite up the
 	 * parent chain. If you require scrolling, use 'createScrolledForm' instead.
-	 * 
+	 *
 	 * @param parent
 	 *            the form parent
 	 * @return the form that does not scroll
@@ -100,7 +101,7 @@ public interface IToolkit {
 
 	/**
 	 * Creates a section as a part of the form.
-	 * 
+	 *
 	 * @param parent
 	 *            the section parent
 	 * @param sectionStyle
@@ -111,7 +112,7 @@ public interface IToolkit {
 
 	/**
 	 * Creates a rich text as a part of the form.
-	 * 
+	 *
 	 * @param parent
 	 *            the rich text parent
 	 * @param trackFocus
@@ -125,7 +126,7 @@ public interface IToolkit {
 	/**
 	 * Creates a hyperlink as a part of the form. The hyperlink will be added to
 	 * the hyperlink group that belongs to this toolkit.
-	 * 
+	 *
 	 * @param parent
 	 *            the hyperlink parent
 	 * @param text
@@ -138,7 +139,7 @@ public interface IToolkit {
 
 	/**
 	 * Creates a label as a part of the form.
-	 * 
+	 *
 	 * @param parent
 	 *            the label parent
 	 * @param text
@@ -146,9 +147,22 @@ public interface IToolkit {
 	 * @param style
 	 *            the label style
 	 * @return the label widget
-	 */	
+	 */
 	public Label createLabel(Composite parent, String text, int style);
-	
+
+	/**
+	 * Creates a button as a part of the form.
+	 *
+	 * @param parent
+	 *            the button parent
+	 * @param text
+	 *            an optional text for the button (can be <code>null</code>)
+	 * @param style
+	 *            the button style (for example, <code>SWT.PUSH</code>)
+	 * @return the button widget
+	 */
+	public Button createButton(Composite parent, String text, int style);
+
 //	/**
 //	* Creates an image hyperlink as a part of the form. The hyperlink will be
 //	* added to the hyperlink group that belongs to this toolkit.
