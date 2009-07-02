@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.nightlabs.base.ui">
+<schema targetNamespace="org.nightlabs.base.ui" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
          <meta.schema plugin="org.nightlabs.base.ui" id="editorActionBarContribution" name="EditorActionBarContribution Extension-Point"/>
@@ -11,13 +11,17 @@
    </annotation>
 
    <element name="extension">
+      <annotation>
+         <appInfo>
+            <meta.element />
+         </appInfo>
+      </annotation>
       <complexType>
-        <sequence>
-          <element ref="editorActionBarContributionRegistry" minOccurs="1" maxOccurs="unbounded"/>
-        </sequence>
+         <sequence>
+            <element ref="editorActionBarContributionRegistry" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
       </complexType>
    </element>
-   
 
    <element name="editorActionBarContribution">
       <annotation>
@@ -98,6 +102,13 @@
             <annotation>
                <documentation>
                   
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="actionDefinitionId" type="string">
+            <annotation>
+               <documentation>
+                  Defines to which commandId this action should be assigned to in the context of the editor. The command needs to be defined in another extension.
                </documentation>
             </annotation>
          </attribute>
@@ -188,6 +199,12 @@ path specifies the location where the new separator shall be placed. It is a sla
 
    <element name="editorActionBarContributionRegistry">
       <complexType>
+         <sequence>
+            <element ref="editorActionBarContribution" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="menu" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="separator" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="groupMarker" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
          <attribute name="targetEditorID" type="string" use="required">
             <annotation>
                <documentation>
@@ -202,13 +219,6 @@ path specifies the location where the new separator shall be placed. It is a sla
                </documentation>
             </annotation>
          </attribute>
-         
-         <sequence>
-            <element ref="editorActionBarContribution" minOccurs="0" maxOccurs="unbounded"/>
-            <element ref="menu" minOccurs="0" maxOccurs="unbounded"/>
-            <element ref="separator" minOccurs="0" maxOccurs="unbounded"/>
-            <element ref="groupMarker" minOccurs="0" maxOccurs="unbounded"/>
-         </sequence>
       </complexType>
    </element>
 
@@ -248,13 +258,5 @@ path specifies the location where the new separator shall be placed. It is a sla
       </documentation>
    </annotation>
 
-   <annotation>
-      <appInfo>
-         <meta.section type="copyright"/>
-      </appInfo>
-      <documentation>
-         
-      </documentation>
-   </annotation>
 
 </schema>

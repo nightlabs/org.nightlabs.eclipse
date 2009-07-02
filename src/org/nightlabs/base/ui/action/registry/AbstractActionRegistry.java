@@ -124,6 +124,8 @@ extends AbstractEPProcessor
 	protected static final String ATTRIBUTE_NAME_ACTION_VISIBLE_IN_MENUBAR = "visibleInMenubar"; //$NON-NLS-1$
 	protected static final String ATTRIBUTE_NAME_ACTION_VISIBLE_IN_TOOLBAR = "visibleInToolbar"; //$NON-NLS-1$
 	protected static final String ATTRIBUTE_NAME_ACTION_VISIBLE_IN_CONTEXTMENU = "visibleInContextmenu"; //$NON-NLS-1$
+	
+	protected static final String ATTRIBUTE_NAME_ACTION_ACTION_DEFINITION_ID = "actionDefinitionId"; //$NON-NLS-1$
 
 	private String elementNameAction = null;
 
@@ -1237,6 +1239,8 @@ extends AbstractEPProcessor
 			String visibleInMenubar = element.getAttribute(ATTRIBUTE_NAME_ACTION_VISIBLE_IN_MENUBAR);
 			String visibleInToolbar = element.getAttribute(ATTRIBUTE_NAME_ACTION_VISIBLE_IN_TOOLBAR);
 			String visibleInContextmenu = element.getAttribute(ATTRIBUTE_NAME_ACTION_VISIBLE_IN_CONTEXTMENU);
+			
+			String actionDefinitionId = element.getAttribute(ATTRIBUTE_NAME_ACTION_ACTION_DEFINITION_ID);
 
 			Object actionOrContribution = createActionOrContributionItem(extension, element);
 
@@ -1261,6 +1265,9 @@ extends AbstractEPProcessor
 				if (hoverIcon != null && !"".equals(hoverIcon)) //$NON-NLS-1$
 					action.setHoverImageDescriptor(
 							ImageDescriptor.createFromURL(Platform.getBundle(extension.getNamespaceIdentifier()).getEntry(hoverIcon)));
+				
+				if (actionDefinitionId != null && !actionDefinitionId.isEmpty())
+					action.setActionDefinitionId(actionDefinitionId);
 
 				initAction(action, extension, element);
 			}

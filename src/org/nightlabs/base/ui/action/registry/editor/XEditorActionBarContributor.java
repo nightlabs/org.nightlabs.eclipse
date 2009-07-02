@@ -11,6 +11,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IKeyBindingService;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.EditorActionBarContributor;
@@ -66,10 +67,18 @@ implements ISelectionChangedListener
 		return actionRegistry;
 	}
 	
+	private boolean actionsRegisteredToKeyBindingService = false;
+	
 	protected void updateActions()
 	{
 		if (getActionRegistry() != null) {
+			IKeyBindingService keyBindingService = getActiveEditor().getSite().getKeyBindingService();
 			for (ActionDescriptor actionDescriptor : getActionRegistry().getActionDescriptors()) {
+				if (!actionsRegisteredToKeyBindingService) {
+					if (keyBindingService != null && actionDescriptor.getAction() != null && actionDescriptor.getAction().getActionDefinitionId() != null) {
+						keyBindingService.registerAction(actionDescriptor.getAction());
+					}
+				}
 				if (actionDescriptor.getAction() instanceof IUpdateActionOrContributionItem) {
 					boolean enabled = ((IUpdateActionOrContributionItem)actionDescriptor.getAction()).calculateEnabled();
 					actionDescriptor.getAction().setEnabled(enabled);
@@ -79,6 +88,7 @@ implements ISelectionChangedListener
 						logger.debug("enabled = "+enabled+" for action "+actionDescriptor.getAction().getId()); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
+			actionsRegisteredToKeyBindingService = true;
 		}
 	}
 	

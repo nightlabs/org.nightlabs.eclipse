@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.nightlabs.base.ui">
+<schema targetNamespace="org.nightlabs.base.ui" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
          <meta.schema plugin="org.nightlabs.base.ui" id="entityEditorActionBarContribution" name="entityEditorActionBarContribution"/>
@@ -89,6 +89,13 @@
             <annotation>
                <documentation>
                   
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="actionDefinitionId" type="string">
+            <annotation>
+               <documentation>
+                  Defines to which commandId this action should be assigned to in the context of the editor. The command needs to be defined in another extension.
                </documentation>
             </annotation>
          </attribute>
@@ -193,6 +200,11 @@ path specifies the location where the new separator shall be placed. It is a sla
    </element>
 
    <element name="extension">
+      <annotation>
+         <appInfo>
+            <meta.element />
+         </appInfo>
+      </annotation>
       <complexType>
          <sequence minOccurs="1" maxOccurs="unbounded">
             <element ref="entityEditorActionBarContribution"/>
@@ -299,13 +311,5 @@ path specifies the location where the new separator shall be placed. It is a sla
       </documentation>
    </annotation>
 
-   <annotation>
-      <appInfo>
-         <meta.section type="copyright"/>
-      </appInfo>
-      <documentation>
-         
-      </documentation>
-   </annotation>
 
 </schema>
