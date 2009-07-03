@@ -10,7 +10,7 @@ import org.nightlabs.base.ui.extensionpoint.IEPProcessListener;
  * Processes extensions of <code>simpleExceptionHandler</code>s by registering to
  * {@link ExceptionHandlerRegistry}s processListener which calls method <code>postProcess</code>
  * after having processed all of its EPs.
- * 
+ *
  * @author Tobias Langner <!-- tobias[dot]langner[at]nightlabs[dot]de -->
  */
 public class SimpleExceptionHandlerRegistry
@@ -35,8 +35,10 @@ implements IEPProcessListener
 			{
 				String targetType = element.getAttribute("targetType"); //$NON-NLS-1$
 				String message = element.getAttribute("message"); //$NON-NLS-1$
+				String title = element.getAttribute("title"); //$NON-NLS-1$
 				message = ( message != null && !message.equals("") ? message : null ); //$NON-NLS-1$
-				IExceptionHandler handler = new SimpleExceptionHandler(message);
+				title = ( title != null && !title.equals("") ? title : null ); //$NON-NLS-1$
+				IExceptionHandler handler = new SimpleExceptionHandler(message, title);
 				ExceptionHandlerRegistry.sharedInstance().addExceptionHandler(targetType, handler);
 			}
 			else
@@ -53,14 +55,14 @@ implements IEPProcessListener
 
 	public void preProcess()
 	{
-		
+
 	}
 
 	public void postProcess()
 	{
 		checkProcessing();
 	}
-	
+
 	public static SimpleExceptionHandlerRegistry sharedInstance() {
 		if (sharedInstance == null) {
 			sharedInstance = new SimpleExceptionHandlerRegistry();
