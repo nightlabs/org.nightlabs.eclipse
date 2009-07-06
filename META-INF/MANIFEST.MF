@@ -27,7 +27,7 @@ Require-Bundle: org.eclipse.ui,
  org.nightlabs.jfire.base.j2ee;resolution:=optional,
  org.nightlabs.eclipse.ui.dialog;visibility:=reexport,
  com.thoughtworks.xstream;bundle-version="1.2.0",
- org.nightlabs.editor2d;bundle-version="0.9.7"
+ org.nightlabs.editor2d;bundle-version="0.9.7";visibility:=reexport
 Eclipse-LazyStart: true
 Eclipse-BuddyPolicy: registered
 Eclipse-RegisterBuddy: org.nightlabs.jfire.base.j2ee,org.nightlabs.xstream 
