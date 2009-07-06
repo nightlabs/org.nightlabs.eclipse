@@ -7,6 +7,7 @@ import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.OwnerDrawLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -69,64 +70,103 @@ public abstract class ColumnSpanLabelProvider extends OwnerDrawLabelProvider {
 	protected Image getColumnImage(Object element, int spanColIndex) {
 		return null;
 	}
+	
+	/**
+	 * Get the alignment for the given column-group. If {@link SWT#NONE} is returned here,
+	 * the alignment from the first real column in the column group will be used, otherwise
+	 * one of the values returned here. Either {@link SWT#LEFT}, {@link SWT#RIGHT} or {@link SWT#CENTER}.
+	 * <p>
+	 * The default implementation returns {@link SWT#NONE} to indicate that the value from 
+	 * the column definition should be used. Override this method to change this behaviour.
+	 * </p>
+	 * 
+	 * @param element The element the column alignment is queried for.
+	 * @param spanColIndex The index of the column-group the alignment is queried for.
+	 * @return {@link SWT#NONE} to indicate that the columns (TreeColumn/TableColumn) value should be used. Return
+	 * 		either {@link SWT#LEFT}, {@link SWT#RIGHT} or {@link SWT#CENTER} to override it.
+	 */
+	protected int getColumnAlignment(Object element, int spanColIndex) {
+		return SWT.NONE;
+	}
 
+	
 	@Override
 	protected void measure(Event event, Object element) {
-		int spanColIdx = getSpanColumnIndex(element, event.index);
+		internalIndexElement(event, element);
+		int spanColIdx = internalGetSpanColumnIndex(element, event.index);
 		if (spanColIdx < 0) {
 			event.setBounds(new Rectangle(event.x, event.y, event.width, event.height));
 		} else {
-			String string = getColumnText(element, spanColIdx);
-			int[][] colSpans = internalGetColumnSpan(element);
-			Point extent;
-			if (string == null)
-				extent = new Point(0, 0);
-			else
-				extent = event.gc.stringExtent(string);
-			event.setBounds(new Rectangle(event.x , event.y, extent.x / colSpans[spanColIdx].length  , extent.y));
+			int[][] colSpans = idxColSpans;
+			Point extent = idxColTextExtends[spanColIdx];
+			Image image = idxColImages[spanColIdx];
+			int imageWidth = 0;
+			if (image != null)
+				imageWidth = image.getBounds().width;
+			event.setBounds(new Rectangle(event.x , event.y, extent.x / colSpans[spanColIdx].length + imageWidth , extent.y));
 		}
 	}
 
 	@Override
 	protected void paint(Event event, Object element) {
+		// index the data for the current element
+		internalIndexElement(event, element);
+		
 		if (event.index == 0) {
+			// the firstColOffset is used to honor the indentation in trees
 			firstColOffset = event.x;
 		}
 		if (firstColOffset < 0)
 			firstColOffset = 0;
+		
 		int[][] spanCols = internalGetColumnSpan(element);
-		int spanColIdx = getSpanColumnIndex(element, event.index);
-        if (spanColIdx >= 0 & spanColIdx <= spanCols.length) {
-            String string = getColumnText(element, spanColIdx);
-            Image image = getColumnImage(element, spanColIdx);
+		int spanColIdx = internalGetSpanColumnIndex(element, event.index);
+        if (spanColIdx >= 0 && spanColIdx <= spanCols.length) {
+            String string = idxColTexts[spanColIdx];
+            Image image = idxColImages[spanColIdx];
             int imageWidth = 0;
             if (image != null)
             	imageWidth = image.getBounds().width;
-//            Point extent = event.gc.stringExtent(string);
-//            int y = event.y + (event.height - extent.y) / 2;
+            
+            // If we have an alignment != SWT.LEFT we compute the offset based on the column width
+            int alignmentOffset = 0;
+            int colAlignment = idxColAlignments[spanColIdx];
+            if (colAlignment == SWT.RIGHT) {
+            	alignmentOffset = idxColWidths[spanColIdx] - (idxColTextExtends[spanColIdx].x + 5);
+            } else if (colAlignment == SWT.CENTER) {
+            	alignmentOffset = idxColWidths[spanColIdx] / 2 - idxColTextExtends[spanColIdx].x / 2;
+            }
+            
             int y = event.y;
         	if (spanCols[spanColIdx].length > 0) {
-        		if (spanCols[spanColIdx].length != 1) {
-        			int offset = - (firstColOffset + imageWidth + 5);
+        		int offset = 0;
+        		
+        		if (alignmentOffset != 0) {
+        			// If an alignment-offset was set, we take this offset 
+        			offset = - alignmentOffset;
         			if (event.index == 0) {
         				offset = offset + firstColOffset;
         			}
-        			for (int i = event.index; i > spanCols[spanColIdx][0]; i--) {
-        				if (i != 0) {
-        					offset += getColumnWidth(i - 1);
-        				}
-        			}
-        			if (event.index == spanCols[spanColIdx][0] && image != null) {
-        				event.gc.drawImage(image, event.x, event.y);
-        			}
-        			if (string != null)
-        				event.gc.drawString(string, event.x - offset, y, true);
         		} else {
-        			if (image != null)
-        				event.gc.drawImage(image, event.x, event.y);
-
-        			if (string != null)
-        				event.gc.drawString(string, event.x + 5 + imageWidth, y, true);
+        			// If we align left, we use a little space and the image width as offset 
+        			offset = - (firstColOffset + imageWidth + 5);
+            		if ((event.index == 0 && spanCols[spanColIdx].length > 1) || (spanCols[spanColIdx].length == 1)) {
+            			offset = offset + firstColOffset;
+            		}
+        		}
+        		
+        		// If we are in a column of a group we substract the width of the previous columns from the offset
+        		for (int i = event.index; i > spanCols[spanColIdx][0]; i--) {
+        			if (i != 0) {
+        				offset += internalGetColumnWidth(i - 1);
+        			}
+        		}
+        		
+        		if (string != null)
+        			event.gc.drawString(string, event.x - offset, y, true);
+        		
+        		if (event.index == spanCols[spanColIdx][0] && image != null) {
+        			event.gc.drawImage(image, event.x, event.y);
         		}
         	} else {
         		throw new IllegalStateException("Span column " + spanColIdx + " out of " + spanCols + " is empty");
@@ -136,25 +176,55 @@ public abstract class ColumnSpanLabelProvider extends OwnerDrawLabelProvider {
         }
 	}
 
-	private Object tmpElement;
-	private int[][] tmpColSpans;
+	private Object idxElement;
+	private int[][] idxColSpans;
 	private int firstColOffset = -1;
+	private int[] idxColAlignments = null;
+	private String[] idxColTexts = null;
+	private Image[] idxColImages = null;
+	private int[] idxColWidths = null;
+	private Point[] idxColTextExtends = null;
 
-	protected int[][] internalGetColumnSpan(Object element) {
-		if (tmpElement == element) {
-			return tmpColSpans;
+	private int[][] internalGetColumnSpan(Object element) {
+		if (idxElement == element) {
+			return idxColSpans;
 		}
 		return getColumnSpan(element);
 	}
 
-	protected int getSpanColumnIndex(Object element, int columnIndex) {
-		int[][] colSpans = null;
-		if (tmpElement != element) {
-			tmpElement = element;
-			tmpColSpans = getColumnSpan(element);
-			validateColumnSpan(tmpColSpans);
+	private void internalIndexElement(Event event, Object element) {
+		if (idxElement == element) {
+			return;
 		}
-		colSpans = tmpColSpans;
+		idxElement = element;
+		idxColSpans = getColumnSpan(element);
+		internalValidateColumnSpan(idxColSpans);
+		idxColAlignments = new int[idxColSpans.length];
+		idxColTexts = new String[idxColSpans.length];
+		idxColImages = new Image[idxColSpans.length];
+		idxColTextExtends = new Point[idxColSpans.length];
+		idxColWidths = new int[idxColSpans.length];
+		for (int i = 0; i < idxColSpans.length; i++) {
+			idxColAlignments[i] = internalValidateColumnAlignment(getColumnAlignment(element, i), idxColSpans[i]);
+			idxColTexts[i] = getColumnText(element, i);
+			idxColImages[i] = getColumnImage(element, i);
+			if (idxColTexts[i] == null)
+				idxColTexts[i] = "";
+			idxColTextExtends[i] = event.gc.stringExtent(idxColTexts[i]);
+			int colWidth = 0;
+			if (idxColSpans[i].length == 1) {
+				colWidth = internalGetColumnWidth(idxColSpans[i][0]);
+			} else {
+				for (int j = idxColSpans[i][0]; j <= idxColSpans[i][idxColSpans[i].length - 1]; j++) {
+					colWidth += internalGetColumnWidth(j);
+				}
+			}
+			idxColWidths[i] = colWidth;
+		}
+	}
+	
+	private int internalGetSpanColumnIndex(Object element, int columnIndex) {
+		int[][] colSpans = idxColSpans;
 		for (int i = 0; i < colSpans.length; i++) {
 			if (colSpans[i][0] <= columnIndex && colSpans[i][colSpans[i].length -1] >= columnIndex) {
 				return i;
@@ -163,7 +233,7 @@ public abstract class ColumnSpanLabelProvider extends OwnerDrawLabelProvider {
 		return -1;
 	}
 
-	protected void validateColumnSpan(int[][] colSpans) {
+	private void internalValidateColumnSpan(int[][] colSpans) {
 		// validate the column group
 		if (colSpans.length > 0) {
 			if (colSpans[0].length < 1)
@@ -180,9 +250,25 @@ public abstract class ColumnSpanLabelProvider extends OwnerDrawLabelProvider {
 			}
 		}
 	}
+	
+	private int internalValidateColumnAlignment(int alignment, int[] colSpan) {
+		if ((alignment & (SWT.LEFT | SWT.RIGHT | SWT.CENTER)) > 0) {
+			return alignment;
+		} else {
+			return internalGetColumnAlignment(colSpan[0]);
+		}
+	}
 
+	private int internalGetColumnAlignment(int columnIndex) {
+		if (columnViewer instanceof TableViewer) {
+			return ((TableViewer) columnViewer).getTable().getColumn(columnIndex).getAlignment();
+		} else if (columnViewer instanceof TreeViewer) {
+			return ((TreeViewer) columnViewer).getTree().getColumn(columnIndex).getAlignment();
+		}
+		throw new IllegalStateException("Unsupported ColumnViewer type: " + columnViewer.getClass().getName());
+	}
 
-	protected int getColumnWidth(int columnIndex) {
+	private int internalGetColumnWidth(int columnIndex) {
 		if (columnViewer instanceof TableViewer) {
 			return ((TableViewer) columnViewer).getTable().getColumn(columnIndex).getWidth();
 		} else if (columnViewer instanceof TreeViewer) {
@@ -190,6 +276,4 @@ public abstract class ColumnSpanLabelProvider extends OwnerDrawLabelProvider {
 		}
 		throw new IllegalStateException("Unsupported ColumnViewer type: " + columnViewer.getClass().getName());
 	}
-
-
 }
