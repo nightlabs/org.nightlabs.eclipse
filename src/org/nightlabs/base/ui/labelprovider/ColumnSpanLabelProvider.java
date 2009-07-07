@@ -178,6 +178,12 @@ public abstract class ColumnSpanLabelProvider extends OwnerDrawLabelProvider {
         }
 	}
 
+	/**
+	 * We have refresh bugs, because our "idxElement" is changed, but the reference here stays the same. Hence,
+	 * I introduce this constant temporarily until we find a way to clear our cache whenever TreeViewer.refresh() or TableViewer.refresh() is called.
+	 * Marco.
+	 */
+	private static final boolean USE_CACHE = false;
 	private Object idxElement;
 	private int[][] idxColSpans;
 	private int firstColOffset = -1;
@@ -188,14 +194,14 @@ public abstract class ColumnSpanLabelProvider extends OwnerDrawLabelProvider {
 	private Point[] idxColTextExtends = null;
 
 	private int[][] internalGetColumnSpan(Object element) {
-		if (idxElement == element) {
+		if (USE_CACHE && idxElement == element) {
 			return idxColSpans;
 		}
 		return getColumnSpan(element);
 	}
 
 	private void internalIndexElement(Event event, Object element) {
-		if (idxElement == element) {
+		if (USE_CACHE && idxElement == element) {
 			return;
 		}
 		idxElement = element;
