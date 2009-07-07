@@ -60,7 +60,12 @@ public class DynamicPathWizardDialog extends WizardDialog
 	/**
 	 * Create a new DynamicPathWizardDialog.
 	 * @param wizard The wizard to show
+	 * @deprecated It is dangerous to use this, since {@link RCPUtil#getActiveShell()} is used by this method and sometimes
+	 * returns a window of a Job or another short-living shell that's not supposed to be used by this Dialog. Better
+	 * use {@link #DynamicPathWizardDialog(Shell, IWizard)} and pass your shell from the UI element that triggered this
+	 * dialog to be created.
 	 */
+	@Deprecated
 	public DynamicPathWizardDialog(IWizard wizard)
 	{
 		this(RCPUtil.getActiveShell(), wizard);
@@ -76,7 +81,7 @@ public class DynamicPathWizardDialog extends WizardDialog
 		super(shell, wizard);
 		dynamicWizard = wizard;
 		if (dynamicWizard instanceof DynamicPathWizard) {
-			((DynamicPathWizard)dynamicWizard).setDynamicWizardDialog(this);	
+			((DynamicPathWizard)dynamicWizard).setDynamicWizardDialog(this);
 		}
 	}
 
@@ -152,7 +157,7 @@ public class DynamicPathWizardDialog extends WizardDialog
 	@Override
 	protected Control createContents(Composite parent) {
 		Control result = super.createContents(parent);
-		if (dynamicWizard instanceof DynamicPathWizard) 
+		if (dynamicWizard instanceof DynamicPathWizard)
 		{
 			DynamicPathWizard dynamicPathWizard = (DynamicPathWizard) dynamicWizard;
 			if (dynamicPathWizard.getFirstPage() instanceof IDynamicPathWizardPage)
