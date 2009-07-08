@@ -119,6 +119,8 @@ public abstract class AbstractTableComposite<ElementType>
 	private TableViewer tableViewer;
 	private Table table;
 	private boolean editable = true;
+	private int viewerStyle;
+	private GridData gridData;
 
 	public AbstractTableComposite(Composite parent, int style) {
 		this(parent, style, true);
@@ -135,28 +137,39 @@ public abstract class AbstractTableComposite<ElementType>
 		if ((viewerStyle & SWT.BORDER) == SWT.BORDER)
 		{
 			int borderStyle = XComposite.getBorderStyle(parent);
-// remove original SWT.BORDER flag by negating the SWT.BORDER mask and &-ing it with the original
+			// remove original SWT.BORDER flag by negating the SWT.BORDER mask and &-ing it with the original
 			viewerStyle &= ~SWT.BORDER;
 			viewerStyle |= borderStyle;
 		}
-		tableViewer = new TableViewer(this, viewerStyle);
-		tableViewer.setUseHashlookup(true);
-		GridData tgd = new GridData(GridData.FILL_BOTH);
-		table = tableViewer.getTable();
-		table.setHeaderVisible(true);
-		table.setLinesVisible(true);
-		table.setLayoutData(tgd);
-		table.setLayout(new TableLayout());
-
+		this.viewerStyle = viewerStyle;
+		createTableViewer(viewerStyle);
 		init();
 		if (initTable)
 		{
 			initTable();
 
 			// set default minimum size
-			tgd.minimumWidth = tableViewer.getTable().getColumnCount() * 30;
-			tgd.minimumHeight = 50;
+			if (gridData != null) {
+				gridData.minimumWidth = tableViewer.getTable().getColumnCount() * 30;
+				gridData.minimumHeight = 50;
+			}
 		}
+	}
+
+	protected int getViewerStyle() {
+		return viewerStyle;
+	}
+
+	protected void createTableViewer(int viewerStyle) {
+		tableViewer = new TableViewer(this, viewerStyle);
+		tableViewer.setUseHashlookup(true);
+		gridData = new GridData(GridData.FILL_BOTH);
+		table = tableViewer.getTable();
+		table.setHeaderVisible(true);
+		table.setLinesVisible(true);
+		table.setLayoutData(gridData);
+		table.setLayout(new TableLayout());
+
 	}
 
 	protected void initTable() {
