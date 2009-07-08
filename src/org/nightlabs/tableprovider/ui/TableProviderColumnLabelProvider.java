@@ -12,13 +12,11 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 public class TableProviderColumnLabelProvider extends ColumnLabelProvider {
 
 	private Collection<TableProvider<?, ?>> tableProviders;
-//	private String type;
 	private Set<String> types;
 	private String scope;
 
 	public TableProviderColumnLabelProvider(Collection<TableProvider<?, ?>> tableProviders, Set<String> types, String scope) {
 		this.tableProviders = tableProviders;
-//		this.type = type;
 		this.types = types;
 		this.scope = scope;
 	}

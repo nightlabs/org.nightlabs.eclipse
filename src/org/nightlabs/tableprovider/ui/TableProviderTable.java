@@ -28,6 +28,7 @@ extends AbstractTableComposite<Element>
 	private String elementClass;
 	private String scope;
 	private List<TableColumnLabelProviderPair> tableColumnLabelProviderPairs;
+	private Collection<Element> elements;
 
 	public TableProviderTable(Composite parent, int style, String elementClass, String scope) {
 		super(parent, style, false, DEFAULT_STYLE_MULTI_BORDER);
@@ -42,7 +43,7 @@ extends AbstractTableComposite<Element>
 	 */
 	@Override
 	protected void createTableColumns(TableViewer tableViewer, Table table) {
-		tableColumnLabelProviderPairs = tableProviderBuilder.createTableColumnLabelProviderPairs(table, elementClass, scope);
+		tableColumnLabelProviderPairs = createTableColumnLabelProviderPairs(table, elements);
 		TableLayout tableLayout = new TableLayout();
 		configureTableLayout(table, tableLayout);
 	}
@@ -68,8 +69,9 @@ extends AbstractTableComposite<Element>
 		}
 	}
 
-	public void setElementIDs(Collection elementIDs, String scope, ProgressMonitor monitor) {
-		Collection<TableProvider<?, ?>> tableProviders = tableProviderBuilder.getTableProviders(elementClass);
+	public void setElementIDs(Collection elementIDs, String scope, ProgressMonitor monitor)
+	{
+		Collection<TableProvider<?, ?>> tableProviders = TableProviderRegistry.sharedInstance().createTableProviders(elementClass, scope);
 		monitor.beginTask("Loading Elements", tableProviders.size() * 100);
 		Map elementID2Element = new HashMap();
 		for (TableProvider<?, ?> tp : tableProviders) {
@@ -78,6 +80,28 @@ extends AbstractTableComposite<Element>
 				elementID2Element.put(entry.getKey(), entry.getValue());
 			}
 		}
-		setInput(elementID2Element.values());
+		elements = elementID2Element.values();
+		tableProviders = TableProviderRegistry.sharedInstance().createTableProviders(elementClass, scope, elements);
+		Table table = getTable();
+		tableColumnLabelProviderPairs = createTableColumnLabelProviderPairs(table, elements);
+		table.dispose();
+		createTableViewer(getViewerStyle());
+		initTable();
+		setInput(elements);
 	}
+
+	protected List<TableColumnLabelProviderPair> createTableColumnLabelProviderPairs(Table table, Collection<Element> elements)
+	{
+		Collection<TableProvider<?, ?>> tableProviders = null;
+		if (elements == null) {
+			tableProviders = TableProviderRegistry.sharedInstance().createTableProviders(elementClass, scope);
+		}
+		else {
+			tableProviders = TableProviderRegistry.sharedInstance().createTableProviders(elementClass, scope, elements);
+		}
+		List<TableColumnLabelProviderPair> tableColumnLabelProviderPairs =
+			tableProviderBuilder.createTableColumnLabelProviderPairs(table, scope, tableProviders);
+		return tableColumnLabelProviderPairs;
+	}
+
 }

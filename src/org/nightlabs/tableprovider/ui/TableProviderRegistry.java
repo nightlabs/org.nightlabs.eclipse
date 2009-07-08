@@ -108,13 +108,40 @@ extends AbstractEPProcessor
 		return Collections.emptyList();
 	}
 
-	public Collection<TableProvider<?, ?>> createTableProvider(String elementClassName, String scopeClassName) {
+	public Collection<TableProvider<?, ?>> createTableProviders(String elementClassName, String scopeClassName) {
 		Map<String, List<TableProviderFactory>> scope2Factories = element2Scope2Factory.get(elementClassName);
 		if (scope2Factories != null) {
 			Collection<TableProvider<?, ?>> tableProviders = new ArrayList<TableProvider<?,?>>(scope2Factories.values().size());
 			List<TableProviderFactory> factories = scope2Factories.get(scopeClassName);
-			for (TableProviderFactory factory : factories) {
-				tableProviders.add(factory.createTableProvider());
+			if (factories != null) {
+				for (TableProviderFactory factory : factories) {
+					tableProviders.add(factory.createTableProvider());
+				}
+				return tableProviders;
+			}
+		}
+		return Collections.emptyList();
+	}
+
+	public Collection<TableProvider<?, ?>> createTableProviders(String elementClassName, String scopeClassName, Collection<?> elements) {
+		Map<String, List<TableProviderFactory>> scope2Factories = element2Scope2Factory.get(elementClassName);
+		if (scope2Factories != null) {
+			Collection<TableProvider<?, ?>> tableProviders = new ArrayList<TableProvider<?,?>>(scope2Factories.values().size());
+			List<TableProviderFactory> factories = scope2Factories.get(scopeClassName);
+			if (factories != null) {
+				for (TableProviderFactory factory : factories) {
+					TableProvider tp = factory.createTableProvider();
+					boolean compatible = false;
+					for (Object element : elements) {
+						if (tp.isCompatible(element, scopeClassName)) {
+							compatible = true;
+							break;
+						}
+					}
+					if (compatible) {
+						tableProviders.add(tp);
+					}
+				}
 			}
 			return tableProviders;
 		}

@@ -17,34 +17,53 @@ import org.eclipse.swt.widgets.TableColumn;
  */
 public class TableProviderBuilder
 {
-	public List<TableColumn> createTableColumns(Table table, String elementClass, String scope) {
-		Collection<TableProvider<?, ?>> tableProviders = getTableProviders(elementClass);
-		List<String> columns = getColumnNames(tableProviders, scope);
-		List<TableColumn> tableColumns = new ArrayList<TableColumn>(columns.size());
-		for (String columnName : columns) {
-			TableColumn tc = new TableColumn(table, SWT.NONE);
-			tc.setText(columnName);
-			tableColumns.add(tc);
-		}
-		return tableColumns;
-	}
-
-	public ColumnLabelProvider createColumnLabelProvider(String elementClass, String scope, Set<String> type) {
-		Collection<TableProvider<?, ?>> tableProviders = getTableProviders(elementClass);
-		TableProviderColumnLabelProvider columnLabelProvider = new TableProviderColumnLabelProvider(tableProviders, type, scope);
-		return columnLabelProvider;
-	}
-
-	public List<ColumnLabelProvider> createColumnLabelProviders(String elementClass, String scope) {
-		Collection<TableProvider<?, ?>> tableProviders = getTableProviders(elementClass);
-		List<Set<String>> typesInOrder = getTypes(tableProviders, scope);
-		List<ColumnLabelProvider> columnLabelProviders = new ArrayList<ColumnLabelProvider>();
-		for (Set<String> types : typesInOrder){
-			ColumnLabelProvider clp = createColumnLabelProvider(elementClass, scope, types);
-			columnLabelProviders.add(clp);
-		}
-		return columnLabelProviders;
-	}
+//	public List<TableColumn> createTableColumns(Table table, String elementClass, String scope) {
+//		Collection<TableProvider<?, ?>> tableProviders = getTableProviders(elementClass);
+//		List<String> columns = getColumnNames(tableProviders, scope);
+//		List<TableColumn> tableColumns = new ArrayList<TableColumn>(columns.size());
+//		for (String columnName : columns) {
+//			TableColumn tc = new TableColumn(table, SWT.NONE);
+//			tc.setText(columnName);
+//			tableColumns.add(tc);
+//		}
+//		return tableColumns;
+//	}
+//
+//	public ColumnLabelProvider createColumnLabelProvider(String elementClass, String scope, Set<String> type) {
+//		Collection<TableProvider<?, ?>> tableProviders = getTableProviders(elementClass);
+//		TableProviderColumnLabelProvider columnLabelProvider = new TableProviderColumnLabelProvider(tableProviders, type, scope);
+//		return columnLabelProvider;
+//	}
+//
+//	public List<ColumnLabelProvider> createColumnLabelProviders(String elementClass, String scope) {
+//		Collection<TableProvider<?, ?>> tableProviders = getTableProviders(elementClass);
+//		List<Set<String>> typesInOrder = getTypes(tableProviders, scope);
+//		List<ColumnLabelProvider> columnLabelProviders = new ArrayList<ColumnLabelProvider>();
+//		for (Set<String> types : typesInOrder){
+//			ColumnLabelProvider clp = createColumnLabelProvider(elementClass, scope, types);
+//			columnLabelProviders.add(clp);
+//		}
+//		return columnLabelProviders;
+//	}
+//
+//	public List<TableColumnLabelProviderPair> createTableColumnLabelProviderPairs(Table table, String elementClass, String scope) {
+//		List<TableColumn> tableColumns = createTableColumns(table, elementClass, scope);
+//		List<ColumnLabelProvider> columnLabelProviders = createColumnLabelProviders(elementClass, scope);
+//		List<TableColumnLabelProviderPair> pairs = new ArrayList<TableColumnLabelProviderPair>(tableColumns.size());
+//		for (int i=0; i<tableColumns.size(); i++){
+//			TableColumnLabelProviderPair pair = new TableColumnLabelProviderPair(tableColumns.get(i), columnLabelProviders.get(i));
+//			pairs.add(pair);
+//		}
+//		return pairs;
+//	}
+//
+//	private Collection<TableProvider<?, ?>> tableProviders = null;
+//	public Collection<TableProvider<?, ?>> getTableProviders(String elementClass) {
+//		if (tableProviders == null) {
+//			tableProviders = TableProviderRegistry.sharedInstance().createTableProviders(elementClass);
+//		}
+//		return tableProviders;
+//	}
 
 	public List<String> getColumnNames(Collection<TableProvider<?, ?>> tableProviders, String scope) {
 		List<String> columns = new ArrayList<String>();
@@ -84,15 +103,41 @@ public class TableProviderBuilder
 					typeSet = new HashSet<String>();
 				}
 				typeSet.add(type);
-				typesList.add(typeSet);
+				if (typesList.size() > i)
+					typesList.set(i, typeSet);
+				else
+					typesList.add(typeSet);
 			}
 		}
 		return typesList;
 	}
 
-	public List<TableColumnLabelProviderPair> createTableColumnLabelProviderPairs(Table table, String elementClass, String scope) {
-		List<TableColumn> tableColumns = createTableColumns(table, elementClass, scope);
-		List<ColumnLabelProvider> columnLabelProviders = createColumnLabelProviders(elementClass, scope);
+	public List<TableColumn> createTableColumns(Table table, String scope, Collection<TableProvider<?, ?>> tableProviders) {
+		List<String> columns = getColumnNames(tableProviders, scope);
+		List<TableColumn> tableColumns = new ArrayList<TableColumn>(columns.size());
+		for (String columnName : columns) {
+			TableColumn tc = new TableColumn(table, SWT.NONE);
+			tc.setText(columnName);
+			tableColumns.add(tc);
+		}
+		return tableColumns;
+	}
+
+	public List<ColumnLabelProvider> createColumnLabelProviders(String scope, Collection<TableProvider<?, ?>> tableProviders) {
+		List<Set<String>> typesInOrder = getTypes(tableProviders, scope);
+		List<ColumnLabelProvider> columnLabelProviders = new ArrayList<ColumnLabelProvider>();
+		for (Set<String> types : typesInOrder){
+			ColumnLabelProvider clp = createColumnLabelProvider(tableProviders, scope, types);
+			columnLabelProviders.add(clp);
+		}
+		return columnLabelProviders;
+	}
+
+	public List<TableColumnLabelProviderPair> createTableColumnLabelProviderPairs(Table table,
+			String scope, Collection<TableProvider<?, ?>> tableProviders)
+	{
+		List<TableColumn> tableColumns = createTableColumns(table, scope, tableProviders);
+		List<ColumnLabelProvider> columnLabelProviders = createColumnLabelProviders(scope, tableProviders);
 		List<TableColumnLabelProviderPair> pairs = new ArrayList<TableColumnLabelProviderPair>(tableColumns.size());
 		for (int i=0; i<tableColumns.size(); i++){
 			TableColumnLabelProviderPair pair = new TableColumnLabelProviderPair(tableColumns.get(i), columnLabelProviders.get(i));
@@ -101,11 +146,9 @@ public class TableProviderBuilder
 		return pairs;
 	}
 
-	private Collection<TableProvider<?, ?>> tableProviders = null;
-	public Collection<TableProvider<?, ?>> getTableProviders(String elementClass) {
-		if (tableProviders == null) {
-			tableProviders = TableProviderRegistry.sharedInstance().createTableProviders(elementClass);
-		}
-		return tableProviders;
+	public ColumnLabelProvider createColumnLabelProvider(Collection<TableProvider<?, ?>> tableProviders, String scope, Set<String> type) {
+		TableProviderColumnLabelProvider columnLabelProvider = new TableProviderColumnLabelProvider(tableProviders, type, scope);
+		return columnLabelProvider;
 	}
+
 }
