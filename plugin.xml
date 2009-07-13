@@ -7,5 +7,16 @@
             class="org.nightlabs.history.StartupListener">
       </startup>
    </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="org.nightlabs.history.EditorHistoryBackActionHandler"
+            commandId="org.eclipse.ui.navigate.backwardHistory">
+      </handler>
+      <handler
+            class="org.nightlabs.history.EditorHistoryForwardActionHandler"
+            commandId="org.eclipse.ui.navigate.forwardHistory">
+      </handler>
+   </extension>
 
 </plugin>
