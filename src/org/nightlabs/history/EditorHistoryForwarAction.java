@@ -8,18 +8,22 @@ import org.eclipse.ui.PlatformUI;
  * @author Daniel Mazurek - daniel [at] nightlabs [dot] de
  *
  */
-public class EditorHistoryBackAction extends Action {
+public class EditorHistoryForwarAction
+extends Action
+{
+	public static final String ID = EditorHistoryForwarAction.class.getName();
 
-	public static final String ID = EditorHistoryBackAction.class.getName();
-
-	public EditorHistoryBackAction() {
+	/**
+	 *
+	 */
+	public EditorHistoryForwarAction() {
 		super();
 		setId(ID);
-		setText("History Back");
-		setToolTipText("History Back");
+		setText("History Forward");
+		setToolTipText("History Forward");
 		ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
-		setImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_TOOL_BACK));
-		setActionDefinitionId("org.eclipse.ui.navigate.backwardHistory");
+		setImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_TOOL_FORWARD));
+		setActionDefinitionId("org.eclipse.ui.navigate.forwardHistory");
 	}
 
 	/* (non-Javadoc)
@@ -27,7 +31,7 @@ public class EditorHistoryBackAction extends Action {
 	 */
 	@Override
 	public void run() {
-		EditorHistory.sharedInstance().historyBack();
+		EditorHistory.sharedInstance().historyForward();
 	}
 
 	/* (non-Javadoc)
@@ -35,7 +39,7 @@ public class EditorHistoryBackAction extends Action {
 	 */
 	@Override
 	public boolean isEnabled() {
-		return EditorHistory.sharedInstance().canBackward();
+		return EditorHistory.sharedInstance().canForward();
 	}
 
 }

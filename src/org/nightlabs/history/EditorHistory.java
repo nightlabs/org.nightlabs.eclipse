@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IWorkbench;
@@ -11,8 +12,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.nightlabs.base.ui.part.PartAdapter;
-import org.nightlabs.base.ui.util.RCPUtil;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * @author Daniel Mazurek - daniel [at] nightlabs [dot] de
@@ -31,10 +31,18 @@ public class EditorHistory
 		return sharedInstance;
 	}
 
+//	private IContributionItem forwardAction;
+//	private IContributionItem backAction;
+	private IAction forwardAction;
+	private IAction backAction;
+
 	private IWorkbench workbench;
 	private List<IEditorHistoryItem> historyItems;
 	private int currentIndex = 0;
-	private IPartListener2 partListener = new PartAdapter() {
+	private boolean forwardPressed;
+	private boolean backPressed;
+
+	private IPartListener2 partListener = new IPartListener2() {
 		/* (non-Javadoc)
 		 * @see org.nightlabs.base.ui.part.PartAdapter#partActivated(org.eclipse.ui.IWorkbenchPartReference)
 		 */
@@ -43,25 +51,95 @@ public class EditorHistory
 			IWorkbenchPart part = partRef.getPart(false);
 			if (part instanceof IEditorPart) {
 				IEditorPart editorPart = (IEditorPart) part;
-				IEditorHistoryItem item = getHistoryItem(editorPart);
-				if (item == null) {
-					item = new EditorHistoryItem(partRef.getId(), editorPart.getEditorInput(), getCurrentPerspectiveID());
+				// user clicked manually on the editor tab
+				if (!forwardPressed  && !backPressed) {
+					IEditorHistoryItem item = new EditorHistoryItem(partRef.getId(), editorPart.getEditorInput(), getCurrentPerspectiveID());
 					historyItems.add(item);
-					currentIndex++;
+					currentIndex = historyItems.indexOf(item);
 				}
+				updateActions();
 			}
 		}
+		/* (non-Javadoc)
+		 * @see org.eclipse.ui.IPartListener2#partBroughtToTop(org.eclipse.ui.IWorkbenchPartReference)
+		 */
+		@Override
+		public void partBroughtToTop(IWorkbenchPartReference partRef) {
+			// TODO Auto-generated method stub
+
+		}
+
+		/* (non-Javadoc)
+		 * @see org.eclipse.ui.IPartListener2#partClosed(org.eclipse.ui.IWorkbenchPartReference)
+		 */
+		@Override
+		public void partClosed(IWorkbenchPartReference partRef) {
+			// TODO Auto-generated method stub
+
+		}
+
+		/* (non-Javadoc)
+		 * @see org.eclipse.ui.IPartListener2#partDeactivated(org.eclipse.ui.IWorkbenchPartReference)
+		 */
+		@Override
+		public void partDeactivated(IWorkbenchPartReference partRef) {
+			// TODO Auto-generated method stub
+
+		}
+
+		/* (non-Javadoc)
+		 * @see org.eclipse.ui.IPartListener2#partHidden(org.eclipse.ui.IWorkbenchPartReference)
+		 */
+		@Override
+		public void partHidden(IWorkbenchPartReference partRef) {
+			// TODO Auto-generated method stub
+
+		}
+
+		/* (non-Javadoc)
+		 * @see org.eclipse.ui.IPartListener2#partInputChanged(org.eclipse.ui.IWorkbenchPartReference)
+		 */
+		@Override
+		public void partInputChanged(IWorkbenchPartReference partRef) {
+			// TODO Auto-generated method stub
+
+		}
+
+		/* (non-Javadoc)
+		 * @see org.eclipse.ui.IPartListener2#partOpened(org.eclipse.ui.IWorkbenchPartReference)
+		 */
+		@Override
+		public void partOpened(IWorkbenchPartReference partRef) {
+			// TODO Auto-generated method stub
+
+		}
+
+		/* (non-Javadoc)
+		 * @see org.eclipse.ui.IPartListener2#partVisible(org.eclipse.ui.IWorkbenchPartReference)
+		 */
+		@Override
+		public void partVisible(IWorkbenchPartReference partRef) {
+			// TODO Auto-generated method stub
+
+		}
+
 	};
 
 	private EditorHistory() {
 		historyItems = new ArrayList<IEditorHistoryItem>();
+//		forwardAction = new EditorHistoryForwardContributionItem();
+//		backAction = new EditorHistoryBackContributionItem();
+		forwardAction = new EditorHistoryForwarAction();
+		backAction = new EditorHistoryBackAction();
+
+		updateActions();
 	}
 
 	private boolean listenerAdded = false;
 	private boolean check()
 	{
 		if (workbench == null) {
-			throw new IllegalStateException("Workbencj is notset, call setWorkbench() first!");
+			throw new IllegalStateException("Workbench is not set, call setWorkbench() first!");
 		}
 		if (!listenerAdded) {
 			for (IWorkbenchWindow window : workbench.getWorkbenchWindows()) {
@@ -84,18 +162,17 @@ public class EditorHistory
 	}
 
 	private String getCurrentPerspectiveID() {
-//		return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getPerspective().getId();
-		return RCPUtil.getActivePerspectiveID();
+		return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getPerspective().getId();
 	}
 
-	private IEditorHistoryItem getHistoryItem(IEditorPart editorPart) {
-		for (IEditorHistoryItem item : historyItems) {
-			if (item.getEditorInput().equals(editorPart.getEditorInput())) {
-				return item;
-			}
-		}
-		return null;
-	}
+//	private IEditorHistoryItem getHistoryItem(IEditorPart editorPart) {
+//		for (IEditorHistoryItem item : historyItems) {
+//			if (item.getEditorInput().equals(editorPart.getEditorInput())) {
+//				return item;
+//			}
+//		}
+//		return null;
+//	}
 
 	public int getCurrentIndex() {
 		return currentIndex;
@@ -107,22 +184,26 @@ public class EditorHistory
 
 	public void historyForward() {
 		if (canForward()) {
+			forwardPressed = true;
 			currentIndex++;
 			IEditorHistoryItem item = historyItems.get(currentIndex);
 			showHistoryItem(item);
+			forwardPressed = false;
 		}
 	}
 
 	public void historyBack() {
 		if (canBackward()) {
+			backPressed = true;
 			currentIndex--;
 			IEditorHistoryItem item = historyItems.get(currentIndex);
 			showHistoryItem(item);
+			backPressed = false;
 		}
 	}
 
 	public boolean canForward() {
-		boolean canForward = historyItems.size() > currentIndex + 1 && !historyItems.isEmpty();
+		boolean canForward = historyItems.size() > currentIndex + 1;
 		if (logger.isDebugEnabled()) {
 			logger.debug("currentIndex = "+currentIndex);
 			logger.debug("historyItems.size() = "+historyItems.size());
@@ -132,7 +213,7 @@ public class EditorHistory
 	}
 
 	public boolean canBackward() {
-		boolean canBackward = currentIndex - 1 >= 0 && !historyItems.isEmpty();
+		boolean canBackward = currentIndex - 1 >= 0;
 		if (logger.isDebugEnabled()) {
 			logger.debug("currentIndex = "+currentIndex);
 			logger.debug("historyItems.size() = "+historyItems.size());
@@ -141,7 +222,7 @@ public class EditorHistory
 		return canBackward;
 	}
 
-	protected void showHistoryItem(IEditorHistoryItem item) {
+	private void showHistoryItem(IEditorHistoryItem item) {
 		try {
 			if (logger.isDebugEnabled()) {
 				logger.debug("showHistoryItem()");
@@ -152,42 +233,83 @@ public class EditorHistory
 			workbench.showPerspective(item.getPerspectiveId(), workbench.getActiveWorkbenchWindow());
 			for (IWorkbenchWindow window : workbench.getWorkbenchWindows()) {
 				for (IWorkbenchPage page : window.getPages()) {
-					// Does not work
 					IEditorPart editorPart = page.findEditor(item.getEditorInput());
 					if (editorPart != null) {
-//						workbench.showPerspective(item.getPerspectiveId(), window);
 						page.activate(editorPart);
 						break;
 					}
-
-//					// Does not work
-//					IEditorReference[] editorReferences = page.getEditorReferences();
-//					for (IEditorReference editorReference : editorReferences) {
-//						if (logger.isDebugEnabled()) {
-//							logger.debug("editorReference.getId() = "+editorReference.getId());
-//						}
-//						if (editorReference.getId().equals(item.getEditorId())) {
-//							if (logger.isDebugEnabled()) {
-//								logger.debug("editorReference.getId().equals(item.getEditorId()");
-//							}
-//							if (editorReference.getEditorInput().equals(item.getEditorInput())) {
-//								workbench.showPerspective(item.getPerspectiveId(), window);
-//								page.activate(editorReference.getPart(false));
-//								if (logger.isDebugEnabled()) {
-//									logger.debug("perspectiveID = "+item.getPerspectiveId());
-//									logger.debug("editorID = "+item.getEditorId());
-//									logger.debug("editorReference = "+editorReference);
-//								}
-//								break;
-//							}
-//						}
-//					}
-
 				}
 			}
+			updateActions();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+//	private void updateActions() {
+//		if (forwardAction != null) {
+//			forwardAction.update();
+//		}
+//		if (backAction != null) {
+//			backAction.update();
+//		}
+//	}
+//
+//	/**
+//	 * Returns the forwardAction.
+//	 * @return the forwardAction
+//	 */
+//	public IContributionItem getForwardAction() {
+//		return forwardAction;
+//	}
+//
+//	/**
+//	 * Returns the backAction.
+//	 * @return the backAction
+//	 */
+//	public IContributionItem getBackAction() {
+//		return backAction;
+//	}
+
+	private void updateActions() {
+		if (forwardAction != null) {
+			forwardAction.setEnabled(canForward());
+		}
+		if (backAction != null) {
+			backAction.setEnabled(canBackward());
+		}
+	}
+
+	/**
+	 * Returns the forwardAction.
+	 * @return the forwardAction
+	 */
+	public IAction getForwardAction() {
+		return forwardAction;
+	}
+
+	/**
+	 * Returns the backAction.
+	 * @return the backAction
+	 */
+	public IAction getBackAction() {
+		return backAction;
+	}
+
+	public List<IEditorHistoryItem> getBackItems() {
+		 List<IEditorHistoryItem> backItems = new ArrayList<IEditorHistoryItem>(currentIndex);
+		 for (int i = 0; i < currentIndex; i++) {
+			 backItems.add(historyItems.get(i));
+		 }
+		 return backItems;
+	}
+
+	public List<IEditorHistoryItem> getForwardItems() {
+		 List<IEditorHistoryItem> forwardItems = new ArrayList<IEditorHistoryItem>();
+		 for (int i = currentIndex+1; i < historyItems.size(); i++) {
+			 forwardItems.add(historyItems.get(i));
+		 }
+		 return forwardItems;
 	}
 
 }
