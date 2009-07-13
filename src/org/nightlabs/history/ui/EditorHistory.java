@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IPartListener2;
@@ -48,6 +49,8 @@ public class EditorHistory
 	private boolean forwardPressed;
 	private boolean backPressed;
 
+	private ListenerList listeners;
+
 	private IPartListener2 partListener = new IPartListener2() {
 		/* (non-Javadoc)
 		 * @see org.nightlabs.base.ui.part.PartAdapter#partActivated(org.eclipse.ui.IWorkbenchPartReference)
@@ -64,6 +67,7 @@ public class EditorHistory
 					currentIndex = historyItems.indexOf(item);
 				}
 				updateActions();
+				fireEventHistoryEvent();
 			}
 		}
 		/* (non-Javadoc)
@@ -135,9 +139,9 @@ public class EditorHistory
 		historyItems = new ArrayList<IEditorHistoryItem>();
 //		forwardAction = new EditorHistoryForwardContributionItem();
 //		backAction = new EditorHistoryBackContributionItem();
-		forwardAction = new EditorHistoryForwarAction();
+		forwardAction = new EditorHistoryForwardAction();
 		backAction = new EditorHistoryBackAction();
-
+		listeners = new ListenerList();
 		updateActions();
 	}
 
@@ -244,9 +248,15 @@ public class EditorHistory
 						page.activate(editorPart);
 						break;
 					}
+					// editor could not be found (possibly closed)
+					if (editorPart == null) {
+						editorPart = page.openEditor(item.getEditorInput(), item.getEditorId());
+						break;
+					}
 				}
 			}
 			updateActions();
+			fireEventHistoryEvent();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -316,6 +326,22 @@ public class EditorHistory
 			 forwardItems.add(historyItems.get(i));
 		 }
 		 return forwardItems;
+	}
+
+	public void addEventHistoryListener(IEditorHistoryChangedListener listener) {
+		listeners.add(listener);
+	}
+
+	public void removeEventHistoryListener(IEditorHistoryChangedListener listener) {
+		listeners.remove(listener);
+	}
+
+	private void fireEventHistoryEvent() {
+		EditorHistoryChangedEvent event = new EditorHistoryChangedEvent(this);
+		for (Object o : listeners.getListeners()) {
+			IEditorHistoryChangedListener listener = (IEditorHistoryChangedListener) o;
+			listener.editorHistoryChanged(event);
+		}
 	}
 
 }

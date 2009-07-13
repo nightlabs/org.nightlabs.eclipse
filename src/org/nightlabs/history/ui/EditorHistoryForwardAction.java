@@ -9,19 +9,19 @@ import org.nightlabs.history.ui.resource.Messages;
  * @author Daniel Mazurek - daniel [at] nightlabs [dot] de
  *
  */
-public class EditorHistoryForwarAction
+public class EditorHistoryForwardAction
 extends Action
 {
-	public static final String ID = EditorHistoryForwarAction.class.getName();
+	public static final String ID = EditorHistoryForwardAction.class.getName();
 
 	/**
 	 *
 	 */
-	public EditorHistoryForwarAction() {
+	public EditorHistoryForwardAction() {
 		super();
 		setId(ID);
-		setText(Messages.getString("org.nightlabs.history.ui.EditorHistoryForwarAction.text")); //$NON-NLS-1$
-		setToolTipText(Messages.getString("org.nightlabs.history.ui.EditorHistoryForwarAction.tooltip")); //$NON-NLS-1$
+		setText(Messages.getString("org.nightlabs.history.ui.EditorHistoryForwardAction.text")); //$NON-NLS-1$
+		setToolTipText(Messages.getString("org.nightlabs.history.ui.EditorHistoryForwardAction.tooltip")); //$NON-NLS-1$
 		ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
 		setImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_TOOL_FORWARD));
 		setActionDefinitionId("org.eclipse.ui.navigate.forwardHistory"); //$NON-NLS-1$
