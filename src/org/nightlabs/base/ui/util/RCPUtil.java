@@ -30,13 +30,17 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
@@ -67,9 +71,11 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
@@ -77,6 +83,10 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.internal.EditorAreaHelper;
+import org.eclipse.ui.internal.EditorPane;
+import org.eclipse.ui.internal.EditorStack;
+import org.eclipse.ui.internal.WorkbenchPage;
 import org.nightlabs.base.ui.composite.ChildStatusController;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.form.AbstractBaseFormPage;
@@ -91,7 +101,7 @@ import org.nightlabs.util.IOUtil;
  */
 public class RCPUtil
 {
-//	private static final Logger logger = Logger.getLogger( RCPUtil.class);
+	private static final Logger logger = Logger.getLogger( RCPUtil.class);
 
 	/**
 	 * Recursively sets the enabled flag for the given Composite and all its children.
@@ -980,4 +990,65 @@ public class RCPUtil
 			}
 		}
 	}
+
+	/**
+	 * Returns all {@link IEditorReference} for the {@link IWorkbench}.
+	 * @return all {@link IEditorReference} for the {@link IWorkbench}.
+	 */
+	public static IEditorReference[] getAllEditorReferences()
+	{
+		Collection<IEditorReference> editorReferences = new HashSet<IEditorReference>();
+		for (IWorkbenchWindow win : PlatformUI.getWorkbench().getWorkbenchWindows()) {
+			for (IWorkbenchPage page : win.getPages()) {
+				IEditorReference[] editorRefs = getEditorReferencesPerPage(page);
+				for (IEditorReference editorRef : editorRefs) {
+					editorReferences.add(editorRef);
+				}
+			}
+		}
+		return editorReferences.toArray(new IEditorReference[editorReferences.size()]);
+	}
+
+	/**
+	 * Returns an array with all {@link IEditorReference} of the given {@link IWorkbenchPage}.
+	 * In case the patched version of org.eclipse.ui from NightLabs is used which provides EditorPart to Perspective binding,
+	 * this method will also work properly in contrast to {@link IWorkbenchPage#getEditorReferences()} which
+	 * only returns the IEditorReferences of the the current displayed perspective.
+	 * If the patch is not installed/used this method will just delegate to {@link IWorkbenchPage#getEditorReferences()}.
+	 *
+	 * @param page the {@link IWorkbenchPage} to get all {@link IEditorReference} for.
+	 * @return an array with all {@link IEditorReference} of the given {@link IWorkbenchPage}.
+	 */
+	public static IEditorReference[] getEditorReferencesPerPage(IWorkbenchPage page) {
+		if (page instanceof WorkbenchPage) {
+			Collection<IEditorReference> editorReferences = new HashSet<IEditorReference>();
+			WorkbenchPage workbenchPage = (WorkbenchPage) page;
+			EditorAreaHelper editorAreaHelper = workbenchPage.getEditorPresentation();
+			try {
+				Method method = EditorAreaHelper.class.getMethod("getEditorStack", String.class);
+				IConfigurationElement[] elements = Platform.getExtensionRegistry()
+					.getExtensionPoint("org.eclipse.ui.perspectives") //$NON-NLS-1$
+					.getConfigurationElements();
+				for (int i = 0; i < elements.length; i++) {
+					String perspectiveId = elements[i].getAttribute("id").trim(); //$NON-NLS-1$
+					Object o = method.invoke(editorAreaHelper, perspectiveId);
+					if (o instanceof EditorStack) {
+						EditorStack editorStack = (EditorStack) o;
+						EditorPane[] editorPanes = editorStack.getEditors();
+						for (EditorPane editorPane: editorPanes) {
+							IEditorReference editorReference = editorPane.getEditorReference();
+							editorReferences.add(editorReference);
+						}
+					}
+				}
+				return editorReferences.toArray(new IEditorReference[editorReferences.size()]);
+			} catch (Exception e) {
+				logger.warn("Could not access method getEditorStack(String perspectiveID) for class "+EditorAreaHelper.class.getName() +
+						". Assume that not the patched editor perspective version of org.nightlabs.eclipse.ui is used and try to close editors the normal way.", e);
+				return page.getEditorReferences();
+			}
+		}
+		return page.getEditorReferences();
+	}
+
 }
