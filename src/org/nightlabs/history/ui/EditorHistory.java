@@ -13,9 +13,14 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
-import org.nightlabs.history.ui.resource.Messages;
 
 /**
+ * Editor-History which tracks all activated editors.,
+ * In contrast to the default org.eclipse.ui.internal.NavigationHistory
+ * it also tracks the corresponding perspective where the editor was opened and
+ * opens it again, when the corresponding history item will be displayed.
+ * The history also provides a forward and backward action.
+ *
  * @author Daniel Mazurek - daniel [at] nightlabs [dot] de
  *
  */
