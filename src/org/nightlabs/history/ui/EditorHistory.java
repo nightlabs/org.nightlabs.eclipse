@@ -1,4 +1,4 @@
-package org.nightlabs.history;
+package org.nightlabs.history.ui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +13,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.nightlabs.history.ui.resource.Messages;
 
 /**
  * @author Daniel Mazurek - daniel [at] nightlabs [dot] de
@@ -139,7 +140,7 @@ public class EditorHistory
 	private boolean check()
 	{
 		if (workbench == null) {
-			throw new IllegalStateException("Workbench is not set, call setWorkbench() first!");
+			throw new IllegalStateException("Workbench is not set, call setWorkbench() first!"); //$NON-NLS-1$
 		}
 		if (!listenerAdded) {
 			for (IWorkbenchWindow window : workbench.getWorkbenchWindows()) {
@@ -205,9 +206,9 @@ public class EditorHistory
 	public boolean canForward() {
 		boolean canForward = historyItems.size() > currentIndex + 1;
 		if (logger.isDebugEnabled()) {
-			logger.debug("currentIndex = "+currentIndex);
-			logger.debug("historyItems.size() = "+historyItems.size());
-			logger.debug("canForward = "+canForward);
+			logger.debug("currentIndex = "+currentIndex); //$NON-NLS-1$
+			logger.debug("historyItems.size() = "+historyItems.size()); //$NON-NLS-1$
+			logger.debug("canForward = "+canForward); //$NON-NLS-1$
 		}
 		return canForward;
 	}
@@ -215,9 +216,9 @@ public class EditorHistory
 	public boolean canBackward() {
 		boolean canBackward = currentIndex - 1 >= 0;
 		if (logger.isDebugEnabled()) {
-			logger.debug("currentIndex = "+currentIndex);
-			logger.debug("historyItems.size() = "+historyItems.size());
-			logger.debug("canBackward = "+canBackward);
+			logger.debug("currentIndex = "+currentIndex); //$NON-NLS-1$
+			logger.debug("historyItems.size() = "+historyItems.size()); //$NON-NLS-1$
+			logger.debug("canBackward = "+canBackward); //$NON-NLS-1$
 		}
 		return canBackward;
 	}
@@ -225,10 +226,10 @@ public class EditorHistory
 	private void showHistoryItem(IEditorHistoryItem item) {
 		try {
 			if (logger.isDebugEnabled()) {
-				logger.debug("showHistoryItem()");
-				logger.debug("item.getEditorId() = "+item.getEditorId());
-				logger.debug("item.getEditorInput() = "+item.getEditorInput());
-				logger.debug("item.getPerspectiveId() = "+item.getPerspectiveId());
+				logger.debug("showHistoryItem()"); //$NON-NLS-1$
+				logger.debug("item.getEditorId() = "+item.getEditorId()); //$NON-NLS-1$
+				logger.debug("item.getEditorInput() = "+item.getEditorInput()); //$NON-NLS-1$
+				logger.debug("item.getPerspectiveId() = "+item.getPerspectiveId()); //$NON-NLS-1$
 			}
 			workbench.showPerspective(item.getPerspectiveId(), workbench.getActiveWorkbenchWindow());
 			for (IWorkbenchWindow window : workbench.getWorkbenchWindows()) {

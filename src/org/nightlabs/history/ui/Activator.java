@@ -1,4 +1,4 @@
-package org.nightlabs.history;
+package org.nightlabs.history.ui;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -9,7 +9,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.nightlabs.history";
+	public static final String PLUGIN_ID = "org.nightlabs.history.ui";
 
 	// The shared instance
 	private static Activator plugin;

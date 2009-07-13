@@ -1,4 +1,4 @@
-package org.nightlabs.history;
+package org.nightlabs.history.ui;
 import org.eclipse.ui.IStartup;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;

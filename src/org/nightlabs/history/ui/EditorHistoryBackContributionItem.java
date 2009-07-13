@@ -1,8 +1,9 @@
-package org.nightlabs.history;
+package org.nightlabs.history.ui;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
+import org.nightlabs.history.ui.resource.Messages;
 
 /**
  * @author Daniel Mazurek - daniel [at] nightlabs [dot] de
@@ -23,12 +24,12 @@ extends AbstractEditorHistoryContributionItem
 
 	@Override
 	protected String getText() {
-		return "EditorHistory Back";
+		return Messages.getString("org.nightlabs.history.ui.EditorHistoryBackContributionItem.text"); //$NON-NLS-1$
 	}
 
 	@Override
 	protected String getToolTip() {
-		return "EditorHistory Back";
+		return Messages.getString("org.nightlabs.history.ui.EditorHistoryBackContributionItem.tooltip"); //$NON-NLS-1$
 	}
 
 	@Override

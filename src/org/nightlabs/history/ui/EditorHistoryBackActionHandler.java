@@ -1,4 +1,4 @@
-package org.nightlabs.history;
+package org.nightlabs.history.ui;
 
 
 /**

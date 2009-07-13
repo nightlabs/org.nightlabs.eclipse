@@ -1,4 +1,4 @@
-package org.nightlabs.history;
+package org.nightlabs.history.ui;
 
 import org.eclipse.ui.IEditorInput;
 
@@ -26,7 +26,7 @@ public class EditorHistoryItem implements IEditorHistoryItem {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.nightlabs.history.IEditorHistoryItem#getEditorId()
+	 * @see org.nightlabs.history.ui.IEditorHistoryItem#getEditorId()
 	 */
 	@Override
 	public String getEditorId() {
@@ -34,7 +34,7 @@ public class EditorHistoryItem implements IEditorHistoryItem {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.nightlabs.history.IEditorHistoryItem#getEditorInput()
+	 * @see org.nightlabs.history.ui.IEditorHistoryItem#getEditorInput()
 	 */
 	@Override
 	public IEditorInput getEditorInput() {
@@ -42,7 +42,7 @@ public class EditorHistoryItem implements IEditorHistoryItem {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.nightlabs.history.IEditorHistoryItem#getPerspectiveId()
+	 * @see org.nightlabs.history.ui.IEditorHistoryItem#getPerspectiveId()
 	 */
 	@Override
 	public String getPerspectiveId() {

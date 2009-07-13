@@ -1,8 +1,9 @@
-package org.nightlabs.history;
+package org.nightlabs.history.ui;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
+import org.nightlabs.history.ui.resource.Messages;
 
 /**
  * @author Daniel Mazurek - daniel [at] nightlabs [dot] de
@@ -15,11 +16,11 @@ public class EditorHistoryBackAction extends Action {
 	public EditorHistoryBackAction() {
 		super();
 		setId(ID);
-		setText("History Back");
-		setToolTipText("History Back");
+		setText(Messages.getString("org.nightlabs.history.ui.EditorHistoryBackAction.text")); //$NON-NLS-1$
+		setToolTipText(Messages.getString("org.nightlabs.history.ui.EditorHistoryBackAction.tooltip")); //$NON-NLS-1$
 		ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
 		setImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_TOOL_BACK));
-		setActionDefinitionId("org.eclipse.ui.navigate.backwardHistory");
+		setActionDefinitionId("org.eclipse.ui.navigate.backwardHistory"); //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)

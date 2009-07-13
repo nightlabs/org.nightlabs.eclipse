@@ -4,17 +4,17 @@
    <extension
          point="org.eclipse.ui.startup">
       <startup
-            class="org.nightlabs.history.StartupListener">
+            class="org.nightlabs.history.ui.StartupListener">
       </startup>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="org.nightlabs.history.EditorHistoryBackActionHandler"
+            class="org.nightlabs.history.ui.EditorHistoryBackActionHandler"
             commandId="org.eclipse.ui.navigate.backwardHistory">
       </handler>
       <handler
-            class="org.nightlabs.history.EditorHistoryForwardActionHandler"
+            class="org.nightlabs.history.ui.EditorHistoryForwardActionHandler"
             commandId="org.eclipse.ui.navigate.forwardHistory">
       </handler>
    </extension>

@@ -1,8 +1,9 @@
-package org.nightlabs.history;
+package org.nightlabs.history.ui;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
+import org.nightlabs.history.ui.resource.Messages;
 
 /**
  * @author Daniel Mazurek - daniel [at] nightlabs [dot] de
@@ -22,7 +23,7 @@ extends AbstractEditorHistoryContributionItem
 	}
 
 	/* (non-Javadoc)
-	 * @see org.nightlabs.history.AbstractEditorHistoryContributionItem#createImage()
+	 * @see org.nightlabs.history.ui.AbstractEditorHistoryContributionItem#createImage()
 	 */
 	@Override
 	protected Image createImage() {
@@ -31,23 +32,23 @@ extends AbstractEditorHistoryContributionItem
 	}
 
 	/* (non-Javadoc)
-	 * @see org.nightlabs.history.AbstractEditorHistoryContributionItem#getText()
+	 * @see org.nightlabs.history.ui.AbstractEditorHistoryContributionItem#getText()
 	 */
 	@Override
 	protected String getText() {
-		return "EditorHistory Forward";
+		return Messages.getString("org.nightlabs.history.ui.EditorHistoryForwardContributionItem.text"); //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
-	 * @see org.nightlabs.history.AbstractEditorHistoryContributionItem#getToolTip()
+	 * @see org.nightlabs.history.ui.AbstractEditorHistoryContributionItem#getToolTip()
 	 */
 	@Override
 	protected String getToolTip() {
-		return "EditorHistory Forward";
+		return Messages.getString("org.nightlabs.history.ui.EditorHistoryForwardContributionItem.tooltip"); //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
-	 * @see org.nightlabs.history.AbstractEditorHistoryContributionItem#isEnabled()
+	 * @see org.nightlabs.history.ui.AbstractEditorHistoryContributionItem#isEnabled()
 	 */
 	@Override
 	public boolean isEnabled() {
@@ -55,7 +56,7 @@ extends AbstractEditorHistoryContributionItem
 	}
 
 	/* (non-Javadoc)
-	 * @see org.nightlabs.history.AbstractEditorHistoryContributionItem#run()
+	 * @see org.nightlabs.history.ui.AbstractEditorHistoryContributionItem#run()
 	 */
 	@Override
 	protected void run() {
