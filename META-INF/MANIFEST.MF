@@ -3,7 +3,7 @@ Generated-from: 1148177220000;type=2
 Bundle-ManifestVersion: 2
 Bundle-Name: Editor2D Viewer Plug-in
 Bundle-SymbolicName: org.nightlabs.editor2d.viewer.ui;singleton:=true
-Bundle-Version: 1.0.7.qualifier
+Bundle-Version: 1.0.8.qualifier
 Bundle-Activator: org.nightlabs.editor2d.viewer.ui.ViewerPlugin
 Bundle-Vendor: NightLabs.org
 Bundle-Localization: plugin
