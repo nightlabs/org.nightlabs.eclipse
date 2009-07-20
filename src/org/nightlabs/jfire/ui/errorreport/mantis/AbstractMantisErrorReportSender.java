@@ -168,7 +168,14 @@ public abstract class AbstractMantisErrorReportSender implements IErrorReportSen
 		parts.add(new StringPart("project_id", String.valueOf(getProjectId())));
 		parts.add(new StringPart("severity","60")); // 60 = major
 		parts.add(new StringPart("priority","30")); // 30 = normal
-		parts.add(new StringPart("view_state","50")); // 10 = public (default) / 50 = private
+		// Since we submit to the "Automated submissions" project which is *private*,
+		// it is not necessary to make the issue itself private, too. This only causes
+		// additional work when moving the issue into another project and often is
+		// forgotten completely (leaving it "private" and thus nobody can see it even after
+		// moving it). Therefore, I now submit them with view_state "public".
+		// => https://www.jfire.org/modules/bugs/view.php?id=1194
+		// Marco. 2009-07-20.
+//		parts.add(new StringPart("view_state","50")); // 10 = public (default) / 50 = private
 		parts.add(new StringPart("reproducibility", "100")); // 100 = N/A
 		parts.add(new StringPart("summary", summary.toString()));
 		parts.add(new StringPart("description", description.toString()));
