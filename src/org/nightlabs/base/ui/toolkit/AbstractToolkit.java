@@ -3,6 +3,7 @@
  */
 package org.nightlabs.base.ui.toolkit;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.PaintEvent;
@@ -30,6 +31,7 @@ public abstract class AbstractToolkit extends FormToolkit
 {
 
 	protected class TextBorderPainter implements PaintListener {
+		private final Logger logger = Logger.getLogger(TextBorderPainter.class);
 		private Control drawBorders;
 
 		public TextBorderPainter(Control child) {
@@ -39,6 +41,7 @@ public abstract class AbstractToolkit extends FormToolkit
 		public void paintControl(PaintEvent event) {
 			Composite parent = (Composite) event.widget;
 			if (drawBorders.isDisposed()) {
+				logger.warn("paintControl: Control \"" + drawBorders + "\" is disposed! Removing this PaintListener from its parent.");
 				parent.removePaintListener(this);
 				return;
 			}
@@ -61,6 +64,7 @@ public abstract class AbstractToolkit extends FormToolkit
 	}
 
 	protected class TableBorderPainter implements PaintListener {
+		private final Logger logger = Logger.getLogger(TableBorderPainter.class);
 		private Control drawBorders;
 
 		public TableBorderPainter(Control child) {
@@ -70,6 +74,7 @@ public abstract class AbstractToolkit extends FormToolkit
 		public void paintControl(PaintEvent event) {
 			Composite parent = (Composite) event.widget;
 			if (drawBorders.isDisposed()) {
+				logger.warn("paintControl: Control \"" + drawBorders + "\" is disposed! Removing this PaintListener from its parent.");
 				parent.removePaintListener(this);
 				return;
 			}
