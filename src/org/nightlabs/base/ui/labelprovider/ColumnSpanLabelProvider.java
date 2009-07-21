@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Tree;
 
 /**
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
- *
+ * @author marco schulze - marco at nightlabs dot de
  */
 public abstract class ColumnSpanLabelProvider extends OwnerDrawLabelProvider {
 
@@ -46,6 +46,8 @@ public abstract class ColumnSpanLabelProvider extends OwnerDrawLabelProvider {
 	 *
 	 * @param element The element the column-grouping should be determined for.
 	 * @return The column-grouping for the given element given as array of intervals.
+	 * A <code>null</code> result is allowed (since 2009-07-20) and means to map every
+	 * real column to a span-column (i.e. default, non-spanning behaviour).
 	 */
 	protected abstract int[][] getColumnSpan(Object element);
 
@@ -193,11 +195,24 @@ public abstract class ColumnSpanLabelProvider extends OwnerDrawLabelProvider {
 	private int[] idxColWidths = null;
 	private Point[] idxColTextExtends = null;
 
+	private int[][] safeGetColumnSpan(Object element) {
+		int[][] result = getColumnSpan(element);
+		if (result == null) {
+			int colCount = getColumnCount();
+			result = new int[colCount][];
+			for (int i = 0; i < colCount; ++i)
+				result[i] = new int[] { i };
+
+			return result;
+		}
+		return result;
+	}
+
 	private int[][] internalGetColumnSpan(Object element) {
 		if (USE_CACHE && idxElement == element) {
 			return idxColSpans;
 		}
-		return getColumnSpan(element);
+		return safeGetColumnSpan(element);
 	}
 
 	private void internalIndexElement(Event event, Object element) {
@@ -205,7 +220,7 @@ public abstract class ColumnSpanLabelProvider extends OwnerDrawLabelProvider {
 			return;
 		}
 		idxElement = element;
-		idxColSpans = getColumnSpan(element);
+		idxColSpans = safeGetColumnSpan(element);
 		internalValidateColumnSpan(idxColSpans);
 		idxColAlignments = new int[idxColSpans.length];
 		idxColTexts = new String[idxColSpans.length];
@@ -265,6 +280,22 @@ public abstract class ColumnSpanLabelProvider extends OwnerDrawLabelProvider {
 		} else {
 			return internalGetColumnAlignment(colSpan[0]);
 		}
+	}
+
+	/**
+	 * Get the number of columns in the ColumnViewer. This will return either
+	 * {@link Table#getColumnCount()} or {@link Tree#getColumnCount()}.
+	 */
+	private int getColumnCount()
+	{
+		if (columnViewer instanceof TableViewer) {
+			Table table = ((TableViewer) columnViewer).getTable();
+			return table.getColumnCount();
+		} else if (columnViewer instanceof TreeViewer) {
+			Tree tree = ((TreeViewer) columnViewer).getTree();
+			return tree.getColumnCount();
+		}
+		throw new IllegalStateException("Unsupported ColumnViewer type: " + columnViewer.getClass().getName());
 	}
 
 	private int internalGetColumnAlignment(int columnIndex) {

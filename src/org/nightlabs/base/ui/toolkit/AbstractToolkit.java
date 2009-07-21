@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.nightlabs.base.ui.toolkit;
 
@@ -31,17 +31,22 @@ public abstract class AbstractToolkit extends FormToolkit
 
 	protected class TextBorderPainter implements PaintListener {
 		private Control drawBorders;
-		
+
 		public TextBorderPainter(Control child) {
 			drawBorders = child;
 		}
-		
+
 		public void paintControl(PaintEvent event) {
 			Composite parent = (Composite) event.widget;
+			if (drawBorders.isDisposed()) {
+				parent.removePaintListener(this);
+				return;
+			}
+
 			if (drawBorders.getParent() != parent)
 				throw new RuntimeException("This PaintListener is configured to draw a border for: "+drawBorders //$NON-NLS-1$
 						+" , but is NOT a listener of the parent of that control!"); //$NON-NLS-1$
-			
+
 			if (!parent.isVisible() || !drawBorders.isVisible())
 				return;
 
@@ -52,22 +57,27 @@ public abstract class AbstractToolkit extends FormToolkit
 				GC gc = event.gc;
 				paintTextBorder(drawBorders, gc, getColors().getBorderColor());
 		}
-		
+
 	}
-	
+
 	protected class TableBorderPainter implements PaintListener {
 		private Control drawBorders;
-		
+
 		public TableBorderPainter(Control child) {
 			drawBorders = child;
 		}
 
 		public void paintControl(PaintEvent event) {
 			Composite parent = (Composite) event.widget;
+			if (drawBorders.isDisposed()) {
+				parent.removePaintListener(this);
+				return;
+			}
+
 			if (drawBorders.getParent() != parent)
 				throw new RuntimeException("This PaintListener is configured to draw a border for: "+drawBorders //$NON-NLS-1$
 						+" , but is NOT a listener of the parent of that control!"); //$NON-NLS-1$
-			
+
 			if (!parent.isVisible() || !drawBorders.isVisible())
 				return;
 
@@ -77,7 +87,7 @@ public abstract class AbstractToolkit extends FormToolkit
 
 			paintTableBorder(drawBorders, event.gc, getColors().getBorderColor());
 		}
-		
+
 	}
 
 	/**
@@ -95,19 +105,19 @@ public abstract class AbstractToolkit extends FormToolkit
 	}
 
 	protected abstract void paintTextBorder(Control child, GC gc, Color color);
-	
+
 	protected abstract void paintTableBorder(Control child, GC gc, Color color);
-	
+
 	public boolean checkForBorders(Control element) {
 		// skip own border painting if native borders are fine
 		if ((getBorderStyle() & SWT.BORDER) != 0)
 			return false;
-		
+
 		Composite parent = element.getParent();
-		
+
 		if (parent == null) // kann das passieren?
 			return false;
-		
+
 		Object flag = element.getData(IToolkit.KEY_DRAW_BORDER);
 		// The flags to force a border and to continue drawing borders for child elements.
 		boolean textBorder = false;
@@ -120,7 +130,7 @@ public abstract class AbstractToolkit extends FormToolkit
 			else if (flag.equals(IToolkit.TEXT_BORDER))
 				textBorder = true;
 		}
-			
+
 		boolean listenerAdded = false;
 		if (textBorder || element instanceof Text || element instanceof CCombo) { // element instanceof Spinner ||
 			parent.addPaintListener( new TextBorderPainter(element) );
@@ -140,11 +150,11 @@ public abstract class AbstractToolkit extends FormToolkit
 		}
 
 		listenerAdded |= checkAdditionalTypesForBorders(element);
-		
+
 		if (listenerAdded) {
 			checkPrerequisites(element);
 		}
-		
+
 		return listenerAdded;
 	}
 
@@ -152,17 +162,17 @@ public abstract class AbstractToolkit extends FormToolkit
 	 * Everytime {@link #checkForBorders(Control)} adds a PaintListener to a Control, this method
 	 * is called so that subclasses can ensure all prerequisites are met for their changes in the
 	 * layout / style.
-	 * 
+	 *
 	 * @param child the Control which is getting a border.
 	 */
 	protected abstract void checkPrerequisites(Control child);
-	
+
 	/**
 	 * Here you can check for additional own Widgets and if for this widgets flat borders should be set
 	 * then add a {@link PaintListener} to its parent, which does that. <br>
 	 * There are already 2 preconfigured ones available {@link TextBorderPainter} and
 	 * {@link TableBorderPainter}.
-	 * 
+	 *
 	 * @param control the control, which to check whether borders shall be drawn for it.
 	 * @return <code>true</code> iff a {@link PaintListener} has been added to the parent of the Control
 	 * 					drawing its borders.
