@@ -161,10 +161,11 @@ extends Dialog
 			int timeStyle = SWT.TIME;
 
 			if ((DateFormatProvider.TIME_SEC & flags) == DateFormatProvider.TIME_SEC)
-				timeStyle = timeStyle | SWT.MEDIUM;
-
-			if ((DateFormatProvider.TIME_MSEC & flags) == DateFormatProvider.TIME_MSEC)
-				timeStyle = timeStyle | SWT.LONG;
+				timeStyle |= SWT.MEDIUM;
+			else if ((DateFormatProvider.TIME_MSEC & flags) == DateFormatProvider.TIME_MSEC)
+				timeStyle |= SWT.LONG;
+			else
+				timeStyle |= SWT.SHORT;
 
 			new Label(timeComp, SWT.NONE).setText(Messages.getString("CalendarDateTimeEditLookupDialog.label.time")); //$NON-NLS-1$
 			timeDateTime = new DateTime(timeComp, timeStyle | SWT.BORDER);
@@ -211,6 +212,8 @@ extends Dialog
 	@Override
 	protected void okPressed()
 	{
+		getButton(OK).setFocus();
+		
 		if (calendarDateTime != null)
 		{
 			date.set(Calendar.YEAR, calendarDateTime.getYear());
