@@ -4,6 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/NightLabsConnection"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/KeyReader"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.nightlabs.keyreader"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
