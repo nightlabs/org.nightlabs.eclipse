@@ -202,12 +202,11 @@ extends ActionBarContributor
   	if (fileMenu != null)
   	{
   		IContributionItem printMenu = RCPUtil.getMenuItem(EditorPrintAction.ID, fileMenu);
-  		if (printMenu == null)
-  			fileMenu.insertBefore(ActionFactory.QUIT.getId(), getAction(EditorPrintAction.ID));
-  		
-//  		fileMenu.insertAfter(EditorPrintPreviewAction.ID, getAction(EditorPrintSetupAction.ID));
-			fileMenu.insertAfter(EditorPrintAction.ID, getAction(EditorPrintSetupAction.ID));
-    	fileMenu.insertAfter(EditorPrintSetupAction.ID, new Separator());
+  		if (printMenu == null && fileMenu.find(ActionFactory.QUIT.getId()) != null) {
+  	  		fileMenu.insertBefore(ActionFactory.QUIT.getId(), getAction(EditorPrintAction.ID));
+  			fileMenu.insertAfter(EditorPrintAction.ID, getAction(EditorPrintSetupAction.ID));
+  	    	fileMenu.insertAfter(EditorPrintSetupAction.ID, new Separator());  			
+  		}
   	}
 
   	// Edit
