@@ -68,6 +68,7 @@ extends WorkbenchWindowAdvisor
 		menuBarItems.add(ActionBarItem.Preferences);
 		menuBarItems.add(ActionBarItem.Close);
 		menuBarItems.add(ActionBarItem.CloseAll);
+		menuBarItems.add(ActionBarItem.Quit);
 		return new DefaultActionBuilder(configurer, menuBarItems, null);
 	}
 

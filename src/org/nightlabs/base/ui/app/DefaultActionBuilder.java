@@ -489,7 +489,9 @@ extends ActionBarAdvisor
 			fileMenu.add(new Separator());
 		}
 
-		addToMenuGroup(fileMenu, quitAction, null);
+		if (menuBarItems.contains(ActionBarItem.Quit)) {
+			addToMenuGroup(fileMenu, quitAction, null);
+		}
 
 		fileMenu.add(new GroupMarker(IWorkbenchActionConstants.FILE_END));
 		menuBar.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
@@ -554,7 +556,9 @@ extends ActionBarAdvisor
 		if (updateAction != null)
 			helpMenu.add(updateAction);
 
-		helpMenu.add(aboutAction);
+		if (menuBarItems.contains(ActionBarItem.About)) {
+			helpMenu.add(aboutAction);	
+		}
 	}
 
 	private ContributionItemSetRegistry contributionItemSetRegistry;
