@@ -170,11 +170,26 @@ implements ISelectionProvider, StatableTree
 		super(parent, SWT.NONE, XComposite.LayoutMode.TIGHT_WRAPPER, setLayoutData ? XComposite.LayoutDataMode.GRID_DATA : XComposite.LayoutDataMode.NONE);
 		treeViewer = createTreeViewer(style);
 		treeViewer.getTree().setLayoutData(new GridData(GridData.FILL_BOTH));
-		treeViewer.getTree().setHeaderVisible(headerVisible);
-		TreeStateController.sharedInstance().registerTree(this);
+		treeViewer.getTree().setHeaderVisible(headerVisible);		
 		this.sortColumns = sortColumns;
 		if (init)
 			init();
+	}
+
+	private boolean restoreCollapseState = true;
+	
+	/**
+	 * @return the restoreCollapseState
+	 */
+	public boolean isRestoreCollapseState() {
+		return restoreCollapseState;
+	}
+
+	/**
+	 * @param restoreCollapseState the restoreCollapseState to set
+	 */
+	public void setRestoreCollapseState(boolean restoreCollapseState) {
+		this.restoreCollapseState = restoreCollapseState;
 	}
 
 	/**
@@ -186,6 +201,10 @@ implements ISelectionProvider, StatableTree
 		setTreeProvider(treeViewer);
 		createTreeColumns(treeViewer.getTree());
 
+		if (restoreCollapseState) {
+			TreeStateController.sharedInstance().registerTree(this);
+		}
+		
 		if (sortColumns)
 		{
 			for (int i=0; i<treeViewer.getTree().getColumns().length; i++) {
@@ -307,7 +326,9 @@ implements ISelectionProvider, StatableTree
 		if (treeViewer != null && treeViewer.getControl() != null && !treeViewer.getControl().isDisposed())
 			treeViewer.setInput(input);
 
-		TreeStateController.sharedInstance().loadTreeState(getTree());
+		if (restoreCollapseState) {
+			TreeStateController.sharedInstance().loadTreeState(getTree());
+		}
 	}
 
 	public void setSelection(ISelection selection)
