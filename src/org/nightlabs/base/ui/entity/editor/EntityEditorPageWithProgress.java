@@ -49,6 +49,7 @@ import org.nightlabs.base.ui.composite.FadeableComposite;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.editor.IFormPartDirtyStateProxy;
 import org.nightlabs.base.ui.editor.IFormPartDirtyStateProxyListener;
+import org.nightlabs.base.ui.editor.RestorableSectionPart;
 import org.nightlabs.base.ui.editor.UndirtyBehaviour;
 import org.nightlabs.base.ui.job.Job;
 import org.nightlabs.base.ui.progress.CompoundProgressMonitor;
@@ -193,17 +194,44 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 	 * This method is invoked when the {@link IEntityEditorPageController} associated to this page
 	 * notifies that one of its objects has changed. This happens when the controller (re-)loaded
 	 * or saved its model. This method is invoked on the thread that caused the notification
-	 * so it is very likely that it is called on a non-ui thread, so please remember that ui
+	 * so it is normally called on a non-ui thread, so please remember that ui
 	 * operations have to be done on the {@link Display} thread.
 	 * <p>
-	 * This implementation does nothing and is intended to be overridden in order to fill
-	 * the ui with the data now loaded. Also make use of the {@link #switchToContent()} method
-	 * here.
+	 * The default implementation passes the new object
+	 * (from {@link EntityEditorPageControllerModifyEvent#getNewObject()})
+	 * to the managed-form as input (via {@link IManagedForm#setInput(Object)}).
+	 * The default behaviour of an {@link IManagedForm} is to delegate the input-object
+	 * to its form parts via {@link IFormPart#setFormInput(Object)}.
+	 * </p>
+	 * <p>
+	 * It's recommended to subclass {@link RestorableSectionPart} which already behaves
+	 * correctly in its {@link RestorableSectionPart#setFormInput(Object)}-implementation
+	 * for most use-cases.
+	 * </p>
+	 * <p>
+	 * After setting the managed-form's input, the default implementation of <code>handleControllerObjectModified(...)</code>
+	 * calls {@link IManagedForm#refresh()}. For all stale form-parts (i.e. sections), this will
+	 * result in a call to {@link IFormPart#refresh()} - load the data of your input into your
+	 * UI elements, there.
 	 * </p>
 	 *
-	 * @param modifyEvent The Event thrown by the associated controller.
+	 * @param modifyEvent The event fired by the associated controller.
+	 *
+	 * @see IManagedForm#setInput(Object)
+	 * @see RestorableSectionPart#setFormInput(Object)
+	 * @see RestorableSectionPart#refresh()
+	 * @see RestorableSectionPart#commit(boolean)
 	 */
-	protected void handleControllerObjectModified(EntityEditorPageControllerModifyEvent modifyEvent) {
+	protected void handleControllerObjectModified(final EntityEditorPageControllerModifyEvent modifyEvent) {
+		getManagedForm().getForm().getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				if (getManagedForm().getForm().isDisposed())
+					return;
+
+				getManagedForm().setInput(modifyEvent.getNewObject());
+				getManagedForm().refresh();
+			}
+		});
 	}
 
 

@@ -33,6 +33,8 @@ import org.eclipse.ui.forms.SectionPart;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
+import org.nightlabs.base.ui.entity.editor.EntityEditorPageControllerModifyEvent;
+import org.nightlabs.base.ui.entity.editor.EntityEditorPageWithProgress;
 import org.nightlabs.base.ui.notification.IDirtyStateManager;
 
 /**
@@ -186,5 +188,35 @@ implements IDirtyStateManager, IFormPartDirtyStateProxy
 		}
 	}
 
-
+	/**
+	 * Notifies the part that an object has been set as overall form's input.
+	 * The part can elect to react by revealing or selecting the object, or do
+	 * nothing if not applicable.
+	 * <p>
+	 * The implementation of this method in {@link RestorableSectionPart} calls
+	 * {@link #markStale()} and then returns <code>true</code>, assuming that this
+	 * default behaviour fits most use-cases in the best way. If this is not desired
+	 * in a subclass, it must override without calling the super method.
+	 * </p>
+	 * <p>
+	 * In most use-cases, however, you likely want to override &amp; extend this method in
+	 * order to save the <code>input</code> object in a field for later use.
+	 * If {@link #markStale()} was called (as it is in the default implementation), the
+	 * method {@link #refresh()} will be called afterwards and gives your subclass the
+	 * opportunity to load the <code>input</code> object's data into the UI
+	 * elements.
+	 * </p>
+	 *
+	 * @return <code>true</code> if the part has selected and revealed the
+	 *         input object, <code>false</code> otherwise.
+	 *
+	 * @see EntityEditorPageWithProgress#handleControllerObjectModified(EntityEditorPageControllerModifyEvent)
+	 * @see #refresh()
+	 * @see #commit(boolean)
+	 */
+	@Override
+	public boolean setFormInput(Object input) {
+		markStale();
+		return true;
+	}
 }

@@ -3,7 +3,7 @@ Generated-from: 1140596560679;type=2
 Bundle-ManifestVersion: 2
 Bundle-Name: NightLabs Base plugin
 Bundle-SymbolicName: org.nightlabs.base.ui; singleton:=true
-Bundle-Version: 1.1.8.qualifier
+Bundle-Version: 1.1.9.qualifier
 Bundle-ClassPath: .,
  lib/xercesImpl.jar,
  lib/commons-beanutils.jar,
