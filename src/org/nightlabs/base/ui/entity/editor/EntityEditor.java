@@ -36,9 +36,13 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.IPageChangedListener;
 import org.eclipse.jface.dialogs.PageChangedEvent;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IPropertyListener;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.forms.editor.IFormPage;
 import org.nightlabs.base.ui.NLBasePlugin;
@@ -46,6 +50,7 @@ import org.nightlabs.base.ui.composite.Fadeable;
 import org.nightlabs.base.ui.editor.CommitableFormEditor;
 import org.nightlabs.base.ui.entity.EntityEditorRegistry;
 import org.nightlabs.base.ui.entity.editor.overview.OverviewPageFactory;
+import org.nightlabs.base.ui.exceptionhandler.ExceptionHandlerRegistry;
 import org.nightlabs.base.ui.job.FadeableCompositeJob;
 import org.nightlabs.base.ui.job.Job;
 import org.nightlabs.base.ui.progress.ProgressMonitorWrapper;
@@ -57,19 +62,19 @@ import org.nightlabs.progress.ProgressMonitor;
  * A base class for entity editors. It provides
  * the method {@link #addPages()} using the EntityEditorRegistry
  * to add pages registered via extension point.
- * 
+ *
  * Each {@link EntityEditor} will have a {@link EntityEditorController} that
  * holds one {@link IEntityEditorPageController} for each page it displays.
- * 
+ *
  * This means that combined with {@link IEntityEditorPageFactory}s that return
  * controllers this class can be used as is and registered as editor (of course with an unique id).
  * All work will be delegated to the pages (visible representation) and the
  * page controller (model loading and saving) that were created by the pageFactory.
- * 
+ *
  * However {@link EntityEditor} can be subclassed to configure its appearance (title, tooltip).
- * 
+ *
  * @version $Revision$ - $Date$
- * 
+ *
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  * @author Daniel Mazurek - daniel[at]nightlabs[dot]de
@@ -80,16 +85,16 @@ public class EntityEditor extends CommitableFormEditor
 	 * This editor's controller, that will delegate
 	 * loading and saving of the entity to the
 	 * page controllers of the registered pages.
-	 * 
+	 *
 	 */
 	private EntityEditorController controller;
-	
+
 	/**
 	 * A handler that can show a dialog when
 	 * the editor is stale.
 	 */
 	private EntityEditorStaleHandler staleHandler;
-	
+
 	private String LAST_ACTIVE_PAGE_KEY_PREFIX = EntityEditor.class.getSimpleName() + ".lastPage."; //$NON-NLS-1$
 	private String lastPageId = null;
 	private IPageChangedListener pageChangedListener = new IPageChangedListener() {
@@ -101,20 +106,20 @@ public class EntityEditor extends CommitableFormEditor
 			}
 		}
 	};
-	
+
 	private boolean showOverviewPage = false;
-	
+
 	public EntityEditor()
 	{	}
-	
+
 	/**
-	 * This method creates the form pages of the editor and adds them to it. 
+	 * This method creates the form pages of the editor and adds them to it.
 	 * Furthermore it adds page controllers for each registered page.
 	 * <p>
 	 * For storing the last active page of the editor a listener for page changes is added in
 	 * this page change provider.
 	 * </p>
-	 * 
+	 *
 	 * @see org.eclipse.ui.forms.editor.FormEditor#addPages()
 	 */
 	@Override
@@ -129,34 +134,85 @@ public class EntityEditor extends CommitableFormEditor
 				addPage(page);
 			}
 		} catch (PartInitException e) {
-			e.printStackTrace();
+			ExceptionHandlerRegistry.asyncHandleException(e);
 		}
 		addPageChangedListener(pageChangedListener);
 		selectLastActivePage();
 	}
-	
+
+	private IPropertyListener formPagePropertyListener = new IPropertyListener() {
+		@Override
+		public void propertyChanged(Object source, int propId) {
+			if (IWorkbenchPart.PROP_TITLE == propId) {
+				IFormPage p = (IFormPage) source;
+				int pageIndex = getPages().indexOf(p);
+				if (pageIndex >= 0)
+					setPageText(pageIndex, p.getTitle());
+			}
+		}
+	};
+
+	@Override
+	public int addPage(Control control) {
+		addFormPagePropertyListener(control);
+		return super.addPage(control);
+	}
+	@Override
+	public int addPage(IEditorPart editor, IEditorInput input) throws PartInitException
+	{
+		addFormPagePropertyListener(editor);
+		return super.addPage(editor, input);
+	}
+	@Override
+	public int addPage(IFormPage page) throws PartInitException {
+		addFormPagePropertyListener(page);
+		return super.addPage(page);
+	}
+	@Override
+	public void addPage(int index, Control control) {
+		addFormPagePropertyListener(control);
+		super.addPage(index, control);
+	}
+	@Override
+	public void addPage(int index, IEditorPart editor, IEditorInput input) throws PartInitException {
+		addFormPagePropertyListener(editor);
+		super.addPage(index, editor, input);
+	}
+	@Override
+	public void addPage(int index, IFormPage page) throws PartInitException {
+		addFormPagePropertyListener(page);
+		super.addPage(index, page);
+	}
+
+	private void addFormPagePropertyListener(Object formPage) {
+		if (formPage instanceof IFormPage) {
+			((IFormPage)formPage).removePropertyListener(formPagePropertyListener);
+			((IFormPage)formPage).addPropertyListener(formPagePropertyListener);
+		}
+	}
+
 	/**
 	 * This method is called when the editor creates its pages.
-	 * It should return all {@link EntityEditorPageSettings} for the pages to 
+	 * It should return all {@link EntityEditorPageSettings} for the pages to
 	 * be displayed in this editor.
 	 * <p>
 	 * This method uses the {@link EntityEditorRegistry} and the id of the editor
 	 * to build the settings but it might be overridden in order to customise
-	 * this behaviour. 
+	 * this behaviour.
 	 * </p>
-	 * @return An ordered list of the {@link EntityEditorPageSettings} 
+	 * @return An ordered list of the {@link EntityEditorPageSettings}
 	 *         for the pages to be displayed in this editor.
 	 */
 	protected List<EntityEditorPageSettings> getPageSettingsOrdered() {
 		List<EntityEditorPageSettings> pageSettingsOrdered = EntityEditorRegistry.sharedInstance().getPageSettingsOrdered(getEditorID());
 		if (showOverviewPage) {
-			EntityEditorPageSettings overviewPageSettings = new EntityEditorPageSettings(getEditorID(), 
+			EntityEditorPageSettings overviewPageSettings = new EntityEditorPageSettings(getEditorID(),
 					0, new OverviewPageFactory(), null, null, Messages.getString("org.nightlabs.base.ui.entity.editor.EntityEditor.page.overview.name")); //$NON-NLS-1$
 			pageSettingsOrdered.add(0, overviewPageSettings);
 		}
 		return pageSettingsOrdered;
 	}
-	
+
 	/**
 	 * Get the editor id.
 	 * @return The editor id
@@ -164,16 +220,16 @@ public class EntityEditor extends CommitableFormEditor
 	public String getEditorID() {
 		return getEditorSite().getId();
 	}
-	
+
 	/**
 	 * This method sets the active page of an editor.
 	 * Therefore, the ID of the recently active page of an editor before closing it is utilized by the use
-	 * of the preference store of the corresponding plugin. The ID has been saved in the store at the same time 
+	 * of the preference store of the corresponding plugin. The ID has been saved in the store at the same time
 	 * the editor has been closed.
-	 * <p>   
-	 * In {@link ArticleContainerEditor} controls are not available in the case a page other than the first one is chosen as 
-	 * active at the beginning. For this reason the FIRST page of this editor is always chosen as active, i.e. the last page ID 
-	 * is not maintained.    
+	 * <p>
+	 * In {@link ArticleContainerEditor} controls are not available in the case a page other than the first one is chosen as
+	 * active at the beginning. For this reason the FIRST page of this editor is always chosen as active, i.e. the last page ID
+	 * is not maintained.
 	 * </p>
 	 */
 	protected void selectLastActivePage() {
@@ -184,22 +240,22 @@ public class EntityEditor extends CommitableFormEditor
 			setActivePage(pageID);
 		}
 	}
-	
+
 	/**
-	 * Determines if the ID of the last active page before closing a certain editor will be chosen as active page when 
+	 * Determines if the ID of the last active page before closing a certain editor will be chosen as active page when
 	 * starting this editor again.
 	 * <p>
-	 * In {@link ArticleContainerEditor} control is not available in the case a page other than the first one is chosen as 
-	 * active at the beginning. For this reason the FIRST page of this editor is always chosen as active, i.e. the last page ID 
-	 * is not maintained.    
+	 * In {@link ArticleContainerEditor} control is not available in the case a page other than the first one is chosen as
+	 * active at the beginning. For this reason the FIRST page of this editor is always chosen as active, i.e. the last page ID
+	 * is not maintained.
 	 * </p>
-	 * 
+	 *
 	 * @return true if the last page ID shall be maintained, otherwise false.
 	 */
 	protected boolean maintainLastPageID() {
 		return true;
 	}
-	
+
 	/**
 	 * This method returns the key under which the last active page id
 	 * will be stored in the preferences store.
@@ -215,7 +271,7 @@ public class EntityEditor extends CommitableFormEditor
 	protected String getLastPageIDPreferenceKey() {
 		return LAST_ACTIVE_PAGE_KEY_PREFIX + getEditorID();
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.part.EditorPart#doSaveAs()
 	 */
@@ -231,7 +287,7 @@ public class EntityEditor extends CommitableFormEditor
 	public boolean isSaveAsAllowed() {
 		return false;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 * This implementation additionally creates this editor's controller.
@@ -272,10 +328,10 @@ public class EntityEditor extends CommitableFormEditor
 //			return true;
 //		return super.isDirty();
 	}
-	
+
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * This implementation will start a job to save the
 	 * editor. It will first let all pages commit and then
 	 * call its controllers doSave() method. This will
@@ -288,13 +344,13 @@ public class EntityEditor extends CommitableFormEditor
 		if (controller != null)
 			controller.populateDirtyPageControllers();
 		super.doSave(monitor);
-		
+
 //		try {
 //			saveRunnable.run(monitor);
 //		} catch (Throwable t) {
 //
 //		}
-		
+
 		// FIXME: check why saving is not done when workbench is shutdown
 		int active = getActivePage();
 		Job saveJob = null;
@@ -329,13 +385,13 @@ public class EntityEditor extends CommitableFormEditor
 //		saveJob.setUser(true);
 		saveJob.schedule();
 	}
-	
+
 	/**
 	 * Return the controller associated with this editor.
 	 * The controller is created in {@link #init(IEditorSite, IEditorInput)}.
-	 * 
+	 *
 	 * See {@link #getPageController(IFormPage)} on how to access a single page's controller.
-	 * 
+	 *
 	 * @return The controller associated with this editor.
 	 */
 	public EntityEditorController getController() {
@@ -375,7 +431,7 @@ public class EntityEditor extends CommitableFormEditor
 	}
 
 	/**
-	 * 
+	 *
 	 * @return all IFormPages attached to this editor.
 	 */
 	public List<IFormPage> getPages() {
@@ -389,7 +445,7 @@ public class EntityEditor extends CommitableFormEditor
 //		return pages;
 		return Arrays.asList(getFormPages());
 	}
-	
+
 	/**
 	 * Returns the showOverviewPage.
 	 * @return the showOverviewPage
@@ -405,5 +461,5 @@ public class EntityEditor extends CommitableFormEditor
 	public void setShowOverviewPage(boolean showOverviewPage) {
 		this.showOverviewPage = showOverviewPage;
 	}
-	
+
 }
