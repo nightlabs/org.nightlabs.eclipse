@@ -70,10 +70,10 @@ extends XCellEditor
 		
 		this.types = types;
 		this.labelProvider = labelProvider;
-		setReadOnly(readOnly);
 		setStyle(style);
 		this.comboStyle = comboStyle;
 		create(parent);
+		setReadOnly(readOnly);
 	}
 		
 	@Override
