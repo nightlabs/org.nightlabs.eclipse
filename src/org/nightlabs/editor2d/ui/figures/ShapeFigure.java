@@ -33,7 +33,6 @@ import java.awt.geom.Area;
 
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.J2DGraphics;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.editparts.ZoomListener;
@@ -53,7 +52,7 @@ implements IShapeFigure
 {
 	public static final double DEFAULT_HIT_TOLERANCE = 5;
 
-	protected J2DGraphics j2d;
+	protected Graphics j2d;
 	protected Graphics2D g2d;
 	protected AffineTransform at = new AffineTransform();
 	protected GeneralShape gp;
@@ -96,10 +95,11 @@ implements IShapeFigure
 	@Override
 	protected void fillShape(Graphics graphics)
 	{
-		if (graphics instanceof J2DGraphics)
+		if (J2DUtil.instanceofJ2DGraphics(graphics))
 		{
-			j2d = (J2DGraphics) graphics;
-			g2d = j2d.createGraphics2D();
+			j2d = graphics;
+//			g2d = j2d.createGraphics2D();
+			g2d = J2DUtil.createGraphics2D(j2d);
 			g2d.setClip(null);
 			g2d.setPaint(ColorUtil.toAWTColor(getBackgroundColor()));
 			g2d.fill(getGeneralShape());
@@ -119,10 +119,11 @@ implements IShapeFigure
 	@Override
 	protected void outlineShape(Graphics graphics)
 	{
-		if (graphics instanceof J2DGraphics)
+		if (J2DUtil.instanceofJ2DGraphics(graphics))
 		{
-			j2d = (J2DGraphics) graphics;
-			g2d = j2d.createGraphics2D();
+			j2d = graphics;
+//			g2d = j2d.createGraphics2D();
+			g2d = J2DUtil.createGraphics2D(j2d);
 			g2d.setClip(null);
 			g2d.setPaint(ColorUtil.toAWTColor(getForegroundColor()));
 			//      g2d.setStroke(RenderUtil.getStroke(lineWidth, lineStyle));

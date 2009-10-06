@@ -40,7 +40,6 @@ import org.eclipse.draw2d.FreeformFigure;
 import org.eclipse.draw2d.FreeformListener;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.J2DGraphics;
 import org.eclipse.draw2d.Layer;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -52,6 +51,7 @@ import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Control;
 import org.holongate.j2d.J2DRegistry;
 import org.nightlabs.editor2d.ui.util.EditorUtil;
+import org.nightlabs.editor2d.ui.util.J2DUtil;
 
 /**
  * Buffers its contents for optimized painting.
@@ -242,16 +242,18 @@ implements FreeformFigure, BufferedFreeformLayer
 	public void paint(Graphics graphics)
 	{
 		long time = System.currentTimeMillis();
-		if (graphics instanceof J2DGraphics)
+		if (J2DUtil.instanceofJ2DGraphics(graphics))
 		{
-			J2DGraphics j2dGraphics = (J2DGraphics)graphics;
+//			J2DGraphics j2dGraphics = (J2DGraphics)graphics;
+			Graphics j2dGraphics = graphics;
 			j2dGraphics.clipRect(null);
 			
 			// get / create the buffer
 			BufferedImage buffer = getBufferedImage();
 			
 			// create the Graphics where the buffer is drawn on
-			Graphics2D g2d = j2dGraphics.createGraphics2D();
+//			Graphics2D g2d = j2dGraphics.createGraphics2D();
+			Graphics2D g2d = J2DUtil.createGraphics2D(j2dGraphics);
 			// scale it invers of the current zoom ...
 			g2d.scale(1/currentZoom, 1/currentZoom);
 			// and translate it with the current scroll offset

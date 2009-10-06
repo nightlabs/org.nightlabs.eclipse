@@ -33,7 +33,6 @@ import java.awt.geom.Area;
 
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.J2DGraphics;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.editparts.ZoomListener;
@@ -58,7 +57,7 @@ implements RendererFigure
 //	 */
 //	private static final Logger logger = Logger.getLogger(DrawComponentFigure.class.getName());
 
-	private J2DGraphics j2d;
+	private Graphics j2d;
 	private Graphics2D g2d;
 	private double hitTolerance = DEFAULT_HIT_TOLERANCE;
 	private boolean accurateContains = true;
@@ -86,11 +85,12 @@ implements RendererFigure
 	@Override
 	public void paint(Graphics graphics)
 	{
-		if (graphics instanceof J2DGraphics)
+		if (J2DUtil.instanceofJ2DGraphics(graphics))
 		{
-			j2d = (J2DGraphics) graphics;
+			j2d = graphics;
 			j2d.clipRect(null);
-			g2d = j2d.createGraphics2D();
+//			g2d = j2d.createGraphics2D();
+			g2d = J2DUtil.createGraphics2D(j2d);
 			g2d.setClip(null);
 			paint(g2d);
 //			paintHitTestArea(g2d);

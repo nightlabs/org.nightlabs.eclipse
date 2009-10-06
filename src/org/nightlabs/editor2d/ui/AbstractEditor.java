@@ -53,7 +53,6 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.draw2d.FigureCanvas;
-import org.eclipse.draw2d.J2DGraphics;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.DefaultEditDomain;
@@ -65,7 +64,6 @@ import org.eclipse.gef.KeyHandler;
 import org.eclipse.gef.KeyStroke;
 import org.eclipse.gef.SnapToGeometry;
 import org.eclipse.gef.SnapToGrid;
-import org.eclipse.gef.editparts.J2DScalableFreeformRootEditPart;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.palette.PaletteRoot;
@@ -85,7 +83,6 @@ import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.PaletteViewerProvider;
 import org.eclipse.gef.ui.palette.FlyoutPaletteComposite.FlyoutPreferences;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette;
-import org.eclipse.gef.ui.parts.J2DScrollingGraphicalViewer;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.gef.ui.parts.SelectionSynchronizer;
 import org.eclipse.gef.ui.parts.TreeViewer;
@@ -177,6 +174,7 @@ import org.nightlabs.editor2d.ui.properties.UnitManager;
 import org.nightlabs.editor2d.ui.render.Draw2DRenderContext;
 import org.nightlabs.editor2d.ui.resource.Messages;
 import org.nightlabs.editor2d.ui.rulers.EditorRulerProvider;
+import org.nightlabs.editor2d.ui.util.J2DUtil;
 import org.nightlabs.editor2d.unit.DotUnit;
 import org.nightlabs.editor2d.unit.UnitConstants;
 import org.nightlabs.editor2d.viewer.ui.descriptor.DescriptorManager;
@@ -369,7 +367,8 @@ extends GraphicalEditorWithFlyoutPalette
 	{
 		// TODO: Holongate Draw2D-PreferencePage does not store values
 		Map hints = new HashMap();
-		hints.put(J2DGraphics.KEY_USE_JAVA2D, Boolean.TRUE);
+//		hints.put(J2DGraphics.KEY_USE_JAVA2D, Boolean.TRUE);
+		hints.put(J2DUtil.get_J2DGraphics_KEY_USE_JAVA2D(), Boolean.TRUE);
 		J2DRegistry.setHints(hints);
 	}
 
@@ -452,7 +451,8 @@ extends GraphicalEditorWithFlyoutPalette
 		if (rootEditPart == null) 
 		{
 			if (useJava2D) {
-				rootEditPart = new J2DScalableFreeformRootEditPart();					
+//				rootEditPart = new J2DScalableFreeformRootEditPart();
+				rootEditPart = J2DUtil.newJ2DScalableFreeformRootEditPart();
 			}
 			else {
 				rootEditPart = new ScalableFreeformRootEditPart();
@@ -1075,7 +1075,8 @@ extends GraphicalEditorWithFlyoutPalette
 //		super.createGraphicalViewer(rulerComp);
 		GraphicalViewer viewer = null;
 		if (useJava2D) {
-			viewer = new J2DScrollingGraphicalViewer();			
+//			viewer = new J2DScrollingGraphicalViewer();
+			viewer = J2DUtil.newJ2DScrollingGraphicalViewer();
 		} else {
 			viewer = new ScrollingGraphicalViewer();
 		}
