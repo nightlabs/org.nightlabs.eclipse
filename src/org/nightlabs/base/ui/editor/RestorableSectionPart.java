@@ -173,7 +173,7 @@ implements IDirtyStateManager, IFormPartDirtyStateProxy
 	@Override
 	public void removeFormPartDirtyStateProxyListener(
 			IFormPartDirtyStateProxyListener listener) {
-		dirtyStateListeners.add(listener);
+		dirtyStateListeners.remove(listener);
 	}
 
 	protected void notifyDirtyStateListeners(boolean dirty) {
