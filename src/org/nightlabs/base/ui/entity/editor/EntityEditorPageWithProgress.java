@@ -223,7 +223,7 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 	 * @see RestorableSectionPart#commit(boolean)
 	 */
 	protected void handleControllerObjectModified(final EntityEditorPageControllerModifyEvent modifyEvent) {
-		getManagedForm().getForm().getDisplay().asyncExec(new Runnable() {
+		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
 				if (getManagedForm().getForm().isDisposed())
 					return;
@@ -273,7 +273,8 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 		form.setExpandVertical(true);
 		IToolkit toolkit = (IToolkit) getEditor().getToolkit(); // CommitableFormEditor uses NightlabsFormToolkit
 		String formText = getPageFormTitle();
-		form.setText(formText == null ? "" : formText);  //$NON-NLS-1$
+//		form.setText(formText == null ? "" : formText);  //$NON-NLS-1$
+		form.setText(formText); // passing null causes the title to be completely hidden (no space allocated) - thus we must not convert null to an empty string. marco.
 		fillBody(managedForm, toolkit);
 //		getEditor().getToolkit().decorateFormHeading(form.getForm());
 	}
