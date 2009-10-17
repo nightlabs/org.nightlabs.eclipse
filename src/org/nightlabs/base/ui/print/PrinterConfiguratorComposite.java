@@ -29,6 +29,7 @@ package org.nightlabs.base.ui.print;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.print.PrintService;
 import javax.print.attribute.Attribute;
@@ -36,6 +37,7 @@ import javax.print.attribute.AttributeSet;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttribute;
 import javax.print.attribute.PrintRequestAttributeSet;
+import javax.swing.SwingUtilities;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
@@ -46,8 +48,10 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.PlatformUI;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.print.PrintUtil;
@@ -178,29 +182,40 @@ public class PrinterConfiguratorComposite extends XComposite {
 		}
 	};
 	
-	private SelectionListener selectPrinterListener = new SelectionListener()
-	{
+	private SelectionListener selectPrinterListener = new SelectionListener() {
 		public void widgetDefaultSelected(SelectionEvent arg0) {
 		}
+		
 		public void widgetSelected(SelectionEvent arg0) {
-			PrinterJob printerJob = getPrinterJob();
+			final PrinterJob printerJob = getPrinterJob();
 			PrintService printService = printServiceCombo.getSelectedElement();
-			if (printService != null)
+			if (printService != null) {
 				try {
 					printerJob.setPrintService(printService);
 				} catch (PrinterException e) {
 					throw new RuntimeException(e);
 				}
-//			if (printerJob.printDialog(printRequestAttributeSet)) {
-			if (printerJob.printDialog()) {
-				printServiceCombo.selectElement(printerJob.getPrintService());
-				// TODO: This does not work at all. Somehow the job get the attributes assigned, but
-				// I can't access them
-				printRequestAttributeSet = convertPrintRequestAttributeSet(
-						printerJob.getPrintService().createPrintJob().getAttributes()
-					);
-				updateForPrintRequestAttributes(printRequestAttributeSet);
 			}
+			// Added call to AWT Event Dispatch Thread.
+			// Loeser.
+			SwingUtilities.invokeLater(new Runnable() {		// synchronous call (invokeAndWait) is not working
+				@Override
+				public void run() {
+					if (printerJob.printDialog()) {
+						Display.getDefault().syncExec(new Runnable() {
+							@Override
+							public void run() {
+								printServiceCombo.selectElement(printerJob.getPrintService());
+								// TODO This does not work at all. Somehow the job gets the attributes assigned, but
+								// I can't access them.
+								printRequestAttributeSet = convertPrintRequestAttributeSet(
+										printerJob.getPrintService().createPrintJob().getAttributes());
+								updateForPrintRequestAttributes(printRequestAttributeSet);
+							}
+						});
+					}
+				}
+			});
 		}
 	};
 	
@@ -209,17 +224,38 @@ public class PrinterConfiguratorComposite extends XComposite {
 		public void widgetDefaultSelected(SelectionEvent arg0) {
 		}
 		public void widgetSelected(SelectionEvent arg0) {
-			PrinterJob printerJob = getPrinterJob();
-			PageFormat newPageFormat;
-			if (PrinterConfiguratorComposite.this.pageFormat != null)
-				newPageFormat = printerJob.pageDialog(PrinterConfiguratorComposite.this.pageFormat);
-			else
-				newPageFormat = printerJob.pageDialog(printerJob.defaultPage());
-			PrinterConfiguratorComposite.this.pageFormat = newPageFormat;
+			final PrinterJob printerJob = getPrinterJob();
+//			PageFormat newPageFormat;
+//			if (PrinterConfiguratorComposite.this.pageFormat != null)
+//				newPageFormat = printerJob.pageDialog(PrinterConfiguratorComposite.this.pageFormat);
+//			else
+//				newPageFormat = printerJob.pageDialog(printerJob.defaultPage());
+//			PrinterConfiguratorComposite.this.pageFormat = newPageFormat;
+//			
+//			pageFormatDescription.setText(getPageFormatDescription(PrinterConfiguratorComposite.this.pageFormat));
+//			if (pageSetupComposite != null)
+//				pageSetupComposite.refresh(PrinterConfiguratorComposite.this.pageFormat);
 			
-			pageFormatDescription.setText(getPageFormatDescription(PrinterConfiguratorComposite.this.pageFormat));
-			if (pageSetupComposite != null)
-				pageSetupComposite.refresh(PrinterConfiguratorComposite.this.pageFormat);
+			// Added call to AWT Event Dispatch Thread.
+			// Loeser.
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					PageFormat newPageFormat = PrinterConfiguratorComposite.this.pageFormat != null 
+						? printerJob.pageDialog(PrinterConfiguratorComposite.this.pageFormat)
+						: printerJob.pageDialog(printerJob.defaultPage());		
+					PrinterConfiguratorComposite.this.pageFormat = newPageFormat;
+					Display.getDefault().syncExec(new Runnable() {
+						@Override
+						public void run() {
+							pageFormatDescription.setText(getPageFormatDescription(PrinterConfiguratorComposite.this.pageFormat));
+							if (pageSetupComposite != null) {
+								pageSetupComposite.refresh(PrinterConfiguratorComposite.this.pageFormat);
+							}
+						}	
+					});
+				}
+			});
 		}
 	};
 	
