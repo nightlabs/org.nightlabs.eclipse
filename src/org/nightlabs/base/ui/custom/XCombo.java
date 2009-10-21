@@ -354,6 +354,9 @@ public void addSelectionListener(SelectionListener listener) {
 void arrowEvent (Event event) {
 	switch (event.type) {
 		case SWT.FocusIn: {
+			if (!getEditable()) {
+				break;
+			}
 			handleFocus (SWT.FocusIn);
 			break;
 		}
@@ -1645,6 +1648,10 @@ String stripMnemonic (String string) {
 void textEvent (Event event) {
 	switch (event.type) {
 		case SWT.FocusIn: {
+			if (!getEditable()) { //Moves the focus to the arrow button if it's not editable, Karmic Chairat
+				arrow.forceFocus();
+				break;
+			}
 			handleFocus (SWT.FocusIn);
 			break;
 		}
