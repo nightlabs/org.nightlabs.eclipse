@@ -177,7 +177,7 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 		@Override
 		protected IStatus run(ProgressMonitor monitor) {
 			final IEntityEditorPageController controller = getPageController();
-			if (controller != null) {
+			if (controller != null && !controller.isLoaded()) { // added ' && !controller.isLoaded()' because it otherwise forgets local changes when switching pages in a scenario where multiple pages share the same controller. Marco, 2009-10-28.
 
 				CompoundProgressMonitor compoundMonitor = new CompoundProgressMonitor(new ProgressMonitorWrapper(progressMonitorPart), monitor);
 				if (controller instanceof EntityEditorPageController) {
