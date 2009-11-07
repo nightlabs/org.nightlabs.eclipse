@@ -75,7 +75,7 @@ public class FadeableComposite extends XComposite implements Fadeable
 		if (!controlEnabled.containsKey(control))
 			control.addDisposeListener(childDisposeListener);
 
-		controlEnabled.put(control, new Boolean(enabled));
+		controlEnabled.put(control, Boolean.valueOf(enabled));
 	}
 
 	private DisposeListener childDisposeListener = new DisposeListener() {

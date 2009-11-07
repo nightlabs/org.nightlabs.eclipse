@@ -89,7 +89,7 @@ extends XCellEditor
 	 */
 	@Override
 	protected Object doGetValue() {
-		return new Boolean(checkbox.getSelection());
+		return Boolean.valueOf(checkbox.getSelection());
 	}
 	
 	@Override
