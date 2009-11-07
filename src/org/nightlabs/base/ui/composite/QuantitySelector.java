@@ -68,7 +68,7 @@ public abstract class QuantitySelector extends XComposite
 		for (int i = 0; i < quickQtyButtons.length; ++i) {
 			quickQtyButtons[i] = new Button(this, SWT.FLAT);
 			quickQtyButtons[i].setText(Integer.toString(i + 1));
-			quickQtyButtons[i].setData(new Integer(i + 1));
+			quickQtyButtons[i].setData(Integer.valueOf(i + 1));
 			quickQtyButtons[i].addSelectionListener(buttonSelectionListener);
 			quickQtyButtons[i].setLayoutData(createGridData());
 		}
@@ -83,7 +83,7 @@ public abstract class QuantitySelector extends XComposite
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				int qty = varQtySpinner.getSelection();
-				varQtyButton.setData(new Integer(qty));
+				varQtyButton.setData(Integer.valueOf(qty));
 				varQtyButton.setText(Integer.toString(qty));
 				relayout();
 			}
@@ -94,7 +94,7 @@ public abstract class QuantitySelector extends XComposite
 		spacer2.setLayoutData(createGridData());
 
 		varQtyButton = new Button(this, SWT.FLAT);
-		varQtyButton.setData(new Integer(varQtySpinner.getSelection()));
+		varQtyButton.setData(Integer.valueOf(varQtySpinner.getSelection()));
 		varQtyButton.setText(Integer.toString(varQtySpinner.getSelection()));
 		varQtyButton.addSelectionListener(buttonSelectionListener);
 		varQtyButton.setLayoutData(createGridData());

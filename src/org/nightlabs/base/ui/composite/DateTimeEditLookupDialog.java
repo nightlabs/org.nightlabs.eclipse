@@ -126,7 +126,7 @@ public class DateTimeEditLookupDialog
 		spinner.setMinimum(calendar.getMinimum(field) - 1);
 		spinner.setMaximum(calendar.getMaximum(field) +  1);
 		spinner.setSelection(getCalendarValue(field));
-		spinner.setData(new Integer(field));
+		spinner.setData(Integer.valueOf(field));
 		calendarField2Spinner.put(field, spinner);
 		spinner.addSelectionListener(fieldChangedListener);
 		return spinner;

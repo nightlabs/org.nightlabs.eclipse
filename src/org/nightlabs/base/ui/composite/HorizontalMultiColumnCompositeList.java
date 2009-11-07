@@ -117,11 +117,11 @@ public class HorizontalMultiColumnCompositeList extends Composite implements ISe
 	private Set<Integer> keySet = new HashSet<Integer>();
 	private KeyListener keyListener = new KeyListener() {
 		public void keyPressed(KeyEvent evt) {
-			keySet.add(new Integer(evt.keyCode));
+			keySet.add(Integer.valueOf(evt.keyCode));
 			System.out.println("Key pressed for CompList : Key Code is: "+evt.keyCode); //$NON-NLS-1$
 		}
 		public void keyReleased(KeyEvent evt) {
-			keySet.remove(new Integer(evt.keyCode));
+			keySet.remove(Integer.valueOf(evt.keyCode));
 		}
 	};
 

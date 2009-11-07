@@ -57,7 +57,7 @@ public class MonthlyTimePatternBuilderHopPage extends WizardHopPage {
 		for (int i = 1; i <= 31; i++) {
 			Button dayButton = new Button(dayWrapper, SWT.CHECK);
 			dayButton.setText(Integer.toString(i));
-			dayButton.setData(new Integer(i));
+			dayButton.setData(Integer.valueOf(i));
 			dayButton.addSelectionListener(daySelectListner);
 		}
 		monthWrapper = new Group(selectionWrapper, SWT.NONE);
@@ -67,7 +67,7 @@ public class MonthlyTimePatternBuilderHopPage extends WizardHopPage {
 		for (int i = 1; i <= 12; i++) {
 			Button monthButton = new Button(monthWrapper, SWT.CHECK);
 			monthButton.setText(Messages.getString("org.nightlabs.base.ui.timepattern.builder.MonthlyTimePatternBuilderHopPage.month" + i + ".text")); //$NON-NLS-1$  //$NON-NLS-2$
-			monthButton.setData(new Integer(i));
+			monthButton.setData(Integer.valueOf(i));
 			monthButton.setSelection(true);
 			selectedMonths.add((Integer) monthButton.getData());
 			monthButton.addSelectionListener(monthSelectListner);

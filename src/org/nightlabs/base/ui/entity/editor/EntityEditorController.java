@@ -125,7 +125,7 @@ public class EntityEditorController
 					IFormPage page2 = pages2 == null ? null : pages2.iterator().next();
 					if (page1 == null || page2 == null)
 						return 0;
-					return new Integer(page1.getIndex()).compareTo(page2.getIndex());
+					return Integer.valueOf(page1.getIndex()).compareTo(page2.getIndex());
 				}
 			}
 		);
