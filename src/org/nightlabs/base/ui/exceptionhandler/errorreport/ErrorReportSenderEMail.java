@@ -45,7 +45,10 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Display;
 import org.nightlabs.base.ui.util.ImageUtil;
+import org.nightlabs.base.ui.util.RCPUtil;
 import org.nightlabs.config.Config;
 
 //import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeBodyPart;
@@ -68,7 +71,7 @@ public class ErrorReportSenderEMail implements IErrorReportSender
 	public void sendErrorReport(ErrorReport errorReport)
 	{
 		File tempscreenshot = null;
-		try {		
+		try {
 
 			ErrorReportEMailCfMod cfMod = Config.sharedInstance().createConfigModule(ErrorReportEMailCfMod.class);
 
@@ -78,8 +81,8 @@ public class ErrorReportSenderEMail implements IErrorReportSender
 			props.put("mail.smtp.localhost", cfMod.getSmtpLocalhost()); //$NON-NLS-1$
 			props.put("mail.smtp.port", cfMod.getSmtpPort()); //$NON-NLS-1$
 			props.put("mail.smtp.starttls.enable", String.valueOf(cfMod.isEnableTLS())); //$NON-NLS-1$
-			
-			Session mailConnection = Session.getInstance(props, null);		
+
+			Session mailConnection = Session.getInstance(props, null);
 
 			Message msg = new MimeMessage(mailConnection);
 			Address mailFrom = new InternetAddress(cfMod.getMailFrom());
@@ -87,13 +90,13 @@ public class ErrorReportSenderEMail implements IErrorReportSender
 			msg.setFrom(mailFrom);
 
 			for (String recipient : cfMod.getMailTo())
-				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));			
+				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
 
 			msg.setSubject(errorReport.getFirstThrowable().getClass().getSimpleName() +  " " + errorReport.getTimeAsString()); //$NON-NLS-1$
 
 			if(errorReport.getErrorScreenshot() != null && errorReport.getIsSendScreenShot() == true)
 			{
-				// create the message part 
+				// create the message part
 				MimeBodyPart messageBodyPart = new MimeBodyPart();
 				//fill message
 				messageBodyPart.setText(errorReport.toString());
@@ -148,8 +151,21 @@ public class ErrorReportSenderEMail implements IErrorReportSender
 
 			logger.info("Message was sent to "+ cfMod.getMailTo().size() +" recipient(s)"); //$NON-NLS-1$ //$NON-NLS-2$
 
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			logger.fatal("Sending error report by eMail failed.", e); //$NON-NLS-1$
+			Display.getDefault().asyncExec(new Runnable() {
+				public void run() {
+					MessageDialog.openError(
+							RCPUtil.getActiveShell(),
+							"Sending error-report failed",
+							String.format(
+									"Sending the error-report via eMail failed. Please see the log for more details. Exception: %s: %s",
+									e.getClass().getName(),
+									e.getLocalizedMessage()
+							)
+					);
+				}
+			});
 		} finally {
 			if (tempscreenshot != null)
 				tempscreenshot.delete();
