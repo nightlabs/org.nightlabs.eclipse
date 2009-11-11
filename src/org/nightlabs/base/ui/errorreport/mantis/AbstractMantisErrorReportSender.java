@@ -92,9 +92,7 @@ public abstract class AbstractMantisErrorReportSender implements IErrorReportSen
 						proxyData = proxyService.getProxyDataForHost(host, IProxyData.HTTPS_PROXY_TYPE);
 
 					if (proxyData != null && (proxyData.getHost() == null || proxyData.getHost().isEmpty())) {
-						if (proxyData == null)
-							logger.debug("sendErrorReport.HttpClient.executeMethod: Got empty proxyData for host=\"" + host + "\" and protocol=\"" + protocol + "\"! Discarding it.");
-
+						logger.debug("sendErrorReport.HttpClient.executeMethod: Got empty proxyData for host=\"" + host + "\" and protocol=\"" + protocol + "\"! Discarding it.");
 						proxyData = null;
 					}
 
