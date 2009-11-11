@@ -2,8 +2,8 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Mantis Error Report Base Plug-in
 Bundle-SymbolicName: org.nightlabs.base.ui.errorreport.mantis
-Bundle-Version: 1.0.1.qualifier
-Bundle-Activator: org.nightlabs.jfire.ui.errorreport.mantis.Activator
+Bundle-Version: 1.0.3.qualifier
+Bundle-Activator: org.nightlabs.base.ui.errorreport.mantis.Activator
 Eclipse-LazyStart: true
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: nightlabs.org
@@ -13,6 +13,7 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.3.100",
  org.nightlabs.config,
  org.nightlabs.base,
  org.nightlabs.base.ui;visibility:=reexport,
- org.apache.commons.httpclient;bundle-version="3.1.0";visibility:=reexport
-Export-Package: org.nightlabs.jfire.ui.errorreport.mantis
+ org.apache.commons.httpclient;bundle-version="3.1.0";visibility:=reexport,
+ org.eclipse.core.net
+Export-Package: org.nightlabs.base.ui.errorreport.mantis
 Eclipse-RegisterBuddy: org.nightlabs.config

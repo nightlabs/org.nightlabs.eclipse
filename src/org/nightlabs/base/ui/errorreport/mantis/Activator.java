@@ -1,4 +1,4 @@
-package org.nightlabs.jfire.ui.errorreport.mantis;
+package org.nightlabs.base.ui.errorreport.mantis;
 
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;

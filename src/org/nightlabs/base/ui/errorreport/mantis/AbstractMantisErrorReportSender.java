@@ -1,4 +1,4 @@
-package org.nightlabs.jfire.ui.errorreport.mantis;
+package org.nightlabs.base.ui.errorreport.mantis;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -10,19 +10,29 @@ import java.util.zip.GZIPOutputStream;
 
 import javax.imageio.ImageIO;
 
+import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.HttpState;
+import org.apache.commons.httpclient.UsernamePasswordCredentials;
+import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.multipart.ByteArrayPartSource;
 import org.apache.commons.httpclient.methods.multipart.FilePart;
 import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
+import org.apache.log4j.Logger;
+import org.eclipse.core.net.proxy.IProxyData;
+import org.eclipse.core.net.proxy.IProxyService;
 import org.eclipse.swt.graphics.ImageData;
 import org.nightlabs.base.ui.exceptionhandler.errorreport.CauseEffectThrowablePair;
 import org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReport;
 import org.nightlabs.base.ui.exceptionhandler.errorreport.IErrorReportSender;
 import org.nightlabs.base.ui.util.ImageUtil;
 import org.nightlabs.util.IOUtil;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * Base mantis error report sender. Tested and working with Mantis 1.0.8 and 1.0.7.
@@ -31,6 +41,8 @@ import org.nightlabs.util.IOUtil;
  */
 public abstract class AbstractMantisErrorReportSender implements IErrorReportSender
 {
+	private static final Logger logger = Logger.getLogger(AbstractMantisErrorReportSender.class);
+
 	/**
 	 * Get the base mantis URL for all operations.
 	 * @return teh base mantis URL.
@@ -61,17 +73,91 @@ public abstract class AbstractMantisErrorReportSender implements IErrorReportSen
 	@Override
 	public void sendErrorReport(final ErrorReport errorReport) throws IOException
 	{
-		HttpClient client = new HttpClient();
-		doLogin(client);
-		doSelectProject(client);
-		PostMethod m = doPostIssue(client, errorReport);
-		if(errorReport.getIsSendScreenShot()) {
-			String response = m.getResponseBodyAsString();
-			Integer issueId = extractIssueId(response);
-			if(issueId != null) {
-				if (errorReport.getErrorScreenshot() != null) // the screenshot might be null!
-					doAttachScreenshot(client, issueId, errorReport.getErrorScreenshot());
+		ServiceTracker tracker = new ServiceTracker(
+				Activator.getDefault().getBundle().getBundleContext(), IProxyService.class.getName(), null
+		);
+		tracker.open();
+		try {
+			final IProxyService proxyService = (IProxyService) tracker.getService();
+
+			HttpClient client = new HttpClient() {
+				@Override
+				public int executeMethod(HostConfiguration hostconfig, HttpMethod method, HttpState state) throws IOException, HttpException {
+					String host = method.getURI().getHost();
+					String protocol = method.getURI().getScheme();
+					IProxyData proxyData = null;
+					if ("http".equalsIgnoreCase(protocol))
+						proxyData = proxyService.getProxyDataForHost(host, IProxyData.HTTP_PROXY_TYPE);
+					else if ("https".equalsIgnoreCase(protocol))
+						proxyData = proxyService.getProxyDataForHost(host, IProxyData.HTTPS_PROXY_TYPE);
+
+					if (proxyData != null && (proxyData.getHost() == null || proxyData.getHost().isEmpty())) {
+						if (proxyData == null)
+							logger.debug("sendErrorReport.HttpClient.executeMethod: Got empty proxyData for host=\"" + host + "\" and protocol=\"" + protocol + "\"! Discarding it.");
+
+						proxyData = null;
+					}
+
+					if (logger.isDebugEnabled()) {
+						if (proxyData == null)
+							logger.debug("sendErrorReport.HttpClient.executeMethod: Will NOT use proxy for host=\"" + host + "\" and protocol=\"" + protocol + "\"!");
+						else
+							logger.debug("sendErrorReport.HttpClient.executeMethod: Will use proxy for host=\"" + host + "\" and protocol=\"" + protocol + "\": proxyData.host=\"" + proxyData.getHost() + "\" proxyData.port=\"" + proxyData.getPort() + "\" proxyData.userId=\"" + proxyData.getUserId() + "\"");
+					}
+
+					if (proxyData != null) {
+						if (hostconfig == null)
+							hostconfig = getHostConfiguration();
+
+						hostconfig.setProxy(proxyData.getHost(), proxyData.getPort());
+						if (proxyData.getUserId() != null && !proxyData.getUserId().isEmpty()) {
+							if (state == null)
+								state = getState();
+
+							state.setProxyCredentials(
+									new AuthScope(proxyData.getHost(), proxyData.getPort()),
+									new UsernamePasswordCredentials(proxyData.getUserId(), proxyData.getPassword())
+							);
+						}
+					}
+
+					return super.executeMethod(hostconfig, method, state);
+				}
+
+				@Override
+				public int executeMethod(HostConfiguration hostConfiguration, HttpMethod method) throws IOException, HttpException {
+					// This method probably delegates to the first overloaded executeMethod(...) version. Hence we don't need to do anything here.
+					// I did not test it, because this method is never called, but I assume that it works this way. Marco.
+					return super.executeMethod(hostConfiguration, method);
+				}
+
+				@Override
+				public int executeMethod(HttpMethod method) throws IOException, HttpException {
+					// This method delegates to the first overloaded executeMethod(...) version. Hence we don't need to do anything here.
+					// I tested it 2009-11-11. Marco.
+					return super.executeMethod(method);
+				}
+			};
+
+//			client.getHostConfiguration().setProxy("myproxyhost", 8080);
+//		  client.getState().setProxyCredentials(
+//		  		new AuthScope(host, port, realm),
+//		  		new UsernamePasswordCredentials("my-proxy-username", "my-proxy-password"));
+
+
+			doLogin(client);
+			doSelectProject(client);
+			PostMethod m = doPostIssue(client, errorReport);
+			if(errorReport.getIsSendScreenShot()) {
+				String response = m.getResponseBodyAsString();
+				Integer issueId = extractIssueId(response);
+				if(issueId != null) {
+					if (errorReport.getErrorScreenshot() != null) // the screenshot might be null!
+						doAttachScreenshot(client, issueId, errorReport.getErrorScreenshot());
+				}
 			}
+		} finally {
+			tracker.close();
 		}
 	}
 
