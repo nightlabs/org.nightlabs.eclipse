@@ -137,12 +137,6 @@ public abstract class AbstractMantisErrorReportSender implements IErrorReportSen
 				}
 			};
 
-//			client.getHostConfiguration().setProxy("myproxyhost", 8080);
-//		  client.getState().setProxyCredentials(
-//		  		new AuthScope(host, port, realm),
-//		  		new UsernamePasswordCredentials("my-proxy-username", "my-proxy-password"));
-
-
 			doLogin(client);
 			doSelectProject(client);
 			PostMethod m = doPostIssue(client, errorReport);
