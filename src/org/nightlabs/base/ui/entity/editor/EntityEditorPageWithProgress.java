@@ -401,6 +401,11 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 		}
 	}
 
+	protected Composite createPageWrapper(Composite parent)
+	{
+		return new Composite(parent, SWT.NONE);
+	}
+
 	/**
 	 * Creates stack layout, progress-stack-item and the page's content
 	 * with the help of the configure and create callbacks.
@@ -416,6 +421,7 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 
 		wrapper = new FadeableComposite(body, SWT.NONE, XComposite.LayoutMode.TIGHT_WRAPPER);
 		wrapper.setToolkit(toolkit);
+
 		stackLayout = new StackLayout();
 		stackLayout.marginHeight = 0;
 		stackLayout.marginWidth = 0;
@@ -436,7 +442,8 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 		progressMonitorPart = createProgressMonitorPart(progressWrapper);
 		progressWrapper.adaptToToolkit();
 
-		pageWrapper = new Composite(wrapper, SWT.NONE);
+//		pageWrapper = new Composite(wrapper, SWT.NONE);
+		pageWrapper = createPageWrapper(wrapper);
 
 		configurePageWrapper(pageWrapper);
 
