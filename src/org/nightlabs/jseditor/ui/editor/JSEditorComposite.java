@@ -37,7 +37,7 @@ public class JSEditorComposite extends XComposite{
 //	public JSEditorComposite(IWorkbenchWindow wPart, Composite parent, String title) {
 //		this(wPart, parent, title, SWT.NONE);
 //	}
-//	
+//
 //	public JSEditorComposite(IWorkbenchWindow wPart, Composite parent, String title, int style) {
 //		this(parent, title, style);
 //	}
@@ -49,7 +49,7 @@ public class JSEditorComposite extends XComposite{
 //	public JSEditorComposite(Composite parent, String title) {
 //		this(parent, title, SWT.NONE);
 //	}
-		
+
 	public JSEditorComposite(Composite parent, int style) {
 		super(parent, style, LayoutMode.TIGHT_WRAPPER);
 		GridLayout layout = new GridLayout();
@@ -113,7 +113,7 @@ public class JSEditorComposite extends XComposite{
 			}
 		} );
 	}
-	
+
 	@Override
 	public void addFocusListener(FocusListener listener)
 	{
@@ -145,5 +145,17 @@ public class JSEditorComposite extends XComposite{
 
 	public SourceViewer getSourceViewer(){
 		return sourceViewer;
+	}
+
+	// This should be in compliance with the current FocusListener settings, which direct this JSEditorComposite's
+	// focus to the sourceViewer. Kai 2009-11-19.
+	@Override
+	public void addKeyListener(KeyListener listener) {
+		sourceViewer.getTextWidget().addKeyListener(listener);
+	}
+
+	@Override
+	public void removeKeyListener(KeyListener listener) {
+		sourceViewer.getTextWidget().removeKeyListener(listener);
 	}
 }
