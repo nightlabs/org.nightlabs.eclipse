@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.nightlabs.base.ui.composite;
 
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -14,6 +11,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
+import org.nightlabs.base.ui.message.MessageType;
 
 /**
  * Composite for displaying messages of a certain type.
@@ -22,18 +20,12 @@ import org.eclipse.ui.PlatformUI;
 public class MessageComposite
 extends XComposite
 {
-	public enum MessageType {
-		INFO,
-		ERROR,
-		WARNING
-	}
-	
 	private String message = ""; //$NON-NLS-1$
 	private Label label;
 	private Image image;
 	private Label imageLabel;
 	private MessageType messageType;
-	
+
 	/**
 	 * @param parent
 	 * @param style
@@ -42,14 +34,14 @@ extends XComposite
 		super(parent, style);
 		this.message = message;
 		this.messageType = messageType;
-		
+
 		setLayout(new GridLayout(2, false));
 		imageLabel = new Label(this, SWT.NONE);
 		label = new Label(this, SWT.WRAP);
 		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		
+
 		setMessage(message, messageType);
-		
+
 		addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				if (image != null)
@@ -57,7 +49,7 @@ extends XComposite
 			}
 		});
 	}
-	
+
 	private Image getImageForMessageType(MessageType messageType)
 	{
 		String key = null;
@@ -68,7 +60,7 @@ extends XComposite
 			case WARNING:
 				key = ISharedImages.IMG_OBJS_WARN_TSK	;
 				break;
-			case INFO:
+			case INFORMATION:
 				key = ISharedImages.IMG_OBJS_INFO_TSK;
 				break;
 		}
@@ -79,7 +71,7 @@ extends XComposite
 
 		return desc.createImage();
 	}
-	
+
 	public void setMessage(String message, MessageType messageType)
 	{
 		if (image != null)
@@ -89,11 +81,11 @@ extends XComposite
 		imageLabel.setImage(image);
 		label.setText(message);
 	}
-	
+
 	public String getMessage() {
 		return message;
 	}
-	
+
 	public MessageType getMessageType() {
 		return messageType;
 	}

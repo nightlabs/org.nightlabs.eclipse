@@ -34,6 +34,7 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.nightlabs.base.ui.message.IMessageDisplayer;
+import org.nightlabs.base.ui.message.MessageType;
 import org.nightlabs.util.CollectionUtil;
 
 /**
@@ -194,6 +195,16 @@ implements IDynamicPathWizardPage, IMessageDisplayer
 	}
 
 	private boolean shown = false;
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.nightlabs.base.ui.message.IMessageDisplayer#setMessage(java.lang.String, org.nightlabs.base.ui.composite.MessageComposite.MessageType)
+	 */
+	@Override
+	public void setMessage(String message, MessageType type)
+	{
+		setMessage(message, type.ordinal());
+	}
 
 	/**
 	 * @see org.nightlabs.base.ui.wizard.IDynamicPathWizardPage#isShown()

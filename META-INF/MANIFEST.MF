@@ -3,7 +3,7 @@ Generated-from: 1140596560679;type=2
 Bundle-ManifestVersion: 2
 Bundle-Name: NightLabs Base plugin
 Bundle-SymbolicName: org.nightlabs.base.ui; singleton:=true
-Bundle-Version: 1.1.19.qualifier
+Bundle-Version: 1.1.20
 Bundle-ClassPath: .,
  lib/xercesImpl.jar,
  lib/commons-beanutils.jar,
@@ -141,6 +141,7 @@ Export-Package: com.sun.activation.registries,
  org.nightlabs.base.ui.toolkit,
  org.nightlabs.base.ui.tree,
  org.nightlabs.base.ui.util,
+ org.nightlabs.base.ui.validation,
  org.nightlabs.base.ui.wizard,
  org.w3c.dom.html,
  org.w3c.dom.ls
