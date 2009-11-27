@@ -1,9 +1,0 @@
-<project>
-	<target name="compile.pre">
-	    <mkdir dir="${project.dir}/${lib.dir}"/>
-<!--
-		<copy file="../NightLabsConnection/lib/RXTXcomm.jar" todir="${project.dir}/${lib.dir}" failonerror="false" verbose="true"/>
-	    <copy file="../NightLabsConnection/dist/NightLabsConnection.jar" todir="${project.dir}/${lib.dir}" failonerror="false" verbose="true"/>
--->
-	</target>
-</project>
