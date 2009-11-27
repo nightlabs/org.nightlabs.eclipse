@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Keyreader Plug-in
 Bundle-SymbolicName: org.nightlabs.keyreader.ui;singleton:=true
-Bundle-Version: 1.0.2.qualifier
+Bundle-Version: 1.0.3.qualifier
 Bundle-Activator: org.nightlabs.keyreader.ui.KeyReaderPlugin
 Bundle-Vendor: NightLabs.com
 Bundle-Localization: plugin
