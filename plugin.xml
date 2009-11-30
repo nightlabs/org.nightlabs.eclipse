@@ -48,11 +48,11 @@
         <factory class="org.nightlabs.base.ui.io.FileEditorInputFactory" id="org.nightlabs.base.ui.io.FileEditorInputFactory"/>
     </extension>
     <extension point="org.eclipse.ui.preferencePages">
+<!--    
         <page
             category="org.nightlabs.base.ui.preference.UIPreferencePage"
             class="org.eclipse.ui.internal.keys.KeysPreferencePage"
-            id="org.eclipse.ui.internal.keys.KeysPreferencePage" name="%preferencePage.keys.label"/>
-        <!--            
+            id="org.eclipse.ui.internal.keys.KeysPreferencePage" name="%preferencePage.keys.label"/>            
         <page category="%category.general"
             class="org.eclipse.ui.internal.themes.ColorsAndFontsPreferencePage"
             id="org.eclipse.ui.internal.themes.ColorsAndFontsPreferencePage" name="%preferencePage.colorAndFonts.label"/>
