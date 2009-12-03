@@ -122,18 +122,18 @@ implements ILanguageManager
 	 * or the languageID stored in the {@link LanguageCfMod} if present and valid.
 	 */
 	public void setLanguage() {
-		boolean haveGoodValue = false;
+//		boolean haveGoodValue = false;
 		if (globalL10nSettings.getLanguage() != null) {
-			if (checkLanguageID(globalL10nSettings.getLanguage())) {
-				haveGoodValue = true;
+//			if (checkLanguageID(globalL10nSettings.getLanguage())) {
+//				haveGoodValue = true;
 				Locale.setDefault(new Locale(globalL10nSettings.getLanguage(), globalL10nSettings.getCountry()));
-			}
+//			}
 		}
-		if(!haveGoodValue) {
-			// if the current default locale is
-			// invalid for some reason, we switch to default english
-			Locale.setDefault(Locale.ENGLISH);
-		}
+//		if(!haveGoodValue) {
+//			// if the current default locale is
+//			// invalid for some reason, we switch to default english
+//			Locale.setDefault(Locale.ENGLISH);
+//		}
 		currentLanguage = getLanguage(NLLocale.getDefault(), false);
 		if (currentLanguage == null) {
 			currentLanguage = createDefaultLanguage();
@@ -153,14 +153,14 @@ implements ILanguageManager
 		setLanguage();
 	}
 
-	private boolean checkLanguageID(String languageID) {
-		String[] isoLangs = Locale.getISOLanguages();
-		for (String lang : isoLangs) {
-			if (lang.equals(languageID))
-				return true;
-		}
-		return false;
-	}
+//	private boolean checkLanguageID(String languageID) {
+//		String[] isoLangs = Locale.getISOLanguages();
+//		for (String lang : isoLangs) {
+//			if (lang.equals(languageID))
+//				return true;
+//		}
+//		return false;
+//	}
 
 	/**
 	 *
@@ -169,8 +169,9 @@ implements ILanguageManager
 	public void addLanguage(LanguageCf langCf) {
 		if (languageID2LanguageCf.containsKey(langCf.getLanguageID()))
 			return;
-		if (!checkLanguageID(langCf.getLanguageID()))
-			throw new IllegalArgumentException("The languageID " + langCf.getLanguageID() + " is invalid!"); //$NON-NLS-1$ //$NON-NLS-2$
+		// It is desired to support languages that are not known to Java. That's actually a reason why we use our own language datamodel. Marco.
+//		if (!checkLanguageID(langCf.getLanguageID()))
+//			throw new IllegalArgumentException("The languageID " + langCf.getLanguageID() + " is invalid!"); //$NON-NLS-1$ //$NON-NLS-2$
 		langCf.init(langCfMod.getLanguageIDs());
 		langCfMod.getLanguages().add(langCf);
 		languageID2LanguageCf.put(langCf.getLanguageID(), langCf);
@@ -190,24 +191,29 @@ implements ILanguageManager
 		if (languageID2LanguageCf.containsKey(languageID))
 			return;
 
-		if (!checkLanguageID(languageID))
-			throw new IllegalArgumentException("The languageID " + languageID + " is invalid!"); //$NON-NLS-1$ //$NON-NLS-2$
+//		if (!checkLanguageID(languageID))
+//			throw new IllegalArgumentException("The languageID " + languageID + " is invalid!"); //$NON-NLS-1$ //$NON-NLS-2$
 		LanguageCf langCf = createLanguage(languageID);
 		addLanguage(langCf);
 	}
 
 	/**
-	 * creates an LanguageCF based on the given Locale and adds it
+	 * Creates a LanguageCF based on the given Locale and adds it.
 	 * @param locale
 	 */
-	public void addLanguage(Locale locale) {
-		if (languageID2LanguageCf.containsKey(locale.getLanguage()))
-			return;
+	public LanguageCf addLanguage(Locale locale) {
+//		if (languageID2LanguageCf.containsKey(locale.getLanguage()))
+//			return;
 
-		if (!checkLanguageID(locale.getLanguage()))
-			throw new IllegalArgumentException("The languageID " + locale.getLanguage() + " is invalid!"); //$NON-NLS-1$ //$NON-NLS-2$
+//		if (!checkLanguageID(locale.getLanguage()))
+//			throw new IllegalArgumentException("The languageID " + locale.getLanguage() + " is invalid!"); //$NON-NLS-1$ //$NON-NLS-2$
+
+		if (languageID2LanguageCf.containsKey(locale.getLanguage())) {
+			return languageID2LanguageCf.get(locale.getLanguage());
+		}
 		LanguageCf langCf = createLanguage(getLanguageID(locale));
 		addLanguage(langCf);
+		return langCf;
 	}
 
 	protected Map<String, LanguageCf> languageID2LanguageCf = new HashMap<String, LanguageCf>();
