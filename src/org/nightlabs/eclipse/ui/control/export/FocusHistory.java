@@ -10,7 +10,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.Widget;
-import org.nightlabs.eclipse.ui.control.export.resource.Messages;
 
 public class FocusHistory {
 	private static volatile FocusHistory _sharedInstance = null;

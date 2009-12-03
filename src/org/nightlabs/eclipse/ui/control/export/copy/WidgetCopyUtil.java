@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.ColumnLayoutData;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.TableLayout;
@@ -24,7 +23,7 @@ import org.nightlabs.eclipse.ui.control.export.model.Item;
 
 public class WidgetCopyUtil
 {
-	private static final Logger logger = Logger.getLogger(WidgetCopyUtil.class);
+//	private static final Logger logger = Logger.getLogger(WidgetCopyUtil.class);
 
 	//Table
 	public static Table copyTable(Composite composite, Table oldTable, boolean isCopyStyle) {

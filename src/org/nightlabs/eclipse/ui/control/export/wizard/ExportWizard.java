@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.nightlabs.eclipse.ui.control.export.wizard;
 
 import org.eclipse.jface.viewers.IStructuredSelection;

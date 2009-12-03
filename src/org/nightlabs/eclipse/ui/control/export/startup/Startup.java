@@ -11,7 +11,6 @@ import org.eclipse.ui.IStartup;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.nightlabs.eclipse.ui.control.export.FocusHistory;
-import org.nightlabs.eclipse.ui.control.export.resource.Messages;
 
 public class Startup
 implements IStartup

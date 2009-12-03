@@ -1,13 +1,9 @@
-/**
- * 
- */
 package org.nightlabs.eclipse.ui.control.export.action;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.nightlabs.eclipse.ui.control.export.resource.Messages;
 
 /**
  * @author Chairat Kongarayawetchakun - chairat[at]nightlabs[dot]de
