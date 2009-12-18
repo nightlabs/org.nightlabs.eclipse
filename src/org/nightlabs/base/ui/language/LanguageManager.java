@@ -43,6 +43,7 @@ import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.config.LanguageCfMod;
 import org.nightlabs.config.Config;
 import org.nightlabs.config.ConfigException;
+import org.nightlabs.i18n.I18nUtil;
 import org.nightlabs.l10n.GlobalL10nSettings;
 import org.nightlabs.language.LanguageCf;
 import org.nightlabs.util.NLLocale;
@@ -249,7 +250,7 @@ implements ILanguageManager
 			LanguageCf languageCf = getLanguage(languageID, true);
 			byte[] flagData = languageCf._getFlagIcon16x16();
 
-			InputStream in = flagData != null ? new ByteArrayInputStream(flagData) : LanguageCf.class.getResourceAsStream("resource/Flag-fallback.16x16.png"); //$NON-NLS-1$
+			InputStream in = flagData != null ? new ByteArrayInputStream(flagData) : I18nUtil.class.getResourceAsStream("resource/country/Flag-fallback.16x16.png"); //$NON-NLS-1$
 			try {
 				ImageData imageData = new ImageData(in);
 				imageDescriptor = ImageDescriptor.createFromImageData(imageData);
