@@ -94,6 +94,89 @@ extends XComposite
 		return "gtk".equals(ws); //$NON-NLS-1$
 	}
 
+	// new
+	public XCombo (Composite parent, int style, int columns) {
+		super(parent, style = checkAndAdaptStyle (style, parent), LayoutMode.NONE, LayoutDataMode.NONE);
+//		getGridLayout().horizontalSpacing = 2;
+
+		imageLabel = new Label(this, SWT.NONE);
+		imageLabel.setBackground(getDefaultBackgroundColor());
+
+		int textStyle = SWT.SINGLE;
+		// The XCombo MUST NOT set this flag, because it is impossible to be used for free entries then. If a user of this XCombo
+		// wants read-only behaviour, he has to set it!!! Marco.
+		if ((style & SWT.READ_ONLY) != 0) textStyle |= SWT.READ_ONLY;
+		if ((style & SWT.FLAT) != 0) textStyle |= SWT.FLAT;
+		text = new Text (this, textStyle);
+		// Workaround to avoid grey background if style == SWT.READ_ONLY; // TODO why this?! The native combos are grey, if this style is set.
+//		if (!isGtk()) { // added by Marco, because it doesn't look good in GTK.
+			if (isReadOnly())
+				text.setBackground(getDefaultBackgroundColor());
+//		}
+
+		int arrowStyle = SWT.DOWN | SWT.ARROW;
+		if ((style & SWT.FLAT) != 0) arrowStyle |= SWT.FLAT;
+
+		arrow = new Button (this, arrowStyle);
+
+		listener = new Listener () {
+			public void handleEvent (Event event) {
+				if (popup == event.widget) {
+					popupEvent (event);
+					return;
+				}
+				if (text == event.widget) {
+					textEvent (event);
+					return;
+				}
+				if (table == event.widget) {
+					listEvent (event);
+					return;
+				}
+				if (arrow == event.widget) {
+					arrowEvent (event);
+					return;
+				}
+				if (XCombo.this == event.widget) {
+					comboEvent (event);
+					return;
+				}
+				if (getShell () == event.widget) {
+					handleFocus (SWT.FocusOut);
+				}
+			}
+		};
+		filter = new Listener() {
+			public void handleEvent(Event event) {
+				Shell shell = ((Control)event.widget).getShell ();
+				if (shell == XCombo.this.getShell ()) {
+					handleFocus (SWT.FocusOut);
+				}
+			}
+		};
+
+		int [] comboEvents = {SWT.Dispose, SWT.Move, SWT.Resize};
+		for (int i=0; i<comboEvents.length; i++) this.addListener (comboEvents [i], listener);
+
+		int [] textEvents = {SWT.KeyDown, SWT.KeyUp, SWT.Modify, SWT.MouseDown, SWT.MouseUp, SWT.Traverse, SWT.FocusIn};
+		for (int i=0; i<textEvents.length; i++) text.addListener (textEvents [i], listener);
+
+		int [] arrowEvents = {SWT.Selection, SWT.FocusIn};
+		for (int i=0; i<arrowEvents.length; i++) arrow.addListener (arrowEvents [i], listener);
+
+		addControlListener(new ControlAdapter() {
+
+			@Override
+			public void controlResized(ControlEvent e) {
+				XCombo.this.controlResized(e);
+			}
+
+		});
+
+		createPopup(null, -1, columns);
+		initAccessible();
+	}
+
 /**
  * Constructs a new instance of this class given its parent
  * and a style value describing its behaviour and appearance.
@@ -123,7 +206,13 @@ extends XComposite
  * @see Widget#getStyle()
  */
 public XCombo (Composite parent, int style) {
+	// new
+	this(parent, style, 1);
+
+	// old
+/*
 	super(parent, style = checkAndAdaptStyle (style, parent), LayoutMode.NONE, LayoutDataMode.NONE);
+
 //	getGridLayout().horizontalSpacing = 2;
 
 	imageLabel = new Label(this, SWT.NONE);
@@ -201,7 +290,7 @@ public XCombo (Composite parent, int style) {
 	});
 
 	createPopup(null, -1);
-	initAccessible();
+	initAccessible();*/
 }
 
 protected void controlResized(ControlEvent e) {
@@ -292,6 +381,42 @@ public void add (Image image, String text, int index) {
 }
 
 /**
+ * Adds the argument to the receiver's table at the given zero-relative index.
+ * <p>
+ * Note: To add an item at the end of the list, use the result of calling <code>getItemCount()</code> as the
+ * index or use <code>add(String)</code>.
+ * </p>
+ * @param image1 The new item image.
+ * @param text The new item name.
+ * @param image2 The additional item image displayed in a separate column.
+ * @param index The index for the item.
+ * @exception IllegalArgumentException <ul>
+ *    <li>ERROR_NULL_ARGUMENT - if the string is null</li>
+ *    <li>ERROR_INVALID_RANGE - if the index is not between 0 and the number of elements in the list (inclusive)</li>
+ * </ul>
+ * @exception SWTException <ul>
+ *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+ *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
+ * </ul>
+ */
+public void add (final Image image1, final String text, final Image image2, int index) {
+	checkWidget();
+	if (text == null) {
+		SWT.error (SWT.ERROR_NULL_ARGUMENT);
+	}
+	if (index < 0) {
+		index = table.getItemCount();
+	}
+	final TableItem item = new TableItem(table, getStyle(), index);
+	item.setImage(0, image1);
+	item.setText(0, text);
+	item.setImage(1, image2);
+	for (int i = 0; i < 2; i++) {
+		table.getColumn(i).pack();
+	}
+}
+
+/**
  * Adds the listener to the collection of listeners who will
  * be notified when the receiver's text is modified, by sending
  * it one of the messages defined in the <code>ModifyListener</code>
@@ -316,6 +441,7 @@ public void addModifyListener (ModifyListener listener) {
 	TypedListener typedListener = new TypedListener (listener);
 	addListener (SWT.Modify, typedListener);
 }
+
 /**
  * Adds the listener to the collection of listeners who will
  * be notified when the receiver's selection changes, by sending
@@ -369,6 +495,7 @@ void arrowEvent (Event event) {
 		}
 	}
 }
+
 /**
  * Sets the selection in the receiver's text field to an empty
  * selection starting just before the first character. If the
@@ -483,6 +610,44 @@ public Point computeSize (int wHint, int hHint, boolean changed)
 	return new Point (width, height);
 }
 
+// new
+void createPopup(TableItem[] items, int selectionIndex, int columns) {
+	// create shell and list
+	popup = new Shell (getShell (), SWT.NO_TRIM | SWT.ON_TOP);
+//	shellJustDeactivated = false;
+	int style = getStyle ();
+	int listStyle = SWT.SINGLE | SWT.V_SCROLL;
+	if ((style & SWT.FLAT) != 0) listStyle |= SWT.FLAT;
+	if ((style & SWT.RIGHT_TO_LEFT) != 0) listStyle |= SWT.RIGHT_TO_LEFT;
+	if ((style & SWT.LEFT_TO_RIGHT) != 0) listStyle |= SWT.LEFT_TO_RIGHT;
+	table = new Table (popup, listStyle);
+
+	if (columns > 1) {
+		for (int i = 0; i < columns; i++) {
+			TableColumn column = new TableColumn(table, SWT.NONE);
+		}
+	}
+
+	if (font != null) table.setFont (font);
+	if (foreground != null) table.setForeground (foreground);
+//	if (background != null) table.setBackground (background); // always keep the backround of the table white!
+
+	int [] popupEvents = {SWT.Close, SWT.Paint, SWT.Deactivate};
+	for (int i=0; i<popupEvents.length; i++) popup.addListener (popupEvents [i], listener);
+	int [] listEvents = {SWT.MouseUp, SWT.Selection, SWT.Traverse, SWT.KeyDown, SWT.KeyUp, SWT.FocusIn, SWT.Dispose};
+	for (int i=0; i<listEvents.length; i++) table.addListener (listEvents [i], listener);
+
+	if (items != null)
+	{
+		for (TableItem item : items)
+		{
+			add(item.getImage(), item.getText());
+		}
+	}
+	if (selectionIndex != -1) table.setSelection (selectionIndex);
+}
+
+// old
 void createPopup(TableItem[] items, int selectionIndex) {
 		// create shell and list
 		popup = new Shell (getShell (), SWT.NO_TRIM | SWT.ON_TOP);
@@ -493,6 +658,7 @@ void createPopup(TableItem[] items, int selectionIndex) {
 		if ((style & SWT.RIGHT_TO_LEFT) != 0) listStyle |= SWT.RIGHT_TO_LEFT;
 		if ((style & SWT.LEFT_TO_RIGHT) != 0) listStyle |= SWT.LEFT_TO_RIGHT;
 		table = new Table (popup, listStyle);
+
 		if (font != null) table.setFont (font);
 		if (foreground != null) table.setForeground (foreground);
 //		if (background != null) table.setBackground (background); // always keep the backround of the table white!
