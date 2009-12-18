@@ -72,7 +72,7 @@ public class LanguageChooserList
 		this(parent, SWT.BORDER | SWT.H_SCROLL | SWT.FULL_SELECTION, showHeader);
 		((GridData)getLayoutData()).grabExcessHorizontalSpace = grabExcessHorizontalSpace;
 	}
-	
+
 	public LanguageChooserList(Composite parent, int tableStyle, boolean showHeader)
 	{
 		super(parent, SWT.NONE, true);
@@ -86,8 +86,10 @@ public class LanguageChooserList
 		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event)
 			{
-				logger.debug("new language: "+getLanguage().getLanguageID()); //$NON-NLS-1$
-				fireLanguageChangeEvent();
+				if (getLanguage() != null) {
+					logger.debug("new language: "+getLanguage().getLanguageID()); //$NON-NLS-1$
+					fireLanguageChangeEvent();
+				}
 			}
 		});
 
