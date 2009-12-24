@@ -363,8 +363,10 @@ implements ISelectionProvider
 	public int removeElement(T element)
 	{
 		int index = elements.indexOf(element);
-		removeElementFromGui(index);
-		elements.remove(index);
+		if (index >= 0) {
+			removeElementFromGui(index);
+			elements.remove(index);
+		}
 		return index;
 	}
 
