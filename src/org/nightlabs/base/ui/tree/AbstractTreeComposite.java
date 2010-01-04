@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.util.SafeRunnable;
 import org.eclipse.jface.viewers.CellEditor;
@@ -91,6 +92,8 @@ implements ISelectionProvider, StatableTree
 	 * Default set of styles to use when constructing a multi-selection viewer.
 	 */
 	public static int DEFAULT_STYLE_MULTI_BORDER = SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL  | SWT.FULL_SELECTION | SWT.BORDER;
+
+	private Logger logger = Logger.getLogger(AbstractTreeComposite.class);
 
 	private boolean editable = true;
 	private ListenerList doubleClickListenerBackup;
@@ -170,14 +173,14 @@ implements ISelectionProvider, StatableTree
 		super(parent, SWT.NONE, XComposite.LayoutMode.TIGHT_WRAPPER, setLayoutData ? XComposite.LayoutDataMode.GRID_DATA : XComposite.LayoutDataMode.NONE);
 		treeViewer = createTreeViewer(style);
 		treeViewer.getTree().setLayoutData(new GridData(GridData.FILL_BOTH));
-		treeViewer.getTree().setHeaderVisible(headerVisible);		
+		treeViewer.getTree().setHeaderVisible(headerVisible);
 		this.sortColumns = sortColumns;
 		if (init)
 			init();
 	}
 
 	private boolean restoreCollapseState = true;
-	
+
 	/**
 	 * @return the restoreCollapseState
 	 */
@@ -204,7 +207,7 @@ implements ISelectionProvider, StatableTree
 		if (restoreCollapseState) {
 			TreeStateController.sharedInstance().registerTree(this);
 		}
-		
+
 		if (sortColumns)
 		{
 			for (int i=0; i<treeViewer.getTree().getColumns().length; i++) {
@@ -404,6 +407,90 @@ implements ISelectionProvider, StatableTree
 		}
 		return result;
 	}
+
+//	private <T> Set<T> findIntersection(Set<T> setA, Set<T> setB)
+//	{
+//		assert setA != null && setB != null;
+//		Set<T> result = new HashSet<T>();
+//		Set<T> smallerSet = (setA.size() < setB.size()) ? setA : setB;
+//		Set<T> biggerSet = (setA.size() < setB.size()) ? setB : setA;
+//
+//		for (T element : smallerSet)
+//		{
+//			if (biggerSet.contains(element))
+//				result.add(element);
+//		}
+//		return result;
+//	}
+
+//	protected static final int maxSelectionDepth = 10;
+//
+//	public void setSelectedElements(Set<Object> elementsToSelect)
+//	{
+//		if (elementsToSelect == null || elementsToSelect.isEmpty())
+//			return;
+//
+//		IContentProvider contentProvider = getTreeViewer().getContentProvider();
+//		final Set<Object> stillToSelect = new HashSet<Object>(elementsToSelect);
+//		int depth = 0;
+//		Object input = getTreeViewer().getInput();
+//
+//		Set<Object> currentLevel = new HashSet<Object>();
+//		Set<Object> nextLevel = new HashSet<Object>();
+//
+//		if (contentProvider instanceof ITreeContentProvider)
+//		{
+//			final ITreeContentProvider iscp = (ITreeContentProvider) contentProvider;
+//			while (depth < maxSelectionDepth && !stillToSelect.isEmpty())
+//			{
+//				if (depth == 0)
+//					currentLevel.addAll( Arrays.asList(iscp.getElements(input)) );
+//				else
+//				{
+//					for (Object object : currentLevel)
+//						nextLevel.addAll( Arrays.asList(iscp.getChildren(object)) );
+//
+//					currentLevel = nextLevel;
+//					nextLevel = new HashSet<Object>();
+//				}
+//
+//				Set<Object> intersection = findIntersection(stillToSelect, currentLevel);
+//				stillToSelect.removeAll(intersection);
+//				depth++;
+//			}
+//		}
+//		else if (contentProvider instanceof ILazyTreeContentProvider)
+//		{
+//			final ILazyTreeContentProvider iltcp = (ILazyTreeContentProvider) contentProvider;
+//			while (depth < maxSelectionDepth && ! stillToSelect.isEmpty())
+//			{
+//				if (depth == 0)
+//					currentLevel.addAll( Arrays.asList(new ArrayContentProvider().getElements(input)) );
+//				else
+//				{
+//					for (Object object : currentLevel)
+//						iltcp.updateChildCount(object, depth);
+//
+////					getTreeViewer().g
+//					currentLevel = nextLevel;
+//					nextLevel = new HashSet<Object>();
+//				}
+//
+//				Set<Object> intersection = findIntersection(stillToSelect, currentLevel);
+//				stillToSelect.removeAll(intersection);
+//				depth++;
+//			}
+//		}
+//		else if (contentProvider instanceof ILazyTreePathContentProvider)
+//		{
+//			final ILazyTreePathContentProvider iltpcp = (ILazyTreePathContentProvider) contentProvider;
+//			// TODO: Implement this crap.
+//		}
+//		else
+//			logger.error("Cannot select elements in this AbstractTreeComposite, since the content provider is of unknown " +
+//					"type! TreeComposite = " + this.getClass().getName() + ", ContentProviderType = " +
+//					contentProvider.getClass().getName()+" !");
+//	}
 
 	/**
 	 * Sets the flag whether the table may actively be modified or if it is "read-only".
