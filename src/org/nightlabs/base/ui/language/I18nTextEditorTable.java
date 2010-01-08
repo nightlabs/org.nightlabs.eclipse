@@ -24,6 +24,7 @@ import org.eclipse.jface.viewers.TableViewerEditor;
 import org.eclipse.jface.viewers.TableViewerFocusCellManager;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -94,7 +95,8 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 
 		GridData gd = new GridData(GridData.FILL_BOTH);
 		gd.minimumHeight = 100;
-
+		gd.heightHint = 100;
+		
 		if (title != null)
 			new Label(this, SWT.NONE).setText(title);
 
@@ -121,7 +123,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 		tableLayout.addColumnData(new ColumnPixelData(24, false));
 		tableLayout.addColumnData(new ColumnWeightData(20));
 		tableLayout.addColumnData(new ColumnWeightData(80));
-		table.setLayout(new WeightedTableLayout(new int[] { -1, 15, 80 }, new int[] { 24, -1, -1 }));
+		table.setLayout(new WeightedTableLayout(new int[] { -1, 40, 80 }, new int[] { 24, -1, -1 }));
 
 		// Assign the cell editors to the viewer
 //		tableViewer.setCellEditors(new CellEditor[] { null, null, new TextCellEditor(table) });
@@ -131,6 +133,8 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 		tableViewer.setContentProvider(new I18nTextEditorTableContentProvider()); // Marco: removed the parameters - a ContentProvider never gets its content immutable this way - it gets it via the callback-method inputChanged(...)
 		tableViewer.setLabelProvider(new I18nTextLabelProvider());
 
+		tableViewer.setSorter(new ViewerSorter());
+		
 		TableViewerFocusCellManager focusCellManager = new TableViewerFocusCellManager(tableViewer, new FocusCellOwnerDrawHighlighter(tableViewer));
 		final char[] activationChar = new char[1];
 		final TextCellEditor textCellEditor = new TextCellEditor(tableViewer.getTable()) {
