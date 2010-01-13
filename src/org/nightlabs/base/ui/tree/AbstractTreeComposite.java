@@ -235,9 +235,13 @@ implements ISelectionProvider, StatableTree
 	}
 
 	protected TreeViewer createTreeViewer(int style) {
-		TreeViewer tv = new TreeViewer(this, style);
-		if ((style & SWT.VIRTUAL) != 0)
+		TreeViewer tv;
+		if ((style & SWT.VIRTUAL) != 0) {
+			tv = new VirtualTreeViewer(this, style);
 			tv.setUseHashlookup(true);
+		}
+		else
+			tv = new TreeViewer(this, style);
 
 		return tv;
 	}
