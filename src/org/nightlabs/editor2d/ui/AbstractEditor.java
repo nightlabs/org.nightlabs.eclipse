@@ -212,7 +212,7 @@ extends GraphicalEditorWithFlyoutPalette
 	private EditorOutlinePage outlinePage;
 	private boolean editorSaving = false;
 	private boolean useJava2D = true;
-	
+
 	/** Create a new Editor instance. This is called by the Workspace. */
 	public AbstractEditor()
 	{
@@ -340,7 +340,8 @@ extends GraphicalEditorWithFlyoutPalette
 	public LanguageManager getLanguageManager()
 	{
 		if (langMan == null)
-			langMan = new LanguageManager();
+//			langMan = new LanguageManager();
+			langMan = LanguageManager.sharedInstance();
 
 		return langMan;
 	}
@@ -448,7 +449,7 @@ extends GraphicalEditorWithFlyoutPalette
 	private ScalableFreeformRootEditPart rootEditPart;
 	public ScalableFreeformRootEditPart getRootEditPart()
 	{
-		if (rootEditPart == null) 
+		if (rootEditPart == null)
 		{
 			if (useJava2D) {
 //				rootEditPart = new J2DScalableFreeformRootEditPart();
@@ -824,10 +825,10 @@ extends GraphicalEditorWithFlyoutPalette
 	protected void configureRenderModeManager()
 	{
 		if (useJava2D) {
-			getRenderModeManager().setCurrentRenderContextType(J2DRenderContext.RENDER_CONTEXT_TYPE_JAVA2D);	
+			getRenderModeManager().setCurrentRenderContextType(J2DRenderContext.RENDER_CONTEXT_TYPE_JAVA2D);
 		}
 		else {
-			getRenderModeManager().setCurrentRenderContextType(Draw2DRenderContext.RENDER_CONTEXT_TYPE);	
+			getRenderModeManager().setCurrentRenderContextType(Draw2DRenderContext.RENDER_CONTEXT_TYPE);
 		}
 	}
 
@@ -1071,7 +1072,7 @@ extends GraphicalEditorWithFlyoutPalette
 	{
 		long start = System.currentTimeMillis();
 		rulerComp = new RulerComposite(parent, SWT.NONE);
-		
+
 //		super.createGraphicalViewer(rulerComp);
 		GraphicalViewer viewer = null;
 		if (useJava2D) {
@@ -1085,7 +1086,7 @@ extends GraphicalEditorWithFlyoutPalette
 		configureGraphicalViewer();
 		hookGraphicalViewer();
 		initializeGraphicalViewer();
-		
+
 		rulerComp.setGraphicalViewer((ScrollingGraphicalViewer) getGraphicalViewer());
 		if (logger.isDebugEnabled()) {
 			long duration = System.currentTimeMillis() - start;
