@@ -117,10 +117,13 @@ public class LanguageChooserCombo
 				}
 		  }
 
-		  if (languageIdx < 0)
-				throw new IllegalStateException("The user's language \""+userLanguageID+"\" is not registered in the server!"); //$NON-NLS-1$ //$NON-NLS-2$
+//		  if (languageIdx < 0)
+//				throw new IllegalStateException("The user's language \""+userLanguageID+"\" is not registered in the server!"); //$NON-NLS-1$ //$NON-NLS-2$
 
-			combo.select(languageIdx);
+		  if (languageIdx < 0)
+			  languageIdx = 0;
+
+		  combo.select(languageIdx);
 		} catch (RuntimeException e) {
 			ExceptionHandlerRegistry.asyncHandleException(e);
 			throw e;
