@@ -29,6 +29,7 @@ package org.nightlabs.base.ui.language;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
@@ -149,5 +150,38 @@ public class LanguageChooserCombo
 	public List<LanguageCf> getLanguages()
 	{
 		return languages;
+	}
+	
+	/**
+	 * Selects the given LanguageCf in the combo if it is contained in the list.
+	 * 
+	 * @param language The language to select
+	 */
+	public void select(LanguageCf language) {
+		if (languages.contains(language)) {
+			combo.select(languages.indexOf(language));
+		}
+	}
+	
+	/**
+	 * Selects the given Language in the combo if it is contained in the list.
+	 * 
+	 * @param languageID The id of language to select
+	 */
+	public void select(String languageID) {
+		for (LanguageCf languageCf : languages) {
+			if (languageCf.getLanguageID().equals(languageID)) {
+				select(languageCf);
+			}
+		}
+	}
+	
+	/**
+	 * Selects the Language of the given Locale in the combo if it is contained in the list.
+	 * 
+	 * @param locale The Locale whose language to select.
+	 */
+	public void select(Locale locale) {
+		select(locale.getLanguage());
 	}
 }
