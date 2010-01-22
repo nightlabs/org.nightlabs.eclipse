@@ -27,6 +27,7 @@ import org.nightlabs.timepattern.TimePattern;
 import org.nightlabs.timepattern.TimePatternFormatException;
 import org.nightlabs.timepattern.TimePatternSet;
 import org.nightlabs.util.CollectionUtil;
+import org.nightlabs.util.Util;
 
 public class TimePatternSetComposite
 extends AbstractTableComposite<TimePattern>
@@ -149,7 +150,13 @@ implements TimePatternSetEdit
 		{
 			TableItem tableItem = (TableItem)element;
 			TimePattern tp = (TimePattern)tableItem.getData();
-
+			
+			Object oldValue = getValue(tp, property);
+			if (Util.equals(oldValue, value)) {
+				// Nothing to do, values are equal
+				return;
+			}
+				
 			try {
 				if (COLUMN_PROPERTY_YEAR.equals(property))
 					tp.setYear((String)value);
@@ -167,14 +174,12 @@ implements TimePatternSetEdit
 				throw new RuntimeException(x); // TODO nice message and reset the previous state (i.e. update the table, becaue the TimePattern does not accept invalid values)!
 			}
 
-			// TODO do we need to refresh the table?!
-			// update(element... or update(tp ????
 			timePatternSetComposite.getTableViewer().update(tp, new String[] { property });
 			timePatternSetComposite.fireTimePatternSetModifyEvent();
 		}
 	}
 
-	protected void fireTimePatternSetModifyEvent()
+	void fireTimePatternSetModifyEvent()
 	{
 		Object[] listeners = timePatternSetModifyListeners.getListeners();
 		if (listeners.length < 1)
