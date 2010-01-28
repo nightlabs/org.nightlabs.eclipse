@@ -76,13 +76,15 @@ public class TimePatternSetEditComposite extends XComposite implements TimePatte
 		// Hyperlink buildWizardLink = new Hyperlink(this, SWT.WRAP);
 		// buildWizardLink.setLayoutData(new GridData());
 		// buildWizardLink.setText("Build with wizard");
-		Hyperlink buildWizardLink = getToolkit().createHyperlink(this, "Build with wizard", SWT.NONE);
+		Hyperlink buildWizardLink = getToolkit(true).createHyperlink(this, "Build with wizard", SWT.NONE);
 		buildWizardLink.addHyperlinkListener(new HyperlinkAdapter() {
 			@Override
 			public void linkActivated(HyperlinkEvent e) {
-				if (TimePatternSetBuilderWizard.open(getShell(), timePatternSetComposite.getTimePatternSet())) {
-					timePatternSetComposite.refresh();
-					timePatternSetComposite.fireTimePatternSetModifyEvent();
+				if (timePatternSetComposite.getTimePatternSet() != null) {
+					if (TimePatternSetBuilderWizard.open(getShell(), timePatternSetComposite.getTimePatternSet())) {
+						timePatternSetComposite.refresh();
+						timePatternSetComposite.fireTimePatternSetModifyEvent();
+					}
 				}
 			}
 		});
