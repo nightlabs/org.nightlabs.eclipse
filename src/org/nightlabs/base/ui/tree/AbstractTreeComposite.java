@@ -28,12 +28,18 @@ package org.nightlabs.base.ui.tree;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.ListenerList;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IContributionItem;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.util.SafeRunnable;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -51,10 +57,13 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.part.DrillDownAdapter;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.table.GenericInvertViewerSorter;
 import org.nightlabs.eclipse.ui.treestate.StatableTree;
@@ -92,8 +101,6 @@ implements ISelectionProvider, StatableTree
 	 * Default set of styles to use when constructing a multi-selection viewer.
 	 */
 	public static int DEFAULT_STYLE_MULTI_BORDER = SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL  | SWT.FULL_SELECTION | SWT.BORDER;
-
-	private Logger logger = Logger.getLogger(AbstractTreeComposite.class);
 
 	private boolean editable = true;
 	private ListenerList doubleClickListenerBackup;
@@ -731,4 +738,63 @@ implements ISelectionProvider, StatableTree
 	private <T> T naiveCast(T t, Object obj) {
 		return (T) obj;
 	}
+
+	protected void createContextMenu(boolean withDrillDownAdapter) {
+		if (withDrillDownAdapter)
+			drillDownAdapter = new DrillDownAdapter(getTreeViewer());
+
+		MenuManager menuMgr = new MenuManager("#PopupMenu"); //$NON-NLS-1$
+		menuMgr.setRemoveAllWhenShown(true);
+		menuMgr.addMenuListener(new IMenuListener() {
+			public void menuAboutToShow(IMenuManager manager) {
+				AbstractTreeComposite.this.fillContextMenu(manager);
+			}
+		});
+		Menu menu = menuMgr.createContextMenu(getTreeViewer().getControl());
+		getTreeViewer().getControl().setMenu(menu);
+//		if (getSite() != null)
+//			getSite().registerContextMenu(menuMgr, getTreeViewer());
+	}
+
+	/**
+	 * Contains instances of both, {@link IContributionItem} and {@link IAction}
+	 */
+	private List<Object> contextMenuContributions;
+
+	public void addContextMenuContribution(IContributionItem contributionItem)
+	{
+		if (contextMenuContributions == null)
+			contextMenuContributions = new LinkedList<Object>();
+
+		contextMenuContributions.add(contributionItem);
+	}
+
+	public void addContextMenuContribution(IAction action)
+	{
+		if (contextMenuContributions == null)
+			contextMenuContributions = new LinkedList<Object>();
+
+		contextMenuContributions.add(action);
+	}
+
+	private void fillContextMenu(IMenuManager manager) {
+		if (contextMenuContributions != null) {
+			for (Object contextMenuContribution : contextMenuContributions) {
+				if (contextMenuContribution instanceof IContributionItem)
+					manager.add((IContributionItem)contextMenuContribution);
+				else if (contextMenuContribution instanceof IAction)
+					manager.add((IAction)contextMenuContribution);
+				else
+					throw new IllegalStateException("How the hell got an instance of " + (contextMenuContribution == null ? "null" : contextMenuContribution.getClass()) + " in the contextMenuContributions list?!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			}
+		}
+
+		if (drillDownAdapter != null)
+			drillDownAdapter.addNavigationActions(manager);
+
+		// Other plug-ins can contribute their actions here
+		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+	}
+
+	private DrillDownAdapter drillDownAdapter;
 }
