@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
 import org.nightlabs.base.ui.form.NightlabsFormsToolkit;
+import org.nightlabs.base.ui.resource.SharedImages;
 import org.nightlabs.l10n.DateFormatter;
 import org.nightlabs.l10n.DateParseException;
 
@@ -31,6 +32,7 @@ import org.nightlabs.l10n.DateParseException;
 public class DateTimeControl extends XComposite {
 	private Text text;
 	private Button lookupButton;
+	private Button clearButton;
 	private Date date;
 	private long flags;
 	private boolean allowPast;
@@ -73,7 +75,7 @@ public class DateTimeControl extends XComposite {
 		this.flags = flags;
 		this.allowPast = true;
 
-		getGridLayout().numColumns = 2;
+		getGridLayout().numColumns = 3;
 
 		text = new Text(this, getBorderStyle());
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -109,6 +111,15 @@ public class DateTimeControl extends XComposite {
 			}
 		});
 
+		clearButton = new Button(this, SWT.NONE);
+		clearButton.setImage(SharedImages.DELETE_16x16.createImage());
+		clearButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				clearButtonClicked();
+			}
+		});
+		
 		super.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -202,7 +213,8 @@ public class DateTimeControl extends XComposite {
 	}
 
 	private ListenerList selectionListeners = new ListenerList();
-
+	private ListenerList clearSelectionListeners = new ListenerList();
+	
 	/**
 	 * Add a listener that is triggered whenever the user selected date and time in a calendar/time dialog.
 	 * <p>
@@ -225,6 +237,16 @@ public class DateTimeControl extends XComposite {
 	public void removeSelectionListener(SelectionListener listener)
 	{
 		selectionListeners.remove(listener);
+	}
+	
+	public void addClearSelectionListener(SelectionListener listener)
+	{
+		clearSelectionListeners.add(listener);
+	}
+
+	public void removeClearSelectionListener(SelectionListener listener)
+	{
+		clearSelectionListeners.remove(listener);
 	}
 
 	private ListenerList modifyListeners = new ListenerList();
@@ -348,6 +370,11 @@ public class DateTimeControl extends XComposite {
 				suppressModifyEvent = false;
 			}
 		}
+		else {
+			suppressModifyEvent = true;
+			text.setText(""); //$NON-NLS-1$
+			suppressModifyEvent = false;
+		}
 		this.dateParseException = null;
 	}
 
@@ -390,11 +417,28 @@ public class DateTimeControl extends XComposite {
 	}
 
 	/**
-	 * Clears the text & sets date = null
+	 * Clears the text & sets date = null. Called when the clear button was clicked.
 	 */
-	public void clearDate() {
+	private void clearButtonClicked() {
+		this.date = null;
+		
+		suppressModifyEvent = true;
 		text.setText(""); //$NON-NLS-1$
-		date = null;
+		
+		Object[] listeners = clearSelectionListeners.getListeners();
+		if (listeners.length < 1)
+			return;
+
+		Event event = new Event();
+		event.widget = DateTimeControl.this;
+		event.display = getDisplay();
+		SelectionEvent se = new SelectionEvent(event);
+		for (Object listener : listeners) {
+			SelectionListener l = (SelectionListener) listener;
+			l.widgetSelected(se);
+		}
+		
+		suppressModifyEvent = false;
 	}
 
 	/**
