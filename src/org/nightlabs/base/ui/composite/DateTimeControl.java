@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
+import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.form.NightlabsFormsToolkit;
 import org.nightlabs.base.ui.resource.SharedImages;
 import org.nightlabs.l10n.DateFormatter;
@@ -112,7 +113,7 @@ public class DateTimeControl extends XComposite {
 		});
 
 		clearButton = new Button(this, SWT.NONE);
-		clearButton.setImage(SharedImages.DELETE_16x16.createImage());
+		clearButton.setImage(SharedImages.getSharedImage(NLBasePlugin.getDefault(), DateTimeControl.class, "clearButton"));
 		clearButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
