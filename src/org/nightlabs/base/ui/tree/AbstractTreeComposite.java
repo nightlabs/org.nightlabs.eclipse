@@ -33,13 +33,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.ListenerList;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.util.SafeRunnable;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -62,6 +65,8 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.ui.IViewActionDelegate;
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.part.DrillDownAdapter;
 import org.nightlabs.base.ui.composite.XComposite;
@@ -75,6 +80,8 @@ import org.nightlabs.eclipse.ui.treestate.TreeStateController;
  * (see {@link #setTreeProvider(TreeViewer)}) and {@link #createTreeColumns(Tree)}.
  *
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
+ * @author Marco Schulze
+ * @author Khaireel Mohamed - khaireel at nightlabs dot de
  *
  */
 public abstract class AbstractTreeComposite<ElementType>
@@ -734,7 +741,7 @@ implements ISelectionProvider, StatableTree
 		return this.getClass().getName();
 	}
 
-	@SuppressWarnings("unchecked") //$NON-NLS-1$
+	@SuppressWarnings("unchecked")
 	private <T> T naiveCast(T t, Object obj) {
 		return (T) obj;
 	}
@@ -757,29 +764,81 @@ implements ISelectionProvider, StatableTree
 	}
 
 	/**
-	 * Contains instances of both, {@link IContributionItem} and {@link IAction}
+	 * Contains instances of both, {@link IContributionItem} and {@link IAction}.
+	 * In addition, the (menu) items in this list must be ordered in accordance to 'first-available-default' priority,
+	 * if they are to be automatically used in the double-click context. See notes 2010.03.08. Kai.
 	 */
-	private List<Object> contextMenuContributions;
+	private List<Object> priorityOrderedContextMenuContributions;
+	protected List<Object> getPriorityOrderedContextMenuContributions() { return priorityOrderedContextMenuContributions; }
 
 	public void addContextMenuContribution(IContributionItem contributionItem)
 	{
-		if (contextMenuContributions == null)
-			contextMenuContributions = new LinkedList<Object>();
+		if (priorityOrderedContextMenuContributions == null)
+			priorityOrderedContextMenuContributions = new LinkedList<Object>();
 
-		contextMenuContributions.add(contributionItem);
+		priorityOrderedContextMenuContributions.add(contributionItem);
 	}
 
 	public void addContextMenuContribution(IAction action)
 	{
-		if (contextMenuContributions == null)
-			contextMenuContributions = new LinkedList<Object>();
+		if (priorityOrderedContextMenuContributions == null)
+			priorityOrderedContextMenuContributions = new LinkedList<Object>();
 
-		contextMenuContributions.add(action);
+		priorityOrderedContextMenuContributions.add(action);
+	}
+
+	/**
+	 * Takes in an IViewActionDelegate and wraps it around an Action, for use as a contextMenuContribution.
+	 * See the accompanying
+	 */
+	public void addContextMenuContribution(IViewPart view, IViewActionDelegate actionDelegate, String id, String text, ImageDescriptor imageDescriptor) {
+		IAction action = new ViewActionDelegateWrapperAction(view, actionDelegate, id, text, imageDescriptor);
+		addContextMenuContribution(action);
+	}
+
+	/**
+	 * The wrapper class that wraps an {@link IViewActionDelegate} around an {@link Action}, for use in
+	 * the context menu, which do not implement the {@link IAction}.
+	 */
+	private static class ViewActionDelegateWrapperAction extends Action implements IViewActionDelegate {
+		private static final Logger logger = Logger.getLogger(ViewActionDelegateWrapperAction.class);
+		private IViewActionDelegate actionDelegate;
+
+		public ViewActionDelegateWrapperAction
+		(IViewPart view, IViewActionDelegate actionDelegate, String id, String text, ImageDescriptor imageDescriptor) {
+			this.actionDelegate = actionDelegate;
+
+			if (actionDelegate instanceof IAction)
+				logger.warn("<init>: delegate implements IAction! It is not necessary to use this wrapper for instance of " + actionDelegate.getClass().getName()); //$NON-NLS-1$
+
+			actionDelegate.init(view);
+			if (id == null)
+				this.setId(actionDelegate.getClass().getName());
+			else
+				this.setId(id);
+
+			setText(text);
+
+			if (imageDescriptor != null)
+				setImageDescriptor(imageDescriptor);
+		}
+
+		@Override
+		public void run() { run(this); }
+
+		@Override
+		public void run(IAction action) { actionDelegate.run(action); }
+
+		@Override
+		public void selectionChanged(IAction action, ISelection selection) { actionDelegate.selectionChanged(action, selection); }
+
+		@Override
+		public void init(IViewPart view) { throw new UnsupportedOperationException("This method should never be used."); } //$NON-NLS-1$
 	}
 
 	private void fillContextMenu(IMenuManager manager) {
-		if (contextMenuContributions != null) {
-			for (Object contextMenuContribution : contextMenuContributions) {
+		if (priorityOrderedContextMenuContributions != null) {
+			for (Object contextMenuContribution : priorityOrderedContextMenuContributions) {
 				if (contextMenuContribution instanceof IContributionItem)
 					manager.add((IContributionItem)contextMenuContribution);
 				else if (contextMenuContribution instanceof IAction)
