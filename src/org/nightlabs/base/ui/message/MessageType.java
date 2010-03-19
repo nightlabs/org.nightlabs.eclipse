@@ -14,9 +14,9 @@ import org.eclipse.jface.dialogs.IMessageProvider;
 public enum MessageType
 {
 	NONE,
-  INFORMATION,
-  WARNING,
-  ERROR;
+	INFORMATION,
+	WARNING,
+	ERROR;
 
 	@Override
 	public String toString()
