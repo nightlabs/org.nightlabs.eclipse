@@ -836,7 +836,7 @@ implements ISelectionProvider, StatableTree
 		public void init(IViewPart view) { throw new UnsupportedOperationException("This method should never be used."); } //$NON-NLS-1$
 	}
 
-	private void fillContextMenu(IMenuManager manager) {
+	protected void fillContextMenu(IMenuManager manager) { // Access changed to protected, to allow extended classes to register/prepare their own 'dynamic' menu-items.
 		if (priorityOrderedContextMenuContributions != null) {
 			for (Object contextMenuContribution : priorityOrderedContextMenuContributions) {
 				if (contextMenuContribution instanceof IContributionItem)
