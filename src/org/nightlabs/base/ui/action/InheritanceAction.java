@@ -33,10 +33,10 @@ import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.resource.SharedImages;
 
 /**
- * Abstract base class for all Inheritance action, whih are used to visualize the inheritance.
+ * Abstract base class for all Inheritance actions, which are used to visualize the inheritance.
  * It automatically changes the icon, dependent on the checked state.
- * Subclasses must implement {@link IAction#run()}.  
- * 
+ * Subclasses must implement {@link IAction#run()}.
+ *
  * @author Daniel.Mazurek [at] NightLabs [dot] de
  */
 public abstract class InheritanceAction
