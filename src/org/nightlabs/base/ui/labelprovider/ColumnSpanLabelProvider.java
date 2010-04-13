@@ -181,6 +181,17 @@ public abstract class ColumnSpanLabelProvider extends OwnerDrawLabelProvider {
 	}
 
 	/**
+	 * Overridden and doing nothing, this yields the default selection and background to be drawn.
+	 */
+	@Override
+	protected void erase(Event event, Object element) {
+		// We suppress the super implementation here, because it will force SWT.COLOR_LIST_SELECTION
+		// to be drawn as background for selected items but misses the fact that this might be
+		// subject of os-configuration
+		// super.erase(event, element);
+	}
+	
+	/**
 	 * We have refresh bugs, because our "idxElement" is changed, but the reference here stays the same. Hence,
 	 * I introduce this constant temporarily until we find a way to clear our cache whenever TreeViewer.refresh() or TableViewer.refresh() is called.
 	 * Marco.
