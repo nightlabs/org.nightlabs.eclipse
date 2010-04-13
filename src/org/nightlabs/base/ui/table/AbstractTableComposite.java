@@ -66,6 +66,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.nightlabs.base.ui.composite.ContextMenuReadyComposite;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.util.Util;
 
@@ -92,7 +93,7 @@ import org.nightlabs.util.Util;
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
  */
 public abstract class AbstractTableComposite<ElementType>
-	extends XComposite
+	extends ContextMenuReadyComposite // XComposite
 	implements ISelectionProvider
 {
 	/**
