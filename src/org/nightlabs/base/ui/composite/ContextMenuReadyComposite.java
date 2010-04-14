@@ -155,6 +155,13 @@ public abstract class ContextMenuReadyComposite extends XComposite {
 		};
 	}
 	
+	/**
+	 * Integrates the context-menu directly into this Composite.
+	 */
+	public IDoubleClickListener integratePriorityOrderedContextMenu(ISelectionProvider selectionProvider, DrillDownAdapter drillDownAdapter, Control parent) {
+		createContextMenu(drillDownAdapter, parent);
+		return integratePriorityOrderedContextMenu(selectionProvider);
+	}
 	
 
 	// ----------------------------------------------------------------------------------- || -------------------------------------------->>
@@ -181,6 +188,13 @@ public abstract class ContextMenuReadyComposite extends XComposite {
 	}
 
 	/**
+	 * Adds a fully instantiated {@link ViewActionDelegateWrapperAction} to the priority-ordered context menu contribution items.
+	 */
+	public void addContextMenuContribution(ViewActionDelegateWrapperAction viewActionDelegateWrapperAction) {
+		addContextMenuContribution((IAction) viewActionDelegateWrapperAction);
+	}
+
+	/**
 	 * Adds an {@link IViewActionDelegate} to the priority-ordered context menu contribution items.
 	 */
 	public void addContextMenuContribution(IViewPart view, IViewActionDelegate actionDelegate, String id, String text, ImageDescriptor imageDescriptor) {
@@ -188,6 +202,14 @@ public abstract class ContextMenuReadyComposite extends XComposite {
 		addContextMenuContribution(action); // <-- Adds to the current framework as an IAction.
 	}
 
+	/**
+	 * Adds an {@link IViewActionDelegate} to the priority-ordered context menu contribution items.
+	 */
+	public void addContextMenuContribution(IViewPart view, IViewActionDelegate actionDelegate, String text, ImageDescriptor imageDescriptor) {
+		IAction action = new ViewActionDelegateWrapperAction(view, actionDelegate, text, imageDescriptor);
+		addContextMenuContribution(action); // <-- Adds to the current framework as an IAction.
+	}
+	
 	/**
 	 * @return the list of priority-ordered context menu contribution items.
 	 */

@@ -39,7 +39,26 @@ public class ViewActionDelegateWrapperAction extends Action implements IViewActi
 		if (imageDescriptor != null)
 			setImageDescriptor(imageDescriptor);
 	}
+	
+	/**
+	 * Creates a new instance of the ViewActionDelegateWrapperAction.
+	 */
+	public ViewActionDelegateWrapperAction(IViewPart view, IViewActionDelegate actionDelegate, String text, ImageDescriptor imageDescriptor) {
+		this(view, actionDelegate, null, text, imageDescriptor);
+	}
+	
+	/**
+	 * The bare minimum needed to instatiate a valid ViewActionDelegateWrapperAction.
+	 */
+	public ViewActionDelegateWrapperAction(IViewPart view, IViewActionDelegate actionDelegate, String text) {
+		this(view, actionDelegate, null, text, null);
+	}
 
+	
+
+	// ----------------------------------------------------------------------------------- || -------------------------------------------->>
+	// [Section] The run-action wraps.
+	// ----------------------------------------------------------------------------------- || -------------------------------------------->>
 	@Override
 	public void run() { run(this); }
 
