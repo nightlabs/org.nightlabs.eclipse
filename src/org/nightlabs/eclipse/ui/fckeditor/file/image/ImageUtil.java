@@ -60,7 +60,7 @@ import org.nightlabs.eclipse.ui.fckeditor.resource.Messages;
 public class ImageUtil
 {
 	/**
-	 * converts a SWT Image to a SWT BufferedImage
+	 * converts an SWT ImageData to an AWT BufferedImage
 	 * taken from http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.swt.snippets/src/org/eclipse/swt/snippets/Snippet156.java
 	 *
 	 * @param data The ImageData of the SWT Image
