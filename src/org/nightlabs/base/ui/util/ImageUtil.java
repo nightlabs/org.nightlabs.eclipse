@@ -32,17 +32,24 @@ import java.awt.image.ColorModel;
 import java.awt.image.DirectColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.WritableRaster;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.imageio.ImageIO;
+
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
@@ -167,6 +174,48 @@ public class ImageUtil
 			return data;
 		}
 		return null;
+	}
+
+	/**
+	 * Load an image from the given input stream.
+	 * @param in The input stream to load the image from
+	 * @return The loaded image data
+	 * @throws IOException In case of an error reading from the input stream
+	 * @throws UnsupportedImageException If the image format is not supported
+	 */
+	public static ImageData loadImage(InputStream in/*, IProgressMonitor monitor*/) throws IOException/*, UnsupportedImageException*/
+	{
+		// TODO: monitor handling
+//		monitor.beginTask(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ImageUtil.loadingTaskName"), IProgressMonitor.UNKNOWN); //$NON-NLS-1$
+//		monitor.subTask(Messages.getString("org.nightlabs.eclipse.ui.fckeditor.file.image.ImageUtil.loadingTaskName")); //$NON-NLS-1$
+
+		ImageData result = null;
+		BufferedInputStream bufferedInputStream = new BufferedInputStream(in);
+		bufferedInputStream.mark(Integer.MAX_VALUE);
+
+		try {
+			ImageLoader imageLoader = new ImageLoader();
+			ImageData[] id = imageLoader.load(bufferedInputStream);
+			result = id[0];
+		} catch(SWTException e) {
+			if(e.code == SWT.ERROR_IO)
+				throw new IOException(e.getMessage(), e);
+//			Activator.warn("Unable to load image using SWT image loader", e); //$NON-NLS-1$
+		}
+
+		if(result == null) {
+			bufferedInputStream.reset();
+			BufferedImage bufferedImage = ImageIO.read(bufferedInputStream);
+			if(bufferedImage == null)
+				throw new RuntimeException("Unable to load image"); //$NON-NLS-1$
+			result = convertToSWT(bufferedImage);
+			if(result == null)
+				throw new RuntimeException("Unable to load image"); //$NON-NLS-1$
+		}
+
+//		monitor.done();
+
+		return result;
 	}
 
 	private static final class ImageColorEntry {
