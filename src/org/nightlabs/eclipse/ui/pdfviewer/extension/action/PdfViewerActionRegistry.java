@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Display;
 import org.nightlabs.base.ui.action.IXContributionItem;
 import org.nightlabs.base.ui.action.registry.AbstractActionRegistry;
 import org.nightlabs.base.ui.action.registry.ActionDescriptor;
-import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
+import org.nightlabs.eclipse.extension.EPProcessorException;
 import org.nightlabs.eclipse.ui.pdfviewer.ContextElement;
 import org.nightlabs.eclipse.ui.pdfviewer.ContextElementType;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
