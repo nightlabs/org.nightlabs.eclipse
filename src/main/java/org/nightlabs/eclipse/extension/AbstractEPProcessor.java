@@ -180,7 +180,10 @@ implements IEPProcessor // , Serializable
 	 * @param s the String to check
 	 * @return true if the String is neither null nor an empty String otherwise
 	 * returns false
+	 * @deprecated This method should not be public and not be used by other bundles/packages/classes. 
+	 * 		Btw, the method name says nothing about the behaviour. mklinger
 	 */
+	@Deprecated
 	public static boolean checkString(final String s)
 	{
 		return s != null && !s.trim().isEmpty();
