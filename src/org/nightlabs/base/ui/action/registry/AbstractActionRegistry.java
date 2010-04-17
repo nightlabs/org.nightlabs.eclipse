@@ -57,8 +57,8 @@ import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Display;
 import org.nightlabs.base.ui.action.IXContributionItem;
-import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
-import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
+import org.nightlabs.eclipse.extension.AbstractEPProcessor;
+import org.nightlabs.eclipse.extension.EPProcessorException;
 
 /**
  * This class can be used to easily create an own extension-point for the management of actions.

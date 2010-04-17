@@ -29,10 +29,10 @@ package org.nightlabs.base.ui.extensionpoint;
 import org.eclipse.core.runtime.IExtension;
 
 /**
- * Thrown when an error occurs during the processing of an extension-point.
- *
- * @author Alexander Bieber
+ * @deprecated The class has moved to the bundle org.nightlabs.eclipse.extension but is 
+ * 		also deprecated there. Don't use it.
  */
+@Deprecated
 public class EPProcessorException
 extends Exception
 {

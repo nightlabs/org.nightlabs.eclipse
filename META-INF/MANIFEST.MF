@@ -156,6 +156,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.nightlabs.eclipse.preference.ui;visibility:=reexport,
  org.nightlabs.eclipse.ui.treestate;visibility:=reexport,
  org.nightlabs.base;visibility:=reexport,
- org.nightlabs.config;bundle-version="0.9.7"
+ org.nightlabs.config;bundle-version="0.9.7",
+ org.nightlabs.eclipse.extension;bundle-version="1.0.0";visibility:=reexport
 Eclipse-LazyStart: true
 Eclipse-BuddyPolicy: registered

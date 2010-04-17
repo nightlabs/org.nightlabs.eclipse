@@ -34,7 +34,7 @@ import java.util.TreeSet;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
-import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
+import org.nightlabs.eclipse.extension.AbstractEPProcessor;
 
 /**
  * @author Daniel.Mazurek [at] NightLabs [dot] de

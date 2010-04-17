@@ -46,8 +46,9 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 
 /**
- * @author Daniel.Mazurek [at] NightLabs [dot] de
+ * @deprecated Use the class in bundle org.nightlabs.eclipse.extension instead.
  */
+@Deprecated
 public class RemoveExtensionRegistry
 extends AbstractEPProcessor
 {

@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
-import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
+import org.nightlabs.eclipse.extension.AbstractEPProcessor;
 
 /**
  * Registry for error senders provided by extensions.

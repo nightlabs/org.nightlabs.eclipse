@@ -30,11 +30,9 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 
 /**
- * Interface for processors of an extension-point.
- * 
- * @author Alexander Bieber
- * @author Marco Schulze - Marco at NightLabs dot de
+ * @deprecated Use the interface in bundle org.nightlabs.eclipse.extension instead.
  */
+@Deprecated
 public interface IEPProcessor
 {
 	/**

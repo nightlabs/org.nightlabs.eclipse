@@ -44,8 +44,8 @@ import org.nightlabs.base.ui.entity.tree.EntityTreeCategoryViewBinding;
 import org.nightlabs.base.ui.entity.tree.IEntityTreeCategory;
 import org.nightlabs.base.ui.entity.tree.IEntityTreeCategoryBinding;
 import org.nightlabs.base.ui.entity.tree.IEntityTreeCategoryViewBinding;
-import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
-import org.nightlabs.base.ui.extensionpoint.EPProcessorException;
+import org.nightlabs.eclipse.extension.AbstractEPProcessor;
+import org.nightlabs.eclipse.extension.EPProcessorException;
 
 /**
  * An extension point registry for entity tree categories

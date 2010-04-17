@@ -38,8 +38,8 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.swt.widgets.Display;
-import org.nightlabs.base.ui.extensionpoint.AbstractEPProcessor;
 import org.nightlabs.base.ui.util.RCPUtil;
+import org.nightlabs.eclipse.extension.AbstractEPProcessor;
 
 /**
  * Maintains a Map of {@link IExceptionHandler} and is able

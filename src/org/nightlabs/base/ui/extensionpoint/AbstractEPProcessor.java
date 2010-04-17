@@ -39,38 +39,11 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.IAction;
 import org.nightlabs.util.Util;
 
+
 /**
- * Used for parsing extensions to a certain extension-point.
- * <p>
- * Calling {@link #process()} will cause {@link #processElement(IExtension, IConfigurationElement)}
- * to be called for every extension defined to the point returned by {@link #getExtensionPointID()}.
- * </p>
- * <p>
- * The IConfigurationElement passed to processElement is the root element of the extension.
- * Usually one will use element.createExecutableExtension() to get a instance of
- * the extensions object.
- * </p>
- * <p>
- * A common usage is subclassing this to a registry which registeres its
- * entries in processElement lazily by calling {@link #checkProcessing()}
- * everytime when asked for one element fist.
- * </p>
- * <!-- serialize doesn't work because of different class loaders!
- * <p>
- * Since 2008-10-06, this class is {@link Serializable} in order to make it possible to clone
- * extension-registries which usually extend this class (via {@link Util#cloneSerializable(Object)}).
- * This is necessary, if the contents of
- * the registry need to be instantiated multiple times for different use cases (for example
- * {@link IAction}s used at different places simultaneously as in
- * <code>org.nightlabs.eclipse.ui.pdfviewer.extension.action.PdfViewerActionRegistry</code>).
- * It's still recommended, not to use this feature and instead model your extension point in a way
- * (use factories!) that supports multiple instances of the elements held by your {@link AbstractEPProcessor}
- * implementation.
- * </p>
- * -->
- *
- * @author Alexander Bieber
+ * @deprecated Use the class in bundle org.nightlabs.eclipse.extension instead.
  */
+@Deprecated
 public abstract class AbstractEPProcessor
 implements IEPProcessor // , Serializable
 {

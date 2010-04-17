@@ -58,6 +58,7 @@ public class NLBasePlugin extends AbstractUIPlugin
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		// TODO what exactly is this useful for? maybe handle this with some kind of IOC?
 		ExceptionHandlerRegistry.sharedInstance().addProcessListener(SimpleExceptionHandlerRegistry.sharedInstance());
 //		try {
 //			resourceBundle = Platform.getResourceBundle(getBundle());

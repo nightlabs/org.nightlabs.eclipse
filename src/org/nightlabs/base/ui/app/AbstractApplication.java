@@ -41,9 +41,9 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.exceptionhandler.ExceptionHandlerRegistry;
 import org.nightlabs.base.ui.exceptionhandler.SaveRunnableRunner;
-import org.nightlabs.base.ui.extensionpoint.RemoveExtensionRegistry;
 import org.nightlabs.config.Config;
 import org.nightlabs.config.ConfigException;
+import org.nightlabs.eclipse.extension.RemoveExtensionRegistry;
 import org.nightlabs.util.IOUtil;
 
 /**
