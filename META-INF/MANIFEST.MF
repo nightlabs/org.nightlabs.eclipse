@@ -8,3 +8,5 @@ Bundle-Vendor: nightlabs.org
 Require-Bundle: org.eclipse.core.runtime
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
+Export-Package: org.nightlabs.eclipse.extension,
+ org.nightlabs.eclipse.extension.generic
