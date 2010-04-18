@@ -78,25 +78,25 @@ public class RemoveExtensionRegistry extends AbstractEPProcessor
 		if (element.getName().equalsIgnoreCase(ELEMENT_REMOVE_EXTENSION))
 		{
 			final String extensionPointID = element.getAttribute(ATTRIBUTE_EXTENSION_POINT_ID);
-			if (!checkString(extensionPointID)) {
+			if (!isNonEmpty(extensionPointID)) {
 				ExtensionPlugin.logError("attribute extensionPoint must not be null nor empty!"); //$NON-NLS-1$
 				return;
 			}
 
 			final String elementPath = element.getAttribute(ATTRIBUTE_ELEMENT_PATH);
-			if (!checkString(elementPath)) {
+			if (!isNonEmpty(elementPath)) {
 				ExtensionPlugin.logError("attribute elementPath must not be null nor empty!"); //$NON-NLS-1$
 				return;
 			}
 
 			final String attributeName = element.getAttribute(ATTRIBUTE_ATTRIBUTE_NAME);
-			if (!checkString(attributeName)) {
+			if (!isNonEmpty(attributeName)) {
 				ExtensionPlugin.logError("attribute attributeName must not be null nor empty!"); //$NON-NLS-1$
 				return;
 			}
 
 			final String attributePattern = element.getAttribute(ATTRIBUTE_ATTRIBUTE_PATTERN);
-			if (!checkString(attributePattern)) {
+			if (!isNonEmpty(attributePattern)) {
 				ExtensionPlugin.logError("attribute attributePattern must not be null nor empty!"); //$NON-NLS-1$
 				return;
 			}
@@ -267,5 +267,17 @@ public class RemoveExtensionRegistry extends AbstractEPProcessor
 			sharedInstance = new RemoveExtensionRegistry();
 		}
 		return sharedInstance;
+	}
+
+	/**
+	 * Test if a string is non null and non-empty. A string is non-empty if
+	 * it contains other character than spaces.
+	 * @param s the String to check
+	 * @return <code>true</code> if the string is neither null nor an empty String - otherwise
+	 * 		returns <code>false</code>
+	 */
+	private static boolean isNonEmpty(final String s)
+	{
+		return s != null && !s.trim().isEmpty();
 	}
 }

@@ -3,6 +3,7 @@ package org.nightlabs.eclipse.extension;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
+import org.nightlabs.eclipse.extension.generic.ServiceExtensionRegistry;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -13,6 +14,8 @@ public class ExtensionPlugin extends Plugin {
 
 	// The shared instance
 	private static ExtensionPlugin plugin;
+
+	private ServiceExtensionRegistry serviceExtensionRegistry;
 
 	/**
 	 * The constructor
@@ -63,5 +66,12 @@ public class ExtensionPlugin extends Plugin {
 	 */
 	public static void logError(final String msg) {
 		getDefault().getLog().log(new Status(IStatus.ERROR, getDefault().getBundle().getSymbolicName(), msg));
+	}
+
+	public synchronized ServiceExtensionRegistry getServiceExtensionRegistry() {
+		if(serviceExtensionRegistry == null) {
+			serviceExtensionRegistry = new ServiceExtensionRegistry();
+		}
+		return serviceExtensionRegistry;
 	}
 }

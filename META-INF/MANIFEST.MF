@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Eclipse Extension Utilities
-Bundle-SymbolicName: org.nightlabs.eclipse.extension
+Bundle-SymbolicName: org.nightlabs.eclipse.extension;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.nightlabs.eclipse.extension.ExtensionPlugin
 Bundle-Vendor: nightlabs.org

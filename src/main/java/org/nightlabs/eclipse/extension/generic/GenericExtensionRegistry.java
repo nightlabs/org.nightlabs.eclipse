@@ -14,20 +14,24 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
-import org.osgi.framework.Bundle;
+import org.nightlabs.eclipse.extension.ExtensionPlugin;
 
 /**
+ * Generic extension point registry. Handles extensions of type {@link GenericExtension}.
+ * Optional support for extension classes implementing {@link NameExtension}, {@link AttributesExtension}
+ * and {@link PriorityExtension}.
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  */
 public class GenericExtensionRegistry<ExtensionType extends GenericExtension>
 {
-	private String extensionPointId;
-	private String extensionElementName;
+	private final String extensionPointId;
+	private final String extensionElementName;
 	private Map<String, List<ExtensionType>> extensionsById;
-	private boolean allowMultiple;
-	private Bundle bundle;
-	private ILog log;
+	private final boolean allowMultiple;
+	private final String bundleSymbolicName;
+	private final ILog log;
 
 	/**
 	 * Create a new GenericExtensionRegistry instance.
@@ -56,15 +60,27 @@ public class GenericExtensionRegistry<ExtensionType extends GenericExtension>
 	 * @param extensionPointId The extension point id
 	 * @param extensionElementName The extension element name. This
 	 * 		element must contain the id and class attributes.
-	 * @param bundle The calling bundle (used for logging - optional)
+	 * @param plugin The calling plugin (used for logging - optional)
+	 */
+	public GenericExtensionRegistry(final String extensionPointId, final String extensionElementName, final boolean allowMultiple, final Plugin plugin)
+	{
+		this(extensionPointId, extensionElementName, allowMultiple, plugin == null ? null : plugin.getBundle().getSymbolicName(), plugin == null ? null : plugin.getLog());
+	}
+
+	/**
+	 * Create a new GenericExtensionRegistry instance.
+	 * @param extensionPointId The extension point id
+	 * @param extensionElementName The extension element name. This
+	 * 		element must contain the id and class attributes.
+	 * @param bundleSymbolicName The calling bundle symbolic name (used for logging - optional)
 	 * @param log The log to use (optional)
 	 */
-	public GenericExtensionRegistry(final String extensionPointId, final String extensionElementName, final boolean allowMultiple, final Bundle bundle, final ILog log)
+	public GenericExtensionRegistry(final String extensionPointId, final String extensionElementName, final boolean allowMultiple, final String bundleSymbolicName, final ILog log)
 	{
 		this.extensionPointId = extensionPointId;
 		this.extensionElementName = extensionElementName;
 		this.allowMultiple = allowMultiple;
-		this.bundle = bundle;
+		this.bundleSymbolicName = bundleSymbolicName;
 		this.log = log;
 	}
 
@@ -76,8 +92,10 @@ public class GenericExtensionRegistry<ExtensionType extends GenericExtension>
 
 	public void logError(final String message, final Throwable e)
 	{
-		if(log != null && bundle != null) {
-			log.log(new Status(IStatus.ERROR, bundle.getSymbolicName(), message, e));
+		if(log != null && bundleSymbolicName != null) {
+			log.log(new Status(IStatus.ERROR, bundleSymbolicName, message, e));
+		} else {
+			ExtensionPlugin.logError(message, e);
 		}
 	}
 
@@ -215,7 +233,7 @@ public class GenericExtensionRegistry<ExtensionType extends GenericExtension>
 	 * @param id The id
 	 * @return The list of extensions
 	 */
-	public List<ExtensionType> getExtensions(final String id)
+	public List<ExtensionType> getExtensionsById(final String id)
 	{
 		initializeLazy();
 		List<ExtensionType> extensions = extensionsById.get(id);
@@ -233,7 +251,7 @@ public class GenericExtensionRegistry<ExtensionType extends GenericExtension>
 	 */
 	public ExtensionType getExtensionById(final String id)
 	{
-		final List<ExtensionType> extensions = getExtensions(id);
+		final List<ExtensionType> extensions = getExtensionsById(id);
 		if(extensions.isEmpty()) {
 			return null;
 		} else {
@@ -249,16 +267,23 @@ public class GenericExtensionRegistry<ExtensionType extends GenericExtension>
 	 * @return The list of extensions or an empty list if no compatible
 	 * 		extension are known
 	 */
-	@SuppressWarnings("unchecked")
 	public <T> List<T> getExtensionsByImplementedType(final Class<T> type) {
-		final Collection<ExtensionType> allExtensions = getAllExtensions();
-		final List<T> extensionsByType = new ArrayList<T>();
+		final List<T> extensionsByType = filterByType(getAllExtensions(), type);
+		if(extensionsByType.size() > 1) {
+			Collections.sort(extensionsByType, new ExtensionComparator());
+		}
+		return extensionsByType;
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T> List<T> filterByType(final Collection<ExtensionType> allExtensions, final Class<T> type)
+	{
+		final List<T> extensionsByType = new ArrayList<T>(Math.min(10, allExtensions.size()));
 		for (final ExtensionType extension : allExtensions) {
 			if(type.isAssignableFrom(extension.getClass())) {
 				extensionsByType.add((T)extension);
 			}
 		}
-		Collections.sort(extensionsByType, new ExtensionComparator());
 		return extensionsByType;
 	}
 
@@ -275,6 +300,40 @@ public class GenericExtensionRegistry<ExtensionType extends GenericExtension>
 			return null;
 		} else {
 			return extensionsByType.iterator().next();
+		}
+	}
+
+	/**
+	 * Get all extensions that are compatible to the given type.
+	 * ordered by priority.
+	 * @param <T> The type
+	 * @param id The id
+	 * @param type The type
+	 * @return The list of extensions or an empty list if no compatible
+	 * 		extension are known
+	 */
+	public <T> List<T> getExtensions(final String id, final Class<T> type) {
+		final List<T> extensionsByType = filterByType(getExtensionsById(id), type);
+		if(extensionsByType.size() > 1) {
+			Collections.sort(extensionsByType, new ExtensionComparator());
+		}
+		return extensionsByType;
+	}
+
+	/**
+	 * Get the extensions with the highest priority that is compatible to the given type.
+	 * ordered by priority.
+	 * @param <T> The type
+	 * @param type The type
+	 * @param id The id
+	 * @return The extension or <code>null</code> if no such extension is known
+	 */
+	public <T> T getExtension(final String id, final Class<T> type) {
+		final List<T> extensions = getExtensions(id, type);
+		if(extensions.isEmpty()) {
+			return null;
+		} else {
+			return extensions.iterator().next();
 		}
 	}
 
