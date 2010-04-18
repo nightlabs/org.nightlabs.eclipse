@@ -19,12 +19,12 @@ import org.eclipse.core.runtime.Status;
 import org.nightlabs.eclipse.extension.ExtensionPlugin;
 
 /**
- * Generic extension point registry. Handles extensions of type {@link GenericExtension}.
+ * Generic extension point registry. Handles extensions of type {@link IdExtension}.
  * Optional support for extension classes implementing {@link NameExtension}, {@link AttributesExtension}
  * and {@link PriorityExtension}.
  * @author Marc Klinger - marc[at]nightlabs[dot]de
  */
-public class GenericExtensionRegistry<ExtensionType extends GenericExtension>
+public class GenericExtensionRegistry<ExtensionType>
 {
 	private final String extensionPointId;
 	private final String extensionElementName;
@@ -32,6 +32,7 @@ public class GenericExtensionRegistry<ExtensionType extends GenericExtension>
 	private final boolean allowMultiple;
 	private final String bundleSymbolicName;
 	private final ILog log;
+	private IExtensionRegistry extensionRegistry;
 
 	/**
 	 * Create a new GenericExtensionRegistry instance.
@@ -99,6 +100,18 @@ public class GenericExtensionRegistry<ExtensionType extends GenericExtension>
 		}
 	}
 
+	private void setId(final ExtensionType extension, final String id) {
+		if(extension instanceof IdExtension) {
+			((IdExtension)extension).setId(id);
+		}
+		//		try {
+		//			Method method = extension.getClass().getMethod("setName", new Class<?>[] { String.class });
+		//			method.invoke(extension, name);
+		//		} catch(Exception e) {
+		//			// ignore.
+		//		}
+	}
+
 	private void setName(final ExtensionType extension, final String name) {
 		if(extension instanceof NameExtension) {
 			((NameExtension)extension).setName(name);
@@ -157,11 +170,14 @@ public class GenericExtensionRegistry<ExtensionType extends GenericExtension>
 			return;
 		}
 		extensionsById = new HashMap<String, List<ExtensionType>>();
-		final IExtensionRegistry registry = Platform.getExtensionRegistry();
+		final IExtensionRegistry registry = getExtensionRegistry();
 		final IConfigurationElement[] elements = registry.getConfigurationElementsFor(extensionPointId);
 		for (final IConfigurationElement element : elements) {
 			if(extensionElementName.equals(element.getName())) {
-				final String id = element.getAttribute("id");
+				String id = element.getAttribute("id");
+				if(id == null || id.isEmpty()) {
+					id = element.getAttribute("class");
+				}
 				ExtensionType extension;
 				try {
 					extension = createExecutableExtension(element);
@@ -171,9 +187,7 @@ public class GenericExtensionRegistry<ExtensionType extends GenericExtension>
 					}
 					continue;
 				}
-				if(id != null && !id.isEmpty()) {
-					extension.setId(id);
-				}
+				setId(extension, id);
 				final String name = element.getAttribute("name");
 				if(name != null && !name.isEmpty()) {
 					setName(extension, name);
@@ -350,5 +364,29 @@ public class GenericExtensionRegistry<ExtensionType extends GenericExtension>
 			allExtensions.addAll(extensions);
 		}
 		return allExtensions;
+	}
+
+	/**
+	 * Get the extension registry This may be an injected registry or the default
+	 * platform registy if no registry was injected.
+	 * @return the extension registry
+	 */
+	private IExtensionRegistry getExtensionRegistry()
+	{
+		if(extensionRegistry != null) {
+			return extensionRegistry;
+		} else {
+			return Platform.getExtensionRegistry();
+		}
+	}
+
+	/**
+	 * Set the extension registry. This extension registry will always be used
+	 * for extension lookup. This method is intended for testing.
+	 * @param extensionRegistry the extension registry to set
+	 */
+	public void setExtensionRegistry(final IExtensionRegistry extensionRegistry)
+	{
+		this.extensionRegistry = extensionRegistry;
 	}
 }
