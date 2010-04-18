@@ -75,7 +75,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.nightlabs.eclipse.extension.generic.GenericExtension"/>
+                  <meta.attribute kind="java"/>
                </appinfo>
             </annotation>
          </attribute>
