@@ -129,7 +129,7 @@ public class SelectionManager extends NotificationManager
 		}
 	}
 
-// That's wrong, IMHO! What makes you think that you should remove an event only because a listener is removed?
+// That's wrong, IMHO! Commented the whole method out. Marco.
 //	/**
 //	 * Shouldn't we remove the event also?, @see line - 171 {@link SelectionManager#addNotificationListener(String, Class, NotificationListener)}
 //	 * ,Chairat
