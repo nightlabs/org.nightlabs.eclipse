@@ -129,17 +129,19 @@ public class SelectionManager extends NotificationManager
 		}
 	}
 
-	/**
-	 * Shouldn't we remove the event also?, @see line - 171 {@link SelectionManager#addNotificationListener(String, Class, NotificationListener)}
-	 * ,Chairat  
-	 */
-	@Override
-	public void removeNotificationListener(String zone, Class<?> subjectClass,
-			NotificationListener listener) {
-		super.removeNotificationListener(zone, subjectClass, listener);
-		Map<Class<?>, NotificationEvent> eventsByClass = eventsByZone.get(zone);
-		eventsByClass.remove(subjectClass);
-	}
+// That's wrong, IMHO! What makes you think that you should remove an event only because a listener is removed?
+//	/**
+//	 * Shouldn't we remove the event also?, @see line - 171 {@link SelectionManager#addNotificationListener(String, Class, NotificationListener)}
+//	 * ,Chairat
+//	 */
+//	@Override
+//	public void removeNotificationListener(String zone, Class<?> subjectClass,
+//			NotificationListener listener) {
+//		super.removeNotificationListener(zone, subjectClass, listener);
+//		Map<Class<?>, NotificationEvent> eventsByClass = eventsByZone.get(zone);
+//		eventsByClass.remove(subjectClass);
+//	}
+
 	/**
 	 * @see org.nightlabs.notification.NotificationManager#addNotificationListener(java.lang.String, java.lang.Class, org.nightlabs.notification.NotificationListener)
 	 */
