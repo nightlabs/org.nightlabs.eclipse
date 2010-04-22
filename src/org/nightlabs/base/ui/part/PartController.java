@@ -86,7 +86,14 @@ public abstract class PartController {
 		private FadeableComposite fadeableWrapper;
 		private XComposite conditionWrapper;
 
+		/**
+		 * Reflects whether the contents of the part are created, will be set after creation and
+		 * re-set when the contents are disposed
+		 */
 		private boolean contentsCreated = false;
+		/** Reflects whether this controller is in the process of creating the part-contents */
+		private boolean creatingContents = false;
+		/** Reflects whether the internal part (the wrapper for the controlled part) was created */
 		private boolean internalPartsCreated = false;
 
 		public ControlledPart(ControllablePart part) {
@@ -151,14 +158,20 @@ public abstract class PartController {
 		}
 
 		/**
-		 * Creates the View contents if possible
-		 * and neccesary
+		 * Creates the contents of the controlled part if possible and neccesary see ({@link ControllablePart#canDisplayPart()}).
 		 */
 		protected void doCreateContents() {
 			if (!contentsCreated) {
 				if (part.canDisplayPart()) {
-					part.createPartContents(fadeableWrapper);
-					contentsCreated = true;
+					if (!creatingContents) {
+						creatingContents = true;
+						try{
+							part.createPartContents(fadeableWrapper);
+							contentsCreated = true;
+						} finally {
+							creatingContents = false;
+						}
+					}
 				}
 			}
 		}
@@ -177,7 +190,7 @@ public abstract class PartController {
 
 		/**
 		 * Show/Hide all Viewactions of a View if the {@link ControllablePart} is a {@link IViewPart}
-		 * @param visible
+		 * @param visible Whether the actions should be visible.
 		 */
 		protected void setViewActionsVisible(boolean visible)
 		{
@@ -190,10 +203,10 @@ public abstract class PartController {
 	}
 
 	/**
-	 * Sublcasses should create a new Composite indicating that the conditions
-	 * neccessary to show a View were not satisfied.
+	 * Subclasses should create a new Composite indicating that the conditions
+	 * necessary to show a View were not satisfied.
 	 *
-	 * @param parent The parent the Composite shoulb be created for
+	 * @param parent The parent the Composite should be created for
 	 * @return A new Composite
 	 */
 	protected abstract Composite createNewConditionUnsatisfiedComposite(Composite parent);
