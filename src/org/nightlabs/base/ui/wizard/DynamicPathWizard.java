@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
@@ -138,15 +139,6 @@ public abstract class DynamicPathWizard extends Wizard implements IDynamicPathWi
 	public String getIdentifier()
 	{
 		return this.getClass().getName();
-	}
-
-	@Override
-	public void addPages()
-	{
-		super.addPages(); // empty super method.
-		IWizardPage entryPage = getWizardEntryPage();
-		if(entryPage != null)
-			addPage(entryPage);
 	}
 
 	/**
@@ -508,4 +500,80 @@ public abstract class DynamicPathWizard extends Wizard implements IDynamicPathWi
 			setDynamicWizardDialog((DynamicPathWizardDialog)wizardContainer);
 		}
 	}
+
+	// BEGIN new wizard action handler extension-point functionality
+
+	private static final Logger logger = Logger.getLogger(DynamicPathWizard.class);
+
+	private IWizardDelegate wizardActionHandler;
+
+	protected IWizardDelegate getWizardActionHandler() {
+		return wizardActionHandler;
+	}
+
+//	@Override
+//	public void addPages()
+//	{
+//		super.addPages(); // empty super method.
+//		IWizardPage entryPage = getWizardEntryPage();
+//		if(entryPage != null)
+//			addPage(entryPage);
+//	}
+
+	/**
+	 * Subclasses can override this method and call internally {@link #addPage(IWizardPage)} for each page they want to add.
+	 * If this method is not overridden the extension-point with the id {@link WizardDelegateRegistry#EXTENSION_POINT_ID}
+	 * is processed and if a {@link IWizardDelegateFactory} is registered for a subclass it will automatically be used.
+	 * In this case {@link #performFinish()} should also not be overridden.
+	 */
+	@Override
+	public void addPages()
+	{
+		super.addPages(); // empty super method.
+		IWizardPage entryPage = getWizardEntryPage();
+		if(entryPage != null)
+			addPage(entryPage);
+
+		// check if a wizardActionHandler is registered for this wizard class
+		initWizardActionHandler();
+
+		// if a wizardActionHandler is registered add the pages of the corresponding page provider
+		if (wizardActionHandler != null)
+		{
+			List<? extends IWizardPage> pages = wizardActionHandler.getPageProvider().getPages();
+			for (IWizardPage page : pages) {
+				addPage(page);
+			}
+		}
+	}
+
+	protected void initWizardActionHandler()
+	{
+		IWizardDelegateFactory factory = WizardDelegateRegistry.sharedInstance().getFactory(this.getClass());
+		if (factory != null) {
+			wizardActionHandler = factory.createWizardDelegate();
+			wizardActionHandler.setWizard(this);
+		}
+		else {
+//			throw new IllegalStateException("There is no IWizardDelegateFactory registered for the wizard class "+this.getClass());
+			logger.info("There is no IWizardDelegateFactory registered for the wizard class "+this.getClass());
+		}
+	}
+
+	/**
+	 * Subclasses can override this method and perform the finish action.
+	 * If this method is not overridden the extension-point with the id {@link WizardDelegateRegistry#EXTENSION_POINT_ID}
+	 * is processed and if a {@link IWizardDelegateFactory} is registered for a subclass it will automatically be used.
+	 * In this case {@link #addPages())} should also not be overridden.
+	 */
+	@Override
+	public boolean performFinish()
+	{
+		if (wizardActionHandler != null) {
+			return wizardActionHandler.performFinish();
+		}
+		return false;
+	}
+
+	// END new wizard action handler extension-point functionality
 }

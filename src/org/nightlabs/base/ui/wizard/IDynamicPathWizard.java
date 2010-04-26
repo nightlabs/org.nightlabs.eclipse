@@ -56,6 +56,8 @@ public interface IDynamicPathWizard extends IWizard
 	 *
 	 * @see DynamicPathWizardPage
 	 * @see IDynamicPathWizardPage
+	 * 
+	 * @deprecated not used anymore, implementations should override {@link #addPages()} instead
 	 */
 	IDynamicPathWizardPage createWizardEntryPage();
 
@@ -66,6 +68,8 @@ public interface IDynamicPathWizard extends IWizard
 	 * @return Returns the first page of the wizard. If this page does not yet exist
 	 * (means it's the first call to this method), {@link #createWizardEntryPage()} is
 	 * called.
+	 * 
+	 * @deprecated not used anymore
 	 */
 	IDynamicPathWizardPage getWizardEntryPage();
 
