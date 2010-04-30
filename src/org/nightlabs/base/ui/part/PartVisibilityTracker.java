@@ -26,11 +26,11 @@
 
 package org.nightlabs.base.ui.part;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.widgets.Display;
@@ -45,7 +45,7 @@ import org.nightlabs.base.ui.util.RCPUtil;
  * Addtionally {@link org.nightlabs.base.ui.part.PartVisibilityListener} can be
  * registered that will be notified when the visibility status of a part changes
  * (see {@link #addVisibilityListener(IWorkbenchPart, PartVisibilityListener)}).
- * 
+ *
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
  *
  */
@@ -59,16 +59,16 @@ public class PartVisibilityTracker {
 	 * LOG4J logger used by this class
 	 */
 	private static final Logger logger = Logger.getLogger(PartVisibilityTracker.class);
-	
+
 	/**
 	 * An instance of this listener will to the active WorkbenchPage and tracks
 	 * status changes of the parts within that page.
 	 * @see PartVisibilityTracker#initialize()
 	 */
 	protected static class Listener implements IPartListener2 {
-	
+
 		private PartVisibilityTracker tracker;
-		
+
 		public Listener(PartVisibilityTracker tracker) {
 			this.tracker = tracker;
 		}
@@ -81,11 +81,11 @@ public class PartVisibilityTracker {
 			if (status != null)
 				status.setStatus(newStatus);
 		}
-		
+
 		private PartStatus getPartStatus(IWorkbenchPartReference partRef) {
 			return tracker.getPartStatus(partRef);
 		}
-		
+
 		/**
 		 * @see org.eclipse.ui.IPartListener2#partActivated(org.eclipse.ui.IWorkbenchPartReference)
 		 */
@@ -98,7 +98,7 @@ public class PartVisibilityTracker {
 			else
 				setPartStatus(partRef, PART_STATUS_NO_VISIBILITY_CHANGE);
 		}
-		
+
 		/**
 		 * @see org.eclipse.ui.IPartListener2#partBroughtToTop(org.eclipse.ui.IWorkbenchPartReference)
 		 */
@@ -108,7 +108,7 @@ public class PartVisibilityTracker {
 
 			setPartStatus(partRef, PART_STATUS_VISIBLE);
 		}
-		
+
 		/**
 		 * @see org.eclipse.ui.IPartListener2#partClosed(org.eclipse.ui.IWorkbenchPartReference)
 		 */
@@ -119,7 +119,7 @@ public class PartVisibilityTracker {
 			setPartStatus(partRef, PART_STATUS_HIDDEN);
 			getPartStatus(partRef).removeAllListeners();
 		}
-		
+
 		/**
 		 * @see org.eclipse.ui.IPartListener2#partDeactivated(org.eclipse.ui.IWorkbenchPartReference)
 		 */
@@ -144,7 +144,7 @@ public class PartVisibilityTracker {
 
 			setPartStatus(partRef, PART_STATUS_VISIBLE);
 		}
-		
+
 		/**
 		 * @see org.eclipse.ui.IPartListener2#partHidden(org.eclipse.ui.IWorkbenchPartReference)
 		 */
@@ -154,7 +154,7 @@ public class PartVisibilityTracker {
 
 			setPartStatus(partRef, PART_STATUS_HIDDEN);
 		}
-		
+
 		/**
 		 * @see org.eclipse.ui.IPartListener2#partVisible(org.eclipse.ui.IWorkbenchPartReference)
 		 */
@@ -164,7 +164,7 @@ public class PartVisibilityTracker {
 
 			setPartStatus(partRef, PART_STATUS_VISIBLE);
 		}
-		
+
 		/**
 		 * @see org.eclipse.ui.IPartListener2#partInputChanged(org.eclipse.ui.IWorkbenchPartReference)
 		 */
@@ -177,7 +177,7 @@ public class PartVisibilityTracker {
 	}
 
 //	public static final int PART_STATUS_CLOSED = 4;
-	
+
 	/**
 	 * Class to hold the status of a IWorkbenchPart and notify visibility listners.
 	 */
@@ -186,15 +186,15 @@ public class PartVisibilityTracker {
 		private IWorkbenchPartReference partRef;
 		private int status;
 		private List<PartVisibilityListener> listeners = new LinkedList<PartVisibilityListener>();
-		
+
 		private boolean haveDelayedHideStatusChanges = false;
 //		private boolean doNotification = false;
-		
+
 		public PartStatus(IWorkbenchPart part) {
 			this.part = part;
 			this.partRef = null;
 		}
-		
+
 		public PartStatus(IWorkbenchPart part, IWorkbenchPartReference partRef) {
 			this.partRef = partRef;
 			this.part = part;
@@ -206,15 +206,15 @@ public class PartVisibilityTracker {
 		public int getStatus() {
 			return status;
 		}
-		
+
 		public IWorkbenchPartReference getPartRef() {
 			return partRef;
 		}
-		
+
 		public void setPartRef(IWorkbenchPartReference partRef) {
 			this.partRef = partRef;
 		}
-		
+
 		public Runnable delayedHiddenNotifyer = new Runnable() {
 			public void run() {
 				if (logger.isDebugEnabled())
@@ -262,7 +262,7 @@ public class PartVisibilityTracker {
 				}
 			}
 		}
-		
+
 		/**
 		 * Notify all listeners of the new satus
 		 *
@@ -278,10 +278,10 @@ public class PartVisibilityTracker {
 						listener.partVisible(partRef);
 						break;
 				}
-				
+
 			}
 		}
-		
+
 		public void asyncInitStatus(int status) {
 			this.status = status;
 			notifyListeners(status);
@@ -290,33 +290,33 @@ public class PartVisibilityTracker {
 		public IWorkbenchPart getPart() {
 			return part;
 		}
-		
+
 		public void addListener(PartVisibilityListener listener) {
 			listeners.add(listener);
 		}
-		
+
 		public void removeListener(PartVisibilityListener listener) {
 			listeners.remove(listener);
 		}
-		
+
 		public void removeAllListeners() {
 			listeners.clear();
 		}
 	}
-	
+
 	/**
 	 * key: IWorkbenchPart part<br/>
 	 * value: PartStatus satus
 	 */
-	private Map<IWorkbenchPart, PartStatus> partStati = new HashMap<IWorkbenchPart, PartStatus>();
+	private Map<IWorkbenchPart, PartStatus> partStati = new WeakHashMap<IWorkbenchPart, PartStatus>();
 
 	/**
-	 * 
+	 *
 	 */
 	public PartVisibilityTracker() {
 		super();
 	}
-	
+
 	/**
 	 * Get the PartStatus for the part referenced by the given partRef.
 	 * Calls {@link #getPartStatus(IWorkbenchPartReference, IWorkbenchPart)}
@@ -325,7 +325,7 @@ public class PartVisibilityTracker {
 	private PartStatus getPartStatus(IWorkbenchPartReference partRef) {
 		return getPartStatus(partRef, partRef.getPart(false));
 	}
-	
+
 	/**
 	 * Get the PartStatus for the given part. If not found a new PartStatus
 	 * will be created for the given part and partRef.
@@ -358,7 +358,7 @@ public class PartVisibilityTracker {
 	 * {@link PartVisibilityListener#partVisible(IWorkbenchPartReference)}.
 	 * Note that all listeners to a part will be removed when this part is
 	 * closed.
-	 * 
+	 *
 	 * @param part The IWorkbenchPart which visibility changes should be notified for.
 	 * @param listener The listener to be notified.
 	 */
@@ -367,7 +367,7 @@ public class PartVisibilityTracker {
 			throw new IllegalArgumentException("Cannot add listener for null-part. Parameter part must not be null"); //$NON-NLS-1$
 		if (listener == null)
 			throw new IllegalArgumentException("Parameter listener must not be null"); //$NON-NLS-1$
-		
+
 		if (!initialized)
 			initialize();
 		final PartStatus status = getPartStatus(part);
@@ -404,11 +404,11 @@ public class PartVisibilityTracker {
 		}
 		status.removeListener(listener);
 	}
-	
+
 	/**
 	 * Get the visibility status of the given part. Will return one out of
 	 * {@link #PART_STATUS_VISIBLE} or {@link #PART_STATUS_HIDDEN}.
-	 * 
+	 *
 	 * @param part The part the visibilty should be returned
 	 */
 	public int getPartVisibilityStatus(IWorkbenchPart part) {
@@ -424,7 +424,7 @@ public class PartVisibilityTracker {
 
 		return res;
 	}
-	
+
 	private boolean initialized = false;
 	public void initialize() {
 		if (initialized) {
@@ -454,7 +454,7 @@ public class PartVisibilityTracker {
 
 
 	private static PartVisibilityTracker sharedInstance;
-	
+
 	/**
 	 * Shared instance of PartVisibilityTracker. Should be initialized once.
 	 * @see #initialize()
@@ -464,7 +464,7 @@ public class PartVisibilityTracker {
 			sharedInstance = new PartVisibilityTracker();
 		return sharedInstance;
 	}
-	
+
 	/**
 	 * Check whether the given part is visible.
 	 * Be sure that at some point of time {@link #initialize()} was called before
@@ -474,10 +474,10 @@ public class PartVisibilityTracker {
 	public static boolean isPartVisible(IWorkbenchPart part) {
 		if (RCPUtil.getActiveWorkbenchPage().isPartVisible(part))
 			return true;
-		
+
 		return sharedInstance().getPartVisibilityStatus(part) == PART_STATUS_VISIBLE;
 	}
-	
-	
-	
+
+
+
 }
