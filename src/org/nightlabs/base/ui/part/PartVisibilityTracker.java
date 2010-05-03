@@ -26,6 +26,7 @@
 
 package org.nightlabs.base.ui.part;
 
+import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -308,7 +309,7 @@ public class PartVisibilityTracker {
 	 * key: IWorkbenchPart part<br/>
 	 * value: PartStatus satus
 	 */
-	private Map<IWorkbenchPart, PartStatus> partStati = new WeakHashMap<IWorkbenchPart, PartStatus>();
+	private Map<IWorkbenchPart, WeakReference<PartStatus>> partStatusMap = new WeakHashMap<IWorkbenchPart, WeakReference<PartStatus>>();
 
 	/**
 	 *
@@ -331,10 +332,11 @@ public class PartVisibilityTracker {
 	 * will be created for the given part and partRef.
 	 */
 	private PartStatus getPartStatus(IWorkbenchPartReference partRef, IWorkbenchPart part) {
-		PartStatus status = partStati.get(part);
+		WeakReference<PartStatus> partStatusReference = partStatusMap.get(part);
+		PartStatus status = partStatusReference == null ? null : partStatusReference.get();
 		if (status == null) {
 			status = new PartStatus(part, partRef);
-			partStati.put(part, status);
+			partStatusMap.put(part, new WeakReference<PartStatus>(status));
 		}
 		else if (status.getPartRef() == null)
 			status.setPartRef(partRef);
