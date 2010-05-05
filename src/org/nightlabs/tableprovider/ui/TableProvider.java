@@ -13,7 +13,7 @@ import org.nightlabs.progress.ProgressMonitor;
  * @author Daniel Mazurek - daniel [at] nightlabs [dot] de
  */
 public interface TableProvider<ElementID, Element>
-extends Serializable
+extends TableLabelProvider<ElementID, Element>, Serializable
 {
 	/**
 	 * Returns the elements for the given id objects, which contain the necessary information which should be
@@ -25,16 +25,6 @@ extends Serializable
 	 * @return the Collection of elements for the given id objects with all the information needed to display in the given scope
 	 */
 	Map<ElementID, Element> getObjects(Collection<ElementID> objectIDs, String scope, ProgressMonitor monitor);
-
-	/**
-	 * Returns a a text for the given element which corresponds to any of the given types in the given scope
-	 *
-	 * @param types the types to return a text for.
-	 * @param element the element to return a text for the given types.
-	 * @param scope the scope for which texts should be returned
-	 * @return a text for the given element which corresponds to the given types
-	 */
-	String getText(Set<String> types, Element element, String scope);
 
 	/**
 	 * Returns the amount of columns as types in the given scope.
