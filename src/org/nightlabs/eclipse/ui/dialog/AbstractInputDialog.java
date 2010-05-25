@@ -49,16 +49,16 @@ extends InputDialog
 	public AbstractInputDialog(Shell shell, String title, String message) {
 		this(shell, title, message, "", inputValidator); //$NON-NLS-1$
 	}
-		
-	protected static IInputValidator inputValidator = new IInputValidator()
+
+	protected static final IInputValidator inputValidator = new IInputValidator()
 	{
-    public String isValid(String input)
-    {
-      if(input.trim().equals("")) //$NON-NLS-1$
-        return Messages.getString("org.nightlabs.eclipse.ui.dialog.AbstractInputDialog.inputValidator.emptyString"); //$NON-NLS-1$
-      
-      return null;
-    }
+		public String isValid(String input)
+		{
+			if(input.trim().equals("")) //$NON-NLS-1$
+				return Messages.getString("org.nightlabs.eclipse.ui.dialog.AbstractInputDialog.inputValidator.emptyString"); //$NON-NLS-1$
+
+			return null;
+		}
 	};
 
 	public IInputValidator getInputValidator() {
