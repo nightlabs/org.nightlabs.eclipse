@@ -45,7 +45,7 @@ extends ByteArrayTransfer
 {
 	
 	public static final String TYPE_NAME = "local-object-transfer"; //$NON-NLS-1$
-	public static int TYPE_ID = registerType(TYPE_NAME);
+	public static final int TYPE_ID = registerType(TYPE_NAME);
 
 	public LocalObjectTransfer() {
 		super();

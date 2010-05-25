@@ -78,22 +78,26 @@ implements ISelectionProvider, StatableTree
 	 * The internally used {@link TreeViewer}.
 	 */
 	private TreeViewer treeViewer;
+	
 	/**
 	 * Default set of styles to use when constructing a single-selection viewer.
 	 */
-	public static int DEFAULT_STYLE_SINGLE = SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION;
+	public static final int DEFAULT_STYLE_SINGLE = SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION;
+	
 	/**
 	 * Default set of styles to use when constructing a multi-selection viewer.
 	 */
-	public static int DEFAULT_STYLE_MULTI = SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL  | SWT.FULL_SELECTION;
+	public static final int DEFAULT_STYLE_MULTI = SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL  | SWT.FULL_SELECTION;
+	
 	/**
 	 * Default set of styles to use when constructing a single-selection viewer.
 	 */
-	public static int DEFAULT_STYLE_SINGLE_BORDER = SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER;
+	public static final int DEFAULT_STYLE_SINGLE_BORDER = SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER;
+	
 	/**
 	 * Default set of styles to use when constructing a multi-selection viewer.
 	 */
-	public static int DEFAULT_STYLE_MULTI_BORDER = SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL  | SWT.FULL_SELECTION | SWT.BORDER;
+	public static final int DEFAULT_STYLE_MULTI_BORDER = SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL  | SWT.FULL_SELECTION | SWT.BORDER;
 
 	private boolean editable = true;
 	private ListenerList doubleClickListenerBackup;
