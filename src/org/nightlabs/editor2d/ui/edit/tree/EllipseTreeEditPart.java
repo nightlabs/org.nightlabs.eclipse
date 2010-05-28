@@ -42,36 +42,33 @@ import org.nightlabs.editor2d.ui.model.EllipsePropertySource;
 public class EllipseTreeEditPart
 extends DrawComponentTreeEditPart
 {	
-	public static Image ELLIPSE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
+	private static final Image ELLIPSE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
 			AbstractPaletteFactory.class, "Ellipse", ImageFormat.gif).createImage();	 //$NON-NLS-1$
-  
-  public EllipseTreeEditPart(EllipseDrawComponent model) {
-    super(model);
-  }
 
-//  public Image getImage() {
-//    return ELLIPSE_ICON;
-//  }
-  @Override
+	public EllipseTreeEditPart(EllipseDrawComponent model) {
+		super(model);
+	}
+
+	@Override
 	public Image getOutlineImage() {
-    return ELLIPSE_ICON;
-  }
+		return ELLIPSE_ICON;
+	}
 
-  @Override
+	@Override
 	public IPropertySource getPropertySource()
-  {
-    if (propertySource == null)
-    {
-      propertySource =
-        new EllipsePropertySource(getEllipseDrawComponent());
-    }
-    return propertySource;
-  }
-  
-  public EllipseDrawComponent getEllipseDrawComponent() {
-  	return (EllipseDrawComponent) getDrawComponent();
-  }
-  
+	{
+		if (propertySource == null)
+		{
+			propertySource =
+				new EllipsePropertySource(getEllipseDrawComponent());
+		}
+		return propertySource;
+	}
+
+	public EllipseDrawComponent getEllipseDrawComponent() {
+		return (EllipseDrawComponent) getDrawComponent();
+	}
+
 	@Override
 	protected void propertyChanged(PropertyChangeEvent evt)
 	{

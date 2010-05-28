@@ -40,9 +40,7 @@ import org.nightlabs.editor2d.ui.model.LinePropertySource;
 public class LineTreeEditPart
 extends DrawComponentTreeEditPart
 {
-//	public static Image LINE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
-//	AbstractPaletteFactory.class, "Line").createImage();
-	public static Image LINE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
+	private static final Image LINE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
 			AbstractPaletteFactory.class, "Line", ImageFormat.gif).createImage();	 //$NON-NLS-1$
 
 	public LineTreeEditPart(LineDrawComponent drawComponent) {

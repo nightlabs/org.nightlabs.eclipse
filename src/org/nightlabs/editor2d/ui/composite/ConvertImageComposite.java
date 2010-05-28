@@ -192,8 +192,8 @@ extends XComposite
 	private Composite detailComp = null;
 	private Composite detailParent = null;
 
-	public static String DITHER_MODE_QUALITY = "errordiffusion";  //$NON-NLS-1$
-	public static String DITHER_MODE_SPEED = "ordereddither"; //$NON-NLS-1$
+	public static final String DITHER_MODE_QUALITY = "errordiffusion";  //$NON-NLS-1$
+	public static final String DITHER_MODE_SPEED = "ordereddither"; //$NON-NLS-1$
 	private String ditherMode = DITHER_MODE_QUALITY;
 
 //	private KernelJAI ditherAlgorithm = KernelJAI.ERROR_FILTER_FLOYD_STEINBERG;

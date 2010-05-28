@@ -48,143 +48,143 @@ public abstract class AbstractDragTracker
 extends SimpleDragTracker
 implements EditorRequestConstants
 {
-  protected static int FLAG_TARGET_FEEDBACK = SimpleDragTracker.MAX_FLAG << 1;
-  protected static final int MAX_FLAG = FLAG_TARGET_FEEDBACK;
+	protected static final int FLAG_TARGET_FEEDBACK = SimpleDragTracker.MAX_FLAG << 1;
+	protected static final int MAX_FLAG = FLAG_TARGET_FEEDBACK;
 
-  protected GraphicalEditPart owner;
-  protected PrecisionRectangle sourceRect;
-  protected SnapToHelper snapToHelper;
+	protected GraphicalEditPart owner;
+	protected PrecisionRectangle sourceRect;
+	protected SnapToHelper snapToHelper;
 
-  public AbstractDragTracker(GraphicalEditPart owner)
-  {
-    super();
-    this.owner = owner;
-    setDisabledCursor(Cursors.NO);
-  }
+	public AbstractDragTracker(GraphicalEditPart owner)
+	{
+		super();
+		this.owner = owner;
+		setDisabledCursor(Cursors.NO);
+	}
 
-  @Override
+	@Override
 	public void activate()
-  {
-    super.activate();
-    if (owner != null)
-    {
-      if (getTargetEditPart() != null)
-        snapToHelper = (SnapToHelper)getTargetEditPart().getAdapter(SnapToHelper.class);
+	{
+		super.activate();
+		if (owner != null)
+		{
+			if (getTargetEditPart() != null)
+				snapToHelper = (SnapToHelper)getTargetEditPart().getAdapter(SnapToHelper.class);
 
-      IFigure figure = owner.getFigure();
-      if (figure instanceof HandleBounds)
-        sourceRect = new PrecisionRectangle(((HandleBounds)figure).getHandleBounds());
-      else
-        sourceRect = new PrecisionRectangle(figure.getBounds());
-      figure.translateToAbsolute(sourceRect);
-    }
-  }
+			IFigure figure = owner.getFigure();
+			if (figure instanceof HandleBounds)
+				sourceRect = new PrecisionRectangle(((HandleBounds)figure).getHandleBounds());
+			else
+				sourceRect = new PrecisionRectangle(figure.getBounds());
+			figure.translateToAbsolute(sourceRect);
+		}
+	}
 
-  @SuppressWarnings("unchecked") //$NON-NLS-1$
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	protected List createOperationSet()
-  {
-    List list = super.createOperationSet();
-    ToolUtilities.filterEditPartsUnderstanding(list, getSourceRequest());
-    return list;
-  }
+	{
+		List list = super.createOperationSet();
+		ToolUtilities.filterEditPartsUnderstanding(list, getSourceRequest());
+		return list;
+	}
 
-  /**
-   * The TargetEditPart is the parent of the EditPart being dragged.
-   *
-   * @return  The target EditPart; may be <code>null</code> in 2.1 applications that use
-   * the now deprecated {@link ResizeTracker#ResizeTracker(int) constructor}.
-   */
-  protected GraphicalEditPart getTargetEditPart()
-  {
-    if (owner != null)
-    {
-      GraphicalEditPart targetEditPart = (GraphicalEditPart)owner.getParent();
-      return targetEditPart;
-    }
-    return null;
-  }
+	/**
+	 * The TargetEditPart is the parent of the EditPart being dragged.
+	 *
+	 * @return  The target EditPart; may be <code>null</code> in 2.1 applications that use
+	 * the now deprecated {@link ResizeTracker#ResizeTracker(int) constructor}.
+	 */
+	protected GraphicalEditPart getTargetEditPart()
+	{
+		if (owner != null)
+		{
+			GraphicalEditPart targetEditPart = (GraphicalEditPart)owner.getParent();
+			return targetEditPart;
+		}
+		return null;
+	}
 
-  protected void eraseTargetFeedback()
-  {
-    if (!getFlag(FLAG_TARGET_FEEDBACK))
-      return;
-    if (getTargetEditPart() != null)
-      getTargetEditPart().eraseTargetFeedback(getSourceRequest());
-    setFlag(FLAG_TARGET_FEEDBACK, false);
-  }
+	protected void eraseTargetFeedback()
+	{
+		if (!getFlag(FLAG_TARGET_FEEDBACK))
+			return;
+		if (getTargetEditPart() != null)
+			getTargetEditPart().eraseTargetFeedback(getSourceRequest());
+		setFlag(FLAG_TARGET_FEEDBACK, false);
+	}
 
-  @Override
+	@Override
 	public void deactivate()
-  {
-    eraseTargetFeedback();
-    sourceRect = null;
-    snapToHelper = null;
-    super.deactivate();
-  }
+	{
+		eraseTargetFeedback();
+		sourceRect = null;
+		snapToHelper = null;
+		super.deactivate();
+	}
 
-  /**
-   * @see org.eclipse.gef.tools.AbstractTool#getCommand()
-   */
-  @Override
+	/**
+	 * @see org.eclipse.gef.tools.AbstractTool#getCommand()
+	 */
+	@Override
 	protected Command getCommand()
-  {
-    return getTargetEditPart().getCommand(getSourceRequest());
-  }
+	{
+		return getTargetEditPart().getCommand(getSourceRequest());
+	}
 
-  @Override
+	@Override
 	protected boolean handleButtonUp(int button)
-  {
-    if (stateTransition(STATE_DRAG_IN_PROGRESS, STATE_TERMINAL)) {
-      eraseSourceFeedback();
-      eraseTargetFeedback();
-      performDrag();
-      // added to repaint the handle
-  		performSelection();
-    }
-    return true;
-  }
+	{
+		if (stateTransition(STATE_DRAG_IN_PROGRESS, STATE_TERMINAL)) {
+			eraseSourceFeedback();
+			eraseTargetFeedback();
+			performDrag();
+			// added to repaint the handle
+			performSelection();
+		}
+		return true;
+	}
 
-  @Override
+	@Override
 	protected boolean handleDragInProgress()
-  {
-    if (isInState(STATE_DRAG | STATE_DRAG_IN_PROGRESS))
-    {
-      updateSourceRequest();
-      showSourceFeedback();
-      showTargetFeedback();
-      setCurrentCommand(getCommand());
-    }
-    return true;
-  }
+	{
+		if (isInState(STATE_DRAG | STATE_DRAG_IN_PROGRESS))
+		{
+			updateSourceRequest();
+			showSourceFeedback();
+			showTargetFeedback();
+			setCurrentCommand(getCommand());
+		}
+		return true;
+	}
 
-  protected void showTargetFeedback()
-  {
-    setFlag(FLAG_TARGET_FEEDBACK, true);
-    if (getTargetEditPart() != null)
-      getTargetEditPart().showTargetFeedback(getSourceRequest());
-  }
+	protected void showTargetFeedback()
+	{
+		setFlag(FLAG_TARGET_FEEDBACK, true);
+		if (getTargetEditPart() != null)
+			getTargetEditPart().showTargetFeedback(getSourceRequest());
+	}
 
-  protected boolean isInDragInProgress() {
-    return isInState(STATE_DRAG_IN_PROGRESS | STATE_ACCESSIBLE_DRAG_IN_PROGRESS);
-  }
+	protected boolean isInDragInProgress() {
+		return isInState(STATE_DRAG_IN_PROGRESS | STATE_ACCESSIBLE_DRAG_IN_PROGRESS);
+	}
 
-  @Override
+	@Override
 	protected String getDebugName()
-  {
-    return "Debug "+getCommandName(); //$NON-NLS-1$
-  }
+	{
+		return "Debug "+getCommandName(); //$NON-NLS-1$
+	}
 
-  @Override
+	@Override
 	protected abstract Request createSourceRequest();
-  @Override
+	@Override
 	protected abstract void updateSourceRequest();
-  @Override
+	@Override
 	protected abstract String getCommandName();
 
-  protected void performSelection()
-  {
-  	EditorUtil.selectEditPart(owner);
-  }
+	protected void performSelection()
+	{
+		EditorUtil.selectEditPart(owner);
+	}
 
 }

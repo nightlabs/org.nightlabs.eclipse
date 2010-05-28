@@ -40,35 +40,30 @@ import org.nightlabs.editor2d.ui.model.ShapeDrawComponentPropertySource;
 public class RectangleTreeEditPart
 extends DrawComponentTreeEditPart
 {
-//	public static Image RECTANGLE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
-//			AbstractPaletteFactory.class, "Rectangle").createImage();
-	public static Image RECTANGLE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
+	private static final Image RECTANGLE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
 			AbstractPaletteFactory.class, "Rectangle", ImageFormat.gif).createImage();	 //$NON-NLS-1$
-	  
-  public RectangleTreeEditPart(RectangleDrawComponent model) {
-    super(model);
-  }
 
-  @Override
+	public RectangleTreeEditPart(RectangleDrawComponent model) {
+		super(model);
+	}
+
+	@Override
 	public IPropertySource getPropertySource()
-  {
-    if (propertySource == null)
-    {
-      propertySource =
-        new ShapeDrawComponentPropertySource(getRectangleDrawComponent());
-    }
-    return propertySource;
-  }
-  
-  protected RectangleDrawComponent getRectangleDrawComponent() {
-  	return (RectangleDrawComponent) getModel();
-  }
-  
-//  public Image getImage() {
-//    return RECTANGLE_ICON;
-//  }
-  @Override
+	{
+		if (propertySource == null)
+		{
+			propertySource =
+				new ShapeDrawComponentPropertySource(getRectangleDrawComponent());
+		}
+		return propertySource;
+	}
+
+	protected RectangleDrawComponent getRectangleDrawComponent() {
+		return (RectangleDrawComponent) getModel();
+	}
+
+	@Override
 	protected Image getOutlineImage() {
-    return RECTANGLE_ICON;
-  }
+		return RECTANGLE_ICON;
+	}
 }

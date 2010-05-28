@@ -49,6 +49,8 @@ import org.nightlabs.editor2d.util.GeomUtil;
 public class J2DUtil
 extends ColorUtil
 {
+	protected static final AffineTransform at = new AffineTransform();
+
 	public static org.eclipse.draw2d.geometry.Point toDraw2D(Point2D p) {
 		return new org.eclipse.draw2d.geometry.Point(p.getX(), p.getY());
 	}
@@ -94,7 +96,7 @@ extends ColorUtil
 		transformGeneralShape(gs, oldBounds.x, oldBounds.y, oldBounds.width, oldBounds.height,
 				newBounds.x, newBounds.y, newBounds.width, newBounds.height, false);
 	}
-	
+
 	public static void transformGeneralShape(GeneralShape gs,
 			org.eclipse.draw2d.geometry.Rectangle oldBounds,
 			org.eclipse.draw2d.geometry.Rectangle newBounds,
@@ -112,54 +114,52 @@ extends ColorUtil
 				newBounds.x, newBounds.y, newBounds.width, newBounds.height, false);
 	}
 
-	protected static AffineTransform at = new AffineTransform();
-
 	public static void transformGeneralShape(GeneralShape generalShape, int x1, int y1, int w1, int h1,
 			int x2, int y2, int w2, int h2, boolean cloneGS)
 	{
-	  // TODO: if cloneGS is true return the cloned GeneralShape in a seperate Method
-	  // else return the transformed generalShape for convience
-	  GeneralShape gs;
-	  if (cloneGS) {
-	    gs = (GeneralShape) generalShape.clone();
-	  } else {
-	    gs = generalShape;
-	  }
-	    	    
-	  // if both Rectangles are equal do nothing
-	  if (x1 == x2 && y1 == y2 && w1 == w2 && h1 == h2) {
-//	    LOGGER.debug("Both Rectangles are Equal!");
-	    return;
-	  }
-	    	  
-	  // if only a Translation is performed, just translate
-	  if (w1 == w2 && h1 == h2)
-	  {
-	    at.setToIdentity();
-	    at.translate(x2 - x1, y2 - y1);
-	    gs.transform(at);
-	  }
-	  // translate to origin and scale
-	  else
-	  {
-		  double ratioX = ((double)w2) / ((double)w1);
-		  double ratioY = ((double)h2) / ((double)h1);
-	    double x = x1;
-	    double y = y1;
-	    double distanceX = x - (x*ratioX);
-	    double distanceY = y - (y*ratioY);
-	    at.setToIdentity();
-	    at.translate(distanceX, distanceY);
-	    at.scale(ratioX, ratioY);
-	    gs.transform(at);
-		  
-	    // translate back
-	    distanceX = x2 - x1;
-	    distanceY = y2 - y1;
-	    at.setToIdentity();
-	    at.translate(distanceX, distanceY);
-	    gs.transform(at);
-	  }
+		// TODO: if cloneGS is true return the cloned GeneralShape in a seperate Method
+		// else return the transformed generalShape for convience
+		GeneralShape gs;
+		if (cloneGS) {
+			gs = (GeneralShape) generalShape.clone();
+		} else {
+			gs = generalShape;
+		}
+
+		// if both Rectangles are equal do nothing
+		if (x1 == x2 && y1 == y2 && w1 == w2 && h1 == h2) {
+			//	    LOGGER.debug("Both Rectangles are Equal!");
+			return;
+		}
+
+		// if only a Translation is performed, just translate
+		if (w1 == w2 && h1 == h2)
+		{
+			at.setToIdentity();
+			at.translate(x2 - x1, y2 - y1);
+			gs.transform(at);
+		}
+		// translate to origin and scale
+		else
+		{
+			double ratioX = ((double)w2) / ((double)w1);
+			double ratioY = ((double)h2) / ((double)h1);
+			double x = x1;
+			double y = y1;
+			double distanceX = x - (x*ratioX);
+			double distanceY = y - (y*ratioY);
+			at.setToIdentity();
+			at.translate(distanceX, distanceY);
+			at.scale(ratioX, ratioY);
+			gs.transform(at);
+
+			// translate back
+			distanceX = x2 - x1;
+			distanceY = y2 - y1;
+			at.setToIdentity();
+			at.translate(distanceX, distanceY);
+			gs.transform(at);
+		}
 	}
 
 	public static AffineTransform getTranslateAffineTransform(java.awt.Rectangle oldBounds,
@@ -285,31 +285,31 @@ extends ColorUtil
 				int segType = pi.currentSegment(coords);
 				switch (segType)
 				{
-					case (PathIterator.SEG_MOVETO):
-						p = new org.eclipse.draw2d.geometry.Point(coords[0], coords[1]);
-					points.addPoint(p);
-					break;
-					case (PathIterator.SEG_LINETO):
-						p = new org.eclipse.draw2d.geometry.Point(coords[0], coords[1]);
-					points.addPoint(p);
-					break;
-					case (PathIterator.SEG_QUADTO):
-						p = new org.eclipse.draw2d.geometry.Point(coords[0], coords[1]);
-					p2 = new org.eclipse.draw2d.geometry.Point(coords[2], coords[3]);
-					points.addPoint(p);
-					points.addPoint(p2);
-					break;
-					case (PathIterator.SEG_CUBICTO):
-						p = new org.eclipse.draw2d.geometry.Point(coords[0], coords[1]);
-					p2 = new org.eclipse.draw2d.geometry.Point(coords[2], coords[3]);
-					p3 = new org.eclipse.draw2d.geometry.Point(coords[4], coords[5]);
-					points.addPoint(p);
-					points.addPoint(p2);
-					points.addPoint(p3);
-					break;
-					case (PathIterator.SEG_CLOSE):
+				case (PathIterator.SEG_MOVETO):
+					p = new org.eclipse.draw2d.geometry.Point(coords[0], coords[1]);
+				points.addPoint(p);
+				break;
+				case (PathIterator.SEG_LINETO):
+					p = new org.eclipse.draw2d.geometry.Point(coords[0], coords[1]);
+				points.addPoint(p);
+				break;
+				case (PathIterator.SEG_QUADTO):
+					p = new org.eclipse.draw2d.geometry.Point(coords[0], coords[1]);
+				p2 = new org.eclipse.draw2d.geometry.Point(coords[2], coords[3]);
+				points.addPoint(p);
+				points.addPoint(p2);
+				break;
+				case (PathIterator.SEG_CUBICTO):
+					p = new org.eclipse.draw2d.geometry.Point(coords[0], coords[1]);
+				p2 = new org.eclipse.draw2d.geometry.Point(coords[2], coords[3]);
+				p3 = new org.eclipse.draw2d.geometry.Point(coords[4], coords[5]);
+				points.addPoint(p);
+				points.addPoint(p2);
+				points.addPoint(p3);
+				break;
+				case (PathIterator.SEG_CLOSE):
 
-						break;
+					break;
 				}
 			}
 		}
@@ -334,26 +334,26 @@ extends ColorUtil
 		{
 			int segType = pi.currentSegment(coords);
 			switch (segType) {
-				case (PathIterator.SEG_MOVETO):
-					pi.currentSegment(coords);
-				polyline.addPoint(new org.eclipse.draw2d.geometry.Point(coords[0], coords[1]));
+			case (PathIterator.SEG_MOVETO):
+				pi.currentSegment(coords);
+			polyline.addPoint(new org.eclipse.draw2d.geometry.Point(coords[0], coords[1]));
+			break;
+			case (PathIterator.SEG_LINETO):
+				pi.currentSegment(coords);
+			polyline.addPoint(new org.eclipse.draw2d.geometry.Point(coords[0], coords[1]));
+			break;
+			case (PathIterator.SEG_QUADTO):
+				pi.currentSegment(coords);
+			polyline.addPoint(new org.eclipse.draw2d.geometry.Point(coords[0], coords[1]));
+			break;
+			case (PathIterator.SEG_CUBICTO):
+				pi.currentSegment(coords);
+			polyline.addPoint(new org.eclipse.draw2d.geometry.Point(coords[0], coords[1]));
+			break;
+			case (PathIterator.SEG_CLOSE):
+				//        pi.currentSegment(coords);
+				//      	polyline.addPoint(new org.eclipse.draw2d.geometry.Point(coords[0], coords[1]));
 				break;
-				case (PathIterator.SEG_LINETO):
-					pi.currentSegment(coords);
-				polyline.addPoint(new org.eclipse.draw2d.geometry.Point(coords[0], coords[1]));
-				break;
-				case (PathIterator.SEG_QUADTO):
-					pi.currentSegment(coords);
-				polyline.addPoint(new org.eclipse.draw2d.geometry.Point(coords[0], coords[1]));
-				break;
-				case (PathIterator.SEG_CUBICTO):
-					pi.currentSegment(coords);
-				polyline.addPoint(new org.eclipse.draw2d.geometry.Point(coords[0], coords[1]));
-				break;
-				case (PathIterator.SEG_CLOSE):
-//        pi.currentSegment(coords);
-//      	polyline.addPoint(new org.eclipse.draw2d.geometry.Point(coords[0], coords[1]));
-					break;
 			}
 		}
 		return polyline;
@@ -373,165 +373,165 @@ extends ColorUtil
 		}
 		return gs;
 	}
-    
-//  public static GeneralShape removePathSegment(GeneralShape generalShape, int index)
-//  {
-//    if (generalShape == null)
-//      throw new IllegalArgumentException("Param generalShape MUST not be null!"); //$NON-NLS-1$
-//
-//    if (index > generalShape.getNumTypes())
-//      throw new IndexOutOfBoundsException("Param index is out of GeneralShape PathSegment Bounds!"); //$NON-NLS-1$
-//
-//    if (index == 0)
-//      removeFirstPathSegment(generalShape);
-//
-//    float[] coords = new float[6];
-//    int pathIndex = 0;
-//    GeneralShape gs = new GeneralShape();
-//    boolean indexSet = false;
-//    for (PathIterator pi = generalShape.getPathIterator(new AffineTransform()); !pi.isDone(); pi.next())
-//    {
-//      if (pathIndex == index)
-//      {
-//        pathIndex = -1;
-//        indexSet = true;
-//        continue;
-//      }
-//
-//      int segType = pi.currentSegment(coords);
-//      switch (segType)
-//      {
-//	      case (PathIterator.SEG_MOVETO):
-//	        gs.moveTo(coords[0], coords[1]);
-//	      	if (!indexSet)
-//	      	  pathIndex++;
-//	        break;
-//	      case (PathIterator.SEG_LINETO):
-//	        gs.lineTo(coords[0], coords[1]);
-//	      	if (!indexSet)
-//	      	  pathIndex++;
-//	        break;
-//	      case (PathIterator.SEG_QUADTO):
-//	        gs.quadTo(coords[0], coords[1], coords[2], coords[3]);
-//	      	if (!indexSet)
-//	      	  pathIndex++;
-//	        break;
-//	      case (PathIterator.SEG_CUBICTO):
-//	        gs.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
-//	      	if (!indexSet)
-//	      	  pathIndex++;
-//	        break;
-//	      case (PathIterator.SEG_CLOSE):
-//	        gs.closePath();
-//	      	if (!indexSet)
-//	      	  pathIndex++;
-//	        break;
-//      }
-//    }
-//    return gs;
-//  }
-//
-//  public static GeneralShape removeFirstPathSegment(GeneralShape generalShape)
-//  {
-//    float[] coords = new float[6];
-//    int pathIndex = 0;
-//    GeneralShape gs = new GeneralShape();
-//    for (PathIterator pi = generalShape.getPathIterator(null); !pi.isDone(); pi.next())
-//    {
-//      int segType = pi.currentSegment(coords);
-//      switch (segType)
-//      {
-//	      case (PathIterator.SEG_MOVETO):
-//	      	pathIndex++;
-//	        break;
-//	      case (PathIterator.SEG_LINETO):
-//	        if (pathIndex == 1)
-//	          gs.moveTo(coords[0], coords[1]);
-//	        else
-//	          gs.lineTo(coords[0], coords[1]);
-//	      	pathIndex++;
-//	        break;
-//	      case (PathIterator.SEG_QUADTO):
-//	        gs.quadTo(coords[0], coords[1], coords[2], coords[3]);
-//	      	pathIndex++;
-//	        break;
-//	      case (PathIterator.SEG_CUBICTO):
-//	        gs.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
-//	      	pathIndex++;
-//	        break;
-//	      case (PathIterator.SEG_CLOSE):
-//	        pathIndex++;
-//	        break;
-//      }
-//    }
-//    return gs;
-//  }
-//
-//  public static GeneralShape addPathSegment(GeneralShape generalShape, int type, int index, float[] newCoords)
-//  {
-//    float[] coords = new float[6];
-//    GeneralShape gs = new GeneralShape();
-//    int pathIndex = 0;
-//    boolean indexSet = false;
-//    for (PathIterator pi = generalShape.getPathIterator(null); !pi.isDone(); pi.next())
-//    {
-//      if (pathIndex == index)
-//      {
-//        switch (type)
-//        {
-//	      	case (PathIterator.SEG_MOVETO):
-//	      	  gs.moveTo(newCoords[0], newCoords[1]);
-//	      	  break;
-//	      	case (PathIterator.SEG_LINETO):
-//	      	  gs.lineTo(newCoords[0], newCoords[1]);
-//	      	  break;
-//		      case (PathIterator.SEG_QUADTO):
-//		        gs.quadTo(newCoords[0], newCoords[1], newCoords[2], newCoords[3]);
-//		        break;
-//		      case (PathIterator.SEG_CUBICTO):
-//		        gs.curveTo(newCoords[0], newCoords[1], newCoords[2], newCoords[3], newCoords[4], newCoords[5]);
-//		        break;
-//        }
-//        pathIndex = -1;
-//        indexSet = true;
-//      }
-//
-//      int segType = pi.currentSegment(coords);
-//      switch (segType)
-//      {
-//	      case (PathIterator.SEG_MOVETO):
-//	        gs.moveTo(coords[0], coords[1]);
-//	      	if (!indexSet)
-//	      	  pathIndex++;
-//	        break;
-//	      case (PathIterator.SEG_LINETO):
-//	        gs.lineTo(coords[0], coords[1]);
-//	      	if (!indexSet)
-//	      	  pathIndex++;
-//	        break;
-//	      case (PathIterator.SEG_QUADTO):
-//	        gs.quadTo(coords[0], coords[1], coords[2], coords[3]);
-//	      	if (!indexSet)
-//	      	  pathIndex++;
-//	        break;
-//	      case (PathIterator.SEG_CUBICTO):
-//	        gs.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
-//	      	if (!indexSet)
-//	      	  pathIndex++;
-//	        break;
-//	      case (PathIterator.SEG_CLOSE):
-//	        gs.closePath();
-//	      	if (!indexSet)
-//	      	  pathIndex++;
-//	        break;
-//      }
-//    }
-//    return gs;
-//  }
+
+	//  public static GeneralShape removePathSegment(GeneralShape generalShape, int index)
+	//  {
+	//    if (generalShape == null)
+	//      throw new IllegalArgumentException("Param generalShape MUST not be null!"); //$NON-NLS-1$
+	//
+	//    if (index > generalShape.getNumTypes())
+	//      throw new IndexOutOfBoundsException("Param index is out of GeneralShape PathSegment Bounds!"); //$NON-NLS-1$
+	//
+	//    if (index == 0)
+	//      removeFirstPathSegment(generalShape);
+	//
+	//    float[] coords = new float[6];
+	//    int pathIndex = 0;
+	//    GeneralShape gs = new GeneralShape();
+	//    boolean indexSet = false;
+	//    for (PathIterator pi = generalShape.getPathIterator(new AffineTransform()); !pi.isDone(); pi.next())
+	//    {
+	//      if (pathIndex == index)
+	//      {
+	//        pathIndex = -1;
+	//        indexSet = true;
+	//        continue;
+	//      }
+	//
+	//      int segType = pi.currentSegment(coords);
+	//      switch (segType)
+	//      {
+	//	      case (PathIterator.SEG_MOVETO):
+	//	        gs.moveTo(coords[0], coords[1]);
+	//	      	if (!indexSet)
+	//	      	  pathIndex++;
+	//	        break;
+	//	      case (PathIterator.SEG_LINETO):
+	//	        gs.lineTo(coords[0], coords[1]);
+	//	      	if (!indexSet)
+	//	      	  pathIndex++;
+	//	        break;
+	//	      case (PathIterator.SEG_QUADTO):
+	//	        gs.quadTo(coords[0], coords[1], coords[2], coords[3]);
+	//	      	if (!indexSet)
+	//	      	  pathIndex++;
+	//	        break;
+	//	      case (PathIterator.SEG_CUBICTO):
+	//	        gs.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+	//	      	if (!indexSet)
+	//	      	  pathIndex++;
+	//	        break;
+	//	      case (PathIterator.SEG_CLOSE):
+	//	        gs.closePath();
+	//	      	if (!indexSet)
+	//	      	  pathIndex++;
+	//	        break;
+	//      }
+	//    }
+	//    return gs;
+	//  }
+	//
+	//  public static GeneralShape removeFirstPathSegment(GeneralShape generalShape)
+	//  {
+	//    float[] coords = new float[6];
+	//    int pathIndex = 0;
+	//    GeneralShape gs = new GeneralShape();
+	//    for (PathIterator pi = generalShape.getPathIterator(null); !pi.isDone(); pi.next())
+	//    {
+	//      int segType = pi.currentSegment(coords);
+	//      switch (segType)
+	//      {
+	//	      case (PathIterator.SEG_MOVETO):
+	//	      	pathIndex++;
+	//	        break;
+	//	      case (PathIterator.SEG_LINETO):
+	//	        if (pathIndex == 1)
+	//	          gs.moveTo(coords[0], coords[1]);
+	//	        else
+	//	          gs.lineTo(coords[0], coords[1]);
+	//	      	pathIndex++;
+	//	        break;
+	//	      case (PathIterator.SEG_QUADTO):
+	//	        gs.quadTo(coords[0], coords[1], coords[2], coords[3]);
+	//	      	pathIndex++;
+	//	        break;
+	//	      case (PathIterator.SEG_CUBICTO):
+	//	        gs.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+	//	      	pathIndex++;
+	//	        break;
+	//	      case (PathIterator.SEG_CLOSE):
+	//	        pathIndex++;
+	//	        break;
+	//      }
+	//    }
+	//    return gs;
+	//  }
+	//
+	//  public static GeneralShape addPathSegment(GeneralShape generalShape, int type, int index, float[] newCoords)
+	//  {
+	//    float[] coords = new float[6];
+	//    GeneralShape gs = new GeneralShape();
+	//    int pathIndex = 0;
+	//    boolean indexSet = false;
+	//    for (PathIterator pi = generalShape.getPathIterator(null); !pi.isDone(); pi.next())
+	//    {
+	//      if (pathIndex == index)
+	//      {
+	//        switch (type)
+	//        {
+	//	      	case (PathIterator.SEG_MOVETO):
+	//	      	  gs.moveTo(newCoords[0], newCoords[1]);
+	//	      	  break;
+	//	      	case (PathIterator.SEG_LINETO):
+	//	      	  gs.lineTo(newCoords[0], newCoords[1]);
+	//	      	  break;
+	//		      case (PathIterator.SEG_QUADTO):
+	//		        gs.quadTo(newCoords[0], newCoords[1], newCoords[2], newCoords[3]);
+	//		        break;
+	//		      case (PathIterator.SEG_CUBICTO):
+	//		        gs.curveTo(newCoords[0], newCoords[1], newCoords[2], newCoords[3], newCoords[4], newCoords[5]);
+	//		        break;
+	//        }
+	//        pathIndex = -1;
+	//        indexSet = true;
+	//      }
+	//
+	//      int segType = pi.currentSegment(coords);
+	//      switch (segType)
+	//      {
+	//	      case (PathIterator.SEG_MOVETO):
+	//	        gs.moveTo(coords[0], coords[1]);
+	//	      	if (!indexSet)
+	//	      	  pathIndex++;
+	//	        break;
+	//	      case (PathIterator.SEG_LINETO):
+	//	        gs.lineTo(coords[0], coords[1]);
+	//	      	if (!indexSet)
+	//	      	  pathIndex++;
+	//	        break;
+	//	      case (PathIterator.SEG_QUADTO):
+	//	        gs.quadTo(coords[0], coords[1], coords[2], coords[3]);
+	//	      	if (!indexSet)
+	//	      	  pathIndex++;
+	//	        break;
+	//	      case (PathIterator.SEG_CUBICTO):
+	//	        gs.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+	//	      	if (!indexSet)
+	//	      	  pathIndex++;
+	//	        break;
+	//	      case (PathIterator.SEG_CLOSE):
+	//	        gs.closePath();
+	//	      	if (!indexSet)
+	//	      	  pathIndex++;
+	//	        break;
+	//      }
+	//    }
+	//    return gs;
+	//  }
 
 	private static final String className_J2DGraphics = "org.eclipse.draw2d.J2DGraphics";
 	private static Class<?> class_J2DGraphics = null;
-	
+
 	private static Class<?> get_class_J2DGraphics()
 	{
 		if (class_J2DGraphics == null) {
@@ -541,7 +541,7 @@ extends ColorUtil
 				throw new RuntimeException("The class '" + className_J2DGraphics + "' could not be found! Are the fragments 'org.holongate.draw2d' and 'org.holongate.gef' installed?", e);
 			}
 		}
-		
+
 		return class_J2DGraphics;
 	}
 

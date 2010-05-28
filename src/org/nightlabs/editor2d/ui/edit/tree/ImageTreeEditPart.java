@@ -39,35 +39,30 @@ import org.nightlabs.editor2d.ui.model.ImagePropertySource;
 public class ImageTreeEditPart
 extends DrawComponentTreeEditPart
 {
-//	public static Image IMAGE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
-//			AbstractPaletteFactory.class, "Image").createImage();
-	public static Image IMAGE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
+	private static final Image IMAGE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
 			AbstractPaletteFactory.class, "Image", ImageFormat.gif).createImage();	 //$NON-NLS-1$
-	
-  public ImageTreeEditPart(ImageDrawComponent drawComponent) {
-    super(drawComponent);
-  }
 
-//  protected Image getImage() {
-//    return IMAGE_ICON;
-//  }
-  @Override
+	public ImageTreeEditPart(ImageDrawComponent drawComponent) {
+		super(drawComponent);
+	}
+
+	@Override
 	protected Image getOutlineImage() {
-    return IMAGE_ICON;
-  }
-  
-  public ImageDrawComponent getImageDrawComponent() {
-  	return (ImageDrawComponent) getModel();
-  }
-  
-  @Override
+		return IMAGE_ICON;
+	}
+
+	public ImageDrawComponent getImageDrawComponent() {
+		return (ImageDrawComponent) getModel();
+	}
+
+	@Override
 	public IPropertySource getPropertySource()
-  {
-    if (propertySource == null)
-    {
-      propertySource =
-        new ImagePropertySource(getImageDrawComponent());
-    }
-    return propertySource;
-  }
+	{
+		if (propertySource == null)
+		{
+			propertySource =
+				new ImagePropertySource(getImageDrawComponent());
+		}
+		return propertySource;
+	}
 }

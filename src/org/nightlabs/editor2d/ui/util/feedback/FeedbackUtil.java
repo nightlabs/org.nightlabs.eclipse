@@ -39,12 +39,13 @@ import org.nightlabs.editor2d.ui.figures.IShapeFigure;
 
 public class FeedbackUtil
 {
+	public static final PaintDescriptor DEFAULT_PAINT_DESCRIPTOR = new PaintDescriptor();
+	protected static final PaintDescriptor pd = new PaintDescriptor();
+	
 	public FeedbackUtil()
 	{
 		super();
 	}
-
-	public static final PaintDescriptor DEFAULT_PAINT_DESCRIPTOR = new PaintDescriptor();
 
 	public static IShapeFigure getCustomFeedbackFigure(Object modelPart)
 	//protected IFigure getCustomFeedbackFigure(Object modelPart)
@@ -85,8 +86,6 @@ public class FeedbackUtil
 		shapeFigure.setForegroundColor(pd.getForegroundColor());
 		return shapeFigure;
 	}
-
-	protected static PaintDescriptor pd = new PaintDescriptor();
 
 	public static IShapeFigure getCustomFeedbackFigure(Object modelPart, Color bgColor, Color fgColor,
 			boolean fill, boolean outline, boolean xor, int lineStyle, int lineWidth)

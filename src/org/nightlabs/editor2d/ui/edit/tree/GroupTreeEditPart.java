@@ -39,9 +39,7 @@ import org.nightlabs.editor2d.ui.model.GroupPropertySource;
 public class GroupTreeEditPart
 extends DrawComponentContainerTreeEditPart
 {
-//	public static Image GROUP_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
-//			GroupTreeEditPart.class).createImage();
-	public static Image GROUP_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
+	private static final Image GROUP_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
 			GroupTreeEditPart.class, "", ImageFormat.gif).createImage();	 //$NON-NLS-1$
 
 	public GroupTreeEditPart(GroupDrawComponent model) {
@@ -51,22 +49,18 @@ extends DrawComponentContainerTreeEditPart
 	public GroupDrawComponent getGroupDrawComponent() {
 		return (GroupDrawComponent) getModel();
 	}
-	
-//	@Override
-//	protected Image getImage() {
-//		return GROUP_ICON;
-//	}
+
 	@Override
 	protected Image getOutlineImage() {
 		return GROUP_ICON;
 	}
-		
+
 	@Override
 	public IPropertySource getPropertySource()
-  {
-    if (propertySource == null) {
-      propertySource = new GroupPropertySource(getGroupDrawComponent());
-    }
-    return propertySource;
-  }
+	{
+		if (propertySource == null) {
+			propertySource = new GroupPropertySource(getGroupDrawComponent());
+		}
+		return propertySource;
+	}
 }

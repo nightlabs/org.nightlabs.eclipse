@@ -39,11 +39,9 @@ import org.nightlabs.editor2d.ui.model.ShapeDrawComponentPropertySource;
 public class ShapeTreeEditPart
 extends DrawComponentTreeEditPart
 {
-//	public static Image SHAPE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
-//			ShapeTreeEditPart.class).createImage();
-	public static Image SHAPE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
+	private static final Image SHAPE_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
 			ShapeTreeEditPart.class, "", ImageFormat.gif).createImage();	 //$NON-NLS-1$
-	
+
 	/**
 	 * @param shapeDrawComponent the {@link ShapeDrawComponent}
 	 */
@@ -51,25 +49,21 @@ extends DrawComponentTreeEditPart
 		super(shapeDrawComponent);
 	}
 
-//	@Override
-//	protected Image getImage() {
-//		return SHAPE_ICON;
-//	}
 	@Override
 	protected Image getOutlineImage() {
 		return SHAPE_ICON;
 	}
-	
+
 	public ShapeDrawComponent getShapeDrawComponent() {
 		return (ShapeDrawComponent) getDrawComponent();
 	}
-	
+
 	@Override
 	public IPropertySource getPropertySource()
-  {
-    if (propertySource == null) {
-      propertySource = new ShapeDrawComponentPropertySource(getShapeDrawComponent());
-    }
-    return propertySource;
-  }
+	{
+		if (propertySource == null) {
+			propertySource = new ShapeDrawComponentPropertySource(getShapeDrawComponent());
+		}
+		return propertySource;
+	}
 }

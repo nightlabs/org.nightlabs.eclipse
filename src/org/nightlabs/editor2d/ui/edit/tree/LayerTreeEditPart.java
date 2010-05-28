@@ -40,47 +40,41 @@ import org.nightlabs.editor2d.ui.views.LayerView;
 public class LayerTreeEditPart
 extends DrawComponentContainerTreeEditPart
 {
-//	public static Image LAYER_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
-//			LayerView.class).createImage();
-	public static Image LAYER_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
+	private static final Image LAYER_ICON = SharedImages.getSharedImageDescriptor(EditorPlugin.getDefault(),
 			LayerView.class, "", ImageFormat.gif).createImage();	 //$NON-NLS-1$
-	
-//	@Override
-//  protected Image getImage() {
-//    return LAYER_ICON;
-//  }
+
 	@Override
-  protected Image getOutlineImage() {
-    return LAYER_ICON;
-  }
-	
-  public LayerTreeEditPart(Layer layer) {
-    super(layer);
-  }
-		
-  public Layer getLayer() {
-  	return (Layer) getModel();
-  }
-  
+	protected Image getOutlineImage() {
+		return LAYER_ICON;
+	}
+
+	public LayerTreeEditPart(Layer layer) {
+		super(layer);
+	}
+
+	public Layer getLayer() {
+		return (Layer) getModel();
+	}
+
 	@Override
-  public IPropertySource getPropertySource()
-  {
-    if (propertySource == null)
-    {
-      propertySource =
-        new LayerPropertySource(getLayer());
-    }
-    return propertySource;
-  }
-  
-  /**
-   * Creates and installs pertinent EditPolicies.
-   */
-  @Override
+	public IPropertySource getPropertySource()
+	{
+		if (propertySource == null)
+		{
+			propertySource =
+				new LayerPropertySource(getLayer());
+		}
+		return propertySource;
+	}
+
+	/**
+	 * Creates and installs pertinent EditPolicies.
+	 */
+	@Override
 	protected void createEditPolicies()
-  {
-    // TODO: Must override EditPolicy.TREE_CONTAINER_ROLE with a EditPolicy which does
-    // support dragging of layers
-  	super.createEditPolicies();
-  }
+	{
+		// TODO: Must override EditPolicy.TREE_CONTAINER_ROLE with a EditPolicy which does
+		// support dragging of layers
+		super.createEditPolicies();
+	}
 }
