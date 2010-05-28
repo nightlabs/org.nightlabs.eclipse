@@ -140,7 +140,7 @@ implements IViewer
 		return getZoomSupport().getZoom();
 	}
 
-	public static Color defaultBgColor = new Color(null, 255, 255, 255);
+	private static final Color defaultBgColor = new Color(null, 255, 255, 255);
 	private Color bgColor = defaultBgColor;
 
 	/**

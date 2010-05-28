@@ -50,7 +50,7 @@ import org.nightlabs.editor2d.viewer.ui.resource.Messages;
 public class BackgroundContributionItem
 extends AbstractContributionItem
 {
-	public static String ID = BackgroundContributionItem.class.getName();
+	public static final String ID = BackgroundContributionItem.class.getName();
 	
 	public BackgroundContributionItem(IViewer viewer)
 	{

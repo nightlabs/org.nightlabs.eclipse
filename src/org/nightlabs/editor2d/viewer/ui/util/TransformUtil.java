@@ -39,7 +39,7 @@ public class TransformUtil
 	 */
 	private static final Logger logger = Logger.getLogger(TransformUtil.class);
 	
-	protected static AffineTransform at = new AffineTransform();
+	private static final AffineTransform at = new AffineTransform();
 	
 	public static void transformGeneralShape(GeneralShape gs,
 			Rectangle oldBounds, Rectangle newBounds)

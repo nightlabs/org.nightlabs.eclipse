@@ -53,13 +53,10 @@ public class AWTCanvasComposite
 extends AbstractCanvasComposite
 implements IComponentViewer
 {
-//	public static int styleFlag = SWT.EMBEDDED | SWT.DOUBLE_BUFFERED;
-//	public static int styleFlag = SWT.EMBEDDED | SWT.NO_BACKGROUND | SWT.NO_MERGE_PAINTS;
-	public static int styleFlag = SWT.EMBEDDED;
-	public static final Logger logger = Logger.getLogger(AWTCanvasComposite.class);
+	private static final int styleFlag = SWT.EMBEDDED;
+	private static final Logger logger = Logger.getLogger(AWTCanvasComposite.class);
 	private Frame frame = null;
 	private DisplayPanel displayPanel = null;
-//	private BufferedViewport displayPanel = null;
 
 	public AWTCanvasComposite(Composite parent, int style, DrawComponent dc)
 	{
@@ -76,15 +73,6 @@ implements IComponentViewer
 	public Component getComponent() {
 		return (Component) getCanvas();
 	}
-
-//	@Override
-//	protected IAutoScrollSupport initAutoScrollSupport()
-//	{
-//		IAutoScrollSupport autoScrollSupport = new AWTCanvasAutoScrollSupport(getComponent());
-//		autoScrollSupport.setScrollStep(10);
-//		autoScrollSupport.setTimerDelay(25);
-//		return autoScrollSupport;
-//	}
 
 	@Override
 	protected IAutoScrollSupport initAutoScrollSupport()
@@ -127,7 +115,6 @@ implements IComponentViewer
 		frame = SWT_AWT.new_Frame(parent);
 		frame.setLayout(new BorderLayout());
 		displayPanel = new DisplayPanel(getDrawComponent());
-//		displayPanel = new BufferedViewport(getDrawComponent());
 		frame.add(displayPanel, BorderLayout.CENTER);
 		frame.addWindowListener(new WindowAdapter(){
 			@Override
@@ -151,5 +138,4 @@ implements IComponentViewer
 				getAutoScrollSupport().dispose();
 		}
 	};
-
 }
