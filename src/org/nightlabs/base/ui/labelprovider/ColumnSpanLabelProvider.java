@@ -60,7 +60,7 @@ public abstract class ColumnSpanLabelProvider extends OwnerDrawLabelProvider {
 	 * @param spanColIndex The index of the column-group the text is queried for.
 	 * @return The text to be displayed for the given column-group.
 	 */
-	protected abstract String getColumnText(Object element, int spanColIndex);
+	public abstract String getColumnText(Object element, int spanColIndex);
 
 	/**
 	 * Get the image to display for the given element at begining of the column with the given index.
@@ -71,7 +71,7 @@ public abstract class ColumnSpanLabelProvider extends OwnerDrawLabelProvider {
 	 * @param spanColIndex The index of the column-group the image is queried for.
 	 * @return The image to be displayed for the given column-group.
 	 */
-	protected Image getColumnImage(Object element, int spanColIndex) {
+	public Image getColumnImage(Object element, int spanColIndex) {
 		return null;
 	}
 
