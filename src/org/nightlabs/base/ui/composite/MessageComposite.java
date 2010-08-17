@@ -53,20 +53,22 @@ extends XComposite
 	private Image getImageForMessageType(MessageType messageType)
 	{
 		String key = null;
+		if(messageType == MessageType.NONE)
+			return null;		
 		switch (messageType) {
-			case ERROR:
-				key = ISharedImages.IMG_OBJS_ERROR_TSK;
-				break;
-			case WARNING:
-				key = ISharedImages.IMG_OBJS_WARN_TSK	;
-				break;
-			case INFORMATION:
-				key = ISharedImages.IMG_OBJS_INFO_TSK;
-				break;
+		case ERROR:
+			key = ISharedImages.IMG_OBJS_ERROR_TSK;
+			break;
+		case WARNING:
+			key = ISharedImages.IMG_OBJS_WARN_TSK	;
+			break;
+		case INFORMATION:
+			key = ISharedImages.IMG_OBJS_INFO_TSK;
+			break;
 		}
-//		image = new SharedImages().getImage(key);
-//		return image;
-//		ImageDescriptor desc = new SharedImages().getImageDescriptor(key);
+		//		image = new SharedImages().getImage(key);
+		//		return image;
+		//		ImageDescriptor desc = new SharedImages().getImageDescriptor(key);
 		ImageDescriptor desc = PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(key);
 
 		return desc.createImage();
@@ -74,11 +76,19 @@ extends XComposite
 
 	public void setMessage(String message, MessageType messageType)
 	{
-		if (image != null)
-			image.dispose();
+		Image imageType;
 		this.message = message;
-		image = getImageForMessageType(messageType);
-		imageLabel.setImage(image);
+		imageType = getImageForMessageType(messageType);
+		if(imageType != null)
+		{
+			if (image != null)
+				image.dispose();
+			image = imageType;
+			imageLabel.setVisible(true);
+			imageLabel.setImage(image);
+		}
+		else
+			imageLabel.setVisible(false);
 		label.setText(message);
 	}
 
