@@ -399,4 +399,13 @@ public class SharedImages
 	
 	public static final ImageDescriptor RESET_16x16 =
 		getSharedImageDescriptor(NLBasePlugin.getDefault(), NLBasePlugin.class, "Reset");	 //$NON-NLS-1$
+
+
+	public static final ImageDescriptor PREVIEW_16x16 =
+		getSharedImageDescriptor(NLBasePlugin.getDefault(), NLBasePlugin.class, "Preview");	 //$NON-NLS-1$
+
+	public static final ImageDescriptor PREVIEW_24x24 =
+		getSharedImageDescriptor(NLBasePlugin.getDefault(), NLBasePlugin.class, "Preview");	 //$NON-NLS-1$
+
+
 }
