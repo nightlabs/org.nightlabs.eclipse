@@ -211,7 +211,7 @@ extends GraphicalEditorWithFlyoutPalette
 	private TreeViewer treeViewer;
 	private EditorOutlinePage outlinePage;
 	private boolean editorSaving = false;
-	private boolean useJava2D = true;
+	private boolean useJava2D = false;
 
 	/** Create a new Editor instance. This is called by the Workspace. */
 	public AbstractEditor()

@@ -25,6 +25,8 @@
  ******************************************************************************/
 package org.nightlabs.editor2d.ui.render;
 
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 import org.eclipse.draw2d.Graphics;
@@ -34,6 +36,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.nightlabs.editor2d.DrawComponent;
 import org.nightlabs.editor2d.ImageDrawComponent;
+import org.nightlabs.editor2d.render.j2d.J2DImageDefaultRenderer;
 import org.nightlabs.editor2d.ui.util.J2DUtil;
 import org.nightlabs.editor2d.viewer.ui.util.AWTSWTUtil;
 
@@ -47,6 +50,42 @@ extends Draw2DBaseRenderer
 		super();
 	}
 
+//	@Override
+//	public void paint(DrawComponent dc, Graphics g)
+//	{
+//		ImageDrawComponent image = (ImageDrawComponent) dc;
+//		if (image.getImage() != null) 
+//		{
+//			g.setAntialias(SWT.ON);
+//			
+////			Image img = convertImage(image.getImage());
+////			g.drawImage(img, image.getX(), image.getY());
+////			img.dispose();
+//			
+////			AffineTransform at = image.getAffineTransform();			
+////			float scaleX = (float)at.getScaleX();
+////			float scaleY = (float)at.getScaleY();
+////			float translateX = (float) at.getTranslateX();
+////			float translateY = (float) at.getTranslateY();
+////			float rotation = (float) image.getRotation();
+////			g.translate(translateX, translateY);
+////			g.scale(scaleX);
+////			g.rotate((float)image.getRotation());
+////			g.drawImage(img, image.getX(), image.getY());
+//			
+//			Rectangle imageBounds = J2DUtil.toDraw2D(image.getBounds());
+//			Image img = convertImage(image.getOriginalImage());
+//			g.drawImage(img, 0, 0, image.getOriginalImage().getWidth(), image.getOriginalImage().getHeight(),
+//					imageBounds.x, imageBounds.y, imageBounds.width, imageBounds.height);
+//			
+//			img.dispose();
+//			
+////			g.scale(1/scaleX);
+////			g.translate(-translateX, -translateY);
+////			g.rotate(-rotation);
+//		}
+//	}
+
 	@Override
 	public void paint(DrawComponent dc, Graphics g)
 	{
@@ -54,10 +93,14 @@ extends Draw2DBaseRenderer
 		if (image.getImage() != null) 
 		{
 			g.setAntialias(SWT.ON);
+			// TODO FIXME XXX Fix image rotation with GEF
+			BufferedImage bi = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+			J2DImageDefaultRenderer renderer = new J2DImageDefaultRenderer();
+			renderer.paint(dc, (Graphics2D) bi.getGraphics());
 			
-//			Image img = convertImage(image.getImage());
-//			g.drawImage(img, image.getX(), image.getY());
-//			img.dispose();
+			Image img = convertImage(bi);
+			g.drawImage(img, image.getX(), image.getY());
+			img.dispose();
 			
 //			AffineTransform at = image.getAffineTransform();			
 //			float scaleX = (float)at.getScaleX();
@@ -69,19 +112,17 @@ extends Draw2DBaseRenderer
 //			g.scale(scaleX);
 //			g.rotate((float)image.getRotation());
 //			g.drawImage(img, image.getX(), image.getY());
-//			g.scale(1/scaleX);
-//			g.translate(-translateX, -translateY);
-//			g.rotate(-rotation);
 			
-			Rectangle imageBounds = J2DUtil.toDraw2D(image.getBounds());
-			Image img = convertImage(image.getOriginalImage());
-			g.drawImage(img, 0, 0, image.getOriginalImage().getWidth(), image.getOriginalImage().getHeight(),
-					imageBounds.x, imageBounds.y, imageBounds.width, imageBounds.height);
-			
-			img.dispose();
+//			Rectangle imageBounds = J2DUtil.toDraw2D(image.getBounds());
+//			Image img = convertImage(image.getOriginalImage());
+//			g.rotate((float)image.getRotation());
+//			g.drawImage(img, 0, 0, image.getOriginalImage().getWidth(), image.getOriginalImage().getHeight(),
+//					imageBounds.x, imageBounds.y, imageBounds.width, imageBounds.height);
+//			g.rotate(-(float)image.getRotation());
+//			img.dispose();
 		}
-	}
-
+	}	
+	
 	protected Image convertImage(BufferedImage img) {
 		return AWTSWTUtil.toSWTImage(img, Display.getDefault());
 	}

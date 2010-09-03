@@ -52,10 +52,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.nightlabs.config,
  org.nightlabs.base.ui,
  org.holongate.j2d;visibility:=reexport,
- org.eclipse.draw2d,
- org.eclipse.gef;visibility:=reexport,
  org.eclipse.core.resources,
  org.nightlabs.editor2d.viewer.ui;visibility:=reexport,
- org.nightlabs.editor2d
+ org.nightlabs.editor2d,
+ org.eclipse.gef;visibility:=reexport
 Eclipse-LazyStart: true
 Eclipse-BuddyPolicy: registered
