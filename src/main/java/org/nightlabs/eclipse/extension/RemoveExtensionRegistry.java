@@ -40,6 +40,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.InvalidRegistryObjectException;
 import org.eclipse.core.runtime.Platform;
 
 /**
@@ -240,16 +241,23 @@ public class RemoveExtensionRegistry extends AbstractEPProcessor
 		final String[] splits = pattern.split(elementPath);
 		final String element0 = splits[0];
 		if (element0.equals(elementPath)) {
-			// element path matches
-			if (element.getName().equals(element0)) {
-				// attribute name matches
-				if (element.getAttribute(attributeName) != null) {
-					final String attributeValue = element.getAttribute(attributeName);
-					if (Pattern.matches(attributePattern, attributeValue)) {
-						// attribute pattern matches
-						elements.add(element);
+			try {
+				// element path matches
+				if (element.getName().equals(element0)) {
+					// attribute name matches
+					if (element.getAttribute(attributeName) != null) {
+						final String attributeValue = element.getAttribute(attributeName);
+						if (Pattern.matches(attributePattern, attributeValue)) {
+							// attribute pattern matches
+							elements.add(element);
+						}
 					}
 				}
+				// necessary since eclipse 3.6 migration
+			} catch (InvalidRegistryObjectException e) {
+				// TODO Log to eclipse log
+				System.out.println("Exception occured while trying to access element name for element "+element);
+//				logger.warn("Exception occured while trying to access element name for element "+element, e);
 			}
 		}
 		else if (element0.equals(element.getName())) {
