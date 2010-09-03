@@ -333,9 +333,11 @@ implements IApplication
 			initConfig();
 			
 			try {
+				// readded old RemoveExtensionRegistry because nearly all extensions are not adopted yet. Daniel 2010-08-30
+				org.nightlabs.base.ui.extensionpoint.RemoveExtensionRegistry.sharedInstance().removeRegisteredExtensions();
 				RemoveExtensionRegistry.sharedInstance().removeRegisteredExtensions();
 			} catch (Throwable t) {
-				logger.error("There occured an error while tyring to remove all registered extensions"); //$NON-NLS-1$
+				logger.error("There occured an error while tyring to remove all registered extensions", t); //$NON-NLS-1$
 			}
 
 			preCreateWorkbench();

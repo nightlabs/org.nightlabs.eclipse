@@ -36,11 +36,14 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IEditorRegistry;
 import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IPerspectiveRegistry;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PerspectiveAdapter;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
 import org.nightlabs.base.ui.io.FileEditorInput;
@@ -186,9 +189,49 @@ extends AbstractEPProcessor
 
 	public void activate() {
 		checkProcessing();
-		//  	RCPUtil.getActiveWorkbenchWindow().addPerspectiveListener(perspectiveListener);
+		addListener();
 	}
 
+// BEGIN - editor 2 perspective binding without workbench patch	
+	private PerspectiveAdapter listener;
+	private Set<IEditorReference> hiddenEditorReferences;
+	
+	private void addListener() {
+		if (listener == null) {
+			hiddenEditorReferences = new HashSet<IEditorReference>();
+			listener = new PerspectiveAdapter() {
+				@Override
+				public void perspectiveActivated(IWorkbenchPage page,
+						IPerspectiveDescriptor perspective) 
+				{
+					if (perspective != null) {
+						String perspectiveID = perspective.getId();
+						Set<String> editorIDsForPerspective = perspectiveID2editorIDs.get(perspectiveID);
+						IEditorReference[] editorReferences = page.getEditorReferences();
+						if (editorIDsForPerspective != null) {
+							for (IEditorReference ref : editorReferences) {
+								if (!editorIDsForPerspective.contains(ref.getId())) {
+									page.hideEditor(ref);
+									hiddenEditorReferences.add(ref);
+								}
+								else {
+									page.showEditor(ref);
+								}
+							}
+							for (IEditorReference hiddenEditorRef : hiddenEditorReferences) {
+								if (editorIDsForPerspective.contains(hiddenEditorRef.getId()))
+									page.showEditor(hiddenEditorRef);
+							}
+						}
+					}
+				}
+			};
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().addPerspectiveListener(listener);			
+		}
+	}
+// END - editor 2 perspective binding without workbench patch	
+	
+	
 	//***************************** Only workbenchPartReference.setVisible(true) Variant *****************************
 	//  private Set<IEditorReference> hiddenEditorReferences = new HashSet<IEditorReference>();
 	//  private IPerspectiveListener perspectiveListener = new PerspectiveAdapter() {

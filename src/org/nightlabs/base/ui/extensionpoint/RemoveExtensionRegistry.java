@@ -43,6 +43,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.InvalidRegistryObjectException;
 import org.eclipse.core.runtime.Platform;
 
 /**
@@ -251,16 +252,25 @@ extends AbstractEPProcessor
 		String[] splits = pattern.split(elementPath);
 		String element0 = splits[0];
 		if (element0.equals(elementPath)) {
-			// element path matches
-			if (element.getName().equals(element0)) {
-				// attribute name matches
-				if (element.getAttribute(attributeName) != null) {
-					String attributeValue = element.getAttribute(attributeName);
-					Pattern attrPattern = Pattern.compile(attributePattern);
-					if (Pattern.matches(attributePattern, attributeValue)) {
-						// attribute pattern matches
-						elements.add(element);
+			try {
+				// element path matches			
+				if (element.getName().equals(element0)) {
+					// attribute name matches
+					if (element.getAttribute(attributeName) != null) {
+						String attributeValue = element.getAttribute(attributeName);
+						Pattern attrPattern = Pattern.compile(attributePattern);
+						if (Pattern.matches(attributePattern, attributeValue)) {
+							// attribute pattern matches
+							elements.add(element);
+						}
 					}
+				}
+				// necessary since eclipse 3.6 migration
+			} catch (InvalidRegistryObjectException e) {
+				if (logger.isDebugEnabled() || logger.isTraceEnabled()) {
+					logger.warn("Exception occured while trying to access element name for element "+element, e);	
+				} else {
+					logger.warn("Exception occured while trying to access element name for element "+element);
 				}
 			}
 		}
