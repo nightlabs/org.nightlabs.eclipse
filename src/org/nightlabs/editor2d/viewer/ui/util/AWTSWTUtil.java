@@ -43,6 +43,7 @@ import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Display;
 
 public class AWTSWTUtil
@@ -166,5 +167,16 @@ public class AWTSWTUtil
 					new PaletteData(0xFF0000, 0x00FF00, 0x0000FF));
 		imageData.setPixels(0, 0, data.length, data, 0);
 		return imageData;
+	}
+	
+	public static Transform toSWTTransform(AffineTransform at) 
+	{
+		double[] matrix = new double[6];
+		at.getMatrix(matrix);
+		float[] elements = new float[6];
+		for (int i=0; i<matrix.length; i++) {
+			elements[i] = (float) matrix[i];
+		}
+		return new Transform(null, elements);
 	}
 }
