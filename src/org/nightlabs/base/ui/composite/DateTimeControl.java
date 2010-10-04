@@ -81,6 +81,7 @@ public class DateTimeControl extends XComposite {
 		text = new Text(this, getBorderStyle());
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		text.addModifyListener(textModifyListener);
+		text.setEditable(true);
 		text.addFocusListener(new FocusAdapter() {
 			/* (non-Javadoc)
 			 * @see org.eclipse.swt.events.FocusAdapter#focusLost(org.eclipse.swt.events.FocusEvent)
@@ -144,6 +145,11 @@ public class DateTimeControl extends XComposite {
 		});
 	}
 
+	
+	public void setDateEditable(Boolean editable) {
+		text.setEditable(editable);
+	}
+	
 	/**
 	 * Called when the lookup button was clicked. Open a date time
 	 * lookup dialog at the buttons position.
@@ -161,23 +167,23 @@ public class DateTimeControl extends XComposite {
 		cal.setTime(date);
 
 		dialog.setInitialDate(cal);
+		// No needs to propagate selection Event if Cancel was clicked
 		if (dialog.open() == Window.OK) {
 			setDate(dialog.getDate().getTime());
-		}
+			Object[] listeners = selectionListeners.getListeners();
+			if (listeners.length < 1)
+				return;
 
-		Object[] listeners = selectionListeners.getListeners();
-		if (listeners.length < 1)
-			return;
-
-		Event event = new Event();
-		event.widget = DateTimeControl.this;
-		event.display = getDisplay();
-//		event.time = e.time;
-//		event.data = e.data;
-		SelectionEvent se = new SelectionEvent(event);
-		for (Object listener : listeners) {
-			SelectionListener l = (SelectionListener) listener;
-			l.widgetSelected(se);
+			Event event = new Event();
+			event.widget = DateTimeControl.this;
+			event.display = getDisplay();
+			//		event.time = e.time;
+			//		event.data = e.data;
+			SelectionEvent se = new SelectionEvent(event);
+			for (Object listener : listeners) {
+				SelectionListener l = (SelectionListener) listener;
+				l.widgetSelected(se);
+			}
 		}
 	}
 
