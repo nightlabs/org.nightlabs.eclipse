@@ -15,7 +15,7 @@ import org.nightlabs.base.ui.composite.DateTimeEdit;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.wizard.WizardHopPage;
-import org.nightlabs.l10n.DateFormatter;
+import org.nightlabs.l10n.IDateFormatter;
 import org.nightlabs.timepattern.TimePattern;
 import org.nightlabs.timepattern.TimePatternFormatException;
 
@@ -40,15 +40,15 @@ public class SingleExecTimePatternBuilderHopPage extends WizardHopPage {
 	 * @see org.nightlabs.base.ui.wizard.DynamicPathWizardPage#createPageContents(org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
-	public Control createPageContents(Composite parent) {
-		XComposite wrapper = new XComposite(parent, SWT.NONE);
+	public Control createPageContents(final Composite parent) {
+		final XComposite wrapper = new XComposite(parent, SWT.NONE);
 		startTimeComposite = new PatternExecutionTimeComposite(wrapper, SWT.NONE);
 		startTimeComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		(new Label(wrapper, SWT.SEPARATOR | SWT.HORIZONTAL)).setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		XComposite dayWrapper = new XComposite(wrapper, SWT.NONE);
+		final XComposite dayWrapper = new XComposite(wrapper, SWT.NONE);
 		executionDateEdit = new DateTimeEdit(
 				dayWrapper,
-				DateFormatter.FLAGS_DATE_LONG_WEEKDAY,
+				IDateFormatter.FLAGS_DATE_LONG_WEEKDAY,
 				Messages.getString("org.nightlabs.base.ui.timepattern.builder.SingleExecTimePatternBuilderHopPage.executionDateEdit.caption")); //$NON-NLS-1$
 		return wrapper;
 	}
@@ -57,11 +57,11 @@ public class SingleExecTimePatternBuilderHopPage extends WizardHopPage {
 	public boolean isPageComplete() {
 		return getControl() != null && !getControl().isDisposed();
 	}
-	
-	public void configureTimePattern(TimePattern timePattern)
+
+	public void configureTimePattern(final TimePattern timePattern)
 	throws TimePatternFormatException
 	{
-		Calendar calendar = new GregorianCalendar();
+		final Calendar calendar = new GregorianCalendar();
 		calendar.setTime(executionDateEdit.getDate());
 		timePattern.setYear(String.valueOf(calendar.get(Calendar.YEAR)));
 		timePattern.setMonth(String.valueOf(calendar.get(Calendar.MONTH)+1));

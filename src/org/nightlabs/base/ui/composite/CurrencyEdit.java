@@ -54,10 +54,10 @@ import org.nightlabs.l10n.NumberFormatter;
 public class CurrencyEdit extends XComposite
 {
 	private Currency currency;
-	private Text numberText;
-//	private Label currencySymbol;
+	private final Text numberText;
+	//	private Label currencySymbol;
 	private long value;
-	private long flags;
+	private final long flags;
 	private Button active;
 
 	public static final long FLAGS_NONE = 0;
@@ -66,12 +66,12 @@ public class CurrencyEdit extends XComposite
 	/**
 	 * @param parent
 	 */
-	public CurrencyEdit(Composite parent, Currency _currency)
+	public CurrencyEdit(final Composite parent, final Currency _currency)
 	{
 		this(parent, _currency, 0, null);
 	}
 
-	public CurrencyEdit(Composite parent, Currency _currency, long _flags, String caption)
+	public CurrencyEdit(final Composite parent, final Currency _currency, final long _flags, final String caption)
 	{
 		super(parent, SWT.NONE, LayoutMode.TIGHT_WRAPPER);
 		this.currency = _currency;
@@ -87,11 +87,11 @@ public class CurrencyEdit extends XComposite
 				control = active;
 			}
 			else {
-				Label l = new Label(this, SWT.WRAP);
+				final Label l = new Label(this, SWT.WRAP);
 				l.setText(caption);
 				control = l;
 			}
-			GridData gd = new GridData();
+			final GridData gd = new GridData();
 			gd.horizontalSpan = getGridLayout().numColumns;
 			control.setLayoutData(gd);
 		}
@@ -104,7 +104,7 @@ public class CurrencyEdit extends XComposite
 
 			active.addSelectionListener(new SelectionAdapter() {
 				@Override
-				public void widgetSelected(SelectionEvent e)
+				public void widgetSelected(final SelectionEvent e)
 				{
 					activeSelected();
 				}
@@ -113,20 +113,20 @@ public class CurrencyEdit extends XComposite
 
 		numberText = new Text(this, SWT.BORDER);
 		numberText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-//		currencySymbol = new Label(this, SWT.NONE);
+		//		currencySymbol = new Label(this, SWT.NONE);
 		setCurrency(currency);
 
 		numberText.addModifyListener(new ModifyListener(){
-			public void modifyText(ModifyEvent e)
+			public void modifyText(final ModifyEvent e)
 			{
 				if (!modifyListenerEnabled)
 					return;
 
-				String s = numberText.getText();
+				final String s = numberText.getText();
 				try {
 					value = NumberFormatter.parseCurrency(s, currency, false);
 					parseException = null;
-				} catch (ParseException x) {
+				} catch (final ParseException x) {
 					parseException = x;
 
 					if (errorDialogEnabled)
@@ -136,14 +136,14 @@ public class CurrencyEdit extends XComposite
 				if (modifyListeners == null)
 					return;
 
-				Event event = new Event();
+				final Event event = new Event();
 				event.widget = CurrencyEdit.this;
 				event.display = e.display;
 				event.time = e.time;
 				event.data = e.data;
-				ModifyEvent me = new ModifyEvent(event);
-				for (Iterator<ModifyListener> it = modifyListeners.iterator(); it.hasNext(); ) {
-					ModifyListener l = it.next();
+				final ModifyEvent me = new ModifyEvent(event);
+				for (final Iterator<ModifyListener> it = modifyListeners.iterator(); it.hasNext(); ) {
+					final ModifyListener l = it.next();
 					l.modifyText(me);
 				}
 			}
@@ -157,7 +157,7 @@ public class CurrencyEdit extends XComposite
 	private void activeSelected()
 	{
 		numberText.setEnabled(isActive());
-//		currencySymbol.setEnabled(isActive());
+		//		currencySymbol.setEnabled(isActive());
 	}
 
 	private boolean errorDialogEnabled = true;
@@ -180,7 +180,7 @@ public class CurrencyEdit extends XComposite
 	 *
 	 * @param errorDialogEnabled The errorDialogEnabled to set.
 	 */
-	public void setErrorDialogEnabled(boolean errorDialogEnabled)
+	public void setErrorDialogEnabled(final boolean errorDialogEnabled)
 	{
 		this.errorDialogEnabled = errorDialogEnabled;
 	}
@@ -198,7 +198,7 @@ public class CurrencyEdit extends XComposite
 
 	private LinkedList<ModifyListener> modifyListeners = null;
 
-	public void addModifyListener(ModifyListener modifyListener)
+	public void addModifyListener(final ModifyListener modifyListener)
 	{
 		if (modifyListeners == null)
 			modifyListeners = new LinkedList<ModifyListener>();
@@ -206,7 +206,7 @@ public class CurrencyEdit extends XComposite
 		modifyListeners.add(modifyListener);
 	}
 
-	public boolean removeModifyListener(ModifyListener modifyListener)
+	public boolean removeModifyListener(final ModifyListener modifyListener)
 	{
 		if (modifyListeners == null)
 			return false;
@@ -214,20 +214,35 @@ public class CurrencyEdit extends XComposite
 		return modifyListeners.remove(modifyListener);
 	}
 
-	public void setCurrency(Currency currency)
+	// same method exists in org.nightlabs.l10n.AbstractNumberFormatter
+	private static long power(long base, int exponent) { // exponent >= 0
+		if (exponent < 0)
+			throw new IllegalArgumentException("exponent < 0!");
+
+		long result = 1;
+		while (exponent != 0) {
+			if (exponent % 2 != 0)
+				result = result * base;
+			exponent = exponent / 2;
+			base = base * base;
+		}
+		return result;
+	}
+
+	public void setCurrency(final Currency currency)
 	{
-		int oldDecimalDigitCount = this.currency.getDecimalDigitCount();
-		int newDecimalDigitCount = currency.getDecimalDigitCount();
+		final int oldDecimalDigitCount = this.currency.getDecimalDigitCount();
+		final int newDecimalDigitCount = currency.getDecimalDigitCount();
 
 		this.currency = currency;
-//		currencySymbol.setText(currency.getCurrencySymbol());
+		//		currencySymbol.setText(currency.getCurrencySymbol());
 		if (oldDecimalDigitCount == newDecimalDigitCount)
 			setValue(getValue());
 		else
-			setValue(getValue() / NumberFormatter.power(10, oldDecimalDigitCount) * NumberFormatter.power(10, newDecimalDigitCount));
+			setValue(getValue() / power(10, oldDecimalDigitCount) * power(10, newDecimalDigitCount));
 	}
 
-	public void setValue(long currencyValue)
+	public void setValue(final long currencyValue)
 	{
 		modifyListenerEnabled = false;
 		try {
@@ -257,7 +272,7 @@ public class CurrencyEdit extends XComposite
 		return active == null ? true : active.getSelection();
 	}
 
-	public void setActive(boolean active)
+	public void setActive(final boolean active)
 	{
 		if (this.active == null)
 			return;
@@ -266,7 +281,7 @@ public class CurrencyEdit extends XComposite
 		activeSelected();
 	}
 
-	public void addVerifyListener(VerifyListener listener){
+	public void addVerifyListener(final VerifyListener listener){
 		numberText.addVerifyListener(listener);
 	}
 }
