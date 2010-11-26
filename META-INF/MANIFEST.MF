@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Pdfrenderer Plug-in
+Bundle-SymbolicName: org.nightlabs.eclipse.ui.pdfrenderer
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: NightLabs.org
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ClassPath: .,
+ lib/PDFRenderer.jar
+Export-Package: com.sun.pdfview,
+ com.sun.pdfview.action,
+ com.sun.pdfview.colorspace,
+ com.sun.pdfview.decode,
+ com.sun.pdfview.decrypt,
+ com.sun.pdfview.font,
+ com.sun.pdfview.font.ttf,
+ com.sun.pdfview.function,
+ com.sun.pdfview.pattern,
+ org.nightlabs.eclipse.ui.pdfrenderer,
+ org.nightlabs.eclipse.ui.pdfrenderer.internal
+Require-Bundle: org.apache.log4j
