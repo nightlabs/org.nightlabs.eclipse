@@ -97,7 +97,6 @@ public class PdfViewerComposite extends Composite
 	// https://sourceforge.net/projects/pdfviewer/forums/forum/866211/topic/4097829
 	private static void _requestFocus(Component component)
 	{
-		logger.info("****************** _requestFocus(" + component + ") ****************");
 		component.requestFocusInWindow();
 	}
 
