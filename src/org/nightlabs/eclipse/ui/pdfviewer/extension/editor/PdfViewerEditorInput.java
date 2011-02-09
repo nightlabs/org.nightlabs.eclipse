@@ -34,7 +34,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
-import org.nightlabs.eclipse.ui.pdfviewer.PdfFileLoader;
+import org.nightlabs.eclipse.ui.pdfrenderer.PdfFileLoader;
+import org.nightlabs.eclipse.ui.pdfviewer.PdfProgressMontitorWrapper;
 import org.nightlabs.util.IOUtil;
 import org.nightlabs.util.Util;
 
@@ -190,15 +191,15 @@ implements IEditorInput
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
 				IOUtil.transferStreamData(in, out);
 				out.close();
-				pdfFile = PdfFileLoader.loadPdf(out.toByteArray(), monitor);
+				pdfFile = PdfFileLoader.loadPdf(out.toByteArray(), new PdfProgressMontitorWrapper(monitor));
 			} finally {
 				in.close();
 			}
 		}
 		else if (byteArray != null)
-			pdfFile = PdfFileLoader.loadPdf(byteArray, monitor);
+			pdfFile = PdfFileLoader.loadPdf(byteArray, new PdfProgressMontitorWrapper(monitor));
 		else if (file != null)
-			pdfFile = PdfFileLoader.loadPdf(file, monitor);
+			pdfFile = PdfFileLoader.loadPdf(file, new PdfProgressMontitorWrapper(monitor));
 		else
 			throw new IllegalStateException("Have no data!"); //$NON-NLS-1$
 

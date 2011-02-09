@@ -54,9 +54,10 @@ import org.eclipse.ui.part.EditorPart;
 import org.nightlabs.base.ui.io.FileEditorInput;
 import org.nightlabs.base.ui.progress.ProgressMonitorWrapper;
 import org.nightlabs.base.ui.util.RCPUtil;
+import org.nightlabs.eclipse.ui.pdfrenderer.PdfFileLoader;
 import org.nightlabs.eclipse.ui.pdfviewer.OneDimensionalPdfDocument;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
-import org.nightlabs.eclipse.ui.pdfviewer.PdfFileLoader;
+import org.nightlabs.eclipse.ui.pdfviewer.PdfProgressMontitorWrapper;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
 import org.nightlabs.eclipse.ui.pdfviewer.extension.action.PdfViewerActionRegistry;
 import org.nightlabs.eclipse.ui.pdfviewer.extension.action.save.SaveAsActionHandler;
@@ -158,12 +159,12 @@ public class PdfViewerEditor extends EditorPart
 					}
 					else if (input instanceof FileEditorInput) {
 						File file = ((FileEditorInput)input).getFile();
-						pdfFile = PdfFileLoader.loadPdf(file, new SubProgressMonitor(monitor, 20));
+						pdfFile = PdfFileLoader.loadPdf(file, new PdfProgressMontitorWrapper(new SubProgressMonitor(monitor, 20)));
 						datasourceFile = file;
 					}
 					else if (input instanceof IPathEditorInput) {
 						File file = ((IPathEditorInput)input).getPath().toFile();
-						pdfFile = PdfFileLoader.loadPdf(file, new SubProgressMonitor(monitor, 20));
+						pdfFile = PdfFileLoader.loadPdf(file, new PdfProgressMontitorWrapper(new SubProgressMonitor(monitor, 20)));
 						datasourceFile = file;
 					}
 				// I have no idea, in which plugin this IURIEditorInput can be found - thus we don't support it
