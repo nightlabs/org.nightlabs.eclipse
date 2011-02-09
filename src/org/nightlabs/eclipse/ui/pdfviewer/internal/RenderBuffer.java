@@ -40,6 +40,7 @@ import javax.imageio.ImageWriter;
 import javax.imageio.stream.FileImageOutputStream;
 
 import org.apache.log4j.Logger;
+import org.nightlabs.eclipse.ui.pdfrenderer.internal.Util;
 import org.nightlabs.eclipse.ui.pdfviewer.Dimension2DDouble;
 import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
 

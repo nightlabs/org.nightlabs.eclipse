@@ -23,7 +23,7 @@
  **********************************************************************/
 package org.nightlabs.eclipse.ui.pdfviewer;
 
-import org.nightlabs.eclipse.ui.pdfviewer.internal.Util;
+import org.nightlabs.eclipse.ui.pdfrenderer.internal.Util;
 
 /**
  * An instance of this class specifies a type a {@link ContextElement}.

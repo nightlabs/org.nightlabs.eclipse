@@ -2,25 +2,15 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: PDF Viewer Plug-in
 Bundle-SymbolicName: org.nightlabs.eclipse.ui.pdfviewer;singleton:=true
-Bundle-Version: 1.0.2.qualifier
+Bundle-Version: 1.0.3.qualifier
 Bundle-Activator: org.nightlabs.eclipse.ui.pdfviewer.PdfViewerPlugin
 Bundle-Localization: plugin
 Bundle-Vendor: NightLabs.org
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.apache.log4j;visibility:=reexport
+ org.apache.log4j;visibility:=reexport,
+ org.nightlabs.eclipse.ui.pdfrenderer;visibility:=reexport
 Eclipse-LazyStart: true
 Bundle-ClassPath: .,
  lib/PDFRenderer.jar
-Export-Package: com.sun.pdfview,
- com.sun.pdfview.action,
- com.sun.pdfview.colorspace,
- com.sun.pdfview.decode,
- com.sun.pdfview.font,
- com.sun.pdfview.font.res,
- com.sun.pdfview.font.ttf,
- com.sun.pdfview.function,
- com.sun.pdfview.gfx,
- com.sun.pdfview.pattern,
- org.nightlabs.eclipse.ui.pdfviewer,
- org.nightlabs.eclipse.ui.pdfviewer.internal;x-internal:=true
+Export-Package: org.nightlabs.eclipse.ui.pdfviewer
