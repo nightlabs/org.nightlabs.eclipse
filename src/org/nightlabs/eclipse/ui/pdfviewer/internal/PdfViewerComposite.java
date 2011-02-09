@@ -24,6 +24,7 @@
 package org.nightlabs.eclipse.ui.pdfviewer.internal;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -92,6 +93,13 @@ public class PdfViewerComposite extends Composite
 	private ScrollBar scrollBarVertical, scrollBarHorizontal;
 	private Point2DDouble zoomScreenResolutionFactor;
 	private int currentPage;
+
+	// https://sourceforge.net/projects/pdfviewer/forums/forum/866211/topic/4097829
+	private static void _requestFocus(Component component)
+	{
+		logger.info("****************** _requestFocus(" + component + ") ****************");
+		component.requestFocusInWindow();
+	}
 
 	/**
 	 * Since the int range of the scroll bars is limited and we don't need to be able to scroll to every single
@@ -213,7 +221,7 @@ public class PdfViewerComposite extends Composite
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
 						if (viewPanel != null)
-							viewPanel.requestFocus();
+							_requestFocus(viewPanel);
 					}
 				});
 				return true;
@@ -335,7 +343,7 @@ public class PdfViewerComposite extends Composite
 		getDisplay().addFilter(SWT.KeyDown, keyDownListener);
 		getDisplay().addFilter(SWT.KeyUp, keyUpListener);
 
-		viewPanel.requestFocus();
+		_requestFocus(viewPanel);
 
 //		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_MOUSE_CLICKED, propertyChangeListenerMouseClicked);
 	}
@@ -408,7 +416,7 @@ public class PdfViewerComposite extends Composite
 	private FocusListener intermediatePanel_focusListener = new FocusAdapter() {
 		@Override
 		public void focusGained(FocusEvent e) {
-			viewPanel.requestFocus();
+			_requestFocus(viewPanel);
 		}
 	};
 
@@ -557,8 +565,8 @@ public class PdfViewerComposite extends Composite
 			if (logger.isDebugEnabled())
 				logger.debug("mousePressed: " + e); //$NON-NLS-1$
 
-			intermediatePanel.requestFocus();
-			viewPanel.requestFocus();
+			_requestFocus(intermediatePanel);
+			_requestFocus(viewPanel);
 
 			getDisplay().asyncExec(new Runnable() {
 				public void run() {
@@ -892,7 +900,7 @@ public class PdfViewerComposite extends Composite
 			JPanel viewPanel = getViewPanel();
 			if (viewPanel != null) {
 				g.setColor(viewPanel.getBackground());
-				g.fillRect(0, 0, viewPanel.getWidth(), viewPanel.getHeight());				
+				g.fillRect(0, 0, viewPanel.getWidth(), viewPanel.getHeight());
 			}
 			return;
 		}
@@ -937,7 +945,7 @@ public class PdfViewerComposite extends Composite
 		public void mouseWheelMoved(MouseWheelEvent e) {
 			boolean mouseWheelModeZoom = e.isControlDown();
 
-//			viewPanel.requestFocus();
+//			_requestFocus(viewPanel);
 
 			if (e.getWheelRotation() < 0)
 				mouseRotationOrientation = - 1;
@@ -1214,7 +1222,7 @@ public class PdfViewerComposite extends Composite
 	public boolean setFocus() {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				viewPanel.requestFocus();
+				_requestFocus(viewPanel);
 			}
 		});
 		return true;

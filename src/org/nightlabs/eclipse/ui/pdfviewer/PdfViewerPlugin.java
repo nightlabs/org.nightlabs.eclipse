@@ -58,6 +58,9 @@ public class PdfViewerPlugin extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+
+		// See: https://sourceforge.net/projects/pdfviewer/forums/forum/866211/topic/4097829
+		new java.awt.Frame(""); //$NON-NLS-1$
 	}
 
 	/*
