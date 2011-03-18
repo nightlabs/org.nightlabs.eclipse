@@ -39,6 +39,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.nightlabs.base.ui.composite.XComposite;
@@ -71,7 +72,8 @@ public class I18nTextEditor extends XComposite implements II18nTextEditor
 	private LanguageChooser languageChooser;
 	private LanguageCf textLanguage;
 	protected Text text;
-	protected Text getText() {
+	
+	public Text getText() {
 		return text;
 	}
 
@@ -301,6 +303,7 @@ public class I18nTextEditor extends XComposite implements II18nTextEditor
 		setI18nText(i18nText, null);
 	}
 
+	
 	/* (non-Javadoc)
 	 * @see org.nightlabs.base.ui.language.II18nTextEditor#setI18nText(org.nightlabs.i18n.I18nText, org.nightlabs.base.ui.language.I18nTextEditor.EditMode)
 	 */
@@ -534,5 +537,12 @@ public class I18nTextEditor extends XComposite implements II18nTextEditor
 	public void removeFocusListener(FocusListener listener) {
 		text.removeFocusListener(listener);
 	}
-
+	
+	public void addLanguageChangeListener(LanguageChangeListener listener) {
+		languageChooser.addLanguageChangeListener(listener);
+	}
+	
+	public void removeLanguageChangeListener(LanguageChangeListener listener) {
+		languageChooser.removeLanguageChangeListener(listener);
+	}
 }
