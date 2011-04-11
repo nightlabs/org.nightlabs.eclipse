@@ -7,6 +7,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.nightlabs.eclipse.ui.control.export.FocusHistory;
@@ -38,6 +39,7 @@ public class ExportCSVAction implements IWorkbenchWindowActionDelegate {
 		if (FocusHistory.sharedInstance().getItems().size() != 0) {
 			ExportWizard wizard = new ExportWizard();
 			WizardDialog dialog = new WizardDialog(window.getShell(), wizard);
+			dialog.setPageSize(SWT.DEFAULT, 300);
 			dialog.open();
 		}
 		else {
