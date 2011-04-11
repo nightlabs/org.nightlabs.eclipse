@@ -141,7 +141,13 @@ extends TableLayout
 		else
 			throw new IllegalArgumentException("Composite c is neither a " + Table.class.getName() + " nor a " + Tree.class.getName()); //$NON-NLS-1$ //$NON-NLS-2$
 
-		int width = c.getBounds().width;
+		int reduceWidth = 0;
+		if (reduceHorizontalScrollbarFix) {
+			// TODO FIXME Check if this setting is right for all OS and Themes.
+			// Only tested with Windows XP Classic Theme. Daniel
+			reduceWidth = 5;
+		}
+		int width = c.getBounds().width - reduceWidth;
 		ScrollBar sb = c.getVerticalBar();
 		if(sb.isEnabled() && sb.isVisible())
 			width -= sb.getSize().x;
@@ -190,6 +196,22 @@ extends TableLayout
 				layoutDatas.add(new ColumnWeightData(getWeight(i)));
 		}
 		return layoutDatas;
+	}
+	
+	private boolean reduceHorizontalScrollbarFix = false;
+
+	/**
+	 * @return the reduceHorizontalScrollbarFix
+	 */
+	public boolean isReduceHorizontalScrollbarFix() {
+		return reduceHorizontalScrollbarFix;
+	}
+
+	/**
+	 * @param reduceHorizontalScrollbarFix the reduceHorizontalScrollbarFix to set
+	 */
+	public void setReduceHorizontalScrollbarFix(boolean reduceHorizontalScrollbarFix) {
+		this.reduceHorizontalScrollbarFix = reduceHorizontalScrollbarFix;
 	}
 }
 
