@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -75,6 +76,11 @@ implements ISelectionProvider
 	 */
 	protected ILabelProvider labelProvider;
 
+	/**
+	 * The (optional) comparator for sorting the managed elements;
+	 */
+	protected Comparator<T> comparator;
+	
 	/**
 	 * Creates a fully configurable ListComposite. If a subclass defines own members (declares and defines)
 	 * or initialises own members in its own constructors, then this subclass needs to set
@@ -340,14 +346,29 @@ implements ISelectionProvider
 	 */
 	protected abstract void refreshElement(T elem);
 
+//	/**
+//	 * Adds the specified element to the end of the list.
+//	 * @param element The element to be added.
+//	 */
+//	public void addElement(T element)
+//	{
+//		elements.add(element);
+//		addElementToGui(elements.size() - 1, element);
+//	}
 	/**
-	 * Adds the specified element to the end of the list.
+	 * Adds the specified element to the list.  
 	 * @param element The element to be added.
 	 */
 	public void addElement(T element)
 	{
-		elements.add(element);
-		addElementToGui(elements.size() - 1, element);
+		if (comparator == null) {
+			elements.add(element);
+			addElementToGui(elements.size() - 1, element);			
+		} else {
+			elements.add(element);
+			Collections.sort(elements, comparator);
+			addElementToGui(elements.indexOf(element), element);
+		}
 	}
 
 	public void addElement(int index, T element)
@@ -646,4 +667,23 @@ implements ISelectionProvider
 
 		setSelection(sel);
 	}
+
+	/**
+	 * @return the comparator
+	 */
+	public Comparator<T> getComparator() {
+		return comparator;
+	}
+
+	/**
+	 * @param comparator the comparator to set
+	 */
+	public void setComparator(Comparator<T> comparator) {
+		this.comparator = comparator;
+		if (comparator != null) {
+			Collections.sort(elements, comparator);
+			setInput(elements);
+		}
+	}
+	
 }
