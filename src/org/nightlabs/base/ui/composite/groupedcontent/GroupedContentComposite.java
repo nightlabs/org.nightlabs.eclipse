@@ -99,6 +99,30 @@ public class GroupedContentComposite extends XComposite {
 	}
 
 	/**
+	 * Adds a listener to selection changes in the switcher-table of this {@link GroupedContentComposite}.
+	 * The selected elements will depend on the {@link GroupedContentProvider} set.
+	 * 
+	 * @param listener The listener to add.
+	 */
+	public void addSelectionChangedListener(ISelectionChangedListener listener) {
+		if (switcherTable != null && !switcherTable.isDisposed()) {
+			switcherTable.addSelectionChangedListener(listener);
+			preSelect();
+		}
+	}
+	
+	/**
+	 * Removes the given listener from the list of listeners to selection chagnes.
+	 * 
+	 * @param listener The listener to remove.
+	 */
+	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
+		if (switcherTable != null && !switcherTable.isDisposed()) {
+			switcherTable.removeSelectionChangedListener(listener);
+		}
+	}
+
+	/**
 	 * Add the given {@link GroupedContentProvider} to the list of providers of this {@link GroupedContentComposite}.
 	 * The provider will be added to the end of the list.
 	 * 

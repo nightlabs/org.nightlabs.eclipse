@@ -38,6 +38,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
+import org.nightlabs.base.ui.labelprovider.ColumnSpanLabelProvider;
 
 /**
  * This sorter can be used with a column of a {@link TableViewer} or {@link TreeViewer}
@@ -156,6 +157,12 @@ extends InvertableSorter<Object>
 					final ColumnLabelProvider clprov = (ColumnLabelProvider) lprov;
 					comp1 = clprov.getText(e1);
 					comp2 = clprov.getText(e2);
+				}
+				else if (lprov != null && lprov instanceof ColumnSpanLabelProvider)
+				{
+					ColumnSpanLabelProvider cslp = (ColumnSpanLabelProvider) lprov;
+					comp1 = cslp.getColumnText(e1, columnIndex);
+					comp2 = cslp.getColumnText(e2, columnIndex);
 				}
 				else
 				{

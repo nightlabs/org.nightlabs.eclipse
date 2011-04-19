@@ -687,8 +687,20 @@ public abstract class AbstractTableComposite<ElementType>
 		return table.getSelectionCount();
 	}
 
+	/**
+	 * Selects the Element at the given index.
+	 * <p>
+	 * Note that using this method will invoke {@link ISelectionChangedListener}s linked to the TableViewer.
+	 * </p>
+	 * 
+	 * @param index The index of the Element to select.
+	 */
+	@SuppressWarnings("unchecked")
 	public void select(int index) {
-		table.select(index);
+//		table.select(index);
+		if (index >= 0 && index < table.getItemCount()) {
+			setSelection((List<ElementType>) Collections.singletonList(table.getItem(index).getData()));
+		}
 	}
 
 	@Override
