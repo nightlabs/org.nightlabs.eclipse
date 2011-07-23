@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.nightlabs.eclipse</groupId>
 	<artifactId>org.nightlabs.eclipse.parent</artifactId>
@@ -16,8 +17,87 @@
 		<url>https://svn.nightlabs.org/svn/eclipse/trunk/org.nightlabs.jfire.parent</url>
 	</scm>
 
+	<!-- swt impls:
+org.eclipse.swt.carbon.macosx/ 	Fri Jul 22 17:26:03 EDT 2011 	  	 
+org.eclipse.swt.cocoa.macosx/ 	Fri Jul 22 17:26:03 EDT 2011 	  	 
+org.eclipse.swt.cocoa.macosx.x86_64/ 	Fri Jul 22 17:26:02 EDT 2011 	  	 
+org.eclipse.swt.gtk.aix.ppc64/ 	Fri Jul 22 17:26:02 EDT 2011 	  	 
+org.eclipse.swt.gtk.linux.ppc/ 	Fri Jul 22 17:26:02 EDT 2011 	  	 
+org.eclipse.swt.gtk.linux.ppc64/ 	Fri Jul 22 17:26:03 EDT 2011 	  	 
+org.eclipse.swt.gtk.linux.s390/ 	Fri Jul 22 17:26:02 EDT 2011 	  	 
+org.eclipse.swt.gtk.linux.s390x/ 	Fri Jul 22 17:26:03 EDT 2011 	  	 
+org.eclipse.swt.gtk.linux.x86/ 	Fri Jul 22 17:26:03 EDT 2011 	  	 
+org.eclipse.swt.gtk.linux.x86_64/ 	Fri Jul 22 17:26:02 EDT 2011 	  	 
+org.eclipse.swt.gtk.solaris.sparc/ 	Fri Jul 22 17:26:03 EDT 2011 	  	 
+org.eclipse.swt.gtk.solaris.x86/ 	Fri Jul 22 17:26:03 EDT 2011 	  	 
+org.eclipse.swt.motif.aix.ppc/ 	Fri Jul 22 17:26:03 EDT 2011 	  	 
+org.eclipse.swt.motif.hpux.ia64_32/ 	Fri Jul 22 17:26:02 EDT 2011 	  	 
+org.eclipse.swt.motif.linux.x86/ 	Fri Jul 22 17:26:03 EDT 2011 	  	 
+org.eclipse.swt.motif.solaris.sparc/ 	Fri Jul 22 17:26:03 EDT 2011 	  	 
+org.eclipse.swt.photon.qnx.x86/ 	Fri Jul 22 17:26:03 EDT 2011 	  	 
+org.eclipse.swt.win32.win32.x86/ 	Fri Jul 22 17:26:02 EDT 2011 	  	 
+org.eclipse.swt.win32.win32.x86_64/ 	Fri Jul 22 17:26:03 EDT 2011	
+	-->
+	<profiles>
+		<!-- TODO arch / test / cocoa -->
+		<profile>
+			<id>mac</id>
+			<activation>
+				<os>
+					<name>mac os x</name>
+				</os>
+			</activation>
+			<properties>
+				<swt.groupId>org.eclipse.swt.carbon</swt.groupId>
+				<swt.artifactId>macosx</swt.artifactId>
+			</properties>
+		</profile>
+		<!-- TODO arch / test -->
+		<profile>
+			<id>windows</id>
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+			</activation>
+			<properties>
+				<swt.artifactId>org.eclipse.swt.win32.win32.x86</swt.artifactId>
+			</properties>
+		</profile>
+		<!-- TODO test -->
+		<profile>
+			<id>linux-gtk-x86</id>
+			<activation>
+				<os>
+					<name>Linux</name>
+					<arch>x86</arch>
+				</os>
+			</activation>
+			<properties>
+				<swt.artifactId>org.eclipse.swt.gtk.linux.x86</swt.artifactId>
+			</properties>
+		</profile>
+		<profile>
+			<id>linux-gtk-x86_64</id>
+			<activation>
+				<os>
+					<name>Linux</name>
+					<arch>amd64</arch>
+				</os>
+			</activation>
+			<properties>
+				<swt.artifactId>org.eclipse.swt.gtk.linux.x86_64</swt.artifactId>
+			</properties>
+		</profile>
+	</profiles>
+
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>org.eclipse.swt</groupId>
+				<artifactId>${swt.artifactId}</artifactId>
+				<version>[3.6,4.0)</version>
+			</dependency>
 			<dependency>
 				<groupId>org.eclipse.core</groupId>
 				<artifactId>org.eclipse.core.resources</artifactId>
@@ -42,6 +122,16 @@
 				<groupId>org.eclipse.ui</groupId>
 				<artifactId>org.eclipse.ui.views</artifactId>
 				<version>3.5.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jface</groupId>
+				<artifactId>org.eclipse.jface</artifactId>
+				<version>3.6.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.ui</groupId>
+				<artifactId>org.eclipse.ui.workbench</artifactId>
+				<version>3.6.2</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
