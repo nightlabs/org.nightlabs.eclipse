@@ -160,6 +160,16 @@
 				<artifactId>org.eclipse.update.ui</artifactId>
 				<version>3.2.300</version>
 			</dependency>
+			<dependency>
+				<groupId>org.eclipse.core</groupId>
+				<artifactId>org.eclipse.core.net</artifactId>
+				<version>1.2.100</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.equinox</groupId>
+				<artifactId>org.eclipse.equinox.registry</artifactId>
+				<version>3.5.0</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
