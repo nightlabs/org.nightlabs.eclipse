@@ -1,7 +1,7 @@
 package org.nightlabs.jseditor.ui.scriptwizard;
 
-import org.eclipse.jface.text.source.SourceViewer;
 import org.nightlabs.base.ui.wizard.DynamicPathWizard;
+import org.nightlabs.jseditor.ui.IJSEditor;
 
 /**
  * @author unascribed
@@ -14,11 +14,11 @@ public class JSEditorScriptWizard extends DynamicPathWizard // implements INewWi
 //	private IWorkbench workbench;
 //	private ISelection selection;
 
-	private SourceViewer sourceViewer;
+	private IJSEditor targetEditor;
 	
-	public JSEditorScriptWizard(SourceViewer sourceViewer){
+	public JSEditorScriptWizard(IJSEditor targetEditor){
 		super();
-		this.sourceViewer = sourceViewer;
+		this.targetEditor = targetEditor;
 	}
 
 //	public void init(IWorkbench w, IStructuredSelection s) {
@@ -32,13 +32,13 @@ public class JSEditorScriptWizard extends DynamicPathWizard // implements INewWi
 
 	@Override
 	public void addPages() {
-		page = new JSEditorScriptWizardPage(sourceViewer);
+		page = new JSEditorScriptWizardPage(targetEditor);
 		addPage(page);
 	}
 	
 	@Override
 	public boolean performFinish() {
-		sourceViewer.getDocument().set(page.getSrcText().getDocumentText());
+		targetEditor.setDocumentText(page.getSrcText().getDocumentText());
 		return true;
 	}
 }

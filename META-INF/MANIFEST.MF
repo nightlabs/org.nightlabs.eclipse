@@ -1,24 +1,22 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: JSEditor Plug-in
+Bundle-Name: JSEditor interface project
 Bundle-SymbolicName: org.nightlabs.jseditor.ui;singleton:=true
-Bundle-Version: 1.1.2.qualifier
-Bundle-ClassPath: .
-Bundle-Activator: org.nightlabs.jseditor.ui.JSEditorPlugin
-Bundle-Localization: plugin
-Export-Package: org.nightlabs.jseditor.ui,
- org.nightlabs.jseditor.ui.editor,
- org.nightlabs.jseditor.ui.editor.colorprovider,
- org.nightlabs.jseditor.ui.editor.contentassist,
- org.nightlabs.jseditor.ui.editor.detector,
- org.nightlabs.jseditor.ui.editor.scanner,
- org.nightlabs.jseditor.ui.scriptwizard
-Require-Bundle: org.eclipse.ui,
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: NightLabs.org
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: org.eclipse.core.commands.common,
  org.eclipse.core.runtime,
- org.eclipse.ui,
- org.eclipse.ui.forms,
- org.eclipse.jface.text;visibility:=reexport,
- org.eclipse.ui.editors,
- org.eclipse.ui.workbench.texteditor;visibility:=reexport,
- org.nightlabs.base.ui
-Eclipse-LazyStart: true
+ org.eclipse.jface.action,
+ org.eclipse.jface.dialogs,
+ org.eclipse.jface.window,
+ org.eclipse.jface.wizard,
+ org.eclipse.swt,
+ org.eclipse.swt.events,
+ org.eclipse.swt.layout,
+ org.eclipse.swt.widgets,
+ org.nightlabs.eclipse.extension,
+ org.slf4j;version="1.5.11"
+Export-Package: org.nightlabs.jseditor.ui,
+ org.nightlabs.jseditor.ui.scriptwizard
+Require-Bundle: org.nightlabs.base.ui

@@ -1,22 +1,22 @@
 package org.nightlabs.jseditor.ui.scriptwizard;
 
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Composite;
+import org.nightlabs.jseditor.ui.IJSEditor;
 
 public class BuildScriptAction extends Action{
-	private SourceViewer sourceViewer;
+	private IJSEditor targetEditor;
 	private Composite composite;
 	
-	public BuildScriptAction(Composite composite, SourceViewer sourceViewer){
+	public BuildScriptAction(Composite composite, IJSEditor targetEditor) {
 		this.composite = composite;
-		this.sourceViewer = sourceViewer;
+		this.targetEditor = targetEditor;
 	}
 	
 	@Override
 	public void run() {
-		JSEditorScriptWizard jsWizard = new JSEditorScriptWizard(sourceViewer);
+		JSEditorScriptWizard jsWizard = new JSEditorScriptWizard(targetEditor);
 		//Instantiates the wizard container with the wizard and opens it
 		WizardDialog dialog = new WizardDialog(composite.getShell(), jsWizard);
 		dialog.open();

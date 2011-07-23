@@ -4,7 +4,6 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
@@ -24,7 +23,8 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.wizard.WizardHopPage;
-import org.nightlabs.jseditor.ui.editor.JSEditorComposite;
+import org.nightlabs.jseditor.ui.IJSEditor;
+import org.nightlabs.jseditor.ui.JSEditorFactory;
 import org.nightlabs.jseditor.ui.resource.Messages;
 
 public class JSEditorScriptWizardPage
@@ -35,15 +35,15 @@ extends WizardHopPage
 	private TabItem tabItem2;
 
 	private List scriptList;
-	private JSEditorComposite srcText;
+	private IJSEditor srcText;
 
-	private SourceViewer sourceViewer;
+	private IJSEditor targetEditor;
 
 	private Text descText;
 
-	public JSEditorScriptWizardPage(SourceViewer sourceViewer){
+	public JSEditorScriptWizardPage(IJSEditor targetEditor){
 		super(Messages.getString("org.nightlabs.jseditor.ui.scriptwizard.JSEditorScriptWizardPage.pageName")); //$NON-NLS-1$
-		this.sourceViewer = sourceViewer;
+		this.targetEditor = targetEditor;
 
 		setTitle(Messages.getString("org.nightlabs.jseditor.ui.scriptwizard.JSEditorScriptWizardPage.title")); //$NON-NLS-1$
 		setDescription(Messages.getString("org.nightlabs.jseditor.ui.scriptwizard.JSEditorScriptWizardPage.description")); //$NON-NLS-1$
@@ -135,7 +135,7 @@ extends WizardHopPage
 			@Override
 			public void mouseDoubleClick(MouseEvent arg0) {
 				String[] selected = scriptList.getSelection();
-				srcText.getDocument().set(srcText.getDocument().get().concat(selected[0]));
+				srcText.setDocumentText(srcText.getDocumentText().concat(selected[0]));
 			}
 		});
 
@@ -165,13 +165,13 @@ extends WizardHopPage
 		/******************************
 		 * Source Preview
 		 ******************************/
-		srcText = new JSEditorComposite(editorGroup);
-		if(sourceViewer != null){
-			srcText.getDocument().set(sourceViewer.getTextWidget().getText());
+		srcText = JSEditorFactory.createJSEditor(editorGroup);
+		if(targetEditor != null){
+			srcText.setDocumentText(targetEditor.getDocumentText());
 		}//if
 		gridData = new GridData(GridData.FILL_BOTH);
 		gridData.grabExcessHorizontalSpace = true;
-		srcText.setLayoutData(gridData);
+		srcText.getControl().setLayoutData(gridData);
 
 		srcText.addFocusListener(new FocusAdapter() {
 
@@ -182,7 +182,7 @@ extends WizardHopPage
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				srcText.getSourceViewer().getMark();
+//				srcText.getSourceViewer().getMark();
 //				srcText.getSourceViewer().getTextWidget().setFont(new Font())
 			}
 		});
@@ -241,7 +241,7 @@ extends WizardHopPage
 		scriptList.setItems(sArray);
 	}
 
-	public JSEditorComposite getSrcText(){
+	public IJSEditor getSrcText(){
 		return srcText;
 	}
 }

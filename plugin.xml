@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.2"?>
+<?eclipse version="3.4"?>
 <plugin>
-<!--
- <extension
-         point="org.eclipse.ui.views">
-      <category
-            id="org.nightlabs.jseditor.ui"
-            name="JSEditor"/>
-      <view
-            category="org.nightlabs.jseditor.ui"
-            class="org.nightlabs.jseditor.ui.editor.JSEditorView"
-            icon="icons/sample.gif"
-            id="org.nightlabs.jseditor.ui.editor.JSEditorView"
-            name="%org.nightlabs.jseditor.ui.editor.JSEditorView.name"/>
-   </extension>
--->   
+   <extension-point id="jsEditorFactory" name="Extension-Point for IJSEditorFactories" schema="schema/jsEditorFactory.exsd"/>
+
 </plugin>
