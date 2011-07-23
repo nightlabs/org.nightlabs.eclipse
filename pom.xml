@@ -2,8 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	
-	<!-- @generated - Auto generated POM. Remove this marker after review. -->
-	
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.nightlabs.eclipse</groupId>
 	<artifactId>org.nightlabs.eclipse.extension</artifactId>
@@ -19,14 +17,8 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.eclipse.XXX</groupId>
+			<groupId>org.eclipse.core</groupId>
 			<artifactId>org.eclipse.core.runtime</artifactId>
-			<scope>provided</scope>
 		</dependency>		
 	</dependencies>
-
-	<build>
-
-
-	</build>
 </project>
