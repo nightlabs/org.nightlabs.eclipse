@@ -1,5 +1,7 @@
 package org.nightlabs.jseditor.ui.rcp.editor;
 
+import java.util.IdentityHashMap;
+
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.Document;
@@ -18,6 +20,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.nightlabs.base.ui.composite.XComposite;
+import org.nightlabs.jseditor.ui.DocumentEvent;
+import org.nightlabs.jseditor.ui.IDocumentListener;
 import org.nightlabs.jseditor.ui.IJSEditor;
 import org.nightlabs.jseditor.ui.rcp.JSEditorPlugin;
 import org.nightlabs.jseditor.ui.rcp.editor.colorprovider.JSEditorColorProvider;
@@ -119,6 +123,40 @@ public class JSEditorComposite extends XComposite implements IJSEditor {
 		} );
 	}
 
+	private IdentityHashMap<IDocumentListener, org.eclipse.jface.text.IDocumentListener> jsEditorDocumentListenerToJFaceDocumentListener = new IdentityHashMap<IDocumentListener, org.eclipse.jface.text.IDocumentListener>();
+
+	@Override
+	public void addDocumentListener(final IDocumentListener documentListener)
+	{
+		if (documentListener == null)
+			throw new IllegalArgumentException("documentListener == null");
+
+		org.eclipse.jface.text.IDocumentListener jfaceDocumentListener = new org.eclipse.jface.text.IDocumentListener()
+		{
+			@Override
+			public void documentChanged(org.eclipse.jface.text.DocumentEvent paramDocumentEvent) {
+				documentListener.documentChanged(new DocumentEvent(JSEditorComposite.this));
+			}
+
+			@Override
+			public void documentAboutToBeChanged(org.eclipse.jface.text.DocumentEvent paramDocumentEvent) { }
+		};
+
+		jsEditorDocumentListenerToJFaceDocumentListener.put(documentListener, jfaceDocumentListener);
+		sourceViewer.getDocument().addDocumentListener(jfaceDocumentListener);
+	}
+
+	@Override
+	public void removeDocumentListener(IDocumentListener documentListener)
+	{
+		org.eclipse.jface.text.IDocumentListener jfaceDocumentListener = jsEditorDocumentListenerToJFaceDocumentListener.get(documentListener);
+		if (jfaceDocumentListener == null)
+			return;
+
+		sourceViewer.getDocument().removeDocumentListener(jfaceDocumentListener);
+		jsEditorDocumentListenerToJFaceDocumentListener.remove(documentListener);
+	}
+
 	/* (non-Javadoc)
 	 * @see org.nightlabs.jseditor.ui.editor.IJSEditor#addFocusListener(org.eclipse.swt.events.FocusListener)
 	 */
@@ -181,17 +219,17 @@ public class JSEditorComposite extends XComposite implements IJSEditor {
 	public void removeKeyListener(KeyListener listener) {
 		sourceViewer.getTextWidget().removeKeyListener(listener);
 	}
-	
+
 	@Override
 	public void addMouseListener(MouseListener listener) {
 		sourceViewer.getTextWidget().addMouseListener(listener);
 	}
-	
+
 	@Override
 	public void removeMouseListener(MouseListener listener) {
 		sourceViewer.getTextWidget().removeMouseListener(listener);
 	}
-	
+
 	@Override
 	public Control getControl() {
 		return this;
