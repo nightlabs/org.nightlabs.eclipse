@@ -51,6 +51,15 @@
 					<exclude>**/*.java</exclude>
 				</excludes>
 			</resource>
+			<!-- TODO following may be removed when upper is removed (defined in parent) -->
+			<resource>
+				<directory>.</directory>
+				<includes>
+					<include>plugin.xml</include>
+					<include>plugin*.properties</include>
+					<include>schema/**/*</include>
+				</includes>
+			</resource>
 		</resources>
 		<plugins>
 			<!-- FIXME: package name does not match bundle name ("preference" vs. "preferences") -->
