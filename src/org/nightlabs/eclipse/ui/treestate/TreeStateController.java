@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
@@ -274,7 +275,9 @@ public class TreeStateController
 				method.setAccessible(true);
 				method.invoke(item.getParent(), event.type, event);
 			} catch (Exception ex) {
-				throw new RuntimeException(ex);
+				// FIXME
+				System.err.println(ex);
+//				throw new RuntimeException(ex);
 			}
 
 			item.setExpanded(true);
