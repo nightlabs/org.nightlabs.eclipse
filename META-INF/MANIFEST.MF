@@ -7,13 +7,12 @@ Bundle-Activator: org.nightlabs.base.ui.errorreport.mantis.Activator
 Eclipse-LazyStart: true
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: nightlabs.org
-Require-Bundle: org.eclipse.core.runtime;bundle-version="3.3.100",
- org.eclipse.ui;bundle-version="3.3.0",
- org.nightlabs.concurrent,
+Require-Bundle: org.nightlabs.concurrent,
  org.nightlabs.config,
  org.nightlabs.base,
  org.nightlabs.base.ui;visibility:=reexport,
  org.apache.commons.httpclient;bundle-version="3.1.0";visibility:=reexport,
+ org.nightlabs.jfire.compatibility;bundle-version="1.0.0",
  org.eclipse.core.net
 Export-Package: org.nightlabs.base.ui.errorreport.mantis
 Eclipse-RegisterBuddy: org.nightlabs.config
