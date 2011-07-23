@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: JSEditor Plug-in
+Bundle-SymbolicName: org.nightlabs.jseditor.ui.rcp;singleton:=true
+Bundle-Version: 1.1.2.qualifier
+Bundle-ClassPath: .
+Bundle-Activator: org.nightlabs.jseditor.ui.rcp.JSEditorPlugin
+Bundle-Localization: plugin
+Export-Package: org.nightlabs.jseditor.ui.rcp,
+ org.nightlabs.jseditor.ui.rcp.editor,
+ org.nightlabs.jseditor.ui.rcp.editor.colorprovider,
+ org.nightlabs.jseditor.ui.rcp.editor.contentassist,
+ org.nightlabs.jseditor.ui.rcp.editor.detector,
+ org.nightlabs.jseditor.ui.rcp.editor.scanner
+Require-Bundle: org.eclipse.core.runtime,
+ org.nightlabs.base.ui,
+ org.nightlabs.jseditor.ui,
+ org.nightlabs.jfire.compatibility;bundle-version="1.0.0",
+ org.eclipse.ui.workbench.texteditor;bundle-version="3.6.0",
+ org.eclipse.jface.text;bundle-version="3.6.0",
+ org.eclipse.ui.editors;bundle-version="3.6.0"
+Eclipse-LazyStart: true
