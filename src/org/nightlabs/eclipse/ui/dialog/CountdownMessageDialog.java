@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.nightlabs.eclipse.ui.dialog.resource.Messages;
+import org.nightlabs.jfire.compatibility.CompatibleDialogConstants;
 
 /**
  * A dialog for showing messages to the user that disappears
@@ -173,8 +174,8 @@ public class CountdownMessageDialog extends MessageDialog
               // default
               // window
               // icon
-              message, QUESTION, new String[] { IDialogConstants.OK_LABEL,
-                      IDialogConstants.CANCEL_LABEL }, 0, disappearTimeInSeconds); // OK is the
+              message, QUESTION, new String[] { CompatibleDialogConstants.get().OK_LABEL,
+  			CompatibleDialogConstants.get().CANCEL_LABEL }, 0, disappearTimeInSeconds); // OK is the
       // default
       return dialog.open() == 0;
   }
@@ -197,7 +198,7 @@ public class CountdownMessageDialog extends MessageDialog
               // default
               // window
               // icon
-              message, ERROR, new String[] { IDialogConstants.OK_LABEL }, 0, disappearTimeInSeconds); // ok
+              message, ERROR, new String[] { CompatibleDialogConstants.get().OK_LABEL }, 0, disappearTimeInSeconds); // ok
       // is
       // the
       // default
@@ -225,7 +226,7 @@ public class CountdownMessageDialog extends MessageDialog
               // window
               // icon
               message, INFORMATION,
-              new String[] { IDialogConstants.OK_LABEL }, 0, disappearTimeInSeconds);
+              new String[] { CompatibleDialogConstants.get().OK_LABEL }, 0, disappearTimeInSeconds);
       // ok is the default
       dialog.open();
       return;
@@ -253,8 +254,8 @@ public class CountdownMessageDialog extends MessageDialog
               // default
               // window
               // icon
-              message, QUESTION, new String[] { IDialogConstants.YES_LABEL,
-                      IDialogConstants.NO_LABEL }, 0, disappearTimeInSeconds); // yes is the default
+              message, QUESTION, new String[] { CompatibleDialogConstants.get().YES_LABEL,
+  			CompatibleDialogConstants.get().NO_LABEL }, 0, disappearTimeInSeconds); // yes is the default
       return dialog.open() == 0;
   }
 
@@ -276,7 +277,7 @@ public class CountdownMessageDialog extends MessageDialog
               // default
               // window
               // icon
-              message, WARNING, new String[] { IDialogConstants.OK_LABEL }, 0, disappearTimeInSeconds); // ok
+              message, WARNING, new String[] { CompatibleDialogConstants.get().OK_LABEL }, 0, disappearTimeInSeconds); // ok
       // is
       // the
       // default

@@ -14,6 +14,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.nightlabs.eclipse.ui.dialog.resource.Messages;
+import org.nightlabs.jfire.compatibility.CompatibleDialogConstants;
 import org.osgi.service.prefs.BackingStoreException;
 
 /**
@@ -165,8 +166,8 @@ public class RememberDecisionMessageDialog extends MessageDialog
   	if(rememberedDecision != null)
   		return rememberedDecision;
   	RememberDecisionMessageDialog dialog = new RememberDecisionMessageDialog(parent, title, null, // accept the default window icon
-  			message, QUESTION, new String[] { IDialogConstants.OK_LABEL,
-  			IDialogConstants.CANCEL_LABEL }, 0); // OK is the default
+  			message, QUESTION, new String[] { CompatibleDialogConstants.get().OK_LABEL,
+  			CompatibleDialogConstants.get().CANCEL_LABEL }, 0); // OK is the default
   	int result = dialog.open();
   	if((result == 0 || result == 1) && dialog.isRememberDecision())
   		setRememberedDecision(nodeKey, preferenceKey, preferenceScope, result == 0);
@@ -193,8 +194,8 @@ public class RememberDecisionMessageDialog extends MessageDialog
   	if(rememberedDecision != null)
   		return rememberedDecision;
   	RememberDecisionMessageDialog dialog = new RememberDecisionMessageDialog(parent, title, null, // accept the default window icon
-              message, QUESTION, new String[] { IDialogConstants.YES_LABEL,
-                      IDialogConstants.NO_LABEL }, 0); // yes is the default
+              message, QUESTION, new String[] { CompatibleDialogConstants.get().YES_LABEL,
+  			CompatibleDialogConstants.get().NO_LABEL }, 0); // yes is the default
   	int result = dialog.open();
   	if((result == 0 || result == 1) && dialog.isRememberDecision())
   		setRememberedDecision(nodeKey, preferenceKey, preferenceScope, result == 0);
