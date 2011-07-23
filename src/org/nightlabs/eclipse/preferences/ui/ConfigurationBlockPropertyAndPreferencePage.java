@@ -27,12 +27,12 @@ public abstract class ConfigurationBlockPropertyAndPreferencePage extends Proper
 		return null;
 	}
 	
-	protected Control createPreferenceContent(Composite composite) {
+	public Control createPreferenceContent(Composite composite) {
 		fConfigurationBlock.setShell(getShell());
 		return fConfigurationBlock.createContents(composite);
 	}
 	
-	protected boolean hasProjectSpecificOptions(IProject project) {
+	public boolean hasProjectSpecificOptions(IProject project) {
 		return fConfigurationBlock.hasProjectSpecificOptions(project);
 	}
 	

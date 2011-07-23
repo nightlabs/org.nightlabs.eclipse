@@ -14,9 +14,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import org.eclipse.core.resources.CompatibleResources;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.ControlEnableState;
@@ -184,7 +184,7 @@ public abstract class PropertyAndPreferencePage extends PreferencePage implement
 		} else {
 			HashSet<IProject> projectsWithSpecifics= new HashSet<IProject>();
 //			try {
-				IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+				IProject[] projects = CompatibleResources.getProjects();
 //				IJavaProject[] projects= JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()).getJavaProjects();
 				for (int i= 0; i < projects.length; i++) {
 //					IJavaProject curr= projects[i];

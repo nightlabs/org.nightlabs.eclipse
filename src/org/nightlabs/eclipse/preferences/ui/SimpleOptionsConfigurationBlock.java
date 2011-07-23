@@ -50,6 +50,7 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 import org.eclipse.ui.preferences.IWorkingCopyManager;
 import org.eclipse.ui.preferences.WorkingCopyManager;
+import org.nightlabs.jfire.compatibility.CompatibleDialogConstants;
 import org.osgi.service.prefs.BackingStoreException;
 
 /**
@@ -734,7 +735,7 @@ public abstract class SimpleOptionsConfigurationBlock {
 		if (needsBuild) {
 			String[] strings= getFullBuildDialogStrings(fProject == null);
 			if (strings != null) {
-				MessageDialog dialog= new MessageDialog(getShell(), strings[0], null, strings[1], MessageDialog.QUESTION, new String[] { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL, IDialogConstants.CANCEL_LABEL }, 2);
+				MessageDialog dialog= new MessageDialog(getShell(), strings[0], null, strings[1], MessageDialog.QUESTION, new String[] { CompatibleDialogConstants.get().YES_LABEL, CompatibleDialogConstants.get().NO_LABEL, CompatibleDialogConstants.get().CANCEL_LABEL }, 2);
 				int res= dialog.open();
 				if (res == 0) {
 //					doBuild= true;

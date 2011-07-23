@@ -4,11 +4,7 @@ Bundle-Name: Eclipse specific preferences UI
 Bundle-SymbolicName: org.nightlabs.eclipse.preference.ui
 Bundle-Version: 1.0.4.qualifier
 Bundle-Activator: org.nightlabs.eclipse.preferences.ui.PreferencesUIPlugin
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
- org.eclipse.core.resources,
- org.eclipse.ui.forms,
- org.eclipse.ui.views
+Require-Bundle: org.nightlabs.jfire.compatibility;bundle-version="1.0.0"
 Eclipse-LazyStart: true
 Export-Package: org.nightlabs.eclipse.preferences.ui
 Bundle-Vendor: NightLabs.org

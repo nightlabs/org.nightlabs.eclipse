@@ -21,11 +21,11 @@ package org.nightlabs.eclipse.preferences.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.CompatibleResources;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
@@ -144,7 +144,7 @@ public class WorkspaceResourceDialog extends ElementTreeSelectionDialog implemen
 
     if (suggestedFile != null)
     {
-      IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+      IWorkspaceRoot root = CompatibleResources.getWorkspace().getRoot();
       IResource resource = root.getFile(suggestedFile);
       IResource accessibleResource = resource;
       while (accessibleResource != null && !accessibleResource.isAccessible())
@@ -182,7 +182,7 @@ public class WorkspaceResourceDialog extends ElementTreeSelectionDialog implemen
 
   public void loadContents()
   {
-    IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+    IWorkspaceRoot root = CompatibleResources.getWorkspace().getRoot();
     setInput(root);
   }
 

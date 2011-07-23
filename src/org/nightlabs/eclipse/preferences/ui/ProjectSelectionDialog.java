@@ -12,8 +12,8 @@ package org.nightlabs.eclipse.preferences.ui;
 
 import java.util.Set;
 
+import org.eclipse.core.resources.CompatibleResources;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -151,7 +151,7 @@ public class ProjectSelectionDialog extends SelectionStatusDialog {
 //		checkbox.setSelection(doFilter);
 //		updateFilter(doFilter);
 		
-		fTableViewer.setInput(ResourcesPlugin.getWorkspace().getRoot().getProjects());
+		fTableViewer.setInput(CompatibleResources.getProjects());
 		
 		doSelectionChanged(new Object[0]);
 		Dialog.applyDialogFont(composite);

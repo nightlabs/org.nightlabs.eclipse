@@ -17,7 +17,8 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.eclipse.swt</groupId>
-			<artifactId>${swt.artifactId}</artifactId>
+			<artifactId>org.eclipse.swt.gtk.linux.x86</artifactId>
+			<version>[3.6,4.0)</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.core</groupId>
@@ -51,28 +52,6 @@
 					<exclude>**/*.java</exclude>
 				</excludes>
 			</resource>
-			<!-- TODO following may be removed when upper is removed (defined in parent) -->
-			<resource>
-				<directory>.</directory>
-				<includes>
-					<include>plugin.xml</include>
-					<include>plugin*.properties</include>
-					<include>schema/**/*</include>
-				</includes>
-			</resource>
 		</resources>
-		<plugins>
-			<!-- FIXME: package name does not match bundle name ("preference" vs. "preferences") -->
-			<plugin>
-				<groupId>org.apache.felix</groupId>
-				<artifactId>maven-bundle-plugin</artifactId>
-				<configuration>
-					<instructions>
-						<Export-Package>!org.nightlabs.eclipse.preferences.ui.internal.*,org.nightlabs.eclipse.preferences.ui.*;version="${project.version}"</Export-Package>
-						<Private-Package>org.nightlabs.eclipse.preferences.ui.internal.*</Private-Package>
-					</instructions>
-				</configuration>
-			</plugin>		
-		</plugins>
 	</build>
 </project>
