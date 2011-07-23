@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.nightlabs.eclipse.extension;singleton:=true
 Bundle-Version: 1.0.1.qualifier
 Bundle-Activator: org.nightlabs.eclipse.extension.ExtensionPlugin
 Bundle-Vendor: nightlabs.org
-Require-Bundle: org.eclipse.core.runtime
+Require-Bundle: org.nightlabs.jfire.compatibility;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: org.nightlabs.eclipse.extension,
