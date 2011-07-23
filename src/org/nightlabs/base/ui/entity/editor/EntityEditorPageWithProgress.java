@@ -488,7 +488,7 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 		if (Display.getCurrent() != null)
 			runnable.run();
 		else
-			Display.getDefault().syncExec(runnable);
+			wrapper.getDisplay().syncExec(runnable);
 	}
 
 	/**
@@ -518,7 +518,7 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 		if (Display.getCurrent() != null)
 			runnable.run();
 		else
-			Display.getDefault().syncExec(runnable);
+			wrapper.getDisplay().syncExec(runnable);
 	}
 
 	/**
@@ -538,5 +538,13 @@ public abstract class EntityEditorPageWithProgress extends FormPage implements F
 
 	public void setMenu(Menu menu) {
 		wrapper.getParent().setMenu(menu);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Display getDisplay() {
+		return wrapper.getDisplay();
 	}
 }

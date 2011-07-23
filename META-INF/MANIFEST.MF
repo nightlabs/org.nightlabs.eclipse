@@ -3,7 +3,7 @@ Generated-from: 1140596560679;type=2
 Bundle-ManifestVersion: 2
 Bundle-Name: NightLabs Base plugin
 Bundle-SymbolicName: org.nightlabs.base.ui; singleton:=true
-Bundle-Version: 1.2.20.qualifier
+Bundle-Version: 1.2.17.qualifier
 Bundle-ClassPath: .,
  lib/xercesImpl.jar,
  lib/commons-beanutils.jar,
@@ -99,6 +99,7 @@ Export-Package: com.sun.activation.registries,
  org.nightlabs.base.ui.composite,
  org.nightlabs.base.ui.composite.groupedcontent,
  org.nightlabs.base.ui.config,
+ org.nightlabs.base.ui.context,
  org.nightlabs.base.ui.custom,
  org.nightlabs.base.ui.dnd,
  org.nightlabs.base.ui.editor,
@@ -134,7 +135,6 @@ Export-Package: com.sun.activation.registries,
  org.nightlabs.base.ui.search,
  org.nightlabs.base.ui.selection,
  org.nightlabs.base.ui.table,
- org.nightlabs.base.ui.table.filter,
  org.nightlabs.base.ui.timelength,
  org.nightlabs.base.ui.timepattern,
  org.nightlabs.base.ui.timepattern.builder,
@@ -146,19 +146,14 @@ Export-Package: com.sun.activation.registries,
  org.nightlabs.base.ui.wizard,
  org.w3c.dom.html,
  org.w3c.dom.ls
-Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.ui,
- org.eclipse.ui.forms;visibility:=reexport,
- org.eclipse.ui.views;visibility:=reexport,
- org.eclipse.core.resources;visibility:=reexport,
- org.eclipse.update.ui,
- org.apache.log4j;visibility:=reexport,
+Require-Bundle: org.apache.log4j;visibility:=reexport,
  org.nightlabs.eclipse.ui.dialog,
  org.nightlabs.eclipse.preference.ui;visibility:=reexport,
  org.nightlabs.eclipse.ui.treestate;visibility:=reexport,
  org.nightlabs.base;visibility:=reexport,
  org.nightlabs.config;bundle-version="0.9.7",
  org.nightlabs.eclipse.extension;bundle-version="1.0.0";visibility:=reexport,
+ org.nightlabs.jfire.compatibility;bundle-version="1.0.0",
  org.nightlabs.singleton;bundle-version="1.0.0";visibility:=reexport
 Eclipse-LazyStart: true
 Eclipse-BuddyPolicy: registered

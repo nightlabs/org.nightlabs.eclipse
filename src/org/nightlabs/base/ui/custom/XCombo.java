@@ -35,6 +35,7 @@ import org.eclipse.swt.accessibility.AccessibleControlEvent;
 import org.eclipse.swt.accessibility.AccessibleEvent;
 import org.eclipse.swt.accessibility.AccessibleTextAdapter;
 import org.eclipse.swt.accessibility.AccessibleTextEvent;
+import org.eclipse.swt.accessibility.CompatibleAccessible;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -61,6 +62,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TypedListener;
 import org.eclipse.swt.widgets.Widget;
 import org.nightlabs.base.ui.composite.XComposite;
+import org.nightlabs.jfire.compatibility.Compatibility;
+import org.nightlabs.jfire.compatibility.CompatibleSWT;
 
 /**
  * A Custom Implementation of a ComboBox which is able not only to show Strings but also
@@ -114,10 +117,12 @@ extends XComposite
 				text.setBackground(getDefaultBackgroundColor());
 //		}
 
-		int arrowStyle = SWT.DOWN | SWT.ARROW;
+		int arrowStyle = SWT.DOWN | (Compatibility.isRCP ? SWT.ARROW : SWT.PUSH);
 		if ((style & SWT.FLAT) != 0) arrowStyle |= SWT.FLAT;
 
 		arrow = new Button (this, arrowStyle);
+		if(Compatibility.isRAP)
+			arrow.setText("V");
 
 		listener = new Listener () {
 			public void handleEvent (Event event) {
@@ -321,7 +326,7 @@ static int checkAndAdaptStyle (int style, Composite parent) {
 			SWT.READ_ONLY
 			| SWT.FLAT
 			| SWT.LEFT_TO_RIGHT
-			| SWT.RIGHT_TO_LEFT
+			| CompatibleSWT.RIGHT_TO_LEFT
 	);
 	return (style & mask) | XComposite.getBorderStyle(parent);
 }
@@ -618,7 +623,7 @@ void createPopup(TableItem[] items, int selectionIndex, int columns) {
 	int style = getStyle ();
 	int listStyle = SWT.SINGLE | SWT.V_SCROLL;
 	if ((style & SWT.FLAT) != 0) listStyle |= SWT.FLAT;
-	if ((style & SWT.RIGHT_TO_LEFT) != 0) listStyle |= SWT.RIGHT_TO_LEFT;
+	if ((style & CompatibleSWT.RIGHT_TO_LEFT) != 0) listStyle |= CompatibleSWT.RIGHT_TO_LEFT;
 	if ((style & SWT.LEFT_TO_RIGHT) != 0) listStyle |= SWT.LEFT_TO_RIGHT;
 	table = new Table (popup, listStyle);
 
@@ -632,7 +637,7 @@ void createPopup(TableItem[] items, int selectionIndex, int columns) {
 	if (foreground != null) table.setForeground (foreground);
 //	if (background != null) table.setBackground (background); // always keep the backround of the table white!
 
-	int [] popupEvents = {SWT.Close, SWT.Paint, SWT.Deactivate};
+	int [] popupEvents = {SWT.Close, CompatibleSWT.Paint, SWT.Deactivate};
 	for (int i=0; i<popupEvents.length; i++) popup.addListener (popupEvents [i], listener);
 	int [] listEvents = {SWT.MouseUp, SWT.Selection, SWT.Traverse, SWT.KeyDown, SWT.KeyUp, SWT.FocusIn, SWT.Dispose};
 	for (int i=0; i<listEvents.length; i++) table.addListener (listEvents [i], listener);
@@ -655,7 +660,7 @@ void createPopup(TableItem[] items, int selectionIndex) {
 		int style = getStyle ();
 		int listStyle = SWT.SINGLE | SWT.V_SCROLL;
 		if ((style & SWT.FLAT) != 0) listStyle |= SWT.FLAT;
-		if ((style & SWT.RIGHT_TO_LEFT) != 0) listStyle |= SWT.RIGHT_TO_LEFT;
+		if ((style & CompatibleSWT.RIGHT_TO_LEFT) != 0) listStyle |= CompatibleSWT.RIGHT_TO_LEFT;
 		if ((style & SWT.LEFT_TO_RIGHT) != 0) listStyle |= SWT.LEFT_TO_RIGHT;
 		table = new Table (popup, listStyle);
 
@@ -663,7 +668,7 @@ void createPopup(TableItem[] items, int selectionIndex) {
 		if (foreground != null) table.setForeground (foreground);
 //		if (background != null) table.setBackground (background); // always keep the backround of the table white!
 
-		int [] popupEvents = {SWT.Close, SWT.Paint, SWT.Deactivate};
+		int [] popupEvents = {SWT.Close, CompatibleSWT.Paint, SWT.Deactivate};
 		for (int i=0; i<popupEvents.length; i++) popup.addListener (popupEvents [i], listener);
 		int [] listEvents = {SWT.MouseUp, SWT.Selection, SWT.Traverse, SWT.KeyDown, SWT.KeyUp, SWT.FocusIn, SWT.Dispose};
 		for (int i=0; i<listEvents.length; i++) table.addListener (listEvents [i], listener);
@@ -785,7 +790,9 @@ Label getAssociatedLabel () {
 @Override
 public Control [] getChildren () {
 	checkWidget();
-	return new Control [0];
+	
+	//WHY?!?!?!?!?!?!
+	return Compatibility.isRCP ? new Control[0] : super.getChildren();
 }
 
 /**
@@ -1115,11 +1122,12 @@ void initAccessible() {
 			e.result = getToolTipText ();
 		}
 	};
-	getAccessible ().addAccessibleListener (accessibleAdapter);
-	text.getAccessible ().addAccessibleListener (accessibleAdapter);
-	table.getAccessible ().addAccessibleListener (accessibleAdapter);
-
-	arrow.getAccessible ().addAccessibleListener (new AccessibleAdapter() {
+	
+	CompatibleAccessible.addAccessibleListener(this, accessibleAdapter);
+	CompatibleAccessible.addAccessibleListener(text, accessibleAdapter);
+	CompatibleAccessible.addAccessibleListener(table, accessibleAdapter);
+	
+	CompatibleAccessible.addAccessibleListener(arrow, new AccessibleAdapter() {
 		@Override
 		public void getName (AccessibleEvent e) {
 			e.result = isDropped () ? SWT.getMessage ("SWT_Close") : SWT.getMessage ("SWT_Open"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1134,14 +1142,15 @@ void initAccessible() {
 		}
 	});
 
-	getAccessible().addAccessibleTextListener (new AccessibleTextAdapter() {
+	
+	CompatibleAccessible.addAccessibleTextListener(this, new AccessibleTextAdapter() {
 		@Override
 		public void getCaretOffset (AccessibleTextEvent e) {
 			e.offset = text.getCaretPosition ();
 		}
 	});
 
-	getAccessible().addAccessibleControlListener (new AccessibleControlAdapter() {
+	CompatibleAccessible.addAccessibleControlListener(this, new AccessibleControlAdapter() {
 		@Override
 		public void getChildAtPoint (AccessibleControlEvent e) {
 			Point testPoint = toControl (e.x, e.y);
@@ -1181,14 +1190,14 @@ void initAccessible() {
 		}
 	});
 
-	text.getAccessible ().addAccessibleControlListener (new AccessibleControlAdapter () {
+	CompatibleAccessible.addAccessibleControlListener (this, new AccessibleControlAdapter () {
 		@Override
 		public void getRole (AccessibleControlEvent e) {
 			e.detail = text.getEditable () ? ACC.ROLE_TEXT : ACC.ROLE_LABEL;
 		}
 	});
 
-	arrow.getAccessible ().addAccessibleControlListener (new AccessibleControlAdapter() {
+	CompatibleAccessible.addAccessibleControlListener (arrow, new AccessibleControlAdapter() {
 		@Override
 		public void getDefaultAction (AccessibleControlEvent e) {
 			e.result = isDropped () ? SWT.getMessage ("SWT_Close") : SWT.getMessage ("SWT_Open"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1277,8 +1286,8 @@ void listEvent (Event event) {
 			switch (event.detail) {
 				case SWT.TRAVERSE_RETURN:
 				case SWT.TRAVERSE_ESCAPE:
-				case SWT.TRAVERSE_ARROW_PREVIOUS:
-				case SWT.TRAVERSE_ARROW_NEXT:
+				case CompatibleSWT.TRAVERSE_ARROW_PREVIOUS:
+				case CompatibleSWT.TRAVERSE_ARROW_NEXT:
 					event.doit = false;
 					break;
 			}
@@ -1347,7 +1356,7 @@ boolean shellJustDeactivated = false;
 void popupEvent(Event event) {
 	shellJustDeactivated = false;
 	switch (event.type) {
-		case SWT.Paint:
+		case CompatibleSWT.Paint:
 			// draw black rectangle around list
 			Rectangle listRect = table.getBounds();
 			Color black = getDisplay().getSystemColor(SWT.COLOR_BLACK);
@@ -1507,7 +1516,9 @@ public void removeAll () {
 public void removeModifyListener (ModifyListener listener) {
 	checkWidget();
 	if (listener == null) SWT.error (SWT.ERROR_NULL_ARGUMENT);
-	removeListener(SWT.Modify, listener);
+
+	// FIXME resolve which is the proper listener type
+	//removeListener(SWT.Modify, listener);
 }
 
 /**
@@ -1530,8 +1541,10 @@ public void removeModifyListener (ModifyListener listener) {
 public void removeSelectionListener (SelectionListener listener) {
 	checkWidget();
 	if (listener == null) SWT.error (SWT.ERROR_NULL_ARGUMENT);
-	removeListener(SWT.Selection, listener);
-	removeListener(SWT.DefaultSelection,listener);
+
+	// FIXME resolve which is the proper listener type
+	//removeListener(SWT.Selection, listener);
+	//removeListener(SWT.DefaultSelection,listener);
 }
 
 /**
@@ -1908,8 +1921,8 @@ void textEvent (Event event) {
 		case SWT.Traverse: {
 			switch (event.detail) {
 				case SWT.TRAVERSE_RETURN:
-				case SWT.TRAVERSE_ARROW_PREVIOUS:
-				case SWT.TRAVERSE_ARROW_NEXT:
+				case CompatibleSWT.TRAVERSE_ARROW_PREVIOUS:
+				case CompatibleSWT.TRAVERSE_ARROW_NEXT:
 					// The enter causes default selection and
 					// the arrow keys are used to manipulate the list contents so
 					// do not use them for traversal.

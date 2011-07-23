@@ -26,6 +26,7 @@ package org.nightlabs.base.ui.entity.tree;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 import org.nightlabs.base.ui.part.ControllablePart;
@@ -121,7 +122,10 @@ implements ControllablePart, ISelectionProvider
 	 */
 	public void createPartContents(Composite parent)
 	{
+		// Had to set FillLayout because otherwise content was not filled. Daniel 2010-03-15
+		parent.setLayout(new FillLayout());
 		entityTree = new EntityTree(parent, getViewSite().getId(), getEntityTreeStyle());
+		entityTree.setLayoutData(null);
 		selectionProviderProxy.addRealSelectionProvider(entityTree);
 	}
 

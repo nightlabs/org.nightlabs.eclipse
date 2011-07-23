@@ -28,8 +28,7 @@ package org.nightlabs.base.ui;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.nightlabs.base.ui.app.AbstractApplication;
-import org.nightlabs.base.ui.exceptionhandler.ExceptionHandlerRegistry;
-import org.nightlabs.base.ui.exceptionhandler.SimpleExceptionHandlerRegistry;
+import org.nightlabs.singleton.ISingletonProvider;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -59,7 +58,8 @@ public class NLBasePlugin extends AbstractUIPlugin
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		// TODO what exactly is this useful for? maybe handle this with some kind of IOC?
-		ExceptionHandlerRegistry.sharedInstance().addProcessListener(SimpleExceptionHandlerRegistry.sharedInstance());
+		
+		
 //		try {
 //			resourceBundle = Platform.getResourceBundle(getBundle());
 //		} catch (MissingResourceException x) {
@@ -102,17 +102,13 @@ public class NLBasePlugin extends AbstractUIPlugin
 //		return resourceBundle;
 //	}
 
-	private AbstractApplication application = null;
+	private static ISingletonProvider<? extends AbstractApplication> applicationProvider = null;
 
-	public AbstractApplication getApplication()
-	{
-		return application;
+	public AbstractApplication getApplication() {
+		return applicationProvider.getInstance();
 	}
-	public void setApplication(AbstractApplication application)
-	{
-		if (this.application != null && this.application != application)
-			throw new IllegalStateException("Cannot overwrite application! It is already initialized!"); //$NON-NLS-1$
-
-		this.application = application;
+	
+	public static void setApplicationSingletonProvider(ISingletonProvider<? extends AbstractApplication> provider) {
+		applicationProvider = provider;
 	}
 }

@@ -29,6 +29,7 @@ package org.nightlabs.base.ui.exceptionhandler;
 import org.apache.log4j.Logger;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.CompatibleWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.nightlabs.base.ui.resource.Messages;
 
@@ -59,7 +60,7 @@ public class OutOfMemoryErrorDialog extends DefaultErrorDialog {
 			restartWorkbenchButton.getVisible(); // to avoid warning
 			try {
 				logger.info("Trying to restart the workbench due to OutOfMemoryError"); //$NON-NLS-1$
-				if (!PlatformUI.getWorkbench().restart()) {
+				if (!CompatibleWorkbench.restart()) {
 					System.exit(1);
 				}
 				logger.info("Close successful, restarting"); //$NON-NLS-1$

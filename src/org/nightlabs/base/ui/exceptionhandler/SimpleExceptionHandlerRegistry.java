@@ -5,6 +5,8 @@ import org.eclipse.core.runtime.IExtension;
 import org.nightlabs.eclipse.extension.AbstractEPProcessor;
 import org.nightlabs.eclipse.extension.EPProcessorException;
 import org.nightlabs.eclipse.extension.IEPProcessListener;
+import org.nightlabs.singleton.ISingletonProvider;
+import org.nightlabs.singleton.SingletonProviderFactory;
 
 /**
  * Processes extensions of <code>simpleExceptionHandler</code>s by registering to
@@ -18,7 +20,7 @@ extends AbstractEPProcessor
 implements IEPProcessListener
 {
 	public static final String ExtensionPointID = "org.nightlabs.base.ui.simpleExceptionHandler"; //$NON-NLS-1$
-	private static SimpleExceptionHandlerRegistry sharedInstance;
+	private static ISingletonProvider<SimpleExceptionHandlerRegistry> sharedInstance = SingletonProviderFactory.createProviderForClass(SimpleExceptionHandlerRegistry.class);
 
 	@Override
 	public String getExtensionPointID()
@@ -64,9 +66,6 @@ implements IEPProcessListener
 	}
 
 	public static SimpleExceptionHandlerRegistry sharedInstance() {
-		if (sharedInstance == null) {
-			sharedInstance = new SimpleExceptionHandlerRegistry();
-		}
-		return sharedInstance;
+		return sharedInstance.getInstance();
 	}
 }

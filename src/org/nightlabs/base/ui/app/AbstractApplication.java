@@ -39,11 +39,15 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 import org.nightlabs.base.ui.NLBasePlugin;
+import org.nightlabs.base.ui.context.DefaultUIContextRunner;
+import org.nightlabs.base.ui.context.UIContext;
 import org.nightlabs.base.ui.exceptionhandler.ExceptionHandlerRegistry;
 import org.nightlabs.base.ui.exceptionhandler.SaveRunnableRunner;
+import org.nightlabs.base.ui.exceptionhandler.SimpleExceptionHandlerRegistry;
 import org.nightlabs.config.Config;
 import org.nightlabs.config.ConfigException;
 import org.nightlabs.eclipse.extension.RemoveExtensionRegistry;
+import org.nightlabs.singleton.SingletonProviderFactory;
 import org.nightlabs.util.IOUtil;
 
 /**
@@ -94,13 +98,6 @@ implements IApplication
 //	public static final String LOG_FILE_NAME_PROPERTY_KEY = "org.nightlabs.base.ui.log.filename";
 //	public static final String LOG_FILE_WITH_PATH_PROPERTY_KEY = "org.nightlabs.base.ui.log.file";
 
-	protected static AbstractApplication sharedInstance;
-
-	protected static AbstractApplication sharedInstance() {
-		if (sharedInstance == null)
-			throw new IllegalStateException("No application has been created yet!"); //$NON-NLS-1$
-		return sharedInstance;
-	}
 
 	/**
 	 * Constructs a new Application and
@@ -110,7 +107,6 @@ implements IApplication
 	{
 		super();
 //		applicationName = initApplicationName();
-		sharedInstance = this;
 	}
 
 //	private static String applicationName = "AbstractApplication"; //$NON-NLS-1$
@@ -231,7 +227,7 @@ implements IApplication
 	 * Configures log4j with the file located in {@link #getConfigDir()}+"/log4j.properties"
 	 * @throws IOException If copying the config-file fails.
 	 */
-	protected void initializeLogging()
+	public void initializeLogging()
 	throws IOException
 	{
 		File logConfFile = new File(getConfigDir(), LOG4J_CONFIG_FILE);
@@ -301,7 +297,10 @@ implements IApplication
 	 * 
 	 * @see Thread#setDefaultUncaughtExceptionHandler(java.lang.Thread.UncaughtExceptionHandler)
 	 */
-	protected void initExceptionHandling() {
+	public void initExceptionHandling() {
+		ExceptionHandlerRegistry.sharedInstance().addProcessListener(SimpleExceptionHandlerRegistry.sharedInstance());
+
+		
 		final Thread.UncaughtExceptionHandler oldDefaultExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
 		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
 			public void uncaughtException(Thread t, Throwable e) {
@@ -326,7 +325,9 @@ implements IApplication
 	public Object start(IApplicationContext context) throws Exception {
 		try {
 			initExceptionHandling();
-			NLBasePlugin.getDefault().setApplication(this);
+			
+			NLBasePlugin.setApplicationSingletonProvider(SingletonProviderFactory.createProviderForInstance(this));
+			
 			this.arguments = (String[]) context.getArguments().get(IApplicationContext.APPLICATION_ARGS);
 			
 			initializeLogging();
@@ -345,6 +346,7 @@ implements IApplication
 				return platformReturnCode;
 			}
 			display = PlatformUI.createDisplay();
+			UIContext.sharedInstance().registerRunner(Thread.currentThread(), new DefaultUIContextRunner());
 			try {
 				int returnCode = PlatformUI.createAndRunWorkbench(display, initWorkbenchAdvisor(display));
 				if (returnCode == PlatformUI.RETURN_RESTART)
@@ -426,7 +428,7 @@ implements IApplication
 		});
 	}
 
-	private String[] arguments = null;
+	protected String[] arguments = new String[0];
 
 	/**
 	 * This method returns the program arguments. Note, that they are <code>null</code> until {@link #run(Object)} has been
@@ -437,6 +439,9 @@ implements IApplication
 	public String[] getArguments() {
 		return arguments;
 	}
+	
+	
+	
 
 	/**
 	 * 
@@ -451,7 +456,7 @@ implements IApplication
 	 * Initializes the Config in the ConfigDir of the Application
 	 * @throws ConfigException If creating the Configs shared instance fails.
 	 */
-	protected void initConfig()
+	public void initConfig()
 	throws ConfigException
 	{
 		// initialize the Config
@@ -473,7 +478,7 @@ implements IApplication
 	 * This implementation does nothing.
 	 * </p>
 	 */
-	protected void preCreateWorkbench() {}
+	public void preCreateWorkbench() {}
 	
 	/**
 	 * Sets the platforms returnCode

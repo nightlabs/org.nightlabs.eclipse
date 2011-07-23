@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Text;
 import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.form.NightlabsFormsToolkit;
 import org.nightlabs.base.ui.resource.SharedImages;
+import org.nightlabs.jfire.compatibility.CompatibleSWT;
 import org.nightlabs.l10n.DateFormatter;
 import org.nightlabs.l10n.DateParseException;
 
@@ -196,7 +197,7 @@ public class DateTimeControl extends XComposite {
 		Event event = new Event();
 		event.widget = DateTimeControl.this;
 		event.display = originalFocusEvent.display;
-		event.time = originalFocusEvent.time;
+		event.time = CompatibleSWT.getFocusEventTime(originalFocusEvent);
 		event.data = originalFocusEvent.data;
 		FocusEvent fe = new FocusEvent(event);
 		for (Object listener : listeners) {
@@ -303,7 +304,7 @@ public class DateTimeControl extends XComposite {
 			Event event = new Event();
 			event.widget = DateTimeControl.this;
 			event.display = e.display;
-			event.time = e.time;
+			event.time = CompatibleSWT.getModifyEventTime(e);
 			event.data = e.data;
 			ModifyEvent me = new ModifyEvent(event);
 			for (Object listener : listeners) {

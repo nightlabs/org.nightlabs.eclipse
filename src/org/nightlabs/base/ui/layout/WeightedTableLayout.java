@@ -39,6 +39,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
+import org.nightlabs.jfire.compatibility.CompatibleSWT;
 
 /**
  * An instance of this class can be used for a {@link Tree} (can be wrapped by {@link TreeViewer}) or
@@ -141,17 +142,9 @@ extends TableLayout
 		else
 			throw new IllegalArgumentException("Composite c is neither a " + Table.class.getName() + " nor a " + Tree.class.getName()); //$NON-NLS-1$ //$NON-NLS-2$
 
-		int reduceWidth = 0;
-		if (reduceHorizontalScrollbarFix) {
-			// TODO FIXME Check if this setting is right for all OS and Themes.
-			// Only tested with Windows XP Classic Theme. Daniel
-			reduceWidth = 5;
-		}
-		int width = c.getBounds().width - reduceWidth;
-		ScrollBar sb = c.getVerticalBar();
-		if(sb.isEnabled() && sb.isVisible())
-			width -= sb.getSize().x;
-//			width += sb.getSize().x;
+		int width = c.getBounds().width;
+		
+		width -= CompatibleSWT.getVerticalScrollBarWidth(c);
 		
 		int totalWeight = 0;
 		int totalFixedWidth = 0;
@@ -196,22 +189,6 @@ extends TableLayout
 				layoutDatas.add(new ColumnWeightData(getWeight(i)));
 		}
 		return layoutDatas;
-	}
-	
-	private boolean reduceHorizontalScrollbarFix = false;
-
-	/**
-	 * @return the reduceHorizontalScrollbarFix
-	 */
-	public boolean isReduceHorizontalScrollbarFix() {
-		return reduceHorizontalScrollbarFix;
-	}
-
-	/**
-	 * @param reduceHorizontalScrollbarFix the reduceHorizontalScrollbarFix to set
-	 */
-	public void setReduceHorizontalScrollbarFix(boolean reduceHorizontalScrollbarFix) {
-		this.reduceHorizontalScrollbarFix = reduceHorizontalScrollbarFix;
 	}
 }
 

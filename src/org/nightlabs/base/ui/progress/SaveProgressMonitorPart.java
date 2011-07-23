@@ -73,7 +73,7 @@ public class SaveProgressMonitorPart extends ProgressMonitorPart {
 	 */
 	@Override
 	public void beginTask(final String title, final int work) {
-		Display.getDefault().asyncExec(new Runnable() {
+		getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				if (! checkGUIexists())
 					return;
@@ -89,7 +89,7 @@ public class SaveProgressMonitorPart extends ProgressMonitorPart {
 	 */
 	@Override
 	public void done() {
-		Display.getDefault().asyncExec(new Runnable() {
+		getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				if (! checkGUIexists())
 					return;
@@ -105,7 +105,7 @@ public class SaveProgressMonitorPart extends ProgressMonitorPart {
 	 */
 	@Override
 	public void internalWorked(final double worked) {
-		Display.getDefault().asyncExec(new Runnable() {
+		getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				if (! checkGUIexists())
 					return;
@@ -125,7 +125,7 @@ public class SaveProgressMonitorPart extends ProgressMonitorPart {
 			public boolean bool = false;
 		}
 		final BooleanHolder holder = new BooleanHolder();
-		Display.getDefault().asyncExec(new Runnable() {
+		getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				if (! checkGUIexists()) {
 					holder.bool = true;
@@ -144,7 +144,7 @@ public class SaveProgressMonitorPart extends ProgressMonitorPart {
 	 */
 	@Override
 	public void setCanceled(final boolean canceled) {
-		Display.getDefault().asyncExec(new Runnable() {
+		getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				if (! checkGUIexists())
 					return;
@@ -160,7 +160,7 @@ public class SaveProgressMonitorPart extends ProgressMonitorPart {
 	 */
 	@Override
 	public void setTaskName(final String taskName) {
-		Display.getDefault().asyncExec(new Runnable() {
+		getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				if (! checkGUIexists())
 					return;
@@ -192,7 +192,7 @@ public class SaveProgressMonitorPart extends ProgressMonitorPart {
 	 */
 	@Override
 	public void worked(final int worked) {
-		Display.getDefault().asyncExec(new Runnable() {
+		getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				if (! checkGUIexists())
 					return;

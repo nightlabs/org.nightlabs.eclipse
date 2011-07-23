@@ -53,6 +53,8 @@ import org.nightlabs.i18n.unit.DefaultScreenUnit;
 import org.nightlabs.i18n.unit.IUnit;
 import org.nightlabs.i18n.unit.MMUnit;
 import org.nightlabs.i18n.unit.UnitUtil;
+import org.nightlabs.jfire.compatibility.CompatibleGC;
+import org.nightlabs.jfire.compatibility.CompatibleSWT;
 
 /**
  * @author Daniel.Mazurek [at] NightLabs [dot] de
@@ -243,14 +245,14 @@ extends XComposite
 //				double translateY = Math.abs((pageRectangle.getHeight() - canvasHeight) / 2);
 //				transform.translate((float)translateX, (float)translateY);
 				
-				gc.setTransform(transform);
+				CompatibleGC.setTransform(gc, transform);
 				
 				gc.setBackground(getBackgroundColor());
 				gc.fillRectangle(pageRectangle.x, pageRectangle.y,
 						pageRectangle.width, pageRectangle.height);
 				
 				gc.setLineWidth(3);
-				gc.setLineStyle(SWT.LINE_SOLID);
+				CompatibleGC.setLineStyle(gc, CompatibleSWT.LINE_SOLID);
 				gc.drawRectangle(imageablePageRectangle.x, imageablePageRectangle.y,
 						imageablePageRectangle.width, imageablePageRectangle.height);
 			}

@@ -248,13 +248,21 @@ extends AbstractEPProcessor
 	private void checkElementPath(String elementPath, IConfigurationElement element,
 			Set<IConfigurationElement> elements, String attributeName, String attributePattern)
 	{
+		String elementName;
+		try {
+			elementName = element.getName();
+		} catch (InvalidRegistryObjectException x) {
+			logger.warn("checkElementPath: " + x, x);
+			return;
+		}
+		
 		Pattern pattern = Pattern.compile("/"); //$NON-NLS-1$
 		String[] splits = pattern.split(elementPath);
 		String element0 = splits[0];
 		if (element0.equals(elementPath)) {
 			try {
 				// element path matches			
-				if (element.getName().equals(element0)) {
+				if (elementName.equals(element0)) {
 					// attribute name matches
 					if (element.getAttribute(attributeName) != null) {
 						String attributeValue = element.getAttribute(attributeName);
@@ -274,7 +282,7 @@ extends AbstractEPProcessor
 				}
 			}
 		}
-		else if (element0.equals(element.getName())) {
+		else if (element0.equals(elementName)) {
 			String newElementPath = elementPath.substring(element0.length() + 1);
 			IConfigurationElement[] children = element.getChildren();
 			for (IConfigurationElement child : children) {

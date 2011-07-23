@@ -54,6 +54,7 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.composite.XComposite.LayoutDataMode;
 import org.nightlabs.base.ui.composite.XComposite.LayoutMode;
+import org.nightlabs.jfire.compatibility.CompatibleFormToolkit;
 
 /**
  * This is a subclass of the {@link FormToolkit} which allows also to
@@ -424,17 +425,16 @@ extends FormToolkit
 		return super.getHyperlinkGroup();
 	}
 
-	@Override
 	public void paintBordersFor(Composite parent)
 	{
 		switch (currentMode)
 		{
 			case FORM:
-				super.paintBordersFor(parent);
+				CompatibleFormToolkit.paintBordersFor(this, parent);
 			case COMPOSITE:
 				// Does nothing
 			default:
-				super.paintBordersFor(parent);
+				CompatibleFormToolkit.paintBordersFor(this, parent);
 		}
 	}
 

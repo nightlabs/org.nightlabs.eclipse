@@ -55,7 +55,7 @@ public abstract class FadeableCompositeJob extends Job
 		IStatus ret = Status.CANCEL_STATUS;
 		try
 		{
-			Display.getDefault().syncExec(
+			composite.getDisplay().syncExec(
 					new Runnable()
 					{
 						public void run()
@@ -73,7 +73,7 @@ public abstract class FadeableCompositeJob extends Job
 		}
 		finally
 		{
-			Display.getDefault().syncExec(
+			composite.getDisplay().syncExec(
 					new Runnable()
 					{
 						public void run()

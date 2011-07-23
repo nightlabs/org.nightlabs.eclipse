@@ -33,7 +33,7 @@ public class TableColumnFilterTable extends AbstractTableComposite<String>
 		TableColumn tc = new TableColumn(table, SWT.NONE);
 		tc.setText("Name");
 		WeightedTableLayout layout = new WeightedTableLayout(new int[] {1});
-		layout.setReduceHorizontalScrollbarFix(true);
+//		layout.setReduceHorizontalScrollbarFix(true); // If necessary, CompatibleSWT.getVerticalScrollBarWidth(...) should be modified as this is now always used by WeightedTableLayout - without enabling a fix like this.
 		table.setLayout(layout);
 	}
 

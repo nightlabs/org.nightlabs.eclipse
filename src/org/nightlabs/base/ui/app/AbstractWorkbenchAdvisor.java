@@ -154,7 +154,7 @@ extends WorkbenchAdvisor
 	 * and then modify the result.
 	 */
 	protected AbstractApplication initApplication() {
-		return AbstractApplication.sharedInstance();
+		return NLBasePlugin.getDefault().getApplication();
 	}
 
 	/**

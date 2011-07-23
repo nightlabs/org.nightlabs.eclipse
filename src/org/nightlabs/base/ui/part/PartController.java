@@ -34,7 +34,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.ui.IViewPart;
@@ -113,6 +115,8 @@ public abstract class PartController {
 		 * @param parent
 		 */
 		public void createPartControl(Composite parent) {
+			parent.setLayout(new GridLayout());
+			
 			wrapper = new XComposite(parent, SWT.NONE, XComposite.LayoutMode.TIGHT_WRAPPER);
 			stackLayout = new StackLayout();
 			wrapper.setLayout(stackLayout);
@@ -167,6 +171,14 @@ public abstract class PartController {
 						creatingContents = true;
 						try{
 							part.createPartContents(fadeableWrapper);
+							
+							Control[] children = fadeableWrapper.getChildren();
+							if (children.length == 1) {
+								if (children[0].getLayoutData() != null) {
+									children[0].setLayoutData(null);
+								}
+							}
+							
 							contentsCreated = true;
 						} finally {
 							creatingContents = false;

@@ -26,6 +26,8 @@
 
 package org.nightlabs.base.ui.composite;
 
+import org.eclipse.swt.widgets.Display;
+
 /**
  * @author Niklas Schiffler <nick@nightlabs.de>
  *
@@ -34,4 +36,5 @@ public interface Fadeable
 {
 	boolean isDisposed();
 	void setFaded(boolean faded);
+	Display getDisplay();
 }

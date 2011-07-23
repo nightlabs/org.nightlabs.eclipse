@@ -52,12 +52,12 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PerspectiveAdapter;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.ContributionItemFactory;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
-import org.eclipse.ui.internal.handlers.ShowKeyAssistHandler;
 import org.nightlabs.base.ui.action.ContributionItemSetRegistry;
 import org.nightlabs.base.ui.action.NewWizardAction;
 import org.nightlabs.base.ui.action.OpenFileAction;
@@ -71,6 +71,7 @@ import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.util.RCPUtil;
 import org.nightlabs.config.Config;
 import org.nightlabs.config.ConfigException;
+import org.nightlabs.jfire.compatibility.CompatibleActionFactory;
 import org.nightlabs.util.CollectionUtil;
 
 /**
@@ -152,8 +153,6 @@ extends ActionBarAdvisor
 	protected IAction updateAction;
 	protected ActionFactory.IWorkbenchAction aboutAction;
 
-	protected ShowKeyAssistHandler keyAssistHandler;
-
 	// Window-Menu
 	protected IContributionItem openPerspectiveMenu;
 	protected IContributionItem showViewMenu;
@@ -216,7 +215,8 @@ extends ActionBarAdvisor
 	{
 		// File
 		if (isContained(ActionBarItem.KeyAssist)) {
-			keyAssistHandler = new ShowKeyAssistHandler();
+			//FIXME doesn't exist in RAP
+			//keyAssistHandler = new ShowKeyAssistHandler();
 		}
 		if (isContained(ActionBarItem.New)) {
 			IWorkbenchAction newAction = new NewWizardAction(window);
@@ -314,7 +314,7 @@ extends ActionBarAdvisor
 			helpAction = ActionFactory.HELP_CONTENTS.create(window);
 			actions.put(ActionBarItem.Help, helpAction);
 		}
-		if (isContained(ActionBarItem.Intro)) {
+		if (isContained(ActionBarItem.Intro) && window.getWorkbench().getIntroManager().getIntro() != null) {
 			try {
 				introAction = ActionFactory.INTRO.create(window);
 				actions.put(ActionBarItem.Intro, introAction);
@@ -329,8 +329,8 @@ extends ActionBarAdvisor
 //			updateAction = new UpdateAction();
 //			actions.put(ActionBarItem.Update, updateAction);
 		}
-		if (isContained(ActionBarItem.About)) {
-			aboutAction = ActionFactory.ABOUT.create(window);
+		if (isContained(ActionBarItem.About) && CompatibleActionFactory.ABOUT != null) {
+			aboutAction = CompatibleActionFactory.ABOUT.create(window);
 			actions.put(ActionBarItem.About, aboutAction);
 		}
 
@@ -556,7 +556,7 @@ extends ActionBarAdvisor
 		if (updateAction != null)
 			helpMenu.add(updateAction);
 
-		if (menuBarItems.contains(ActionBarItem.About)) {
+		if (menuBarItems.contains(ActionBarItem.About) && aboutAction != null) {
 			helpMenu.add(aboutAction);	
 		}
 	}
@@ -595,6 +595,9 @@ extends ActionBarAdvisor
 			// It might happen, that the application never has an active perspective, because it is shut down before
 			// completely starting (e.g. when the classloader-config changed and the login occurs very early
 			// and decides to restart the application.
+			
+			final Display display = Display.getDefault();
+			
 			Thread thread = new Thread() {
 				@Override
 				public void run() {
@@ -604,9 +607,13 @@ extends ActionBarAdvisor
 					} catch (InterruptedException e) {
 						// ignore
 					}
-					Display.getDefault().asyncExec(new Runnable() {
+					display.asyncExec(new Runnable() {
 						public void run() {
+							try {
 							createContributionItemSetRegistry();
+							}catch(Exception aEx) {
+								aEx.printStackTrace();
+							}
 						}
 					});
 				}

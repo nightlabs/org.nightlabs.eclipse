@@ -46,19 +46,18 @@ import org.nightlabs.config.ConfigException;
 import org.nightlabs.i18n.I18nUtil;
 import org.nightlabs.l10n.GlobalL10nSettings;
 import org.nightlabs.language.LanguageCf;
+import org.nightlabs.singleton.ISingletonProvider;
+import org.nightlabs.singleton.SingletonProviderFactory;
 import org.nightlabs.util.NLLocale;
 
 // TODO: use language and country (complete locale)
 public class LanguageManager
 implements ILanguageManager
 {
-	private static LanguageManager sharedInstance = null;
-	public static LanguageManager sharedInstance()
-	{
-		if (sharedInstance == null)
-			sharedInstance = new LanguageManager();
-
-		return sharedInstance;
+	private static ISingletonProvider<LanguageManager> singleton = SingletonProviderFactory.createProviderForClass(LanguageManager.class);
+	
+	public static LanguageManager sharedInstance()	{
+		return singleton.getInstance();
 	}
 
 	private LanguageCfMod langCfMod;

@@ -33,6 +33,7 @@ import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Layout;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.nightlabs.base.ui.form.NightlabsFormsToolkit;
@@ -454,6 +455,11 @@ public class XComposite extends Composite
 		} // walk up the composite tree
 
 		return null;
+	}
+	
+	@Override
+	public void setLayout(Layout layout) {
+		super.setLayout(layout);
 	}
 
 }

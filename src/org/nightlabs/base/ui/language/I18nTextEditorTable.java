@@ -43,6 +43,7 @@ import org.nightlabs.base.ui.layout.WeightedTableLayout;
 import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.i18n.I18nText;
 import org.nightlabs.i18n.I18nTextBuffer;
+import org.nightlabs.jfire.compatibility.CompatibleSWT;
 import org.nightlabs.language.LanguageCf;
 
 /**
@@ -102,7 +103,7 @@ public class I18nTextEditorTable extends XComposite implements II18nTextEditor
 
 		// Initial TableViewer
 		int tableStyle = getBorderStyle() | SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL
-		| SWT.FULL_SELECTION | SWT.HIDE_SELECTION;
+		| SWT.FULL_SELECTION | CompatibleSWT.HIDE_SELECTION;
 		table = new Table(this, tableStyle);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);

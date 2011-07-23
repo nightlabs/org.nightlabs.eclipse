@@ -6,6 +6,9 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.nightlabs.eclipse.extension.AbstractEPProcessor;
 import org.nightlabs.eclipse.extension.EPProcessorException;
+import org.nightlabs.singleton.ISingletonProvider;
+import org.nightlabs.singleton.SingletonProviderFactory;
+import org.nightlabs.singleton.ISingletonProvider.ISingletonFactory;
 
 /**
  * Base class for handling login authentication in applications.
@@ -17,18 +20,18 @@ import org.nightlabs.eclipse.extension.EPProcessorException;
 public final class Login
 extends AbstractEPProcessor
 {
-	private static Login sharedInstance = null;
+	private static ISingletonProvider<Login> sharedInstance = SingletonProviderFactory.createProviderForFactory(new ISingletonFactory<Login>() {
+		@Override
+		public synchronized Login makeInstance() {
+			Login login = new Login();
+			login.process();
+			return login;
+		}
+		
+	});
 
 	public static Login sharedInstance() {
-		if (sharedInstance == null) {
-			synchronized (Login.class) {
-				if (sharedInstance == null) {
-					sharedInstance = new Login();
-					sharedInstance.process();
-				}
-			}
-		}
-		return sharedInstance;
+		return sharedInstance.getInstance();
 	}
 
 	private Login() { }
@@ -111,21 +114,26 @@ extends AbstractEPProcessor
 		return "org.nightlabs.base.ui.login"; //$NON-NLS-1$
 	}
 
+	public static final String LOGIN_DELEGATE_ELEMENT = "login";
+	
 	@Override
 	public void processElement(IExtension extension, IConfigurationElement element)
 	throws Exception
 	{
-		ILoginDelegate loginDelegate;
-		try {
-			loginDelegate = (ILoginDelegate) element.createExecutableExtension("class"); //$NON-NLS-1$
-		} catch (Exception e) {
-			throw new EPProcessorException(e.getMessage(), extension, e);
+		if (Login.LOGIN_DELEGATE_ELEMENT.equals(element.getName())) 
+		{
+			ILoginDelegate loginDelegate;
+			try {
+				loginDelegate = (ILoginDelegate) element.createExecutableExtension("class"); //$NON-NLS-1$
+			} catch (Exception e) {
+				throw new EPProcessorException(e.getMessage(), extension, e);
+			}
+
+			if (this.loginDelegate != null)
+				throw new EPProcessorException("More than one plugin provide an extension to \""+getExtensionPointID()+"\": The plugin \"" + contributingPluginId + "\" did already initialize loginDelegate and the plugin \"" + extension.getNamespaceIdentifier() + "\" collides with this previous contribution!", extension); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+
+			this.contributingPluginId = extension.getNamespaceIdentifier();
+			this.loginDelegate = loginDelegate;			
 		}
-
-		if (this.loginDelegate != null)
-			throw new EPProcessorException("More than one plugin provide an extension to \""+getExtensionPointID()+"\": The plugin \"" + contributingPluginId + "\" did already initialize loginDelegate and the plugin \"" + extension.getNamespaceIdentifier() + "\" collides with this previous contribution!", extension); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-
-		this.contributingPluginId = extension.getNamespaceIdentifier();
-		this.loginDelegate = loginDelegate;
 	}
 }

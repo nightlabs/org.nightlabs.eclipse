@@ -146,10 +146,11 @@ public class EntityEditorStaleHandler {
 				public void shellDeactivated(ShellEvent e) {
 					shellDeactivated = true;
 				}
-				@Override
+				
+				@SuppressWarnings("unused")
 				public void shellDeiconified(ShellEvent e) {
 				}
-				@Override
+				@SuppressWarnings("unused")
 				public void shellIconified(ShellEvent e) {
 				}
 			};

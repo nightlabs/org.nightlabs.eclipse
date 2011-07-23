@@ -41,10 +41,10 @@ import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.forms.AbstractFormPart;
 import org.eclipse.ui.forms.IFormPart;
 import org.eclipse.ui.forms.editor.IFormPage;
+import org.nightlabs.base.ui.context.UIContext;
 import org.nightlabs.base.ui.exceptionhandler.ExceptionHandlerRegistry;
 import org.nightlabs.base.ui.job.Job;
 import org.nightlabs.base.ui.progress.CompoundProgressMonitor;
@@ -118,7 +118,7 @@ implements IEntityEditorPageController
 				// we should call refresh, too. Kai & Marco.
 				// Maybe we should be even more Eclipse-complient and work with IManagedForm.setInput(...) additionally to refresh() and commit(...). Daniel.
 				// Needs further thoughts and discussions. For example, the EntityEditorPageController (or an interface/superclass of it) should return the input-object for this purpose. Marco.
-				Display.getDefault().syncExec(new Runnable() {
+				UIContext.getDisplay().syncExec(new Runnable() {
 					public void run() {
 						for (IFormPage page : controller.getPages()) {
 							if (page != null && page.getManagedForm() != null && page.getManagedForm().getToolkit() != null) {

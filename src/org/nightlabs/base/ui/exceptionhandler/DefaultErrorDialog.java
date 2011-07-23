@@ -49,6 +49,7 @@ import org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReport;
 import org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportWizardDialog;
 import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.util.RCPUtil;
+import org.nightlabs.jfire.compatibility.CompatibleDialogConstants;
 
 /**
  * The default error dialog implementation. Error dialogs should be opened
@@ -98,7 +99,7 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 				null,
 				JFaceResources.getString("Problem_Occurred"), //$NON-NLS-1$
 				ERROR,
-				new String[] { IDialogConstants.OK_LABEL },
+				new String[] { CompatibleDialogConstants.get().OK_LABEL },
 				0);
 		setShellStyle(getShellStyle() | SWT.RESIZE);
 	}
@@ -223,11 +224,11 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 		GridData stackTraceGD = ((GridData)stackTraceText.getLayoutData());
 		if(visible) {
 			stackTraceGD.heightHint = stackTraceText.getLineHeight() * STACK_TRACE_LINE_COUNT;
-			detailsButton.setText(IDialogConstants.HIDE_DETAILS_LABEL);
+			detailsButton.setText(CompatibleDialogConstants.get().HIDE_DETAILS_LABEL);
 			stackTraceText.setVisible(true);
 		} else {
 			stackTraceGD.heightHint = 0;
-			detailsButton.setText(IDialogConstants.SHOW_DETAILS_LABEL);
+			detailsButton.setText(CompatibleDialogConstants.get().SHOW_DETAILS_LABEL);
 			stackTraceText.setVisible(false);
 		}
 		Point newSize = getShell().computeSize(SWT.DEFAULT, SWT.DEFAULT);
@@ -300,6 +301,6 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 	{
 		super.createButtonsForButtonBar(parent);
 		createButton(parent, SEND_ERROR_REPORT_ID, Messages.getString("org.nightlabs.base.ui.exceptionhandler.DefaultErrorDialog.button.sendErrorReport.text"), false); //$NON-NLS-1$
-		detailsButton = createButton(parent, IDialogConstants.DETAILS_ID, IDialogConstants.SHOW_DETAILS_LABEL, false);
+		detailsButton = createButton(parent, IDialogConstants.DETAILS_ID, CompatibleDialogConstants.get().SHOW_DETAILS_LABEL, false);
 	}
 }

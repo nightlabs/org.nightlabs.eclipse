@@ -38,8 +38,8 @@ import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.eclipse.core.resources.CompatibleResources;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -89,9 +89,12 @@ import org.eclipse.ui.internal.EditorStack;
 import org.eclipse.ui.internal.WorkbenchPage;
 import org.nightlabs.base.ui.composite.ChildStatusController;
 import org.nightlabs.base.ui.composite.XComposite;
+import org.nightlabs.base.ui.context.UIContext;
 import org.nightlabs.base.ui.form.AbstractBaseFormPage;
 import org.nightlabs.base.ui.layout.WeightedTableLayout;
 import org.nightlabs.base.ui.resource.Messages;
+import org.nightlabs.jfire.compatibility.CompatibleGC;
+import org.nightlabs.jfire.compatibility.CompatibleSWT;
 import org.nightlabs.util.IOUtil;
 
 /**
@@ -211,11 +214,11 @@ public class RCPUtil
 //		}
 //		return new Robot().createScreenCapture(new java.awt.Rectangle(minX, minY, maxX - minX, maxY - minY));
 
-		Image image = new Image(display, new Rectangle(minX, minY, maxX - minX, maxY - minY));
+		Image image = CompatibleSWT.newImage(display, new Rectangle(minX, minY, maxX - minX, maxY - minY));
 		try {
 			GC gc = new GC(display);
 			try {
-				gc.copyArea(image, minX, minY);
+				CompatibleGC.copyArea(gc, image, minX, minY);
 			} finally {
 				gc.dispose();
 			}
@@ -672,7 +675,8 @@ public class RCPUtil
 	}
 
 	public static boolean isDisplayThread() {
-		return Display.getDefault().getThread().equals(Thread.currentThread());
+		Display display = UIContext.getDisplay();
+		return display != null && display.getThread().equals(Thread.currentThread());
 	}
 
 	/**
@@ -683,7 +687,7 @@ public class RCPUtil
 	 */
 	public File getResourcesWorkspace()
 	{
-		return new File(ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString());
+		return CompatibleResources.getWorkspaceRootLocationPath();
 	}
 
 	/**
@@ -693,7 +697,7 @@ public class RCPUtil
 	 * @return A {@link File} representation of the given {@link IResource}.
 	 */
 	public static File getResourceAsFile(IResource resource) {
-		return new File(resource.getWorkspace().getRoot().getLocation().toFile(), resource.getFullPath().toOSString());
+		return CompatibleResources.getResourceAsFile(resource);
 	}
 
 	/**
@@ -841,7 +845,9 @@ public class RCPUtil
 			// the given tree of table is used in. If so reduce the available width.
 			// Note: The weird thing is, that the ScrollBar is always set and the width is always > 0,
 			//       BUT with this fix, the table width always matches perfectly. (marius)
-			final int verticalScrollBarWidth = c.getVerticalBar().getSize().y;
+			
+			// AAV: why height?!
+			final int verticalScrollBarWidth = CompatibleSWT.getVerticalScrollBarHeight(c);
 			final int width = c.getClientArea().width - verticalScrollBarWidth;
 
 			if (width > 1)

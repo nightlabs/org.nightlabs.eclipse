@@ -10,6 +10,7 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.ui.CompatibleWorkbench;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IKeyBindingService;
 import org.eclipse.ui.ISelectionListener;
@@ -72,7 +73,7 @@ implements ISelectionChangedListener
 	protected void updateActions()
 	{
 		if (getActionRegistry() != null) {
-			IKeyBindingService keyBindingService = getActiveEditor().getSite().getKeyBindingService();
+			IKeyBindingService keyBindingService = CompatibleWorkbench.getKeyBindingService(getActiveEditor().getSite());
 			for (ActionDescriptor actionDescriptor : getActionRegistry().getActionDescriptors()) {
 				if (!actionsRegisteredToKeyBindingService) {
 					if (keyBindingService != null && actionDescriptor.getAction() != null && actionDescriptor.getAction().getActionDefinitionId() != null) {
@@ -189,5 +190,4 @@ implements ISelectionChangedListener
 			activeEditor.getSite().getPage().removeSelectionListener(selectionListener);
 		super.dispose();
 	}
-		
 }

@@ -68,9 +68,6 @@ extends Section
 		super.internalSetExpanded(expanded);
 	}
 	
-	@Override
 	protected void onPaint(PaintEvent e) {
 	}
-	
-	
 }

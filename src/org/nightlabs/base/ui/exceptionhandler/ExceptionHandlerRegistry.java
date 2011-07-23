@@ -37,9 +37,12 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
-import org.eclipse.swt.widgets.Display;
+import org.nightlabs.base.ui.context.UIContext;
 import org.nightlabs.base.ui.util.RCPUtil;
 import org.nightlabs.eclipse.extension.AbstractEPProcessor;
+import org.nightlabs.jfire.compatibility.Compatibility;
+import org.nightlabs.singleton.ISingletonProvider;
+import org.nightlabs.singleton.SingletonProviderFactory;
 
 /**
  * Maintains a Map of {@link IExceptionHandler} and is able
@@ -312,7 +315,10 @@ public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 								IExceptionHandler handler = searchResult.getExceptionHandlerRegistryItem().getExceptionHandler();
 							
 								ExceptionHandlerParam exceptionParam = new ExceptionHandlerParam(thread,exception, searchResult.getTriggerException()); 
-								exceptionParam.setErrorScreenShot(RCPUtil.takeApplicationScreenShot());
+								
+								if(Compatibility.isRCP)
+									exceptionParam.setErrorScreenShot(RCPUtil.takeApplicationScreenShot());
+								
 								handled = handler.handleException(exceptionParam);
 								if (handled)
 									break;
@@ -342,9 +348,9 @@ public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 				};
 
 				if (async)
-					Display.getDefault().asyncExec(runnable);
+					UIContext.getDisplay().asyncExec(runnable);
 				else
-					Display.getDefault().syncExec(runnable);
+					UIContext.getDisplay().syncExec(runnable);
 				
 			} catch (Throwable ex) {
 				logger.fatal("Exception occured while handling exception on causing thread!", ex); //$NON-NLS-1$
@@ -412,12 +418,9 @@ public class ExceptionHandlerRegistry extends AbstractEPProcessor {
 	
 	
 	
-	private static ExceptionHandlerRegistry sharedInstance;
+	private static ISingletonProvider<ExceptionHandlerRegistry> sharedInstance = SingletonProviderFactory.createProviderForClass(ExceptionHandlerRegistry.class);
 	
 	public static ExceptionHandlerRegistry sharedInstance() {
-		if (sharedInstance == null) {
-			sharedInstance = new ExceptionHandlerRegistry();
-		}
-		return sharedInstance;
+		return sharedInstance.getInstance();
 	}
 }

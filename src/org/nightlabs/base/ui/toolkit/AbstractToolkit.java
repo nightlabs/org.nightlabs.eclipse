@@ -22,6 +22,8 @@ import org.eclipse.ui.forms.FormColors;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.nightlabs.base.ui.custom.XCombo;
+import org.nightlabs.jfire.compatibility.Compatibility;
+import org.nightlabs.jfire.compatibility.CompatibleSWT;
 
 /**
  * @author Marius Heinzmann [marius<at>NightLabs<dot>de]
@@ -42,7 +44,7 @@ public abstract class AbstractToolkit extends FormToolkit
 			Composite parent = (Composite) event.widget;
 			if (drawBorders.isDisposed()) {
 				logger.warn("paintControl: Control \"" + drawBorders + "\" is disposed! Removing this PaintListener from its parent.");
-				parent.removePaintListener(this);
+				CompatibleSWT.removePaintListener(parent, this);
 				return;
 			}
 
@@ -75,7 +77,7 @@ public abstract class AbstractToolkit extends FormToolkit
 			Composite parent = (Composite) event.widget;
 			if (drawBorders.isDisposed()) {
 				logger.warn("paintControl: Control \"" + drawBorders + "\" is disposed! Removing this PaintListener from its parent.");
-				parent.removePaintListener(this);
+				CompatibleSWT.removePaintListener(parent, this);
 				return;
 			}
 
@@ -137,21 +139,24 @@ public abstract class AbstractToolkit extends FormToolkit
 		}
 
 		boolean listenerAdded = false;
-		if (textBorder || element instanceof Text || element instanceof CCombo) { // element instanceof Spinner ||
-			parent.addPaintListener( new TextBorderPainter(element) );
-//		 if textBorder is set -> return false -> continue drawing borders for children
-			listenerAdded = ! textBorder;
-		}
-		else if (tableBorder || element instanceof Table || element instanceof Tree
-							|| element instanceof Spinner || element instanceof List)
-		{
-			parent.addPaintListener( new TableBorderPainter(element) );
-//		 if tableBorder is set -> return false -> continue drawing borders for children
-			listenerAdded = ! tableBorder;
-		}
-		else if (element instanceof XCombo) { // element instanceof CComboComposite ||
-			parent.addPaintListener( new TableBorderPainter(element) );
-			listenerAdded = true;
+		
+		if(Compatibility.isRCP) {
+			if (textBorder || element instanceof Text || element instanceof CCombo) { // element instanceof Spinner ||
+				CompatibleSWT.addPaintListener(parent, new TextBorderPainter(element) );
+	//		 if textBorder is set -> return false -> continue drawing borders for children
+				listenerAdded = ! textBorder;
+			}
+			else if (tableBorder || element instanceof Table || element instanceof Tree
+								|| element instanceof Spinner || element instanceof List)
+			{
+				CompatibleSWT.addPaintListener(parent, new TableBorderPainter(element) );
+	//		 if tableBorder is set -> return false -> continue drawing borders for children
+				listenerAdded = ! tableBorder;
+			}
+			else if (element instanceof XCombo) { // element instanceof CComboComposite ||
+				CompatibleSWT.addPaintListener(parent, new TableBorderPainter(element) );
+				listenerAdded = true;
+			}
 		}
 
 		listenerAdded |= checkAdditionalTypesForBorders(element);

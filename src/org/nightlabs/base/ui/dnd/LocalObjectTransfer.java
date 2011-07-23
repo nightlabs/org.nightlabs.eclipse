@@ -62,14 +62,14 @@ extends ByteArrayTransfer
 	}
 
 	@Override
-	protected void javaToNative(Object object, TransferData transferData)
+	public void javaToNative(Object object, TransferData transferData)
 	{
 		String objectKey = LocalTransferManager.sharedInstance().addObject(object);
 		super.javaToNative(objectKey.getBytes(), transferData); // TODO shouldn't we better use objectKey.getBytes(Utils.CHARSET_NAME_UTF_8) ?!!!!
 	}
 
 	@Override
-	protected Object nativeToJava(TransferData transferData)
+	public Object nativeToJava(TransferData transferData)
 	{
 		byte[] superResult = (byte[])super.nativeToJava(transferData);
 		String transferKey = new String(superResult); // TODO shouldn't we better use new String(superResult, Utils.CHARSET_NAME_UTF_8) ?!!!!

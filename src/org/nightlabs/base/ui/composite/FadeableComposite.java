@@ -39,6 +39,8 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.nightlabs.jfire.compatibility.Compatibility;
+import org.nightlabs.jfire.compatibility.CompatibleSWT;
 
 /**
  * This composite grays out if {@link #setFaded(boolean)} is called with value <tt>true</tt>.
@@ -266,8 +268,9 @@ public class FadeableComposite extends XComposite implements Fadeable
 		}
 
 		c.setEnabled(false);
-		if (FADE_WITH_IMAGE)
-			c.addPaintListener(pl);
+		
+		if (FADE_WITH_IMAGE && Compatibility.isRCP)
+			CompatibleSWT.addPaintListener(c, pl);
 	}
 
 	private void unfade(Control c)
@@ -288,7 +291,7 @@ public class FadeableComposite extends XComposite implements Fadeable
 			}
 		}
 
-		if (FADE_WITH_IMAGE)
-			c.removePaintListener(pl);
+		if (FADE_WITH_IMAGE && Compatibility.isRCP)
+			CompatibleSWT.removePaintListener(c, pl);
 	}
 }

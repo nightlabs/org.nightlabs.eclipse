@@ -53,6 +53,8 @@ import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
+import org.nightlabs.jfire.compatibility.CompatibleGC;
+import org.nightlabs.jfire.compatibility.CompatibleSWT;
 
 /**
  * Utility class for working with AWT and SWT images.
@@ -352,8 +354,8 @@ public class ImageUtil
 	 */
 	public static Image createColorImage(Color color, int width, int height)
 	{
-		Image image = new Image(Display.getDefault(), width, height);
-		GC gc = new GC(image);
+		Image image = CompatibleSWT.newImage(Display.getDefault(), width, height);
+		GC gc = CompatibleGC.newGC(image);
 		try {
 			org.eclipse.swt.graphics.Color swtColor = ColorUtil.toSWTColor(color);
 			registerTemporaryColor(image, swtColor);
@@ -376,8 +378,8 @@ public class ImageUtil
 	 */
 	public static Image createColorImage(org.eclipse.swt.graphics.Color color, int width, int height)
 	{
-		Image image = new Image(Display.getDefault(), width, height);
-		GC gc = new GC(image);
+		Image image = CompatibleSWT.newImage(Display.getDefault(), width, height);
+		GC gc = CompatibleGC.newGC(image);
 		try {
 			gc.setBackground(color);
 			gc.fillRectangle(0, 0, width, height);
@@ -391,10 +393,10 @@ public class ImageUtil
 
 	public static Image createLineStyleImage(int lineStyle, int width, int height)
 	{
-		Image image = new Image(Display.getDefault(), width, height);
-		GC gc = new GC(image);
+		Image image = CompatibleSWT.newImage(Display.getDefault(), width, height);
+		GC gc = CompatibleGC.newGC(image);
 		try {
-			gc.setLineStyle(lineStyle);
+			CompatibleGC.setLineStyle(gc, lineStyle);
 			gc.setLineWidth(5);
 			gc.setForeground(new org.eclipse.swt.graphics.Color(Display.getDefault(), 0, 0, 0));
 			gc.drawLine(1, height/2, width-1, height/2);
@@ -416,12 +418,12 @@ public class ImageUtil
 	 * @return Image of the new resized Image
 	 */
 	public static Image resize(Image image, int width, int height,Boolean highQuality) {
-		Image scaled = new Image(Display.getDefault(), width, height);
-		GC gc = new GC(scaled);
+		Image scaled = CompatibleSWT.newImage(Display.getDefault(), width, height);
+		GC gc = CompatibleGC.newGC(scaled);
 		if(highQuality)
 		{
-			gc.setAntialias(SWT.ON);
-			gc.setInterpolation(SWT.HIGH);
+			CompatibleGC.setAntialias(gc, SWT.ON);
+			CompatibleGC.setInterpolation(gc, CompatibleSWT.HIGH);
 		}
 		gc.drawImage(image, 0, 0,
 				image.getBounds().width, image.getBounds().height,

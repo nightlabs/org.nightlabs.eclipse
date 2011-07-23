@@ -42,6 +42,8 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Text;
+import org.nightlabs.jfire.compatibility.CompatibleSWT;
+import org.nightlabs.jfire.compatibility.CompatibleText;
 
 public class TimerText extends XComposite
 {
@@ -92,7 +94,7 @@ public class TimerText extends XComposite
 					Event ev = new Event();
 					ev.data = e.data;
 					ev.display = e.display;
-					ev.time = e.time;
+					ev.time = CompatibleSWT.getModifyEventTime(e);
 					ev.widget = TimerText.this;
 					event = new ModifyEvent(ev);
 				}
@@ -232,7 +234,7 @@ public class TimerText extends XComposite
 	 */
 	public void copy()
 	{
-		text.copy();
+		CompatibleText.copy(text);
 	}
 
 	/**
@@ -240,7 +242,7 @@ public class TimerText extends XComposite
 	 */
 	public void cut()
 	{
-		text.cut();
+		CompatibleText.cut(text);
 	}
 
 	/**
@@ -257,7 +259,7 @@ public class TimerText extends XComposite
 	 */
 	public boolean getDoubleClickEnabled()
 	{
-		return text.getDoubleClickEnabled();
+		return CompatibleText.getDoubleClickEnabled(text);
 	}
 
 	/**
@@ -335,7 +337,7 @@ public class TimerText extends XComposite
 	 */
 	public int getTabs()
 	{
-		return text.getTabs();
+		return CompatibleText.getTabs(text);
 	}
 
 	/**
@@ -501,16 +503,15 @@ public class TimerText extends XComposite
 	 */
 	public void showSelection()
 	{
-		text.showSelection();
+		CompatibleText.showSelection(text);
 	}
 
 	/**
 	 * @see org.eclipse.swt.widgets.Control#traverse(int)
 	 */
-	@Override
 	public boolean traverse(int traversal)
 	{
-		return text.traverse(traversal);
+		return CompatibleText.traverse(text, traversal);
 	}
 
 	/**

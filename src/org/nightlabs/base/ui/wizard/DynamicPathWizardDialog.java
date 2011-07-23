@@ -27,6 +27,7 @@
 package org.nightlabs.base.ui.wizard;
 
 import java.awt.Dimension;
+import java.awt.HeadlessException;
 import java.awt.Toolkit;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -222,12 +223,25 @@ public class DynamicPathWizardDialog extends WizardDialog
 		super.create();
 
 		DialogCf cf = getDialogCfMod().getDialogCf(getWizardIdentifier(getWizard()));
-		if (cf == null) {
-			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			Point shellSize = getShell().getSize();
-			int diffWidth = screenSize.width - shellSize.x;
-			int diffHeight = screenSize.height - shellSize.y;
-			getShell().setLocation(diffWidth/2, diffHeight/2);
+		
+		if (cf == null) { 
+			Dimension screenSize = null;
+			try {
+				screenSize = Toolkit.getDefaultToolkit().getScreenSize();	
+			} catch (HeadlessException e) {
+				// if we are in a headless environment (e.g. rap) we take the parent shell if available
+				if (getParentShell() != null) {
+					Point size = getParentShell().getSize();
+					screenSize = new Dimension(size.x, size.y);
+				}
+			}
+			// if we could obtain a screen size we center the dialog
+			if (screenSize != null) {
+				Point shellSize = getShell().getSize();
+				int diffWidth = screenSize.width - shellSize.x;
+				int diffHeight = screenSize.height - shellSize.y;
+				getShell().setLocation(diffWidth/2, diffHeight/2);				
+			}
 		}
 		else {
 			getShell().setLocation(cf.getX(), cf.getY());

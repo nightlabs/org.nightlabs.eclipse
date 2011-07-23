@@ -45,6 +45,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.nightlabs.base.ui.resource.Messages;
+import org.nightlabs.jfire.compatibility.CompatibleSWT;
 import org.nightlabs.l10n.Currency;
 import org.nightlabs.l10n.NumberFormatter;
 
@@ -139,7 +140,8 @@ public class CurrencyEdit extends XComposite
 				final Event event = new Event();
 				event.widget = CurrencyEdit.this;
 				event.display = e.display;
-				event.time = e.time;
+				
+				event.time = CompatibleSWT.getModifyEventTime(e);
 				event.data = e.data;
 				final ModifyEvent me = new ModifyEvent(event);
 				for (final Iterator<ModifyListener> it = modifyListeners.iterator(); it.hasNext(); ) {

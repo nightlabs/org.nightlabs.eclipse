@@ -34,6 +34,7 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
+import org.eclipse.ui.CompatibleWorkbench;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorReference;
@@ -211,16 +212,16 @@ extends AbstractEPProcessor
 						if (editorIDsForPerspective != null) {
 							for (IEditorReference ref : editorReferences) {
 								if (!editorIDsForPerspective.contains(ref.getId())) {
-									page.hideEditor(ref);
+									CompatibleWorkbench.hideEditor(page, ref);
 									hiddenEditorReferences.add(ref);
 								}
 								else {
-									page.showEditor(ref);
+									CompatibleWorkbench.showEditor(page, ref);
 								}
 							}
 							for (IEditorReference hiddenEditorRef : hiddenEditorReferences) {
 								if (editorIDsForPerspective.contains(hiddenEditorRef.getId()))
-									page.showEditor(hiddenEditorRef);
+									CompatibleWorkbench.showEditor(page, hiddenEditorRef);
 							}
 						}
 					}

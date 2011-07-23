@@ -45,6 +45,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
+import org.nightlabs.jfire.compatibility.CompatibleSWT;
 
 /**
  * @author Alexander Bieber <alex[AT]nightlabs[DOT]de>
@@ -74,7 +75,7 @@ public class SelectableComposite extends XComposite {
 			switch (event.type) {
 				case SWT.MouseDown:
 					break;
-				case SWT.MouseMove:
+				case CompatibleSWT.MouseMove:
 					break;
 				case SWT.MouseUp:
 					System.out.println("mouse up with x"+event.x+", y"+event.y); //$NON-NLS-1$ //$NON-NLS-2$

@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.nightlabs.base.ui.composite.CalendarDateTimeEditLookupDialog;
+import org.nightlabs.jfire.compatibility.CompatibleSWT;
 import org.nightlabs.l10n.DateFormatter;
 import org.nightlabs.l10n.DateParseException;
 
@@ -89,7 +90,7 @@ public class DateTimeCellEditor extends DialogCellEditor
 	@Override
 	protected Button createButton(Composite parent) {
 		defaultButton = super.createButton(parent);
-		defaultButton.addMouseTrackListener(new MouseTrackAdapter() {
+		CompatibleSWT.addMouseTrackListener(defaultButton, new MouseTrackAdapter() {
 			@Override
 			public void mouseEnter(MouseEvent e) {
 				overDefaultButton = true;
