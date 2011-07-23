@@ -21,10 +21,12 @@
 	</distributionManagement>
 
 	<modules>
+		<module>../org.nightlabs.eclipse.parent</module>
 		<module>../org.nightlabs.eclipse.preference.ui</module>
 		<module>../org.nightlabs.eclipse.ui.dialog</module>
 		<module>../org.nightlabs.eclipse.ui.treestate</module>
 		<module>../org.nightlabs.eclipse.extension</module>
 		<module>../org.nightlabs.base.ui</module>
+		<module>../org.nightlabs.base.ui.errorreport.mantis</module>
 	</modules>
 </project>
