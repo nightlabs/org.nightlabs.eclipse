@@ -170,6 +170,26 @@
 				<artifactId>org.eclipse.equinox.registry</artifactId>
 				<version>3.5.0</version>
 			</dependency>
+			<dependency>
+				<groupId>org.eclipse.ui</groupId>
+				<artifactId>org.eclipse.ui.intro</artifactId>
+				<version>3.4.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.ui</groupId>
+				<artifactId>org.eclipse.ui.editors</artifactId>
+				<version>3.6.1</version>
+			</dependency>
+		<dependency>
+			<groupId>org.eclipse.update</groupId>
+			<artifactId>org.eclipse.update.core</artifactId>
+			<version>3.2.402</version>
+		</dependency>
+			<dependency>
+				<groupId>org.eclipse.update</groupId>
+				<artifactId>org.eclipse.update.configurator</artifactId>
+				<version>3.3.100</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
