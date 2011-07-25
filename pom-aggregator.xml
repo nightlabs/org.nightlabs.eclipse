@@ -27,7 +27,9 @@
 		<module>../org.nightlabs.eclipse.ui.treestate</module>
 		<module>../org.nightlabs.eclipse.extension</module>
 		<module>../org.nightlabs.eclipse.compatibility.rcp</module>
+		<!-- Temporarily commented RAP out.
 		<module>../org.nightlabs.eclipse.compatibility.rap</module>
+		-->
 		<module>../org.nightlabs.base.ui</module>
 		<module>../org.nightlabs.base.ui.errorreport.mantis</module>
 	</modules>
