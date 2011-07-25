@@ -7,8 +7,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.nightlabs.eclipse.compatibility.CompatibleDialogConstants;
 import org.nightlabs.eclipse.ui.dialog.resource.Messages;
-import org.nightlabs.jfire.compatibility.CompatibleDialogConstants;
 
 /**
  * A dialog for showing messages to the user that disappears

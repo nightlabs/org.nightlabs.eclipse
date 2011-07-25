@@ -13,8 +13,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.nightlabs.eclipse.compatibility.CompatibleDialogConstants;
 import org.nightlabs.eclipse.ui.dialog.resource.Messages;
-import org.nightlabs.jfire.compatibility.CompatibleDialogConstants;
 import org.osgi.service.prefs.BackingStoreException;
 
 /**

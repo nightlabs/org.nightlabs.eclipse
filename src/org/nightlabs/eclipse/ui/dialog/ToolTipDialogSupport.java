@@ -17,7 +17,7 @@ import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.nightlabs.jfire.compatibility.CompatibleSWT;
+import org.nightlabs.eclipse.compatibility.CompatibleSWT;
 
 /**
  * Support for opening and closing a {@link Dialog} automatically as a tool-tip for certain
