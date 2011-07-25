@@ -6,12 +6,12 @@ Bundle-Version: 1.0.1.qualifier
 Bundle-Activator: org.nightlabs.connection.ui.NightLabsConnectionPlugin
 Bundle-Vendor: NightLabs.org
 Bundle-Localization: plugin
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
+Require-Bundle: org.eclipse.core.runtime,
  org.nightlabs.config,
  org.nightlabs.base.ui;visibility:=reexport,
  org.nightlabs.jfire.base.j2ee;resolution:=optional,
- org.nightlabs.eclipse.extension;bundle-version="1.0.0"
+ org.nightlabs.eclipse.extension;bundle-version="1.0.0",
+ org.nightlabs.eclipse.compatibility
 Eclipse-LazyStart: true
 Bundle-ClassPath: .
 Export-Package: org.nightlabs.connection.ui,
