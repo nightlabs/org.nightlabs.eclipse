@@ -42,8 +42,8 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Text;
-import org.nightlabs.jfire.compatibility.CompatibleSWT;
-import org.nightlabs.jfire.compatibility.CompatibleText;
+import org.nightlabs.eclipse.compatibility.CompatibleSWT;
+import org.nightlabs.eclipse.compatibility.CompatibleText;
 
 public class TimerText extends XComposite
 {

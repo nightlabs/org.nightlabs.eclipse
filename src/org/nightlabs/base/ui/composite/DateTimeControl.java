@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Text;
 import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.form.NightlabsFormsToolkit;
 import org.nightlabs.base.ui.resource.SharedImages;
-import org.nightlabs.jfire.compatibility.CompatibleSWT;
+import org.nightlabs.eclipse.compatibility.CompatibleSWT;
 import org.nightlabs.l10n.DateFormatter;
 import org.nightlabs.l10n.DateParseException;
 

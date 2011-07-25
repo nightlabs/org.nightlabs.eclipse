@@ -49,12 +49,12 @@ import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.i18n.UnitRegistryEP;
 import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.util.GeomUtil;
+import org.nightlabs.eclipse.compatibility.CompatibleGC;
+import org.nightlabs.eclipse.compatibility.CompatibleSWT;
 import org.nightlabs.i18n.unit.DefaultScreenUnit;
 import org.nightlabs.i18n.unit.IUnit;
 import org.nightlabs.i18n.unit.MMUnit;
 import org.nightlabs.i18n.unit.UnitUtil;
-import org.nightlabs.jfire.compatibility.CompatibleGC;
-import org.nightlabs.jfire.compatibility.CompatibleSWT;
 
 /**
  * @author Daniel.Mazurek [at] NightLabs [dot] de

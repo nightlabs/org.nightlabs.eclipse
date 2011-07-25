@@ -62,8 +62,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TypedListener;
 import org.eclipse.swt.widgets.Widget;
 import org.nightlabs.base.ui.composite.XComposite;
-import org.nightlabs.jfire.compatibility.Compatibility;
-import org.nightlabs.jfire.compatibility.CompatibleSWT;
+import org.nightlabs.eclipse.compatibility.Compatibility;
+import org.nightlabs.eclipse.compatibility.CompatibleSWT;
 
 /**
  * A Custom Implementation of a ComboBox which is able not only to show Strings but also

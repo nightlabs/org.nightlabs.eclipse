@@ -39,8 +39,8 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.nightlabs.base.ui.context.UIContext;
 import org.nightlabs.base.ui.util.RCPUtil;
+import org.nightlabs.eclipse.compatibility.Compatibility;
 import org.nightlabs.eclipse.extension.AbstractEPProcessor;
-import org.nightlabs.jfire.compatibility.Compatibility;
 import org.nightlabs.singleton.ISingletonProvider;
 import org.nightlabs.singleton.SingletonProviderFactory;
 

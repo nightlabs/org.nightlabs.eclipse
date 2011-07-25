@@ -53,8 +53,8 @@ import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
-import org.nightlabs.jfire.compatibility.CompatibleGC;
-import org.nightlabs.jfire.compatibility.CompatibleSWT;
+import org.nightlabs.eclipse.compatibility.CompatibleGC;
+import org.nightlabs.eclipse.compatibility.CompatibleSWT;
 
 /**
  * Utility class for working with AWT and SWT images.

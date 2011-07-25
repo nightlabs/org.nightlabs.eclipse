@@ -153,7 +153,7 @@ Require-Bundle: org.apache.log4j;visibility:=reexport,
  org.nightlabs.base;visibility:=reexport,
  org.nightlabs.config;bundle-version="0.9.7",
  org.nightlabs.eclipse.extension;bundle-version="1.0.0";visibility:=reexport,
- org.nightlabs.jfire.compatibility;bundle-version="1.0.0",
+ org.nightlabs.eclipse.compatibility;bundle-version="1.0.0",
  org.nightlabs.singleton;bundle-version="1.0.0";visibility:=reexport
 Eclipse-LazyStart: true
 Eclipse-BuddyPolicy: registered

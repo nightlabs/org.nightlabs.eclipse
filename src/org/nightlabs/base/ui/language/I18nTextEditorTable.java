@@ -41,9 +41,9 @@ import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.language.I18nTextEditor.EditMode;
 import org.nightlabs.base.ui.layout.WeightedTableLayout;
 import org.nightlabs.base.ui.resource.Messages;
+import org.nightlabs.eclipse.compatibility.CompatibleSWT;
 import org.nightlabs.i18n.I18nText;
 import org.nightlabs.i18n.I18nTextBuffer;
-import org.nightlabs.jfire.compatibility.CompatibleSWT;
 import org.nightlabs.language.LanguageCf;
 
 /**

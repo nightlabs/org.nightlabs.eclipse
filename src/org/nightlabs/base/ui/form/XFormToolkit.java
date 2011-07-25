@@ -54,7 +54,7 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.base.ui.composite.XComposite.LayoutDataMode;
 import org.nightlabs.base.ui.composite.XComposite.LayoutMode;
-import org.nightlabs.jfire.compatibility.CompatibleFormToolkit;
+import org.nightlabs.eclipse.compatibility.CompatibleFormToolkit;
 
 /**
  * This is a subclass of the {@link FormToolkit} which allows also to

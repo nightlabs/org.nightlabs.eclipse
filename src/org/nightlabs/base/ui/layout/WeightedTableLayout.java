@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
-import org.nightlabs.jfire.compatibility.CompatibleSWT;
+import org.nightlabs.eclipse.compatibility.CompatibleSWT;
 
 /**
  * An instance of this class can be used for a {@link Tree} (can be wrapped by {@link TreeViewer}) or

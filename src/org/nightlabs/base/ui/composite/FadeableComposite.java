@@ -39,8 +39,8 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.nightlabs.jfire.compatibility.Compatibility;
-import org.nightlabs.jfire.compatibility.CompatibleSWT;
+import org.nightlabs.eclipse.compatibility.Compatibility;
+import org.nightlabs.eclipse.compatibility.CompatibleSWT;
 
 /**
  * This composite grays out if {@link #setFaded(boolean)} is called with value <tt>true</tt>.

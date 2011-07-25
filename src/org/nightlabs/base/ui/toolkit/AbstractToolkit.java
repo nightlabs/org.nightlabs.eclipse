@@ -22,8 +22,8 @@ import org.eclipse.ui.forms.FormColors;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.nightlabs.base.ui.custom.XCombo;
-import org.nightlabs.jfire.compatibility.Compatibility;
-import org.nightlabs.jfire.compatibility.CompatibleSWT;
+import org.nightlabs.eclipse.compatibility.Compatibility;
+import org.nightlabs.eclipse.compatibility.CompatibleSWT;
 
 /**
  * @author Marius Heinzmann [marius<at>NightLabs<dot>de]

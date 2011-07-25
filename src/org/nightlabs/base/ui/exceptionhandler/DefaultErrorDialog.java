@@ -49,7 +49,7 @@ import org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReport;
 import org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportWizardDialog;
 import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.util.RCPUtil;
-import org.nightlabs.jfire.compatibility.CompatibleDialogConstants;
+import org.nightlabs.eclipse.compatibility.CompatibleDialogConstants;
 
 /**
  * The default error dialog implementation. Error dialogs should be opened

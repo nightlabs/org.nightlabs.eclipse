@@ -71,7 +71,7 @@ import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.base.ui.util.RCPUtil;
 import org.nightlabs.config.Config;
 import org.nightlabs.config.ConfigException;
-import org.nightlabs.jfire.compatibility.CompatibleActionFactory;
+import org.nightlabs.eclipse.compatibility.CompatibleActionFactory;
 import org.nightlabs.util.CollectionUtil;
 
 /**

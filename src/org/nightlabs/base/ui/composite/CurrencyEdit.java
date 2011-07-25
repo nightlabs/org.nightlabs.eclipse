@@ -45,7 +45,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.nightlabs.base.ui.resource.Messages;
-import org.nightlabs.jfire.compatibility.CompatibleSWT;
+import org.nightlabs.eclipse.compatibility.CompatibleSWT;
 import org.nightlabs.l10n.Currency;
 import org.nightlabs.l10n.NumberFormatter;
 

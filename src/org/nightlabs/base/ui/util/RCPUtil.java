@@ -93,8 +93,8 @@ import org.nightlabs.base.ui.context.UIContext;
 import org.nightlabs.base.ui.form.AbstractBaseFormPage;
 import org.nightlabs.base.ui.layout.WeightedTableLayout;
 import org.nightlabs.base.ui.resource.Messages;
-import org.nightlabs.jfire.compatibility.CompatibleGC;
-import org.nightlabs.jfire.compatibility.CompatibleSWT;
+import org.nightlabs.eclipse.compatibility.CompatibleGC;
+import org.nightlabs.eclipse.compatibility.CompatibleSWT;
 import org.nightlabs.util.IOUtil;
 
 /**
