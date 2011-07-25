@@ -50,7 +50,7 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 import org.eclipse.ui.preferences.IWorkingCopyManager;
 import org.eclipse.ui.preferences.WorkingCopyManager;
-import org.nightlabs.jfire.compatibility.CompatibleDialogConstants;
+import org.nightlabs.eclipse.compatibility.CompatibleDialogConstants;
 import org.osgi.service.prefs.BackingStoreException;
 
 /**
