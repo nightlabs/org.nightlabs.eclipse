@@ -15,7 +15,7 @@ Export-Package: org.nightlabs.jseditor.ui.rcp,
 Require-Bundle: org.eclipse.core.runtime,
  org.nightlabs.base.ui,
  org.nightlabs.jseditor.ui,
- org.nightlabs.jfire.compatibility;bundle-version="1.0.0",
+ org.nightlabs.eclipse.compatibility;bundle-version="1.0.0",
  org.eclipse.ui.workbench.texteditor;bundle-version="3.6.0",
  org.eclipse.jface.text;bundle-version="3.6.0",
  org.eclipse.ui.editors;bundle-version="3.6.0"
