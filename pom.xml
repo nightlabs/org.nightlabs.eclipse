@@ -113,6 +113,18 @@
 				<artifactId>org.nightlabs.base.ui</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.eclipse.compatibility.rap</artifactId>
+				<version>${project.version}</version>
+				<scope>provided</scope> <!-- All RCP/RAP-specific dependencies should be 'provided' to prevent automatic packaging of both. Marco :-) -->
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.eclipse.compatibility.rcp</artifactId>
+				<version>${project.version}</version>
+				<scope>provided</scope> <!-- All RCP/RAP-specific dependencies should be 'provided' to prevent automatic packaging of both. Marco :-) -->
+			</dependency>
 
 			<!-- ##### ECLIPSE ##### -->
 			<dependency>
