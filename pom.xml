@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	
-	<!-- @generated - Auto generated POM. Remove this marker after review. -->
-	
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.nightlabs.eclipse</groupId>
 	<artifactId>org.nightlabs.base.ui</artifactId>
@@ -15,7 +13,6 @@
 		<groupId>org.nightlabs.eclipse</groupId>
 		<artifactId>org.nightlabs.eclipse.parent</artifactId>
 		<version>1.2.0-SNAPSHOT</version>
-		<relativePath>../${project.parent.artifactId}/pom.xml</relativePath>
 	</parent>
 
 	<dependencies>
@@ -25,34 +22,43 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.XXX</groupId>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-javamail_1.4_spec</artifactId>
+			<version>1.7.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.swt</groupId>
+			<artifactId>${swt.artifactId}</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.core</groupId>
 			<artifactId>org.eclipse.core.resources</artifactId>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.XXX</groupId>
+			<groupId>org.eclipse.core</groupId>
 			<artifactId>org.eclipse.core.runtime</artifactId>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.XXX</groupId>
+			<groupId>org.eclipse.ui</groupId>
 			<artifactId>org.eclipse.ui</artifactId>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.XXX</groupId>
+			<groupId>org.eclipse.ui</groupId>
 			<artifactId>org.eclipse.ui.forms</artifactId>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.XXX</groupId>
+			<groupId>org.eclipse.ui</groupId>
 			<artifactId>org.eclipse.ui.views</artifactId>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.XXX</groupId>
+			<groupId>org.eclipse.update</groupId>
 			<artifactId>org.eclipse.update.ui</artifactId>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.nightlabs</groupId>
@@ -88,7 +94,11 @@
 			<groupId>org.nightlabs</groupId>
 			<artifactId>org.nightlabs.singleton</artifactId>
 			<scope>provided</scope>
-		</dependency>		
+		</dependency>
+		<dependency>
+			<groupId>org.nightlabs.eclipse</groupId>
+			<artifactId>org.nightlabs.eclipse.compatibility.rcp</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -101,8 +111,15 @@
 					<exclude>**/*.java</exclude>
 				</excludes>
 			</resource>
+			<!-- TODO following may be removed when upper is removed (defined in parent) -->
+			<resource>
+				<directory>.</directory>
+				<includes>
+					<include>plugin.xml</include>
+					<include>plugin*.properties</include>
+					<include>schema/**/*</include>
+				</includes>
+			</resource>
 		</resources>
-
-
 	</build>
 </project>
