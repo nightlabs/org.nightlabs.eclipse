@@ -34,10 +34,16 @@
 			<groupId>org.eclipse.core</groupId>
 			<artifactId>org.eclipse.core.runtime</artifactId>
 		</dependency>
+<!--
+These should not be referenced directly, because they are not existing in RAP. The required
+packages are either transitive dependencies of org.nightlabs.eclipse.compatibility.* or 
+provided by org.nightlabs.eclipse.compatibility.rap (to emulate the missing functionality in RAP).
+Marco :-)
 		<dependency>
 			<groupId>org.eclipse.ui</groupId>
 			<artifactId>org.eclipse.ui</artifactId>
 		</dependency>
+-->
 		<dependency>
 			<groupId>org.nightlabs</groupId>
 			<artifactId>org.nightlabs.base</artifactId>
@@ -57,7 +63,11 @@
 			<groupId>org.nightlabs</groupId>
 			<artifactId>org.nightlabs.config</artifactId>
 			<scope>provided</scope>
-		</dependency>		
+		</dependency>
+		<dependency>
+			<groupId>org.nightlabs.eclipse</groupId>
+			<artifactId>${org.nightlabs.eclipse.compatibility.artifactId}</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
