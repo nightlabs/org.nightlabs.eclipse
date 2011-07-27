@@ -35,52 +35,127 @@
 	<profiles>
 		<!-- TODO arch / test / cocoa -->
 		<profile>
-			<id>mac</id>
+			<id>client.platform.mac</id>
+<!--
+  Commenting automatic activation, because there must only be one of the profiles active and there are two active when we want to build RAP.
+  Here, it would not matter, because the properties are overwritten, but in pom-aggregator.xml, it causes too many modules to be included in
+  the build process.
+  Marco :-)
 			<activation>
 				<os>
 					<name>mac os x</name>
 				</os>
 			</activation>
+-->
+			<activation>
+				<property>
+					<name>client.platform</name>
+					<value>mac</value>
+				</property>
+			</activation>
 			<properties>
 				<swt.groupId>org.eclipse.swt.carbon</swt.groupId>
 				<swt.artifactId>macosx</swt.artifactId>
+				<org.nightlabs.eclipse.compatibility.artifactId>org.nightlabs.eclipse.compatibility.rcp</org.nightlabs.eclipse.compatibility.artifactId>
 			</properties>
 		</profile>
 		<!-- TODO arch / test -->
 		<profile>
-			<id>windows</id>
+			<id>client.platform.windows-x86</id>
+<!--
+  Commenting automatic activation, because there must only be one of the profiles active and there are two active when we want to build RAP.
+  Here, it would not matter, because the properties are overwritten, but in pom-aggregator.xml, it causes too many modules to be included in
+  the build process.
+  Marco :-)
 			<activation>
 				<os>
 					<family>windows</family>
 				</os>
 			</activation>
+-->
+<!--
+  Adding the activation by system property, because the -P argument did *NOT* work for me - no profile was enabled. Even though
+  "mvn help:active-profiles -P linux-gtk-x86_64" (before I added the "client.platform." prefix) told me that the profile was
+  enabled. I assume that this is a Maven bug (in version 3.0.3). It took me ages to find this out :-(((
+  Marco :-)
+-->
+			<activation>
+				<property>
+					<name>client.platform</name>
+					<value>windows-x86</value>
+				</property>
+			</activation>
 			<properties>
+				<swt.groupId>org.eclipse.swt</swt.groupId>
 				<swt.artifactId>org.eclipse.swt.win32.win32.x86</swt.artifactId>
+				<org.nightlabs.eclipse.compatibility.artifactId>org.nightlabs.eclipse.compatibility.rcp</org.nightlabs.eclipse.compatibility.artifactId>
 			</properties>
 		</profile>
 		<!-- TODO test -->
 		<profile>
-			<id>linux-gtk-x86</id>
+			<id>client.platform.linux-gtk-x86</id>
+<!--
+  Commenting automatic activation, because there must only be one of the profiles active and there are two active when we want to build RAP.
+  Here, it would not matter, because the properties are overwritten, but in pom-aggregator.xml, it causes too many modules to be included in
+  the build process.
+  Marco :-)
 			<activation>
 				<os>
 					<name>Linux</name>
 					<arch>x86</arch>
 				</os>
 			</activation>
+-->
+			<activation>
+				<property>
+					<name>client.platform</name>
+					<value>linux-gtk-x86</value>
+				</property>
+			</activation>
 			<properties>
+				<swt.groupId>org.eclipse.swt</swt.groupId>
 				<swt.artifactId>org.eclipse.swt.gtk.linux.x86</swt.artifactId>
+				<org.nightlabs.eclipse.compatibility.artifactId>org.nightlabs.eclipse.compatibility.rcp</org.nightlabs.eclipse.compatibility.artifactId>
 			</properties>
 		</profile>
 		<profile>
-			<id>linux-gtk-x86_64</id>
+			<id>client.platform.linux-gtk-x86_64</id>
+<!--
+  Commenting automatic activation, because there must only be one of the profiles active and there are two active when we want to build RAP.
+  Here, it would not matter, because the properties are overwritten, but in pom-aggregator.xml, it causes too many modules to be included in
+  the build process.
+  Marco :-)
 			<activation>
 				<os>
 					<name>Linux</name>
 					<arch>amd64</arch>
 				</os>
 			</activation>
+-->
+			<activation>
+				<property>
+					<name>client.platform</name>
+					<value>linux-gtk-x86_64</value>
+				</property>
+			</activation>
 			<properties>
+				<swt.groupId>org.eclipse.swt</swt.groupId>
 				<swt.artifactId>org.eclipse.swt.gtk.linux.x86_64</swt.artifactId>
+				<org.nightlabs.eclipse.compatibility.artifactId>org.nightlabs.eclipse.compatibility.rcp</org.nightlabs.eclipse.compatibility.artifactId>
+			</properties>
+		</profile>
+		<profile>
+			<id>client.platform.rap</id>
+			<activation>
+				<property>
+					<name>client.platform</name>
+					<value>rap</value>
+				</property>
+			</activation>
+			<properties>
+				<swt.groupId>org.eclipse.rap</swt.groupId>
+				<swt.artifactId>org.eclipse.rap.rwt</swt.artifactId>
+				<org.nightlabs.eclipse.compatibility.artifactId>org.nightlabs.eclipse.compatibility.rap</org.nightlabs.eclipse.compatibility.artifactId>
 			</properties>
 		</profile>
 	</profiles>
@@ -117,31 +192,72 @@
 				<groupId>org.nightlabs.eclipse</groupId>
 				<artifactId>org.nightlabs.eclipse.compatibility.rap</artifactId>
 				<version>${project.version}</version>
-				<scope>provided</scope> <!-- All RCP/RAP-specific dependencies should be 'provided' to prevent automatic packaging of both. Marco :-) -->
+				<scope>compile</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.nightlabs.eclipse</groupId>
 				<artifactId>org.nightlabs.eclipse.compatibility.rcp</artifactId>
 				<version>${project.version}</version>
-				<scope>provided</scope> <!-- All RCP/RAP-specific dependencies should be 'provided' to prevent automatic packaging of both. Marco :-) -->
+				<scope>compile</scope>
 			</dependency>
 
-			<!-- ##### ECLIPSE ##### -->
+			<!-- ##### ECLIPSE :: BEGIN ##### -->
+			<!-- ### ECLIPSE RAP :: BEGIN ### -->
+			<dependency>
+				<groupId>org.eclipse.rap</groupId>
+				<artifactId>org.eclipse.rap.rwt</artifactId>
+				<version>1.4.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.rap</groupId>
+				<artifactId>org.eclipse.rap.jface</artifactId>
+				<version>1.4.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.rap</groupId>
+				<artifactId>org.eclipse.rap.ui</artifactId>
+				<version>1.4.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.rap</groupId>
+				<artifactId>org.eclipse.rap.ui.forms</artifactId>
+				<version>1.4.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.rap</groupId>
+				<artifactId>org.eclipse.rap.ui.views</artifactId>
+				<version>1.4.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.rap</groupId>
+				<artifactId>org.eclipse.rap.ui.workbench</artifactId>
+				<version>1.4.0</version>
+			</dependency>
+			<!-- ### ECLIPSE RAP :: END ### -->
+
+			<!-- ### ECLIPSE RCP :: BEGIN ### -->
 			<dependency>
 				<groupId>org.eclipse.swt</groupId>
-				<artifactId>${swt.artifactId}</artifactId>
+<!--			<artifactId>${swt.artifactId}</artifactId> not using this variable here in order to specify all possible SWT artifact's versions -->
+				<artifactId>org.eclipse.swt.gtk.linux.x86</artifactId>
 				<version>[3.6,4.0)</version>
 			</dependency>
 			<dependency>
-				<groupId>org.eclipse.core</groupId>
-				<artifactId>org.eclipse.core.resources</artifactId>
-				<version>3.6.1</version>
+				<groupId>org.eclipse.swt</groupId>
+				<artifactId>org.eclipse.swt.gtk.linux.x86_64</artifactId>
+				<version>[3.6,4.0)</version>
 			</dependency>
 			<dependency>
-				<groupId>org.eclipse.core</groupId>
-				<artifactId>org.eclipse.core.runtime</artifactId>
-				<version>3.6.0</version>
+				<groupId>org.eclipse.swt</groupId>
+				<artifactId>org.eclipse.swt.win32.win32.x86</artifactId>
+				<version>[3.6,4.0)</version>
 			</dependency>
+			<dependency>
+				<groupId>org.eclipse.swt.carbon</groupId>
+				<artifactId>macosx</artifactId>
+				<version>[3.6,4.0)</version>
+			</dependency>
+
 			<dependency>
 				<groupId>org.eclipse.ui</groupId>
 				<artifactId>org.eclipse.ui</artifactId>
@@ -173,6 +289,29 @@
 				<version>3.2.300</version>
 			</dependency>
 			<dependency>
+				<groupId>org.eclipse.update</groupId>
+				<artifactId>org.eclipse.update.core</artifactId>
+				<version>3.2.402</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.update</groupId>
+				<artifactId>org.eclipse.update.configurator</artifactId>
+				<version>3.3.100</version>
+			</dependency>
+			<!-- ### ECLIPSE RCP :: END ### -->
+			
+			<!-- ### ECLIPSE SHARED :: BEGIN ### -->
+			<dependency>
+				<groupId>org.eclipse.core</groupId>
+				<artifactId>org.eclipse.core.resources</artifactId>
+				<version>3.6.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.core</groupId>
+				<artifactId>org.eclipse.core.runtime</artifactId>
+				<version>3.6.0</version>
+			</dependency>
+			<dependency>
 				<groupId>org.eclipse.core</groupId>
 				<artifactId>org.eclipse.core.net</artifactId>
 				<version>1.2.100</version>
@@ -192,16 +331,8 @@
 				<artifactId>org.eclipse.ui.editors</artifactId>
 				<version>3.6.1</version>
 			</dependency>
-		<dependency>
-			<groupId>org.eclipse.update</groupId>
-			<artifactId>org.eclipse.update.core</artifactId>
-			<version>3.2.402</version>
-		</dependency>
-			<dependency>
-				<groupId>org.eclipse.update</groupId>
-				<artifactId>org.eclipse.update.configurator</artifactId>
-				<version>3.3.100</version>
-			</dependency>
+			<!-- ### ECLIPSE SHARED :: END ### -->
+			<!-- ##### ECLIPSE :: END ##### -->
 		</dependencies>
 	</dependencyManagement>
 

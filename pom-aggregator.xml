@@ -19,6 +19,70 @@
 			<url>https://dev.nightlabs.org/maven-repository/libs-snapshots-local</url>
 		</snapshotRepository>
 	</distributionManagement>
+	
+	<profiles>
+		<!-- TODO update this, whenever the parent-pom's profiles change. -->
+		<profile>
+			<id>client.platform.mac</id>
+			<activation>
+				<property>
+					<name>client.platform</name>
+					<value>mac</value>
+				</property>
+			</activation>
+			<modules>
+				<module>../org.nightlabs.eclipse.compatibility.rcp</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>client.platform.windows-x86</id>
+			<activation>
+				<property>
+					<name>client.platform</name>
+					<value>windows-x86</value>
+				</property>
+			</activation>
+			<modules>
+				<module>../org.nightlabs.eclipse.compatibility.rcp</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>client.platform.linux-gtk-x86</id>
+			<activation>
+				<property>
+					<name>client.platform</name>
+					<value>linux-gtk-x86</value>
+				</property>
+			</activation>
+			<modules>
+				<module>../org.nightlabs.eclipse.compatibility.rcp</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>client.platform.linux-gtk-x86_64</id>
+			<activation>
+				<property>
+					<name>client.platform</name>
+					<value>linux-gtk-x86_64</value>
+				</property>
+			</activation>
+			<modules>
+				<module>../org.nightlabs.eclipse.compatibility.rcp</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>client.platform.rap</id>
+			<activation>
+				<property>
+					<name>client.platform</name>
+					<value>rap</value>
+				</property>
+			</activation>
+			<modules>
+				<module>../org.nightlabs.eclipse.compatibility.rap</module>
+			</modules>
+		</profile>
+	</profiles>
 
 	<modules>
 		<module>../org.nightlabs.eclipse.parent</module>
@@ -26,10 +90,6 @@
 		<module>../org.nightlabs.eclipse.ui.dialog</module>
 		<module>../org.nightlabs.eclipse.ui.treestate</module>
 		<module>../org.nightlabs.eclipse.extension</module>
-		<module>../org.nightlabs.eclipse.compatibility.rcp</module>
-		<!-- Temporarily commented RAP out.
-		<module>../org.nightlabs.eclipse.compatibility.rap</module>
-		-->
 		<module>../org.nightlabs.base.ui</module>
 		<module>../org.nightlabs.base.ui.errorreport.mantis</module>
 	</modules>
