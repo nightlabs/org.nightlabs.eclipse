@@ -5,6 +5,7 @@
 	<artifactId>org.nightlabs.eclipse.parent</artifactId>
 	<version>1.2.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
+	<name>${project.artifactId}</name>
 	<parent>
 		<groupId>org.nightlabs</groupId>
 		<artifactId>org.nightlabs.parent</artifactId>
@@ -16,6 +17,20 @@
 		<developerConnection>scm:svn:https://svn.nightlabs.org/svn/eclipse/trunk/org.nightlabs.jfire.parent</developerConnection>
 		<url>https://svn.nightlabs.org/svn/eclipse/trunk/org.nightlabs.jfire.parent</url>
 	</scm>
+
+	<properties>
+		<swt.groupId>org.eclipse.swt</swt.groupId>
+		<org.nightlabs.eclipse.compatibility.artifactId>org.nightlabs.eclipse.compatibility.rcp</org.nightlabs.eclipse.compatibility.artifactId>
+		
+		<client.plaform.linux-gtk-x86_64.swt.artifactId>org.eclipse.swt.gtk.linux.x86_64</client.plaform.linux-gtk-x86_64.swt.artifactId>
+		<client.plaform.linux-gtk-x86.swt.artifactId>org.eclipse.swt.gtk.linux.x86</client.plaform.linux-gtk-x86.swt.artifactId>
+		<client.plaform.win32-win32-x86_64.swt.artifactId>org.eclipse.swt.win32.win32.x86_64</client.plaform.win32-win32-x86_64.swt.artifactId>
+		<client.plaform.win32-win32-x86.swt.artifactId>org.eclipse.swt.win32.win32.x86</client.plaform.win32-win32-x86.swt.artifactId>
+		
+		<client.plaform.rap.swt.groupId>org.eclipse.rap</client.plaform.rap.swt.groupId>
+		<client.plaform.rap.swt.artifactId>org.eclipse.rap.rwt</client.plaform.rap.swt.artifactId>
+		<client.plaform.rap.org.nightlabs.eclipse.compatibility.artifactId>org.nightlabs.eclipse.compatibility.rap</client.plaform.rap.org.nightlabs.eclipse.compatibility.artifactId>
+	</properties>
 
 	<!-- swt impls: org.eclipse.swt.carbon.macosx/ Fri Jul 22 17:26:03 EDT 2011 
 		org.eclipse.swt.cocoa.macosx/ Fri Jul 22 17:26:03 EDT 2011 org.eclipse.swt.cocoa.macosx.x86_64/ 
@@ -33,79 +48,25 @@
 		Fri Jul 22 17:26:02 EDT 2011 org.eclipse.swt.win32.win32.x86_64/ Fri Jul 
 		22 17:26:03 EDT 2011 -->
 	<profiles>
-		<!-- TODO arch / test / cocoa -->
+		<!-- ### linux gtk x86 ### -->
 		<profile>
-			<id>client.platform.mac</id>
-<!--
-  Commenting automatic activation, because there must only be one of the profiles active and there are two active when we want to build RAP.
-  Here, it would not matter, because the properties are overwritten, but in pom-aggregator.xml, it causes too many modules to be included in
-  the build process.
-  Marco :-)
-			<activation>
-				<os>
-					<name>mac os x</name>
-				</os>
-			</activation>
--->
+			<id>client.plaform.linux-gtk-x86.by.os</id>
 			<activation>
 				<property>
 					<name>client.platform</name>
-					<value>mac</value>
+					<value></value>
 				</property>
-			</activation>
-			<properties>
-				<swt.groupId>org.eclipse.swt.carbon</swt.groupId>
-				<swt.artifactId>macosx</swt.artifactId>
-				<org.nightlabs.eclipse.compatibility.artifactId>org.nightlabs.eclipse.compatibility.rcp</org.nightlabs.eclipse.compatibility.artifactId>
-			</properties>
-		</profile>
-		<!-- TODO arch / test -->
-		<profile>
-			<id>client.platform.windows-x86</id>
-<!--
-  Commenting automatic activation, because there must only be one of the profiles active and there are two active when we want to build RAP.
-  Here, it would not matter, because the properties are overwritten, but in pom-aggregator.xml, it causes too many modules to be included in
-  the build process.
-  Marco :-)
-			<activation>
-				<os>
-					<family>windows</family>
-				</os>
-			</activation>
--->
-<!--
-  Adding the activation by system property, because the -P argument did *NOT* work for me - no profile was enabled. Even though
-  "mvn help:active-profiles -P linux-gtk-x86_64" (before I added the "client.platform." prefix) told me that the profile was
-  enabled. I assume that this is a Maven bug (in version 3.0.3). It took me ages to find this out :-(((
-  Marco :-)
--->
-			<activation>
-				<property>
-					<name>client.platform</name>
-					<value>windows-x86</value>
-				</property>
-			</activation>
-			<properties>
-				<swt.groupId>org.eclipse.swt</swt.groupId>
-				<swt.artifactId>org.eclipse.swt.win32.win32.x86</swt.artifactId>
-				<org.nightlabs.eclipse.compatibility.artifactId>org.nightlabs.eclipse.compatibility.rcp</org.nightlabs.eclipse.compatibility.artifactId>
-			</properties>
-		</profile>
-		<!-- TODO test -->
-		<profile>
-			<id>client.platform.linux-gtk-x86</id>
-<!--
-  Commenting automatic activation, because there must only be one of the profiles active and there are two active when we want to build RAP.
-  Here, it would not matter, because the properties are overwritten, but in pom-aggregator.xml, it causes too many modules to be included in
-  the build process.
-  Marco :-)
-			<activation>
 				<os>
 					<name>Linux</name>
-					<arch>x86</arch>
+					<arch>i386</arch>
 				</os>
 			</activation>
--->
+			<properties>
+				<swt.artifactId>${client.plaform.linux-gtk-x86.swt.artifactId}</swt.artifactId>
+			</properties>
+		</profile>
+		<profile>
+			<id>client.plaform.linux-gtk-x86.by.property</id>
 			<activation>
 				<property>
 					<name>client.platform</name>
@@ -113,25 +74,28 @@
 				</property>
 			</activation>
 			<properties>
-				<swt.groupId>org.eclipse.swt</swt.groupId>
-				<swt.artifactId>org.eclipse.swt.gtk.linux.x86</swt.artifactId>
-				<org.nightlabs.eclipse.compatibility.artifactId>org.nightlabs.eclipse.compatibility.rcp</org.nightlabs.eclipse.compatibility.artifactId>
+				<swt.artifactId>${client.plaform.linux-gtk-x86.swt.artifactId}</swt.artifactId>
+			</properties>
+		</profile>
+		<!-- ### linux gtk x86_64 ### -->
+		<profile>
+			<id>client.plaform.linux-gtk-x86_64.by.os</id>
+			<activation>
+				<property>
+					<name>client.platform</name>
+					<value></value>
+				</property>
+				<os>
+					<name>Linux</name>
+					<arch>x86_64</arch>
+				</os>
+			</activation>
+			<properties>
+				<swt.artifactId>${client.plaform.linux-gtk-x86_64.swt.artifactId}</swt.artifactId>
 			</properties>
 		</profile>
 		<profile>
-			<id>client.platform.linux-gtk-x86_64</id>
-<!--
-  Commenting automatic activation, because there must only be one of the profiles active and there are two active when we want to build RAP.
-  Here, it would not matter, because the properties are overwritten, but in pom-aggregator.xml, it causes too many modules to be included in
-  the build process.
-  Marco :-)
-			<activation>
-				<os>
-					<name>Linux</name>
-					<arch>amd64</arch>
-				</os>
-			</activation>
--->
+			<id>client.plaform.linux-gtk-x86_64.by.property</id>
 			<activation>
 				<property>
 					<name>client.platform</name>
@@ -139,13 +103,77 @@
 				</property>
 			</activation>
 			<properties>
-				<swt.groupId>org.eclipse.swt</swt.groupId>
-				<swt.artifactId>org.eclipse.swt.gtk.linux.x86_64</swt.artifactId>
-				<org.nightlabs.eclipse.compatibility.artifactId>org.nightlabs.eclipse.compatibility.rcp</org.nightlabs.eclipse.compatibility.artifactId>
+				<swt.artifactId>${client.plaform.linux-gtk-x86_64.swt.artifactId}</swt.artifactId>
+			</properties>
+		</profile>
+		<!-- ### windows x86_64 ### -->
+		<profile>
+			<id>client.plaform.win32-win32-x86_64.by.os</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+				<property>
+					<name>client.platform</name>
+					<value></value>
+				</property>
+				<os>
+					<family>windows</family>
+					<arch>x86_64</arch>
+				</os>
+			</activation>
+			<properties>
+				<swt.artifactId>${client.plaform.win32-win32-x86_64.swt.artifactId}</swt.artifactId>
 			</properties>
 		</profile>
 		<profile>
-			<id>client.platform.rap</id>
+			<id>client.plaform.win32-win32-x86_64.by.property</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+				<property>
+					<name>client.platform</name>
+					<value>win32-win32-x86_64</value>
+				</property>
+			</activation>
+			<properties>
+				<swt.artifactId>${client.plaform.win32-win32-x86_64.swt.artifactId}</swt.artifactId>
+			</properties>
+		</profile>
+		<!-- ### windows x86 ### -->
+		<profile>
+			<id>client.plaform.win32-win32-x86.by.os</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+				<property>
+					<name>client.platform</name>
+					<value></value>
+				</property>
+				<os>
+					<family>windows</family>
+					<arch>i386</arch>
+				</os>
+			</activation>
+			<properties>
+				<swt.artifactId>${client.plaform.win32-win32-x86.swt.artifactId}</swt.artifactId>
+			</properties>
+		</profile>
+		<profile>
+			<id>client.plaform.win32-win32-x86.by.property</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+				<property>
+					<name>client.platform</name>
+					<value>win32-win32-x86</value>
+				</property>
+			</activation>
+			<properties>
+				<swt.artifactId>${client.plaform.win32-win32-x86.swt.artifactId}</swt.artifactId>
+			</properties>
+		</profile>
+		<!-- ### mac carbon ### -->
+		<!-- ### mac cocoa 32 ### -->
+		<!-- ### mac cocoa 64 ### -->
+		<!-- ### rap ### -->
+		<profile>
+			<id>client.platform.rap.by.property</id>
 			<activation>
 				<property>
 					<name>client.platform</name>
@@ -153,9 +181,9 @@
 				</property>
 			</activation>
 			<properties>
-				<swt.groupId>org.eclipse.rap</swt.groupId>
-				<swt.artifactId>org.eclipse.rap.rwt</swt.artifactId>
-				<org.nightlabs.eclipse.compatibility.artifactId>org.nightlabs.eclipse.compatibility.rap</org.nightlabs.eclipse.compatibility.artifactId>
+				<swt.groupId>${client.plaform.rap.swt.groupId}</swt.groupId>
+				<swt.artifactId>${client.plaform.rap.swt.artifactId}</swt.artifactId>
+				<org.nightlabs.eclipse.compatibility.artifactId>${client.plaform.rap.org.nightlabs.eclipse.compatibility.artifactId}</org.nightlabs.eclipse.compatibility.artifactId>
 			</properties>
 		</profile>
 	</profiles>
@@ -238,25 +266,25 @@
 			<!-- ### ECLIPSE RCP :: BEGIN ### -->
 			<dependency>
 				<groupId>org.eclipse.swt</groupId>
-<!--			<artifactId>${swt.artifactId}</artifactId> not using this variable here in order to specify all possible SWT artifact's versions -->
-				<artifactId>org.eclipse.swt.gtk.linux.x86</artifactId>
+				<artifactId>${client.plaform.linux-gtk-x86.swt.artifactId}</artifactId>
 				<version>[3.6,4.0)</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.swt</groupId>
-				<artifactId>org.eclipse.swt.gtk.linux.x86_64</artifactId>
+				<artifactId>${client.plaform.linux-gtk-x86_64.swt.artifactId}</artifactId>
 				<version>[3.6,4.0)</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.swt</groupId>
-				<artifactId>org.eclipse.swt.win32.win32.x86</artifactId>
+				<artifactId>${client.plaform.win32-win32-x86_64.swt.artifactId}</artifactId>
 				<version>[3.6,4.0)</version>
 			</dependency>
 			<dependency>
-				<groupId>org.eclipse.swt.carbon</groupId>
-				<artifactId>macosx</artifactId>
+				<groupId>org.eclipse.swt</groupId>
+				<artifactId>${client.plaform.win32-win32-x86.swt.artifactId}</artifactId>
 				<version>[3.6,4.0)</version>
 			</dependency>
+			<!-- TODO other swt impl (mac etc) -->
 
 			<dependency>
 				<groupId>org.eclipse.ui</groupId>
