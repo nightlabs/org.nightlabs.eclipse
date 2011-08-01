@@ -387,6 +387,11 @@ Marco :-)
 				<artifactId>org.eclipse.ui.editors</artifactId>
 				<version>3.6.1</version>
 			</dependency>
+			<dependency>
+				<groupId>org.eclipse.osgi</groupId>
+				<artifactId>org.eclipse.osgi</artifactId>
+				<version>3.6.2</version>
+			</dependency>
 			<!-- ### ECLIPSE SHARED :: END ### -->
 			<!-- ##### ECLIPSE :: END ##### -->
 		</dependencies>
