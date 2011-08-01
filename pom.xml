@@ -25,9 +25,10 @@ IMHO this is wrong. Marco :-)
 	</scm>
 
 	<properties>
+	<!-- static dependency - we build all against the RAP platform - see below
 		<swt.groupId>org.eclipse.swt</swt.groupId>
 		<org.nightlabs.eclipse.compatibility.artifactId>org.nightlabs.eclipse.compatibility.rcp</org.nightlabs.eclipse.compatibility.artifactId>
-		
+
 		<client.plaform.linux-gtk-x86_64.swt.artifactId>org.eclipse.swt.gtk.linux.x86_64</client.plaform.linux-gtk-x86_64.swt.artifactId>
 		<client.plaform.linux-gtk-x86.swt.artifactId>org.eclipse.swt.gtk.linux.x86</client.plaform.linux-gtk-x86.swt.artifactId>
 		<client.plaform.win32-win32-x86_64.swt.artifactId>org.eclipse.swt.win32.win32.x86_64</client.plaform.win32-win32-x86_64.swt.artifactId>
@@ -36,6 +37,14 @@ IMHO this is wrong. Marco :-)
 		<client.plaform.rap.swt.groupId>org.eclipse.rap</client.plaform.rap.swt.groupId>
 		<client.plaform.rap.swt.artifactId>org.eclipse.rap.rwt</client.plaform.rap.swt.artifactId>
 		<client.plaform.rap.org.nightlabs.eclipse.compatibility.artifactId>org.nightlabs.eclipse.compatibility.rap</client.plaform.rap.org.nightlabs.eclipse.compatibility.artifactId>
+
+		<swt.groupId>${client.plaform.rap.swt.groupId}</swt.groupId>
+		<swt.artifactId>${client.plaform.rap.swt.artifactId}</swt.artifactId>
+	-->
+
+		<!-- The SWT/RWT dependency is transferred usually via transitive dependencies from this one. Hence, we only
+		need this one property. -->
+		<org.nightlabs.eclipse.compatibility.artifactId>org.nightlabs.eclipse.compatibility.rap</org.nightlabs.eclipse.compatibility.artifactId>
 	</properties>
 
 	<!-- swt impls: org.eclipse.swt.carbon.macosx/ Fri Jul 22 17:26:03 EDT 2011 
@@ -53,8 +62,18 @@ IMHO this is wrong. Marco :-)
 		org.eclipse.swt.photon.qnx.x86/ Fri Jul 22 17:26:03 EDT 2011 org.eclipse.swt.win32.win32.x86/ 
 		Fri Jul 22 17:26:02 EDT 2011 org.eclipse.swt.win32.win32.x86_64/ Fri Jul 
 		22 17:26:03 EDT 2011 -->
+<!--
+We now build against static dependencies and leave the platform-dependent stuff to the assembly only.
+The reason is that all our libraries (except for org.nightlabs.eclipse.compatibility.rap/rcp) are platform-agnostic
+and it makes therefore no sense to compile them 5 or more times. The only reason to do so is that there might be a mistake
+and platform-dependent stuff might be used by error. But this isn't worth the far more complex build configuration and
+the much longer build time (factor 5 at least).
+We now build solely against RAP, because the feature-set of RAP is smaller than the one of RCP. Hence, we don't need (most of)
+the properties anymore.
+Marco :-) 
+
 	<profiles>
-		<!-- ### linux gtk x86 ### -->
+		<!- ### linux gtk x86 ### ->
 		<profile>
 			<id>client.plaform.linux-gtk-x86.by.os</id>
 			<activation>
@@ -83,7 +102,7 @@ IMHO this is wrong. Marco :-)
 				<swt.artifactId>${client.plaform.linux-gtk-x86.swt.artifactId}</swt.artifactId>
 			</properties>
 		</profile>
-		<!-- ### linux gtk x86_64 ### -->
+		<!- ### linux gtk x86_64 ### ->
 		<profile>
 			<id>client.plaform.linux-gtk-x86_64.by.os</id>
 			<activation>
@@ -112,7 +131,7 @@ IMHO this is wrong. Marco :-)
 				<swt.artifactId>${client.plaform.linux-gtk-x86_64.swt.artifactId}</swt.artifactId>
 			</properties>
 		</profile>
-		<!-- ### windows x86_64 ### -->
+		<!- ### windows x86_64 ### ->
 		<profile>
 			<id>client.plaform.win32-win32-x86_64.by.os</id>
 			<activation>
@@ -143,7 +162,7 @@ IMHO this is wrong. Marco :-)
 				<swt.artifactId>${client.plaform.win32-win32-x86_64.swt.artifactId}</swt.artifactId>
 			</properties>
 		</profile>
-		<!-- ### windows x86 ### -->
+		<!- ### windows x86 ### ->
 		<profile>
 			<id>client.plaform.win32-win32-x86.by.os</id>
 			<activation>
@@ -174,10 +193,10 @@ IMHO this is wrong. Marco :-)
 				<swt.artifactId>${client.plaform.win32-win32-x86.swt.artifactId}</swt.artifactId>
 			</properties>
 		</profile>
-		<!-- ### mac carbon ### -->
-		<!-- ### mac cocoa 32 ### -->
-		<!-- ### mac cocoa 64 ### -->
-		<!-- ### rap ### -->
+		<!- ### mac carbon ### ->
+		<!- ### mac cocoa 32 ### ->
+		<!- ### mac cocoa 64 ### ->
+		<!- ### rap ### ->
 		<profile>
 			<id>client.platform.rap.by.property</id>
 			<activation>
@@ -193,6 +212,7 @@ IMHO this is wrong. Marco :-)
 			</properties>
 		</profile>
 	</profiles>
+-->
 
 	<dependencyManagement>
 		<dependencies>
@@ -226,13 +246,11 @@ IMHO this is wrong. Marco :-)
 				<groupId>org.nightlabs.eclipse</groupId>
 				<artifactId>org.nightlabs.eclipse.compatibility.rap</artifactId>
 				<version>${project.version}</version>
-				<scope>compile</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.nightlabs.eclipse</groupId>
 				<artifactId>org.nightlabs.eclipse.compatibility.rcp</artifactId>
 				<version>${project.version}</version>
-				<scope>compile</scope>
 			</dependency>
 
 			<!-- ##### ECLIPSE :: BEGIN ##### -->
@@ -272,22 +290,26 @@ IMHO this is wrong. Marco :-)
 			<!-- ### ECLIPSE RCP :: BEGIN ### -->
 			<dependency>
 				<groupId>org.eclipse.swt</groupId>
-				<artifactId>${client.plaform.linux-gtk-x86.swt.artifactId}</artifactId>
+<!--				<artifactId>${client.plaform.linux-gtk-x86.swt.artifactId}</artifactId> -->
+				<artifactId>org.eclipse.swt.gtk.linux.x86</artifactId>
 				<version>[3.6,4.0)</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.swt</groupId>
-				<artifactId>${client.plaform.linux-gtk-x86_64.swt.artifactId}</artifactId>
+<!--				<artifactId>${client.plaform.linux-gtk-x86_64.swt.artifactId}</artifactId> -->
+				<artifactId>org.eclipse.swt.gtk.linux.x86_64</artifactId>
 				<version>[3.6,4.0)</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.swt</groupId>
-				<artifactId>${client.plaform.win32-win32-x86_64.swt.artifactId}</artifactId>
+<!--				<artifactId>${client.plaform.win32-win32-x86.swt.artifactId}</artifactId> -->
+				<artifactId>org.eclipse.swt.win32.win32.x86</artifactId>
 				<version>[3.6,4.0)</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.swt</groupId>
-				<artifactId>${client.plaform.win32-win32-x86.swt.artifactId}</artifactId>
+<!--				<artifactId>${client.plaform.win32-win32-x86_64.swt.artifactId}</artifactId> -->
+				<artifactId>org.eclipse.swt.win32.win32.x86_64</artifactId>
 				<version>[3.6,4.0)</version>
 			</dependency>
 			<!-- TODO other swt impl (mac etc) -->
