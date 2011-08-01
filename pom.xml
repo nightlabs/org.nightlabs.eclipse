@@ -16,12 +16,11 @@
 
 	<dependencies>
 <!-- transitive from org.nightlabs.eclipse.compatibility.* Marco :-)
-...hmmmm should be transitive but is not - why?!
--->
 		<dependency>
 			<groupId>${swt.groupId}</groupId>
 			<artifactId>${swt.artifactId}</artifactId>
 		</dependency>
+-->
 		<dependency>
 			<groupId>org.eclipse.core</groupId>
 			<artifactId>org.eclipse.core.resources</artifactId>
