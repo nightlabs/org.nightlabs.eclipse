@@ -17,9 +17,13 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>${swt.groupId}</groupId>
-			<artifactId>${swt.artifactId}</artifactId>
-			<scope>compile</scope>
+			<!-- Static dependency onto the RCP stuff, because we always need to build this project against RCP - it is specific.
+			Which SWT implementation (Windows, Linux, Mac + 32 or 64 bit) should not matter and we now use this one everywhere
+			where we need the dependency. These are not many locations anyway, because 1st this dependency would be forwarded
+			as a maven transitive dependency and 2nd we build everything against RAP anyway (rather than against the RCP).
+			Marco :-) -->
+			<groupId>org.eclipse.swt</groupId>
+			<artifactId>org.eclipse.swt.gtk.linux.x86_64</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.core</groupId>
@@ -32,22 +36,18 @@
 		<dependency>
 			<groupId>org.eclipse.ui</groupId>
 			<artifactId>org.eclipse.ui</artifactId>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jface</groupId>
 			<artifactId>org.eclipse.jface</artifactId>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.ui</groupId>
 			<artifactId>org.eclipse.ui.forms</artifactId>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.ui</groupId>
 			<artifactId>org.eclipse.ui.views</artifactId>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.update</groupId>
@@ -56,7 +56,6 @@
 		<dependency>
 			<groupId>org.eclipse.update</groupId>
 			<artifactId>org.eclipse.update.configurator</artifactId>
-			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 
