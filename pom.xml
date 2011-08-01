@@ -13,9 +13,15 @@
 	</parent>
 
 	<scm>
+<!--
+IMHO this is wrong. Marco :-)
 		<connection>scm:svn:https://svn.nightlabs.org/svn/eclipse/trunk/org.nightlabs.jfire.parent</connection>
 		<developerConnection>scm:svn:https://svn.nightlabs.org/svn/eclipse/trunk/org.nightlabs.jfire.parent</developerConnection>
 		<url>https://svn.nightlabs.org/svn/eclipse/trunk/org.nightlabs.jfire.parent</url>
+-->
+		<connection>scm:svn:https://svn.nightlabs.org/svn/eclipse/trunk/org.nightlabs.eclipse.parent</connection>
+		<developerConnection>scm:svn:https://svn.nightlabs.org/svn/eclipse/trunk/org.nightlabs.eclipse.parent</developerConnection>
+		<url>https://svn.nightlabs.org/svn/eclipse/trunk/org.nightlabs.eclipse.parent</url>
 	</scm>
 
 	<properties>
