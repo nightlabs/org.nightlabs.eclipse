@@ -17,8 +17,9 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>${swt.groupId}</groupId>
-			<artifactId>${swt.artifactId}</artifactId>
+			<!-- Static dependency onto the RAP stuff, because we always need to build this project against RAP - it is specific. Marco :-) -->
+			<groupId>org.eclipse.rap</groupId>
+			<artifactId>org.eclipse.rap.rwt</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.core</groupId>
