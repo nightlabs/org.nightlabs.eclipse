@@ -50,6 +50,11 @@ Marco :-)
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.nightlabs</groupId>
+			<artifactId>org.nightlabs.util</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.nightlabs.eclipse</groupId>
 			<artifactId>org.nightlabs.base.ui</artifactId>
 			<scope>provided</scope>
