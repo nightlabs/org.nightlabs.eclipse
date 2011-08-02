@@ -399,6 +399,35 @@ Marco :-)
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.core</groupId>
+				<artifactId>org.eclipse.core.jobs</artifactId>
+				<version>3.5.1</version>
+			</dependency>
+			<dependency>
+				<!-- Without this, it tries to use 3.2.0 which references a non-existent parent-pom. Marco :-) -->
+				<groupId>org.eclipse.equinox</groupId>
+				<artifactId>org.eclipse.equinox.common</artifactId>
+				<version>3.6.0</version>
+			</dependency>
+			<dependency>
+				<!-- Without this, it tries to use 3.2.0 which references a non-existent parent-pom. Marco :-) -->
+				<groupId>org.eclipse.equinox</groupId>
+				<artifactId>org.eclipse.equinox.preferences</artifactId>
+				<version>3.3.0</version>
+			</dependency>
+			<dependency>
+				<!-- Without this, it tries to use 3.2.0 which references a non-existent parent-pom. Marco :-) -->
+				<groupId>org.eclipse.core</groupId>
+				<artifactId>org.eclipse.core.expressions</artifactId>
+				<version>3.4.200</version>
+			</dependency>
+			<dependency>
+				<!-- Without this, it tries to use 1.5.0-SNAPSHOT which cannot be downloaded for a reason I don't understand. Marco :-) -->
+				<groupId>org.eclipse.rap</groupId>
+				<artifactId>org.eclipse.rap.rwt.q07</artifactId>
+				<version>1.4.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.core</groupId>
 				<artifactId>org.eclipse.core.net</artifactId>
 				<version>1.2.100</version>
 			</dependency>
