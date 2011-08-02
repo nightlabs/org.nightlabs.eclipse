@@ -79,6 +79,26 @@ Marco :-)
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.nightlabs</groupId>
+			<artifactId>org.nightlabs.concurrent</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.nightlabs</groupId>
+			<artifactId>org.nightlabs.i18n</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.nightlabs</groupId>
+			<artifactId>org.nightlabs.progress</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.nightlabs</groupId>
+			<artifactId>org.nightlabs.util</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.nightlabs.eclipse</groupId>
 			<artifactId>org.nightlabs.eclipse.extension</artifactId>
 			<scope>provided</scope>
