@@ -427,6 +427,12 @@ Marco :-)
 				<version>1.4.0</version>
 			</dependency>
 			<dependency>
+				<!-- Without this, it tries to use 3.2.0 which references a non-existent parent-pom. Marco :-) -->
+				<groupId>org.eclipse.core</groupId>
+				<artifactId>org.eclipse.core.commands</artifactId>
+				<version>3.6.0</version>
+			</dependency>
+			<dependency>
 				<groupId>org.eclipse.core</groupId>
 				<artifactId>org.eclipse.core.net</artifactId>
 				<version>1.2.100</version>
@@ -437,19 +443,36 @@ Marco :-)
 				<version>3.5.0</version>
 			</dependency>
 			<dependency>
+				<groupId>org.eclipse.osgi</groupId>
+				<artifactId>org.eclipse.osgi</artifactId>
+				<version>3.6.2</version>
+			</dependency>
+			<dependency>
 				<groupId>org.eclipse.ui</groupId>
 				<artifactId>org.eclipse.ui.intro</artifactId>
 				<version>3.4.0</version>
 			</dependency>
 			<dependency>
+				<groupId>org.eclipse.text</groupId>
+				<artifactId>org.eclipse.text</artifactId>
+				<version>3.5.0</version>
+			</dependency>
+			<dependency>
 				<groupId>org.eclipse.ui</groupId>
 				<artifactId>org.eclipse.ui.editors</artifactId>
 				<version>3.6.1</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.osgi</groupId>
-				<artifactId>org.eclipse.osgi</artifactId>
-				<version>3.6.2</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.eclipse.ui</groupId>
+						<artifactId>org.eclipse.ui.ide</artifactId>
+					</exclusion>
+<!--
+					<exclusion>
+						<groupId>org.eclipse.equinox</groupId>
+						<artifactId>org.eclipse.equinox.p2.engine</artifactId>
+					</exclusion>
+-->
+				</exclusions>
 			</dependency>
 			<!-- ### ECLIPSE SHARED :: END ### -->
 			<!-- ##### ECLIPSE :: END ##### -->
