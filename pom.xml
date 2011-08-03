@@ -282,7 +282,12 @@ Marco :-)
 				<artifactId>org.nightlabs.eclipse.compatibility.rcp</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.base.ui.errorreport.mantis</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			
 			<!-- ##### ECLIPSE :: BEGIN ##### -->
 			<!-- ### ECLIPSE RAP :: BEGIN ### -->
 			<dependency>
