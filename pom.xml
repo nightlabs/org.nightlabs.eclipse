@@ -76,17 +76,17 @@
 						<!-- <Import-Package>org.nightlabs.*;provide:=true,*</Import-Package> -->
 						<Bundle-SymbolicName>org.nightlabs.eclipse.compatibility</Bundle-SymbolicName>
 						<Export-Package>
-						org.eclipse.core.resources;version="${project.version}",
-						org.eclipse.jface.viewers;version="${project.version}",
-						org.eclipse.swt.accessibility;version="${project.version}",
-						org.eclipse.swt.custom;version="${project.version}",
-						org.eclipse.swt.events;version="${project.version}",
-						org.eclipse.swt.graphics;version="${project.version}",
-						org.eclipse.swt.widgets;version="${project.version}",
-						org.eclipse.ui;version="${project.version}",
-						org.eclipse.update.ui;version="${project.version}",
-						org.nightlabs.base.ui.util;version="${project.version}",
-						org.nightlabs.eclipse.compatibility;version="${project.version}"
+						org.eclipse.core.resources;version="${project.version}";-split-package:=first,
+						org.eclipse.jface.viewers;version="${project.version}";-split-package:=first,
+						org.eclipse.swt.accessibility;version="${project.version}";-split-package:=first,
+						org.eclipse.swt.custom;version="${project.version}";-split-package:=first,
+						org.eclipse.swt.events;version="${project.version}";-split-package:=first,
+						org.eclipse.swt.graphics;version="${project.version}";-split-package:=first,
+						org.eclipse.swt.widgets;version="${project.version}";-split-package:=first,
+						org.eclipse.ui;version="${project.version}";-split-package:=first,
+						org.eclipse.update.ui;version="${project.version}";-split-package:=first,
+						org.nightlabs.base.ui.util;version="${project.version}";-split-package:=first,
+						org.nightlabs.eclipse.compatibility;version="${project.version}";-split-package:=first,
 						</Export-Package>
 						<Private-Package>${bundle.namespace}.internal.*</Private-Package>
 						<Bundle-RequiredExecutionEnvironment>JavaSE-1.6</Bundle-RequiredExecutionEnvironment>
