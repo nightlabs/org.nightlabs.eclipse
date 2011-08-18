@@ -79,6 +79,8 @@ Marco :-)
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
 				<configuration>
+					<!-- FIXME: Needed because of split-packages in org.eclipse.core.runitme and wrong version in dependencies -> results in no version in Import-Package  -->
+					<excludeDependencies>*;scope=compile|provided|runtime</excludeDependencies>
 					<instructions>
 						<Export-Package>!org.nightlabs.eclipse.preferences.ui.internal.*,org.nightlabs.eclipse.preferences.ui.*;version="${project.version}"</Export-Package>
 						<Private-Package>org.nightlabs.eclipse.preferences.ui.internal.*</Private-Package>
