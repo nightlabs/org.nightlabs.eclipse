@@ -26,8 +26,6 @@
 package org.nightlabs.eclipse.extension;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -198,20 +196,20 @@ public class RemoveExtensionRegistry extends AbstractEPProcessor
 		}
 	}
 
-	/**
-	 * @deprecated is this method in use? Why is it public? Remove deprecated annotation if this is needed somewhere. mklinger
-	 */
-	@Deprecated
-	public static void removeRegistryObject(final org.eclipse.core.internal.registry.RegistryObject registryObject) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException
-	{
-		final IExtensionRegistry registry = Platform.getExtensionRegistry();
-		final Field masterTokenField = registry.getClass().getField("masterToken"); //$NON-NLS-1$
-		masterTokenField.setAccessible(true);
-		final Object masterToken = masterTokenField.get(registry);
-		final Method removeRegistryObjectMethod = registry.getClass().getDeclaredMethod("removeObject",  //$NON-NLS-1$
-				new Class[] {org.eclipse.core.internal.registry.RegistryObject.class, Boolean.class, Object.class});
-		removeRegistryObjectMethod.invoke(registry, new Object[] {registryObject, false, masterToken});
-	}
+//	/**
+//	 * @deprecated is this method in use? Why is it public? Remove deprecated annotation if this is needed somewhere. mklinger
+//	 */
+//	@Deprecated
+//	public static void removeRegistryObject(final org.eclipse.core.internal.registry.RegistryObject registryObject) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException
+//	{
+//		final IExtensionRegistry registry = Platform.getExtensionRegistry();
+//		final Field masterTokenField = registry.getClass().getField("masterToken"); //$NON-NLS-1$
+//		masterTokenField.setAccessible(true);
+//		final Object masterToken = masterTokenField.get(registry);
+//		final Method removeRegistryObjectMethod = registry.getClass().getDeclaredMethod("removeObject",  //$NON-NLS-1$
+//				new Class[] {org.eclipse.core.internal.registry.RegistryObject.class, Boolean.class, Object.class});
+//		removeRegistryObjectMethod.invoke(registry, new Object[] {registryObject, false, masterToken});
+//	}
 
 	/**
 	 * returns the masterToken field from the ExtensionRegistry by reflection

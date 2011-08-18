@@ -24,7 +24,23 @@
 	</dependencies>
 
 	<build>
-
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<configuration>
+					<instructions>
+						<Bundle-Activator>org.nightlabs.eclipse.extension.ExtensionPlugin</Bundle-Activator>
+						<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
+						<!-- FIXME: Can't use Import-Package, because need all aspects of org.eclipse.core.runtime, but only can import one 
+						<Import-Package>org.eclipse.core.runtime,*</Import-Package>
+						 -->
+						 <Import-Package>!*</Import-Package>
+						<Require-Bundle>org.nightlabs.eclipse.compatibility</Require-Bundle>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
 
 	</build>
 </project>
