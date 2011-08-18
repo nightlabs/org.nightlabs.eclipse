@@ -99,7 +99,9 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 				null,
 				JFaceResources.getString("Problem_Occurred"), //$NON-NLS-1$
 				ERROR,
-				new String[] { CompatibleDialogConstants.get().OK_LABEL },
+				// FIXME: Build problem: IDialogConstants.OK_LABEL is static in RCP but non-static in RAP
+//				new String[] { CompatibleDialogConstants.get().OK_LABEL },
+				new String[] { "OK" },
 				0);
 		setShellStyle(getShellStyle() | SWT.RESIZE);
 	}
@@ -224,11 +226,15 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 		GridData stackTraceGD = ((GridData)stackTraceText.getLayoutData());
 		if(visible) {
 			stackTraceGD.heightHint = stackTraceText.getLineHeight() * STACK_TRACE_LINE_COUNT;
-			detailsButton.setText(CompatibleDialogConstants.get().HIDE_DETAILS_LABEL);
+			// FIXME: Build-Problem: .SHOW_DETAILS_LABEL is static in RCP but nun-static in RAP, can't build only against one platform!!
+//			detailsButton.setText(CompatibleDialogConstants.get().HIDE_DETAILS_LABEL);
+			detailsButton.setText("Hide details");
 			stackTraceText.setVisible(true);
 		} else {
 			stackTraceGD.heightHint = 0;
-			detailsButton.setText(CompatibleDialogConstants.get().SHOW_DETAILS_LABEL);
+			// FIXME: Build-Problem: .SHOW_DETAILS_LABEL is static in RCP but nun-static in RAP, can't build only against one platform!!
+//			detailsButton.setText(CompatibleDialogConstants.get().SHOW_DETAILS_LABEL);
+			detailsButton.setText("Show details");
 			stackTraceText.setVisible(false);
 		}
 		Point newSize = getShell().computeSize(SWT.DEFAULT, SWT.DEFAULT);
@@ -301,6 +307,8 @@ public class DefaultErrorDialog extends MessageDialog implements IErrorDialog
 	{
 		super.createButtonsForButtonBar(parent);
 		createButton(parent, SEND_ERROR_REPORT_ID, Messages.getString("org.nightlabs.base.ui.exceptionhandler.DefaultErrorDialog.button.sendErrorReport.text"), false); //$NON-NLS-1$
-		detailsButton = createButton(parent, IDialogConstants.DETAILS_ID, CompatibleDialogConstants.get().SHOW_DETAILS_LABEL, false);
+		// FIXME: Build-Problem: .SHOW_DETAILS_LABEL is static in RCP but nun-static in RAP, can't build only against one platform!!
+//		detailsButton = createButton(parent, IDialogConstants.DETAILS_ID, CompatibleDialogConstants.get().SHOW_DETAILS_LABEL, false);
+		detailsButton = createButton(parent, IDialogConstants.DETAILS_ID, "Show details", false);
 	}
 }

@@ -8,7 +8,6 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.eclipse.update.ui.UpdateManagerUI;
 
 /**
  * @author Daniel Mazurek - daniel [at] nightlabs [dot] de
@@ -27,7 +26,8 @@ implements IWorkbenchWindowActionDelegate
 	}
 
 	public void run(IAction action) {
-		UpdateManagerUI.openInstaller(shell);
+		// FIXME commented while creating new jfire.min maven assembly, but. Is this used anyway?
+//		UpdateManagerUI.openInstaller(shell);
 	}
 
 	public void selectionChanged(IAction action, ISelection selection) {

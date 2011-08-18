@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.nightlabs.eclipse</groupId>
 	<artifactId>org.nightlabs.base.ui</artifactId>
-	<packaging>bundle</packaging>
+	<packaging>jar</packaging>
 	<name>${project.artifactId}</name>
 
 	<parent>
@@ -146,8 +146,49 @@ Marco :-)
 					<include>plugin.xml</include>
 					<include>plugin*.properties</include>
 					<include>schema/**/*</include>
+					<include>icons/**/*</include>
+					<include>LICENSE.txt</include>
+					<!-- FIXME this is to maintain the old setup, before we switch to maven-bundle-plugin and Import-Package -->
+					<include>lib/**/*</include>
 				</includes>
 			</resource>
 		</resources>
+		
+		
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.1</version>
+				<configuration>
+					<archive>
+						<manifestFile>META-INF/MANIFEST.MF</manifestFile>
+						<manifestEntries>
+							<Bundle-XXX>${project.version}</Bundle-XXX>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+		
+		<!-- FIXME Fix package-situation to be able to use Import-Pakcage (maven-bundle-plugin)  
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<configuration>
+					<excludeDependencies>*;scope=compile|provided|runtime</excludeDependencies>
+					<instructions>
+						Fixme needed because of different implemenation of JFaceUtil for rap and rcp
+						<Export-Package>${bundle.namespace}.*;version="${project.version}";-split-package:=first</Export-Package>
+						
+						<Bundle-Activator>org.nightlabs.base.ui.NLBasePlugin</Bundle-Activator>
+						<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
+						
+						<Import-Package>!org.eclipse.swt*,*</Import-Package>
+						<Require-Bundle>org.nightlabs.eclipse.compatibility</Require-Bundle>
+					</instructions>
+				</configuration>
+			</plugin>
+		-->
+		</plugins>		
 	</build>
 </project>

@@ -252,7 +252,7 @@ extends AbstractEPProcessor
 		try {
 			elementName = element.getName();
 		} catch (InvalidRegistryObjectException x) {
-			logger.warn("checkElementPath: " + x, x);
+//			logger.warn("checkElementPath: " + x, x);
 			return;
 		}
 		

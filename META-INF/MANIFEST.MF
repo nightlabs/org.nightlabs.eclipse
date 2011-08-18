@@ -1,5 +1,4 @@
 Manifest-Version: 1.0
-Generated-from: 1140596560679;type=2
 Bundle-ManifestVersion: 2
 Bundle-Name: NightLabs Base plugin
 Bundle-SymbolicName: org.nightlabs.base.ui; singleton:=true
@@ -15,6 +14,7 @@ Bundle-ClassPath: .,
  lib/activation.jar,
  lib/swtcalendar.jar
 Bundle-Activator: org.nightlabs.base.ui.NLBasePlugin
+Bundle-ActivationPolicy: lazy
 Bundle-Vendor: NightLabs.com
 Bundle-Localization: plugin
 Export-Package: com.sun.activation.registries,
@@ -146,14 +146,12 @@ Export-Package: com.sun.activation.registries,
  org.nightlabs.base.ui.wizard,
  org.w3c.dom.html,
  org.w3c.dom.ls
-Require-Bundle: org.apache.log4j;visibility:=reexport,
- org.nightlabs.eclipse.ui.dialog,
+Require-Bundle: org.nightlabs.eclipse.ui.dialog,
  org.nightlabs.eclipse.preference.ui;visibility:=reexport,
  org.nightlabs.eclipse.ui.treestate;visibility:=reexport,
  org.nightlabs.base;visibility:=reexport,
- org.nightlabs.config;bundle-version="0.9.7",
  org.nightlabs.eclipse.extension;bundle-version="1.0.0";visibility:=reexport,
  org.nightlabs.eclipse.compatibility;bundle-version="1.0.0",
  org.nightlabs.singleton;bundle-version="1.0.0";visibility:=reexport
-Eclipse-LazyStart: true
+Import-Package: org.apache.log4j, org.apache.log4j.xml, org.nightlabs.config, org.nightlabs.concurrent, org.nightlabs.progress, org.nightlabs.util, org.nightlabs.i18n
 Eclipse-BuddyPolicy: registered
