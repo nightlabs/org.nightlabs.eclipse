@@ -16,3 +16,4 @@ Require-Bundle: org.nightlabs.concurrent,
  org.eclipse.core.net
 Export-Package: org.nightlabs.base.ui.errorreport.mantis
 Eclipse-RegisterBuddy: org.nightlabs.config
+Import-Package: org.apache.log4j
