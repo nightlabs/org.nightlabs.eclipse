@@ -33,10 +33,10 @@ import java.util.Set;
 import org.eclipse.swt.widgets.Display;
 import org.nightlabs.eclipse.ui.pdfviewer.ContextElement;
 import org.nightlabs.eclipse.ui.pdfviewer.ContextElementType;
-import org.nightlabs.eclipse.ui.pdfviewer.PdfSimpleNavigator;
+import org.nightlabs.eclipse.ui.pdfviewer.PDFSimpleNavigator;
 
 /**
- * Holds all {@link ContextElement}s for one {@link org.nightlabs.eclipse.ui.pdfviewer.PdfViewer} instance.
+ * Holds all {@link ContextElement}s for one {@link org.nightlabs.eclipse.ui.pdfviewer.PDFViewer} instance.
  *
  * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
@@ -51,8 +51,9 @@ public class ContextElementRegistry
 	 */
 	private static void assertValidThread()
 	{
-		if (Display.getCurrent() == null)
+		if (Display.getCurrent() == null) {
 			throw new IllegalStateException("Wrong thread! This method must be called on the SWT UI thread!"); //$NON-NLS-1$
+		}
 	}
 
 	/**
@@ -60,7 +61,7 @@ public class ContextElementRegistry
 	 *
 	 * @param contextElement the context-element. Must not be <code>null</code>.
 	 */
-	public void registerContextElement(ContextElement<?> contextElement)
+	public void registerContextElement(final ContextElement<?> contextElement)
 	{
 		setContextElement(contextElement.getContextElementType(), contextElement.getContextElementId(), contextElement);
 	}
@@ -71,7 +72,7 @@ public class ContextElementRegistry
 	 * @param contextElementType the type of the <code>contextElement</code> as specified by {@link ContextElement#getContextElementType()} when it was added.
 	 * @param contextElementId the identifier or <code>null</code> as specified by {@link ContextElement#getContextElementId()} when it was added.
 	 */
-	public void unregisterContextElement(ContextElementType<?> contextElementType, String contextElementId)
+	public void unregisterContextElement(final ContextElementType<?> contextElementType, final String contextElementId)
 	{
 		setContextElement(contextElementType, contextElementId, null);
 	}
@@ -79,19 +80,21 @@ public class ContextElementRegistry
 	/**
 	 * Add or remove a context-element from this registry.
 	 *
-	 * @param contextElementType the type of the <code>contextElement</code>. This should be the base class - e.g. when subclassing {@link PdfSimpleNavigator}, you should still pass <code>PdfSimpleNavigator.class</code> and not the subclass' type. Must <b>not</b> be <code>null</code>!
+	 * @param contextElementType the type of the <code>contextElement</code>. This should be the base class - e.g. when subclassing {@link PDFSimpleNavigator}, you should still pass <code>PdfSimpleNavigator.class</code> and not the subclass' type. Must <b>not</b> be <code>null</code>!
 	 * @param contextElementId the identifier of the context-element. Can be <code>null</code>.
 	 * @param contextElement the context-element. Can be <code>null</code> to remove a previously added entry.
 	 */
-	protected void setContextElement(ContextElementType<?> contextElementType, String contextElementId, ContextElement<?> contextElement)
+	protected void setContextElement(final ContextElementType<?> contextElementType, final String contextElementId, final ContextElement<?> contextElement)
 	{
 		assertValidThread();
 
-		if (contextElementType == null)
+		if (contextElementType == null) {
 			throw new IllegalArgumentException("contextElementType must not be null!"); //$NON-NLS-1$
+		}
 
-		if (contextElement != null)
+		if (contextElement != null) {
 			contextElementType.assertValidContextElementImplementation(contextElement);
+		}
 
 		Map<String, ContextElement<?>> id2contextElement = contextElementType2id2contextElement.get(contextElementType);
 		if (id2contextElement == null && contextElement != null) {
@@ -101,16 +104,18 @@ public class ContextElementRegistry
 
 		if (contextElement == null) {
 			if (id2contextElement != null) {
-				ContextElement<?> oldContextElement = id2contextElement.remove(contextElementId);
-				if (oldContextElement != null)
+				final ContextElement<?> oldContextElement = id2contextElement.remove(contextElementId);
+				if (oldContextElement != null) {
 					oldContextElement.onUnregisterContextElement();
+				}
 			}
-		}
-		else
+		} else {
 			id2contextElement.put(contextElementId, contextElement);
+		}
 
-		if (id2contextElement != null && id2contextElement.isEmpty())
+		if (id2contextElement != null && id2contextElement.isEmpty()) {
 			contextElementType2id2contextElement.remove(contextElementType);
+		}
 
 		contextElementType2id2contextElementCache.remove(contextElementType);
 		allContextElementsCache = null;
@@ -124,16 +129,18 @@ public class ContextElementRegistry
 	 * @param id the identifier of the context-element as specified in {@link #setContextElement(ContextElementType, String, ContextElement)} - can be <code>null</code>.
 	 * @return the appropriate context-element or <code>null</code>.
 	 */
-	@SuppressWarnings("unchecked") //$NON-NLS-1$
-	public <T extends ContextElement<T>> T getContextElement(ContextElementType<T> contextElementType, String id) {
+	@SuppressWarnings("unchecked")
+	public <T extends ContextElement<T>> T getContextElement(final ContextElementType<T> contextElementType, final String id) {
 		assertValidThread();
 
-		if (contextElementType == null)
+		if (contextElementType == null) {
 			throw new IllegalArgumentException("contextElementType must not be null!"); //$NON-NLS-1$
+		}
 
-		Map<String, ContextElement<?>> id2contextElement = contextElementType2id2contextElement.get(contextElementType);
-		if (id2contextElement == null)
+		final Map<String, ContextElement<?>> id2contextElement = contextElementType2id2contextElement.get(contextElementType);
+		if (id2contextElement == null) {
 			return null;
+		}
 
 		return (T) id2contextElement.get(id);
 	}
@@ -146,23 +153,26 @@ public class ContextElementRegistry
 	 *         (instead, an empty <code>Collection</code> is returned). This <code>Collection</code> is not backed by the registry and can
 	 *         be safely iterated while the registry is modified.
 	 */
-	@SuppressWarnings("unchecked") //$NON-NLS-1$
-	public <T extends ContextElement<?>> Collection<T> getContextElements(ContextElementType<?> contextElementType)
+	@SuppressWarnings("unchecked")
+	public <T extends ContextElement<?>> Collection<T> getContextElements(final ContextElementType<?> contextElementType)
 	{
 		assertValidThread();
 
-		if (contextElementType == null)
+		if (contextElementType == null) {
 			throw new IllegalArgumentException("contextElementType must not be null!"); //$NON-NLS-1$
+		}
 
 		Map<String, ContextElement<?>> id2contextElement = contextElementType2id2contextElementCache.get(contextElementType);
-		if (id2contextElement != null)
+		if (id2contextElement != null) {
 			return (Collection<T>) id2contextElement.values();
+		}
 
 		id2contextElement = contextElementType2id2contextElement.get(contextElementType);
-		if (id2contextElement == null)
+		if (id2contextElement == null) {
 			id2contextElement = Collections.emptyMap();
-		else
+		} else {
 			id2contextElement = Collections.unmodifiableMap(new HashMap<String, ContextElement<?>>(id2contextElement));
+		}
 
 		contextElementType2id2contextElementCache.put(contextElementType, id2contextElement);
 
@@ -182,8 +192,8 @@ public class ContextElementRegistry
 		assertValidThread();
 
 		if (allContextElementsCache == null) {
-			Set<ContextElement<?>> result = new HashSet<ContextElement<?>>();
-			for (Map<String, ContextElement<?>> id2contextElement : contextElementType2id2contextElement.values()) {
+			final Set<ContextElement<?>> result = new HashSet<ContextElement<?>>();
+			for (final Map<String, ContextElement<?>> id2contextElement : contextElementType2id2contextElement.values()) {
 				result.addAll(id2contextElement.values());
 			}
 			allContextElementsCache = Collections.unmodifiableCollection(result);

@@ -45,10 +45,10 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
-import org.nightlabs.eclipse.ui.pdfviewer.PdfSimpleNavigator;
-import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
-import org.nightlabs.eclipse.ui.pdfviewer.PdfViewerPlugin;
+import org.nightlabs.eclipse.ui.pdfviewer.PDFDocument;
+import org.nightlabs.eclipse.ui.pdfviewer.PDFSimpleNavigator;
+import org.nightlabs.eclipse.ui.pdfviewer.PDFViewer;
+import org.nightlabs.eclipse.ui.pdfviewer.PDFViewerPlugin;
 
 import com.sun.pdfview.PDFFile;
 
@@ -57,10 +57,10 @@ import com.sun.pdfview.PDFFile;
  * @author frederik loeser - frederik at nightlabs dot de
  * @author marco schulze - marco at nightlabs dot de
  */
-public class PdfSimpleNavigatorComposite extends Composite {
+public class PDFSimpleNavigatorComposite extends Composite {
 
 	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
-	private PdfSimpleNavigator pdfSimpleNavigator;
+	private PDFSimpleNavigator pdfSimpleNavigator;
 	private Button gotoFirstPageButton;
 	private Button gotoPreviousPageButton;
 	private Button gotoNextPageButton;
@@ -68,7 +68,7 @@ public class PdfSimpleNavigatorComposite extends Composite {
 	private Text currentPageNumberText;
 	private Label label;
 	private PDFFile pdfFile;
-	private PdfDocument pdfDocument;
+	private PDFDocument pdfDocument;
 	private int numberOfPages;
 //	private ModifyListenerImpl modifyListenerImpl;
 
@@ -79,32 +79,32 @@ public class PdfSimpleNavigatorComposite extends Composite {
 		gotoLastPageButton_enabled
 	}
 
-	public PdfSimpleNavigatorComposite(Composite parent, int style, PdfSimpleNavigator pdfSimpleNavigator) {
+	public PDFSimpleNavigatorComposite(final Composite parent, final int style, final PDFSimpleNavigator pdfSimpleNavigator) {
 		super(parent, style);
 		this.pdfSimpleNavigator = pdfSimpleNavigator;
 
-		GridLayout gridLayout = new GridLayout(6, false);
+		final GridLayout gridLayout = new GridLayout(6, false);
 		this.setLayout(gridLayout);
 
-		ImageRegistry imageRegistry = PdfViewerPlugin.getDefault().getImageRegistry();
-		Image gotoFirstPageButtonImage = imageRegistry.get(ImageKey.gotoFirstPageButton_enabled.name());
-		Image gotoPreviousPageButtonImage = imageRegistry.get(ImageKey.gotoPreviousPageButton_enabled.name());
-		Image gotoNextPageButtonImage = imageRegistry.get(ImageKey.gotoNextPageButton_enabled.name());
-		Image gotoLastPageButtonImage = imageRegistry.get(ImageKey.gotoLastPageButton_enabled.name());
+		final ImageRegistry imageRegistry = PDFViewerPlugin.getDefault().getImageRegistry();
+		final Image gotoFirstPageButtonImage = imageRegistry.get(ImageKey.gotoFirstPageButton_enabled.name());
+		final Image gotoPreviousPageButtonImage = imageRegistry.get(ImageKey.gotoPreviousPageButton_enabled.name());
+		final Image gotoNextPageButtonImage = imageRegistry.get(ImageKey.gotoNextPageButton_enabled.name());
+		final Image gotoLastPageButtonImage = imageRegistry.get(ImageKey.gotoLastPageButton_enabled.name());
 
 		gotoFirstPageButton = new Button(this, SWT.NONE);
 		gotoFirstPageButton.setImage(gotoFirstPageButtonImage);
 		gotoPreviousPageButton = new Button(this, SWT.NONE);
 		gotoPreviousPageButton.setImage(gotoPreviousPageButtonImage);
 		currentPageNumberText = new Text(this, SWT.BORDER);
-		GridData gd1 = new GridData();
+		final GridData gd1 = new GridData();
 		currentPageNumberText.setLayoutData(gd1);
 		currentPageNumberText.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyPressed(KeyEvent e) {
+			public void keyPressed(final KeyEvent e) {
 //			    if (e.keyCode == 16777296) {
 				if (e.character == '\r' || e.character == '\n') { // in Linux, it should be \n, but I just got \r => we better play safe and check for both.
-			    	int pageNumber = Integer.parseInt(currentPageNumberText.getText());
+			    	final int pageNumber = Integer.parseInt(currentPageNumberText.getText());
 			    	gotoPage(pageNumber);
 			    }
 			}
@@ -121,7 +121,7 @@ public class PdfSimpleNavigatorComposite extends Composite {
 
 		gotoFirstPageButton.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent event) {
+			public void widgetSelected(final SelectionEvent event) {
 //				int oldPageNumber = new Integer(currentPageNumberText.getText()).intValue();
 				gotoPage(1);
 			}
@@ -129,23 +129,23 @@ public class PdfSimpleNavigatorComposite extends Composite {
 
 		gotoPreviousPageButton.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent event) {
-				int oldPageNumber = new Integer(currentPageNumberText.getText()).intValue();
+			public void widgetSelected(final SelectionEvent event) {
+				final int oldPageNumber = new Integer(currentPageNumberText.getText()).intValue();
 				gotoPage(oldPageNumber - 1);
 			}
 		});
 
 		gotoNextPageButton.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent event) {
-				int oldPageNumber = new Integer(currentPageNumberText.getText()).intValue();
+			public void widgetSelected(final SelectionEvent event) {
+				final int oldPageNumber = new Integer(currentPageNumberText.getText()).intValue();
 				gotoPage(oldPageNumber + 1);
 			}
 		});
 
 		gotoLastPageButton.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent event) {
+			public void widgetSelected(final SelectionEvent event) {
 //				int oldPageNumber = new Integer(currentPageNumberText.getText()).intValue();
 				gotoPage(numberOfPages);
 			}
@@ -153,7 +153,7 @@ public class PdfSimpleNavigatorComposite extends Composite {
 
 		currentPageNumberText.addVerifyListener(new VerifyListener() {
 			@Override
-            public void verifyText(VerifyEvent event) {
+            public void verifyText(final VerifyEvent event) {
 				if (event.text != null) {
 					event.doit = true;
 					for (int idx = 0; idx < event.text.length(); ++idx) {
@@ -177,31 +177,32 @@ public class PdfSimpleNavigatorComposite extends Composite {
 
 		currentPageNumberText.addKeyListener(new KeyListener() {
 			@Override
-            public void keyPressed(KeyEvent e) {
+            public void keyPressed(final KeyEvent e) {
             }
 			@Override
-            public void keyReleased(KeyEvent e) {
+            public void keyReleased(final KeyEvent e) {
             }
 		});
 
 		setPdfDocument(null);
 	}
 
-	protected PdfSimpleNavigator getPdfSimpleNavigator() {
+	protected PDFSimpleNavigator getPdfSimpleNavigator() {
 	    return pdfSimpleNavigator;
     }
 
 	private static final Set<Character> validChars;
 	static {
-		Set<Character> chars = new HashSet<Character>();
-		for (char c = '0'; c <= '9'; ++c)
+		final Set<Character> chars = new HashSet<Character>();
+		for (char c = '0'; c <= '9'; ++c) {
 			chars.add(c);
+		}
 		chars.add((char)8);
 
 		validChars = Collections.unmodifiableSet(chars);
 	}
 
-	public void setControlEnabledStatus(int currentPageNumber)
+	public void setControlEnabledStatus(final int currentPageNumber)
 	{
 		gotoFirstPageButton.setEnabled(currentPageNumber > 1);
 		gotoPreviousPageButton.setEnabled(currentPageNumber > 1);
@@ -213,16 +214,18 @@ public class PdfSimpleNavigatorComposite extends Composite {
 	private void gotoPage(int pageNumber) {
 //		currentPageNumberText.removeModifyListener(modifyListenerImpl);
 
-		if (pageNumber < 1)
+		if (pageNumber < 1) {
 			pageNumber = 1;
+		}
 
-		if (pageNumber > numberOfPages)
+		if (pageNumber > numberOfPages) {
 			pageNumber = numberOfPages;
+		}
 
 		currentPageNumberText.setText(String.valueOf(pageNumber));
 		setControlEnabledStatus(pageNumber);
 
-		propertyChangeSupport.firePropertyChange(	PdfViewer.PROPERTY_CURRENT_PAGE,
+		propertyChangeSupport.firePropertyChange(	PDFViewer.PROPERTY_CURRENT_PAGE,
 													0,
 													pageNumber
 												);
@@ -264,18 +267,19 @@ public class PdfSimpleNavigatorComposite extends Composite {
 //		currentPageNumberText.addModifyListener(modifyListenerImpl);
 	}
 
-	public PdfDocument getPdfDocument() {
+	public PDFDocument getPdfDocument() {
 		return pdfDocument;
 	}
 
-	public void setPdfDocument(PdfDocument pdfDocument) {
+	public void setPdfDocument(final PDFDocument pdfDocument) {
 		this.pdfDocument = pdfDocument;
-		this.pdfFile = pdfDocument != null ? pdfDocument.getPdfFile() : null;
+		this.pdfFile = pdfDocument != null ? pdfDocument.getPDFFile() : null;
 
-		if (pdfFile == null)
+		if (pdfFile == null) {
 			numberOfPages = 0;
-		else
+		} else {
 			numberOfPages = pdfFile.getNumPages();
+		}
 
 		if (numberOfPages < 1) {
 			setControlEnabledStatus(1);
@@ -286,7 +290,7 @@ public class PdfSimpleNavigatorComposite extends Composite {
 			currentPageNumberText.setText(String.valueOf(1));
 			currentPageNumberText.setTextLimit((Integer.toString(numberOfPages)).length());
 			label.setText(" / " + numberOfPages); //$NON-NLS-1$
-			boolean morePages = numberOfPages > 1 ? true : false;
+			final boolean morePages = numberOfPages > 1 ? true : false;
 			gotoNextPageButton.setEnabled(morePages);
 
 			// the width of currentPageNumberText is dependent on the number of pages of the given document
@@ -317,11 +321,11 @@ public class PdfSimpleNavigatorComposite extends Composite {
     	return currentPageNumberText;
     }
 
-	public void setCurrentPageNumberText(Text currentPageNumberText) {
+	public void setCurrentPageNumberText(final Text currentPageNumberText) {
     	this.currentPageNumberText = currentPageNumberText;
     }
 
-	public void addPropertyChangeListener(PropertyChangeListener listener) {
+	public void addPropertyChangeListener(final PropertyChangeListener listener) {
 		propertyChangeSupport.addPropertyChangeListener(listener);
 	}
 

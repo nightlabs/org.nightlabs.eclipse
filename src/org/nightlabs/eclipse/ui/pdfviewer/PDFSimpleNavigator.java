@@ -29,7 +29,7 @@ import java.beans.PropertyChangeListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.nightlabs.eclipse.ui.pdfviewer.internal.PdfSimpleNavigatorComposite;
+import org.nightlabs.eclipse.ui.pdfviewer.internal.PDFSimpleNavigatorComposite;
 
 /**
  * A simple navigator providing a text field for entering the desired page number
@@ -40,31 +40,31 @@ import org.nightlabs.eclipse.ui.pdfviewer.internal.PdfSimpleNavigatorComposite;
  * @author marco schulze - marco at nightlabs dot de
  * @author frederik loeser - frederik at nightlabs dot de
  */
-public class PdfSimpleNavigator implements ContextElement<PdfSimpleNavigator> {
+public class PDFSimpleNavigator implements ContextElement<PDFSimpleNavigator> {
 
-	public static final ContextElementType<PdfSimpleNavigator> CONTEXT_ELEMENT_TYPE = new ContextElementType<PdfSimpleNavigator>(PdfSimpleNavigator.class);
+	public static final ContextElementType<PDFSimpleNavigator> CONTEXT_ELEMENT_TYPE = new ContextElementType<PDFSimpleNavigator>(PDFSimpleNavigator.class);
 //	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
-	private PdfViewer pdfViewer;
-	private PdfDocument pdfDocument;
+	private PDFViewer pdfViewer;
+	private PDFDocument pdfDocument;
 	private String contextElementId;
-	private PdfSimpleNavigatorComposite pdfSimpleNavigatorComposite;
+	private PDFSimpleNavigatorComposite pdfSimpleNavigatorComposite;
 
 	/**
-	 * Create a <code>PdfSimpleNavigator</code>. This constructor delegates to {@link #PdfSimpleNavigator(PdfViewer, String)}
+	 * Create a <code>PdfSimpleNavigator</code>. This constructor delegates to {@link #PdfSimpleNavigator(PDFViewer, String)}
 	 * with <code>id = null</code>.
-	 * @param pdfViewer the {@link PdfViewer} for which to create a <code>PdfSimpleNavigator</code>.
+	 * @param pdfViewer the {@link PDFViewer} for which to create a <code>PdfSimpleNavigator</code>.
 	 */
-	public PdfSimpleNavigator(PdfViewer pdfViewer) {
+	public PDFSimpleNavigator(final PDFViewer pdfViewer) {
 		this(pdfViewer, null);
 	}
 
 	/**
 	 * Create a <code>PdfSimpleNavigator</code>.
 	 *
-	 * @param pdfViewer the {@link PdfViewer} for which to create a <code>PdfSimpleNavigator</code>.
+	 * @param pdfViewer the {@link PDFViewer} for which to create a <code>PdfSimpleNavigator</code>.
 	 * @param contextElementId the identifier, if multiple instances shall be used, or <code>null</code>.
 	 */
-	public PdfSimpleNavigator(PdfViewer pdfViewer, String contextElementId) {
+	public PDFSimpleNavigator(final PDFViewer pdfViewer, final String contextElementId) {
 		assertValidThread();
 
 		if (pdfViewer == null) {
@@ -74,11 +74,11 @@ public class PdfSimpleNavigator implements ContextElement<PdfSimpleNavigator> {
 		this.pdfViewer = pdfViewer;
 		this.contextElementId = contextElementId;
 		pdfViewer.registerContextElement(this);
-		this.setPdfDocument(pdfViewer.getPdfDocument()); // pdfViewer.getPdfDocument() can return null!
+		this.setPdfDocument(pdfViewer.getPDFDocument()); // pdfViewer.getPdfDocument() can return null!
 
-		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_PDF_DOCUMENT, propertyChangeListenerPdfDocument);
+		pdfViewer.addPropertyChangeListener(PDFViewer.PROPERTY_PDF_DOCUMENT, propertyChangeListenerPdfDocument);
 		// this navigator will be notified here in the case PDF viewer has changed current page
-		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_CURRENT_PAGE, propertyChangeListenerCurrentPage);
+		pdfViewer.addPropertyChangeListener(PDFViewer.PROPERTY_CURRENT_PAGE, propertyChangeListenerCurrentPage);
 
 		// is this the best way?
 		// TODO find and consider only context elements that are of type PDF thumbnail navigator
@@ -99,7 +99,7 @@ public class PdfSimpleNavigator implements ContextElement<PdfSimpleNavigator> {
 
 	private PropertyChangeListener propertyChangeListenerCurrentPage = new PropertyChangeListener() {
 		@Override
-        public void propertyChange(PropertyChangeEvent event) {
+        public void propertyChange(final PropertyChangeEvent event) {
 			pdfSimpleNavigatorComposite.getCurrentPageNumberText().setText(String.valueOf(event.getNewValue()));
 			// check if one or more buttons in PDF simple navigator have to be en-/disabled
 			pdfSimpleNavigatorComposite.setControlEnabledStatus((Integer)event.getNewValue());
@@ -118,15 +118,15 @@ public class PdfSimpleNavigator implements ContextElement<PdfSimpleNavigator> {
 
 	private PropertyChangeListener propertyChangeListenerPdfDocument = new PropertyChangeListener() {
 		@Override
-		public void propertyChange(PropertyChangeEvent event) {
-			setPdfDocument((PdfDocument) event.getNewValue());
+		public void propertyChange(final PropertyChangeEvent event) {
+			setPdfDocument((PDFDocument) event.getNewValue());
 		}
 	};
 
 	@Override
 	public void onUnregisterContextElement() {
-	    pdfViewer.removePropertyChangeListener(PdfViewer.PROPERTY_PDF_DOCUMENT, propertyChangeListenerPdfDocument);
-	    pdfViewer.removePropertyChangeListener(PdfViewer.PROPERTY_CURRENT_PAGE, propertyChangeListenerCurrentPage);
+	    pdfViewer.removePropertyChangeListener(PDFViewer.PROPERTY_PDF_DOCUMENT, propertyChangeListenerPdfDocument);
+	    pdfViewer.removePropertyChangeListener(PDFViewer.PROPERTY_CURRENT_PAGE, propertyChangeListenerCurrentPage);
 	    pdfViewer = null; // ensure we can't do anything with it anymore - the pdfViewer forgot this instance already - so we forget it, too.
 	}
 
@@ -140,32 +140,32 @@ public class PdfSimpleNavigator implements ContextElement<PdfSimpleNavigator> {
 		}
 	}
 
-	public Control createControl(Composite parent, int style) {
+	public Control createControl(final Composite parent, final int style) {
 		assertValidThread();
 
 		if (this.pdfSimpleNavigatorComposite != null) {
 			this.pdfSimpleNavigatorComposite.dispose();
 			this.pdfSimpleNavigatorComposite = null;
 		}
-		this.pdfSimpleNavigatorComposite = new PdfSimpleNavigatorComposite(parent, style, this);
+		this.pdfSimpleNavigatorComposite = new PDFSimpleNavigatorComposite(parent, style, this);
 		pdfSimpleNavigatorComposite.setPdfDocument(pdfDocument);
 
 		this.pdfSimpleNavigatorComposite.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
-			public void propertyChange(PropertyChangeEvent event) {
-				getPdfViewer().setCurrentPage((Integer)event.getNewValue());
+			public void propertyChange(final PropertyChangeEvent event) {
+				getPDFViewer().setCurrentPage((Integer)event.getNewValue());
 			}
 		});
 
 		return this.pdfSimpleNavigatorComposite;
 	}
 
-	public PdfDocument getPdfDocument() {
+	public PDFDocument getPdfDocument() {
 		assertValidThread();
 		return pdfDocument;
 	}
 
-	protected void setPdfDocument(PdfDocument pdfDocument) {
+	protected void setPdfDocument(final PDFDocument pdfDocument) {
 		assertValidThread();
 
 		this.pdfDocument = pdfDocument;
@@ -189,12 +189,12 @@ public class PdfSimpleNavigator implements ContextElement<PdfSimpleNavigator> {
 //	}
 
 	@Override
-	public PdfViewer getPdfViewer() {
+	public PDFViewer getPDFViewer() {
 		return pdfViewer;
 	}
 
 	@Override
-	public ContextElementType<PdfSimpleNavigator> getContextElementType() {
+	public ContextElementType<PDFSimpleNavigator> getContextElementType() {
 		return CONTEXT_ELEMENT_TYPE;
 	}
 

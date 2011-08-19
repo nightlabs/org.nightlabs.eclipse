@@ -41,14 +41,16 @@ class BlockingImageObserver implements ImageObserver {
 	private static final long timeoutMSec = 60000;
 
 	@Override
-	public synchronized boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
+	public synchronized boolean imageUpdate(final Image img, final int infoflags, final int x, final int y, final int width, final int height) {
 		lastInfoflags = infoflags;
 
-		if ((infoflags & ImageObserver.ALLBITS) != 0)
+		if ((infoflags & ImageObserver.ALLBITS) != 0) {
 			renderingFinished = true;
+		}
 
-		if ((infoflags & ImageObserver.ABORT) != 0)
+		if ((infoflags & ImageObserver.ABORT) != 0) {
 			renderingAborted = true;
+		}
 
 		this.notifyAll();
 		return !renderingFinished;
@@ -56,19 +58,21 @@ class BlockingImageObserver implements ImageObserver {
 
 	public synchronized void waitForRendering()
 	{
-		long start = System.currentTimeMillis();
+		final long start = System.currentTimeMillis();
 		while (!renderingFinished && !renderingAborted) {
-			if (System.currentTimeMillis() - start > timeoutMSec)
+			if (System.currentTimeMillis() - start > timeoutMSec) {
 				throw new WaitForRenderingException("Timeout waiting for rendering to finish or abort!"); //$NON-NLS-1$
+			}
 
 			try {
 				this.wait(10000);
-			} catch (InterruptedException e) {
+			} catch (final InterruptedException e) {
 				// ignore
 			}
 		}
 
-		if (renderingAborted)
+		if (renderingAborted) {
 			throw new WaitForRenderingException("Rendering was aborted! lastInfoflags=" + lastInfoflags); //$NON-NLS-1$
+		}
 	}
 }

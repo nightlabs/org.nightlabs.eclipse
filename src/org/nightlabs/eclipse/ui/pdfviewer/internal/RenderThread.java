@@ -46,10 +46,10 @@ public class RenderThread extends Thread
 	}
 
 	private Display display;
-	private PdfViewerComposite pdfViewerComposite;
+	private PDFViewerComposite pdfViewerComposite;
 	private RenderBuffer renderBuffer;
 
-	public RenderThread(PdfViewerComposite pdfViewerComposite, RenderBuffer renderBuffer) {
+	public RenderThread(final PDFViewerComposite pdfViewerComposite, final RenderBuffer renderBuffer) {
 		super("render-" + Long.toHexString(nextThreadId())); //$NON-NLS-1$
 		this.renderBuffer = renderBuffer;
 		this.pdfViewerComposite = pdfViewerComposite;
@@ -74,19 +74,20 @@ public class RenderThread extends Thread
 	public void run() {
 		while (!isInterrupted()) {
 			try {
-				if (pdfViewerComposite.isDisposed())
+				if (pdfViewerComposite.isDisposed()) {
 					return;
+				}
 
-				JPanel viewPanel = pdfViewerComposite.getViewPanel();
+				final JPanel viewPanel = pdfViewerComposite.getViewPanel();
 
 				// rendering necessary, if zoom has been changed
 				boolean doRender = pdfViewerComposite.getZoomFactorPerMill() != (int) (renderBuffer.getZoomFactor() * 1000);
 
 				// the new zoom factor (if unchanged, it's already the same as renderBuffer.getZoomFactor())
-				double zoomFactor = doRender ? (double)pdfViewerComposite.getZoomFactorPerMill() / 1000 : renderBuffer.getZoomFactor();
+				final double zoomFactor = doRender ? (double)pdfViewerComposite.getZoomFactorPerMill() / 1000 : renderBuffer.getZoomFactor();
 
 				// viewRegion is the real coordinates of the visible area (i.e. the viewPanel's location and size in the real coordinate system)
-				Rectangle2D viewRegion = new Rectangle2D.Double(
+				final Rectangle2D viewRegion = new Rectangle2D.Double(
 						pdfViewerComposite.getViewOrigin().getX(),
 						pdfViewerComposite.getViewOrigin().getY(),
 						viewPanel.getWidth() / (zoomFactor * getZoomScreenResolutionFactorX()),
@@ -98,7 +99,7 @@ public class RenderThread extends Thread
 
 				double bufferWidthFactor;
 				double bufferHeightFactor;
-				Dimension2D documentDimension = pdfViewerComposite.getPdfDocument().getDocumentDimension();
+				final Dimension2D documentDimension = pdfViewerComposite.getPdfDocument().getDocumentDimension();
 				if (documentDimension.getWidth() > documentDimension.getHeight()) {
 					bufferWidthFactor = RenderBuffer.BUFFER_SIZE_FACTOR_LARGE;
 					bufferHeightFactor = RenderBuffer.BUFFER_SIZE_FACTOR_SMALL;
@@ -108,33 +109,35 @@ public class RenderThread extends Thread
 					bufferHeightFactor = RenderBuffer.BUFFER_SIZE_FACTOR_LARGE;
 				}
 
-				int bufferWidth = (int) (viewPanel.getWidth() * bufferWidthFactor);
-				int bufferHeight = (int) (viewPanel.getHeight() * bufferHeightFactor);
+				final int bufferWidth = (int) (viewPanel.getWidth() * bufferWidthFactor);
+				final int bufferHeight = (int) (viewPanel.getHeight() * bufferHeightFactor);
 
 				if (bufferWidth >= 1 && bufferHeight >= 1) {
 
 					if (!doRender) {
 						// rendering necessary, if buffer width or buffer height has been changed (induced by panel in- or decrease)
-						if (bufferWidth != renderBuffer.getBufferWidth())
+						if (bufferWidth != renderBuffer.getBufferWidth()) {
 							doRender = true;
-						else if (bufferHeight != renderBuffer.getBufferHeight())
+						} else if (bufferHeight != renderBuffer.getBufferHeight()) {
 							doRender = true;
+						}
 					}
 
 					if (!doRender) {
 						// rendering necessary, if the view area (= pdfViewerComposite.viewPanel) is (at least partially) outside of the buffer
-						Rectangle2D bufferedImageBounds = renderBuffer.getBufferedImageBounds();
-						if (bufferedImageBounds == null)
+						final Rectangle2D bufferedImageBounds = renderBuffer.getBufferedImageBounds();
+						if (bufferedImageBounds == null) {
 							doRender = true;
-						else {
-							if (bufferedImageBounds.getMinX() > viewRegion.getMinX())
+						} else {
+							if (bufferedImageBounds.getMinX() > viewRegion.getMinX()) {
 								doRender = true;
-							else if (bufferedImageBounds.getMinY() > viewRegion.getMinY())
+							} else if (bufferedImageBounds.getMinY() > viewRegion.getMinY()) {
 								doRender = true;
-							else if (bufferedImageBounds.getMaxX() < viewRegion.getMaxX())
+							} else if (bufferedImageBounds.getMaxX() < viewRegion.getMaxX()) {
 								doRender = true;
-							else if (bufferedImageBounds.getMaxY() < viewRegion.getMaxY())
+							} else if (bufferedImageBounds.getMaxY() < viewRegion.getMaxY()) {
 								doRender = true;
+							}
 						}
 					}
 
@@ -148,9 +151,10 @@ public class RenderThread extends Thread
 						);
 						SwingUtilities.invokeLater(new Runnable() {
 							public void run() {
-								JPanel viewPanel = pdfViewerComposite.getViewPanel();
-								if (viewPanel != null)
+								final JPanel viewPanel = pdfViewerComposite.getViewPanel();
+								if (viewPanel != null) {
 									viewPanel.repaint();
+								}
 							}
 						});
 					}
@@ -160,7 +164,7 @@ public class RenderThread extends Thread
 				synchronized (this) {
 					try {
 						this.wait(1000); // Unfortunately, we sometimes don't get notified when zooming, so sleeping only one second to ensure early redraws. Marco.
-					} catch (InterruptedException e) {
+					} catch (final InterruptedException e) {
 						// ignore
 					}
 				}
@@ -177,7 +181,7 @@ public class RenderThread extends Thread
 					}
 				});
 
-				try { Thread.sleep(5000); } catch (InterruptedException x) { } // prevent too quick re-spawns, if the error occurs every time
+				try { Thread.sleep(5000); } catch (final InterruptedException x) { } // prevent too quick re-spawns, if the error occurs every time
 			}
 		}
 	}

@@ -35,15 +35,15 @@ public class WaitForRenderingException extends RuntimeException
 	public WaitForRenderingException() {
 	}
 
-	public WaitForRenderingException(String message) {
+	public WaitForRenderingException(final String message) {
 		super(message);
 	}
 
-	public WaitForRenderingException(Throwable cause) {
+	public WaitForRenderingException(final Throwable cause) {
 		super(cause);
 	}
 
-	public WaitForRenderingException(String message, Throwable cause) {
+	public WaitForRenderingException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 }

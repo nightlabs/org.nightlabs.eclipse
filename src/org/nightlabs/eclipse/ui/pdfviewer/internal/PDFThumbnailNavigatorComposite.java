@@ -38,83 +38,86 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.nightlabs.eclipse.ui.pdfviewer.AutoZoom;
 import org.nightlabs.eclipse.ui.pdfviewer.MouseEvent;
-import org.nightlabs.eclipse.ui.pdfviewer.OneDimensionalPdfDocument;
+import org.nightlabs.eclipse.ui.pdfviewer.OneDimensionalPDFDocument;
+import org.nightlabs.eclipse.ui.pdfviewer.PDFDocument;
+import org.nightlabs.eclipse.ui.pdfviewer.PDFThumbnailNavigator;
+import org.nightlabs.eclipse.ui.pdfviewer.PDFViewer;
 import org.nightlabs.eclipse.ui.pdfviewer.PaintAdapter;
 import org.nightlabs.eclipse.ui.pdfviewer.PaintEvent;
 import org.nightlabs.eclipse.ui.pdfviewer.PaintListener;
-import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
-import org.nightlabs.eclipse.ui.pdfviewer.PdfThumbnailNavigator;
-import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
 import org.nightlabs.eclipse.ui.pdfviewer.Point2DDouble;
 
 /**
  * This composite displays a scrollable list of thumbnails of a PDF file
- * in order to navigate a {@link PdfViewerComposite}.
+ * in order to navigate a {@link PDFViewerComposite}.
  *
  * @version $Revision$ - $Date$
  * @author frederik loeser - frederik at nightlabs dot de
  * @author marco schulze - marco at nightlabs dot de
  */
-public class PdfThumbnailNavigatorComposite extends Composite
+public class PDFThumbnailNavigatorComposite extends Composite
 {
 //	private static final Logger logger = Logger.getLogger(PdfThumbnailNavigatorComposite.class);
 	@SuppressWarnings("unused")
-	private PdfThumbnailNavigator pdfThumbnailNavigator;
-	private PdfViewer thumbnailPdfViewer;
+	private PDFThumbnailNavigator pdfThumbnailNavigator;
+	private PDFViewer thumbnailPdfViewer;
 	private Control thumbnailPdfViewerControl;
-	private PdfDocument thumbnailPdfDocument;
+	private PDFDocument thumbnailPdfDocument;
 
-	public PdfThumbnailNavigatorComposite(Composite parent, int style, PdfThumbnailNavigator pdfThumbnailNavigator) {
+	public PDFThumbnailNavigatorComposite(final Composite parent, final int style, final PDFThumbnailNavigator pdfThumbnailNavigator) {
 		super(parent, style);
 		this.pdfThumbnailNavigator = pdfThumbnailNavigator;
 		this.setLayout(new FillLayout());
 
-		thumbnailPdfViewer = new PdfViewer();
+		thumbnailPdfViewer = new PDFViewer();
 		thumbnailPdfViewer.setUpdateCurrentPageOnScrolling(false);
 		thumbnailPdfViewer.setAutoZoomHorizontalMargin(24);
 		thumbnailPdfViewer.setAutoZoomVerticalMargin(24);
 		thumbnailPdfViewer.setAutoZoom(AutoZoom.pageWidth);
 		thumbnailPdfViewer.setMouseWheelZoomEnabled(false);
 		thumbnailPdfViewer.addPaintToViewListener(currentPageDrawListener);
-		thumbnailPdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_ZOOM_FACTOR, new PropertyChangeListener() {
+		thumbnailPdfViewer.addPropertyChangeListener(PDFViewer.PROPERTY_ZOOM_FACTOR, new PropertyChangeListener() {
 			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				Integer newZoom = (Integer) evt.getNewValue();
+			public void propertyChange(final PropertyChangeEvent evt) {
+				final Integer newZoom = (Integer) evt.getNewValue();
 				zoomFactorPerMill = newZoom;
 			}
 		});
-		thumbnailPdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_VIEW_ORIGIN, new PropertyChangeListener() {
+		thumbnailPdfViewer.addPropertyChangeListener(PDFViewer.PROPERTY_VIEW_ORIGIN, new PropertyChangeListener() {
 			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				Point2D newViewOrigin = (Point2D) evt.getNewValue();
+			public void propertyChange(final PropertyChangeEvent evt) {
+				final Point2D newViewOrigin = (Point2D) evt.getNewValue();
 				viewOrigin = newViewOrigin;
 			}
 		});
-		thumbnailPdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_CURRENT_PAGE, new PropertyChangeListener() {
+		thumbnailPdfViewer.addPropertyChangeListener(PDFViewer.PROPERTY_CURRENT_PAGE, new PropertyChangeListener() {
 			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (thumbnailPdfViewerControl != null)
+			public void propertyChange(final PropertyChangeEvent evt) {
+				if (thumbnailPdfViewerControl != null) {
 					thumbnailPdfViewerControl.redraw();
+				}
 			}
 		});
-		thumbnailPdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_MOUSE_CLICKED, new PropertyChangeListener() {
+		thumbnailPdfViewer.addPropertyChangeListener(PDFViewer.PROPERTY_MOUSE_CLICKED, new PropertyChangeListener() {
 			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
+			public void propertyChange(final PropertyChangeEvent evt) {
 				final MouseEvent pdfMouseEvent = (MouseEvent) evt.getNewValue();
 
 				// calculate current page from pdfMouseEvent.getPointInRealCoordinate() and set it
-				Collection<Integer> visiblePages = pdfDocument.getVisiblePages(
+				final Collection<Integer> visiblePages = pdfDocument.getVisiblePages(
 						new Rectangle2D.Double(pdfMouseEvent.getPointInRealCoordinate().getX(), pdfMouseEvent.getPointInRealCoordinate().getY(), 1, 1)
 				);
 
 				final Integer newCurrentPage;
-				if (visiblePages.isEmpty())
+				if (visiblePages.isEmpty()) {
 					newCurrentPage = null;
-				else
+				} else {
 					newCurrentPage = visiblePages.iterator().next();
+				}
 
-				if (newCurrentPage != null)
+				if (newCurrentPage != null) {
 					setCurrentPage(newCurrentPage);
+				}
 			}
 		});
 
@@ -132,28 +135,30 @@ public class PdfThumbnailNavigatorComposite extends Composite
 
 	private PaintListener currentPageDrawListener = new PaintAdapter() {
 		@Override
-		public void postPaint(PaintEvent event) {
-			PdfViewer thumbnailPdfViewer = event.getSource();
-			Graphics2D graphics2D = event.getGraphics2D();
-			PdfDocument pdfDocument = PdfThumbnailNavigatorComposite.this.pdfDocument;
-			if (pdfDocument == null)
+		public void postPaint(final PaintEvent event) {
+			final PDFViewer thumbnailPdfViewer = event.getSource();
+			final Graphics2D graphics2D = event.getGraphics2D();
+			final PDFDocument pdfDocument = PDFThumbnailNavigatorComposite.this.pdfDocument;
+			if (pdfDocument == null) {
 				return;
+			}
 
-			int currentPage = thumbnailPdfViewer.getCurrentPage();
-			if (currentPage < 1)
+			final int currentPage = thumbnailPdfViewer.getCurrentPage();
+			if (currentPage < 1) {
 				return;
+			}
 
 			Rectangle2D borderBoundsTop, borderBoundsLeft, borderBoundsBottom, borderBoundsRight;
 
 			// get the page bounds of the chosen page in real coordinates
-			Rectangle2D pageBoundsReal = pdfDocument.getPageBounds(currentPage);
+			final Rectangle2D pageBoundsReal = pdfDocument.getPageBounds(currentPage);
 
-			Point2DDouble zoomScreenResolutionFactor = new Point2DDouble(thumbnailPdfViewer.getZoomScreenResolutionFactor());
-			double zoomFactor = (double)zoomFactorPerMill / 1000;
-			Point2D viewOrigin = PdfThumbnailNavigatorComposite.this.viewOrigin;
+			final Point2DDouble zoomScreenResolutionFactor = new Point2DDouble(thumbnailPdfViewer.getZoomScreenResolutionFactor());
+			final double zoomFactor = (double)zoomFactorPerMill / 1000;
+			final Point2D viewOrigin = PDFThumbnailNavigatorComposite.this.viewOrigin;
 
 			// get the page bounds of the chosen page in image coordinates
-			Rectangle2D pageBoundsView = new Rectangle2D.Double();
+			final Rectangle2D pageBoundsView = new Rectangle2D.Double();
 //			pageBoundsView.setRect(
 //					(pageBoundsReal.getMinX() - viewOrigin.getX()) * zoomScreenResolutionFactor.getX() * zoomFactor,
 //					(pageBoundsReal.getMinY() - viewOrigin.getY()) * zoomScreenResolutionFactor.getY() * zoomFactor,
@@ -168,8 +173,8 @@ public class PdfThumbnailNavigatorComposite extends Composite
 					(int) (pageBoundsReal.getHeight() * zoomScreenResolutionFactor.getY() * zoomFactor)
 			);
 
-			int borderWidthScreenLeftRight = (int) (borderWidthLeftRight * zoomScreenResolutionFactor.getX() * zoomFactor);
-			int borderWidthScreenTopBottom = (int) (borderWidthTopBottom * zoomScreenResolutionFactor.getY() * zoomFactor);
+			final int borderWidthScreenLeftRight = (int) (borderWidthLeftRight * zoomScreenResolutionFactor.getX() * zoomFactor);
+			final int borderWidthScreenTopBottom = (int) (borderWidthTopBottom * zoomScreenResolutionFactor.getY() * zoomFactor);
 
 			borderBoundsTop = new Rectangle2D.Double();
 			borderBoundsLeft = new Rectangle2D.Double();
@@ -208,35 +213,35 @@ public class PdfThumbnailNavigatorComposite extends Composite
 		}
 	};
 
-	private PdfDocument pdfDocument;
+	private PDFDocument pdfDocument;
 
-	public void setPdfDocument(PdfDocument pdfDocument)
+	public void setPdfDocument(final PDFDocument pdfDocument)
 	{
 		this.pdfDocument = pdfDocument;
 		if (pdfDocument == null) {
-			thumbnailPdfViewer.setPdfDocument(null);
+			thumbnailPdfViewer.setPDFDocument(null);
 			return;
 		}
 
 		// we force a OneDimensionalPdfDocument, because we have no idea, how the PdfDocument of the main viewer looks like.
-		thumbnailPdfDocument = new OneDimensionalPdfDocument(
-				pdfDocument.getPdfFile(),
-				OneDimensionalPdfDocument.Layout.vertical,
+		thumbnailPdfDocument = new OneDimensionalPDFDocument(
+				pdfDocument.getPDFFile(),
+				OneDimensionalPDFDocument.Layout.vertical,
 				new NullProgressMonitor()
 		);
-		thumbnailPdfViewer.setPdfDocument(thumbnailPdfDocument);
+		thumbnailPdfViewer.setPDFDocument(thumbnailPdfDocument);
 
 	}
 
-	public PdfViewer getThumbnailPdfViewer() {
+	public PDFViewer getThumbnailPdfViewer() {
 		return thumbnailPdfViewer;
 	}
 
-	public void setThumbnailPdfViewer(PdfViewer pdfViewer) {
+	public void setThumbnailPdfViewer(final PDFViewer pdfViewer) {
 		this.thumbnailPdfViewer = pdfViewer;
 	}
 
-	public void setCurrentPage(int pageNumber) {
+	public void setCurrentPage(final int pageNumber) {
 		thumbnailPdfViewer.setCurrentPage(pageNumber);
 	}
 

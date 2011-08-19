@@ -1,23 +1,23 @@
 /**
- * 
+ *
  */
 package org.nightlabs.eclipse.ui.pdfviewer;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.nightlabs.eclipse.ui.pdfrenderer.IPdfProgressMonitor;
+import org.nightlabs.eclipse.ui.pdfrenderer.IPDFProgressMonitor;
 
 /**
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  *
  */
-public class PdfProgressMontitorWrapper implements IPdfProgressMonitor {
+public class PDFProgressMontitorWrapper implements IPDFProgressMonitor {
 
 	private IProgressMonitor progressMonitor;
-	
+
 	/**
-	 * 
+	 *
 	 */
-	public PdfProgressMontitorWrapper(IProgressMonitor progressMonitor) {
+	public PDFProgressMontitorWrapper(final IProgressMonitor progressMonitor) {
 		this.progressMonitor = progressMonitor;
 	}
 
@@ -25,7 +25,7 @@ public class PdfProgressMontitorWrapper implements IPdfProgressMonitor {
 	 * @see org.nightlabs.eclipse.ui.pdfrenderer.IPdfProgressMonitor#beginTask(java.lang.String, int)
 	 */
 	@Override
-	public void beginTask(String taskName, int work) {
+	public void beginTask(final String taskName, final int work) {
 		if (progressMonitor != null) {
 			progressMonitor.beginTask(taskName, work);
 		}
@@ -45,7 +45,7 @@ public class PdfProgressMontitorWrapper implements IPdfProgressMonitor {
 	 * @see org.nightlabs.eclipse.ui.pdfrenderer.IPdfProgressMonitor#worked(int)
 	 */
 	@Override
-	public void worked(int work) {
+	public void worked(final int work) {
 		if (progressMonitor != null) {
 			progressMonitor.worked(work);
 		}

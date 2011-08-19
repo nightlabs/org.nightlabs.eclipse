@@ -35,21 +35,21 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.nightlabs.eclipse.ui.pdfviewer.internal.ContextElementRegistry;
-import org.nightlabs.eclipse.ui.pdfviewer.internal.PdfViewerComposite;
+import org.nightlabs.eclipse.ui.pdfviewer.internal.PDFViewerComposite;
 
 /**
  * The raw viewing area without any additional elements. Use this, if you want to
  * compose a custom viewer. You can add additional elements - if desired -
- * (e.g. a {@link PdfSimpleNavigator}) to your custom viewer wherever you want.
+ * (e.g. a {@link PDFSimpleNavigator}) to your custom viewer wherever you want.
  *
  * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
  * @author frederik loeser - frederik at nightlabs dot de
  */
-public class PdfViewer
+public class PDFViewer
 {
-	private PdfDocument pdfDocument;
-	private PdfViewerComposite pdfViewerComposite;
+	private PDFDocument pdfDocument;
+	private PDFViewerComposite pdfViewerComposite;
 	private ContextElementRegistry contextElementRegistry = new ContextElementRegistry();
 	private int zoomFactorPerMill = 1000;
 
@@ -122,16 +122,16 @@ public class PdfViewer
 	public static final String PROPERTY_ZOOM_FACTOR = "zoomFactor"; //$NON-NLS-1$
 
 	/**
-	 * Constant used by the {@link PropertyChangeListener}s when a {@link PdfDocument} has been assigned to this
+	 * Constant used by the {@link PropertyChangeListener}s when a {@link PDFDocument} has been assigned to this
 	 * <code>PdfViewer</code>.
 	 * <p>
-	 * {@link PropertyChangeEvent#getNewValue()} returns the new {@link PdfDocument} (or <code>null</code>, since this is a valid
-	 * value for {@link #setPdfDocument(PdfDocument)}); {@link PropertyChangeEvent#getOldValue()} returns the {@link PdfDocument}
+	 * {@link PropertyChangeEvent#getNewValue()} returns the new {@link PDFDocument} (or <code>null</code>, since this is a valid
+	 * value for {@link #setPDFDocument(PDFDocument)}); {@link PropertyChangeEvent#getOldValue()} returns the {@link PDFDocument}
 	 * that was assigned before (or <code>null</code>, if there was none).
 	 * </p>
 	 *
-	 * @see #getPdfDocument()
-	 * @see #setPdfDocument(PdfDocument)
+	 * @see #getPDFDocument()
+	 * @see #setPDFDocument(PDFDocument)
 	 * @see #addPropertyChangeListener(String, PropertyChangeListener)
 	 */
 	public static final String PROPERTY_PDF_DOCUMENT = "pdfDocument"; //$NON-NLS-1$
@@ -223,7 +223,7 @@ public class PdfViewer
 //	public static final String PROPERTY_COMPONENT_RESIZED = "componentResized"; //$NON-NLS-1$
 
 
-	public PdfViewer() { }
+	public PDFViewer() { }
 
 	/**
 	 * Assign a context-element. This method should be called by the context-element itself
@@ -231,7 +231,7 @@ public class PdfViewer
 	 *
 	 * @param contextElement the context-element. Must not be <code>null</code>.
 	 */
-	public void registerContextElement(ContextElement<?> contextElement)
+	public void registerContextElement(final ContextElement<?> contextElement)
 	{
 		contextElementRegistry.registerContextElement(contextElement);
 		propertyChangeSupport.firePropertyChange(PROPERTY_REGISTER_CONTEXT_ELEMENT, null, contextElement);
@@ -244,9 +244,9 @@ public class PdfViewer
 	 * @param contextElementId the identifier or <code>null</code> as specified by {@link ContextElement#getContextElementId()} when it was added.
 	 */
 	@SuppressWarnings("unchecked")
-	public void unregisterContextElement(ContextElementType<?> contextElementType, String contextElementId)
+	public void unregisterContextElement(final ContextElementType<?> contextElementType, final String contextElementId)
 	{
-		ContextElement<?> contextElement = contextElementRegistry.getContextElement((ContextElementType)contextElementType, contextElementId);
+		final ContextElement<?> contextElement = contextElementRegistry.getContextElement((ContextElementType)contextElementType, contextElementId);
 		contextElementRegistry.unregisterContextElement(contextElementType, contextElementId);
 		propertyChangeSupport.firePropertyChange(PROPERTY_UNREGISTER_CONTEXT_ELEMENT, null, contextElement);
 	}
@@ -256,7 +256,7 @@ public class PdfViewer
 	 *
 	 * @param contextElement the element to be removed.
 	 */
-	public void unregisterContextElement(ContextElement<?> contextElement)
+	public void unregisterContextElement(final ContextElement<?> contextElement)
 	{
 		contextElementRegistry.unregisterContextElement(contextElement.getContextElementType(), contextElement.getContextElementId());
 	}
@@ -269,7 +269,7 @@ public class PdfViewer
 	 * @param id the identifier of the context-element as specified in {@link #registerContextElement(ContextElement)} - can be <code>null</code>.
 	 * @return the appropriate context-element or <code>null</code>.
 	 */
-	public <T extends ContextElement<T>> T getContextElement(ContextElementType<T> contextElementType, String id) {
+	public <T extends ContextElement<T>> T getContextElement(final ContextElementType<T> contextElementType, final String id) {
 		return contextElementRegistry.getContextElement(contextElementType, id);
 	}
 
@@ -282,8 +282,8 @@ public class PdfViewer
 	 *         <code>Collection</code> is returned). This <code>Collection</code> is not backed by the registry and can be safely iterated
 	 *         while the registry is modified.
 	 */
-	public <T extends ContextElement<T>> Collection<T> getContextElements(ContextElementType<T> contextElementType) {
-		Collection<T> result = contextElementRegistry.getContextElements(contextElementType);
+	public <T extends ContextElement<T>> Collection<T> getContextElements(final ContextElementType<T> contextElementType) {
+		final Collection<T> result = contextElementRegistry.getContextElements(contextElementType);
 		return result;
 	}
 
@@ -294,7 +294,7 @@ public class PdfViewer
 	 *         the registry and can be safely iterated while the registry is modified.
 	 */
 	public Collection<? extends ContextElement<?>> getContextElements() {
-		Collection<? extends ContextElement<?>> result = contextElementRegistry.getContextElements();
+		final Collection<? extends ContextElement<?>> result = contextElementRegistry.getContextElements();
 		return result;
 	}
 
@@ -303,22 +303,23 @@ public class PdfViewer
 	 */
 	private static void assertValidThread()
 	{
-		if (Display.getCurrent() == null)
+		if (Display.getCurrent() == null) {
 			throw new IllegalStateException("Wrong thread! This method must be called on the SWT UI thread!"); //$NON-NLS-1$
+		}
 	}
 
-	public Control createControl(Composite parent, int style) {
+	public Control createControl(final Composite parent, final int style) {
 		assertValidThread();
 
 		if (this.pdfViewerComposite != null) {
 			this.pdfViewerComposite.dispose();
 		}
 
-		this.pdfViewerComposite = new PdfViewerComposite(parent, style, this);
+		this.pdfViewerComposite = new PDFViewerComposite(parent, style, this);
 
 		this.pdfViewerComposite.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
-			public void propertyChange(PropertyChangeEvent event) {
+			public void propertyChange(final PropertyChangeEvent event) {
 				assertValidThread(); // just to make sure the PdfViewerComposite is implemented correctly.
 
 				// We handle some values BEFORE the event is propagated to the outside (the API clients) in order to
@@ -339,13 +340,15 @@ public class PdfViewer
 
 		this.pdfViewerComposite.setViewOrigin(viewOrigin);
 		this.pdfViewerComposite.setZoomFactorPerMill(zoomFactorPerMill);
-		this.pdfViewerComposite.setPdfDocument(pdfDocument); // just in case the document was set before this method.
+		this.pdfViewerComposite.setPDFDocument(pdfDocument); // just in case the document was set before this method.
 
-		for (Object listener : paintToBufferListeners.getListeners())
+		for (final Object listener : paintToBufferListeners.getListeners()) {
 			this.pdfViewerComposite.addPaintToBufferListener((PaintListener) listener);
+		}
 
-		for (Object listener : paintToViewListeners.getListeners())
+		for (final Object listener : paintToViewListeners.getListeners()) {
 			this.pdfViewerComposite.addPaintToViewListener((PaintListener) listener);
+		}
 
 		return this.pdfViewerComposite;
 	}
@@ -357,38 +360,40 @@ public class PdfViewer
 	}
 
 	/**
-	 * Get the current {@link PdfDocument}, which can be <code>null</code>.
+	 * Get the current {@link PDFDocument}, which can be <code>null</code>.
 	 *
-	 * @return the current {@link PdfDocument} or <code>null</code>.
-	 * @see #setPdfDocument(PdfDocument)
+	 * @return the current {@link PDFDocument} or <code>null</code>.
+	 * @see #setPDFDocument(PDFDocument)
 	 */
-	public PdfDocument getPdfDocument() {
+	public PDFDocument getPDFDocument() {
 		assertValidThread();
 
 		return pdfDocument;
 	}
 
 	/**
-	 * Set the current {@link PdfDocument} or <code>null</code>. This will cause
+	 * Set the current {@link PDFDocument} or <code>null</code>. This will cause
 	 * a {@link PropertyChangeEvent} to be propagated for the property
 	 * {@link #PROPERTY_PDF_DOCUMENT}.
 	 *
-	 * @param pdfDocument the new {@link PdfDocument}.
-	 * @see #getPdfDocument()
+	 * @param pdfDocument the new {@link PDFDocument}.
+	 * @see #getPDFDocument()
 	 * @see #PROPERTY_PDF_DOCUMENT
 	 */
-	public void setPdfDocument(PdfDocument pdfDocument) {
+	public void setPDFDocument(final PDFDocument pdfDocument) {
 		assertValidThread();
 
-		PdfDocument oldPdfDocument = this.pdfDocument;
+		final PDFDocument oldPDFDocument = this.pdfDocument;
 		this.pdfDocument = pdfDocument;
-		if (pdfViewerComposite != null)
-			pdfViewerComposite.setPdfDocument(pdfDocument);
+		if (pdfViewerComposite != null) {
+			pdfViewerComposite.setPDFDocument(pdfDocument);
+		}
 
-		propertyChangeSupport.firePropertyChange(PROPERTY_PDF_DOCUMENT, oldPdfDocument, this.pdfDocument);
+		propertyChangeSupport.firePropertyChange(PROPERTY_PDF_DOCUMENT, oldPDFDocument, this.pdfDocument);
 
-		if (pdfDocument != null && pdfDocument.getPdfFile().getNumPages() > 0 && pdfViewerComposite != null)
+		if (pdfDocument != null && pdfDocument.getPDFFile().getNumPages() > 0 && pdfViewerComposite != null) {
 			setCurrentPage(1);
+		}
 	}
 
 	private Point2DDouble viewOrigin;
@@ -399,7 +404,7 @@ public class PdfViewer
 
 	/**
 	 * Get the view origin, i.e. the left top position of the view area in the
-	 * {@link PdfDocument} (in real coordinates).
+	 * {@link PDFDocument} (in real coordinates).
 	 *
 	 * @return the current view origin.
 	 * @see #setViewOrigin(Point2D)
@@ -412,7 +417,7 @@ public class PdfViewer
 
 	/**
 	 * Get the size of the view area in real coordinates (i.e. what is visible
-	 * in the {@link PdfDocument}). Together with {@link #getViewOrigin()},
+	 * in the {@link PDFDocument}). Together with {@link #getViewOrigin()},
 	 * this information tells you what area is currently visible.
 	 * <p>
 	 * This value changes whenever the zoom is modified
@@ -433,15 +438,16 @@ public class PdfViewer
 	{
 		assertValidThread();
 
-		if (pdfViewerComposite == null)
+		if (pdfViewerComposite == null) {
 			return null;
+		}
 
 		return pdfViewerComposite.getViewDimension();
 	}
 
 	/**
 	 * Set the new view origin, i.e. the left top position of the view area in the
-	 * {@link PdfDocument} (in real coordinates). This will cause
+	 * {@link PDFDocument} (in real coordinates). This will cause
 	 * a {@link PropertyChangeEvent} to be propagated for the property
 	 * {@link #PROPERTY_VIEW_ORIGIN}.
 	 *
@@ -449,13 +455,13 @@ public class PdfViewer
 	 * @see #getViewOrigin()
 	 * @see #PROPERTY_VIEW_ORIGIN
 	 */
-	public void setViewOrigin(Point2D viewOrigin) {
+	public void setViewOrigin(final Point2D viewOrigin) {
 		assertValidThread();
 
-		if (pdfViewerComposite != null)
+		if (pdfViewerComposite != null) {
 			pdfViewerComposite.setViewOrigin(viewOrigin);
-		else {
-			Point2DDouble newViewOrigin = new Point2DDouble(viewOrigin);
+		} else {
+			final Point2DDouble newViewOrigin = new Point2DDouble(viewOrigin);
 			newViewOrigin.setReadOnly();
 			this.viewOrigin = newViewOrigin;
 		}
@@ -467,7 +473,7 @@ public class PdfViewer
 	 * @param propertyName the property - one of {@link #PROPERTY_VIEW_ORIGIN}, {@link #PROPERTY_ZOOM_FACTOR} or another <code>PROPERTY_*</code> constant.
 	 * @param listener the listener to be added.
 	 */
-	public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+	public void addPropertyChangeListener(final String propertyName, final PropertyChangeListener listener) {
 		propertyChangeSupport.addPropertyChangeListener(propertyName, listener);
 	}
 
@@ -478,7 +484,7 @@ public class PdfViewer
 	 * @param propertyName the property.
 	 * @param listener the listener to be removed.
 	 */
-	public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+	public void removePropertyChangeListener(final String propertyName, final PropertyChangeListener listener) {
 		propertyChangeSupport.removePropertyChangeListener(propertyName, listener);
 	}
 
@@ -489,7 +495,7 @@ public class PdfViewer
 	 *
 	 * @param listener the listener to be added.
 	 */
-	public void addPropertyChangeListener(PropertyChangeListener listener) {
+	public void addPropertyChangeListener(final PropertyChangeListener listener) {
 		propertyChangeSupport.addPropertyChangeListener(listener);
 	}
 
@@ -499,7 +505,7 @@ public class PdfViewer
 	 *
 	 * @param listener the listener to be removed.
 	 */
-	public void removePropertyChangeListener(PropertyChangeListener listener) {
+	public void removePropertyChangeListener(final PropertyChangeListener listener) {
 		propertyChangeSupport.removePropertyChangeListener(listener);
 	}
 
@@ -529,27 +535,30 @@ public class PdfViewer
 	 * @see #getZoomFactorPerMill()
 	 * @see #PROPERTY_ZOOM_FACTOR
 	 */
-	public void setZoomFactorPerMill(int zoomFactorPerMill) {
+	public void setZoomFactorPerMill(final int zoomFactorPerMill) {
 		assertValidThread();
 
-		if (pdfViewerComposite != null)
+		if (pdfViewerComposite != null) {
 			pdfViewerComposite.setZoomFactorPerMill(zoomFactorPerMill);
-		else
+		} else {
 			this.zoomFactorPerMill = zoomFactorPerMill;
+		}
 	}
 
 	public int getCurrentPage() {
-		if (pdfViewerComposite == null)
+		if (pdfViewerComposite == null) {
 			throw new IllegalStateException("Currently, this method can only be called when a control has already been created (i.e. after PdfViewer.createControl() has been called)!"); // TODO use local mirror variable //$NON-NLS-1$
+		}
 
 		return pdfViewerComposite.getCurrentPage();
 	}
 
-	public void setCurrentPage(int currentPage) {
-		if (pdfViewerComposite != null)
+	public void setCurrentPage(final int currentPage) {
+		if (pdfViewerComposite != null) {
 			pdfViewerComposite.setCurrentPage(currentPage);
-		else
+		} else {
 			throw new IllegalStateException("Currently, this method can only be called when a control has already been created (i.e. after PdfViewer.createControl() has been called)!"); // TODO use local mirror variable //$NON-NLS-1$
+		}
 	}
 
 	/**
@@ -566,27 +575,29 @@ public class PdfViewer
 	 */
 	public Point2D getZoomScreenResolutionFactor()
 	{
-		if (pdfViewerComposite != null)
+		if (pdfViewerComposite != null) {
 			return pdfViewerComposite.getZoomScreenResolutionFactor();
-		else
+		} else {
 			throw new IllegalStateException("Currently, this method can only be called when a control has already been created (i.e. after PdfViewer.createControl() has been called)!"); //$NON-NLS-1$
+		}
 	}
 
 	public AutoZoom getAutoZoom() {
 		return autoZoom;
 	}
 
-	public void setAutoZoom(AutoZoom autoZoom) {
+	public void setAutoZoom(final AutoZoom autoZoom) {
 		assertValidThread();
 
 		this.autoZoom = autoZoom;
-		if (pdfViewerComposite != null)
+		if (pdfViewerComposite != null) {
 			pdfViewerComposite.onAutoZoomChange();
+		}
 	}
 
 	private boolean mouseWheelZoomEnabled = true;
 
-	public void setMouseWheelZoomEnabled(boolean zoomIsAllowed) {
+	public void setMouseWheelZoomEnabled(final boolean zoomIsAllowed) {
 		this.mouseWheelZoomEnabled = zoomIsAllowed;
 	}
 
@@ -604,11 +615,12 @@ public class PdfViewer
 	 * @see #removePaintToBufferListener(PaintListener)
 	 * @see #addPaintToViewListener(PaintListener)
 	 */
-	public void addPaintToBufferListener(PaintListener listener)
+	public void addPaintToBufferListener(final PaintListener listener)
 	{
 		paintToBufferListeners.add(listener);
-		if (pdfViewerComposite != null)
+		if (pdfViewerComposite != null) {
 			pdfViewerComposite.addPaintToBufferListener(listener);
+		}
 	}
 	/**
 	 * Remove a listener that was previously added by {@link #addPaintToBufferListener(PaintListener)}.
@@ -616,11 +628,12 @@ public class PdfViewer
 	 * @param listener the listener to be removed.
 	 * @see #addPaintToBufferListener(PaintListener)
 	 */
-	public void removePaintToBufferListener(PaintListener listener)
+	public void removePaintToBufferListener(final PaintListener listener)
 	{
 		paintToBufferListeners.remove(listener);
-		if (pdfViewerComposite != null)
+		if (pdfViewerComposite != null) {
 			pdfViewerComposite.removePaintToBufferListener(listener);
+		}
 	}
 
 	/**
@@ -630,11 +643,12 @@ public class PdfViewer
 	 * @see #removePaintToViewListener(PaintListener)
 	 * @see #addPaintToBufferListener(PaintListener)
 	 */
-	public void addPaintToViewListener(PaintListener listener)
+	public void addPaintToViewListener(final PaintListener listener)
 	{
 		paintToViewListeners.add(listener);
-		if (pdfViewerComposite != null)
+		if (pdfViewerComposite != null) {
 			pdfViewerComposite.addPaintToViewListener(listener);
+		}
 	}
 	/**
 	 * Remove a listener that was previously added by {@link #addPaintToViewListener(PaintListener)}.
@@ -642,14 +656,15 @@ public class PdfViewer
 	 * @param listener the listener to be removed.
 	 * @see #addPaintToViewListener(PaintListener)
 	 */
-	public void removePaintToViewListener(PaintListener listener)
+	public void removePaintToViewListener(final PaintListener listener)
 	{
 		paintToViewListeners.remove(listener);
-		if (pdfViewerComposite != null)
+		if (pdfViewerComposite != null) {
 			pdfViewerComposite.removePaintToViewListener(listener);
+		}
 	}
 
-	public void setUpdateCurrentPageOnScrolling(boolean updateCurrentPageOnScrolling) {
+	public void setUpdateCurrentPageOnScrolling(final boolean updateCurrentPageOnScrolling) {
 		assertValidThread();
 
 		this.updateCurrentPageOnScrolling = updateCurrentPageOnScrolling;
@@ -672,17 +687,19 @@ public class PdfViewer
 	public int getAutoZoomHorizontalMargin() {
 		return autoZoomHorizontalMargin;
 	}
-	public void setAutoZoomHorizontalMargin(int autoZoomHorizontalMargin) {
+	public void setAutoZoomHorizontalMargin(final int autoZoomHorizontalMargin) {
 		this.autoZoomHorizontalMargin = autoZoomHorizontalMargin;
-		if (pdfViewerComposite != null)
+		if (pdfViewerComposite != null) {
 			pdfViewerComposite.onAutoZoomChange();
+		}
 	}
 	public int getAutoZoomVerticalMargin() {
 		return autoZoomVerticalMargin;
 	}
-	public void setAutoZoomVerticalMargin(int autoZoomVerticalMargin) {
+	public void setAutoZoomVerticalMargin(final int autoZoomVerticalMargin) {
 		this.autoZoomVerticalMargin = autoZoomVerticalMargin;
-		if (pdfViewerComposite != null)
+		if (pdfViewerComposite != null) {
 			pdfViewerComposite.onAutoZoomChange();
+		}
 	}
 }

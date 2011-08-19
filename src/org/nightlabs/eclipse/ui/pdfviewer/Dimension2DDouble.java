@@ -47,7 +47,7 @@ public class Dimension2DDouble extends Dimension2D
 
 	public Dimension2DDouble() { }
 
-	public Dimension2DDouble(double width, double height) {
+	public Dimension2DDouble(final double width, final double height) {
 		this.width = width;
 		this.height = height;
 	}
@@ -59,11 +59,12 @@ public class Dimension2DDouble extends Dimension2D
 
 	private void assertNotReadOnly()
 	{
-		if (readOnly)
+		if (readOnly) {
 			throw new UnsupportedOperationException("This instance of Dimension2DDouble is read-only!"); //$NON-NLS-1$
+		}
 	}
 
-	public void setWidth(double width)
+	public void setWidth(final double width)
 	{
 		assertNotReadOnly();
 
@@ -75,14 +76,14 @@ public class Dimension2DDouble extends Dimension2D
 		return height;
 	}
 
-	public void setHeight(double height) {
+	public void setHeight(final double height) {
 		assertNotReadOnly();
 
 		this.height = height;
 	}
 
 	@Override
-	public void setSize(double width, double height)
+	public void setSize(final double width, final double height)
 	{
 		assertNotReadOnly();
 
@@ -91,18 +92,24 @@ public class Dimension2DDouble extends Dimension2D
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (obj == this) return true;
-		if (obj == null) return false;
-		if (obj.getClass() != this.getClass() && !(obj instanceof Dimension2D)) return false;
-		Dimension2D o = (Dimension2D) obj;
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (obj.getClass() != this.getClass() && !(obj instanceof Dimension2D)) {
+			return false;
+		}
+		final Dimension2D o = (Dimension2D) obj;
 		return this.width == o.getWidth() && this.height == o.getHeight();
 	}
 
 	@Override
 	public int hashCode() {
-		long wbits = Double.doubleToLongBits(width);
-		long hbits = Double.doubleToLongBits(height);
+		final long wbits = Double.doubleToLongBits(width);
+		final long hbits = Double.doubleToLongBits(height);
 		return (int)(wbits ^ (wbits >>> 32)) * 31 ^ (int)(hbits ^ (hbits >>> 32));
 	}
 

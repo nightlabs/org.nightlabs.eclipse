@@ -26,7 +26,7 @@ package org.nightlabs.eclipse.ui.pdfviewer;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.nightlabs.eclipse.ui.pdfviewer.internal.PdfSimpleNavigatorComposite;
+import org.nightlabs.eclipse.ui.pdfviewer.internal.PDFSimpleNavigatorComposite;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -36,18 +36,18 @@ import org.osgi.framework.BundleContext;
  * @author frederik löser - frederik at nightlabs dot de
  * @author marco schulze - marco at nightlabs dot de
  */
-public class PdfViewerPlugin extends AbstractUIPlugin {
+public class PDFViewerPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.nightlabs.eclipse.ui.pdfviewer"; //$NON-NLS-1$
 
 	// The shared instance
-	private static PdfViewerPlugin plugin;
+	private static PDFViewerPlugin plugin;
 
 	/**
 	 * The constructor
 	 */
-	public PdfViewerPlugin() {
+	public PDFViewerPlugin() {
 	}
 
 	/*
@@ -55,7 +55,7 @@ public class PdfViewerPlugin extends AbstractUIPlugin {
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
 	 */
 	@Override
-	public void start(BundleContext context) throws Exception {
+	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
 
@@ -68,7 +68,7 @@ public class PdfViewerPlugin extends AbstractUIPlugin {
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
 	 */
 	@Override
-	public void stop(BundleContext context) throws Exception {
+	public void stop(final BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
 	}
@@ -78,37 +78,37 @@ public class PdfViewerPlugin extends AbstractUIPlugin {
 	 *
 	 * @return the shared instance
 	 */
-	public static PdfViewerPlugin getDefault() {
+	public static PDFViewerPlugin getDefault() {
 		return plugin;
 	}
 
 	@Override
-	protected void initializeImageRegistry(ImageRegistry reg) {
+	protected void initializeImageRegistry(final ImageRegistry reg) {
 	    super.initializeImageRegistry(reg);
 
 	    reg.put(
-	    		PdfSimpleNavigatorComposite.ImageKey.gotoFirstPageButton_enabled.name(),
+	    		PDFSimpleNavigatorComposite.ImageKey.gotoFirstPageButton_enabled.name(),
 	    		ImageDescriptor.createFromURL(
 	    				plugin.getBundle().getEntry("icons/internal/PdfSimpleNavigatorComposite-gotoFirstPageButton-enabled.16x16.png") //$NON-NLS-1$
 	    		)
 	    );
 
 	    reg.put(
-	    		PdfSimpleNavigatorComposite.ImageKey.gotoPreviousPageButton_enabled.name(),
+	    		PDFSimpleNavigatorComposite.ImageKey.gotoPreviousPageButton_enabled.name(),
 	    		ImageDescriptor.createFromURL(
 	    				plugin.getBundle().getEntry("icons/internal/PdfSimpleNavigatorComposite-gotoPreviousPageButton-enabled.16x16.png") //$NON-NLS-1$
 	    		)
 	    );
 
 	    reg.put(
-	    		PdfSimpleNavigatorComposite.ImageKey.gotoNextPageButton_enabled.name(),
+	    		PDFSimpleNavigatorComposite.ImageKey.gotoNextPageButton_enabled.name(),
 	    		ImageDescriptor.createFromURL(
 	    				plugin.getBundle().getEntry("icons/internal/PdfSimpleNavigatorComposite-gotoNextPageButton-enabled.16x16.png") //$NON-NLS-1$
 	    		)
 	    );
 
 	    reg.put(
-	    		PdfSimpleNavigatorComposite.ImageKey.gotoLastPageButton_enabled.name(),
+	    		PDFSimpleNavigatorComposite.ImageKey.gotoLastPageButton_enabled.name(),
 	    		ImageDescriptor.createFromURL(
 	    				plugin.getBundle().getEntry("icons/internal/PdfSimpleNavigatorComposite-gotoLastPageButton-enabled.16x16.png") //$NON-NLS-1$
 	    		)

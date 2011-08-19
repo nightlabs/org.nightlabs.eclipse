@@ -29,7 +29,7 @@ import java.util.EventObject;
 /**
  * Event propagated to {@link PaintListener}s. It provides access to a {@link Graphics2D}
  * allowing listeners to draw.
- * 
+ *
  * @version $Revision$ - $Date$
  * @author frederik loeser - frederik at nightlabs dot de
  * @author marco schulze - marco at nightlabs dot de
@@ -40,7 +40,7 @@ public class PaintEvent extends EventObject
 
 	private Graphics2D graphics2D;
 
-	public PaintEvent(PdfViewer source, Graphics2D graphics2D) {
+	public PaintEvent(final PDFViewer source, final Graphics2D graphics2D) {
 		super(source);
 		this.graphics2D = graphics2D;
 	}
@@ -55,7 +55,7 @@ public class PaintEvent extends EventObject
     }
 
 	@Override
-	public PdfViewer getSource() {
-	    return (PdfViewer) super.getSource();
+	public PDFViewer getSource() {
+	    return (PDFViewer) super.getSource();
 	}
 }

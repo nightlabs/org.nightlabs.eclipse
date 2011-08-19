@@ -43,13 +43,14 @@ public class BufferedImagePool
 
 	private List<BufferedImageCarrier> pool = new LinkedList<BufferedImageCarrier>();
 
-	public synchronized BufferedImage acquire(int width, int height)
+	public synchronized BufferedImage acquire(final int width, final int height)
 	{
 		BufferedImage result = null;
-		for (Iterator<BufferedImageCarrier> it = pool.iterator(); it.hasNext(); ) {
-			BufferedImageCarrier carrier = it.next();
-			if (carrier.acquired)
+		for (final Iterator<BufferedImageCarrier> it = pool.iterator(); it.hasNext(); ) {
+			final BufferedImageCarrier carrier = it.next();
+			if (carrier.acquired) {
 				continue;
+			}
 
 			if (carrier.bufferedImage.getWidth() == width && carrier.bufferedImage.getHeight() == height) {
 				if (result == null) {
@@ -65,7 +66,7 @@ public class BufferedImagePool
 
 		if (result == null) {
 			result = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-			BufferedImageCarrier carrier = new BufferedImageCarrier();
+			final BufferedImageCarrier carrier = new BufferedImageCarrier();
 			carrier.bufferedImage = result;
 			carrier.acquired = true;
 			pool.add(carrier);
@@ -74,14 +75,15 @@ public class BufferedImagePool
 		return result;
 	}
 
-	public synchronized void release(BufferedImage bufferedImage)
+	public synchronized void release(final BufferedImage bufferedImage)
 	{
 		// We have only about 2 entries in the pool, so we can do this by iteration and don't need additional
 		// indexing (would make it even slower due to the overhead).
-		for (BufferedImageCarrier carrier : pool) {
+		for (final BufferedImageCarrier carrier : pool) {
 			if (carrier.bufferedImage == bufferedImage) {
-				if (!carrier.acquired)
+				if (!carrier.acquired) {
 					throw new IllegalArgumentException("This BufferedImage is known to this pool, but not acquired! " + bufferedImage); //$NON-NLS-1$
+				}
 
 				carrier.acquired = false;
 				return;

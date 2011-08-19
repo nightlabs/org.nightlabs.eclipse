@@ -39,7 +39,7 @@ import com.sun.pdfview.PDFFile;
  * coordinate system</i> of the complete viewing area including each page's position and bounds.
  * <p>
  * Implementors are free in how they layout their document. Pages can be simply horizontally
- * (or vertically) spread in one row (or column) like it is done by {@link OneDimensionalPdfDocument} or
+ * (or vertically) spread in one row (or column) like it is done by {@link OneDimensionalPDFDocument} or
  * more complex layouts can be implemented (e.g. a table with multiple columns and rows).
  * </p>
  * <p>
@@ -49,14 +49,14 @@ import com.sun.pdfview.PDFFile;
  * height of 841.89 DOT = 297 mm / 25.4 (mm/inch) * 72 (DOT/inch).
  * </p>
  * <p>
- * It's recommended that you subclass {@link AbstractPdfDocument} instead of directly implementing this
+ * It's recommended that you subclass {@link AbstractPDFDocument} instead of directly implementing this
  * interface.
  * </p>
  *
  * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
  */
-public interface PdfDocument
+public interface PDFDocument
 {
 	/**
 	 * Get the page numbers (1-based) of those pages that are partially or completely visible within the
@@ -118,7 +118,7 @@ public interface PdfDocument
 	 *
 	 * @return the {@link PDFFile} of the current document.
 	 */
-	PDFFile getPdfFile();
+	PDFFile getPDFFile();
 
 	/**
 	 * Read the given {@link PDFFile} and calculate the layout. This operation can be long-going
@@ -126,8 +126,8 @@ public interface PdfDocument
 	 * return only after the complete file has been read and the document-layout is done.
 	 * <p>
 	 * This method can <b>not</b> be called multiple times! It is invoked only once to set the
-	 * {@link PDFFile}. After this initial call, the {@link PdfDocument} is immutable!
-	 * You should assert in your implementation of {@link PdfDocument} that this method is
+	 * {@link PDFFile}. After this initial call, the {@link PDFDocument} is immutable!
+	 * You should assert in your implementation of {@link PDFDocument} that this method is
 	 * not called multiple times (and throw an exception if it is).
 	 * </p>
 	 * <p>
@@ -136,7 +136,7 @@ public interface PdfDocument
 	 * </p>
 	 * <p>
 	 * When you need a second <code>PdfDocument</code> instance (e.g. for a small thumbnail-navigator),
-	 * you should pass the same {@link PDFFile} instance to a new instance of {@link PdfDocument}.
+	 * you should pass the same {@link PDFFile} instance to a new instance of {@link PDFDocument}.
 	 * Re-iterating a {@link PDFFile} a second time is fast, because it seems to cache its data (I tried it
 	 * and had durations like 2793 msec for the first and 2 msec for the 2nd iteration).
 	 * </p>

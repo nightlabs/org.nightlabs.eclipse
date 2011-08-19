@@ -41,13 +41,13 @@ public class Point2DDouble extends Point2D
 
 	public Point2DDouble() { }
 
-	public Point2DDouble(double x, double y)
+	public Point2DDouble(final double x, final double y)
 	{
 		this.x = x;
 		this.y = y;
 	}
 
-	public Point2DDouble(Point2D other)
+	public Point2DDouble(final Point2D other)
 	{
 		this.x = other.getX();
 		this.y = other.getY();
@@ -55,8 +55,9 @@ public class Point2DDouble extends Point2D
 
 	private void assertNotReadOnly()
 	{
-		if (readOnly)
+		if (readOnly) {
 			throw new UnsupportedOperationException("This instance of Dimension2DDouble is read-only!"); //$NON-NLS-1$
+		}
 	}
 
 	@Override
@@ -64,7 +65,7 @@ public class Point2DDouble extends Point2D
 		return x;
 	}
 
-	public void setX(double x) {
+	public void setX(final double x) {
 		assertNotReadOnly();
 	    this.x = x;
 	}
@@ -74,13 +75,13 @@ public class Point2DDouble extends Point2D
 		return y;
 	}
 
-	public void setY(double y) {
+	public void setY(final double y) {
 		assertNotReadOnly();
 	    this.y = y;
     }
 
 	@Override
-	public void setLocation(double x, double y)
+	public void setLocation(final double x, final double y)
 	{
 		assertNotReadOnly();
 
@@ -108,10 +109,16 @@ public class Point2DDouble extends Point2D
     }
 
 	@Override
-    public boolean equals(Object obj) {
-	    if (this == obj) return true;
-	    if (!super.equals(obj)) return false;
-	    if (obj.getClass() != this.getClass() && !(obj instanceof Point2D)) return false;
+    public boolean equals(final Object obj) {
+	    if (this == obj) {
+			return true;
+		}
+	    if (!super.equals(obj)) {
+			return false;
+		}
+	    if (obj.getClass() != this.getClass() && !(obj instanceof Point2D)) {
+			return false;
+		}
 	    final Point2D other = (Point2D) obj;
 	    return this.x == other.getX() && this.y == other.getY();
     }

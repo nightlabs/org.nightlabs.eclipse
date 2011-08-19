@@ -24,10 +24,10 @@
 package org.nightlabs.eclipse.ui.pdfviewer;
 
 /**
- * A context-element is a UI element that interacts with a {@link PdfViewer}.
+ * A context-element is a UI element that interacts with a {@link PDFViewer}.
  * <p>
- * When implementing a <code>ContextElement</code>, you should register it in the {@link PdfViewer}
- * via {@link PdfViewer#registerContextElement(ContextElement)} as soon
+ * When implementing a <code>ContextElement</code>, you should register it in the {@link PDFViewer}
+ * via {@link PDFViewer#registerContextElement(ContextElement)} as soon
  * as you know the <code>PdfViewer</code> (usually in the constructor of your implementation).
  * </p>
  * <p>
@@ -40,8 +40,8 @@ package org.nightlabs.eclipse.ui.pdfviewer;
  * </p>
  * <p>
  * You can obtain a certain <code>ContextElement</code> for a PdfViewer by
- * {@link PdfViewer#getContextElement(ContextElementType, String)} or all of one type by
- * {@link PdfViewer#getContextElements(ContextElementType)}.
+ * {@link PDFViewer#getContextElement(ContextElementType, String)} or all of one type by
+ * {@link PDFViewer#getContextElements(ContextElementType)}.
  * </p>
  *
  * @version $Revision$ - $Date$
@@ -70,25 +70,25 @@ public interface ContextElement<T extends ContextElement<T>>
 	 * Get the unique identifier of this <code>ContextElement</code> instance or <code>null</code>.
 	 * <p>
 	 * This is only required, if multiple instances of the same {@link ContextElementType} are
-	 * used with one {@link PdfViewer} instance. For example, if you put one simple navigator beneath
+	 * used with one {@link PDFViewer} instance. For example, if you put one simple navigator beneath
 	 * the thumbnails in an external view (e.g. the outline) and a second one beneath your main viewer
 	 * area inside an editor.
 	 * </p>
 	 *
-	 * @return the identifier of this <code>ContextElement</code> instance (within the scope of the current {@link PdfViewer}
+	 * @return the identifier of this <code>ContextElement</code> instance (within the scope of the current {@link PDFViewer}
 	 *		and the {@link ContextElementType} returned by {@link #getContextElementType()}).
 	 */
 	String getContextElementId();
 
 	/**
-	 * Get the {@link PdfViewer}.
+	 * Get the {@link PDFViewer}.
 	 *
-	 * @return the {@link PdfViewer} which is assigned to this <code>ContextElement</code>.
+	 * @return the {@link PDFViewer} which is assigned to this <code>ContextElement</code>.
 	 */
-	PdfViewer getPdfViewer();
+	PDFViewer getPDFViewer();
 
 	/**
-	 * Call-back method that is triggered when a {@link ContextElement} is unregistered from its {@link PdfViewer}.
+	 * Call-back method that is triggered when a {@link ContextElement} is unregistered from its {@link PDFViewer}.
 	 * In your implementation of <code>ContextElement</code> you should perform clean-up operations, for example
 	 * remove all listeners that you registered in the <code>PdfViewer</code> before.
 	 */

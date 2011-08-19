@@ -38,16 +38,16 @@ import com.sun.pdfview.PDFPage;
 
 
 /**
- * One-dimensional implementation of {@link PdfDocument}. All pages are arranged either horizontally
+ * One-dimensional implementation of {@link PDFDocument}. All pages are arranged either horizontally
  * or vertically (in a single row or a single column).
  *
  * @version $Revision$ - $Date$
  * @author frederik loeser - frederik at nightlabs dot de
  * @author marco schulze - marco at nightlabs dot de
  */
-public class OneDimensionalPdfDocument extends AbstractPdfDocument
+public class OneDimensionalPDFDocument extends AbstractPDFDocument
 {
-	private static final Logger logger = Logger.getLogger(OneDimensionalPdfDocument.class);
+	private static final Logger logger = Logger.getLogger(OneDimensionalPDFDocument.class);
 	private static final int MARGIN = 20; // DOT = 1/72 inch
 
 	public enum Layout {
@@ -66,13 +66,13 @@ public class OneDimensionalPdfDocument extends AbstractPdfDocument
 	private PDFFile pdfFile;
 	private List<Rectangle2D.Double> pageBounds;
 
-	public OneDimensionalPdfDocument() { }
+	public OneDimensionalPDFDocument() { }
 
-	public OneDimensionalPdfDocument(PDFFile pdfFile, IProgressMonitor monitor) {
+	public OneDimensionalPDFDocument(final PDFFile pdfFile, final IProgressMonitor monitor) {
 		initPdfFile(pdfFile, monitor);
 	}
 
-	public OneDimensionalPdfDocument(PDFFile pdfFile, Layout layout, IProgressMonitor monitor) {
+	public OneDimensionalPDFDocument(final PDFFile pdfFile, final Layout layout, final IProgressMonitor monitor) {
 		this.layout = layout;
 		initPdfFile(pdfFile, monitor);
 	}
@@ -83,32 +83,36 @@ public class OneDimensionalPdfDocument extends AbstractPdfDocument
 	 *
 	 * @param monitor a sub progress monitor showing the progress of getting all PDF pages of the given PDF file.
 	 */
-	private void readPdf(IProgressMonitor monitor)
+	private void readPdf(final IProgressMonitor monitor)
 	{
 		monitor.beginTask(Messages.getString("org.nightlabs.eclipse.ui.pdfviewer.OneDimensionalPdfDocument.readPdf.monitor.task.name"), pdfFile.getNumPages()); //$NON-NLS-1$
 		try {
 			documentDimension = new Dimension2DDouble(0, 0);
 			pageBounds = new ArrayList<Rectangle2D.Double>(pdfFile == null ? 0 : pdfFile.getNumPages());
 
-			if (pdfFile == null)
+			if (pdfFile == null) {
 				return;
+			}
 
 			switch (layout) {
 				case vertical:
 					double nextPageTop = MARGIN;
 
 					for (int j = 0; j < pdfFile.getNumPages(); j++) {
-						PDFPage pdfPage = pdfFile.getPage(j + 1);
-						if (pdfPage == null)
+						final PDFPage pdfPage = pdfFile.getPage(j + 1);
+						if (pdfPage == null) {
 							throw new IllegalStateException("pdfFile.getPage(...) returned null for page " + (j + 1) + "!"); //$NON-NLS-1$ //$NON-NLS-2$
+						}
 
-						if (pdfPage.getBBox() == null)
+						if (pdfPage.getBBox() == null) {
 							throw new IllegalStateException("pdfFile.getPage(...).getBBox() returned null for page " + (j + 1) + "!"); //$NON-NLS-1$ //$NON-NLS-2$
+						}
 
-						double pdfPageWidth = pdfPage.getBBox().getWidth();
-						double pdfPageHeight = pdfPage.getBBox().getHeight();
-						if (documentDimension.getWidth() < pdfPageWidth)
+						final double pdfPageWidth = pdfPage.getBBox().getWidth();
+						final double pdfPageHeight = pdfPage.getBBox().getHeight();
+						if (documentDimension.getWidth() < pdfPageWidth) {
 							documentDimension.setWidth(pdfPageWidth);
+						}
 
 						pageBounds.add(new Rectangle2D.Double(0, nextPageTop, pdfPageWidth, pdfPageHeight));
 						nextPageTop += pdfPageHeight + MARGIN;
@@ -120,7 +124,7 @@ public class OneDimensionalPdfDocument extends AbstractPdfDocument
 					documentDimension.setWidth(documentDimension.getWidth() + MARGIN * 2);
 
 					// put all pages horizontally in the middle
-					for (Rectangle2D.Double pageBound : pageBounds) {
+					for (final Rectangle2D.Double pageBound : pageBounds) {
 						pageBound.x = documentDimension.getWidth() / 2 - pageBound.width / 2;
 					}
 					break;
@@ -129,15 +133,17 @@ public class OneDimensionalPdfDocument extends AbstractPdfDocument
 					double nextPageLeft = MARGIN;
 
 					for (int j = 0; j < pdfFile.getNumPages(); j++) {
-						PDFPage pdfPage = pdfFile.getPage(j + 1);
-						if (pdfPage == null)
+						final PDFPage pdfPage = pdfFile.getPage(j + 1);
+						if (pdfPage == null) {
 							throw new IllegalStateException("pdfFile.getPage(...) returned null for page " + (j + 1) + "!"); //$NON-NLS-1$ //$NON-NLS-2$
+						}
 
-						if (pdfPage.getBBox() == null)
+						if (pdfPage.getBBox() == null) {
 							throw new IllegalStateException("pdfFile.getPage(...).getBBox() returned null for page " + (j + 1) + "!"); //$NON-NLS-1$ //$NON-NLS-2$
+						}
 
-						double pdfPageWidth = pdfPage.getBBox().getWidth();
-						double pdfPageHeight = pdfPage.getBBox().getHeight();
+						final double pdfPageWidth = pdfPage.getBBox().getWidth();
+						final double pdfPageHeight = pdfPage.getBBox().getHeight();
 						if (documentDimension.getHeight() < pdfPageHeight) {
 							documentDimension.setHeight(pdfPageHeight);
 						}
@@ -151,7 +157,7 @@ public class OneDimensionalPdfDocument extends AbstractPdfDocument
 					documentDimension.setHeight(documentDimension.getHeight() + MARGIN * 2);
 
 					// put all pages horizontally in the middle
-					for (Rectangle2D.Double pageBound : pageBounds) {
+					for (final Rectangle2D.Double pageBound : pageBounds) {
 						pageBound.y = documentDimension.getHeight() / 2 - pageBound.height / 2;
 					}
 					break;
@@ -260,14 +266,15 @@ public class OneDimensionalPdfDocument extends AbstractPdfDocument
 	 * @see org.nightlabs.eclipse.ui.pdfviewer.model.PdfDocument#getVisiblePages(java.awt.geom.Rectangle2D)
 	 */
 	@Override
-	public Collection<Integer> getVisiblePages(Rectangle2D bounds) {
-		List<Integer> result = new ArrayList<Integer>();
+	public Collection<Integer> getVisiblePages(final Rectangle2D bounds) {
+		final List<Integer> result = new ArrayList<Integer>();
 
 		int firstVisibleIdx = -1; // the page index (0-based) of the first page (i.e. smallest page number) that is visible.
 
 		int anyVisiblePage = findVisiblePage(bounds);
-		if (logger.isDebugEnabled())
+		if (logger.isDebugEnabled()) {
 			logger.debug("getVisiblePages: anyVisiblePage=" + anyVisiblePage); //$NON-NLS-1$
+		}
 
 		if (anyVisiblePage < 0) {
 			logger.warn("getVisiblePages: findVisiblePage(...) found none! Using expensive full scan!"); //$NON-NLS-1$
@@ -304,7 +311,7 @@ public class OneDimensionalPdfDocument extends AbstractPdfDocument
 
 		if (logger.isDebugEnabled()) {
 			logger.debug("getVisiblePages: returning " + result.size() + " page numbers for bufferBounds=" + bounds); //$NON-NLS-1$ //$NON-NLS-2$
-			for (Integer pageNumber : result) {
+			for (final Integer pageNumber : result) {
 				logger.debug("getVisiblePages: * " + pageNumber); //$NON-NLS-1$
 			}
 		}
@@ -320,38 +327,43 @@ public class OneDimensionalPdfDocument extends AbstractPdfDocument
 	 * @param bounds the bounds within which the searched page is at least partially visible.
 	 * @return a 1-based page number or -1 if no page could be found.
 	 */
-	private int findVisiblePage(Rectangle2D bounds)
+	private int findVisiblePage(final Rectangle2D bounds)
 	{
 		int beginIdx = 0;
 		int endIdx = pageBounds.size() - 1;
 
-		if (isPageVisible(pageBounds.get(beginIdx), bounds))
+		if (isPageVisible(pageBounds.get(beginIdx), bounds)) {
 			return beginIdx + 1;
+		}
 
-		if (isPageVisible(pageBounds.get(endIdx), bounds))
+		if (isPageVisible(pageBounds.get(endIdx), bounds)) {
 			return endIdx + 1;
+		}
 
 		int middleIdx = -1;
 		while (endIdx - beginIdx > 1) {
 			middleIdx = (beginIdx + endIdx) / 2;
-			Rectangle2D.Double middlePage = pageBounds.get(middleIdx);
+			final Rectangle2D.Double middlePage = pageBounds.get(middleIdx);
 
-			if (isPageVisible(middlePage, bounds))
+			if (isPageVisible(middlePage, bounds)) {
 				return middleIdx + 1;
+			}
 
 			switch (layout) {
 				case vertical:
-					if (middlePage.getMinY() > bounds.getMaxY())
+					if (middlePage.getMinY() > bounds.getMaxY()) {
 						endIdx = middleIdx;
-					else
+					} else {
 						beginIdx = middleIdx;
+					}
 				break;
 
 				case horizontal:
-					if (middlePage.getMinX() > bounds.getMaxX())
+					if (middlePage.getMinX() > bounds.getMaxX()) {
 						endIdx = middleIdx;
-					else
+					} else {
 						beginIdx = middleIdx;
+					}
 				break;
 
 				default:
@@ -359,16 +371,18 @@ public class OneDimensionalPdfDocument extends AbstractPdfDocument
 			}
 		}
 
-		if (middleIdx != beginIdx && isPageVisible(pageBounds.get(beginIdx), bounds))
+		if (middleIdx != beginIdx && isPageVisible(pageBounds.get(beginIdx), bounds)) {
 			return beginIdx + 1;
+		}
 
-		if (middleIdx != endIdx && isPageVisible(pageBounds.get(endIdx), bounds))
+		if (middleIdx != endIdx && isPageVisible(pageBounds.get(endIdx), bounds)) {
 			return endIdx + 1;
+		}
 
 		return -1;
 	}
 
-	private boolean isPageVisible(Rectangle2D page, Rectangle2D bounds)
+	private boolean isPageVisible(final Rectangle2D page, final Rectangle2D bounds)
 	{
 		return page.contains(bounds) || bounds.contains(page) || bounds.intersects(page);
 	}
@@ -377,7 +391,7 @@ public class OneDimensionalPdfDocument extends AbstractPdfDocument
 	 * @see org.nightlabs.eclipse.ui.pdfviewer.model.PdfDocument#getPageBounds(int)
 	 */
 	@Override
-	public Rectangle2D getPageBounds(int pageNumber) {
+	public Rectangle2D getPageBounds(final int pageNumber) {
 		return pageBounds.get(pageNumber - 1);
 	}
 
@@ -393,7 +407,7 @@ public class OneDimensionalPdfDocument extends AbstractPdfDocument
 	 * @see org.nightlabs.eclipse.ui.pdfviewer.model.PdfDocument#getPdfFile()
 	 */
 	@Override
-	public PDFFile getPdfFile() {
+	public PDFFile getPDFFile() {
 		return pdfFile;
 	}
 
@@ -401,9 +415,10 @@ public class OneDimensionalPdfDocument extends AbstractPdfDocument
 	 * @see org.nightlabs.eclipse.ui.pdfviewer.model.PdfDocument#setPdfFile(com.sun.pdfview.PDFFile, org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	@Override
-	public void initPdfFile(PDFFile pdfFile, IProgressMonitor monitor) {
-		if (this.pdfFile != null)
+	public void initPdfFile(final PDFFile pdfFile, final IProgressMonitor monitor) {
+		if (this.pdfFile != null) {
 			throw new IllegalStateException("A PDF file has already been assigned! This method cannot be called again!"); //$NON-NLS-1$
+		}
 
 		this.pdfFile = pdfFile;
 		readPdf(monitor);

@@ -29,7 +29,7 @@ import java.beans.PropertyChangeListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.nightlabs.eclipse.ui.pdfviewer.internal.PdfThumbnailNavigatorComposite;
+import org.nightlabs.eclipse.ui.pdfviewer.internal.PDFThumbnailNavigatorComposite;
 
 /**
  * A navigator showing thumbnails of all pages and allowing to navigate
@@ -39,24 +39,25 @@ import org.nightlabs.eclipse.ui.pdfviewer.internal.PdfThumbnailNavigatorComposit
  * @author marco schulze - marco at nightlabs dot de
  * @author frederik loeser - frederik at nightlabs dot de
  */
-public class PdfThumbnailNavigator implements ContextElement<PdfThumbnailNavigator>
+public class PDFThumbnailNavigator implements ContextElement<PDFThumbnailNavigator>
 {
-	public static final ContextElementType<PdfThumbnailNavigator> CONTEXT_ELEMENT_TYPE = new ContextElementType<PdfThumbnailNavigator>(PdfThumbnailNavigator.class);
-	private PdfThumbnailNavigatorComposite pdfThumbnailNavigatorComposite;
-	private PdfViewer pdfViewer;
-	private PdfDocument pdfDocument;
+	public static final ContextElementType<PDFThumbnailNavigator> CONTEXT_ELEMENT_TYPE = new ContextElementType<PDFThumbnailNavigator>(PDFThumbnailNavigator.class);
+	private PDFThumbnailNavigatorComposite pdfThumbnailNavigatorComposite;
+	private PDFViewer pdfViewer;
+	private PDFDocument pdfDocument;
 	private String contextElementId;
 
 
-	public PdfThumbnailNavigator(PdfViewer pdfViewer) {
+	public PDFThumbnailNavigator(final PDFViewer pdfViewer) {
 		this(pdfViewer, null);
 	}
 
-	public PdfThumbnailNavigator(PdfViewer pdfViewer, String contextElementId) {
+	public PDFThumbnailNavigator(final PDFViewer pdfViewer, final String contextElementId) {
 		assertValidThread();
 
-		if (pdfViewer == null)
+		if (pdfViewer == null) {
 			throw new IllegalArgumentException("pdfViewer must not be null!"); //$NON-NLS-1$
+		}
 
 		this.pdfViewer = pdfViewer;
 		this.contextElementId = contextElementId;
@@ -64,14 +65,14 @@ public class PdfThumbnailNavigator implements ContextElement<PdfThumbnailNavigat
 
 		// PDF thumbnail navigator will be notified in the case PDF simple navigator or PDF viewer itself has changed current page.
 		// The event is not fired again (see below).
-		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_CURRENT_PAGE, propertyChangeListenerCurrentPage);
+		pdfViewer.addPropertyChangeListener(PDFViewer.PROPERTY_CURRENT_PAGE, propertyChangeListenerCurrentPage);
 		// PDF thumbnail navigator will be notified in the case PDF viewer has loaded a PDF document.
-		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_PDF_DOCUMENT, propertyChangeListenerPdfDocument);
+		pdfViewer.addPropertyChangeListener(PDFViewer.PROPERTY_PDF_DOCUMENT, propertyChangeListenerPdfDocument);
 //		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_COMPONENT_RESIZED, propertyChangeListenerComponentResized);
-		setPdfDocument(pdfViewer.getPdfDocument());
+		setPdfDocument(pdfViewer.getPDFDocument());
 	}
 
-	public Control createControl(Composite parent, int style) {
+	public Control createControl(final Composite parent, final int style) {
 		assertValidThread();
 
 		if (this.pdfThumbnailNavigatorComposite != null) {
@@ -79,12 +80,12 @@ public class PdfThumbnailNavigator implements ContextElement<PdfThumbnailNavigat
 			this.pdfThumbnailNavigatorComposite = null;
 		}
 
-		this.pdfThumbnailNavigatorComposite = new PdfThumbnailNavigatorComposite(parent, style, this);
+		this.pdfThumbnailNavigatorComposite = new PDFThumbnailNavigatorComposite(parent, style, this);
 
-		this.pdfThumbnailNavigatorComposite.getThumbnailPdfViewer().addPropertyChangeListener(PdfViewer.PROPERTY_CURRENT_PAGE, new PropertyChangeListener() {
+		this.pdfThumbnailNavigatorComposite.getThumbnailPdfViewer().addPropertyChangeListener(PDFViewer.PROPERTY_CURRENT_PAGE, new PropertyChangeListener() {
 			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				PdfThumbnailNavigator.this.pdfViewer.setCurrentPage((Integer) evt.getNewValue());
+			public void propertyChange(final PropertyChangeEvent evt) {
+				PDFThumbnailNavigator.this.pdfViewer.setCurrentPage((Integer) evt.getNewValue());
 			}
 		});
 //		this.pdfThumbnailNavigatorComposite.getThumbnailPdfViewer().addPropertyChangeListener(PdfViewer.PROPERTY_COMPONENT_RESIZED, propertyChangeListenerComponentResized);
@@ -101,17 +102,18 @@ public class PdfThumbnailNavigator implements ContextElement<PdfThumbnailNavigat
 
 	private PropertyChangeListener propertyChangeListenerCurrentPage = new PropertyChangeListener() {
 		@Override
-		public void propertyChange(PropertyChangeEvent event) {
-			int newCurrentPage = (Integer)event.getNewValue();
-			if (pdfThumbnailNavigatorComposite != null && !pdfThumbnailNavigatorComposite.isDisposed())
+		public void propertyChange(final PropertyChangeEvent event) {
+			final int newCurrentPage = (Integer)event.getNewValue();
+			if (pdfThumbnailNavigatorComposite != null && !pdfThumbnailNavigatorComposite.isDisposed()) {
 				pdfThumbnailNavigatorComposite.setCurrentPage(newCurrentPage);
+			}
 		}
 	};
 
 	private PropertyChangeListener propertyChangeListenerPdfDocument = new PropertyChangeListener() {
 		@Override
-		public void propertyChange(PropertyChangeEvent event) {
-			setPdfDocument((PdfDocument)event.getNewValue());
+		public void propertyChange(final PropertyChangeEvent event) {
+			setPdfDocument((PDFDocument)event.getNewValue());
 		}
 	};
 
@@ -119,8 +121,9 @@ public class PdfThumbnailNavigator implements ContextElement<PdfThumbnailNavigat
 	 * Checks if a given method is called on the SWT UI thread.
 	 */
 	private static void assertValidThread()	{
-		if (Display.getCurrent() == null)
+		if (Display.getCurrent() == null) {
 			throw new IllegalStateException("Wrong thread! This method must be called on the SWT UI thread!"); //$NON-NLS-1$
+		}
 	}
 
 //	public PdfViewer getThumbnailPdfViewer() {
@@ -131,12 +134,12 @@ public class PdfThumbnailNavigator implements ContextElement<PdfThumbnailNavigat
 //	}
 
 	@Override
-	public PdfViewer getPdfViewer() {
+	public PDFViewer getPDFViewer() {
 		return pdfViewer;
 	}
 
 	@Override
-	public ContextElementType<PdfThumbnailNavigator> getContextElementType() {
+	public ContextElementType<PDFThumbnailNavigator> getContextElementType() {
 		return CONTEXT_ELEMENT_TYPE;
 	}
 	@Override
@@ -146,19 +149,20 @@ public class PdfThumbnailNavigator implements ContextElement<PdfThumbnailNavigat
 
 	@Override
 	public void onUnregisterContextElement() {
-		pdfViewer.removePropertyChangeListener(PdfViewer.PROPERTY_PDF_DOCUMENT, propertyChangeListenerPdfDocument);
-	    pdfViewer.removePropertyChangeListener(PdfViewer.PROPERTY_CURRENT_PAGE, propertyChangeListenerCurrentPage);
+		pdfViewer.removePropertyChangeListener(PDFViewer.PROPERTY_PDF_DOCUMENT, propertyChangeListenerPdfDocument);
+	    pdfViewer.removePropertyChangeListener(PDFViewer.PROPERTY_CURRENT_PAGE, propertyChangeListenerCurrentPage);
 //	    pdfViewer.removePropertyChangeListener(PdfViewer.PROPERTY_COMPONENT_RESIZED, propertyChangeListenerComponentResized);
 	    pdfViewer = null; // ensure we can't do anything with it anymore - the pdfViewer forgot this instance already - so we forget it, too.
 	}
 
-	protected void setPdfDocument(PdfDocument pdfDocument) {
+	protected void setPdfDocument(final PDFDocument pdfDocument) {
 	    this.pdfDocument = pdfDocument;
-	    if (pdfThumbnailNavigatorComposite != null && !pdfThumbnailNavigatorComposite.isDisposed())
-	    	pdfThumbnailNavigatorComposite.setPdfDocument(pdfDocument);
+	    if (pdfThumbnailNavigatorComposite != null && !pdfThumbnailNavigatorComposite.isDisposed()) {
+			pdfThumbnailNavigatorComposite.setPdfDocument(pdfDocument);
+		}
     }
 
-	public PdfDocument getPdfDocument() {
+	public PDFDocument getPdfDocument() {
 	    return pdfDocument;
     }
 }

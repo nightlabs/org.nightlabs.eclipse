@@ -34,12 +34,12 @@ package org.nightlabs.eclipse.ui.pdfviewer;
 public abstract class PaintAdapter implements PaintListener
 {
 	@Override
-	public void postPaint(PaintEvent event) {
+	public void postPaint(final PaintEvent event) {
 		// override to do sth.!
 	}
 
 	@Override
-	public void prePaint(PaintEvent event) {
+	public void prePaint(final PaintEvent event) {
 		// override to do sth.!
 	}
 }

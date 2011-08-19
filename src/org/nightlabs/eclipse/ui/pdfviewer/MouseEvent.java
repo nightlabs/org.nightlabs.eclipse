@@ -29,14 +29,14 @@ import java.beans.PropertyChangeListener;
 import org.apache.log4j.Logger;
 
 /**
- * Event fired by the {@link PdfViewer} (indirectly via {@link PropertyChangeListener}s) whenever
+ * Event fired by the {@link PDFViewer} (indirectly via {@link PropertyChangeListener}s) whenever
  * the user moves the mouse or clicks it. See the following property constants for more details:
  * <ul>
- * <li>{@link PdfViewer#PROPERTY_MOUSE_CLICKED}</li>
- * <li>{@link PdfViewer#PROPERTY_MOUSE_DRAGGED}</li>
- * <li>{@link PdfViewer#PROPERTY_MOUSE_MOVED}</li>
- * <li>{@link PdfViewer#PROPERTY_MOUSE_PRESSED}</li>
- * <li>{@link PdfViewer#PROPERTY_MOUSE_RELEASED}</li>
+ * <li>{@link PDFViewer#PROPERTY_MOUSE_CLICKED}</li>
+ * <li>{@link PDFViewer#PROPERTY_MOUSE_DRAGGED}</li>
+ * <li>{@link PDFViewer#PROPERTY_MOUSE_MOVED}</li>
+ * <li>{@link PDFViewer#PROPERTY_MOUSE_PRESSED}</li>
+ * <li>{@link PDFViewer#PROPERTY_MOUSE_RELEASED}</li>
  * </ul>
  *
  * @version $Revision$ - $Date$
@@ -53,12 +53,12 @@ public class MouseEvent
 
 	/**
 	 * Constructor for a <code>MouseEvent</code>. Never call this yourself! Instances
-	 * of this class are created inside the {@link PdfViewer} and propagated in
+	 * of this class are created inside the {@link PDFViewer} and propagated in
 	 * property change events.
 	 */
 	public MouseEvent(
-			java.awt.Point pointRelativeToPanel, Point2D pointInRealCoordinate,
-			java.awt.event.MouseEvent awtMouseEvent
+			final java.awt.Point pointRelativeToPanel, final Point2D pointInRealCoordinate,
+			final java.awt.event.MouseEvent awtMouseEvent
 	)
 	{
 		this.pointRelativeToComponent = pointRelativeToPanel;
@@ -80,7 +80,7 @@ public class MouseEvent
 				button = MouseButton.button3;
 				break;
 			default: {
-				logger.warn("java.awt.event.MouseEvent.getButton() returned invalid value: " + awtMouseEvent.getButton(), new IllegalStateException("MouseEvent.getButton() returned invalid value: " + awtMouseEvent.getButton()));
+				logger.warn("java.awt.event.MouseEvent.getButton() returned invalid value: " + awtMouseEvent.getButton(), new IllegalStateException("MouseEvent.getButton() returned invalid value: " + awtMouseEvent.getButton())); //$NON-NLS-1$ //$NON-NLS-2$
 				button = MouseButton.none;
 			}
 		}
@@ -99,7 +99,7 @@ public class MouseEvent
 	}
 
 	/**
-	 * Get the mouse point in real coordinates - i.e. relative to the {@link PdfDocument}
+	 * Get the mouse point in real coordinates - i.e. relative to the {@link PDFDocument}
 	 * in use (the point (0,0) is the left top corner of the <code>PdfDocument</code>).
 	 *
 	 * @return the mouse point in real coordinates - never <code>null</code>.
