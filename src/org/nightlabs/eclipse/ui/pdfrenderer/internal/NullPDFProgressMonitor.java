@@ -1,29 +1,29 @@
 /**
- * 
+ *
  */
 package org.nightlabs.eclipse.ui.pdfrenderer.internal;
 
-import org.nightlabs.eclipse.ui.pdfrenderer.IPdfProgressMonitor;
+import org.nightlabs.eclipse.ui.pdfrenderer.IPDFProgressMonitor;
 
 /**
- * Implementation of {@link IPdfProgressMonitor} doing nothing.
- * 
+ * Implementation of {@link IPDFProgressMonitor} doing nothing.
+ *
  * @author Alexander Bieber <!-- alex [AT] nightlabs [DOT] de -->
  *
  */
-public class NullPdfProgressMonitor implements IPdfProgressMonitor {
+public class NullPDFProgressMonitor implements IPDFProgressMonitor {
 
 	/**
-	 * 
+	 *
 	 */
-	public NullPdfProgressMonitor() {
+	public NullPDFProgressMonitor() {
 	}
 
 	/* (non-Javadoc)
 	 * @see org.nightlabs.eclipse.ui.pdfrenderer.IPdfProgressMonitor#beginTask(java.lang.String, int)
 	 */
 	@Override
-	public void beginTask(String taskName, int work) {
+	public void beginTask(final String taskName, final int work) {
 	}
 
 	/* (non-Javadoc)
@@ -37,7 +37,7 @@ public class NullPdfProgressMonitor implements IPdfProgressMonitor {
 	 * @see org.nightlabs.eclipse.ui.pdfrenderer.IPdfProgressMonitor#worked(int)
 	 */
 	@Override
-	public void worked(int work) {
+	public void worked(final int work) {
 	}
 
 }

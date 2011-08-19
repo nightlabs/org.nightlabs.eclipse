@@ -18,4 +18,5 @@ Export-Package: com.sun.pdfview,
  com.sun.pdfview.pattern,
  org.nightlabs.eclipse.ui.pdfrenderer,
  org.nightlabs.eclipse.ui.pdfrenderer.internal
-Require-Bundle: org.apache.log4j
+Require-Bundle: org.apache.log4j,
+ org.eclipse.swt

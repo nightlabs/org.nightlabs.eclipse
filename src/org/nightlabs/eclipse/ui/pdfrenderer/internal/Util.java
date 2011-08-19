@@ -63,10 +63,11 @@ public final class Util {
 	 *    and equal according to {@link Arrays#equals(Object[], Object[])} -
 	 *    <code>false</code> otherwise
 	 */
-	public static boolean equals(Object obj0, Object obj1)
+	public static boolean equals(final Object obj0, final Object obj1)
 	{
-		if (obj0 instanceof Object[] && obj1 instanceof Object[])
+		if (obj0 instanceof Object[] && obj1 instanceof Object[]) {
 			return obj0 == obj1 || Arrays.equals((Object[])obj0, (Object[])obj1);
+		}
 		return obj0 == obj1 || (obj0 != null && obj0.equals(obj1));
 	}
 
@@ -95,7 +96,7 @@ public final class Util {
 	 * @return the result of: <code>l0 == l1</code>.
 	 * @see #equals(Object, Object)
 	 */
-	public static boolean equals(long l0, long l1)
+	public static boolean equals(final long l0, final long l1)
 	{
 		return l0 == l1;
 	}
@@ -111,7 +112,7 @@ public final class Util {
 	 * @return the result of: <code>i0 == i1</code>.
 	 * @see #equals(long, long)
 	 */
-	public static boolean equals(int i0, int i1)
+	public static boolean equals(final int i0, final int i1)
 	{
 		return i0 == i1;
 	}
@@ -121,7 +122,7 @@ public final class Util {
 	 * @return the same as new Long(l).hashCode() would do, but
 	 * 		without the overhead of creating a Long instance.
 	 */
-	public static int hashCode(long l)
+	public static int hashCode(final long l)
 	{
 		return (int)(l ^ (l >>> 32));
 	}
@@ -133,7 +134,7 @@ public final class Util {
 	 * @return <code>0</code> if <code>obj == null</code> -
 	 * 		<code>obj.hashCode()</code> otherwise
 	 */
-	public static int hashCode(Object obj)
+	public static int hashCode(final Object obj)
 	{
 		return obj == null ? 0 : obj.hashCode();
 	}
@@ -192,8 +193,9 @@ public final class Util {
 	 */
 	public static File getTempDir()
 	{
-		if(tempDir == null)
-	    tempDir = new File(System.getProperty("java.io.tmpdir")); //$NON-NLS-1$
+		if(tempDir == null) {
+			tempDir = new File(System.getProperty("java.io.tmpdir")); //$NON-NLS-1$
+		}
 		return tempDir;
 	}
 
@@ -207,33 +209,38 @@ public final class Util {
 	 * @return The number of bytes transferred
 	 * @throws IOException if an error occurs.
 	 */
-	public static long transferStreamData(InputStream in, OutputStream out, long inputOffset, long inputLen)
+	public static long transferStreamData(final InputStream in, final OutputStream out, final long inputOffset, final long inputLen)
 	throws java.io.IOException
 	{
 		int bytesRead;
 		int transferred = 0;
-		byte[] buf = new byte[4096];
+		final byte[] buf = new byte[4096];
 
 		//skip offset
-		if(inputOffset > 0)
-			if(in.skip(inputOffset) != inputOffset)
+		if(inputOffset > 0) {
+			if(in.skip(inputOffset) != inputOffset) {
 				throw new IOException("Input skip failed (offset "+inputOffset+")"); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+		}
 
 		while (true) {
-			if(inputLen >= 0)
+			if(inputLen >= 0) {
 				bytesRead = in.read(buf, 0, (int)Math.min(buf.length, inputLen-transferred));
-			else
+			} else {
 				bytesRead = in.read(buf);
+			}
 
-			if (bytesRead <= 0)
+			if (bytesRead <= 0) {
 				break;
+			}
 
 			out.write(buf, 0, bytesRead);
 
 			transferred += bytesRead;
 
-			if(inputLen >= 0 && transferred >= inputLen)
+			if(inputLen >= 0 && transferred >= inputLen) {
 				break;
+			}
 		}
 		out.flush();
 		return transferred;
@@ -248,7 +255,7 @@ public final class Util {
 	 * @return The number of bytes transferred
 	 * @throws IOException In case of an error
 	 */
-	public static long transferStreamData(InputStream in, OutputStream out)
+	public static long transferStreamData(final InputStream in, final OutputStream out)
 	throws java.io.IOException
 	{
 		return transferStreamData(in, out, 0, -1);

@@ -46,9 +46,9 @@ import com.sun.pdfview.PDFFile;
  * @author marco schulze - marco at nightlabs dot de
  * @author frederik loeser - frederik at nightlabs dot de
  */
-public class PdfFileLoader
+public class PDFFileLoader
 {
-	private PdfFileLoader() { }
+	private PDFFileLoader() { }
 
 	/**
 	 * Create a {@link PDFFile} from a byte array.
@@ -57,12 +57,12 @@ public class PdfFileLoader
 	 * @return a {@link PDFFile} with the contents from the given <code>byteArray</code>.
 	 * @throws IOException if the {@link PDFFile} failed to read the data.
 	 */
-	public static PDFFile loadPdf(byte[] byteArray, IPdfProgressMonitor monitor) throws IOException {
+	public static PDFFile loadPdf(final byte[] byteArray, final IPDFProgressMonitor monitor) throws IOException {
 		monitor.beginTask(Messages.getString("org.nightlabs.eclipse.ui.pdfviewer.PdfFileLoader.loadPdf.monitor.task.name"), 100); //$NON-NLS-1$
 		try {
-			ByteBuffer byteBuffer = ByteBuffer.wrap(byteArray);
+			final ByteBuffer byteBuffer = ByteBuffer.wrap(byteArray);
 			monitor.worked(50);
-			PDFFile pdfFile = new PDFFile(byteBuffer);
+			final PDFFile pdfFile = new PDFFile(byteBuffer);
 			monitor.worked(50);
 			return pdfFile;
 		} finally {
@@ -77,18 +77,18 @@ public class PdfFileLoader
 	 * @return a {@link PDFFile} with the contents from the given input stream.
 	 * @throws IOException if the {@link PDFFile} failed to read the data.
 	 */
-	public static PDFFile loadPdf(InputStream in, IPdfProgressMonitor monitor) throws IOException
+	public static PDFFile loadPDF(final InputStream in, final IPDFProgressMonitor monitor) throws IOException
 	{
 		monitor.beginTask(Messages.getString("org.nightlabs.eclipse.ui.pdfviewer.PdfFileLoader.loadPdf.monitor.task.name"), 100); //$NON-NLS-1$
 		try {
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			final ByteArrayOutputStream out = new ByteArrayOutputStream();
 			Util.transferStreamData(in, out);
 			out.close();
 
 			monitor.worked(50);
 
-			ByteBuffer byteBuffer = ByteBuffer.wrap(out.toByteArray());
-			PDFFile pdfFile = new PDFFile(byteBuffer);
+			final ByteBuffer byteBuffer = ByteBuffer.wrap(out.toByteArray());
+			final PDFFile pdfFile = new PDFFile(byteBuffer);
 
 			monitor.worked(50);
 
@@ -105,18 +105,18 @@ public class PdfFileLoader
 	 * @return a {@link PDFFile} with the contents from the given file.
 	 * @throws IOException if the {@link PDFFile} failed to read the data.
 	 */
-	public static PDFFile loadPdf(File file, IPdfProgressMonitor monitor) throws IOException
+	public static PDFFile loadPDF(final File file, final IPDFProgressMonitor monitor) throws IOException
 	{
 		monitor.beginTask(Messages.getString("org.nightlabs.eclipse.ui.pdfviewer.PdfFileLoader.loadPdf.monitor.task.name"), 100); //$NON-NLS-1$
 
 		try {
-			RandomAccessFile randomAccessFile = new RandomAccessFile(file, "r"); //$NON-NLS-1$
+			final RandomAccessFile randomAccessFile = new RandomAccessFile(file, "r"); //$NON-NLS-1$
 			try {
-				FileChannel fileChannel = randomAccessFile.getChannel();
+				final FileChannel fileChannel = randomAccessFile.getChannel();
 				try {
-					ByteBuffer byteBuffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, 0, fileChannel.size());
+					final ByteBuffer byteBuffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, 0, fileChannel.size());
 					monitor.worked(50);
-					PDFFile pdfFile = new PDFFile(byteBuffer);
+					final PDFFile pdfFile = new PDFFile(byteBuffer);
 					monitor.worked(50);
 					return pdfFile;
 				} finally {
@@ -132,17 +132,17 @@ public class PdfFileLoader
 
 	/**
 	 * Create a PDFFile from an URL.
-	 * 
+	 *
 	 * @param url The url to load the PDF from.
 	 * @param monitor The monitor used to report progress.
 	 * @return a {@link PDFFile} with the contents from the given URL.
 	 * @throws IOException if the {@link PDFFile} failed to read the data.
 	 */
-	public static PDFFile loadPdf(URL url, IPdfProgressMonitor monitor) throws IOException
+	public static PDFFile loadPDF(final URL url, final IPDFProgressMonitor monitor) throws IOException
 	{
-		InputStream in = url.openStream();
+		final InputStream in = url.openStream();
 		try {
-			return loadPdf(in, monitor);
+			return loadPDF(in, monitor);
 		} finally {
 			in.close();
 		}
