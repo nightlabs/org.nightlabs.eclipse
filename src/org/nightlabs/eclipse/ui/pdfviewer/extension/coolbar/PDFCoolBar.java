@@ -28,9 +28,9 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.nightlabs.eclipse.ui.pdfviewer.ContextElement;
 import org.nightlabs.eclipse.ui.pdfviewer.ContextElementType;
-import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
-import org.nightlabs.eclipse.ui.pdfviewer.extension.action.PdfViewerActionRegistry;
-import org.nightlabs.eclipse.ui.pdfviewer.extension.coolbar.internal.PdfCoolBarComposite;
+import org.nightlabs.eclipse.ui.pdfviewer.PDFViewer;
+import org.nightlabs.eclipse.ui.pdfviewer.extension.action.PDFViewerActionRegistry;
+import org.nightlabs.eclipse.ui.pdfviewer.extension.coolbar.internal.PDFCoolBarComposite;
 
 /**
  * API for creating a cool bar (i.e. a bar holding tools like actions and other contributions).
@@ -40,13 +40,13 @@ import org.nightlabs.eclipse.ui.pdfviewer.extension.coolbar.internal.PdfCoolBarC
  * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
  */
-public class PdfCoolBar implements ContextElement<PdfCoolBar>
+public class PDFCoolBar implements ContextElement<PDFCoolBar>
 {
-	public static final ContextElementType<PdfCoolBar> CONTEXT_ELEMENT_TYPE = new ContextElementType<PdfCoolBar>(PdfCoolBar.class);
-	private PdfViewer pdfViewer;
+	public static final ContextElementType<PDFCoolBar> CONTEXT_ELEMENT_TYPE = new ContextElementType<PDFCoolBar>(PDFCoolBar.class);
+	private PDFViewer pdfViewer;
 	private String contextElementId;
-	private PdfCoolBarComposite pdfCoolBarComposite;
-	private PdfViewerActionRegistry pdfViewerActionRegistry;
+	private PDFCoolBarComposite pdfCoolBarComposite;
+	private PDFViewerActionRegistry pdfViewerActionRegistry;
 
 	/**
 	 * Checks if a given method is called on the SWT UI thread.
@@ -58,22 +58,23 @@ public class PdfCoolBar implements ContextElement<PdfCoolBar>
 		}
 	}
 
-	public PdfCoolBar(PdfViewerActionRegistry pdfViewerActionRegistry) {
+	public PDFCoolBar(final PDFViewerActionRegistry pdfViewerActionRegistry) {
 		this(pdfViewerActionRegistry, null);
 	}
 
-	public PdfCoolBar(PdfViewerActionRegistry pdfViewerActionRegistry, String contextElementId) {
+	public PDFCoolBar(final PDFViewerActionRegistry pdfViewerActionRegistry, final String contextElementId) {
 		assertValidThread();
-		if (pdfViewerActionRegistry == null)
-			throw new IllegalArgumentException("pdfViewerActionRegistry must not be null!");
+		if (pdfViewerActionRegistry == null) {
+			throw new IllegalArgumentException("pdfViewerActionRegistry must not be null!"); //$NON-NLS-1$
+		}
 
-		this.pdfViewer = pdfViewerActionRegistry.getPdfViewer();
+		this.pdfViewer = pdfViewerActionRegistry.getPDFViewer();
 		this.pdfViewerActionRegistry = pdfViewerActionRegistry;
 		this.contextElementId = contextElementId;
 		pdfViewer.registerContextElement(this);
 	}
 
-	public Control createControl(Composite parent, int style)
+	public Control createControl(final Composite parent, final int style)
 	{
 		assertValidThread();
 
@@ -82,12 +83,12 @@ public class PdfCoolBar implements ContextElement<PdfCoolBar>
 			this.pdfCoolBarComposite = null;
 		}
 
-		pdfCoolBarComposite = new PdfCoolBarComposite(parent, style, this);
+		pdfCoolBarComposite = new PDFCoolBarComposite(parent, style, this);
 
 		return pdfCoolBarComposite;
 	}
 
-	public PdfViewerActionRegistry getPdfViewerActionRegistry() {
+	public PDFViewerActionRegistry getPdfViewerActionRegistry() {
 		return pdfViewerActionRegistry;
 	}
 
@@ -102,12 +103,12 @@ public class PdfCoolBar implements ContextElement<PdfCoolBar>
 	}
 
 	@Override
-	public ContextElementType<PdfCoolBar> getContextElementType() {
+	public ContextElementType<PDFCoolBar> getContextElementType() {
 		return CONTEXT_ELEMENT_TYPE;
 	}
 
 	@Override
-	public PdfViewer getPdfViewer() {
+	public PDFViewer getPDFViewer() {
 		return pdfViewer;
 	}
 

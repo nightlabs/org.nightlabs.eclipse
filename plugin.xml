@@ -3,12 +3,12 @@
    <extension-point id="pdfViewerAction" name="PDF Viewer Action" schema="schema/pdfViewerAction.exsd"/>
     <extension point="org.eclipse.ui.editors">
         <editor
-              class="org.nightlabs.eclipse.ui.pdfviewer.extension.editor.PdfViewerEditor"
-              contributorClass="org.nightlabs.eclipse.ui.pdfviewer.extension.editor.PdfViewerEditorActionBarContributor"
+              class="org.nightlabs.eclipse.ui.pdfviewer.extension.editor.PDFViewerEditor"
+              contributorClass="org.nightlabs.eclipse.ui.pdfviewer.extension.editor.PDFViewerEditorActionBarContributor"
               extensions="pdf"
-              icon="icons/editor/PdfViewerEditor.16x16.png"
-              id="org.nightlabs.eclipse.ui.pdfviewer.extension.editor.PdfViewerEditor"
-              name="%org.nightlabs.eclipse.ui.pdfviewer.extension.editor.PdfViewerEditor.name"/>
+              icon="icons/editor/PDFViewerEditor.16x16.png"
+              id="org.nightlabs.eclipse.ui.pdfviewer.extension.editor.PDFViewerEditor"
+              name="%org.nightlabs.eclipse.ui.pdfviewer.extension.editor.PDFViewerEditor.name"/>
     </extension>
    <extension
          point="org.nightlabs.eclipse.ui.pdfviewer.extension.pdfViewerAction">
@@ -18,7 +18,7 @@
          <action
                class="org.nightlabs.eclipse.ui.pdfviewer.extension.action.zoom.ZoomContributionItem"
                id="org.nightlabs.eclipse.ui.pdfviewer.extension.action.zoom.ZoomContributionItem"
-               name="ZoomCombo"
+               name="%org.nightlabs.eclipse.ui.pdfviewer.extension.action.zoom.ZoomContributionItem.name"
                toolbarPath="org.nightlabs.eclipse.ui.pdfviewer.extension.groupMarker1"
                useCase="default">
          
@@ -43,7 +43,7 @@
    </extension>
    <extension
          point="org.eclipse.ui.startup">
-         <startup class="org.nightlabs.eclipse.ui.pdfviewer.extension.printer.PdfPrinterRegistrationStartup"/>         
+         <startup class="org.nightlabs.eclipse.ui.pdfviewer.extension.printer.PDFPrinterRegistrationStartup"/>         
    </extension>
    <extension
          point="org.nightlabs.base.ui.printerConfiguration">

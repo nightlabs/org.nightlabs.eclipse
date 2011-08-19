@@ -34,20 +34,20 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
-import org.nightlabs.eclipse.ui.pdfrenderer.PdfFileLoader;
-import org.nightlabs.eclipse.ui.pdfviewer.PdfProgressMontitorWrapper;
+import org.nightlabs.eclipse.ui.pdfrenderer.PDFFileLoader;
+import org.nightlabs.eclipse.ui.pdfviewer.PDFProgressMontitorWrapper;
 import org.nightlabs.util.IOUtil;
 import org.nightlabs.util.Util;
 
 import com.sun.pdfview.PDFFile;
 
 /**
- * An editor input that can be used to open a {@link PdfViewerEditor}.
+ * An editor input that can be used to open a {@link PDFViewerEditor}.
  *
  * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
  */
-public class PdfViewerEditorInput
+public class PDFViewerEditorInput
 implements IEditorInput
 {
 	private String name;
@@ -68,7 +68,7 @@ implements IEditorInput
 	 *
 	 * @param file the file containing the PDF's data.
 	 */
-	public PdfViewerEditorInput(File file)
+	public PDFViewerEditorInput(final File file)
 	{
 		this(file.getName(), file.getAbsolutePath(), null, file);
 	}
@@ -81,10 +81,11 @@ implements IEditorInput
 	 * @param imageDescriptor an optional image to be displayed in the editor's tab (if <code>null</code>, the default icon of the editor is used instead).
 	 * @param file the file containing the PDF's data.
 	 */
-	public PdfViewerEditorInput(String name, String toolTipText, ImageDescriptor imageDescriptor, File file)
+	public PDFViewerEditorInput(final String name, final String toolTipText, final ImageDescriptor imageDescriptor, final File file)
 	{
-		if (file == null)
+		if (file == null) {
 			throw new IllegalArgumentException("file must not be null!"); //$NON-NLS-1$
+		}
 
 		this.name = name;
 		this.toolTipText = toolTipText;
@@ -102,7 +103,7 @@ implements IEditorInput
 	 *
 	 * @param url the URL pointing to the PDF's data.
 	 */
-	public PdfViewerEditorInput(URL url)
+	public PDFViewerEditorInput(final URL url)
 	{
 		this(
 				new File(url.getPath()).getName(),
@@ -120,10 +121,11 @@ implements IEditorInput
 	 * @param imageDescriptor an optional image to be displayed in the editor's tab (if <code>null</code>, the default icon of the editor is used instead).
 	 * @param url the URL pointing to the PDF's data.
 	 */
-	public PdfViewerEditorInput(String name, String toolTipText, ImageDescriptor imageDescriptor, URL url)
+	public PDFViewerEditorInput(final String name, final String toolTipText, final ImageDescriptor imageDescriptor, final URL url)
 	{
-		if (url == null)
+		if (url == null) {
 			throw new IllegalArgumentException("url must not be null!"); //$NON-NLS-1$
+		}
 
 		this.name = name;
 		this.toolTipText = toolTipText;
@@ -145,9 +147,10 @@ implements IEditorInput
 	 * @deprecated Because of eclipse's internal editor history, it's recommended to use one of the other constructors.
 	 */
 	@Deprecated
-	public PdfViewerEditorInput(String name, String toolTipText, ImageDescriptor imageDescriptor, byte[] byteArray) {
-		if (byteArray == null)
+	public PDFViewerEditorInput(final String name, final String toolTipText, final ImageDescriptor imageDescriptor, final byte[] byteArray) {
+		if (byteArray == null) {
 			throw new IllegalArgumentException("byteArray must not be null!"); //$NON-NLS-1$
+		}
 
 		this.name = name;
 		this.toolTipText = toolTipText;
@@ -174,7 +177,7 @@ implements IEditorInput
 	 * @return a new instance of <code>PDFFile</code>. This
 	 * @throws IOException
 	 */
-	public PDFFile createPDFFile(IProgressMonitor monitor)
+	public PDFFile createPDFFile(final IProgressMonitor monitor)
 	throws IOException
 	{
 //		if (pdfFile != null) {
@@ -186,22 +189,23 @@ implements IEditorInput
 
 		PDFFile pdfFile;
 		if (url != null) {
-			InputStream in = url.openStream();
+			final InputStream in = url.openStream();
 			try {
-				ByteArrayOutputStream out = new ByteArrayOutputStream();
+				final ByteArrayOutputStream out = new ByteArrayOutputStream();
 				IOUtil.transferStreamData(in, out);
 				out.close();
-				pdfFile = PdfFileLoader.loadPdf(out.toByteArray(), new PdfProgressMontitorWrapper(monitor));
+				pdfFile = PDFFileLoader.loadPdf(out.toByteArray(), new PDFProgressMontitorWrapper(monitor));
 			} finally {
 				in.close();
 			}
 		}
-		else if (byteArray != null)
-			pdfFile = PdfFileLoader.loadPdf(byteArray, new PdfProgressMontitorWrapper(monitor));
-		else if (file != null)
-			pdfFile = PdfFileLoader.loadPdf(file, new PdfProgressMontitorWrapper(monitor));
-		else
+		else if (byteArray != null) {
+			pdfFile = PDFFileLoader.loadPdf(byteArray, new PDFProgressMontitorWrapper(monitor));
+		} else if (file != null) {
+			pdfFile = PDFFileLoader.loadPDF(file, new PDFProgressMontitorWrapper(monitor));
+		} else {
 			throw new IllegalStateException("Have no data!"); //$NON-NLS-1$
+		}
 
 		return pdfFile;
 	}
@@ -232,19 +236,25 @@ implements IEditorInput
 		return toolTipText;
 	}
 
-	@SuppressWarnings("unchecked") // seems, IAdaptable does not have a class type set (not even <?>). //$NON-NLS-1$
+	@SuppressWarnings("unchecked") // seems, IAdaptable does not have a class type set (not even <?>).
 	@Override
-	public Object getAdapter(Class arg0) {
+	public Object getAdapter(final Class arg0) {
 		// no adapter supported, at the moment
 		return null;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (obj == this) return true;
-		if (obj == null) return false;
-		if (obj.getClass() != this.getClass()) return false;
-		PdfViewerEditorInput o = (PdfViewerEditorInput) obj;
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (obj.getClass() != this.getClass()) {
+			return false;
+		}
+		final PDFViewerEditorInput o = (PDFViewerEditorInput) obj;
 		return Util.equals(url, o.url) && Util.equals(file, o.file) && Util.equals(byteArray, o.byteArray);
 	}
 

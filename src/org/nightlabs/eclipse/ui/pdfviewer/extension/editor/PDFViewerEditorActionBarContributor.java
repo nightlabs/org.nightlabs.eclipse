@@ -29,50 +29,51 @@ import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.ui.IActionBars2;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.part.EditorActionBarContributor;
-import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
-import org.nightlabs.eclipse.ui.pdfviewer.extension.action.PdfViewerActionRegistry;
+import org.nightlabs.eclipse.ui.pdfviewer.PDFViewer;
+import org.nightlabs.eclipse.ui.pdfviewer.extension.action.PDFViewerActionRegistry;
 
 /**
  * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
  */
-public class PdfViewerEditorActionBarContributor extends EditorActionBarContributor
+public class PDFViewerEditorActionBarContributor extends EditorActionBarContributor
 {
-	private PdfViewerEditor editor;
+	private PDFViewerEditor editor;
 
-	public PdfViewerEditorActionBarContributor() {
+	public PDFViewerEditorActionBarContributor() {
 	}
 
 	@Override
-	public void contributeToCoolBar(ICoolBarManager coolBarManager) {
+	public void contributeToCoolBar(final ICoolBarManager coolBarManager) {
 		contribute();
 	}
 
 	private ICoolBarManager getCoolBarManager()
 	{
-		IActionBars2 actionBars = (IActionBars2) getActionBars();
-		ICoolBarManager coolBarManager = actionBars.getCoolBarManager();
-		if (coolBarManager == null)
+		final IActionBars2 actionBars = (IActionBars2) getActionBars();
+		final ICoolBarManager coolBarManager = actionBars.getCoolBarManager();
+		if (coolBarManager == null) {
 			throw new IllegalStateException("coolBarManager is null!"); //$NON-NLS-1$
+		}
 		return coolBarManager;
 	}
 
 	protected void contribute()
 	{
-		ICoolBarManager coolBarManager = getCoolBarManager();
+		final ICoolBarManager coolBarManager = getCoolBarManager();
 
 		if (editor == null) {
 			coolBarManager.removeAll();
 			return;
 		}
 
-		PdfViewer pdfViewer = editor.getPdfViewer();
+		final PDFViewer pdfViewer = editor.getPDFViewer();
 		if (pdfViewer == null) {
 			coolBarManager.removeAll();
 			return;
 		}
 
-		PdfViewerActionRegistry pdfViewerActionRegistry = getPdfViewerActionRegistry();
+		final PDFViewerActionRegistry pdfViewerActionRegistry = getPDFViewerActionRegistry();
 
 		if (pdfViewerActionRegistry == null) {
 			coolBarManager.removeAll();
@@ -82,31 +83,33 @@ public class PdfViewerEditorActionBarContributor extends EditorActionBarContribu
 		pdfViewerActionRegistry.contributeToCoolBar(coolBarManager);
 	}
 
-	private PdfViewerActionRegistry getPdfViewerActionRegistry()
+	private PDFViewerActionRegistry getPDFViewerActionRegistry()
 	{
-		if (editor == null)
+		if (editor == null) {
 			return null;
+		}
 
-		PdfViewer pdfViewer = editor.getPdfViewer();
-		if (pdfViewer == null)
+		final PDFViewer pdfViewer = editor.getPDFViewer();
+		if (pdfViewer == null) {
 			return null;
+		}
 
 		return pdfViewer.getContextElement(
-				PdfViewerActionRegistry.CONTEXT_ELEMENT_TYPE,
-				PdfViewerEditorActionBarContributor.class.getName()
+				PDFViewerActionRegistry.CONTEXT_ELEMENT_TYPE,
+				PDFViewerEditorActionBarContributor.class.getName()
 		);
 	}
 
-	public PdfViewerEditor getActiveEditor() {
+	public PDFViewerEditor getActiveEditor() {
 		return editor;
 	}
 
 	@Override
-	public void setActiveEditor(IEditorPart targetEditor) {
-		PdfViewerActionRegistry pdfViewerActionRegistry = getPdfViewerActionRegistry();
+	public void setActiveEditor(final IEditorPart targetEditor) {
+		PDFViewerActionRegistry pdfViewerActionRegistry = getPDFViewerActionRegistry();
 
 		if (pdfViewerActionRegistry != null) {
-			PdfViewer pdfViewer = pdfViewerActionRegistry.getPdfViewer();
+			final PDFViewer pdfViewer = pdfViewerActionRegistry.getPDFViewer();
 //			IActionBars2 actionBars = (IActionBars2) getActionBars();
 //
 //			ICoolBarManager coolBarManager = actionBars.getCoolBarManager();
@@ -115,22 +118,22 @@ public class PdfViewerEditorActionBarContributor extends EditorActionBarContribu
 //				throw new IllegalStateException("coolBarManager is null!"); //$NON-NLS-1$
 //
 //			pdfViewerActionRegistry.removeAllFromCoolBar(coolBarManager);
-			pdfViewer.removePropertyChangeListener(PdfViewer.PROPERTY_REGISTER_CONTEXT_ELEMENT, propertyChangeListenerContribute);
+			pdfViewer.removePropertyChangeListener(PDFViewer.PROPERTY_REGISTER_CONTEXT_ELEMENT, propertyChangeListenerContribute);
 
 			pdfViewerActionRegistry.removeAllFromCoolBar(getCoolBarManager());
 			this.editor = null;
 			contribute();
 		}
 
-		this.editor = (PdfViewerEditor) targetEditor;
+		this.editor = (PDFViewerEditor) targetEditor;
 		if (this.editor != null) {
 			this.editor.setPdfViewerEditorActionBarContributor(this);
 		}
 
-		pdfViewerActionRegistry = getPdfViewerActionRegistry();
+		pdfViewerActionRegistry = getPDFViewerActionRegistry();
 		if (pdfViewerActionRegistry != null) {
-			PdfViewer pdfViewer = pdfViewerActionRegistry.getPdfViewer();
-			pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_REGISTER_CONTEXT_ELEMENT, propertyChangeListenerContribute);
+			final PDFViewer pdfViewer = pdfViewerActionRegistry.getPDFViewer();
+			pdfViewer.addPropertyChangeListener(PDFViewer.PROPERTY_REGISTER_CONTEXT_ELEMENT, propertyChangeListenerContribute);
 		}
 
 		contribute();
@@ -138,7 +141,7 @@ public class PdfViewerEditorActionBarContributor extends EditorActionBarContribu
 
 	private PropertyChangeListener propertyChangeListenerContribute = new PropertyChangeListener()
 	{
-		public void propertyChange(java.beans.PropertyChangeEvent evt) {
+		public void propertyChange(final java.beans.PropertyChangeEvent evt) {
 			contribute();
 		}
 	};

@@ -21,62 +21,27 @@
  * Or get it online:                                                  *
  *     http://www.gnu.org/copyleft/lesser.html                        *
  **********************************************************************/
-package org.nightlabs.eclipse.ui.pdfviewer.extension;
+package org.nightlabs.eclipse.ui.pdfviewer.extension.printer;
 
-import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.osgi.framework.BundleContext;
-
+import org.eclipse.ui.IStartup;
+import org.nightlabs.print.DelegatingDocumentPrinterCfMod;
 
 /**
- * The activator class controls the plug-in life cycle.
- *
  * @version $Revision$ - $Date$
- * @author frederik loeser - frederik at nightlabs dot de
+ * @author frederik löser - frederik at nightlabs dot de
  */
-public class PdfViewerExtensionPlugin extends AbstractUIPlugin {
+public class PDFPrinterRegistrationStartup implements IStartup {
 
-	/**
-	 * The ID of this plugin.
-	 */
-	public static final String PLUGIN_ID = "org.nightlabs.eclipse.ui.pdfviewer.extension"; //$NON-NLS-1$
-
-	/**
-	 * The shared instance.
-	 */
-	private static PdfViewerExtensionPlugin plugin;
-
-	/**
-	 * The constructor of <code>PdfViewerExtensionPlugin</code>.
-	 */
-	public PdfViewerExtensionPlugin() {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-	 */
 	@Override
-    public void start(BundleContext context) throws Exception {
-		super.start(context);
-		plugin = this;
-	}
+	public void earlyStartup() {
+		final DelegatingDocumentPrinterCfMod cfMod = DelegatingDocumentPrinterCfMod.sharedInstance();
+		if (!cfMod.getKnownExtensions().contains("pdf")) { //$NON-NLS-1$
+			cfMod.addKnownExtension("pdf"); //$NON-NLS-1$
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-	 */
-	@Override
-    public void stop(BundleContext context) throws Exception {
-		plugin = null;
-		super.stop(context);
+			final DelegatingDocumentPrinterCfMod.ExternalEngineDelegateConfig config
+				= new DelegatingDocumentPrinterCfMod.ExternalEngineDelegateConfig();
+			config.setClassName(PDFDocumentPrinter.class.getName());
+			cfMod.setPrintConfig("pdf", config); //$NON-NLS-1$
+		}
 	}
-
-	/**
-	 * Returns the shared instance.
-	 * @return the shared instance.
-	 */
-	public static PdfViewerExtensionPlugin getDefault() {
-		return plugin;
-	}
-
 }

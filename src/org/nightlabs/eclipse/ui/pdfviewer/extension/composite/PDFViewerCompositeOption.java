@@ -21,30 +21,30 @@
  * Or get it online:                                                  *
  *     http://www.gnu.org/copyleft/lesser.html                        *
  **********************************************************************/
-package org.nightlabs.eclipse.ui.pdfviewer.extension.printer;
-
-import org.eclipse.ui.IStartup;
-import org.nightlabs.print.DelegatingDocumentPrinterCfMod;
+package org.nightlabs.eclipse.ui.pdfviewer.extension.composite;
 
 /**
+ * Options that can be passed to the {@link PDFViewerComposite}'s constructor.
+ *
  * @version $Revision$ - $Date$
- * @author frederik löser - frederik at nightlabs dot de
+ * @author marco schulze - marco at nightlabs dot de
  */
-public class PdfPrinterRegistrationStartup implements IStartup {
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.IStartup#earlyStartup()
+public enum PDFViewerCompositeOption {
+	/**
+	 * Do not create a cool bar. Without this option, a {@link PdfCoolBar} will be created above the
+	 * {@link PdfViewer} (and above the thumbnail navigator, if it is created).
 	 */
-	@Override
-	public void earlyStartup() {
-		DelegatingDocumentPrinterCfMod cfMod = DelegatingDocumentPrinterCfMod.sharedInstance();
-		if (!cfMod.getKnownExtensions().contains("pdf")) {
-			cfMod.addKnownExtension("pdf");
+	NO_COOL_BAR,
 
-			DelegatingDocumentPrinterCfMod.ExternalEngineDelegateConfig config = new DelegatingDocumentPrinterCfMod.ExternalEngineDelegateConfig();
-			config.setClassName(PdfPrinter.class.getName());
-			cfMod.setPrintConfig("pdf", config);
-		}
-	}
+	/**
+	 * Do not create a thumbnail navigator. Without this option, a {@link PdfThumbnailNavigator} will
+	 * be created on the left side of the {@link PdfViewer}.
+	 */
+	NO_THUMBNAIL_NAVIGATOR,
 
+	/**
+	 * Do not create a simple navigator. Without this option, a {@link PdfSimpleNavigator} will be created
+	 * below the {@link PdfThumbnailNavigator} (or below the {@link PdfViewer}, if no thumbnail navigator is shown).
+	 */
+	NO_SIMPLE_NAVIGATOR
 }

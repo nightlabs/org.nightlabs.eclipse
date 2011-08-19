@@ -32,9 +32,9 @@ import org.nightlabs.l10n.NumberFormatter;
  */
 public class ZoomLevel
 {
-	public static final ZoomLevel ZOOM_TO_PAGE_WIDTH = new ZoomLevel("Page width");
-	public static final ZoomLevel ZOOM_TO_PAGE_HEIGHT = new ZoomLevel("Page height");
-	public static final ZoomLevel ZOOM_TO_PAGE = new ZoomLevel("Page (complete)");
+	public static final ZoomLevel ZOOM_TO_PAGE_WIDTH = new ZoomLevel("Page width"); //$NON-NLS-1$
+	public static final ZoomLevel ZOOM_TO_PAGE_HEIGHT = new ZoomLevel("Page height"); //$NON-NLS-1$
+	public static final ZoomLevel ZOOM_TO_PAGE = new ZoomLevel("Page (complete)"); //$NON-NLS-1$
 	private int zoomFactorPerMill = 0;
 	private String label = null;
 
@@ -44,7 +44,7 @@ public class ZoomLevel
 	 * Sets the zoom factor per mill of the {@link ZoomLevel} given as argument.
 	 * @param zoomFactorPerMill the zoom factor per mill to set.
 	 */
-	public ZoomLevel(int zoomFactorPerMill) {
+	public ZoomLevel(final int zoomFactorPerMill) {
 		this.zoomFactorPerMill = zoomFactorPerMill;
 	}
 
@@ -53,7 +53,7 @@ public class ZoomLevel
 	 * Sets the label of the {@link ZoomLevel} given as argument.
 	 * @param label the label to set.
 	 */
-	public ZoomLevel(String label) {
+	public ZoomLevel(final String label) {
 		this.label = label;
 	}
 
@@ -73,13 +73,15 @@ public class ZoomLevel
 		return label;
 	}
 
-	public String getLabel(boolean auto) {
-		if (!auto)
+	public String getLabel(final boolean auto) {
+		if (!auto) {
 			return label;
+		}
 
-		if (label == null)
-			return NumberFormatter.formatFloat((double) zoomFactorPerMill / 10, 1) + "%";
-		else
+		if (label == null) {
+			return NumberFormatter.formatFloat((double) zoomFactorPerMill / 10, 1) + "%"; //$NON-NLS-1$
+		} else {
 			return label;
+		}
 	}
 }

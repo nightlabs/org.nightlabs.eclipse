@@ -21,35 +21,39 @@
  * Or get it online:                                                  *
  *     http://www.gnu.org/copyleft/lesser.html                        *
  **********************************************************************/
-package org.nightlabs.eclipse.ui.pdfviewer.extension.composite;
+package org.nightlabs.eclipse.ui.pdfviewer.extension.action;
 
-import org.nightlabs.eclipse.ui.pdfviewer.PdfSimpleNavigator;
-import org.nightlabs.eclipse.ui.pdfviewer.PdfThumbnailNavigator;
-import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
-import org.nightlabs.eclipse.ui.pdfviewer.extension.coolbar.PdfCoolBar;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IContributionItem;
+import org.nightlabs.base.ui.action.IXContributionItem;
+import org.nightlabs.eclipse.ui.pdfviewer.PDFDocument;
+import org.nightlabs.eclipse.ui.pdfviewer.PDFViewer;
 
 /**
- * Options that can be passed to the {@link PdfViewerComposite}'s constructor.
+ * Implement this interface in your {@link IAction}s and {@link IContributionItem}
+ * (or {@link IXContributionItem}) to get access to the {@link PDFViewerActionRegistry}
+ * (and thus the {@link PDFViewer}).
  *
  * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
  */
-public enum PdfViewerCompositeOption {
+public interface IPDFViewerActionOrContributionItem
+{
 	/**
-	 * Do not create a cool bar. Without this option, a {@link PdfCoolBar} will be created above the
-	 * {@link PdfViewer} (and above the thumbnail navigator, if it is created).
+	 * Set the {@link PDFViewerActionRegistry}.
+	 * @param pdfViewerActionRegistry the PdfViewerActionRegistry.
 	 */
-	NO_COOL_BAR,
+	void init(PDFViewerActionRegistry pdfViewerActionRegistry);
 
 	/**
-	 * Do not create a thumbnail navigator. Without this option, a {@link PdfThumbnailNavigator} will
-	 * be created on the left side of the {@link PdfViewer}.
+	 * Get the {@link PDFViewerActionRegistry}.
+	 * @return the PdfViewerActionRegistry.
 	 */
-	NO_THUMBNAIL_NAVIGATOR,
-	
+	PDFViewerActionRegistry getPDFViewerActionRegistry();
+
 	/**
-	 * Do not create a simple navigator. Without this option, a {@link PdfSimpleNavigator} will be created
-	 * below the {@link PdfThumbnailNavigator} (or below the {@link PdfViewer}, if no thumbnail navigator is shown).
+	 * Calculates if a property change concerning the property ENABLED has occurred.
+	 * This decision depends on whether a {@link PDFDocument} instance is available.
 	 */
-	NO_SIMPLE_NAVIGATOR
+	void calculateEnabled();
 }

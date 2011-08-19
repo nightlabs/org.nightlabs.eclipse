@@ -21,65 +21,59 @@
  * Or get it online:                                                  *
  *     http://www.gnu.org/copyleft/lesser.html                        *
  **********************************************************************/
-package org.nightlabs.eclipse.ui.pdfviewer.extension.action.print;
+package org.nightlabs.eclipse.ui.pdfviewer.extension.printer;
 
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.io.File;
 
-import org.nightlabs.base.ui.print.PrinterInterfaceManager;
 import org.nightlabs.base.ui.print.pref.PDFDocumentPrinterPreferencePage;
 import org.nightlabs.eclipse.ui.pdfrenderer.PDFPrinter;
-import org.nightlabs.eclipse.ui.pdfviewer.extension.action.PDFViewerAction;
+import org.nightlabs.print.DocumentPrinter;
 import org.nightlabs.print.PrintUtil;
 import org.nightlabs.print.PrinterConfiguration;
-import org.nightlabs.print.PrinterInterface;
-
-import com.sun.pdfview.PDFFile;
-
 
 /**
+ * Implementation of {@link DocumentPrinter} to handle PDF files. Throw-away instances of this class are used to
+ * print PDF documents.
  * @version $Revision$ - $Date$
- * @author kiran telukunta - kiran at nightlabs dot de
- * @author marco schulze - marco at nightlabs dot de
+ * @author frederik loeser - frederik at nightlabs dot de
  */
-public class PrintAction extends PDFViewerAction {
+public class PDFDocumentPrinter implements DocumentPrinter {
 
-	public static final String PRINTER_USE_CASE_ID = "org.nightlabs.eclipse.ui.pdfviewer.extension.printerUseCase"; //$NON-NLS-1$
+	private PrinterConfiguration printerConfiguration;
+
+	private boolean usePDFPageDimensions;
 
 	/**
-	 * Creates a new {@link PDFPrinter} instance, sets its configuration and prints the given {@link PDFFile}.
+	 * Prints the given file via PDF printer mechanism.
+	 * @param file The file to print.
 	 */
 	@Override
-	public void run() {
-		try {
-			final PrinterInterface iFace = PrinterInterfaceManager.sharedInstance().getConfiguredPrinterInterface(
-				org.nightlabs.print.PrinterInterfaceManager.INTERFACE_FACTORY_DOCUMENT, PRINTER_USE_CASE_ID);
+	public void printDocument(final File file) throws PrinterException {
+		// Creates and returns a PrinterJob which is configured with the given PrinterConfiguration
+	    final PrinterJob printerJob = PrintUtil.getConfiguredPrinterJob(printerConfiguration);
 
-			if (iFace.getConfiguration() == null) {
-				return;
-			}
+		new PDFPrinter().printPDF(file, printerJob, usePDFPageDimensions);
+	}
 
-			final PDFPrinter pdfPrinter = new PDFPrinter();
+	@Override
+	public void configure(final PrinterConfiguration printerConfiguration) throws PrinterException {
+		this.printerConfiguration = printerConfiguration;
 
-			// Creates and returns a PrinterJob which is configured with the given PrinterConfiguration
-		    final PrinterJob printerJob = PrintUtil.getConfiguredPrinterJob(iFace.getConfiguration());
-
-			final PDFFile pdfFile = getPDFViewerActionRegistry().getPDFViewer().getPDFDocument().getPDFFile();
-
-			boolean usePDFPageDimensions = false;
-			final PrinterConfiguration printerConfig = PrintUtil.getPrinterConfigurationFor(PRINTER_USE_CASE_ID);
-
-			if (printerConfig != null && printerConfig.getAttributes().containsKey(
-					PDFDocumentPrinterPreferencePage.ATTRIBUTE_NAME_PDF_PAGE_DIMENSIONS_USAGE_STATE)) {
-				usePDFPageDimensions = (Boolean) printerConfig.getAttributes().get(
-					PDFDocumentPrinterPreferencePage.ATTRIBUTE_NAME_PDF_PAGE_DIMENSIONS_USAGE_STATE);
-			}
-
-			// Print the file
-			pdfPrinter.printPDF(pdfFile, printerJob, usePDFPageDimensions);
-
-		} catch (final PrinterException e) {
-			throw new RuntimeException(e);
+		// TODO in the case the printer configuration is not refreshed attributes like
+		// PDFDocumentPrinterPreferencePage.ATTRIBUTE_NAME_PDF_PAGE_DIMENSIONS_USAGE_STATE could still have old values (restart
+		// required); see also org.nightlabs.eclipse.ui.pdfviewer.extension.action.print.PrintAction
+		usePDFPageDimensions = false;
+		if (printerConfiguration != null && printerConfiguration.getAttributes().containsKey(
+				PDFDocumentPrinterPreferencePage.ATTRIBUTE_NAME_PDF_PAGE_DIMENSIONS_USAGE_STATE)) {
+			usePDFPageDimensions = (Boolean) printerConfiguration.getAttributes().get(
+				PDFDocumentPrinterPreferencePage.ATTRIBUTE_NAME_PDF_PAGE_DIMENSIONS_USAGE_STATE);
 		}
+	}
+
+	@Override
+	public PrinterConfiguration getConfiguration() {
+		return printerConfiguration;
 	}
 }

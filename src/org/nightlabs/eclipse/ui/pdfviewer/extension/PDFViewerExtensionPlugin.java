@@ -21,60 +21,62 @@
  * Or get it online:                                                  *
  *     http://www.gnu.org/copyleft/lesser.html                        *
  **********************************************************************/
-package org.nightlabs.eclipse.ui.pdfviewer.extension.printer;
+package org.nightlabs.eclipse.ui.pdfviewer.extension;
 
-import java.awt.print.PrinterException;
-import java.awt.print.PrinterJob;
-import java.io.File;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.osgi.framework.BundleContext;
 
-import javax.print.PrintService;
-
-import org.nightlabs.eclipse.ui.pdfrenderer.PdfFileLoader;
-import org.nightlabs.print.DocumentPrinter;
-import org.nightlabs.print.PrintUtil;
-import org.nightlabs.print.PrinterConfiguration;
-
-import com.sun.pdfview.PDFFile;
 
 /**
- * Implementation of {@link DocumentPrinter} to handle PDF files. Throw-away instances
- * of this class are used to print PDF documents.
+ * The activator class controls the plug-in life cycle.
  *
  * @version $Revision$ - $Date$
  * @author frederik loeser - frederik at nightlabs dot de
  */
-public class PdfPrinter implements DocumentPrinter {
-
-	private PrinterConfiguration printerConfiguration;
-	private PrinterJob printerJob;
+public class PDFViewerExtensionPlugin extends AbstractUIPlugin {
 
 	/**
-	 * Gets a {@link PDFFile} from a {@link File} by using {@link PdfFileLoader}.
-	 * @param file the file to print.
+	 * The ID of this plugin.
+	 */
+	public static final String PLUGIN_ID = "org.nightlabs.eclipse.ui.pdfviewer.extension"; //$NON-NLS-1$
+
+	/**
+	 * The shared instance.
+	 */
+	private static PDFViewerExtensionPlugin plugin;
+
+	/**
+	 * The constructor of <code>PdfViewerExtensionPlugin</code>.
+	 */
+	public PDFViewerExtensionPlugin() {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
 	 */
 	@Override
-	public void printDocument(File file) throws PrinterException {
-
-		// Creates and returns a PrinterJob which is initially associated with the default printer.
-	    printerJob = PrinterJob.getPrinterJob();
-
-	    // Returns a PrintService describing the capabilities of the printer given by the printerConfiguration.
-	    // The PrintService is also configured in compliance with the settings of this configuration.
-		PrintService printService = PrintUtil.getConfiguredPrintService(printerConfiguration, true);
-
-		// Associates the PrinterJob with the PrintService.
-		printerJob.setPrintService(printService);
-
-		new org.nightlabs.eclipse.ui.pdfrenderer.PdfPrinter().printPdf(file, printerJob);
+    public void start(final BundleContext context) throws Exception {
+		super.start(context);
+		plugin = this;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+	 */
 	@Override
-	public void configure(PrinterConfiguration printerConfiguration) throws PrinterException {
-		this.printerConfiguration = printerConfiguration;
+    public void stop(final BundleContext context) throws Exception {
+		plugin = null;
+		super.stop(context);
 	}
 
-	@Override
-	public PrinterConfiguration getConfiguration() {
-		return printerConfiguration;
+	/**
+	 * Returns the shared instance.
+	 * @return the shared instance.
+	 */
+	public static PDFViewerExtensionPlugin getDefault() {
+		return plugin;
 	}
+
 }

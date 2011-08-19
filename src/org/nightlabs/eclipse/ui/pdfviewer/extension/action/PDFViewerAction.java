@@ -23,31 +23,29 @@
  **********************************************************************/
 package org.nightlabs.eclipse.ui.pdfviewer.extension.action;
 
-import org.nightlabs.base.ui.action.XContributionItem;
+import org.eclipse.jface.action.Action;
 
 /**
  * Implementation of IPdfViewerActionOrContributionItem.
  * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
  */
-public abstract class PdfViewerContributionItem
-extends XContributionItem
-implements IPdfViewerActionOrContributionItem
+public abstract class PDFViewerAction extends Action implements IPDFViewerActionOrContributionItem
 {
-	private PdfViewerActionRegistry pdfViewerActionRegistry;
+	PDFViewerActionRegistry pdfViewerActionRegistry;
 
 	@Override
-	public void init(PdfViewerActionRegistry pdfViewerActionRegistry) {
+	public void init(final PDFViewerActionRegistry pdfViewerActionRegistry) {
 		this.pdfViewerActionRegistry = pdfViewerActionRegistry;
 	}
 
 	@Override
-	public PdfViewerActionRegistry getPdfViewerActionRegistry() {
+	public PDFViewerActionRegistry getPDFViewerActionRegistry() {
 		return pdfViewerActionRegistry;
 	}
 
 	@Override
 	public void calculateEnabled() {
-		setEnabled(pdfViewerActionRegistry.getPdfViewer().getPdfDocument() != null);
+		setEnabled(pdfViewerActionRegistry.getPDFViewer().getPDFDocument() != null);
 	}
 }

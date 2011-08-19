@@ -35,9 +35,10 @@ public class UseCase {
 	 * The constructor of {@link UseCase}.
 	 * @param useCaseId the {@link UseCase} ID to use in this instance.
 	 */
-	public UseCase(String useCaseId) {
-		if (useCaseId == null)
-			throw new IllegalArgumentException("useCaseID must not be null!");
+	public UseCase(final String useCaseId) {
+		if (useCaseId == null) {
+			throw new IllegalArgumentException("useCaseID must not be null!"); //$NON-NLS-1$
+		}
 		this.useCaseId = useCaseId;
 	}
 
@@ -62,15 +63,22 @@ public class UseCase {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null) return false;
-		if (getClass() != obj.getClass()) return false;
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
 
 		final UseCase other = (UseCase) obj;
 
-		if (useCaseId == null)
+		if (useCaseId == null) {
 			return other.useCaseId == null;
+		}
 
 		return useCaseId.equals(other.useCaseId);
 	}

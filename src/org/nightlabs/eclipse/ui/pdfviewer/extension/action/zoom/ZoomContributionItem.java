@@ -41,9 +41,9 @@ import org.nightlabs.base.ui.action.CComboContributionItem;
 import org.nightlabs.base.ui.composite.XComboComposite;
 import org.nightlabs.base.ui.composite.XComposite;
 import org.nightlabs.eclipse.ui.pdfviewer.AutoZoom;
-import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
-import org.nightlabs.eclipse.ui.pdfviewer.extension.action.IPdfViewerActionOrContributionItem;
-import org.nightlabs.eclipse.ui.pdfviewer.extension.action.PdfViewerActionRegistry;
+import org.nightlabs.eclipse.ui.pdfviewer.PDFViewer;
+import org.nightlabs.eclipse.ui.pdfviewer.extension.action.IPDFViewerActionOrContributionItem;
+import org.nightlabs.eclipse.ui.pdfviewer.extension.action.PDFViewerActionRegistry;
 import org.nightlabs.l10n.NumberFormatter;
 
 /**
@@ -55,12 +55,12 @@ import org.nightlabs.l10n.NumberFormatter;
  */
 public class ZoomContributionItem
 extends CComboContributionItem<ZoomLevel>
-implements IPdfViewerActionOrContributionItem
+implements IPDFViewerActionOrContributionItem
 {
 	private class ZoomLabelProvider extends LabelProvider {
 		@Override
-		public String getText(Object element) {
-			ZoomLevel zoomLevel = (ZoomLevel) element;
+		public String getText(final Object element) {
+			final ZoomLevel zoomLevel = (ZoomLevel) element;
 			return zoomLevel.getLabel(true);
 		}
 	}
@@ -93,30 +93,33 @@ implements IPdfViewerActionOrContributionItem
 	private ArrayList<ZoomLevel> zoomLevels;
 
 	@Override
-	protected XComboComposite<ZoomLevel> createControl(Composite parent) {
-		if (getControl() != null)
+	protected XComboComposite<ZoomLevel> createControl(final Composite parent) {
+		if (getControl() != null) {
 			getControl().removeKeyListener(keyListener);
+		}
 
-		XComboComposite<ZoomLevel> combo = super.createControl(parent);
+		final XComboComposite<ZoomLevel> combo = super.createControl(parent);
 		combo.addKeyListener(keyListener);
 		combo.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
-			public void selectionChanged(SelectionChangedEvent event) {
-				PdfViewer pdfViewer = getPdfViewer();
-				if (pdfViewer == null)
+			public void selectionChanged(final SelectionChangedEvent event) {
+				final PDFViewer pdfViewer = getPdfViewer();
+				if (pdfViewer == null) {
 					return;
+				}
 
-				ZoomLevel selectedZoomLevel = getControl().getSelectedElement();
-				if (selectedZoomLevel == null)
+				final ZoomLevel selectedZoomLevel = getControl().getSelectedElement();
+				if (selectedZoomLevel == null) {
 					return;
+				}
 
-				if (selectedZoomLevel == ZoomLevel.ZOOM_TO_PAGE_WIDTH)
+				if (selectedZoomLevel == ZoomLevel.ZOOM_TO_PAGE_WIDTH) {
 					pdfViewer.setAutoZoom(AutoZoom.pageWidth);
-				else if (selectedZoomLevel == ZoomLevel.ZOOM_TO_PAGE_HEIGHT)
+				} else if (selectedZoomLevel == ZoomLevel.ZOOM_TO_PAGE_HEIGHT) {
 					pdfViewer.setAutoZoom(AutoZoom.pageHeight);
-				else if (selectedZoomLevel == ZoomLevel.ZOOM_TO_PAGE)
+				} else if (selectedZoomLevel == ZoomLevel.ZOOM_TO_PAGE) {
 					pdfViewer.setAutoZoom(AutoZoom.page);
-				else {
+				} else {
 					pdfViewer.setAutoZoom(AutoZoom.none);
 					pdfViewer.setZoomFactorPerMill(selectedZoomLevel.getZoomFactorPerMill());
 				}
@@ -128,20 +131,21 @@ implements IPdfViewerActionOrContributionItem
 
 	private KeyListener keyListener = new KeyAdapter() {
 		@Override
-		public void keyReleased(KeyEvent e)
+		public void keyReleased(final KeyEvent e)
 		{
 			if (e.character == '\n' || e.character == '\r') {
-				PdfViewer pdfViewer = getPdfViewer();
-				if (pdfViewer == null)
+				final PDFViewer pdfViewer = getPdfViewer();
+				if (pdfViewer == null) {
 					return;
+				}
 
 				String newZoomStr = getControl().getText();
-				newZoomStr = newZoomStr.replaceAll("\\s", "").replaceAll("%", "");
+				newZoomStr = newZoomStr.replaceAll("\\s", "").replaceAll("%", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 				double zoom = -1;
 				try {
 					zoom = NumberFormatter.parseFloat(newZoomStr);
 					newZoomStr = null;
-				} catch (ParseException x) {
+				} catch (final ParseException x) {
 					// ignore
 				}
 
@@ -165,24 +169,27 @@ implements IPdfViewerActionOrContributionItem
 	 * @param zoomFactorPerMill the value to search for in the list of {@link ZoomLevel}s.
 	 * @return the {@link ZoomLevel} that has been searched for.
 	 */
-	private ZoomLevel findOrCreateZoomLevel(int zoomFactorPerMill)
+	private ZoomLevel findOrCreateZoomLevel(final int zoomFactorPerMill)
 	{
 		int nextSmallerZoomLevelIndex = -1;
-		for (ZoomLevel zoomLevel : zoomLevels) {
-			if (zoomLevel.getZoomFactorPerMill() < zoomFactorPerMill)
+		for (final ZoomLevel zoomLevel : zoomLevels) {
+			if (zoomLevel.getZoomFactorPerMill() < zoomFactorPerMill) {
 				++nextSmallerZoomLevelIndex;
+			}
 
-			if (zoomLevel.getZoomFactorPerMill() == zoomFactorPerMill)
+			if (zoomLevel.getZoomFactorPerMill() == zoomFactorPerMill) {
 				return zoomLevel;
+			}
 		}
 
-		ArrayList<ZoomLevel> newZoomLevels = new ArrayList<ZoomLevel>(zoomLevels.size() + 1);
+		final ArrayList<ZoomLevel> newZoomLevels = new ArrayList<ZoomLevel>(zoomLevels.size() + 1);
 		newZoomLevels.addAll(zoomLevels);
 		int index = nextSmallerZoomLevelIndex + 1;
-		if (index > newZoomLevels.size())
+		if (index > newZoomLevels.size()) {
 			index = newZoomLevels.size();
+		}
 
-		ZoomLevel newZoomLevel = new ZoomLevel(zoomFactorPerMill);
+		final ZoomLevel newZoomLevel = new ZoomLevel(zoomFactorPerMill);
 		newZoomLevels.add(index, newZoomLevel);
 		setElements(newZoomLevels);
 		return newZoomLevel;
@@ -196,9 +203,10 @@ implements IPdfViewerActionOrContributionItem
 	 */
 	private void setComboZoomFactorPerMill()
 	{
-		PdfViewer pdfViewer = getPdfViewer();
-		if (pdfViewer == null)
+		final PDFViewer pdfViewer = getPdfViewer();
+		if (pdfViewer == null) {
 			return;
+		}
 
 		ZoomLevel zoomLevel = null;
 		switch (pdfViewer.getAutoZoom()) {
@@ -215,65 +223,67 @@ implements IPdfViewerActionOrContributionItem
 				zoomLevel = findOrCreateZoomLevel(pdfViewer.getZoomFactorPerMill());
 			break;
 			default:
-				throw new IllegalStateException("Unknown AutoZoom: " + pdfViewer.getAutoZoom());
+				throw new IllegalStateException("Unknown AutoZoom: " + pdfViewer.getAutoZoom()); //$NON-NLS-1$
 		}
 
-		if (getControl() != null)
+		if (getControl() != null) {
 			getControl().selectElement(zoomLevel);
+		}
 	}
 
 	/**
-	 * Returns the {@link PdfViewer} instance by incorporating the PDF viewer action registry.
-	 * @return PdfViewer the {@link PdfViewer} instance.
+	 * Returns the {@link PDFViewer} instance by incorporating the PDF viewer action registry.
+	 * @return PdfViewer the {@link PDFViewer} instance.
 	 */
-	protected PdfViewer getPdfViewer()
+	protected PDFViewer getPdfViewer()
 	{
-		return pdfViewerActionRegistry == null ? null : pdfViewerActionRegistry.getPdfViewer();
+		return pdfViewerActionRegistry == null ? null : pdfViewerActionRegistry.getPDFViewer();
 	}
 
 	@Override
-	protected int getComboStyle(Composite parent) {
+	protected int getComboStyle(final Composite parent) {
 		return XComposite.getBorderStyle(parent);
 	}
 
 	@Override
-	public void fill(CoolBar parent, int index) {
+	public void fill(final CoolBar parent, final int index) {
 		super.fill(parent, index);
 //		setSize();
 	}
 
 	@Override
-	public void fill(ToolBar parent, int index) {
+	public void fill(final ToolBar parent, final int index) {
 		super.fill(parent, index);
 	}
 
 	@Override
 	public void calculateEnabled() {
-		setEnabled(pdfViewerActionRegistry.getPdfViewer().getPdfDocument() != null);
+		setEnabled(pdfViewerActionRegistry.getPDFViewer().getPDFDocument() != null);
 	}
 
-	private PdfViewerActionRegistry pdfViewerActionRegistry;
+	private PDFViewerActionRegistry pdfViewerActionRegistry;
 
 	private PropertyChangeListener propertyChangeListenerZoom = new PropertyChangeListener() {
 		@Override
-		public void propertyChange(PropertyChangeEvent evt) {
+		public void propertyChange(final PropertyChangeEvent evt) {
 			setComboZoomFactorPerMill();
 		}
 	};
 
 	@Override
-	public PdfViewerActionRegistry getPdfViewerActionRegistry() {
+	public PDFViewerActionRegistry getPDFViewerActionRegistry() {
 		return pdfViewerActionRegistry;
 	}
 
 	@Override
-	public void init(PdfViewerActionRegistry pdfViewerActionRegistry) {
+	public void init(final PDFViewerActionRegistry pdfViewerActionRegistry) {
 		this.pdfViewerActionRegistry = pdfViewerActionRegistry;
-		PdfViewer pdfViewer = getPdfViewer();
-		if (pdfViewer == null)
+		final PDFViewer pdfViewer = getPdfViewer();
+		if (pdfViewer == null) {
 			return;
+		}
 
-		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_ZOOM_FACTOR, propertyChangeListenerZoom );
+		pdfViewer.addPropertyChangeListener(PDFViewer.PROPERTY_ZOOM_FACTOR, propertyChangeListenerZoom );
 	}
 
 

@@ -25,11 +25,11 @@ package org.nightlabs.eclipse.ui.pdfviewer.extension.action.save;
 
 import org.nightlabs.eclipse.ui.pdfviewer.ContextElement;
 import org.nightlabs.eclipse.ui.pdfviewer.ContextElementType;
-import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
+import org.nightlabs.eclipse.ui.pdfviewer.PDFViewer;
 
 /**
  * Handler for saving a file to the local file system. It interacts with the
- * {@link SaveAsAction}. You can register one instance of this class for each {@link PdfViewer}
+ * {@link SaveAsAction}. You can register one instance of this class for each {@link PDFViewer}
  * only!
  *
  * @version $Revision$ - $Date$
@@ -39,11 +39,12 @@ public abstract class SaveAsActionHandler implements ContextElement<SaveAsAction
 {
 	public static final ContextElementType<SaveAsActionHandler> CONTEXT_ELEMENT_TYPE = new ContextElementType<SaveAsActionHandler>(SaveAsActionHandler.class);
 
-	private PdfViewer pdfViewer;
+	private PDFViewer pdfViewer;
 
-	public SaveAsActionHandler(PdfViewer pdfViewer) {
-		if (pdfViewer == null)
-			throw new IllegalArgumentException("pdfViewer must not be null!");
+	public SaveAsActionHandler(final PDFViewer pdfViewer) {
+		if (pdfViewer == null) {
+			throw new IllegalArgumentException("pdfViewer must not be null!"); //$NON-NLS-1$
+		}
 
 		this.pdfViewer = pdfViewer;
 		pdfViewer.registerContextElement(this);
@@ -64,7 +65,7 @@ public abstract class SaveAsActionHandler implements ContextElement<SaveAsAction
 	}
 
 	@Override
-	public PdfViewer getPdfViewer() {
+	public PDFViewer getPDFViewer() {
 		return pdfViewer;
 	}
 

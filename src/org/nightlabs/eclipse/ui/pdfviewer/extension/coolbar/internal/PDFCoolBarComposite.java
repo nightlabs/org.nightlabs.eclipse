@@ -28,21 +28,21 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.CoolBar;
-import org.nightlabs.eclipse.ui.pdfviewer.extension.action.PdfViewerActionRegistry;
-import org.nightlabs.eclipse.ui.pdfviewer.extension.coolbar.PdfCoolBar;
+import org.nightlabs.eclipse.ui.pdfviewer.extension.action.PDFViewerActionRegistry;
+import org.nightlabs.eclipse.ui.pdfviewer.extension.coolbar.PDFCoolBar;
 
 /**
  * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
  */
-public class PdfCoolBarComposite extends Composite
+public class PDFCoolBarComposite extends Composite
 {
-	private PdfCoolBar pdfCoolBar;
-	private PdfViewerActionRegistry pdfViewerActionRegistry;
+	private PDFCoolBar pdfCoolBar;
+	private PDFViewerActionRegistry pdfViewerActionRegistry;
 	private CoolBar coolBar;
 	private CoolBarManager coolBarManager;
 
-	public PdfCoolBarComposite(Composite parent, int style, PdfCoolBar pdfCoolBar) {
+	public PDFCoolBarComposite(final Composite parent, final int style, final PDFCoolBar pdfCoolBar) {
 		super(parent, style);
 		this.setLayout(new FillLayout());
 

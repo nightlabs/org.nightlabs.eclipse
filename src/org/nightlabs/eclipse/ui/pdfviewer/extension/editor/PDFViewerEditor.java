@@ -54,15 +54,15 @@ import org.eclipse.ui.part.EditorPart;
 import org.nightlabs.base.ui.io.FileEditorInput;
 import org.nightlabs.base.ui.progress.ProgressMonitorWrapper;
 import org.nightlabs.base.ui.util.RCPUtil;
-import org.nightlabs.eclipse.ui.pdfrenderer.PdfFileLoader;
-import org.nightlabs.eclipse.ui.pdfviewer.OneDimensionalPdfDocument;
-import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
-import org.nightlabs.eclipse.ui.pdfviewer.PdfProgressMontitorWrapper;
-import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
-import org.nightlabs.eclipse.ui.pdfviewer.extension.action.PdfViewerActionRegistry;
+import org.nightlabs.eclipse.ui.pdfrenderer.PDFFileLoader;
+import org.nightlabs.eclipse.ui.pdfviewer.OneDimensionalPDFDocument;
+import org.nightlabs.eclipse.ui.pdfviewer.PDFDocument;
+import org.nightlabs.eclipse.ui.pdfviewer.PDFProgressMontitorWrapper;
+import org.nightlabs.eclipse.ui.pdfviewer.PDFViewer;
+import org.nightlabs.eclipse.ui.pdfviewer.extension.action.PDFViewerActionRegistry;
 import org.nightlabs.eclipse.ui.pdfviewer.extension.action.save.SaveAsActionHandler;
-import org.nightlabs.eclipse.ui.pdfviewer.extension.composite.PdfViewerComposite;
-import org.nightlabs.eclipse.ui.pdfviewer.extension.composite.PdfViewerCompositeOption;
+import org.nightlabs.eclipse.ui.pdfviewer.extension.composite.PDFViewerComposite;
+import org.nightlabs.eclipse.ui.pdfviewer.extension.composite.PDFViewerCompositeOption;
 import org.nightlabs.eclipse.ui.pdfviewer.extension.resource.Messages;
 import org.nightlabs.util.IOUtil;
 
@@ -72,7 +72,7 @@ import com.sun.pdfview.PDFFile;
  * This editor displays a PDF file. It can be opened with the following implementations of
  * {@link IEditorInput}:
  * <ul>
- *	<li>{@link PdfViewerEditorInput}</li>: Supports {@link File} and byte array as data source.
+ *	<li>{@link PDFViewerEditorInput}</li>: Supports {@link File} and byte array as data source.
  *	<li>{@link FileEditorInput}</li>: Supports {@link File} as data source.
  *	<li>{@link IPathEditorInput}</li>
  * </ul>
@@ -81,17 +81,17 @@ import com.sun.pdfview.PDFFile;
  * @author frederik loeser - frederik at nightlabs dot de
  * @author marco schulze - marco at nightlabs dot de
  */
-public class PdfViewerEditor extends EditorPart
+public class PDFViewerEditor extends EditorPart
 {
-	private static final Logger logger = Logger.getLogger(PdfViewerEditor.class);
-	public static final String ID = PdfViewerEditor.class.getName();
-	private volatile PdfDocument pdfDocument;
+	private static final Logger logger = Logger.getLogger(PDFViewerEditor.class);
+	public static final String ID = PDFViewerEditor.class.getName();
+	private volatile PDFDocument pdfDocument;
 	private PDFFile pdfFile;
-	private PdfViewerComposite pdfViewerComposite;
+	private PDFViewerComposite pdfViewerComposite;
 //	private SashForm page;
 
 	@Override
-	public void doSave(IProgressMonitor monitor) {
+	public void doSave(final IProgressMonitor monitor) {
 		// TODO implement later
 	}
 
@@ -101,14 +101,15 @@ public class PdfViewerEditor extends EditorPart
 	}
 
 	@Override
-	public void init(IEditorSite site, IEditorInput input) throws PartInitException
+	public void init(final IEditorSite site, final IEditorInput input) throws PartInitException
 	{
 		setSite(site);
 		setInput(input);
 
 		// strange that the following lines are necessary - the tool tip pops up automatically - why does the part name not?
-		if (input.getName() != null)
+		if (input.getName() != null) {
 			setPartName(input.getName());
+		}
 	}
 
 	@Override
@@ -136,7 +137,7 @@ public class PdfViewerEditor extends EditorPart
 		final Composite loadingMessagePage = new Composite(parent, SWT.NONE);
 		loadingMessagePage.setLayout(new GridLayout());
 		loadingMessageLabel = new Label(loadingMessagePage, SWT.NONE);
-		GridData gdLoadingMessageLabel = new GridData(GridData.FILL_HORIZONTAL);
+		final GridData gdLoadingMessageLabel = new GridData(GridData.FILL_HORIZONTAL);
 		gdLoadingMessageLabel.verticalIndent = 16;
 		gdLoadingMessageLabel.horizontalIndent = 16;
 		loadingMessageLabel.setLayoutData(gdLoadingMessageLabel);
@@ -145,26 +146,26 @@ public class PdfViewerEditor extends EditorPart
 		final Display display = loadingMessageLabel.getDisplay();
 
 		final IEditorInput input = getEditorInput();
-		Job job = new Job(Messages.getString("org.nightlabs.eclipse.ui.pdfviewer.extension.editor.PdfViewerEditor.monitor.task.name")) { //$NON-NLS-1$
+		final Job job = new Job(Messages.getString("org.nightlabs.eclipse.ui.pdfviewer.extension.editor.PdfViewerEditor.monitor.task.name")) { //$NON-NLS-1$
 			@Override
-			protected IStatus run(IProgressMonitor monitor) {
+			protected IStatus run(final IProgressMonitor monitor) {
 				monitor.beginTask(Messages.getString("org.nightlabs.eclipse.ui.pdfviewer.extension.editor.PdfViewerEditor.monitor.task.name"), 100); //$NON-NLS-1$
 				try {
-					if (input instanceof PdfViewerEditorInput) {
-						PdfViewerEditorInput i = (PdfViewerEditorInput)input;
+					if (input instanceof PDFViewerEditorInput) {
+						final PDFViewerEditorInput i = (PDFViewerEditorInput)input;
 						pdfFile = i.createPDFFile(new SubProgressMonitor(monitor, 20));
 						datasourceURL = i.getUrl();
 						datasourceByteArray = i.getByteArray();
 						datasourceFile = i.getFile();
 					}
 					else if (input instanceof FileEditorInput) {
-						File file = ((FileEditorInput)input).getFile();
-						pdfFile = PdfFileLoader.loadPdf(file, new PdfProgressMontitorWrapper(new SubProgressMonitor(monitor, 20)));
+						final File file = ((FileEditorInput)input).getFile();
+						pdfFile = PDFFileLoader.loadPDF(file, new PDFProgressMontitorWrapper(new SubProgressMonitor(monitor, 20)));
 						datasourceFile = file;
 					}
 					else if (input instanceof IPathEditorInput) {
-						File file = ((IPathEditorInput)input).getPath().toFile();
-						pdfFile = PdfFileLoader.loadPdf(file, new PdfProgressMontitorWrapper(new SubProgressMonitor(monitor, 20)));
+						final File file = ((IPathEditorInput)input).getPath().toFile();
+						pdfFile = PDFFileLoader.loadPDF(file, new PDFProgressMontitorWrapper(new SubProgressMonitor(monitor, 20)));
 						datasourceFile = file;
 					}
 				// I have no idea, in which plugin this IURIEditorInput can be found - thus we don't support it
@@ -179,17 +180,19 @@ public class PdfViewerEditor extends EditorPart
 //							in.close();
 //						}
 //					}
-					else
+					else {
 						throw new IllegalArgumentException("Editor input is an unsupported type! class=" + input.getClass() + " instance=" + input); //$NON-NLS-1$ //$NON-NLS-2$
+					}
 
-					pdfDocument = new OneDimensionalPdfDocument(pdfFile, new SubProgressMonitor(monitor, 80));
+					pdfDocument = new OneDimensionalPDFDocument(pdfFile, new SubProgressMonitor(monitor, 80));
 				} catch (final Exception x) {
 					logger.error("Error while reading PDF file!", x); //$NON-NLS-1$
 
 					display.asyncExec(new Runnable() {
 						public void run() {
-							if (parent.isDisposed())
+							if (parent.isDisposed()) {
 								return;
+							}
 
 							RCPUtil.closeEditor(input, false);
 						}
@@ -203,23 +206,25 @@ public class PdfViewerEditor extends EditorPart
 				display.asyncExec(new Runnable() {
 
 					public void run() {
-						if (parent.isDisposed())
+						if (parent.isDisposed()) {
 							return;
+						}
 
 						loadingMessagePage.dispose();
 
-						pdfViewerComposite = new PdfViewerComposite(
+						pdfViewerComposite = new PDFViewerComposite(
 								parent,
 								SWT.NONE, pdfDocument,
 //								PdfViewerCompositeOption.NO_THUMBNAIL_NAVIGATOR,
 //								PdfViewerCompositeOption.NO_SIMPLE_NAVIGATOR,
-								PdfViewerCompositeOption.NO_COOL_BAR
+								PDFViewerCompositeOption.NO_COOL_BAR
 						);
 						pdfViewerComposite.addDisposeListener(disposeListener);
 						createSaveAsActionHandler();
 
-						if (pdfViewerEditorActionBarContributor != null)
+						if (pdfViewerEditorActionBarContributor != null) {
 							pdfViewerEditorActionBarContributor.contribute();
+						}
 
 //						pdfThumbnailNavigator.setPdfDocumentFactory(new PdfThumbnailNavigator.PdfDocumentFactory() {
 //							public PdfDocument createPdfDocument(PdfDocument pdfDocument)
@@ -239,19 +244,20 @@ public class PdfViewerEditor extends EditorPart
 
 	private DisposeListener disposeListener = new DisposeListener() {
 		@Override
-		public void widgetDisposed(DisposeEvent event) {
+		public void widgetDisposed(final DisposeEvent event) {
 			if (pdfViewerEditorActionBarContributor != null) {
-				if (PdfViewerEditor.this == pdfViewerEditorActionBarContributor.getActiveEditor())
+				if (PDFViewerEditor.this == pdfViewerEditorActionBarContributor.getActiveEditor()) {
 					pdfViewerEditorActionBarContributor.setActiveEditor(null);
+				}
 			}
 		}
 	};
 
-	private PdfViewerEditorActionBarContributor pdfViewerEditorActionBarContributor;
-	protected PdfViewerEditorActionBarContributor getPdfViewerEditorActionBarContributor() {
+	private PDFViewerEditorActionBarContributor pdfViewerEditorActionBarContributor;
+	protected PDFViewerEditorActionBarContributor getPdfViewerEditorActionBarContributor() {
 		return pdfViewerEditorActionBarContributor;
 	}
-	protected void setPdfViewerEditorActionBarContributor(PdfViewerEditorActionBarContributor pdfViewerEditorActionBarContributor) {
+	protected void setPdfViewerEditorActionBarContributor(final PDFViewerEditorActionBarContributor pdfViewerEditorActionBarContributor) {
 		this.pdfViewerEditorActionBarContributor = pdfViewerEditorActionBarContributor;
 	}
 
@@ -259,9 +265,9 @@ public class PdfViewerEditor extends EditorPart
 
 	private void createSaveAsActionHandler()
 	{
-		PdfViewer pdfViewer = getPdfViewer();
+		final PDFViewer pdfViewer = getPDFViewer();
 
-		new PdfViewerActionRegistry(pdfViewer, PdfViewerComposite.USE_CASE_DEFAULT, PdfViewerEditorActionBarContributor.class.getName());
+		new PDFViewerActionRegistry(pdfViewer, PDFViewerComposite.USE_CASE_DEFAULT, PDFViewerEditorActionBarContributor.class.getName());
 
 		new SaveAsActionHandler(pdfViewer) {
 			@Override
@@ -276,47 +282,50 @@ public class PdfViewerEditor extends EditorPart
 					suggestedFileName = datasourceFile.getName();
 				}
 				else if (datasourceURL != null) {
-					if (lastSaveDirectory == null)
+					if (lastSaveDirectory == null) {
 						lastSaveDirectory = IOUtil.getUserHome();
+					}
 					suggestedFileName = new File(datasourceURL.getPath()).getName();
-					File f = new File(lastSaveDirectory, suggestedFileName);
+					final File f = new File(lastSaveDirectory, suggestedFileName);
 					suggestedDirectory = lastSaveDirectory.getAbsolutePath();
 					suggestedFilePath = f.getAbsolutePath();
 				}
 				else {
-					suggestedDirectory = "";
-					suggestedFileName = "";
-					suggestedFilePath = "";
+					suggestedDirectory = ""; //$NON-NLS-1$
+					suggestedFileName = ""; //$NON-NLS-1$
+					suggestedFilePath = ""; //$NON-NLS-1$
 				}
 
-				FileDialog fileDialog = new FileDialog(RCPUtil.getActiveShell(), SWT.SAVE);
+				final FileDialog fileDialog = new FileDialog(RCPUtil.getActiveShell(), SWT.SAVE);
 				fileDialog.setFileName(suggestedFileName);
 
-				if (suggestedFilePath != null && !"".equals(suggestedFilePath))
+				if (suggestedFilePath != null && !"".equals(suggestedFilePath)) { //$NON-NLS-1$
 					fileDialog.setFilterPath(suggestedDirectory);
+				}
 
-				fileDialog.setText(String.format("Save PDF file %s", suggestedFileName, suggestedFilePath));
-				String fileName = fileDialog.open();
+				fileDialog.setText(String.format("Save PDF file %s", suggestedFileName, suggestedFilePath)); //$NON-NLS-1$
+				final String fileName = fileDialog.open();
 				if (fileName != null) {
 					final File file = new File(fileName);
 					if (file.exists()) {
-						if (!MessageDialog.openQuestion(RCPUtil.getActiveShell(), String.format("Overwrite?", file.getName(), file.getAbsolutePath()), String.format("The file \"%s\" already exists. Do you want to overwrite it?", file.getName(), file.getAbsolutePath())))
+						if (!MessageDialog.openQuestion(RCPUtil.getActiveShell(), String.format("Overwrite?", file.getName(), file.getAbsolutePath()), String.format("The file \"%s\" already exists. Do you want to overwrite it?", file.getName(), file.getAbsolutePath()))) { //$NON-NLS-1$ //$NON-NLS-2$
 							return;
+						}
 					}
 
 					lastSaveDirectory = file.getParentFile();
 
-					Job job = new Job(String.format("Saving PDF file %s", file.getName())) {
+					final Job job = new Job(String.format("Saving PDF file %s", file.getName())) { //$NON-NLS-1$
 						@Override
-						protected IStatus run(IProgressMonitor monitor) {
-							monitor.beginTask(String.format("Saving PDF file %s", file.getName()), 100);
+						protected IStatus run(final IProgressMonitor monitor) {
+							monitor.beginTask(String.format("Saving PDF file %s", file.getName()), 100); //$NON-NLS-1$
 							try {
 								monitor.worked(10);
 
 								try {
 									if (datasourceByteArray != null) {
-										ByteArrayInputStream in = new ByteArrayInputStream(datasourceByteArray);
-										FileOutputStream out = new FileOutputStream(file);
+										final ByteArrayInputStream in = new ByteArrayInputStream(datasourceByteArray);
+										final FileOutputStream out = new FileOutputStream(file);
 										try {
 											IOUtil.transferStreamData(
 													in, out, 0, datasourceByteArray.length,
@@ -336,9 +345,9 @@ public class PdfViewerEditor extends EditorPart
 										}
 									}
 									else if (datasourceURL != null) {
-										InputStream in = datasourceURL.openStream();
+										final InputStream in = datasourceURL.openStream();
 										try {
-											FileOutputStream out = new FileOutputStream(file);
+											final FileOutputStream out = new FileOutputStream(file);
 											try {
 												IOUtil.transferStreamData(
 														in, out
@@ -350,11 +359,11 @@ public class PdfViewerEditor extends EditorPart
 											in.close();
 										}
 										monitor.worked(90);
+									} else {
+										throw new IllegalStateException("No datasource! Cannot save!"); //$NON-NLS-1$
 									}
-									else
-										throw new IllegalStateException("No datasource! Cannot save!");
 
-								} catch (IOException x) {
+								} catch (final IOException x) {
 									throw new RuntimeException(x);
 								}
 							} finally {
@@ -376,7 +385,7 @@ public class PdfViewerEditor extends EditorPart
 		}
 	}
 
-	public PdfViewer getPdfViewer() {
+	public PDFViewer getPDFViewer() {
 		return pdfViewerComposite == null ? null : pdfViewerComposite.getPdfViewer();
 	}
 }

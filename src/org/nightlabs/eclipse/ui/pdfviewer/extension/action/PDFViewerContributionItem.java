@@ -23,37 +23,31 @@
  **********************************************************************/
 package org.nightlabs.eclipse.ui.pdfviewer.extension.action;
 
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IContributionItem;
-import org.nightlabs.base.ui.action.IXContributionItem;
-import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
-import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
+import org.nightlabs.base.ui.action.XContributionItem;
 
 /**
- * Implement this interface in your {@link IAction}s and {@link IContributionItem}
- * (or {@link IXContributionItem}) to get access to the {@link PdfViewerActionRegistry}
- * (and thus the {@link PdfViewer}).
- *
+ * Implementation of IPdfViewerActionOrContributionItem.
  * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
  */
-public interface IPdfViewerActionOrContributionItem
+public abstract class PDFViewerContributionItem
+extends XContributionItem
+implements IPDFViewerActionOrContributionItem
 {
-	/**
-	 * Set the {@link PdfViewerActionRegistry}.
-	 * @param pdfViewerActionRegistry the PdfViewerActionRegistry.
-	 */
-	void init(PdfViewerActionRegistry pdfViewerActionRegistry);
+	private PDFViewerActionRegistry pdfViewerActionRegistry;
 
-	/**
-	 * Get the {@link PdfViewerActionRegistry}.
-	 * @return the PdfViewerActionRegistry.
-	 */
-	PdfViewerActionRegistry getPdfViewerActionRegistry();
+	@Override
+	public void init(final PDFViewerActionRegistry pdfViewerActionRegistry) {
+		this.pdfViewerActionRegistry = pdfViewerActionRegistry;
+	}
 
-	/**
-	 * Calculates if a property change concerning the property ENABLED has occurred.
-	 * This decision depends on whether a {@link PdfDocument} instance is available.
-	 */
-	void calculateEnabled();
+	@Override
+	public PDFViewerActionRegistry getPDFViewerActionRegistry() {
+		return pdfViewerActionRegistry;
+	}
+
+	@Override
+	public void calculateEnabled() {
+		setEnabled(pdfViewerActionRegistry.getPDFViewer().getPDFDocument() != null);
+	}
 }

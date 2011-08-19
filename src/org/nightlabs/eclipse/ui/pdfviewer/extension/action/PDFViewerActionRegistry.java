@@ -39,22 +39,21 @@ import org.nightlabs.base.ui.action.registry.ActionDescriptor;
 import org.nightlabs.eclipse.extension.EPProcessorException;
 import org.nightlabs.eclipse.ui.pdfviewer.ContextElement;
 import org.nightlabs.eclipse.ui.pdfviewer.ContextElementType;
-import org.nightlabs.eclipse.ui.pdfviewer.PdfDocument;
-import org.nightlabs.eclipse.ui.pdfviewer.PdfViewer;
+import org.nightlabs.eclipse.ui.pdfviewer.PDFViewer;
 
 /**
  * This class is the main entry point for the registration of PDF viewer actions.
  * @version $Revision$ - $Date$
  * @author marco schulze - marco at nightlabs dot de
  */
-public class PdfViewerActionRegistry
+public class PDFViewerActionRegistry
 extends AbstractActionRegistry
-implements ContextElement<PdfViewerActionRegistry>
+implements ContextElement<PDFViewerActionRegistry>
 {
-	private static final Logger logger = Logger.getLogger(PdfViewerActionRegistry.class);
-	public static final ContextElementType<PdfViewerActionRegistry> CONTEXT_ELEMENT_TYPE = new ContextElementType<PdfViewerActionRegistry>(PdfViewerActionRegistry.class);
+	private static final Logger logger = Logger.getLogger(PDFViewerActionRegistry.class);
+	public static final ContextElementType<PDFViewerActionRegistry> CONTEXT_ELEMENT_TYPE = new ContextElementType<PDFViewerActionRegistry>(PDFViewerActionRegistry.class);
 
-	private PdfViewer pdfViewer;
+	private PDFViewer pdfViewer;
 	private String contextElementId;
 	private UseCase useCase;
 
@@ -69,84 +68,91 @@ implements ContextElement<PdfViewerActionRegistry>
 	}
 
 	/**
-	 * The constructor of {@link PdfViewerActionRegistry}.
-	 * @param pdfViewer the {@link PdfViewer} instance.
+	 * The constructor of {@link PDFViewerActionRegistry}.
+	 * @param pdfViewer the {@link PDFViewer} instance.
 	 * @param useCase the chosen {@link UseCase}.
 	 * @param contextElementId the id of the chosen {@link ContextElement}.
 	 */
-	public PdfViewerActionRegistry(PdfViewer pdfViewer, UseCase useCase, String contextElementId) {
+	public PDFViewerActionRegistry(final PDFViewer pdfViewer, final UseCase useCase, final String contextElementId) {
 		assertValidThread();
 
-		if (pdfViewer == null)
-			throw new IllegalArgumentException("pdfViewer == null");
+		if (pdfViewer == null) {
+			throw new IllegalArgumentException("pdfViewer == null"); //$NON-NLS-1$
+		}
 
-		if (useCase == null)
-			throw new IllegalArgumentException("useCase == null");
+		if (useCase == null) {
+			throw new IllegalArgumentException("useCase == null"); //$NON-NLS-1$
+		}
 
 		this.pdfViewer = pdfViewer;
 		this.useCase = useCase;
 		this.contextElementId = contextElementId;
 		pdfViewer.registerContextElement(this);
-		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_PDF_DOCUMENT, propertyChangeListenerCalculateEnabled);
-		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_REGISTER_CONTEXT_ELEMENT, propertyChangeListenerCalculateEnabled);
-		pdfViewer.addPropertyChangeListener(PdfViewer.PROPERTY_UNREGISTER_CONTEXT_ELEMENT, propertyChangeListenerCalculateEnabled);
+		pdfViewer.addPropertyChangeListener(PDFViewer.PROPERTY_PDF_DOCUMENT, propertyChangeListenerCalculateEnabled);
+		pdfViewer.addPropertyChangeListener(PDFViewer.PROPERTY_REGISTER_CONTEXT_ELEMENT, propertyChangeListenerCalculateEnabled);
+		pdfViewer.addPropertyChangeListener(PDFViewer.PROPERTY_UNREGISTER_CONTEXT_ELEMENT, propertyChangeListenerCalculateEnabled);
 
 		long start = 0;
-		if (logger.isDebugEnabled())
+		if (logger.isDebugEnabled()) {
 			start = System.currentTimeMillis();
+		}
 
 		process();
 
-		if (logger.isDebugEnabled())
-			logger.debug("process() took " + (System.currentTimeMillis() - start) + " msec!");
+		if (logger.isDebugEnabled()) {
+			logger.debug("process() took " + (System.currentTimeMillis() - start) + " msec!"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
 	}
 
 	private PropertyChangeListener propertyChangeListenerCalculateEnabled = new PropertyChangeListener() {
 		@Override
-		public void propertyChange(PropertyChangeEvent evt) {
+		public void propertyChange(final PropertyChangeEvent evt) {
 			calculateEnabled();
 		}
 	};
 
 	@Override
 	public void onUnregisterContextElement() {
-		pdfViewer.removePropertyChangeListener(PdfViewer.PROPERTY_PDF_DOCUMENT, propertyChangeListenerCalculateEnabled);
-		pdfViewer.removePropertyChangeListener(PdfViewer.PROPERTY_REGISTER_CONTEXT_ELEMENT, propertyChangeListenerCalculateEnabled);
-		pdfViewer.removePropertyChangeListener(PdfViewer.PROPERTY_UNREGISTER_CONTEXT_ELEMENT, propertyChangeListenerCalculateEnabled);
+		pdfViewer.removePropertyChangeListener(PDFViewer.PROPERTY_PDF_DOCUMENT, propertyChangeListenerCalculateEnabled);
+		pdfViewer.removePropertyChangeListener(PDFViewer.PROPERTY_REGISTER_CONTEXT_ELEMENT, propertyChangeListenerCalculateEnabled);
+		pdfViewer.removePropertyChangeListener(PDFViewer.PROPERTY_UNREGISTER_CONTEXT_ELEMENT, propertyChangeListenerCalculateEnabled);
 	}
 
 	@Override
-	protected boolean initActionDescriptor(ActionDescriptor actionDescriptor, IExtension extension, IConfigurationElement element)
+	protected boolean initActionDescriptor(final ActionDescriptor actionDescriptor, final IExtension extension, final IConfigurationElement element)
 	throws EPProcessorException
 	{
-		String useCaseId = element.getAttribute("useCase");
-		if (!this.useCase.getUseCaseId().equals(useCaseId))
+		final String useCaseId = element.getAttribute("useCase"); //$NON-NLS-1$
+		if (!this.useCase.getUseCaseId().equals(useCaseId)) {
 			return false; // ignore this actionDescriptor since it's not included in our use case.
+		}
 
 		return super.initActionDescriptor(actionDescriptor, extension, element);
 	}
 
 	@Override
-	protected void initAction(IAction action, IExtension extension, IConfigurationElement element) throws EPProcessorException
+	protected void initAction(final IAction action, final IExtension extension, final IConfigurationElement element) throws EPProcessorException
 	{
-		if (action instanceof IPdfViewerActionOrContributionItem)
-			((IPdfViewerActionOrContributionItem)action).init(this);
+		if (action instanceof IPDFViewerActionOrContributionItem) {
+			((IPDFViewerActionOrContributionItem)action).init(this);
+		}
 	}
 
 	@Override
-	protected void initContributionItem(IXContributionItem contributionItem, IExtension extension, IConfigurationElement element)
+	protected void initContributionItem(final IXContributionItem contributionItem, final IExtension extension, final IConfigurationElement element)
 	throws EPProcessorException
 	{
-		if (contributionItem instanceof IPdfViewerActionOrContributionItem)
-			((IPdfViewerActionOrContributionItem)contributionItem).init(this);
+		if (contributionItem instanceof IPDFViewerActionOrContributionItem) {
+			((IPDFViewerActionOrContributionItem)contributionItem).init(this);
+		}
 	}
 
 	@Override
-	protected Object createActionOrContributionItem(IExtension extension, IConfigurationElement element) throws EPProcessorException
+	protected Object createActionOrContributionItem(final IExtension extension, final IConfigurationElement element) throws EPProcessorException
 	{
 		try {
 			return element.createExecutableExtension("class"); //$NON-NLS-1$
-		} catch (CoreException e) {
+		} catch (final CoreException e) {
 			throw new EPProcessorException(e.getMessage(), extension, e);
 		}
 	}
@@ -162,12 +168,12 @@ implements ContextElement<PdfViewerActionRegistry>
 	}
 
 	@Override
-	public ContextElementType<PdfViewerActionRegistry> getContextElementType() {
+	public ContextElementType<PDFViewerActionRegistry> getContextElementType() {
 		return CONTEXT_ELEMENT_TYPE;
 	}
 
 	@Override
-	public PdfViewer getPdfViewer() {
+	public PDFViewer getPDFViewer() {
 		return pdfViewer;
 	}
 
@@ -184,14 +190,16 @@ implements ContextElement<PdfViewerActionRegistry>
 	 * This decision depends on whether a {@link PdfDocument} instance is available.
 	 */
 	public void calculateEnabled() {
-		for (ActionDescriptor actionDescriptor : getActionDescriptors()) {
-			IAction action = actionDescriptor.getAction();
-			if (action instanceof IPdfViewerActionOrContributionItem)
-				((IPdfViewerActionOrContributionItem)action).calculateEnabled();
+		for (final ActionDescriptor actionDescriptor : getActionDescriptors()) {
+			final IAction action = actionDescriptor.getAction();
+			if (action instanceof IPDFViewerActionOrContributionItem) {
+				((IPDFViewerActionOrContributionItem)action).calculateEnabled();
+			}
 
-			IContributionItem contributionItem = actionDescriptor.getContributionItem();
-			if (contributionItem instanceof IPdfViewerActionOrContributionItem)
-				((IPdfViewerActionOrContributionItem)contributionItem).calculateEnabled();
+			final IContributionItem contributionItem = actionDescriptor.getContributionItem();
+			if (contributionItem instanceof IPDFViewerActionOrContributionItem) {
+				((IPDFViewerActionOrContributionItem)contributionItem).calculateEnabled();
+			}
 		}
 	}
 }
