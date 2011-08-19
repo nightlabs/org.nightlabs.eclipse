@@ -76,6 +76,10 @@
             category="org.nightlabs.base.ui.print.pref.PrinterPreferencePage"
             class="org.nightlabs.base.ui.print.pref.DocumentPrinterPreferencePage"
             id="org.nightlabs.base.ui.print.pref.DocumentPrinterPreferencePage" name="%preferencePage.documentPrinter.label"/>
+        <page
+            category="org.nightlabs.base.ui.print.pref.DocumentPrinterPreferencePage"
+            class="org.nightlabs.base.ui.print.pref.PDFDocumentPrinterPreferencePage"
+            id="org.nightlabs.base.ui.print.pref.PDFDocumentPrinterPreferencePage" name="%preferencePage.pdfDocumentPrinter.label"/>    
         <page class="org.nightlabs.base.ui.preference.UIPreferencePage"
             id="org.nightlabs.base.ui.preference.UIPreferencePage" name="%org.nightlabs.base.ui.preference.UIPreferencePage.name"/>
     </extension>
