@@ -5,6 +5,7 @@ Bundle-Name: Editor2D Viewer Plug-in
 Bundle-SymbolicName: org.nightlabs.editor2d.viewer.ui;singleton:=true
 Bundle-Version: 1.0.9.qualifier
 Bundle-Activator: org.nightlabs.editor2d.viewer.ui.ViewerPlugin
+Bundle-ActivationPolicy: lazy
 Bundle-Vendor: NightLabs.org
 Bundle-Localization: plugin
 Bundle-ClassPath: .
@@ -29,7 +30,7 @@ Require-Bundle: org.eclipse.ui,
  com.thoughtworks.xstream,
  org.nightlabs.editor2d;visibility:=reexport,
  org.nightlabs.jfire.base.j2ee;resolution:=optional
-Eclipse-LazyStart: true
+Import-Package: org.apache.log4j
 Eclipse-BuddyPolicy: registered
 Eclipse-RegisterBuddy: 
  org.nightlabs.jfire.base.j2ee,
