@@ -6,6 +6,7 @@ Bundle-SymbolicName: org.nightlabs.editor2d.ui;singleton:=true
 Bundle-Version: 1.0.11.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: org.nightlabs.editor2d.ui.EditorPlugin
+Bundle-ActivationPolicy: lazy
 Bundle-Vendor: NightLabs.com
 Bundle-Localization: plugin
 Export-Package: org.nightlabs.editor2d.ui,
@@ -56,10 +57,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.nightlabs.editor2d.viewer.ui;visibility:=reexport,
  org.nightlabs.editor2d,
  org.eclipse.gef;visibility:=reexport
-Eclipse-LazyStart: true
 Eclipse-BuddyPolicy: registered
 Import-Package: org.eclipse.ui.forms,
  org.eclipse.ui.forms.events,
  org.eclipse.ui.forms.widgets,
  org.eclipse.ui.views.contentoutline,
- org.eclipse.ui.views.properties
+ org.eclipse.ui.views.properties,
+ org.apache.log4j
