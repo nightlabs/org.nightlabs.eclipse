@@ -251,42 +251,42 @@ Marco :-)
 			<dependency>
 				<groupId>org.nightlabs.eclipse</groupId>
 				<artifactId>org.nightlabs.eclipse.preference.ui</artifactId>
-				<version>${project.version}</version>
+				<version>${nightlabs.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.nightlabs.eclipse</groupId>
 				<artifactId>org.nightlabs.eclipse.ui.dialog</artifactId>
-				<version>${project.version}</version>
+				<version>${nightlabs.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.nightlabs.eclipse</groupId>
 				<artifactId>org.nightlabs.eclipse.ui.treestate</artifactId>
-				<version>${project.version}</version>
+				<version>${nightlabs.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.nightlabs.eclipse</groupId>
 				<artifactId>org.nightlabs.eclipse.extension</artifactId>
-				<version>${project.version}</version>
+				<version>${nightlabs.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.nightlabs.eclipse</groupId>
 				<artifactId>org.nightlabs.base.ui</artifactId>
-				<version>${project.version}</version>
+				<version>${nightlabs.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.nightlabs.eclipse</groupId>
 				<artifactId>org.nightlabs.eclipse.compatibility.rap</artifactId>
-				<version>${project.version}</version>
+				<version>${nightlabs.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.nightlabs.eclipse</groupId>
 				<artifactId>org.nightlabs.eclipse.compatibility.rcp</artifactId>
-				<version>${project.version}</version>
+				<version>${nightlabs.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.nightlabs.eclipse</groupId>
 				<artifactId>org.nightlabs.base.ui.errorreport.mantis</artifactId>
-				<version>${project.version}</version>
+				<version>${nightlabs.version}</version>
 			</dependency>
 			
 			<!-- ##### ECLIPSE :: BEGIN ##### -->
