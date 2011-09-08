@@ -59,7 +59,7 @@ public class PreferencesUtil
 			return null;
 		ByteArrayInputStream in;
 		try {
-			in = new ByteArrayInputStream(string.getBytes("UTF-8"));
+			in = new ByteArrayInputStream(string.getBytes("UTF-8")); //$NON-NLS-1$
 		} catch(UnsupportedEncodingException e) {
 			// this should never happen
 			throw new RuntimeException(e);
@@ -99,7 +99,7 @@ public class PreferencesUtil
 		enc.writeObject(object);
 		enc.close();
 		try {
-			return out.toString("UTF-8");
+			return out.toString("UTF-8"); //$NON-NLS-1$
 		} catch(UnsupportedEncodingException e) {
 			PreferencesUIPlugin.log(e);
 			return null;

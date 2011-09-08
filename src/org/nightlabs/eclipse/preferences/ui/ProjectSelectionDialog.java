@@ -36,6 +36,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.SelectionStatusDialog;
+import org.nightlabs.eclipse.preferences.ui.resource.Messages;
 
 /**
  * Project selection dialog.
@@ -68,8 +69,8 @@ public class ProjectSelectionDialog extends SelectionStatusDialog {
 	 */
 	public ProjectSelectionDialog(Shell parentShell, Set<IProject> projectsWithSpecifics) {
 		super(parentShell);
-		setTitle("Project Specific Configuration");  
-		setMessage("&Select the project to configure:"); 
+		setTitle(Messages.getString("org.nightlabs.eclipse.preference.ui.ProjectSelectionDialog.title"));   //$NON-NLS-1$
+		setMessage(Messages.getString("org.nightlabs.eclipse.preference.ui.ProjectSelectionDialog.message"));  //$NON-NLS-1$
 		fProjectsWithSpecifics= projectsWithSpecifics;
 		
         int shellStyle = getShellStyle();
@@ -136,7 +137,7 @@ public class ProjectSelectionDialog extends SelectionStatusDialog {
 		fTableViewer.getControl().setFont(font);
 
 		Button checkbox= new Button(composite, SWT.CHECK);
-		checkbox.setText("Show only &projects with project specific settings"); 
+		checkbox.setText(Messages.getString("org.nightlabs.eclipse.preference.ui.ProjectSelectionDialog.showOnlyProjectSpecificCheckBox.text"));  //$NON-NLS-1$
 		checkbox.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, true, false));
 		checkbox.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {

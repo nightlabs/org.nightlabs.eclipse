@@ -24,6 +24,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbenchPropertyPage;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
+import org.nightlabs.eclipse.preferences.ui.resource.Messages;
 
 /**
  * Overview page for preference and property dialogs.
@@ -90,7 +91,7 @@ public class OverviewPage extends PreferencePage implements IWorkbenchPreference
 			gd.verticalIndent = 5;
 			ll.setLayoutData(gd);
 			ll.setFont(composite.getFont());
-			ll.setText("- ");
+			ll.setText("- "); //$NON-NLS-1$
 
 			Link link = new Link(linkComposite, SWT.NONE);
 			gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -163,7 +164,7 @@ public class OverviewPage extends PreferencePage implements IWorkbenchPreference
 	 */
 	protected String getIntroductionText()
 	{
-		return "Choose one of the sub-pages:";
+		return Messages.getString("org.nightlabs.eclipse.preference.ui.OverviewPage.introductionText"); //$NON-NLS-1$
 	}
 
 	/**

@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
+import org.nightlabs.eclipse.preferences.ui.resource.Messages;
 
 /**
  * An abstract options configuration block with support for tables
@@ -165,7 +166,7 @@ public abstract class OptionsConfigurationBlock extends SimpleOptionsConfigurati
 		@SuppressWarnings("unchecked")
 		public void add(TableViewer tableViewer, Key key, SelectionEvent event)
 		{
-			InputDialog dlg = new InputDialog(getShell(), "Enter a value", "Please enter a new value:", "", null);
+			InputDialog dlg = new InputDialog(getShell(), Messages.getString("org.nightlabs.eclipse.preference.ui.OptionsConfigurationBlock.addInputDialog.title"), Messages.getString("org.nightlabs.eclipse.preference.ui.OptionsConfigurationBlock.addInputDialog.message"), "", null); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			if(dlg.open() == Window.OK) {
 				List<String> input = (List<String>)tableViewer.getInput();
 				input.add(dlg.getValue());
@@ -187,7 +188,7 @@ public abstract class OptionsConfigurationBlock extends SimpleOptionsConfigurati
 				return;
 			for (int i : indices) {
 				String selectedElement = (String)tableViewer.getElementAt(i);
-				InputDialog dlg = new InputDialog(getShell(), "Enter a value", "Please enter a new value:", selectedElement, null);
+				InputDialog dlg = new InputDialog(getShell(), Messages.getString("org.nightlabs.eclipse.preference.ui.OptionsConfigurationBlock.editInputDialog.title"), Messages.getString("org.nightlabs.eclipse.preference.ui.OptionsConfigurationBlock.editInputDialog.message"), selectedElement, null); //$NON-NLS-1$ //$NON-NLS-2$
 				if(dlg.open() == Window.OK) {
 					List<String> input = (List<String>)tableViewer.getInput();
 					input.set(i, dlg.getValue());
@@ -293,7 +294,7 @@ public abstract class OptionsConfigurationBlock extends SimpleOptionsConfigurati
 			if((buttons & BUTTON_ADD) != 0) {
 				Button addButton = new Button(buttonBar, SWT.PUSH);
 				addButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-				addButton.setText("Add...");
+				addButton.setText(Messages.getString("org.nightlabs.eclipse.preference.ui.OptionsConfigurationBlock.addButton.text")); //$NON-NLS-1$
 				addButton.addSelectionListener(new SelectionListener() {
 					public void widgetDefaultSelected(SelectionEvent e)
 					{
@@ -310,7 +311,7 @@ public abstract class OptionsConfigurationBlock extends SimpleOptionsConfigurati
 			if((buttons & BUTTON_EDIT) != 0) {
 				Button editButton = new Button(buttonBar, SWT.PUSH);
 				editButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-				editButton.setText("Edit...");
+				editButton.setText(Messages.getString("org.nightlabs.eclipse.preference.ui.OptionsConfigurationBlock.editButton.text")); //$NON-NLS-1$
 				editButton.addSelectionListener(new SelectionListener() {
 					public void widgetDefaultSelected(SelectionEvent e)
 					{
@@ -327,7 +328,7 @@ public abstract class OptionsConfigurationBlock extends SimpleOptionsConfigurati
 			if((buttons & BUTTON_REMOVE) != 0) {
 				Button removeButton = new Button(buttonBar, SWT.PUSH);
 				removeButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-				removeButton.setText("Remove");
+				removeButton.setText(Messages.getString("org.nightlabs.eclipse.preference.ui.OptionsConfigurationBlock.removeButton.text")); //$NON-NLS-1$
 				removeButton.addSelectionListener(new SelectionListener() {
 					public void widgetDefaultSelected(SelectionEvent e)
 					{
@@ -404,13 +405,13 @@ public abstract class OptionsConfigurationBlock extends SimpleOptionsConfigurati
 	 */
 	protected Text addDirectoryField(Composite parent, String label, final Key key, int indent, int widthHint)
 	{
-		final Text text = addButtonTextField(parent, label, "...", key, indent, widthHint);
+		final Text text = addButtonTextField(parent, label, Messages.getString("org.nightlabs.eclipse.preference.ui.OptionsConfigurationBlock.addDirectoryFieldButton.text"), key, indent, widthHint); //$NON-NLS-1$
 		Button button = (Button)multiControls.get(text).get(0);
 		button.addSelectionListener(new SelectionListener() {
 			private void browse()
 			{
 				DirectoryDialog dlg = new DirectoryDialog(getShell());
-				dlg.setText("Chose a directory");
+				dlg.setText(Messages.getString("org.nightlabs.eclipse.preference.ui.OptionsConfigurationBlock.directoryDialog.text")); //$NON-NLS-1$
 				String path = dlg.open();
 				if(path != null) {
 					setValue(key, path);
@@ -441,12 +442,12 @@ public abstract class OptionsConfigurationBlock extends SimpleOptionsConfigurati
 	 */
 	protected Text addWorkspaceDirectoryField(Composite parent, String label, final Key key, int indent, int widthHint)
 	{
-		final Text text = addButtonTextField(parent, label, "...", key, indent, widthHint);
+		final Text text = addButtonTextField(parent, label, Messages.getString("org.nightlabs.eclipse.preference.ui.OptionsConfigurationBlock.addWorkspaceDirectoryFieldButton.text"), key, indent, widthHint); //$NON-NLS-1$
 		Button button = (Button)multiControls.get(text).get(0);
 		button.addSelectionListener(new SelectionListener() {
 			private void browse()
 			{
-				IContainer[] cc = WorkspaceResourceDialog.openFolderSelection(getShell(), "Select a directory", "Select a directory", false, null, null);
+				IContainer[] cc = WorkspaceResourceDialog.openFolderSelection(getShell(), Messages.getString("org.nightlabs.eclipse.preference.ui.OptionsConfigurationBlock.addWorkspaceDirectoryDialog.title"), Messages.getString("org.nightlabs.eclipse.preference.ui.OptionsConfigurationBlock.addWorkspaceDirectoryDialog.message"), false, null, null); //$NON-NLS-1$ //$NON-NLS-2$
 				if(cc != null && cc.length > 0) {
 					String path = cc[0].getFullPath().toOSString();
 					setValue(key, path);
@@ -477,7 +478,7 @@ public abstract class OptionsConfigurationBlock extends SimpleOptionsConfigurati
 	 */
 	protected Text addProjectDirectoryField(final Composite parent, final String label, final Key key, final int indent, final int widthHint, final IProject project)
 	{
-		final Text text = addButtonTextField(parent, label, "...", key, indent, widthHint);
+		final Text text = addButtonTextField(parent, label, Messages.getString("org.nightlabs.eclipse.preference.ui.OptionsConfigurationBlock.addProjectDirectoryFieldButton.text"), key, indent, widthHint); //$NON-NLS-1$
 		Button button = (Button)multiControls.get(text).get(0);
 		button.addSelectionListener(new SelectionListener() {
 			private void browse()
@@ -498,8 +499,8 @@ public abstract class OptionsConfigurationBlock extends SimpleOptionsConfigurati
 				};
 				IContainer[] cc = WorkspaceResourceDialog.openFolderSelection(
 						getShell(), 
-						"Select a directory", 
-						"Select a directory", 
+						Messages.getString("org.nightlabs.eclipse.preference.ui.OptionsConfigurationBlock.addProjectDirectoryDialog.title"),  //$NON-NLS-1$
+						Messages.getString("org.nightlabs.eclipse.preference.ui.OptionsConfigurationBlock.addProjectDirectoryDialog.message"),  //$NON-NLS-1$
 						false, 
 						null, 
 						Collections.singletonList(vf));
@@ -526,7 +527,7 @@ public abstract class OptionsConfigurationBlock extends SimpleOptionsConfigurati
 		final Text text = addTextField(parent, label, key, indent, widthHint);
 		((GridData)text.getLayoutData()).horizontalSpan = 1;
 		Button browseButton = new Button(parent, SWT.PUSH);
-		browseButton.setText("...");
+		browseButton.setText(Messages.getString("org.nightlabs.eclipse.preference.ui.OptionsConfigurationBlock.addTextFieldButton.text")); //$NON-NLS-1$
 		GridData gd = new GridData();
 		gd.grabExcessHorizontalSpace = true;
 		
@@ -584,7 +585,7 @@ public abstract class OptionsConfigurationBlock extends SimpleOptionsConfigurati
 	{
 		StatusInfo status = new StatusInfo();
 		if(value == null || value.length() == 0 || !new File(value).isDirectory())
-			status.setError("Must be an existing directory");
+			status.setError(Messages.getString("org.nightlabs.eclipse.preference.ui.OptionsConfigurationBlock.errorMessage.mustBeExistingDirectory")); //$NON-NLS-1$
 		fContext.statusChanged(status);
 	}
 
@@ -595,8 +596,8 @@ public abstract class OptionsConfigurationBlock extends SimpleOptionsConfigurati
 	protected void validateInteger(String value)
 	{
 		StatusInfo status = new StatusInfo();
-		if(value == null || value.length() == 0 || !value.matches("\\+|-?\\d+"))
-			status.setError("Must be a number");
+		if(value == null || value.length() == 0 || !value.matches("\\+|-?\\d+")) //$NON-NLS-1$
+			status.setError(Messages.getString("org.nightlabs.eclipse.preference.ui.OptionsConfigurationBlock.errorMessage.mustBeNumber")); //$NON-NLS-1$
 		fContext.statusChanged(status);
 	}
 
@@ -607,8 +608,8 @@ public abstract class OptionsConfigurationBlock extends SimpleOptionsConfigurati
 	protected void validatePositiveInteger(String value)
 	{
 		StatusInfo status = new StatusInfo();
-		if(value == null || value.length() == 0 || !value.matches("\\+?\\d+"))
-			status.setError("Must be a positive number");
+		if(value == null || value.length() == 0 || !value.matches("\\+?\\d+")) //$NON-NLS-1$
+			status.setError(Messages.getString("org.nightlabs.eclipse.preference.ui.OptionsConfigurationBlock.errorMessage.mustBePositiveNumber")); //$NON-NLS-1$
 		fContext.statusChanged(status);
 	}
 	

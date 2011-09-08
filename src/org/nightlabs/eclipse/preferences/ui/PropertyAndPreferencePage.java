@@ -36,6 +36,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbenchPropertyPage;
 import org.eclipse.ui.dialogs.PreferencesUtil;
+import org.nightlabs.eclipse.preferences.ui.resource.Messages;
 
 /**
  * Base for project property and preference pages.
@@ -100,12 +101,12 @@ public abstract class PropertyAndPreferencePage extends PreferencePage implement
 			
 			fUseProjectSettings= new SelectionButtonDialogField(SWT.CHECK);
 			fUseProjectSettings.setDialogFieldListener(listener);
-			fUseProjectSettings.setLabelText("Enable pr&oject specific settings"); 
+			fUseProjectSettings.setLabelText(Messages.getString("org.nightlabs.eclipse.preference.ui.PropertyAndPreferencePage.fUseProjectSettings.labelText"));  //$NON-NLS-1$
 			fUseProjectSettings.doFillIntoGrid(composite, 1);
 			LayoutUtil.setHorizontalGrabbing(fUseProjectSettings.getSelectionButton(null));
 			
 			if (offerLink()) {
-				fChangeWorkspaceSettings= createLink(composite, "Configure Workspace Settings...");
+				fChangeWorkspaceSettings= createLink(composite, Messages.getString("org.nightlabs.eclipse.preference.ui.PropertyAndPreferencePage.fChangeWorkspaceSettings.text")); //$NON-NLS-1$
 				fChangeWorkspaceSettings.setLayoutData(new GridData(SWT.END, SWT.CENTER, false, false));
 			} else {
 				LayoutUtil.setHorizontalSpan(fUseProjectSettings.getSelectionButton(null), 2);
@@ -115,7 +116,7 @@ public abstract class PropertyAndPreferencePage extends PreferencePage implement
 			horizontalLine.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false, 2, 1));
 			horizontalLine.setFont(composite.getFont());
 		} else if (supportsProjectSpecificOptions() && offerLink()) {
-			fChangeWorkspaceSettings= createLink(parent, "Configure Project Specific Settings...");
+			fChangeWorkspaceSettings= createLink(parent, Messages.getString("org.nightlabs.eclipse.preference.ui.PropertyAndPreferencePage.fChangeProjectSettings.text")); //$NON-NLS-1$
 			fChangeWorkspaceSettings.setLayoutData(new GridData(SWT.END, SWT.CENTER, true, false));
 		}
 

@@ -19,7 +19,7 @@ public class PreferencesUIPlugin extends AbstractUIPlugin {
 	/**
 	 * The plugin ID
 	 */
-	public static final String PLUGIN_ID = "org.nightlabs.eclipse.preferences.ui";
+	public static final String PLUGIN_ID = "org.nightlabs.eclipse.preferences.ui"; //$NON-NLS-1$
 
 	// The shared instance
 	private static PreferencesUIPlugin plugin;
@@ -93,7 +93,7 @@ public class PreferencesUIPlugin extends AbstractUIPlugin {
 	 * @param e The Throwable to log
 	 */
 	public static void log(Throwable e) {
-		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.ERROR, "Error", e)); 
+		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.ERROR, "Error", e));  //$NON-NLS-1$
 	}
 	
 

@@ -49,6 +49,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.dialogs.ISelectionStatusValidator;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
+import org.nightlabs.eclipse.preferences.ui.resource.Messages;
 
 
 /**
@@ -66,7 +67,7 @@ public class WorkspaceResourceDialog extends ElementTreeSelectionDialog implemen
   {
     WorkspaceResourceDialog dialog = new WorkspaceResourceDialog(parent, new WorkbenchLabelProvider(), new WorkbenchContentProvider());
     dialog.setAllowMultiple(allowMultipleSelection);
-    dialog.setTitle(title != null ? title : "Folder Selection");
+    dialog.setTitle(title != null ? title : Messages.getString("org.nightlabs.eclipse.preference.ui.WorkspaceResourceDialog.folderSelectionDialog.title")); //$NON-NLS-1$
     dialog.setMessage(message);
     dialog.setShowNewFolderControl(true);
 
@@ -98,7 +99,7 @@ public class WorkspaceResourceDialog extends ElementTreeSelectionDialog implemen
   {
     WorkspaceResourceDialog dialog = new WorkspaceResourceDialog(parent, new WorkbenchLabelProvider(), new WorkbenchContentProvider());
     dialog.setAllowMultiple(allowMultipleSelection);
-    dialog.setTitle(title != null ? title : "File Selection");
+    dialog.setTitle(title != null ? title : Messages.getString("org.nightlabs.eclipse.preference.ui.WorkspaceResourceDialog.fileSelectionDialog.title")); //$NON-NLS-1$
     dialog.setMessage(message);
 
     dialog.addFilter(dialog.createDefaultViewerFilter(true));
@@ -128,7 +129,7 @@ public class WorkspaceResourceDialog extends ElementTreeSelectionDialog implemen
   {
     WorkspaceResourceDialog dialog = new WorkspaceResourceDialog(parent, new WorkbenchLabelProvider(), new WorkbenchContentProvider());
     dialog.setAllowMultiple(false);
-    dialog.setTitle(title != null ? title : "New File");
+    dialog.setTitle(title != null ? title : Messages.getString("org.nightlabs.eclipse.preference.ui.WorkspaceResourceDialog.newFileDialog.title")); //$NON-NLS-1$
     dialog.setMessage(message);
     dialog.setShowNewFolderControl(true);
     dialog.setShowFileControl(true);
@@ -169,7 +170,7 @@ public class WorkspaceResourceDialog extends ElementTreeSelectionDialog implemen
 
   protected Button newFolderButton;
   protected Text fileText;
-  protected String fileTextContent = "";
+  protected String fileTextContent = ""; //$NON-NLS-1$
 
   protected IContainer selectedContainer;
 
@@ -284,7 +285,7 @@ public class WorkspaceResourceDialog extends ElementTreeSelectionDialog implemen
     }
 
     Label fileLabel = new Label(composite, SWT.NONE);
-    fileLabel.setText("&File Name:");
+    fileLabel.setText(Messages.getString("org.nightlabs.eclipse.preference.ui.WorkspaceResourceDialog.fileLabel.text")); //$NON-NLS-1$
 
     fileText = new Text(composite, SWT.BORDER);
     fileText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -333,8 +334,8 @@ public class WorkspaceResourceDialog extends ElementTreeSelectionDialog implemen
     }
 
     return enableOK ?
-      new Status(IStatus.OK, "org.eclipse.emf.common.ui", 0, "", null) :
-      new Status(IStatus.ERROR, "org.eclipse.emf.common.ui", 0, "", null);
+      new Status(IStatus.OK, "org.eclipse.emf.common.ui", 0, "", null) : //$NON-NLS-1$ //$NON-NLS-2$
+      new Status(IStatus.ERROR, "org.eclipse.emf.common.ui", 0, "", null); //$NON-NLS-1$ //$NON-NLS-2$
   }
 
   public IContainer[] getSelectedContainers()
@@ -391,7 +392,7 @@ public class WorkspaceResourceDialog extends ElementTreeSelectionDialog implemen
   {
     if (text == null)
     {
-      text = "";
+      text = ""; //$NON-NLS-1$
     }
 
     if (fileText != null && !fileText.isDisposed())

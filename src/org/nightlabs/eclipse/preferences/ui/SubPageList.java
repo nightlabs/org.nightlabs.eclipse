@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
+import org.nightlabs.eclipse.preferences.ui.resource.Messages;
 
 /**
  * @author Marc Klinger - marc[at]nightlabs[dot]de
@@ -87,7 +88,7 @@ public class SubPageList extends Composite
 			gd.verticalIndent = 5;
 			ll.setLayoutData(gd);
 			ll.setFont(composite.getFont());
-			ll.setText("- ");
+			ll.setText("- "); //$NON-NLS-1$
 
 			Link link = new Link(linkComposite, SWT.NONE);
 			gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -151,6 +152,6 @@ public class SubPageList extends Composite
 	 */
 	protected String getIntroductionText()
 	{
-		return "Choose one of the sub-pages:";
+		return Messages.getString("org.nightlabs.eclipse.preference.ui.SubPageList.introductionText"); //$NON-NLS-1$
 	}
 }
