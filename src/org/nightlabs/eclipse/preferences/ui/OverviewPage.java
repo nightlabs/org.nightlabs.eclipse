@@ -69,44 +69,50 @@ public class OverviewPage extends PreferencePage implements IWorkbenchPreference
 	{
 		// TODO: use SubPageList
 
+		String[] subPageIds = getSubPageIds();
+		boolean subPagesExist = subPageIds != null && subPageIds.length > 0;
+
 		GridData gd;
 		Label l = new Label(composite, SWT.WRAP);
-		l.setText(getIntroductionText());
+		l.setText(subPagesExist?getIntroductionText():getNoSubPagesText());
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		l.setLayoutData(gd);
+		
+		if (subPagesExist){
 
-		Composite linkComposite = new Composite(composite, SWT.NONE);
-		GridLayout layout = new GridLayout(2, false);
-		layout.horizontalSpacing = 0;
-		layout.verticalSpacing = 0;
-		linkComposite.setLayout(layout);
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.verticalIndent = 0;
-		gd.horizontalIndent = 5;
-		linkComposite.setLayoutData(gd);
-
-		for (final String subPageId : getSubPageIds()) {
-			Label ll = new Label(linkComposite, SWT.NONE);
-			gd = new GridData();
-			gd.verticalIndent = 5;
-			ll.setLayoutData(gd);
-			ll.setFont(composite.getFont());
-			ll.setText("- "); //$NON-NLS-1$
-
-			Link link = new Link(linkComposite, SWT.NONE);
+			Composite linkComposite = new Composite(composite, SWT.NONE);
+			GridLayout layout = new GridLayout(2, false);
+			layout.horizontalSpacing = 0;
+			layout.verticalSpacing = 0;
+			linkComposite.setLayout(layout);
 			gd = new GridData(GridData.FILL_HORIZONTAL);
-			gd.verticalIndent = 5;
-			link.setLayoutData(gd);
-			link.setFont(composite.getFont());
-			link.setText("<A>" + getPageLabel(subPageId) + "</A>");  //$NON-NLS-1$//$NON-NLS-2$
-			link.addSelectionListener(new SelectionListener() {
-				public void widgetSelected(SelectionEvent e) {
-					openPage(subPageId);
-				}
-				public void widgetDefaultSelected(SelectionEvent e) {
-					openPage(subPageId);
-				}
-			});
+			gd.verticalIndent = 0;
+			gd.horizontalIndent = 5;
+			linkComposite.setLayoutData(gd);
+	
+			for (final String subPageId : subPageIds) {
+				Label ll = new Label(linkComposite, SWT.NONE);
+				gd = new GridData();
+				gd.verticalIndent = 5;
+				ll.setLayoutData(gd);
+				ll.setFont(composite.getFont());
+				ll.setText("- "); //$NON-NLS-1$
+	
+				Link link = new Link(linkComposite, SWT.NONE);
+				gd = new GridData(GridData.FILL_HORIZONTAL);
+				gd.verticalIndent = 5;
+				link.setLayoutData(gd);
+				link.setFont(composite.getFont());
+				link.setText("<A>" + getPageLabel(subPageId) + "</A>");  //$NON-NLS-1$//$NON-NLS-2$
+				link.addSelectionListener(new SelectionListener() {
+					public void widgetSelected(SelectionEvent e) {
+						openPage(subPageId);
+					}
+					public void widgetDefaultSelected(SelectionEvent e) {
+						openPage(subPageId);
+					}
+				});
+			}
 		}
 	}
 
@@ -168,6 +174,15 @@ public class OverviewPage extends PreferencePage implements IWorkbenchPreference
 	}
 
 	/**
+	 * Get the no-subpages text. Subclasses may override to return another text.
+	 * @return The text for the case when there's no sub pages
+	 */
+	protected String getNoSubPagesText()
+	{
+		return Messages.getString("org.nightlabs.eclipse.preferences.ui.OverviewPage.noSubPagesDefaultText"); //$NON-NLS-1$
+	}
+
+	/**
 	 * Get the page ids to link to on the overview page.
 	 * The default implementation returns all sub pages.
 	 * Subclassers may override to show only a filtered
@@ -179,7 +194,7 @@ public class OverviewPage extends PreferencePage implements IWorkbenchPreference
 		if(!(getContainer() instanceof PreferenceDialog))
 			return new String[0];
 		String myPageId = getMyPageId();
-		PreferenceDialog dlg = (PreferenceDialog)getContainer();
+//		PreferenceDialog dlg = (PreferenceDialog)getContainer();
 //		IPreferenceNode myNode = dlg.getPreferenceManager().find(myPageId);
 		IPreferenceNode myNode = findNodeMatching(myPageId);
 		if(myNode == null)
