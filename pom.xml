@@ -84,6 +84,8 @@ Marco :-)
 					<instructions>
 						<Export-Package>!org.nightlabs.eclipse.preferences.ui.internal.*,org.nightlabs.eclipse.preferences.ui.*;version="${project.version}"</Export-Package>
 						<Private-Package>org.nightlabs.eclipse.preferences.ui.internal.*</Private-Package>
+						<Bundle-Activator>org.nightlabs.eclipse.preferences.ui.PreferencesUIPlugin</Bundle-Activator>
+						<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
 					</instructions>
 				</configuration>
 			</plugin>		
