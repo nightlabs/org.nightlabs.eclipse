@@ -1,5 +1,8 @@
 package org.nightlabs.eclipse.ui.control.export.wizard;
 
+import java.io.File;
+
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Control;
@@ -44,6 +47,15 @@ public class ExportWizard extends Wizard
 		if (c == null) {
 			c = (Control) FocusHistory.sharedInstance().getLastItem().getWidget();
 		}
+		File file = new File(optionPage.getFilePath());
+		if (file.exists()) {
+			boolean overwrite = MessageDialog.openQuestion(getShell(), 
+					Messages.getString("org.nightlabs.eclipse.ui.control.export.wizard.ExportWizard.fileExistsDialog.title"),  //$NON-NLS-1$
+					String.format(Messages.getString("org.nightlabs.eclipse.ui.control.export.wizard.ExportWizard.fileExistsDialog.message"), file.getAbsolutePath())); //$NON-NLS-1$
+			if (!overwrite)
+				return false;
+		}
+		
 		OpenCSVUtil.exportControlToCSV(optionPage.getFilePath(), c, optionPage.getSeparator());
 		return true;
 	}
