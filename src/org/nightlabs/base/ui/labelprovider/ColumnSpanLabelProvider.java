@@ -4,10 +4,12 @@
 package org.nightlabs.base.ui.labelprovider;
 
 import org.eclipse.jface.viewers.ColumnViewer;
+import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.OwnerDrawLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -165,9 +167,22 @@ public abstract class ColumnSpanLabelProvider extends OwnerDrawLabelProvider {
         				offset += internalGetColumnWidth(i - 1);
         			}
         		}
-
-        		if (string != null)
-        			event.gc.drawString(string, event.x - offset, y, true);
+        		
+        		if (string != null) {
+	        		Color oldForeground = event.gc.getForeground();
+	        		try {
+		        		if (this instanceof IColorProvider) {
+		        			Color foreground = ((IColorProvider) this).getForeground(element);
+		        			if (foreground != null) {
+		        				event.gc.setForeground(foreground);
+		        			}
+		        		}
+		        		
+		        		event.gc.drawString(string, event.x - offset, y, true);
+	        		} finally {
+	        			event.gc.setForeground(oldForeground);
+	        		}
+        		}
 
         		if (event.index == spanCols[spanColIdx][0] && image != null) {
         			event.gc.drawImage(image, event.x, event.y);
