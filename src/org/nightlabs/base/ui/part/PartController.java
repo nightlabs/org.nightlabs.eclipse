@@ -115,9 +115,10 @@ public abstract class PartController {
 		 * @param parent
 		 */
 		public void createPartControl(Composite parent) {
-			parent.setLayout(new GridLayout());
+//			parent.setLayout(new GridLayout());
 			
 			wrapper = new XComposite(parent, SWT.NONE, XComposite.LayoutMode.TIGHT_WRAPPER);
+			wrapper.setLayoutData(null);
 			stackLayout = new StackLayout();
 			wrapper.setLayout(stackLayout);
 			conditionWrapper = new XComposite(wrapper, SWT.NONE, XComposite.LayoutMode.TIGHT_WRAPPER);
