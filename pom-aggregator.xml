@@ -98,7 +98,6 @@
 		<module>../org.nightlabs.eclipse.preference.ui</module>
 		<module>../org.nightlabs.eclipse.ui.dialog</module>
 		<module>../org.nightlabs.eclipse.ui.treestate</module>
-		<module>../au.com.bytecode.opencsv</module>
 		<module>../org.nightlabs.eclipse.ui.control.export</module>
 	</modules>
 </project>
