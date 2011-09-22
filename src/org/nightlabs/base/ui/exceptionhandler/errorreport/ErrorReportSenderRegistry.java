@@ -48,7 +48,7 @@ public class ErrorReportSenderRegistry extends AbstractEPProcessor
 	
 	/**
 	 * Get an unmodifiable senders map id -&gt; sender descriptor.
-	 * @return the senders
+	 * @return the senders or empty unmodifiable Map if none
 	 */
 	public synchronized Map<String, ErrorReportSenderDescriptor> getSenders()
 	{

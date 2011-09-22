@@ -445,7 +445,7 @@ public class EntityEditorController
 	 * @param clazz A class or interface.
 	 * @return a <code>Set</code> of <code>IEntityEditorPageController</code> holding those
 	 *		instances that either implement or are instances of the given class/interface or a subclass
-	 *		of it. Never returns <code>null</code>.
+	 *		of it. Never returns <code>null</code> - returns unmodifiable empty Set instead. 
 	 */
 	public Set<IEntityEditorPageController> getPageControllers(Class<?> clazz)
 	{

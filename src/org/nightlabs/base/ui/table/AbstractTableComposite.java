@@ -246,9 +246,8 @@ public abstract class AbstractTableComposite<ElementType>
 	/**
 	 * Return the table viewer's selection in a Collection
 	 * of the element types of this table.
-	 * @return the table viewer's selection
+	 * @return the table viewer's selection, if selection is null or empty will return an unmodifiable empty List
 	 */
-	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public Collection<ElementType> getSelectedElements() {
 		ISelection sel = tableViewer.getSelection();
 		if (sel == null || sel.isEmpty())
@@ -256,7 +255,7 @@ public abstract class AbstractTableComposite<ElementType>
 		else if (sel instanceof IStructuredSelection) {
 			Collection<ElementType> result = new ArrayList<ElementType>();
 			IStructuredSelection selection = (IStructuredSelection) sel;
-			for (Iterator iter = selection.iterator(); iter.hasNext();) {
+			for (Iterator<?> iter = selection.iterator(); iter.hasNext();) {
 				Object obj = iter.next();
 				ElementType el = getSelectionObject(obj);
 				if (el != null)
@@ -272,7 +271,7 @@ public abstract class AbstractTableComposite<ElementType>
 
 	/**
 	 * Returns all elements of this table composite.
-	 * @return All elements of this table composite.
+	 * @return All elements of this table composite or unmodifiable empty Set if there are none.
 	 */
 	@SuppressWarnings("unchecked")
 	public synchronized Collection<ElementType> getElements() {
@@ -617,13 +616,12 @@ public abstract class AbstractTableComposite<ElementType>
 	/**
 	 * Delegating method for {@link TableViewer}
 	 */
-	@SuppressWarnings("unchecked")
 	public ISelection getSelection() {
 		ISelection viewerSelection = tableViewer.getSelection();
 		if (viewerSelection instanceof IStructuredSelection) {
 			IStructuredSelection structuredSel = (IStructuredSelection) viewerSelection;
 			List<Object> newSelection = new ArrayList<Object>(structuredSel.size());
-			for (Iterator it = structuredSel.iterator(); it.hasNext();) {
+			for (Iterator<?> it = structuredSel.iterator(); it.hasNext();) {
 				Object element = it.next();
 				Object el = getSelectionObject(element);
 				if (el != null)
@@ -714,17 +712,14 @@ public abstract class AbstractTableComposite<ElementType>
 		@Override
 		public void doubleClick(final DoubleClickEvent event)
 		{
-			for (Object listener : doubleClickListeners.getListeners())
-			{
-				Object[] listeners = doubleClickListeners.getListeners();
-				for (int i = 0; i < listeners.length; ++i) {
-					final IDoubleClickListener l = (IDoubleClickListener) listeners[i];
-					SafeRunnable.run(new SafeRunnable() {
-						public void run() {
-							l.doubleClick(event);
-						}
-					});
-				}
+			Object[] listeners = doubleClickListeners.getListeners();
+			for (int i = 0; i < listeners.length; ++i) {
+				final IDoubleClickListener l = (IDoubleClickListener) listeners[i];
+				SafeRunnable.run(new SafeRunnable() {
+					public void run() {
+						l.doubleClick(event);
+					}
+				});
 			}
 		}
 	};
