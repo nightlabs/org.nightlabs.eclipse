@@ -243,7 +243,7 @@ public class GenericExtensionRegistry<ExtensionType>
 	/**
 	 * Get all extensions for the specified id ordered by priority.
 	 * If no extensions are known for the given id, return an empty
-	 * list.
+	 * unmodifiable list.
 	 * @param id The id
 	 * @return The list of extensions
 	 */
