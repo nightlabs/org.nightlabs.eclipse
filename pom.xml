@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	
+
 	<!-- @generated - Auto generated POM. Remove this marker after review. -->
-	
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.nightlabs.eclipse</groupId>
 	<artifactId>org.nightlabs.eclipse.ui.pdfrenderer</artifactId>
@@ -19,10 +19,27 @@
 
 	<dependencies>
 		<dependency>
+			<!-- This version was found in the lib-folder and it was not known which version it was.
+			It was believed, that this version was added about 3years ago.
+			Currently version 0.9.0 was 3months old and 0.9.1 was 12 days old. (Sebl, 2011-09-28)
+			So I uploaded this one to the NL-artifactory.-->
+			<groupId>org.swinglabs</groupId>
+			<artifactId>pdf-renderer</artifactId>
+			<version>0.x.unknown</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.birt.report-designer.v2-2-0-mvnzd</groupId>
+			<artifactId>org.eclipse.swt.gtk.linux.x86</artifactId>
+			<version>3.3.0</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<scope>provided</scope>
-		</dependency>		
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -36,7 +53,5 @@
 				</excludes>
 			</resource>
 		</resources>
-
-
 	</build>
 </project>
