@@ -19,18 +19,31 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.eclipse.XXX</groupId>
+			<groupId>org.eclipse.birt.report-designer.v2-2-0-mvnzd</groupId>
 			<artifactId>org.eclipse.core.runtime</artifactId>
+			<version>3.3.100</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.XXX</groupId>
+			<groupId>org.eclipse.birt.report-designer.v2-2-0-mvnzd</groupId>
 			<artifactId>org.eclipse.ui</artifactId>
+			<scope>provided</scope>
+			<version>3.3.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.nightlabs</groupId>
+			<artifactId>org.nightlabs.base</artifactId>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.nightlabs</groupId>
-			<artifactId>org.nightlabs.base</artifactId>
+			<artifactId>org.nightlabs.util</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.nightlabs</groupId>
+			<artifactId>org.nightlabs.progress</artifactId>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -43,11 +56,37 @@
 			<artifactId>org.nightlabs.config</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.nightlabs.eclipse</groupId>
+			<artifactId>org.nightlabs.eclipse.extension</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.nightlabs.eclipse</groupId>
+			<artifactId>org.nightlabs.eclipse.ui.pdfrenderer</artifactId>
+			<scope>provided</scope>
+			<version>${project.version}</version><!-- move to parent -->
+		</dependency>
 		<dependency>
 			<groupId>org.nightlabs.eclipse</groupId>
 			<artifactId>org.nightlabs.eclipse.ui.pdfviewer</artifactId>
 			<scope>provided</scope>
-		</dependency>		
+			<version>${project.version}</version><!-- move to parent -->
+		</dependency>
+		
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.swinglabs</groupId>
+			<artifactId>pdf-renderer</artifactId>
+			<version>0.x.unknown</version>
+			<scope>provided</scope>
+		</dependency>
+				
 	</dependencies>
 
 	<build>
@@ -61,7 +100,5 @@
 				</excludes>
 			</resource>
 		</resources>
-
-
 	</build>
 </project>
