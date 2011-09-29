@@ -34,7 +34,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -118,7 +118,9 @@ public abstract class PartController {
 //			parent.setLayout(new GridLayout());
 			
 			wrapper = new XComposite(parent, SWT.NONE, XComposite.LayoutMode.TIGHT_WRAPPER);
-			wrapper.setLayoutData(null);
+			if (parent.getLayout() instanceof FillLayout) {
+				wrapper.setLayoutData(null);
+			}
 			stackLayout = new StackLayout();
 			wrapper.setLayout(stackLayout);
 			conditionWrapper = new XComposite(wrapper, SWT.NONE, XComposite.LayoutMode.TIGHT_WRAPPER);
