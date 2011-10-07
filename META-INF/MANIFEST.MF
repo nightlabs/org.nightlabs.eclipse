@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.nightlabs.eclipse.ui.control.export;singleton:=true
 Bundle-Version: 1.0.1.qualifier
 Bundle-Vendor: NightLabs.org
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: org.eclipse.ui,
+Require-Bundle: org.nightlabs.eclipse.compatibility,
  org.eclipse.core.runtime,
  au.com.bytecode.opencsv
 Import-Package: org.apache.log4j
