@@ -76,6 +76,8 @@ IMHO this is wrong. Marco :-)
 		need this one property. -->
 		<org.nightlabs.eclipse.compatibility.artifactId>org.nightlabs.eclipse.compatibility.rap</org.nightlabs.eclipse.compatibility.artifactId>
 		
+		<bastik.group>batik</bastik.group>
+		<bastik.version>1.6</bastik.version>
 	</properties>
 
 	<!-- swt impls: org.eclipse.swt.carbon.macosx/ Fri Jul 22 17:26:03 EDT 2011 
@@ -250,27 +252,12 @@ Marco :-)
 			<!-- ##### NIGHTLABS ##### -->
 			<dependency>
 				<groupId>org.nightlabs.eclipse</groupId>
-				<artifactId>org.nightlabs.eclipse.preference.ui</artifactId>
-				<version>${nightlabs.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.nightlabs.eclipse</groupId>
-				<artifactId>org.nightlabs.eclipse.ui.dialog</artifactId>
-				<version>${nightlabs.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.nightlabs.eclipse</groupId>
-				<artifactId>org.nightlabs.eclipse.ui.treestate</artifactId>
-				<version>${nightlabs.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.nightlabs.eclipse</groupId>
-				<artifactId>org.nightlabs.eclipse.extension</artifactId>
-				<version>${nightlabs.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.nightlabs.eclipse</groupId>
 				<artifactId>org.nightlabs.base.ui</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.base.ui.errorreport.mantis</artifactId>
 				<version>${nightlabs.version}</version>
 			</dependency>
 			<dependency>
@@ -285,7 +272,12 @@ Marco :-)
 			</dependency>
 			<dependency>
 				<groupId>org.nightlabs.eclipse</groupId>
-				<artifactId>org.nightlabs.base.ui.errorreport.mantis</artifactId>
+				<artifactId>org.nightlabs.eclipse.extension</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.eclipse.preference.ui</artifactId>
 				<version>${nightlabs.version}</version>
 			</dependency>
 			<dependency>
@@ -294,11 +286,60 @@ Marco :-)
 				<version>${nightlabs.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.eclipse.ui.dialog</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.eclipse.ui.treestate</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.editor2d.viewer.ui</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			
+			<dependency>
 				<groupId>net.sf.opencsv</groupId>
 				<artifactId>au.com.bytecode.opencsv</artifactId>
 				<version>2.1.0</version>
 			</dependency>
-					
+			
+			<!-- ##### BATIK :: Batik SVG Toolkit ##### -->
+			<dependency>
+				<groupId>${bastik.group}</groupId>
+				<artifactId>batik-dom</artifactId>
+				<version>${bastik.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${bastik.group}</groupId>
+				<artifactId>batik-awt-util</artifactId>
+				<version>${bastik.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${bastik.group}</groupId>
+				<artifactId>batik-svggen</artifactId>
+				<version>${bastik.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${bastik.group}</groupId>
+				<artifactId>batik-util</artifactId>
+				<version>${bastik.version}</version>
+			</dependency>
+			
+			<dependency>
+			    <groupId>com.lowagie</groupId>
+			    <artifactId>itext</artifactId>
+			    <version>2.1.7</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.media</groupId>
+				<artifactId>jai-core</artifactId>
+				<version>1.1.3</version>
+			</dependency>
+			
 			<!-- ##### ECLIPSE :: BEGIN ##### -->
 			<!-- ### ECLIPSE RAP :: BEGIN ### -->
 			<dependency>
