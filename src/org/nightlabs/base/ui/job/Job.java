@@ -75,7 +75,7 @@ public abstract class Job extends org.eclipse.core.runtime.jobs.Job {
 				contextRunner.runInUIContext(new Runnable() {
 					@Override
 					public void run() {
-						ExceptionHandlerRegistry.asyncHandleException(t);
+						ExceptionHandlerRegistry.syncHandleException(t);
 					}
 				});
 			} finally {
