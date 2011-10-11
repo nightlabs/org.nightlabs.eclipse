@@ -14,6 +14,9 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.nightlabs.singleton.ISingletonProvider;
+import org.nightlabs.singleton.SingletonProviderFactory;
+import org.nightlabs.singleton.ISingletonProvider.ISingletonFactory;
 
 /**
  * Editor-History which tracks all activated editors.,
@@ -29,13 +32,24 @@ public class EditorHistory
 {
 	private static final Logger logger = Logger.getLogger(EditorHistory.class);
 
-	private static EditorHistory sharedInstance;
-
+	private static ISingletonProvider<EditorHistory> sharedInstanceProvider;
+	
+	/**
+	 * Get the global EditorHistory shared instance.
+	 * @return The shared instance.
+	 */
 	public static EditorHistory sharedInstance() {
-		if (sharedInstance == null) {
-			sharedInstance = new EditorHistory();
+		if(sharedInstanceProvider == null) {
+			sharedInstanceProvider = SingletonProviderFactory.createProvider();
+			sharedInstanceProvider.setFactory(new ISingletonFactory<EditorHistory>() {
+				@Override
+				public EditorHistory makeInstance() {
+					return new EditorHistory();
+				}
+			});
 		}
-		return sharedInstance;
+		
+		return sharedInstanceProvider.getInstance();
 	}
 
 //	private IContributionItem forwardAction;
