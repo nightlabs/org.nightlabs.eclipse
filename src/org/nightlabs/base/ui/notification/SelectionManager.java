@@ -36,20 +36,33 @@ import org.nightlabs.concurrent.RWLock;
 import org.nightlabs.notification.NotificationEvent;
 import org.nightlabs.notification.NotificationListener;
 import org.nightlabs.notification.SubjectCarrier;
+import org.nightlabs.singleton.ISingletonProvider;
+import org.nightlabs.singleton.SingletonProviderFactory;
+import org.nightlabs.singleton.ISingletonProvider.ISingletonFactory;
 
 /**
  * @author Marco Schulze - marco at nightlabs dot de
  */
 public class SelectionManager extends NotificationManager
 {
-	private static SelectionManager _sharedInstance = null;
-
-	public static SelectionManager sharedInstance()
-	{
-		if (_sharedInstance == null)
-			_sharedInstance = new SelectionManager();
-
-		return _sharedInstance;
+	private static ISingletonProvider<SelectionManager> sharedInstanceProvider;
+	
+	/**
+	 * Get the global SelectionManager shared instance.
+	 * @return The shared instance.
+	 */
+	public static SelectionManager sharedInstance() {
+		if(sharedInstanceProvider == null) {
+			sharedInstanceProvider = SingletonProviderFactory.createProvider();
+			sharedInstanceProvider.setFactory(new ISingletonFactory<SelectionManager>() {
+				@Override
+				public SelectionManager makeInstance() {
+					return new SelectionManager();
+				}
+			});
+		}
+		
+		return sharedInstanceProvider.getInstance();
 	}
 
 	protected SelectionManager()
