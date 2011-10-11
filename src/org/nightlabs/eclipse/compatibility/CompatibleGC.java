@@ -6,7 +6,9 @@ import org.eclipse.swt.graphics.Transform;
 
 public class CompatibleGC {
 	public static GC newGC(Image image) {
-		throw new NotAvailableInRAPException();
+		// TODO FIXME not expected behaviour (is not working) but throws no exception. Daniel
+		return new GC(image.getDevice());
+//		throw new NotAvailableInRAPException();
 		//was: new GC(Image)
 	}
 
