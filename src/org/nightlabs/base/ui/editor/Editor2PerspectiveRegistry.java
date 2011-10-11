@@ -48,9 +48,13 @@ import org.eclipse.ui.PerspectiveAdapter;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
 import org.nightlabs.base.ui.io.FileEditorInput;
+import org.nightlabs.base.ui.notification.SelectionManager;
 import org.nightlabs.base.ui.util.RCPUtil;
 import org.nightlabs.eclipse.extension.AbstractEPProcessor;
 import org.nightlabs.eclipse.extension.EPProcessorException;
+import org.nightlabs.singleton.ISingletonProvider;
+import org.nightlabs.singleton.SingletonProviderFactory;
+import org.nightlabs.singleton.ISingletonProvider.ISingletonFactory;
 
 /**
  * Registry which processes the extension-point "org.nightlabs.base.ui.editor2perspective", 
@@ -71,24 +75,42 @@ extends AbstractEPProcessor
 		return EXTENSION_POINT_ID;
 	}
 
-	private static Editor2PerspectiveRegistry sharedInstance;
+	private static ISingletonProvider<Editor2PerspectiveRegistry> sharedInstanceProvider;
+	
+	/**
+	 * Get the global SelectionManager shared instance.
+	 * @return The shared instance.
+	 */
 	public static Editor2PerspectiveRegistry sharedInstance() {
-		if (sharedInstance == null)
-			sharedInstance = new Editor2PerspectiveRegistry();
-		return sharedInstance;
+		if(sharedInstanceProvider == null) {
+			sharedInstanceProvider = SingletonProviderFactory.createProvider();
+			sharedInstanceProvider.setFactory(new ISingletonFactory<Editor2PerspectiveRegistry>() {
+				@Override
+				public Editor2PerspectiveRegistry makeInstance() {
+					return new Editor2PerspectiveRegistry();
+				}
+			});
+		}
+		
+		return sharedInstanceProvider.getInstance();
 	}
+
+	protected Editor2PerspectiveRegistry()
+	{
+	}	
+	
+//	private static Editor2PerspectiveRegistry sharedInstance;
+//	public static Editor2PerspectiveRegistry sharedInstance() {
+//		if (sharedInstance == null)
+//			sharedInstance = new Editor2PerspectiveRegistry();
+//		return sharedInstance;
+//	}
 
 	private Map<String, String> editorID2PerspectiveID = new HashMap<String, String>();
 	public String getPerspectiveID(String editorID) {
 		checkProcessing();
 		return editorID2PerspectiveID.get(editorID);
 	}
-
-	//	protected Map<String, Set<String>> editorID2PerspectiveIDs = new HashMap<String, Set<String>>();
-	//	public Set<String> getPerspectiveIDs(String editorID) {
-	//		checkProcessing();
-	//		return editorID2PerspectiveIDs.get(editorID);
-	//	}
 
 	private Map<String, Set<String>> perspectiveID2editorIDs = new HashMap<String, Set<String>>();
 	public Set<String> getEditorIDs(String perspectiveID) {
