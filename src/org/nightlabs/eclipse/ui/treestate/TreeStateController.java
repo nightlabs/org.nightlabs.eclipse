@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
@@ -26,6 +25,9 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.swt.widgets.Widget;
+import org.nightlabs.singleton.ISingletonProvider;
+import org.nightlabs.singleton.SingletonProviderFactory;
+import org.nightlabs.singleton.ISingletonProvider.ISingletonFactory;
 import org.osgi.service.prefs.Preferences;
 
 /**
@@ -45,16 +47,28 @@ public class TreeStateController
 
 	private final Set<TreeItem> collapsedItems = new HashSet<TreeItem>();
 
-	private TreeStateController() {}
-
+	private static ISingletonProvider<TreeStateController> sharedInstanceProvider;
+	
 	/**
-	 * @return a shared instance of the controller
+	 * Get the global TreeStateController shared instance.
+	 * @return The shared instance.
 	 */
 	public static TreeStateController sharedInstance() {
-		if (sharedInstance == null) {
-			sharedInstance = new TreeStateController();
+		if(sharedInstanceProvider == null) {
+			sharedInstanceProvider = SingletonProviderFactory.createProvider();
+			sharedInstanceProvider.setFactory(new ISingletonFactory<TreeStateController>() {
+				@Override
+				public TreeStateController makeInstance() {
+					return new TreeStateController();
+				}
+			});
 		}
-		return sharedInstance;
+		
+		return sharedInstanceProvider.getInstance();
+	}
+
+	protected TreeStateController()
+	{
 	}
 
 	/**
