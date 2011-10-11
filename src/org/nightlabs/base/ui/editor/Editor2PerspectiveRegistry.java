@@ -78,7 +78,7 @@ extends AbstractEPProcessor
 	private static ISingletonProvider<Editor2PerspectiveRegistry> sharedInstanceProvider;
 	
 	/**
-	 * Get the global SelectionManager shared instance.
+	 * Get the global Editor2PerspectiveRegistry shared instance.
 	 * @return The shared instance.
 	 */
 	public static Editor2PerspectiveRegistry sharedInstance() {
@@ -98,13 +98,6 @@ extends AbstractEPProcessor
 	protected Editor2PerspectiveRegistry()
 	{
 	}	
-	
-//	private static Editor2PerspectiveRegistry sharedInstance;
-//	public static Editor2PerspectiveRegistry sharedInstance() {
-//		if (sharedInstance == null)
-//			sharedInstance = new Editor2PerspectiveRegistry();
-//		return sharedInstance;
-//	}
 
 	private Map<String, String> editorID2PerspectiveID = new HashMap<String, String>();
 	public String getPerspectiveID(String editorID) {

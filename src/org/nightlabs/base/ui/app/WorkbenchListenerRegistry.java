@@ -35,6 +35,8 @@ import org.eclipse.core.runtime.IExtension;
 import org.nightlabs.eclipse.extension.AbstractEPProcessor;
 
 /**
+ * @deprecated Seems not to be used anywhere.
+ * 
  * Registry for registering {@link IWorkbenchListener}.
  * Implementations of {@link IWorkbenchListener} can be registered via the extension-point "org.nightlabs.base.ui.workbenchListener"
  * and will be automatically processed by this class can can then be accessed by the method {@link #getListener()}.
