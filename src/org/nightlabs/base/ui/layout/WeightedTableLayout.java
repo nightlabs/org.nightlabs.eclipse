@@ -36,7 +36,6 @@ import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
 import org.nightlabs.eclipse.compatibility.CompatibleSWT;
@@ -126,14 +125,10 @@ extends TableLayout
 	}
 
 	
-//	private boolean firstTime = true;
+	private int verticalScrollbarWidth = 0;
 	@Override
 	public void layout(Composite c, boolean flush)
 	{
-//		if (!firstTime) {
-//			return;
-//		}
-		
 		int columnCount;
 		if (c instanceof Table)
 			columnCount = ((Table)c).getColumnCount();
@@ -144,7 +139,19 @@ extends TableLayout
 
 		int width = c.getBounds().width;
 		
-		width -= CompatibleSWT.getVerticalScrollBarWidth(c);
+		// Table vertical scrollbar may blink(appear/disappear) on resize when table has certain amount of items 
+		// which summary height is close to table height. That's why we _always_ take scrollbar width into account 
+		// as soon as it's width happened to be non-zero (scroll bar was displayed). If we don't than scrollbar blinking
+		// will cause "width" be different every time because sometimes it will be zero and sometimes not. Calculated
+		// column "totalDynamicWidth" will be different causing "columnWidth" also be different every time. And this will
+		// lead to infinite loop of calling to this.layout() which may result in StackOverflowError or UI sbeing stuck
+		// (see issue 2038 https://www.jfire.org/modules/bugs/view.php?id=2038). Denis.
+		if (verticalScrollbarWidth == 0){
+			verticalScrollbarWidth = CompatibleSWT.getVerticalScrollBarWidth(c);
+		}
+		if (verticalScrollbarWidth > 0){
+			width -= verticalScrollbarWidth;
+		}
 		
 		int totalWeight = 0;
 		int totalFixedWidth = 0;
@@ -175,8 +182,6 @@ extends TableLayout
 			else
 				throw new IllegalArgumentException("Composite c is neither a " + Table.class.getName() + " nor a " + Tree.class.getName()); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		
-//		firstTime = false;
 	}
 	
 	public List<ColumnLayoutData> translateToColumnLayoutData() {
