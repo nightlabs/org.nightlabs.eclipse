@@ -19,6 +19,12 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.nightlabs.eclipse</groupId>
+			<artifactId>${org.nightlabs.eclipse.compatibility.artifactId}</artifactId>
+			<scope>provided</scope>
+		</dependency>
+<!-- 
+		<dependency>
 			<groupId>org.eclipse.XXX</groupId>
 			<artifactId>org.eclipse.core.resources</artifactId>
 			<scope>provided</scope>
@@ -38,16 +44,8 @@
 			<artifactId>org.eclipse.ui</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.holongate.XXX</groupId>
-			<artifactId>org.holongate.j2d</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.nightlabs.eclipse</groupId>
-			<artifactId>org.nightlabs.base.ui</artifactId>
-			<scope>provided</scope>
-		</dependency>
+ -->	
+		
 		<dependency>
 			<groupId>org.nightlabs</groupId>
 			<artifactId>org.nightlabs.config</artifactId>
@@ -58,11 +56,25 @@
 			<artifactId>org.nightlabs.editor2d</artifactId>
 			<scope>provided</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.nightlabs.eclipse</groupId>
+			<artifactId>org.nightlabs.base.ui</artifactId>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.nightlabs.eclipse</groupId>
 			<artifactId>org.nightlabs.editor2d.viewer.ui</artifactId>
 			<scope>provided</scope>
-		</dependency>		
+		</dependency>
+
+		<dependency>
+			<groupId>org.holongate</groupId>
+			<artifactId>org.holongate.j2d</artifactId>
+			<scope>provided</scope>
+			<version>2.3.0</version>
+		</dependency>
+		
 	</dependencies>
 
 	<build>
@@ -76,7 +88,5 @@
 				</excludes>
 			</resource>
 		</resources>
-
-
 	</build>
 </project>
