@@ -25,9 +25,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.swt.widgets.Widget;
-import org.nightlabs.singleton.ISingletonProvider;
-import org.nightlabs.singleton.SingletonProviderFactory;
-import org.nightlabs.singleton.ISingletonProvider.ISingletonFactory;
 import org.osgi.service.prefs.Preferences;
 
 /**
@@ -47,28 +44,16 @@ public class TreeStateController
 
 	private final Set<TreeItem> collapsedItems = new HashSet<TreeItem>();
 
-	private static ISingletonProvider<TreeStateController> sharedInstanceProvider;
-	
+	private TreeStateController() {}
+
 	/**
-	 * Get the global TreeStateController shared instance.
-	 * @return The shared instance.
+	 * @return a shared instance of the controller
 	 */
 	public static TreeStateController sharedInstance() {
-		if(sharedInstanceProvider == null) {
-			sharedInstanceProvider = SingletonProviderFactory.createProvider();
-			sharedInstanceProvider.setFactory(new ISingletonFactory<TreeStateController>() {
-				@Override
-				public TreeStateController makeInstance() {
-					return new TreeStateController();
-				}
-			});
+		if (sharedInstance == null) {
+			sharedInstance = new TreeStateController();
 		}
-		
-		return sharedInstanceProvider.getInstance();
-	}
-
-	protected TreeStateController()
-	{
+		return sharedInstance;
 	}
 
 	/**
