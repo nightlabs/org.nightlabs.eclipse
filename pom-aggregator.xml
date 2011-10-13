@@ -97,6 +97,9 @@
 		<module>../org.nightlabs.eclipse.extension</module>
 		<module>../org.nightlabs.eclipse.preference.ui</module>
 		<module>../org.nightlabs.eclipse.ui.dialog</module>
+		<module>../org.nightlabs.eclipse.ui.pdfrenderer</module>
+		<module>../org.nightlabs.eclipse.ui.pdfviewer</module>
+		<module>../org.nightlabs.eclipse.ui.pdfviewer.extension</module>
 		<module>../org.nightlabs.eclipse.ui.treestate</module>
 		<module>../org.nightlabs.eclipse.ui.control.export</module>
 	</modules>
