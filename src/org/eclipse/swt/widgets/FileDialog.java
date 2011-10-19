@@ -10,24 +10,31 @@ public class FileDialog extends Dialog {
 		super(aParent);
 	}
 
-	
+
 	public void setFilterExtensions(String[] extensions) {
-		
+
 	}
-	
+
 	public void setFilterNames(String[] extensions) {
-		
+
 	}
-	
+
 	public void setFilterPath(String path) {
-		
+
 	}
-	
-	
+
+
 	public String open() {
 		return null;
 	}
 
 	public void setFileName(String fileName) {
+	}
+
+	public String getFileName() {
+		return null;
+	}
+	public String[] getFileNames() {
+		return null;
 	}
 }
