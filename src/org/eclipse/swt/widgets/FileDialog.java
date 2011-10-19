@@ -19,8 +19,9 @@ public class FileDialog extends Dialog {
 
 	}
 
+	private String filterPath;
 	public void setFilterPath(String path) {
-
+		this.filterPath = path;
 	}
 
 
@@ -36,5 +37,8 @@ public class FileDialog extends Dialog {
 	}
 	public String[] getFileNames() {
 		return null;
+	}
+	public String getFilterPath() {
+		return filterPath;
 	}
 }
