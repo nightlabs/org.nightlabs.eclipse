@@ -79,9 +79,9 @@ import org.eclipse.gef.ui.actions.ToggleSnapToGeometryAction;
 import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.palette.FlyoutPaletteComposite;
+import org.eclipse.gef.ui.palette.FlyoutPaletteComposite.FlyoutPreferences;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.PaletteViewerProvider;
-import org.eclipse.gef.ui.palette.FlyoutPaletteComposite.FlyoutPreferences;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.gef.ui.parts.SelectionSynchronizer;
@@ -189,7 +189,6 @@ import org.nightlabs.io.IOFilter;
 import org.nightlabs.io.IOFilterInformationProvider;
 import org.nightlabs.io.IOFilterMan;
 import org.nightlabs.io.IOFilterWithProgress;
-import org.nightlabs.io.WriteException;
 import org.nightlabs.print.page.IPredefinedPage;
 import org.nightlabs.print.page.PredefinedPageRegistry;
 import org.nightlabs.print.page.PredefinedPageUtil;
@@ -580,7 +579,6 @@ extends GraphicalEditorWithFlyoutPalette
 		};
 	}
 
-	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	public Object getAdapter(Class type)
 	{
@@ -658,7 +656,7 @@ extends GraphicalEditorWithFlyoutPalette
 				getCommandStack().markSaveLocation();
 			}
 		}
-		catch (WriteException e){
+		catch (IOException e){
 			throw new RuntimeException(e);
 		}
 	}
@@ -1329,7 +1327,7 @@ extends GraphicalEditorWithFlyoutPalette
 						{
 							InformationProviderWizard wizard = new InformationProviderWizard(url);
 							wizard.addDynamicWizardPage(hop.getEntryPage());
-							DynamicPathWizardDialog dialog = new DynamicPathWizardDialog(wizard);
+							DynamicPathWizardDialog dialog = new DynamicPathWizardDialog(getSite().getShell(), wizard);
 							int returnCode = dialog.open();
 							if (returnCode == Window.OK) {
 
@@ -1378,9 +1376,10 @@ extends GraphicalEditorWithFlyoutPalette
 	 *
 	 * @param file the file to save
 	 * @param progressMonitor The ProgressMonitor to show the save Progress
+	 * @throws IOException 
 	 */
 	protected boolean save(File file, IProgressMonitor progressMonitor)
-	throws WriteException
+	throws IOException
 	{
 		if (null == progressMonitor)
 			progressMonitor = new NullProgressMonitor();
@@ -1433,16 +1432,21 @@ extends GraphicalEditorWithFlyoutPalette
 	}
 
 	protected void saveFile(File file, IOFilter ioFilter, IProgressMonitor monitor)
-	throws WriteException
+	throws IOException
 	{
+		FileOutputStream fos = null;
 		try {
 			String fileName = file.getCanonicalPath();
 			logger.info("Save File "+fileName); //$NON-NLS-1$
-			FileOutputStream fos = new FileOutputStream(fileName);
+			fos = new FileOutputStream(fileName);
 			ioFilter.write(getRootDrawComponent(), fos);
 		} catch (Exception e) {
 //			throw new WriteException(file, "an error occured while writing", e);
 			throw new RuntimeException(e);
+		} finally {
+			if (fos != null){
+				fos.close();
+			}
 		}
 	}
 
