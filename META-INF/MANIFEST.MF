@@ -9,7 +9,7 @@ Require-Bundle: org.eclipse.core.runtime;visibility:=reexport,
  org.eclipse.ui.views;bundle-version="3.5.0";visibility:=reexport,
  org.eclipse.core.net;bundle-version="1.2.100";visibility:=reexport,
  org.eclipse.update.configurator;bundle-version="3.3.100";visibility:=reexport,
- org.eclipse.nebula.widgets.pshelf;bundle-version="1.0.0";visibility:=reexport,
+ org.eclipse.nebula.widgets.pshelf;bundle-version="1.0.0";resolution:=optional;visibility:=reexport,
  org.eclipse.update.core;bundle-version="3.2.400";visibility:=reexport,
  org.eclipse.core.resources;bundle-version="3.6.0";visibility:=reexport,
  org.eclipse.update.ui;bundle-version="3.2.300";visibility:=reexport
