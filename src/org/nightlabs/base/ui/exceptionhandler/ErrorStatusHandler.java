@@ -50,7 +50,7 @@ public class ErrorStatusHandler extends WorkbenchErrorHandler {
 			}			
 		}
 		else if ((style & StatusManager.LOG) > 0) {
-			logger.error("Exception with style StatusManager.LOG", status.getException()); //$NON-NLS-1$
+			logger.error("Exception with style StatusManager.LOG: "+status.getMessage(), status.getException()); //$NON-NLS-1$
 		}
 		super.handle(statusAdapter, style);
 	}
