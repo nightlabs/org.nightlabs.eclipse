@@ -93,8 +93,8 @@ implements IDynamicPathWizardPage, IMessageDisplayer
 	}
 
 	/**
-	 * Calls createPageContents and then setContents() with the result.
-	 * Additionally set the message to {@link #getDefaultPageMessage()} if
+	 * Calls createPageContents and then setControl() with the result.
+	 * Additionally sets the message to {@link #getDefaultPageMessage()} if
 	 * overridden and does not return null.
 	 * <p>
 	 * {@inheritDoc}

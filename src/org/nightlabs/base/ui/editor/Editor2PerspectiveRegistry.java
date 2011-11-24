@@ -48,7 +48,6 @@ import org.eclipse.ui.PerspectiveAdapter;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
 import org.nightlabs.base.ui.io.FileEditorInput;
-import org.nightlabs.base.ui.notification.SelectionManager;
 import org.nightlabs.base.ui.util.RCPUtil;
 import org.nightlabs.eclipse.extension.AbstractEPProcessor;
 import org.nightlabs.eclipse.extension.EPProcessorException;
@@ -210,12 +209,43 @@ extends AbstractEPProcessor
 
 // BEGIN - editor 2 perspective binding without workbench patch	
 	private PerspectiveAdapter listener;
-	private Set<IEditorReference> hiddenEditorReferences;
+	private Set<IEditorReference> hiddenEditorReferences = new HashSet<IEditorReference>();
+	// All editors that were open in a deactivated perspective that were not in the registry 
+	// => we don't hide these (They will never show up again)
+	private Set<IEditorReference> unmatchedEditorsInDeactivatedPerspective = new HashSet<IEditorReference>();
 	
 	private void addListener() {
 		if (listener == null) {
-			hiddenEditorReferences = new HashSet<IEditorReference>();
 			listener = new PerspectiveAdapter() {
+				
+				@Override
+				public void perspectivePreDeactivate(IWorkbenchPage page, IPerspectiveDescriptor perspective) 
+				{
+					// In this callback we find all editors that were open (for
+					// what ever reason) in the actual perspective that were not
+					// supposed to be there. We do this in order not to hide
+					// these editors because they might never show up again
+					// (when they are not registered for any perspective)
+					String perspectiveID = perspective.getId();
+					Set<String> editorIDsForPerspective = perspectiveID2editorIDs.get(perspectiveID);
+					IEditorReference[] editorReferences = page.getEditorReferences();
+					
+					unmatchedEditorsInDeactivatedPerspective.clear();
+					for (IEditorReference editorReference : editorReferences) {
+						if (editorIDsForPerspective != null) {
+							if (!editorIDsForPerspective.contains(editorReference.getId())) {
+								unmatchedEditorsInDeactivatedPerspective.add(editorReference);
+							}
+						}
+						else {
+							unmatchedEditorsInDeactivatedPerspective.add(editorReference);
+						}
+					}
+					
+					if (editorIDsForPerspective != null) {
+						
+					}
+				}
 				@Override
 				public void perspectiveActivated(IWorkbenchPage page,
 						IPerspectiveDescriptor perspective) 
@@ -226,7 +256,7 @@ extends AbstractEPProcessor
 						IEditorReference[] editorReferences = page.getEditorReferences();
 						if (editorIDsForPerspective != null) {
 							for (IEditorReference ref : editorReferences) {
-								if (!editorIDsForPerspective.contains(ref.getId())) {
+								if (!editorIDsForPerspective.contains(ref.getId()) && !unmatchedEditorsInDeactivatedPerspective.contains(ref)) {
 									CompatibleWorkbench.hideEditor(page, ref);
 									hiddenEditorReferences.add(ref);
 								}
@@ -234,9 +264,11 @@ extends AbstractEPProcessor
 									CompatibleWorkbench.showEditor(page, ref);
 								}
 							}
-							for (IEditorReference hiddenEditorRef : hiddenEditorReferences) {
-								if (editorIDsForPerspective.contains(hiddenEditorRef.getId()))
+							for (IEditorReference hiddenEditorRef : new HashSet<IEditorReference>(hiddenEditorReferences)) {
+								if (editorIDsForPerspective.contains(hiddenEditorRef.getId())) {
 									CompatibleWorkbench.showEditor(page, hiddenEditorRef);
+									hiddenEditorReferences.remove(hiddenEditorRef);
+								}
 							}
 						}
 					}

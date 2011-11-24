@@ -20,12 +20,45 @@ import org.eclipse.swt.widgets.Listener;
 public class ExclusiveExpandBar 
 {
 	private static final Logger logger = Logger.getLogger(ExclusiveExpandBar.class);
-	
+
+	/**
+	 * Enables a exclusive {@link ExpandItem} for the given {@link ExpandBar}.
+	 * 
+	 * @param expandBar The {@link ExpandBar} to enable the behaviour for.
+	 */
 	public static void enableFor(final ExpandBar expandBar) {
+		enableFor(expandBar, true);
+	}
+
+	/**
+	 * Enables the management of the size of the given {@link ExpandBar}s
+	 * {@link ExpandItem}s based on their expanded-state. If
+	 * allowOnlyOneExpandItem is set to <code>true</code> only one ExpandItem
+	 * will be expanded at a time. Otherwise all expanded {@link ExpandItem}s
+	 * will share the available space equally.
+	 * 
+	 * @param expandBar
+	 *            The {@link ExpandBar} to enable the behaviour for.
+	 * @param allowOnlyOneExpandedItem
+	 *            Set to <code>true</code> to allow only one expanded
+	 *            ExpandItem, or to <code>false</code> for multiple expanded
+	 *            items at a time
+	 */
+	public static void enableFor(final ExpandBar expandBar, final boolean allowOnlyOneExpandedItem) {
 		ExpandListener expandListener = new ExpandListener() {
 			 
             @Override
             public void itemExpanded(ExpandEvent e) {
+            	
+            	if (allowOnlyOneExpandedItem) {
+            		// If we allow only one expandedItem, we set all other to expanded=false
+            		ExpandItem expandItem = (ExpandItem) e.item;
+	            	for (ExpandItem item : expandBar.getItems()) {
+	            		if (item != expandItem) {
+	            			item.setExpanded(false);
+	            		}
+					}
+            	}
                 adjustExclusiveItemHeight(expandBar);
             }
  

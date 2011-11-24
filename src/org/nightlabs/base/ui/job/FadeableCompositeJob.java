@@ -28,7 +28,6 @@ package org.nightlabs.base.ui.job;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.swt.widgets.Display;
 import org.nightlabs.base.ui.composite.Fadeable;
 import org.nightlabs.base.ui.exceptionhandler.ExceptionHandlerRegistry;
 import org.nightlabs.progress.ProgressMonitor;
@@ -73,16 +72,18 @@ public abstract class FadeableCompositeJob extends Job
 		}
 		finally
 		{
-			composite.getDisplay().syncExec(
-					new Runnable()
-					{
-						public void run()
+			if (!composite.isDisposed()) {
+				composite.getDisplay().syncExec(
+						new Runnable()
 						{
-							if (!composite.isDisposed())
-								composite.setFaded(false);
+							public void run()
+							{
+								if (!composite.isDisposed())
+									composite.setFaded(false);
+							}
 						}
-					}
-			);
+				);
+			}
 		}
 		return ret;
 	}

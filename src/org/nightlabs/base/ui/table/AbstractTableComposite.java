@@ -174,6 +174,9 @@ public abstract class AbstractTableComposite<ElementType>
 	}
 
 	protected void initTable() {
+		if (table.isDisposed())
+			return;
+
 		createTableColumns(tableViewer, table);
 		setTableProvider(tableViewer);
 
@@ -690,7 +693,7 @@ public abstract class AbstractTableComposite<ElementType>
 	 * <p>
 	 * Note that using this method will invoke {@link ISelectionChangedListener}s linked to the TableViewer.
 	 * </p>
-	 * 
+	 *
 	 * @param index The index of the Element to select.
 	 */
 	@SuppressWarnings("unchecked")
