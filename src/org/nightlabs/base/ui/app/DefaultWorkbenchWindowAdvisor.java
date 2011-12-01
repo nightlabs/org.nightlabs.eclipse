@@ -78,7 +78,10 @@ extends WorkbenchWindowAdvisor
 		super.preWindowOpen();
 		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
 //		configurer.setTitle(applicationName);
-		configurer.setInitialSize(getScreenSize());
+		Point screenSize = getScreenSize();
+		if (screenSize != null) {
+			configurer.setInitialSize(screenSize);
+		}
 		configurer.setShowMenuBar(true);
 		configurer.setShowStatusLine(true);
 		configurer.setShowCoolBar(true);
