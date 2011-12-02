@@ -8,4 +8,6 @@ public abstract class OwnerDrawLabelProvider extends CellLabelProvider {
 	protected abstract void erase(Event event, Object element);
 	public static void setUpOwnerDraw(ColumnViewer columnViewer) {
 	}
+	public void update(ViewerCell cell) {
+	}
 }
