@@ -123,26 +123,28 @@ public class CompatibleSWT {
 		final Display display = Display.getDefault();
 		if(display == null)
 			SWT.error( SWT.ERROR_THREAD_INVALID_ACCESS );
+
+		final boolean[] needsDispose = new boolean[] {false};
 		
 		Thread other = new Thread() {
 			public void run() {
-				if(errorImage.getDevice() != null) {  // call getDevice on NON UI thread. it will be null, if this 
-					                                  // is a factory image
-					display.syncExec(new Runnable() { // otherwise call dispose, but this time from the UI thread 
-						@Override
-						public void run() {
-							errorImage.dispose();
-						}
-					});
+				// call getDevice on NON UI thread. it will be null, if this is a factory image 
+				if(errorImage.getDevice() != null) {
+					// otherwise it needs to be disposed.
+					needsDispose[0] = true;                                 
 				}
 			}
 		};
-		
+
 		other.start();
 		
 		try {
 			other.join();
 		} catch (InterruptedException e) {
+		}
+		
+		if (needsDispose[0]) {
+			errorImage.dispose();
 		}
 	}
 
