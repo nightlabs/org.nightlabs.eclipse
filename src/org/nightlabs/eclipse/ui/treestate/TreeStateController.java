@@ -1,7 +1,6 @@
 package org.nightlabs.eclipse.ui.treestate;
 
 import java.io.File;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -24,7 +23,6 @@ import org.eclipse.swt.events.TreeEvent;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
-import org.eclipse.swt.widgets.Widget;
 import org.nightlabs.eclipse.compatibility.Compatibility;
 import org.nightlabs.eclipse.compatibility.treestate.TreeStateUtil;
 import org.osgi.service.prefs.Preferences;
