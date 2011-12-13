@@ -25,6 +25,8 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.swt.widgets.Widget;
+import org.nightlabs.eclipse.compatibility.Compatibility;
+import org.nightlabs.eclipse.compatibility.treestate.TreeStateUtil;
 import org.osgi.service.prefs.Preferences;
 
 /**
@@ -75,7 +77,7 @@ public class TreeStateController
 				IPreferenceStore preferenceStore = org.nightlabs.eclipse.ui.treestate.preferences.Preferences.getPreferenceStore();
 				boolean isEnable = preferenceStore.getBoolean(org.nightlabs.eclipse.ui.treestate.preferences.Preferences.PREFERENCE_ENABLE_STATE);
 
-				if (isEnable) {
+				if (isEnable && Compatibility.isRCP) {
 					Tree sourceTree = (Tree)e.getSource();
 					saveTreeState(sourceTree);
 				}
@@ -180,7 +182,7 @@ public class TreeStateController
 		IPreferenceStore preferenceStore = org.nightlabs.eclipse.ui.treestate.preferences.Preferences.getPreferenceStore();
 		boolean isEnable = preferenceStore.getBoolean(org.nightlabs.eclipse.ui.treestate.preferences.Preferences.PREFERENCE_ENABLE_STATE);
 
-		if (isEnable) {
+		if (isEnable && Compatibility.isRCP) {
 			nextTryingToGetTreeItemsTime =
 				preferenceStore.getLong(org.nightlabs.eclipse.ui.treestate.preferences.Preferences.PREFERENCE_RELATIVE_TIME);
 			totalTryingToGetTreeItemsTime =
@@ -268,16 +270,8 @@ public class TreeStateController
 			event.type = SWT.Expand;
 			event.item = item;
 			event.widget = item;
-			Method method;
-			try {
-				method = Widget.class.getDeclaredMethod("sendEvent", new Class[] {int.class, Event.class});
-				method.setAccessible(true);
-				method.invoke(item.getParent(), event.type, event);
-			} catch (Exception ex) {
-				// FIXME
-				System.err.println(ex);
-//				throw new RuntimeException(ex);
-			}
+			
+			TreeStateUtil.sendEvent(item.getParent(), event);
 
 			item.setExpanded(true);
 		}
