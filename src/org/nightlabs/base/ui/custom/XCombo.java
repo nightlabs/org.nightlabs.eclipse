@@ -619,6 +619,9 @@ public Point computeSize (int wHint, int hHint, boolean changed)
 void createPopup(TableItem[] items, int selectionIndex, int columns) {
 	// create shell and list
 	popup = new Shell (getShell (), SWT.NO_TRIM | SWT.ON_TOP);
+	// In Rap a new Shell has a default size, to avoid showing the Shell to early the bounds are set to 0
+	// setVisible(false); does not work, might be a bug in RAP
+	popup.setBounds(0, 0, 0, 0);
 //	shellJustDeactivated = false;
 	int style = getStyle ();
 	int listStyle = SWT.SINGLE | SWT.V_SCROLL;
