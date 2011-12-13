@@ -20,7 +20,8 @@ Export-Package: org.eclipse.core.resources,
  org.eclipse.ui,
  org.eclipse.update.ui,
  org.nightlabs.base.ui.util,
- org.nightlabs.eclipse.compatibility
+ org.nightlabs.eclipse.compatibility,
+ org.nightlabs.eclipse.compatibility.treestate
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: .
 Bundle-Activator: org.nightlabs.eclipse.compatibility.RAPCompatibilityPlugin
