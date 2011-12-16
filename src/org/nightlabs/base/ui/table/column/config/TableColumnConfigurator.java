@@ -42,7 +42,7 @@ public class TableColumnConfigurator {
 	private static final IPreferenceStore PREFERENCE_STORE = NLBasePlugin.getDefault().getPreferenceStore();
 
 	/** Preference key under which column configuration will get persisted. */
-	private static final String PREFERENCE_KEY = "tradeOverviewResultViewerColumnConfigurationStatexy"; //$NON-NLS-1$
+	private static final String PREFERENCE_KEY = "tradeOverviewResultViewerColumnConfigurationState"; //$NON-NLS-1$
 
 	/** Delimiter used for preference key. */
 	private static final String PREFERENCE_KEY_DELIMITER = "_"; //$NON-NLS-1$
