@@ -130,16 +130,13 @@ public class TableColumnConfigurator {
 		private String text;
 		private Listener[] listeners;
 		private boolean enabled;
-		private int id;
 		private Image image;
 		private int style;
 
-		public MenuItemWrapper(final String text, final Listener[] listeners, final boolean enabled,
-			final int id, final Image image, final int style) {
+		public MenuItemWrapper(final String text, final Listener[] listeners, final boolean enabled, final Image image, final int style) {
 			this.text = text;
 			this.listeners = listeners;
 			this.enabled = enabled;
-			this.id = id;
 			this.image = image;
 			this.style = style;
 		}
@@ -152,9 +149,6 @@ public class TableColumnConfigurator {
 		}
 		public boolean isEnabled() {
 			return enabled;
-		}
-		public int getId() {
-			return id;
 		}
 		public Image getImage() {
 			return image;
@@ -267,7 +261,7 @@ public class TableColumnConfigurator {
 				for (int i = 0; i < menu.getItemCount(); i++) {
 					final MenuItem item = menu.getItem(i);
 					entrySpecificMenuItems.add(new MenuItemWrapper(item.getText(), item.getListeners(SWT.Selection),
-						item.getEnabled(), item.getID(), item.getImage(), item.getStyle()));
+						item.getEnabled(), item.getImage(), item.getStyle()));
 				}
 				pristine = !pristine;
 			}
@@ -343,7 +337,6 @@ public class TableColumnConfigurator {
 					for (final MenuItemWrapper wrapper : entrySpecificMenuItems) {
 						final MenuItem item = new MenuItem(menu, wrapper.getStyle());
 						item.setEnabled(wrapper.isEnabled());
-						item.setID(wrapper.getId());
 						item.setImage(wrapper.getImage());
 						item.setText(wrapper.getText());
 						for (final Listener listener : wrapper.getListeners())
