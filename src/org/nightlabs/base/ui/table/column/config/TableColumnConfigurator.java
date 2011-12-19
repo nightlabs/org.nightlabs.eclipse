@@ -194,7 +194,7 @@ public class TableColumnConfigurator {
 
 		@Override
 		public void controlResized(final ControlEvent e) {
-			if (model.getColumnIDsHidden().contains(columnID) || localWidthAdaptation)
+			if (columnID == null || model.getColumnIDsHidden().contains(columnID) || localWidthAdaptation)
 				// The column is either hidden or a local programmatical width adaptation is performed => do nothing
 				return;
 			if (initialisation) {
@@ -211,12 +211,14 @@ public class TableColumnConfigurator {
 					// The overview is opened at least the 2nd time and settings have been read out from preference store.
 					// This part will prevent that a column's width is set to a width other than the stored one by someone
 					// else (e.g. via async calls).
-					final int width = model.getColumnIDToColumnWidth().get(columnID);
-					if (table.getColumn(idx).getWidth() != width) {
-						localWidthAdaptation = true;
-						table.getColumn(idx).setWidth(width);
-						table.getColumn(idx).setResizable(true);
-						localWidthAdaptation = false;
+					if (model.getColumnIDToColumnWidth().get(columnID) != null) {
+						final int width = model.getColumnIDToColumnWidth().get(columnID);
+						if (table.getColumn(idx).getWidth() != width) {
+							localWidthAdaptation = true;
+							table.getColumn(idx).setWidth(width);
+							table.getColumn(idx).setResizable(true);
+							localWidthAdaptation = false;
+						}
 					}
 					performedExternalCall = true;
 					lastExternalCall = System.currentTimeMillis();
