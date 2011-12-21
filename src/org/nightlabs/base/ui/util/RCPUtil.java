@@ -74,6 +74,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveDescriptor;
+import org.eclipse.ui.IPerspectiveRegistry;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
@@ -82,6 +83,7 @@ import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.internal.EditorAreaHelper;
 import org.eclipse.ui.internal.EditorPane;
@@ -305,6 +307,29 @@ public class RCPUtil
 			try { view = pages[0].showView(viewID); } catch (PartInitException e) { throw new RuntimeException(e); }
 			if (view != null)
 				return view;
+		}
+		return null;
+	}
+	
+	/**
+	 * Shows the desired perspective in the active workbench window.
+	 * 
+	 * @param perspectiveID The perspective to show.
+	 * @return The IWorkbenchPage the perspective was opened in.
+	 */
+	public static IWorkbenchPage showPerspective(String perspectiveID) {
+		IPerspectiveRegistry perspectiveRegistry = PlatformUI.getWorkbench().getPerspectiveRegistry();
+		if (perspectiveID != null) {
+			IPerspectiveDescriptor perspectiveDescriptor = perspectiveRegistry.findPerspectiveWithId(perspectiveID);
+			if (perspectiveDescriptor != null) {
+				IWorkbench workbench = PlatformUI.getWorkbench();
+				try {
+					return workbench.showPerspective(perspectiveID,
+							workbench.getActiveWorkbenchWindow());
+				} catch (WorkbenchException e) {
+					throw new RuntimeException(e);
+				}
+			}
 		}
 		return null;
 	}
