@@ -244,6 +244,8 @@ public class TableColumnConfigurator {
 			persistColumnConfiguration();
 		}
 	}
+	
+	private Point point;
 
 	/**
 	 * Listener implementation registered for the table that will get notified when an event of type SWT.MenuDetect occurs.
@@ -270,7 +272,7 @@ public class TableColumnConfigurator {
 //				pristine = !pristine;
 //			}
 
-			final Point point = Display.getCurrent().map(null, table, new Point(event.x, event.y));
+			point = Display.getCurrent().map(null, table, new Point(event.x, event.y));
 			final Rectangle clientArea = table.getClientArea();
 			final boolean header = clientArea.y <= point.y && point.y < (clientArea.y + table.getHeaderHeight());
 
@@ -291,6 +293,7 @@ public class TableColumnConfigurator {
 						public void widgetSelected(final SelectionEvent e) {
 							// TODO bug when first hiding column (refresh bug?)
 							final int j = findColumnIdxToHide(point);
+							System.out.println("column index to be hidden: " + j);
 							if (j > -1) {
 								final String columnID = adapter.getColumnIDs().get(j);
 								if (!model.getColumnIDsHidden().contains(columnID))	// should not be the case, but...
@@ -428,31 +431,34 @@ public class TableColumnConfigurator {
 	/**
 	 * Determines the real index of the column that will get hidden.
 	 * @param pt Point with mapped coordinates.
-	 * @return the real index of the column to be hidden
+	 * @return the real index of the column to be hidden or -1 if the search did not succeed
 	 */
 	private int findColumnIdxToHide(final Point pt) {
-		TableItem dummyItem = null;
-		if (table.getItemCount() == 0)
-			dummyItem = new TableItem(table, SWT.NONE);
-
-		if (table.getItemCount() > 0) {
-			final TableItem item = table.getItem(0);
-			for (int i = 0; i < table.getColumnCount(); i++) {
-				final Rectangle itemBounds = item.getBounds(i);
-				if (itemBounds.x <= pt.x && pt.x < itemBounds.x + itemBounds.width)
-					return i;
+		int totalWidth = 0;
+		
+		for (int i = 0; i < model.getColumnIDsOrder().size(); i++) {	// iterates over visible order (including hidden columns)
+			String columnID = model.getColumnIDsOrder().get(i);
+			for (int j = 0; j < table.getColumnCount(); j++) {	// iterates over real order
+				if (table.getColumn(j).getText().equals(model.getColumnIDToColumnText().get(columnID))) {	// TODO column texts must not be unique, so...
+					totalWidth += table.getColumn(j).getWidth();
+					if (pt.x < totalWidth) {
+						// now get real index...
+						return model.getColumnIDToColumnIdx().get(columnID);
+					}
+				}
 			}
 		}
-
-		if (dummyItem != null)
-			table.remove(0);
-
+		
 		return -1;
 	}
 
+	/**
+	 * Updates the column visibility states map according to the given config dialog table items.
+	 * TODO column texts must not be unique, so...
+	 * @param items
+	 */
 	void updateColumnVisibilityStatesMap(final TableItem[] items) {
 		for (int i = 0; i < items.length; i++)
-			// TODO column texts must not be unique, so...
 			for (final Map.Entry<String, String> entry : model.getColumnIDToColumnText().entrySet())
 				if (entry.getValue().equals(items[i].getText())) {
 					model.getColumnIDToVisibilityState().put(entry.getKey(), items[i].getChecked());
@@ -461,8 +467,8 @@ public class TableColumnConfigurator {
 	}
 	
 	/**
-	 * Updates the column widths map as widths have not yet been set completely. This is most likely the case when the 
-	 * overview has been opened the very first time.
+	 * Updates the column widths map as widths have not yet been set completely in this map. This is most likely the case 
+	 * when the overview has been opened the very first time.
 	 */
 	private void updateColumnWidthsMap() {
 		for (int i = 0; i < table.getColumnCount(); i++) {
@@ -537,6 +543,7 @@ public class TableColumnConfigurator {
 		for (int i = 0; i < adapter.getColumnIDs().size(); i++) {
 			final String columnID = adapter.getColumnIDs().get(i);
 			model.getColumnIDToColumnText().put(columnID, table.getColumn(i).getText());	// fix mapping, independent of visibility/ordering! e.g. 0->ID,1->Customer,...
+			model.getColumnIDToColumnIdx().put(columnID, i);
 		}
 
 		String key = buildUpPreferenceKey(adapter.getTableID());
@@ -576,6 +583,7 @@ public class TableColumnConfigurator {
 				final String columnID = adapter.getColumnIDs().get(i);
 				model.getColumnIDToVisibilityState().put(columnID, true);	// all columns visible
 				model.getColumnIDsOrder().add(columnID);	// initial order, e.g. '0', '1', '2', '3',...
+//				model.getColumnIDToColumnIdx().put(columnID, i);
 				// Table columns have been drawn to a smaller scale if opened the 2nd time, so do not read out table column width
 				// here (too early; layout has not been fully set!) but when disposing table or finishing config dialog.
 			}

@@ -14,13 +14,15 @@ public class TableColumnConfigurationModel {
 	private Map<String, Boolean> columnIDToVisibilityState;
 	private Map<String, String> columnIDToColumnText;	// fix mapping, independent of visibility/ordering! e.g. 0->ID,1->Customer,...
 	private Map<String, Integer> columnIDToColumnWidth;
-	private List<String> columnIDsOrder;	// the order the columns appear in the table (i.e. the "visible" order)
+	private Map<String, Integer> columnIDToColumnIdx;	// fix mapping, independent of visibility/ordering! e.g. 0->0,1->1,...
+	private List<String> columnIDsOrder;	// the order the columns appear in the table (i.e. the "visible" order), e.g. Customer,ID,...
 	private List<String> columnIDsHidden;
 
 	public TableColumnConfigurationModel() {
 		columnIDToVisibilityState = new HashMap<String, Boolean>();
 		columnIDToColumnText = new HashMap<String, String>();
 		columnIDToColumnWidth = new HashMap<String, Integer>();
+		columnIDToColumnIdx = new HashMap<String, Integer>();
 		columnIDsOrder = new ArrayList<String>();
 		columnIDsHidden = new ArrayList<String>();
 	}
@@ -40,7 +42,12 @@ public class TableColumnConfigurationModel {
 	public List<String> getColumnIDsHidden() {
 		return columnIDsHidden;
 	}
+
 	public Map<String, Integer> getColumnIDToColumnWidth() {
 		return columnIDToColumnWidth;
+	}
+	
+	public Map<String, Integer> getColumnIDToColumnIdx() {
+		return columnIDToColumnIdx;
 	}
 }
