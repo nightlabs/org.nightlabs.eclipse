@@ -31,9 +31,8 @@ import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.resource.Messages;
 
 /**
- * Configurator for Column order and visibility for an underlying SWT table composite. Settings are
- * 
- * via {@link TableColumnConfigurationDialog}.
+ * Column order and visibility configurator for an underlying SWT Table composite. Settings will be persisted to and
+ * retrieved from preference store.
  * @author Frederik Loeser <!-- frederik [AT] nightlabs [DOT] de -->
  */
 public class TableColumnConfigurator {
@@ -121,7 +120,7 @@ public class TableColumnConfigurator {
 			table.getColumn(i).addControlListener(new ColumnControlListener(i, adapter.getColumnIDs().get(i)));
 		
 		if (debugging)
-			PREFERENCE_STORE.putValue(buildUpPreferenceKey(adapter.getTableID()), "");	// for testing only
+			PREFERENCE_STORE.putValue(buildUpPreferenceKey(adapter.getTableID()), "");	// for testing only //$NON-NLS-1$
 		
 		columnIDToVisibilityState_pending = new HashMap<String, Boolean>(); 
 		columnIDsOrder_pending = new ArrayList<String>();
@@ -248,7 +247,7 @@ public class TableColumnConfigurator {
 							// TODO bug when first hiding column (refresh bug?), does only appear sometimes
 							final int j = findColumnIdxToHide(point);
 							if (LOGGER.isDebugEnabled())
-								LOGGER.debug("column index to be hidden: " + j);
+								LOGGER.debug("column index to be hidden: " + j); //$NON-NLS-1$
 							if (j > -1) {
 								final String columnID = adapter.getColumnIDs().get(j);
 								if (!model.getColumnIDsHidden().contains(columnID))	// should not be the case, but...
@@ -424,12 +423,12 @@ public class TableColumnConfigurator {
 		if (model.getColumnIDToColumnWidth().size() < table.getColumnCount())
 			updateColumnWidthsMap();
 		
-		final String value = debugging ? "" : createColumnConfigurationStateString();
+		final String value = debugging ? "" : createColumnConfigurationStateString(); //$NON-NLS-1$
 		String key = buildUpPreferenceKey(adapter.getTableID());
 		PREFERENCE_STORE.putValue(key, value);
 
 		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("preference key: " + key);
+			LOGGER.debug("preference key: " + key); //$NON-NLS-1$
 			LOGGER.debug("--------------> value: " + value); //$NON-NLS-1$
 		}
 	}
@@ -490,7 +489,7 @@ public class TableColumnConfigurator {
 		final String value = PREFERENCE_STORE.getString(key);
 		
 		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("preference key: " + key);
+			LOGGER.debug("preference key: " + key); //$NON-NLS-1$
 			LOGGER.debug("--------------> value: " + value); //$NON-NLS-1$
 		}
 

@@ -24,12 +24,13 @@ import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.eclipse.ui.dialog.ResizableTitleAreaDialog;
 
 /**
- * Configuration dialog for table column order and visibility adaptation.
+ * Table column order and visibility configuration dialog. Settings will be persisted to and
+ * retrieved from preference store (see {@link TableColumnConfigurator}.
  * @author Frederik Loeser <!-- frederik [AT] nightlabs [DOT] de -->
  */
 public class TableColumnConfigurationDialog extends ResizableTitleAreaDialog {
 
-	static final String TABLE_ITEM_DATA_KEY_COLUMNID = "columnID";
+	static final String TABLE_ITEM_DATA_KEY_COLUMNID = "columnID"; //$NON-NLS-1$
 	
 	private TableColumnConfigurator configurator;
 	private Table configTable;
@@ -46,6 +47,7 @@ public class TableColumnConfigurationDialog extends ResizableTitleAreaDialog {
 
 	@Override
 	protected Control createDialogArea(final Composite parent) {
+		// TODO adapt composite for being automatically resized when dialog is resized
 		Composite parent_ = (Composite) super.createDialogArea(parent);
 		setTitle(Messages.getString(
 			"org.nightlabs.base.ui.table.column.config.TableColumnConfigurationDialog.title")); //$NON-NLS-1$

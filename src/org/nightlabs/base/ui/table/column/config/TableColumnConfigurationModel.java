@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * Model class for {@link TableColumnConfigurator}.
  * @author Frederik Loeser <!-- frederik [AT] nightlabs [DOT] de -->
  */
 public class TableColumnConfigurationModel {
