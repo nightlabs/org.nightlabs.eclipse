@@ -24,8 +24,8 @@ import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.eclipse.ui.dialog.ResizableTitleAreaDialog;
 
 /**
- * Table column order and visibility configuration dialog. Settings will be persisted to and
- * retrieved from preference store (see {@link TableColumnConfigurator}.
+ * Table column configuration dialog. Settings will be persisted to and retrieved from preference 
+ * store (see {@link TableColumnConfigurator}.
  * @author Frederik Loeser <!-- frederik [AT] nightlabs [DOT] de -->
  */
 public class TableColumnConfigurationDialog extends ResizableTitleAreaDialog {

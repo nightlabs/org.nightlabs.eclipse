@@ -31,7 +31,7 @@ import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.resource.Messages;
 
 /**
- * Column order and visibility configurator for an underlying SWT Table composite. Settings will be persisted to and
+ * Column configurator for an underlying SWT Table composite. Settings will be persisted to and
  * retrieved from preference store.
  * @author Frederik Loeser <!-- frederik [AT] nightlabs [DOT] de -->
  */
