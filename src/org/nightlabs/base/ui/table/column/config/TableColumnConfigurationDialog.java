@@ -24,7 +24,7 @@ import org.nightlabs.base.ui.resource.Messages;
 import org.nightlabs.eclipse.ui.dialog.ResizableTitleAreaDialog;
 
 /**
- *
+ * Configuration dialog for table column order and visibility adaptation.
  * @author Frederik Loeser <!-- frederik [AT] nightlabs [DOT] de -->
  */
 public class TableColumnConfigurationDialog extends ResizableTitleAreaDialog {
@@ -84,7 +84,7 @@ public class TableColumnConfigurationDialog extends ResizableTitleAreaDialog {
 		configTable.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(final Event event) {
 				if (event.detail == SWT.CHECK) {
-					configurator.updateColumnVisibilityStatesMap(configTable.getItems());
+					configurator.updateColumnVisibilityStatesMap_pending(configTable.getItems());
 					updateSelectionButtons();
 				}
 				if (event.detail != SWT.CHECK)
@@ -97,7 +97,7 @@ public class TableColumnConfigurationDialog extends ResizableTitleAreaDialog {
 				if (configTable.getSelectionIndex() > -1) {
 					final TableItem item = configTable.getItem(configTable.getSelectionIndex());
 					item.setChecked(!item.getChecked());
-					configurator.updateColumnVisibilityStatesMap(configTable.getItems());
+					configurator.updateColumnVisibilityStatesMap_pending(configTable.getItems());
 					updateSelectionButtons();
 				}
 			}
@@ -167,7 +167,7 @@ public class TableColumnConfigurationDialog extends ResizableTitleAreaDialog {
 			public void widgetSelected(final SelectionEvent e) {
 				for (int i = 0; i < configTable.getItemCount(); i++)
 					configTable.getItem(i).setChecked(true);
-				configurator.updateColumnVisibilityStatesMap(configTable.getItems());
+				configurator.updateColumnVisibilityStatesMap_pending(configTable.getItems());
 				updateSelectionButtons();
 			}
 		});
@@ -187,7 +187,7 @@ public class TableColumnConfigurationDialog extends ResizableTitleAreaDialog {
 			public void widgetSelected(final SelectionEvent e) {
 				for (int i = 0; i < configTable.getItemCount(); i++)
 					configTable.getItem(i).setChecked(false);
-				configurator.updateColumnVisibilityStatesMap(configTable.getItems());
+				configurator.updateColumnVisibilityStatesMap_pending(configTable.getItems());
 				updateSelectionButtons();
 			}
 		});
@@ -198,10 +198,10 @@ public class TableColumnConfigurationDialog extends ResizableTitleAreaDialog {
 		final int sourceIdx = configTable.getSelectionIndex();
 		final int targetIdx = up ? sourceIdx - 1 : sourceIdx + 1;
 
-		final List<String> columnIDsAfterSorting = configurator.getColumnIDsAfterSorting();
+		final List<String> columnIDsAfterSorting = configurator.columnIDsOrder_pending;
 		final String targetColumnID = columnIDsAfterSorting.get(targetIdx);
-		columnIDsAfterSorting.set(targetIdx, columnIDsAfterSorting.get(sourceIdx));
-		columnIDsAfterSorting.set(sourceIdx, targetColumnID);
+		configurator.updateColumnOrderList_pending(targetIdx, columnIDsAfterSorting.get(sourceIdx));
+		configurator.updateColumnOrderList_pending(sourceIdx, targetColumnID);
 
 		final TableItem targetItem = configTable.getItem(targetIdx);
 		final TableItem sourceItem = configTable.getItem(sourceIdx);

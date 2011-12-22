@@ -1,5 +1,7 @@
 package org.nightlabs.base.ui.table.column.config;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -29,7 +31,9 @@ import org.nightlabs.base.ui.NLBasePlugin;
 import org.nightlabs.base.ui.resource.Messages;
 
 /**
- *
+ * Configurator for Column order and visibility for an underlying SWT table composite. Settings are
+ * 
+ * via {@link TableColumnConfigurationDialog}.
  * @author Frederik Loeser <!-- frederik [AT] nightlabs [DOT] de -->
  */
 public class TableColumnConfigurator {
@@ -66,12 +70,6 @@ public class TableColumnConfigurator {
 	/** Flag used to indicate whether an external table column resize event occurred the first time. */
 	private boolean performedExternalCall;
 
-	/** Keeps track of the menu items available if the context menu is opened on a table entry. */
-//	private List<MenuItemWrapper> entrySpecificMenuItems;
-
-	/** True in the case the context menu has not been opened yet. */
-//	private boolean pristine = true;
-
 	/** Keeps track whether the header context menu has been recently opened or not. */
 	private boolean headerSpecificMenuItemsAvailable;
 
@@ -99,6 +97,12 @@ public class TableColumnConfigurator {
 	private final long threshold = 1000;
 	
 	private boolean debugging = false;	// if set to true cleans table-specific preference store
+	
+	/** Keeps track of all pending column visibility state changes performed in config dialog not yet applied to the model. */
+	Map<String, Boolean> columnIDToVisibilityState_pending;
+
+	/** Keeps track of all pending column order changes performed in config dialog not yet applied to the model. */
+	List<String> columnIDsOrder_pending;
 
 	/**
 	 * The constructor.
@@ -109,7 +113,6 @@ public class TableColumnConfigurator {
 		this.table = adapter.getTable();
 
 		model = new TableColumnConfigurationModel();
-//		entrySpecificMenuItems = new ArrayList<MenuItemWrapper>();
 
 		table.addListener(SWT.MenuDetect, new TableMenuDetectListener());
 		table.addDisposeListener(new TableDisposeListener());
@@ -119,47 +122,12 @@ public class TableColumnConfigurator {
 		
 		if (debugging)
 			PREFERENCE_STORE.putValue(buildUpPreferenceKey(adapter.getTableID()), "");	// for testing only
+		
+		columnIDToVisibilityState_pending = new HashMap<String, Boolean>(); 
+		columnIDsOrder_pending = new ArrayList<String>();
 
 		performColumnConfiguration();
 	}
-
-	/**
-	 * Wrapper for menu items that constitute to the table entries' context menu. Note, this is a workaround that has
-	 * a minor bug.
-	 * TODO resolve menu workaround
-	 * @author Frederik Loeser <!-- frederik [AT] nightlabs [DOT] de -->
-	 */
-//	public class MenuItemWrapper {
-//		private String text;
-//		private Listener[] listeners;
-//		private boolean enabled;
-//		private Image image;
-//		private int style;
-//
-//		public MenuItemWrapper(final String text, final Listener[] listeners, final boolean enabled, final Image image, final int style) {
-//			this.text = text;
-//			this.listeners = listeners;
-//			this.enabled = enabled;
-//			this.image = image;
-//			this.style = style;
-//		}
-//
-//		public String getText() {
-//			return text;
-//		}
-//		public Listener[] getListeners() {
-//			return listeners;
-//		}
-//		public boolean isEnabled() {
-//			return enabled;
-//		}
-//		public Image getImage() {
-//			return image;
-//		}
-//		public int getStyle() {
-//			return style;
-//		}
-//	}
 
 	/**
 	 * Initialises the model and additionally configures columns in the case the overview is opened at least
@@ -182,6 +150,7 @@ public class TableColumnConfigurator {
 
 		/** The index of the column this listener instance is registered for, i.e. the "real" index (not the visible one!). */
 		private int idx;
+		
 		/** The ID of the column this listener instance is registered for. */
 		private String columnID;
 
@@ -263,26 +232,11 @@ public class TableColumnConfigurator {
 		public void handleEvent(final Event event) {
 			final Menu menu = table.getMenu();
 
-//			if (pristine) {
-//				for (int i = 0; i < menu.getItemCount(); i++) {
-//					final MenuItem item = menu.getItem(i);
-//					entrySpecificMenuItems.add(new MenuItemWrapper(item.getText(), item.getListeners(SWT.Selection),
-//						item.getEnabled(), item.getImage(), item.getStyle()));
-//				}
-//				pristine = !pristine;
-//			}
-
 			point = Display.getCurrent().map(null, table, new Point(event.x, event.y));
 			final Rectangle clientArea = table.getClientArea();
 			final boolean header = clientArea.y <= point.y && point.y < (clientArea.y + table.getHeaderHeight());
 
 			if (header) {
-				// Remove all items and add header-specific ones.
-//				for (int i = 0; i < menu.getItemCount(); i++) {
-//					menu.getItem(i).dispose();
-//					i--;
-//				}
-				
 				if (itemHide == null && itemConfigure == null) { 
 					itemHide = new MenuItem(menu, SWT.NONE, 0);
 					itemHide.setText(Messages.getString(
@@ -291,9 +245,10 @@ public class TableColumnConfigurator {
 					itemHide.addSelectionListener(new SelectionAdapter() {
 						@Override
 						public void widgetSelected(final SelectionEvent e) {
-							// TODO bug when first hiding column (refresh bug?)
+							// TODO bug when first hiding column (refresh bug?), does only appear sometimes
 							final int j = findColumnIdxToHide(point);
-							System.out.println("column index to be hidden: " + j);
+							if (LOGGER.isDebugEnabled())
+								LOGGER.debug("column index to be hidden: " + j);
 							if (j > -1) {
 								final String columnID = adapter.getColumnIDs().get(j);
 								if (!model.getColumnIDsHidden().contains(columnID))	// should not be the case, but...
@@ -313,10 +268,18 @@ public class TableColumnConfigurator {
 					itemConfigure.addSelectionListener(new SelectionAdapter() {
 						@Override
 						public void widgetSelected(final SelectionEvent e) {
-							final TableColumnConfigurationDialog dialog = new TableColumnConfigurationDialog(TableColumnConfigurator.this,
-								table.getShell());
+							// Reinitialise pending data lists/maps with model data.
+							columnIDsOrder_pending.clear();
+							columnIDsOrder_pending.addAll(model.getColumnIDsOrder());
+							columnIDToVisibilityState_pending.putAll(model.getColumnIDToVisibilityState());
+							
+							final TableColumnConfigurationDialog dialog = new TableColumnConfigurationDialog(TableColumnConfigurator.this, table.getShell());
 							if (dialog.open() == Window.OK) {
-								// Adapt table columns visibility state and order according to settings performed (see model).
+								// Adapt table columns visibility states and order according to settings performed in dialog.
+								// Before this, all pending changes will be transferred into the model.
+								model.getColumnIDsOrder().clear();
+								model.getColumnIDsOrder().addAll(columnIDsOrder_pending);
+								model.getColumnIDToVisibilityState().putAll(columnIDToVisibilityState_pending);
 								configureColumns();
 							}
 						}
@@ -339,30 +302,7 @@ public class TableColumnConfigurator {
 						}
 						itemHide = null;
 						itemConfigure = null;
-						
-//						for (int i = 0; i < menu.getItemCount(); i++) {
-//							final MenuItem item = menu.getItem(i);
-//							if (!itemHide.isDisposed() && item.getText() == itemHide.getText()) {
-//								item.dispose();
-//								itemHide = null;
-//								i--;
-//							}
-//							if (!itemConfigure.isDisposed() && item.getText() == itemConfigure.getText()) {
-//								item.dispose();
-//								itemConfigure = null;
-//								break;
-//							}
-//						}
 					}
-					// ...and set entry-specific items again.
-//					for (final MenuItemWrapper wrapper : entrySpecificMenuItems) {
-//						final MenuItem item = new MenuItem(menu, wrapper.getStyle());
-//						item.setEnabled(wrapper.isEnabled());
-//						item.setImage(wrapper.getImage());
-//						item.setText(wrapper.getText());
-//						for (final Listener listener : wrapper.getListeners())
-//							item.addListener(SWT.Selection, listener);
-//					}
 				}
 			}
 		}
@@ -448,7 +388,6 @@ public class TableColumnConfigurator {
 				}
 			}
 		}
-		
 		return -1;
 	}
 
@@ -456,17 +395,15 @@ public class TableColumnConfigurator {
 	 * Updates the column visibility states map according to the given config dialog table items.
 	 * @param items
 	 */
-	void updateColumnVisibilityStatesMap(final TableItem[] items) {
-//		for (int i = 0; i < items.length; i++)
-//			for (final Map.Entry<String, String> entry : model.getColumnIDToColumnText().entrySet())
-//				if (entry.getValue().equals(items[i].getText())) {
-//					model.getColumnIDToVisibilityState().put(entry.getKey(), items[i].getChecked());
-//					break;
-//				}
+	void updateColumnVisibilityStatesMap_pending(final TableItem[] items) {
 		for (int i = 0; i < items.length; i++) {
 			String columnID = (String) items[i].getData(TableColumnConfigurationDialog.TABLE_ITEM_DATA_KEY_COLUMNID);
-			model.getColumnIDToVisibilityState().put(columnID, items[i].getChecked());
+			columnIDToVisibilityState_pending.put(columnID, items[i].getChecked());
 		}
+	}
+	
+	void updateColumnOrderList_pending(int idx, String columnID) {
+		columnIDsOrder_pending.set(idx, columnID);
 	}
 	
 	/**
@@ -586,14 +523,13 @@ public class TableColumnConfigurator {
 				final String columnID = adapter.getColumnIDs().get(i);
 				model.getColumnIDToVisibilityState().put(columnID, true);	// all columns visible
 				model.getColumnIDsOrder().add(columnID);	// initial order, e.g. '0', '1', '2', '3',...
-//				model.getColumnIDToColumnIdx().put(columnID, i);
 				// Table columns have been drawn to a smaller scale if opened the 2nd time, so do not read out table column width
 				// here (too early; layout has not been fully set!) but when disposing table or finishing config dialog.
 			}
 			return true;
 		}
 	}
-
+	
 	public List<String> getColumnIDsAfterSorting() {
 		return model.getColumnIDsOrder();
 	}
