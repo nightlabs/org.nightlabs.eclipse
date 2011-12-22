@@ -62,8 +62,6 @@ public class TableColumnConfigurationDialog extends ResizableTitleAreaDialog {
 		final GridData gridData = new GridData(GridData.FILL_BOTH);
 		content.setLayoutData(gridData);
 
-//		configurator.initialiseModel();
-
 		createTable(content);
 		createButtons(content, numColumns);
 
@@ -105,21 +103,21 @@ public class TableColumnConfigurationDialog extends ResizableTitleAreaDialog {
 
 		for (int i = 0; i < configurator.getColumnIDsAfterSorting().size(); i++) {
 			final TableItem item = new TableItem(configTable, SWT.NONE);
-			item.setText(configurator.getTable().getColumn(Integer.parseInt(configurator.getColumnIDsAfterSorting().get(i))).getText());
-			final Object value = configurator.getColumnIDToVisibilityState().get(configurator.getColumnIDsAfterSorting().get(i));
-			item.setChecked(value == null ? true : (Boolean) value);
+
+			String columnID = configurator.getColumnIDsAfterSorting().get(i);
+			final Object visibilityState = configurator.getColumnIDToVisibilityState().get(columnID);
+			
+			item.setText(configurator.getColumnIDToColumnText().get(columnID));
+			item.setChecked(visibilityState == null ? true : (Boolean) visibilityState);
 		}
 	}
 
 	private void createButtons(final Composite content, final int numColumns) {
 		GridData gridData = new GridData();
 		gridData.widthHint = 50;
-//		gridData.horizontalSpan = 2;
-//		gridData.verticalSpan = 2;
 		gridData.verticalAlignment = SWT.END;
 		gridData.horizontalAlignment = SWT.CENTER;
 		gridData.verticalIndent = 25;
-//		gridData.grabExcessVerticalSpace = true;
 
 		buttonMoveUp = new Button(content, SWT.PUSH);
 		buttonMoveUp.setEnabled(false);
@@ -137,8 +135,6 @@ public class TableColumnConfigurationDialog extends ResizableTitleAreaDialog {
 		gridData = new GridData();
 		gridData.widthHint = 50;
 		gridData.horizontalAlignment = SWT.CENTER;
-//		gridData.horizontalSpan = 2;
-//		gridData.verticalSpan = 2;
 
 		buttonMoveDown = new Button(content, SWT.PUSH);
 		buttonMoveDown.setEnabled(false);
@@ -157,7 +153,6 @@ public class TableColumnConfigurationDialog extends ResizableTitleAreaDialog {
 		gridData.widthHint = 80;
 		gridData.horizontalAlignment = SWT.CENTER;
 		gridData.verticalIndent = 20;
-//		gridData.horizontalSpan = 2;
 
 		buttonSelectAll = new Button(content, SWT.PUSH);
 		buttonSelectAll.setText(Messages.getString(
@@ -176,11 +171,8 @@ public class TableColumnConfigurationDialog extends ResizableTitleAreaDialog {
 
 		gridData = new GridData();
 		gridData.widthHint = 80;
-//		gridData.horizontalSpan = 2;
-//		gridData.verticalSpan = 2;
 		gridData.verticalAlignment = SWT.TOP;
 		gridData.horizontalAlignment = SWT.CENTER;
-//		gridData.grabExcessVerticalSpace = true;
 		
 		buttonUnselectAll = new Button(content, SWT.PUSH);
 		buttonUnselectAll.setText(Messages.getString(

@@ -598,6 +598,10 @@ public class TableColumnConfigurator {
 	public Map<String, Boolean> getColumnIDToVisibilityState() {
 		return model.getColumnIDToVisibilityState();
 	}
+	
+	public Map<String, String> getColumnIDToColumnText() {
+		return model.getColumnIDToColumnText();
+	}
 
 	public Table getTable() {
 		return table;
