@@ -454,16 +454,19 @@ public class TableColumnConfigurator {
 
 	/**
 	 * Updates the column visibility states map according to the given config dialog table items.
-	 * TODO column texts must not be unique, so...
 	 * @param items
 	 */
 	void updateColumnVisibilityStatesMap(final TableItem[] items) {
-		for (int i = 0; i < items.length; i++)
-			for (final Map.Entry<String, String> entry : model.getColumnIDToColumnText().entrySet())
-				if (entry.getValue().equals(items[i].getText())) {
-					model.getColumnIDToVisibilityState().put(entry.getKey(), items[i].getChecked());
-					break;
-				}
+//		for (int i = 0; i < items.length; i++)
+//			for (final Map.Entry<String, String> entry : model.getColumnIDToColumnText().entrySet())
+//				if (entry.getValue().equals(items[i].getText())) {
+//					model.getColumnIDToVisibilityState().put(entry.getKey(), items[i].getChecked());
+//					break;
+//				}
+		for (int i = 0; i < items.length; i++) {
+			String columnID = (String) items[i].getData(TableColumnConfigurationDialog.TABLE_ITEM_DATA_KEY_COLUMNID);
+			model.getColumnIDToVisibilityState().put(columnID, items[i].getChecked());
+		}
 	}
 	
 	/**

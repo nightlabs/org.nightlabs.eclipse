@@ -29,6 +29,8 @@ import org.nightlabs.eclipse.ui.dialog.ResizableTitleAreaDialog;
  */
 public class TableColumnConfigurationDialog extends ResizableTitleAreaDialog {
 
+	static final String TABLE_ITEM_DATA_KEY_COLUMNID = "columnID";
+	
 	private TableColumnConfigurator configurator;
 	private Table configTable;
 
@@ -109,6 +111,8 @@ public class TableColumnConfigurationDialog extends ResizableTitleAreaDialog {
 			
 			item.setText(configurator.getColumnIDToColumnText().get(columnID));
 			item.setChecked(visibilityState == null ? true : (Boolean) visibilityState);
+			
+			item.setData(TABLE_ITEM_DATA_KEY_COLUMNID, columnID);
 		}
 	}
 
@@ -204,11 +208,14 @@ public class TableColumnConfigurationDialog extends ResizableTitleAreaDialog {
 
 		final String targetItemText = targetItem.getText();
 		final Boolean targetItemChecked = targetItem.getChecked();
+		final Object targetItemData = targetItem.getData(TABLE_ITEM_DATA_KEY_COLUMNID);
 
 		targetItem.setText(sourceItem.getText());
 		targetItem.setChecked(sourceItem.getChecked());
+		targetItem.setData(TABLE_ITEM_DATA_KEY_COLUMNID, sourceItem.getData(TABLE_ITEM_DATA_KEY_COLUMNID));
 		sourceItem.setText(targetItemText);
 		sourceItem.setChecked(targetItemChecked);
+		sourceItem.setData(TABLE_ITEM_DATA_KEY_COLUMNID, targetItemData);
 
 		configTable.setSelection(targetIdx);
 	}
