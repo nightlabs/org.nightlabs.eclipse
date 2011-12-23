@@ -39,6 +39,8 @@ public class TableColumnConfigurator {
 
 	private static Logger LOGGER = Logger.getLogger(TableColumnConfigurator.class);
 
+	private static final String TABLE_COLUMN_DATA_KEY_COLUMNID = "columnID"; //$NON-NLS-1$
+	
 	/** {@link IPreferenceStore} used to store properties. */
 	private static final IPreferenceStore PREFERENCE_STORE = NLBasePlugin.getDefault().getPreferenceStore();
 
@@ -57,7 +59,7 @@ public class TableColumnConfigurator {
 	/** Separates visibility and width values in a column configuration. */
 	private static final String PREFERENCE_VALUE_SUB_DELIMITER_2 = ","; //$NON-NLS-1$
 
-	/** Flag indicating whether the overview has been opened the first time or not. */
+	/** Flag indicating whether the overview has been opened the first time ever or not. */
 	private boolean initialisation = true;
 
 	/** Flag indicating whether a local column width adaptation will get applied. */
@@ -87,6 +89,12 @@ public class TableColumnConfigurator {
 	/** Header context menu item for opening column configuration dialog. */
 	private MenuItem itemConfigure = null;
 
+	/** Keeps track of all pending column visibility state changes performed in config dialog not yet applied to the model. */
+	Map<String, Boolean> columnIDToVisibilityState_pending;
+
+	/** Keeps track of all pending column order changes performed in config dialog not yet applied to the model. */
+	List<String> columnIDsOrder_pending;
+
 	/**
 	 * Threshold used to indicate whether a table column resize event occurred is considered as being external or not.
 	 * In the first case the width of the considered column is reset to the width stored in the model (if overview is
@@ -97,12 +105,6 @@ public class TableColumnConfigurator {
 	
 	private boolean debugging = false;	// if set to true cleans table-specific preference store
 	
-	/** Keeps track of all pending column visibility state changes performed in config dialog not yet applied to the model. */
-	Map<String, Boolean> columnIDToVisibilityState_pending;
-
-	/** Keeps track of all pending column order changes performed in config dialog not yet applied to the model. */
-	List<String> columnIDsOrder_pending;
-
 	/**
 	 * The constructor.
 	 * @param adapter
@@ -112,18 +114,19 @@ public class TableColumnConfigurator {
 		this.table = adapter.getTable();
 
 		model = new TableColumnConfigurationModel();
-
+		columnIDToVisibilityState_pending = new HashMap<String, Boolean>(); 
+		columnIDsOrder_pending = new ArrayList<String>();
+		
 		table.addListener(SWT.MenuDetect, new TableMenuDetectListener());
 		table.addDisposeListener(new TableDisposeListener());
 
-		for (int i = 0; i < table.getColumns().length; i++)
+		for (int i = 0; i < table.getColumns().length; i++) {
 			table.getColumn(i).addControlListener(new ColumnControlListener(i, adapter.getColumnIDs().get(i)));
+			table.getColumn(i).setData(TABLE_COLUMN_DATA_KEY_COLUMNID, adapter.getColumnIDs().get(i));
+		}
 		
 		if (debugging)
 			PREFERENCE_STORE.putValue(buildUpPreferenceKey(adapter.getTableID()), "");	// for testing only //$NON-NLS-1$
-		
-		columnIDToVisibilityState_pending = new HashMap<String, Boolean>(); 
-		columnIDsOrder_pending = new ArrayList<String>();
 
 		performColumnConfiguration();
 	}
@@ -173,10 +176,9 @@ public class TableColumnConfigurator {
 					// The overview is opened the first time. Just set time and flag, but do not adapt any column width here.
 					performedExternalCall = true;
 					lastExternalCall = System.currentTimeMillis();
-				} else {
+				} else
 					// Table column columnID has been resized manually, so update the model.
 					model.getColumnIDToColumnWidth().put(columnID, adapter.getTable().getColumn(idx).getWidth());
-				}
 			} else {
 				if (!performedExternalCall || System.currentTimeMillis() - lastExternalCall < threshold) {
 					// The overview is opened at least the 2nd time and settings have been read out from preference store.
@@ -193,10 +195,9 @@ public class TableColumnConfigurator {
 					}
 					performedExternalCall = true;
 					lastExternalCall = System.currentTimeMillis();
-				} else {
+				} else
 					// Table column columnID has been resized manually, so update the model.
 					model.getColumnIDToColumnWidth().put(columnID, adapter.getTable().getColumn(idx).getWidth());
-				}
 			}
 		}
 	}
@@ -289,7 +290,8 @@ public class TableColumnConfigurator {
 				
 //				for (int i = 2; i < menu.getItemCount(); i++)
 //					menu.getItem(i).setEnabled(false);	=> leads to same problem as before: how to restore enabled state later on?
-					
+				if (itemHide != null)
+					itemHide.setEnabled(model.getColumnIDsHidden().size() < model.getColumnIDsOrder().size() ? true : false);
 				headerSpecificMenuItemsAvailable = true;
 			} else {
 				// Dispose header-specific items if set. If no header-specific items are set nothing happens.
@@ -380,7 +382,7 @@ public class TableColumnConfigurator {
 		for (int i = 0; i < model.getColumnIDsOrder().size(); i++) {	// iterates over visible order (including hidden columns)
 			String columnID = model.getColumnIDsOrder().get(i);
 			for (int j = 0; j < table.getColumnCount(); j++) {	// iterates over real order
-				if (table.getColumn(j).getText().equals(model.getColumnIDToColumnText().get(columnID))) {	// TODO column texts must not be unique, so...
+				if (table.getColumn(j).getData(TABLE_COLUMN_DATA_KEY_COLUMNID).equals(columnID)) {
 					totalWidth += table.getColumn(j).getWidth();
 					if (pt.x < totalWidth) {
 						// now get real index...
