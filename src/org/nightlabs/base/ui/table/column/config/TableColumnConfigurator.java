@@ -235,11 +235,13 @@ public class TableColumnConfigurator {
 			final Rectangle clientArea = table.getClientArea();
 			final boolean header = clientArea.y <= point.y && point.y < (clientArea.y + table.getHeaderHeight());
 
+			String itemHideText = Messages.getString(
+				"org.nightlabs.base.ui.table.column.config.TableColumnConfigurator.TableMenuDetectListener.item1.text"); //$NON-NLS-1$
+			
 			if (header) {
-				if (itemHide == null && itemConfigure == null) { 
+				if (!headerSpecificMenuItemsAvailable || !menu.getItem(0).getText().equals(itemHideText)) { 
 					itemHide = new MenuItem(menu, SWT.NONE, 0);
-					itemHide.setText(Messages.getString(
-						"org.nightlabs.base.ui.table.column.config.TableColumnConfigurator.TableMenuDetectListener.item1.text")); //$NON-NLS-1$
+					itemHide.setText(itemHideText);
 					itemHide.setEnabled(model.getColumnIDsHidden().size() < model.getColumnIDsOrder().size() ? true : false);
 					itemHide.addSelectionListener(new SelectionAdapter() {
 						@Override
@@ -294,7 +296,7 @@ public class TableColumnConfigurator {
 				if (headerSpecificMenuItemsAvailable) {
 					headerSpecificMenuItemsAvailable = false;
 					// Remove header-specific items...
-					if (itemHide != null && itemConfigure != null) {
+					if (itemHide != null && itemConfigure != null && menu.getItem(0).getText().equals(itemHideText)) {
 						for (int i = 1; i > -1; i--) {
 							final MenuItem item = menu.getItem(i);
 							item.dispose();
