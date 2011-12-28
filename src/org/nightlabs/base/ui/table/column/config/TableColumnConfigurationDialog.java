@@ -3,7 +3,6 @@ package org.nightlabs.base.ui.table.column.config;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -47,30 +46,18 @@ public class TableColumnConfigurationDialog extends ResizableTitleAreaDialog {
 
 	@Override
 	protected Control createDialogArea(final Composite parent) {
-		// TODO adapt composite for being automatically resized when dialog is resized
-		Composite parent_ = (Composite) super.createDialogArea(parent);
+		final Composite parent_ = (Composite) super.createDialogArea(parent);
+		
 		setTitle(Messages.getString(
 			"org.nightlabs.base.ui.table.column.config.TableColumnConfigurationDialog.title")); //$NON-NLS-1$
 		setMessage(Messages.getString(
 			"org.nightlabs.base.ui.table.column.config.TableColumnConfigurationDialog.message")); //$NON-NLS-1$
 
-		final ScrolledComposite wrapper = new ScrolledComposite(parent_, SWT.NONE);
-		wrapper.setExpandHorizontal(true);
-		wrapper.setExpandVertical(true);
+		final Composite content = new XComposite(parent_, SWT.NONE, LayoutMode.TIGHT_WRAPPER, 2);
 		
-		final Composite content = new XComposite(wrapper, SWT.NONE, LayoutMode.TIGHT_WRAPPER);
-		
-		final int numColumns = 2;
-		content.setLayout(new GridLayout(numColumns, false));
-
-		final GridData gridData = new GridData(GridData.FILL_BOTH);
-		content.setLayoutData(gridData);
-
 		createTable(content);
-		createButtons(content, numColumns);
+		createButtons(content);
 
-		wrapper.setContent(content);
-		
 		return parent_;
 	}
 
@@ -78,9 +65,7 @@ public class TableColumnConfigurationDialog extends ResizableTitleAreaDialog {
 		
 		configTable = new Table(content, SWT.CHECK | SWT.BORDER);
 		
-		GridData gridData = new GridData();
-		gridData.verticalSpan = 4;
-		gridData.widthHint = 250;
+		final GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
 		configTable.setLayoutData(gridData);
 		
 		configTable.addListener(SWT.Selection, new Listener() {
@@ -108,7 +93,7 @@ public class TableColumnConfigurationDialog extends ResizableTitleAreaDialog {
 		for (int i = 0; i < configurator.getColumnIDsAfterSorting().size(); i++) {
 			final TableItem item = new TableItem(configTable, SWT.NONE);
 
-			String columnID = configurator.getColumnIDsAfterSorting().get(i);
+			final String columnID = configurator.getColumnIDsAfterSorting().get(i);
 			final Object visibilityState = configurator.getColumnIDToVisibilityState().get(columnID);
 			
 			item.setText(configurator.getColumnIDToColumnText().get(columnID));
@@ -118,48 +103,12 @@ public class TableColumnConfigurationDialog extends ResizableTitleAreaDialog {
 		}
 	}
 
-	private void createButtons(final Composite content, final int numColumns) {
-		GridData gridData = new GridData();
-		gridData.widthHint = 50;
-		gridData.verticalAlignment = SWT.END;
-		gridData.horizontalAlignment = SWT.CENTER;
-		gridData.verticalIndent = 25;
-
-		buttonMoveUp = new Button(content, SWT.PUSH);
-		buttonMoveUp.setEnabled(false);
-		buttonMoveUp.setText(Messages.getString(
-			"org.nightlabs.base.ui.table.column.config.TableColumnConfigurationDialog.buttonMoveUp.text")); //$NON-NLS-1$
-		buttonMoveUp.setLayoutData(gridData);
-		buttonMoveUp.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				updateColumnOrder(true);
-				updateButtonMoveUpDownStates();
-			}
-		});
+	private void createButtons(final Composite content_) {
+		final Composite content = new Composite(content_, SWT.NONE);
+		content.setLayout(new GridLayout());
+		GridData gridData;
 		
-		gridData = new GridData();
-		gridData.widthHint = 50;
-		gridData.horizontalAlignment = SWT.CENTER;
-
-		buttonMoveDown = new Button(content, SWT.PUSH);
-		buttonMoveDown.setEnabled(false);
-		buttonMoveDown.setText(Messages.getString(
-			"org.nightlabs.base.ui.table.column.config.TableColumnConfigurationDialog.buttonMoveDown.text")); //$NON-NLS-1$
-		buttonMoveDown.setLayoutData(gridData);
-		buttonMoveDown.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				updateColumnOrder(false);
-				updateButtonMoveUpDownStates();
-			}
-		});
-
-		gridData = new GridData();
-		gridData.widthHint = 80;
-		gridData.horizontalAlignment = SWT.CENTER;
-		gridData.verticalIndent = 20;
-
+		gridData = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
 		buttonSelectAll = new Button(content, SWT.PUSH);
 		buttonSelectAll.setText(Messages.getString(
 			"org.nightlabs.base.ui.table.column.config.TableColumnConfigurationDialog.buttonSelectAll.text")); //$NON-NLS-1$
@@ -175,11 +124,7 @@ public class TableColumnConfigurationDialog extends ResizableTitleAreaDialog {
 		});
 		updateButtonSelectAllState();
 
-		gridData = new GridData();
-		gridData.widthHint = 80;
-		gridData.verticalAlignment = SWT.TOP;
-		gridData.horizontalAlignment = SWT.CENTER;
-		
+		gridData = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
 		buttonUnselectAll = new Button(content, SWT.PUSH);
 		buttonUnselectAll.setText(Messages.getString(
 			"org.nightlabs.base.ui.table.column.config.TableColumnConfigurationDialog.buttonUnselectAll.text")); //$NON-NLS-1$
@@ -194,6 +139,34 @@ public class TableColumnConfigurationDialog extends ResizableTitleAreaDialog {
 			}
 		});
 		updateButtonUnselectAllState();
+		
+		gridData = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
+		buttonMoveUp = new Button(content, SWT.PUSH);
+		buttonMoveUp.setEnabled(false);
+		buttonMoveUp.setText(Messages.getString(
+			"org.nightlabs.base.ui.table.column.config.TableColumnConfigurationDialog.buttonMoveUp.text")); //$NON-NLS-1$
+		buttonMoveUp.setLayoutData(gridData);
+		buttonMoveUp.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(final SelectionEvent e) {
+				updateColumnOrder(true);
+				updateButtonMoveUpDownStates();
+			}
+		});
+		
+		gridData = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
+		buttonMoveDown = new Button(content, SWT.PUSH);
+		buttonMoveDown.setEnabled(false);
+		buttonMoveDown.setText(Messages.getString(
+			"org.nightlabs.base.ui.table.column.config.TableColumnConfigurationDialog.buttonMoveDown.text")); //$NON-NLS-1$
+		buttonMoveDown.setLayoutData(gridData);
+		buttonMoveDown.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(final SelectionEvent e) {
+				updateColumnOrder(false);
+				updateButtonMoveUpDownStates();
+			}
+		});
 	}
 
 	private void updateColumnOrder(final boolean up) {
