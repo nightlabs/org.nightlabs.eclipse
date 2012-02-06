@@ -5,14 +5,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.nightlabs.eclipse</groupId>
 	<artifactId>org.nightlabs.eclipse.ui.pdfrenderer</artifactId>
-	<version>1.2.0</version>
+	<version>1.3.0-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 	<name>${project.artifactId}</name>
 
 	<parent>
 		<groupId>org.nightlabs.eclipse</groupId>
 		<artifactId>org.nightlabs.eclipse.parent</artifactId>
-		<version>1.2.0</version>
+		<version>1.3.0-SNAPSHOT</version>
 		<relativePath>../org.nightlabs.eclipse.parent/pom.xml</relativePath>
 	</parent>
 
