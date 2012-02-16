@@ -52,5 +52,20 @@
 				</excludes>
 			</resource>
 		</resources>
+		
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<configuration>
+					<instructions>
+						<Import-Package>!com.sun.pdfview,*</Import-Package>
+						<Include-Resource>lib/PDFRenderer.jar=lib/PDFRenderer.jar</Include-Resource>
+						<Bundle-ClassPath>.,lib/PDFRenderer.jar</Bundle-ClassPath>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+		
 	</build>
 </project>
