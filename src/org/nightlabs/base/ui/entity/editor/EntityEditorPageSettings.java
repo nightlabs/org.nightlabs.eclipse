@@ -105,7 +105,7 @@ public class EntityEditorPageSettings implements Comparable<EntityEditorPageSett
 		try {
 			this.pageFactory = (IEntityEditorPageFactory)cfg.createExecutableExtension("class"); //$NON-NLS-1$
 		} catch (Exception e) {
-			throw new EPProcessorException("The class attribute was not valid ", extension); //$NON-NLS-1$
+			throw new EPProcessorException("The class attribute was not valid ", extension, e); //$NON-NLS-1$
 		}
 
 //		this.pageClass = cfg.getAttribute("class");
