@@ -60,8 +60,9 @@
 				<configuration>
 					<instructions>
 						<Import-Package>!com.sun.pdfview,*</Import-Package>
-						<Include-Resource>lib/PDFRenderer.jar=lib/PDFRenderer.jar</Include-Resource>
-						<Bundle-ClassPath>.,lib/PDFRenderer.jar</Bundle-ClassPath>
+						<Export-Package>com.sun.pdfview.*,${project.artifactId}.*</Export-Package>
+						<!-- <Include-Resource>lib/PDFRenderer.jar=lib/PDFRenderer.jar</Include-Resource>
+						<Bundle-ClassPath>.,lib/PDFRenderer.jar</Bundle-ClassPath> -->
 					</instructions>
 				</configuration>
 			</plugin>
