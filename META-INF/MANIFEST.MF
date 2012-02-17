@@ -18,7 +18,7 @@ Export-Package: org.eclipse.core.resources,
  org.eclipse.swt.accessibility,
  org.eclipse.ui,
  org.nightlabs.base.ui.util,
- org.nightlabs.eclipse.compatibility;version="1.2.0.SNAPSHOT",
- org.nightlabs.eclipse.compatibility.treestate;version="1.2.0.SNAPSHOT"
+ org.nightlabs.eclipse.compatibility;version="1.3.0.SNAPSHOT",
+ org.nightlabs.eclipse.compatibility.treestate;version="1.3.0.SNAPSHOT"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: .
