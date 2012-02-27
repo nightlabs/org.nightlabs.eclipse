@@ -91,16 +91,29 @@
 		<module>../org.nightlabs.base.ui</module>
 		<module>../org.nightlabs.base.ui.errorreport.mantis</module>		
 
+		<module>../org.nightlabs.connection.ui</module>
+
 		<module>../org.nightlabs.eclipse.compatibility.rap</module>
 		<module>../org.nightlabs.eclipse.compatibility.rcp</module>
 
 		<module>../org.nightlabs.eclipse.extension</module>
 		<module>../org.nightlabs.eclipse.preference.ui</module>
 		<module>../org.nightlabs.eclipse.ui.dialog</module>
+		<module>../org.nightlabs.eclipse.ui.fckeditor</module>
 		<module>../org.nightlabs.eclipse.ui.pdfrenderer</module>
 		<module>../org.nightlabs.eclipse.ui.pdfviewer</module>
 		<module>../org.nightlabs.eclipse.ui.pdfviewer.extension</module>
 		<module>../org.nightlabs.eclipse.ui.treestate</module>
 		<module>../org.nightlabs.eclipse.ui.control.export</module>
+
+		<module>../org.nightlabs.editor2d.ui</module>
+		<module>../org.nightlabs.editor2d.viewer.ui</module>
+
+		<module>../org.nightlabs.jseditor.ui</module>
+		<module>../org.nightlabs.jseditor.ui.rcp</module>
+
+		<module>../org.nightlabs.keyreader.ui</module>
+		<module>../org.nightlabs.tableprovider.ui</module>
+		
 	</modules>
 </project>

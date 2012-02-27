@@ -260,6 +260,11 @@ Marco :-)
 			</dependency>
 			<dependency>
 				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.connection.ui</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
 				<artifactId>org.nightlabs.eclipse.compatibility.rap</artifactId>
 				<version>${nightlabs.version}</version>
 			</dependency>
@@ -290,12 +295,47 @@ Marco :-)
 			</dependency>
 			<dependency>
 				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.eclipse.ui.fckeditor</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
 				<artifactId>org.nightlabs.eclipse.ui.treestate</artifactId>
 				<version>${nightlabs.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.editor2d.ui</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
 				<artifactId>org.nightlabs.editor2d.viewer.ui</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.jseditor.ui</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.jseditor.ui.rcp</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.eclipse.ui.pdfviewer.extension</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.eclipse.ui.pdfrenderer</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.eclipse.ui.pdfviewer</artifactId>
 				<version>${nightlabs.version}</version>
 			</dependency>
 			
@@ -387,6 +427,11 @@ Marco :-)
 				<version>3.6.2</version>
 			</dependency>
 			<dependency>
+				<groupId>org.eclipse.jface</groupId>
+				<artifactId>org.eclipse.jface.text</artifactId>
+				<version>3.6.1</version>
+			</dependency>
+			<dependency>
 				<groupId>org.eclipse.ui</groupId>
 				<artifactId>org.eclipse.ui.workbench</artifactId>
 				<version>3.6.2</version>
@@ -409,6 +454,11 @@ Marco :-)
 			<!-- ### ECLIPSE RCP :: END ### -->
 			
 			<!-- ### ECLIPSE SHARED :: BEGIN ### -->
+			<dependency>
+				<groupId>org.eclipse</groupId>
+				<artifactId>draw2d</artifactId>
+				<version>3.2.100-v20070529</version>
+			</dependency>
 			<dependency>
 				<groupId>org.eclipse.core</groupId>
 				<artifactId>org.eclipse.core.resources</artifactId>
@@ -498,6 +548,13 @@ Marco :-)
 			</dependency>
 			<!-- ### ECLIPSE SHARED :: END ### -->
 			<!-- ##### ECLIPSE :: END ##### -->
+
+			<dependency>
+				<groupId>org.holongate</groupId>
+				<artifactId>org.holongate.j2d</artifactId>
+				<version>2.3.0</version>
+			</dependency>
+			
 		</dependencies>
 	</dependencyManagement>
 
