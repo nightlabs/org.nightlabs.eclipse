@@ -63,13 +63,11 @@
 			<groupId>org.nightlabs.eclipse</groupId>
 			<artifactId>org.nightlabs.eclipse.ui.pdfrenderer</artifactId>
 			<scope>provided</scope>
-			<version>${project.version}</version><!-- move to parent -->
 		</dependency>
 		<dependency>
 			<groupId>org.nightlabs.eclipse</groupId>
 			<artifactId>org.nightlabs.eclipse.ui.pdfviewer</artifactId>
 			<scope>provided</scope>
-			<version>${project.version}</version><!-- move to parent -->
 		</dependency>
 		
 		<dependency>
