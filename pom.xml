@@ -2,7 +2,6 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.nightlabs.eclipse</groupId>
 	<artifactId>org.nightlabs.jseditor.ui</artifactId>
 	<packaging>bundle</packaging>
 
@@ -33,13 +32,5 @@
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<outputDirectory>bin</outputDirectory>
-		<resources>
-			<resource>
-				<directory>src</directory>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
-			</resource>
-		</resources>
 	</build>
 </project>
