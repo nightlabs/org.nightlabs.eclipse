@@ -3,10 +3,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.nightlabs.eclipse</groupId>
 	<artifactId>org.nightlabs.eclipse.ui.dialog</artifactId>
 	<packaging>bundle</packaging>
-	<name>${project.artifactId}</name>
 
 	<parent>
 		<groupId>org.nightlabs.eclipse</groupId>
@@ -32,23 +30,6 @@
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<outputDirectory>bin</outputDirectory>
-		<resources>
-			<resource>
-				<directory>src</directory>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
-			</resource>
-			<!-- TODO following may be removed when upper is removed (defined in parent) -->
-			<resource>
-				<directory>.</directory>
-				<includes>
-					<include>plugin.xml</include>
-					<include>plugin*.properties</include>
-					<include>schema/**/*</include>
-				</includes>
-			</resource>
-		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.felix</groupId>
