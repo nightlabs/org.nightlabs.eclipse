@@ -595,6 +595,12 @@ Marco :-)
 					<instructions>
 						<Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
 						<Bundle-Localization>plugin</Bundle-Localization>
+						<Import-Package>
+						!javax.jdo.*,
+						!org.apache.commons.lang.exception.*,
+						!org.apache.commons.lang.time.*,
+						*
+						</Import-Package>
 					</instructions>
 				</configuration>
 			</plugin>
