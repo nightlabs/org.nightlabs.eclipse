@@ -4,7 +4,7 @@
 	
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>org.nightlabs.editor2d.viewer.ui</artifactId>
-	<packaging>bundle</packaging>
+	<packaging>jar</packaging>
 
 	<parent>
 		<groupId>org.nightlabs.eclipse</groupId>
@@ -79,5 +79,39 @@
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<outputDirectory>bin</outputDirectory>
+		<resources>
+			<resource>
+				<directory>src</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+			<!-- TODO following may be removed when upper is removed (defined in parent) -->
+			<resource>
+				<directory>.</directory>
+				<includes>
+					<include>plugin.xml</include>
+					<include>plugin*.properties</include>
+					<include>schema/**/*</include>
+					<include>icons/**/*</include>
+					<include>LICENSE.txt</include>
+					<!-- FIXME this is to maintain the old setup, before we switch to maven-bundle-plugin and Import-Package -->
+					<include>lib/**/*</include>
+				</includes>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.1</version>
+				<configuration>
+					<archive>
+						<manifestFile>META-INF/MANIFEST.MF</manifestFile>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
+	
 </project>

@@ -3,7 +3,7 @@ Generated-from: 1148177220000;type=2
 Bundle-ManifestVersion: 2
 Bundle-Name: Editor2D Viewer Plug-in
 Bundle-SymbolicName: org.nightlabs.editor2d.viewer.ui;singleton:=true
-Bundle-Version: 1.0.10.qualifier
+Bundle-Version: 1.3.0.qualifier
 Bundle-Activator: org.nightlabs.editor2d.viewer.ui.ViewerPlugin
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: NightLabs.org
@@ -26,11 +26,11 @@ Export-Package: org.nightlabs.editor2d.viewer.ui,
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.nightlabs.base.ui,
- org.nightlabs.eclipse.ui.dialog;visibility:=reexport,
- com.thoughtworks.xstream,
  org.nightlabs.editor2d;visibility:=reexport,
+ org.nightlabs.eclipse.ui.dialog;visibility:=reexport,
  org.nightlabs.jfire.base.j2ee;resolution:=optional
-Import-Package: org.apache.log4j
+Import-Package: org.apache.log4j,
+ com.thoughtworks.xstream
 Eclipse-BuddyPolicy: registered
 Eclipse-RegisterBuddy: 
  org.nightlabs.jfire.base.j2ee,
