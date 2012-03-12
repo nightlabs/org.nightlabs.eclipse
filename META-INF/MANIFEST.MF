@@ -154,5 +154,12 @@ Require-Bundle: org.nightlabs.eclipse.ui.dialog,
  org.nightlabs.eclipse.extension;bundle-version="1.0.0";visibility:=reexport,
  org.nightlabs.eclipse.compatibility;bundle-version="1.0.0",
  org.nightlabs.singleton;bundle-version="1.0.0";visibility:=reexport
-Import-Package: org.apache.log4j, org.apache.log4j.xml, org.nightlabs.config, org.nightlabs.concurrent, org.nightlabs.progress, org.nightlabs.util, org.nightlabs.i18n
+Import-Package: org.apache.log4j, 
+ org.apache.log4j.xml, 
+ org.nightlabs.config, 
+ org.nightlabs.concurrent, 
+ org.nightlabs.progress, 
+ org.nightlabs.util, 
+ org.nightlabs.i18n,
+ org.nightlabs.i18n.unit
 Eclipse-BuddyPolicy: registered
