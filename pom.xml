@@ -569,6 +569,8 @@ Marco :-)
 					<include>LICENSE.txt</include>
 					<include>schema/**/*</include>
 					<include>icons/**/*</include>
+					<include>img/**/*</include>
+					<include>theme/**/*</include>
 				</includes>
 			</resource>
 			<resource>
