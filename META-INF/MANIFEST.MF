@@ -5,11 +5,11 @@ Bundle-SymbolicName: org.nightlabs.history.ui;singleton:=true
 Bundle-Version: 1.0.2
 Bundle-Activator: org.nightlabs.history.ui.Activator
 Require-Bundle: org.nightlabs.eclipse.compatibility,
- org.eclipse.core.runtime,
- org.apache.log4j,
- org.nightlabs.singleton;bundle-version="1.0.0"
+ org.eclipse.core.runtime
 Eclipse-LazyStart: true
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.nightlabs.history.ui
 Bundle-Localization: plugin
 Bundle-Vendor: NightLabs.org
+Import-Package: org.apache.log4j,
+ org.nightlabs.singleton
