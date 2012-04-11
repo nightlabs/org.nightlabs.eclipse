@@ -68,4 +68,3 @@ Import-Package: org.eclipse.ui.forms,
  org.nightlabs.i18n.unit,
  org.nightlabs.i18n.unit.resolution,
  org.nightlabs.util
- 
