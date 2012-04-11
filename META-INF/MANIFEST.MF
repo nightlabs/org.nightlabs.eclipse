@@ -10,4 +10,4 @@ Import-Package: org.eclipse.jface.action,
  org.eclipse.swt.events,
  org.eclipse.swt.layout,
  org.eclipse.swt.widgets
-Require-Bundle: org.nightlabs.jseditor.ui;bundle-version="1.0.0"
+Require-Bundle: org.nightlabs.jseditor.ui
