@@ -108,9 +108,12 @@
 
 		<module>../org.nightlabs.editor2d.ui</module>
 		<module>../org.nightlabs.editor2d.viewer.ui</module>
+		
+		<module>../org.nightlabs.history.ui</module>
 
 		<module>../org.nightlabs.jseditor.ui</module>
 		<module>../org.nightlabs.jseditor.ui.rcp</module>
+		<module>../org.nightlabs.jseditor.ui.rap</module>
 
 		<module>../org.nightlabs.keyreader.ui</module>
 		<module>../org.nightlabs.tableprovider.ui</module>

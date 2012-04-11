@@ -315,12 +315,22 @@ Marco :-)
 			</dependency>
 			<dependency>
 				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.history.ui</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
 				<artifactId>org.nightlabs.jseditor.ui</artifactId>
 				<version>${nightlabs.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.nightlabs.eclipse</groupId>
 				<artifactId>org.nightlabs.jseditor.ui.rcp</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.jseditor.ui.rap</artifactId>
 				<version>${nightlabs.version}</version>
 			</dependency>
 			<dependency>
