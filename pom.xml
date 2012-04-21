@@ -10,6 +10,7 @@
 		<groupId>org.nightlabs.eclipse</groupId>
 		<artifactId>org.nightlabs.eclipse.parent</artifactId>
 		<version>1.3.0</version>
+		<relativePath>../org.nightlabs.eclipse.parent</relativePath>
 	</parent>
 
 	<dependencies>
