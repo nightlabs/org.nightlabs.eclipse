@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: History Plug-in
 Bundle-SymbolicName: org.nightlabs.history.ui;singleton:=true
-Bundle-Version: 1.3.1
+Bundle-Version: 1.3.2.SNAPSHOT
 Bundle-Activator: org.nightlabs.history.ui.Activator
 Require-Bundle: org.nightlabs.eclipse.compatibility,
  org.eclipse.core.runtime
