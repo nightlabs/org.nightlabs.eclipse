@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: org.nightlabs.eclipse.ui.control.export
 Bundle-SymbolicName: org.nightlabs.eclipse.ui.control.export;singleton:=true
-Bundle-Version: 1.3.2
+Bundle-Version: 1.3.3.SNAPSHOT
 Bundle-Vendor: NightLabs.org
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.nightlabs.eclipse.compatibility,
