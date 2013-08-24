@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>org.nightlabs.eclipse</groupId>
 		<artifactId>org.nightlabs.eclipse.parent</artifactId>
-		<version>1.3.2-SNAPSHOT</version>
+		<version>1.3.2</version>
 		<relativePath>../org.nightlabs.eclipse.parent/pom.xml</relativePath>
 	</parent>
 
