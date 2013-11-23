@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+    <extension point="org.eclipse.ui.actionSets">
+        <actionSet
+            id="org.nightlabs.eclipse.ui.control.export.workbenchActionSet"
+            label="%org.nightlabs.eclipse.ui.control.export.workbenchActionSet.label" visible="true">
+            <action
+                class="org.nightlabs.eclipse.ui.control.export.action.ExportCSVAction"
+                id="org.nightlabs.eclipse.ui.control.export.action.ExportCSVAction"
+                label="%org.nightlabs.eclipse.ui.control.export.action.ExportCSVAction.label"
+                menubarPath="window/additions" tooltip="%org.nightlabs.eclipse.ui.control.export.action.ExportCSVAction.tooltip"/>
+        </actionSet>
+    </extension>
+    <extension point="org.eclipse.ui.startup">
+        <startup class="org.nightlabs.eclipse.ui.control.export.startup.Startup"/>
+    </extension>
+</plugin>
