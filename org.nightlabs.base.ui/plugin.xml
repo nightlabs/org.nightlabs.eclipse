@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+    <extension-point id="exceptionhandler"
+        name="Defines handler for uncaught exception within the workbench." schema="schema/exceptionhandler.exsd"/>
+    <extension-point id="notificationinterceptor"
+        name="Notification Interceptor" schema="schema/notificationinterceptor.exsd"/>
+    <extension-point id="entitymanagerview"
+        name="EntityManagerView Extension-Point" schema="schema/entitymanagerview.exsd"/>
+    <extension-point id="entitylist" name="EntityList Extension Point" schema="schema/entitylist.exsd"/>
+    <extension-point id="editorfilefilter"
+        name="Defines FileExtension-Filter for the OpenFileAction based on the editor-ID" schema="schema/editorfilefilter.exsd"/>
+    <extension-point id="newfileaction" name="newfileaction" schema="schema/newfileaction.exsd"/>
+    <extension-point id="editor2perspective" name="editor2perspective" schema="schema/editor2perspective.exsd"/>
+    <extension-point id="selectionAction" name="selectionAction" schema="schema/selectionAction.exsd"/>
+    <extension-point id="iofilter" name="iofilter" schema="schema/iofilter.exsd"/>
+    <extension-point id="simpleExceptionHandler"
+        name="simpleExceptionHandler" schema="schema/simpleExceptionHandler.exsd"/>
+    <extension-point id="printerConfiguration"
+        name="PrinterConfiguration Extension Point" schema="schema/printerConfiguration.exsd"/>
+    <extension-point id="predefinedPage" name="predefinedPage" schema="schema/predefinedPage.exsd"/>
+    <extension-point id="unit" name="unit" schema="schema/unit.exsd"/>
+    <extension-point id="entityEditor"
+        name="EntityEditor Extension-Point" schema="schema/entityEditor.exsd"/>
+    <extension-point id="resolutionUnit" name="ResolutionUnit" schema="schema/resolutionUnit.exsd"/>
+    <extension-point id="cache" name="General Cache Extension Point" schema="schema/cache.exsd"/>
+    <extension-point id="login" name="Login" schema="schema/login.exsd"/>
+    <extension-point id="removeExtension" name="removeExtension" schema="schema/removeExtension.exsd"/>
+    <extension-point id="contributionItemSet" name="contributionItemSet" schema="schema/contributionItemSet.exsd"/>
+    <extension-point id="perspectiveExtension"
+        name="perspectiveExtension" schema="schema/perspectiveExtension.exsd"/>
+    <extension-point id="searchResultProvider"
+        name="searchResultProvider" schema="schema/searchResultProvider.exsd"/>
+    <extension-point id="editorActionBarContribution"
+        name="editorActionBarContribution" schema="schema/editorActionBarContribution.exsd"/>
+    <extension-point id="entityEditorActionBarContribution"
+        name="entityEditorActionBarContribution" schema="schema/entityEditorActionBarContribution.exsd"/>
+    <extension-point id="workbenchListener" name="workbenchListener" schema="schema/workbenchListener.exsd"/>
+    <extension-point id="errorReportSender" name="Error Report Sender" schema="schema/errorReportSender.exsd"/>
+    <extension-point id="wizardDelegateFactory" name="wizardDelegateFactory" schema="schema/wizardDelegateFactory.exsd"/>
+    <extension point="org.nightlabs.base.ui.exceptionhandler">
+        <exceptionHandler
+            class="org.nightlabs.base.ui.exceptionhandler.ThrowableHandler"
+            name="Default Handler for all Throwables" priority="999" targetType="java.lang.Throwable"/>
+        <exceptionHandler
+            class="org.nightlabs.base.ui.exceptionhandler.OutOfMemoryHandler"
+            name="Handler for OutOfMemoryError" priority="100" targetType="java.lang.OutOfMemoryError"/>
+    </extension>
+    <extension point="org.eclipse.ui.elementFactories">
+        <factory class="org.nightlabs.base.ui.io.FileEditorInputFactory" id="org.nightlabs.base.ui.io.FileEditorInputFactory"/>
+    </extension>
+    <extension point="org.eclipse.ui.preferencePages">
+<!--    
+        <page
+            category="org.nightlabs.base.ui.preference.UIPreferencePage"
+            class="org.eclipse.ui.internal.keys.KeysPreferencePage"
+            id="org.eclipse.ui.internal.keys.KeysPreferencePage" name="%preferencePage.keys.label"/>            
+        <page category="%category.general"
+            class="org.eclipse.ui.internal.themes.ColorsAndFontsPreferencePage"
+            id="org.eclipse.ui.internal.themes.ColorsAndFontsPreferencePage" name="%preferencePage.colorAndFonts.label"/>
+        <page category="%category.general"
+            class="org.eclipse.ui.internal.dialogs.ContentTypesPreferencePage"
+            id="org.eclipse.ui.internal.dialogs.ContentTypesPreferencePage" name="%preferencePage.contentTypes.label"/>
+-->
+        <page
+            category="org.nightlabs.base.ui.preference.UIPreferencePage"
+            class="org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportSenderPreferencePage"
+            id="org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportSenderPreferencePage" name="%preferencePage.errorReportSender.label"/>
+        <page category=""
+            class="org.nightlabs.base.ui.print.pref.PrinterPreferencePage"
+            id="org.nightlabs.base.ui.print.pref.PrinterPreferencePage" name="%preferencePage.printer.label"/>
+        <page
+            category="org.nightlabs.base.ui.print.pref.PrinterPreferencePage"
+            class="org.nightlabs.base.ui.print.pref.PrinterConfigurationPreferencePage"
+            id="org.nightlabs.base.ui.print.pref.PrinterConfigurationPreferencePage" name="%preferencePage.printerConfiguration.label"/>
+        <page
+            category="org.nightlabs.base.ui.print.pref.PrinterPreferencePage"
+            class="org.nightlabs.base.ui.print.pref.DocumentPrinterPreferencePage"
+            id="org.nightlabs.base.ui.print.pref.DocumentPrinterPreferencePage" name="%preferencePage.documentPrinter.label"/>
+        <page
+            category="org.nightlabs.base.ui.print.pref.DocumentPrinterPreferencePage"
+            class="org.nightlabs.base.ui.print.pref.PDFDocumentPrinterPreferencePage"
+            id="org.nightlabs.base.ui.print.pref.PDFDocumentPrinterPreferencePage" name="%preferencePage.pdfDocumentPrinter.label"/>    
+        <page class="org.nightlabs.base.ui.preference.UIPreferencePage"
+            id="org.nightlabs.base.ui.preference.UIPreferencePage" name="%org.nightlabs.base.ui.preference.UIPreferencePage.name"/>
+    </extension>
+    <extension point="org.eclipse.ui.actionSets">
+        <actionSet id="org.nightlabs.base.ui.KeyAssistantActionSet"
+            label="%org.nightlabs.base.ui.KeyAssistantActionSet.label" visible="true">
+            <action
+                class="org.eclipse.ui.internal.handlers.ShowKeyAssistHandler"
+                definitionId="org.eclipse.ui.window.showKeyAssist"
+                id="org.eclipse.ui.actions.showKeyAssistHandler"
+                label="%menu.help.showKeyAssistant.label"
+                menubarPath="help/group.assist" style="push"/>
+        </actionSet>
+        <!--        
+        <actionSet
+              id="org.nightlabs.base.ui.actionSet1"
+              label="Error Test"
+              visible="true">
+           <action
+                 class="org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorTestAction"
+                 id="org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorTestAction"
+                 label="Error Test"
+                 menubarPath="help/group.assist"
+                 style="push">
+           </action>
+        </actionSet>
+-->
+    </extension>
+    <extension point="org.nightlabs.base.ui.printerConfiguration">
+        <printerConfiguratorFactory
+            class="org.nightlabs.base.ui.print.PrinterConfiguratorFactoryDefault" id="org.nightlabs.base.ui.print.PrinterConfiguratorFactoryDefault"/>
+        <printerUseCase
+            defaultConfigurator="org.nightlabs.base.ui.print.PrinterConfiguratorFactoryDefault"
+            description="%printerUseCase.default.description"
+            id="PrinterUseCase-Default" name="%printerUseCase.default.name"/>
+    </extension>
+    <extension point="org.nightlabs.base.ui.unit">
+        <unit context="Editor2D"
+            factor="2.8346278133681047678439820851522"
+            name="%unit.point.name" symbol="pt" unitID="point"/>
+    </extension>
+    <!--
+ <extension
+       point="org.nightlabs.base.ui.simpleExceptionHandler">
+    <simpleExceptionHandler
+          message="Ein Laufzeit-Fehler ist aufgetreten. Wenden Sie sich bitte an Ihren System-Administrator..."
+          targetType="java.lang.RuntimeException"/>
+ </extension>
+ <extension
+       point="org.eclipse.ui.actionSets">
+    <actionSet
+          id="org.nightlabs.base.ui.actionSet2"
+          label="org.nightlabs.base.ui.actionSet2"
+          visible="true">
+       <action
+             class="org.nightlabs.base.ui.exceptionhandler.TestExceptionAction"
+             definitionId="org.nightlabs.base.ui.TriggerTestException"
+             icon="icons/NLBasePlugin-Delete.24x24.png"
+             id="TriggerTestException"
+             label="TriggerTestException"
+             menubarPath="File/testMenu"
+             style="push"
+             toolbarPath="TriggerTestException"
+             tooltip="TriggerTestException"/>
+    </actionSet>
+         <actionSet
+            label="Show Key Assist..."
+            visible="true"
+            id="org.eclipse.ui.actionSet.keyBindings">
+         <action
+               label="%KeyBindingActionSet.showKeyAssist.label"
+               class="org.eclipse.ui.internal.handlers.ShowKeyAssistHandler"
+               menubarPath="help/group.assist"
+               id="org.eclipse.ui.actions.showKeyAssistHandler"
+               definitionId="org.eclipse.ui.window.showKeyAssist">
+         </action>
+     	</actionSet>
+ </extension>
+ <extension
+       point="org.eclipse.ui.bindings">
+    <key
+      sequence="Shift+Ctrl+A"
+      commandId="org.nightlabs.base.ui.TriggerTestException"
+      schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
+	</key>
+ </extension>
+ <extension
+       point="org.eclipse.ui.commands">
+    <command
+          description="TriggerTestException"
+          id="org.nightlabs.base.ui.TriggerTestException"
+          name="org.nightlabs.base.ui.TriggerTestException"
+          categoryId="org.nightlabs.base.ui.TestExceptionCategory">
+    </command>
+	<category
+          name="TestExceptionCategory"
+          description="TestExceptionCategory"
+          id="org.nightlabs.base.ui.TestExceptionCategory">
+    </category>
+ </extension>
+-->
+    <extension point="org.nightlabs.base.ui.cache">
+        <cacheFactory class="org.nightlabs.base.ui.cache.DummyCacheFactory"/>
+    </extension>
+    <extension point="org.nightlabs.base.ui.errorReportSender">
+        <errorReportSender
+            class="org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportSenderEMail"
+            id="org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportSenderEMail"
+            name="%org.nightlabs.base.ui.exceptionhandler.errorreport.ErrorReportSenderEMail.name" priority="-1000"/>
+    </extension>
+    <!--   
+   <extension
+         point="org.nightlabs.base.ui.removeExtension">
+      <removeExtension
+            attributeName="id"
+            attributePattern="org.eclipse.ui.edit.text.actionSet.navigation"
+            elementPath="actionSet"
+            extensionPointID="org.eclipse.ui.actionSets"/>
+      <removeExtension
+            attributeName="id"
+            attributePattern="org.eclipse.ui.edit.text.actionSet.convertLineDelimitersTo"
+            elementPath="actionSet"
+            extensionPointID="org.eclipse.ui.actionSets"/>
+      <removeExtension
+            attributeName="id"
+            attributePattern="org.eclipse.ui.WorkingSetActionSet"
+            elementPath="actionSet"
+            extensionPointID="org.eclipse.ui.actionSets"/>
+      <removeExtension
+            attributeName="id"
+            attributePattern=".*eclipse.*resource.*"
+            elementPath="perspective"
+            extensionPointID="org.eclipse.ui.perspectives"/>
+   </extension>
+-->
+</plugin>
