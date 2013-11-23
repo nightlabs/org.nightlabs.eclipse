@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>org.nightlabs.eclipse.ui.treestate</artifactId>
+	<packaging>bundle</packaging>
+
+	<parent>
+		<groupId>org.nightlabs.eclipse</groupId>
+		<artifactId>org.nightlabs.eclipse.parent</artifactId>
+		<version>1.3.3-SNAPSHOT</version>
+		<relativePath>../org.nightlabs.eclipse.parent</relativePath>
+	</parent>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.eclipse.core</groupId>
+			<artifactId>org.eclipse.core.runtime</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.nightlabs.eclipse</groupId>
+			<artifactId>${org.nightlabs.eclipse.compatibility.artifactId}</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<outputDirectory>bin</outputDirectory>
+		
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<configuration>
+					<instructions>
+						<Bundle-Activator>org.nightlabs.eclipse.ui.treestate.TreeStatePlugin</Bundle-Activator>
+						<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
+						<Import-Package>!org.eclipse.core.runtime,*</Import-Package>
+						<Require-Bundle>org.eclipse.core.runtime</Require-Bundle>
+						<Bundle-Activator>org.nightlabs.eclipse.ui.treestate.TreeStatePlugin</Bundle-Activator>
+						<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
+						<Bundle-Localization>plugin</Bundle-Localization>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+		
+	</build>
+</project>
