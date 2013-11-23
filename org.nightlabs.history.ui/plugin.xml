@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+    <extension point="org.eclipse.ui.startup">
+        <startup class="org.nightlabs.history.ui.StartupListener"/>
+    </extension>
+    <extension point="org.eclipse.ui.handlers">
+        <handler
+            class="org.nightlabs.history.ui.EditorHistoryBackActionHandler" commandId="org.eclipse.ui.navigate.backwardHistory"/>
+        <handler
+            class="org.nightlabs.history.ui.EditorHistoryForwardActionHandler" commandId="org.eclipse.ui.navigate.forwardHistory"/>
+    </extension>
+    <extension point="org.eclipse.ui.actionSets">
+        <actionSet id="org.nightlabs.history.ui"
+            label="%org.nightlabs.history.ui.label" visible="true">
+            <menu id="editorHistory" label="%editorHistory.label" path="additions">
+                <separator name="editorHistoryGroup"/>
+            </menu>
+            <action allowLabelUpdate="true"
+                class="org.nightlabs.history.ui.EditorHistoryForwardActionDelegate"
+                definitionId="org.eclipse.ui.navigate.forwardHistory"
+                icon="icons/EditorHistoryForward.16x16.png"
+                id="org.nightlabs.history.ui.forward"
+                label="%org.nightlabs.history.ui.forward.label"
+                menubarPath="editorHistory/editorHistoryGroup"
+                retarget="false" 
+                style="push" 
+                tooltip="%org.nightlabs.history.ui.forward.tooltip"/>
+            <action allowLabelUpdate="true"
+                class="org.nightlabs.history.ui.EditorHistoryBackActionDelegate"
+                definitionId="org.eclipse.ui.navigate.backwardHistory"
+                icon="icons/EditorHistoryBackward.16x16.png"
+                id="org.nightlabs.history.ui.back"
+                label="%org.nightlabs.history.ui.back.label"
+                menubarPath="editorHistory/editorHistoryGroup"
+                retarget="false" 
+                style="push" 
+                tooltip="%org.nightlabs.history.ui.back.tooltip"/>                
+            <action
+				  allowLabelUpdate="true"
+				  class="org.nightlabs.history.ui.EditorHistoryForwardActionDelegate"
+				  definitionId="org.eclipse.ui.navigate.forwardHistory"
+				  icon="icons/EditorHistoryForward.16x16.png"
+				  id="org.nightlabs.history.ui.forward.toolbar"
+				  label="%org.nightlabs.history.ui.forward.label"
+				  retarget="false"
+				  style="push"
+				  toolbarPath="additions"
+				  tooltip="%org.nightlabs.history.ui.forward.tooltip"/>
+			<action
+		         allowLabelUpdate="true"
+		         class="org.nightlabs.history.ui.EditorHistoryBackActionDelegate"
+		         definitionId="org.eclipse.ui.navigate.backwardHistory"
+		         icon="icons/EditorHistoryBackward.16x16.png"
+		         id="org.nightlabs.history.ui.back.toolbar"
+		         label="%org.nightlabs.history.ui.back.label"
+		         retarget="false"
+		         style="push"
+		         toolbarPath="additions"
+		         tooltip="%org.nightlabs.history.ui.back.tooltip"/>                                  
+        </actionSet>
+    </extension>
+</plugin>
