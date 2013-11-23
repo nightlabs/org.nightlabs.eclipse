@@ -1,0 +1,195 @@
+----------------------------------------------------------
+https://www.jfire.org/user.php
+
+POST /user.php HTTP/1.1
+Host: www.jfire.org
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.3) Gecko/2008092816 Iceweasel/3.0.3 (Debian-3.0.3-3)
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: https://www.jfire.org/modules/content/
+Cookie: PHPSESSID=5a388419f49941ebcfc11dd026d7af1b
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 83
+uname=nick&pass=xxxxxxx&xoops_redirect=%2Fmodules%2Fcontent%2Findex.php&op=login
+HTTP/1.x 200 OK
+Date: Thu, 20 Nov 2008 23:32:35 GMT
+Server: Apache/2.2.3
+X-Powered-By: PHP/5.2.0-8+etch11
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Content-Length: 6554
+Keep-Alive: timeout=15, max=100
+Connection: Keep-Alive
+Content-Type: text/html; charset=ISO-8859-1
+----------------------------------------------------------
+https://www.jfire.org/modules/bugs/
+
+GET /modules/bugs/ HTTP/1.1
+Host: www.jfire.org
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.3) Gecko/2008092816 Iceweasel/3.0.3 (Debian-3.0.3-3)
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: https://www.jfire.org/modules/content/index.php
+Cookie: PHPSESSID=5a388419f49941ebcfc11dd026d7af1b
+
+HTTP/1.x 302 Found
+Date: Thu, 20 Nov 2008 23:32:48 GMT
+Server: Apache/2.2.3
+X-Powered-By: PHP/5.2.0-8+etch11
+Expires: Thu, 20 Nov 2008 23:32:48 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Set-Cookie: MANTIS_STRING_COOKIE=39df5bd0eaa0f4c76fa43b1eb156a7d7a63f07f719c71accacd57eafc42f887c; path=/
+Location: /modules/bugs/index.php
+Content-Length: 0
+Keep-Alive: timeout=15, max=96
+Connection: Keep-Alive
+Content-Type: text/html;charset=ISO-8859-1
+----------------------------------------------------------
+https://www.jfire.org/modules/bugs/index.php
+
+GET /modules/bugs/index.php HTTP/1.1
+Host: www.jfire.org
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.3) Gecko/2008092816 Iceweasel/3.0.3 (Debian-3.0.3-3)
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: https://www.jfire.org/modules/content/index.php
+Cookie: PHPSESSID=5a388419f49941ebcfc11dd026d7af1b; MANTIS_STRING_COOKIE=39df5bd0eaa0f4c76fa43b1eb156a7d7a63f07f719c71accacd57eafc42f887c
+
+HTTP/1.x 302 Found
+Date: Thu, 20 Nov 2008 23:32:48 GMT
+Server: Apache/2.2.3
+X-Powered-By: PHP/5.2.0-8+etch11
+Expires: Thu, 20 Nov 2008 23:32:48 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Location: my_view_page.php
+Content-Length: 0
+Keep-Alive: timeout=15, max=99
+Connection: Keep-Alive
+Content-Type: text/html; charset=windows-1252
+----------------------------------------------------------
+https://www.jfire.org/modules/bugs/my_view_page.php
+
+GET /modules/bugs/my_view_page.php HTTP/1.1
+Host: www.jfire.org
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.3) Gecko/2008092816 Iceweasel/3.0.3 (Debian-3.0.3-3)
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: https://www.jfire.org/modules/content/index.php
+Cookie: PHPSESSID=5a388419f49941ebcfc11dd026d7af1b; MANTIS_STRING_COOKIE=39df5bd0eaa0f4c76fa43b1eb156a7d7a63f07f719c71accacd57eafc42f887c
+
+HTTP/1.x 200 OK
+Date: Thu, 20 Nov 2008 23:32:48 GMT
+Server: Apache/2.2.3
+X-Powered-By: PHP/5.2.0-8+etch11
+Expires: Thu, 20 Nov 2008 23:32:48 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Content-Encoding: gzip
+Vary: Accept-Encoding
+Content-Length: 4336
+Keep-Alive: timeout=15, max=95
+Connection: Keep-Alive
+Content-Type: text/html;charset=windows-1252
+----------------------------------------------------------
+https://www.jfire.org/modules/bugs/bug_report_page.php
+
+GET /modules/bugs/bug_report_page.php HTTP/1.1
+Host: www.jfire.org
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.3) Gecko/2008092816 Iceweasel/3.0.3 (Debian-3.0.3-3)
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: https://www.jfire.org/modules/bugs/my_view_page.php
+Cookie: PHPSESSID=5a388419f49941ebcfc11dd026d7af1b; MANTIS_STRING_COOKIE=39df5bd0eaa0f4c76fa43b1eb156a7d7a63f07f719c71accacd57eafc42f887c
+
+HTTP/1.x 302 Found
+Date: Thu, 20 Nov 2008 23:32:51 GMT
+Server: Apache/2.2.3
+X-Powered-By: PHP/5.2.0-8+etch11
+Expires: Thu, 20 Nov 2008 23:32:51 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Location: login_select_proj_page.php?ref=bug_report_page.php
+Content-Length: 0
+Keep-Alive: timeout=15, max=96
+Connection: Keep-Alive
+Content-Type: text/html; charset=windows-1252
+----------------------------------------------------------
+https://www.jfire.org/modules/bugs/set_project.php
+
+POST /modules/bugs/set_project.php HTTP/1.1
+Host: www.jfire.org
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.3) Gecko/2008092816 Iceweasel/3.0.3 (Debian-3.0.3-3)
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: https://www.jfire.org/modules/bugs/login_select_proj_page.php?ref=bug_report_page.php
+Cookie: PHPSESSID=5a388419f49941ebcfc11dd026d7af1b; MANTIS_STRING_COOKIE=39df5bd0eaa0f4c76fa43b1eb156a7d7a63f07f719c71accacd57eafc42f887c
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 42
+ref=bug_report_page.php&project_id=23%3B13
+HTTP/1.x 302 Found
+Date: Thu, 20 Nov 2008 23:33:05 GMT
+Server: Apache/2.2.3
+X-Powered-By: PHP/5.2.0-8+etch11
+Expires: Thu, 20 Nov 2008 23:33:05 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Set-Cookie: MANTIS_PROJECT_COOKIE=23%3B13; expires=Tue, 03-Nov-2009 04:53:05 GMT; path=/
+Location: bug_report_page.php
+Content-Length: 0
+Keep-Alive: timeout=15, max=95
+Connection: Keep-Alive
+Content-Type: text/html; charset=windows-1252
+----------------------------------------------------------
+https://www.jfire.org/modules/bugs/bug_report_page.php
+
+GET /modules/bugs/bug_report_page.php HTTP/1.1
+Host: www.jfire.org
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.3) Gecko/2008092816 Iceweasel/3.0.3 (Debian-3.0.3-3)
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: https://www.jfire.org/modules/bugs/login_select_proj_page.php?ref=bug_report_page.php
+Cookie: PHPSESSID=5a388419f49941ebcfc11dd026d7af1b; MANTIS_STRING_COOKIE=39df5bd0eaa0f4c76fa43b1eb156a7d7a63f07f719c71accacd57eafc42f887c; MANTIS_PROJECT_COOKIE=23%3B13
+
+HTTP/1.x 200 OK
+Date: Thu, 20 Nov 2008 23:33:05 GMT
+Server: Apache/2.2.3
+X-Powered-By: PHP/5.2.0-8+etch11
+Expires: Thu, 20 Nov 2008 23:33:05 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Keep-Alive: timeout=15, max=91
+Connection: Keep-Alive
+Transfer-Encoding: chunked
+Content-Type: text/html;charset=windows-1252
+----------------------------------------------------------

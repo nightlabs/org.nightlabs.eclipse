@@ -1,0 +1,79 @@
+https://www.jfire.org/modules/bugs/bug_report.php
+
+POST /modules/bugs/bug_report.php HTTP/1.1
+Host: www.jfire.org
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.3) Gecko/2008092816 Iceweasel/3.0.3 (Debian-3.0.3-3)
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: https://www.jfire.org/modules/bugs/bug_report_page.php
+Cookie: PHPSESSID=5a388419f49941ebcfc11dd026d7af1b; MANTIS_STRING_COOKIE=39df5bd0eaa0f4c76fa43b1eb156a7d7a63f07f719c71accacd57eafc42f887c; MANTIS_PROJECT_COOKIE=23%3B13
+Content-Type: multipart/form-data; boundary=---------------------------129183123438170038370412660
+Content-Length: 1537
+-----------------------------129183123438170038370412660
+Content-Disposition: form-data; name="m_id"
+
+0
+-----------------------------129183123438170038370412660
+Content-Disposition: form-data; name="project_id"
+
+13
+-----------------------------129183123438170038370412660
+Content-Disposition: form-data; name="handler_id"
+
+0
+-----------------------------129183123438170038370412660
+Content-Disposition: form-data; name="reproducibility"
+
+10
+-----------------------------129183123438170038370412660
+Content-Disposition: form-data; name="severity"
+
+50
+-----------------------------129183123438170038370412660
+Content-Disposition: form-data; name="priority"
+
+30
+-----------------------------129183123438170038370412660
+Content-Disposition: form-data; name="summary"
+
+Testing issue for automated issue submissions
+-----------------------------129183123438170038370412660
+Content-Disposition: form-data; name="description"
+
+test123
+
+-----------------------------129183123438170038370412660
+Content-Disposition: form-data; name="additional_info"
+
+
+-----------------------------129183123438170038370412660
+Content-Disposition: form-data; name="max_file_size"
+
+2000000
+-----------------------------129183123438170038370412660
+Content-Disposition: form-data; name="file"; filename=""
+Content-Type: application/octet-stream
+
+
+-----------------------------129183123438170038370412660
+Content-Disposition: form-data; name="view_state"
+
+50
+-----------------------------129183123438170038370412660--
+
+HTTP/1.x 200 OK
+Date: Thu, 20 Nov 2008 23:42:02 GMT
+Server: Apache/2.2.3
+X-Powered-By: PHP/5.2.0-8+etch11
+Expires: Thu, 20 Nov 2008 23:42:03 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Content-Length: 4853
+Keep-Alive: timeout=15, max=100
+Connection: Keep-Alive
+Content-Type: text/html;charset=windows-1252
+----------------------------------------------------------
