@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.nightlabs.eclipse</groupId>
+	<artifactId>org.nightlabs.eclipse.aggregator</artifactId>
+	<version>1.3.3-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>${project.artifactId}</name>
+
+	<distributionManagement>
+		<repository>
+			<id>dev.nightlabs.org-libs-releases-local</id>
+			<url>https://dev.nightlabs.org/maven-repository/libs-releases-local</url>
+		</repository>
+		<snapshotRepository>
+			<id>dev.nightlabs.org-libs-snapshots-local</id>
+			<url>https://dev.nightlabs.org/maven-repository/libs-snapshots-local</url>
+		</snapshotRepository>
+	</distributionManagement>
+	
+<!--
+	<profiles>
+		<profile>
+			<id>client.platform.mac</id>
+			<activation>
+				<property>
+					<name>client.platform</name>
+					<value>mac</value>
+				</property>
+			</activation>
+			<modules>
+				<module>../org.nightlabs.eclipse.compatibility.rcp</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>client.platform.windows-x86</id>
+			<activation>
+				<property>
+					<name>client.platform</name>
+					<value>windows-x86</value>
+				</property>
+			</activation>
+			<modules>
+				<module>../org.nightlabs.eclipse.compatibility.rcp</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>client.platform.linux-gtk-x86</id>
+			<activation>
+				<property>
+					<name>client.platform</name>
+					<value>linux-gtk-x86</value>
+				</property>
+			</activation>
+			<modules>
+				<module>../org.nightlabs.eclipse.compatibility.rcp</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>client.platform.linux-gtk-x86_64</id>
+			<activation>
+				<property>
+					<name>client.platform</name>
+					<value>linux-gtk-x86_64</value>
+				</property>
+			</activation>
+			<modules>
+				<module>../org.nightlabs.eclipse.compatibility.rcp</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>client.platform.rap</id>
+			<activation>
+				<property>
+					<name>client.platform</name>
+					<value>rap</value>
+				</property>
+			</activation>
+			<modules>
+				<module>../org.nightlabs.eclipse.compatibility.rap</module>
+			</modules>
+		</profile>
+	</profiles>
+-->
+
+	<modules>
+		<module>../org.nightlabs.eclipse.parent</module>
+
+		<module>../org.nightlabs.base.ui</module>
+		<module>../org.nightlabs.base.ui.errorreport.mantis</module>		
+
+		<module>../org.nightlabs.connection.ui</module>
+
+		<module>../org.nightlabs.eclipse.compatibility.rap</module>
+		<module>../org.nightlabs.eclipse.compatibility.rcp</module>
+
+		<module>../org.nightlabs.eclipse.extension</module>
+		<module>../org.nightlabs.eclipse.preference.ui</module>
+		<module>../org.nightlabs.eclipse.ui.dialog</module>
+		<module>../org.nightlabs.eclipse.ui.fckeditor</module>
+		<module>../org.nightlabs.eclipse.ui.pdfrenderer</module>
+		<module>../org.nightlabs.eclipse.ui.pdfviewer</module>
+		<module>../org.nightlabs.eclipse.ui.pdfviewer.extension</module>
+		<module>../org.nightlabs.eclipse.ui.treestate</module>
+		<module>../org.nightlabs.eclipse.ui.control.export</module>
+
+		<module>../org.nightlabs.editor2d.ui</module>
+		<module>../org.nightlabs.editor2d.viewer.ui</module>
+		
+		<module>../org.nightlabs.history.ui</module>
+
+		<module>../org.nightlabs.jseditor.ui</module>
+		<module>../org.nightlabs.jseditor.ui.rcp</module>
+		<module>../org.nightlabs.jseditor.ui.rap</module>
+
+		<module>../org.nightlabs.keyreader.ui</module>
+		<module>../org.nightlabs.tableprovider.ui</module>
+		
+	</modules>
+</project>

@@ -1,0 +1,621 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.nightlabs.eclipse</groupId>
+	<artifactId>org.nightlabs.eclipse.parent</artifactId>
+
+	<packaging>pom</packaging>
+	<name>${project.artifactId}</name>
+	<parent>
+		<groupId>org.nightlabs</groupId>
+		<artifactId>org.nightlabs.parent</artifactId>
+		<version>1.3.3-SNAPSHOT</version>
+	</parent>
+
+	<repositories>
+		<!--
+		Here are only those repositories declared that are needed to download
+		the parent-pom.xml (which contains all used repositories).
+		
+		Important:
+		It is recommended that you use a mirror! See the parent-pom for details.
+		-->
+		<repository>
+			<id>dev.nightlabs.org-libs-releases-local</id>
+			<url>http://dev.nightlabs.org/maven-repository/libs-releases-local/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>dev.nightlabs.org-libs-snapshots-local</id>
+			<url>http://dev.nightlabs.org/maven-repository/libs-snapshots-local/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+	</repositories>
+
+	<scm>
+<!--
+IMHO this is wrong. Marco :-)
+		<connection>scm:svn:https://svn.nightlabs.org/svn/eclipse/trunk/org.nightlabs.jfire.parent</connection>
+		<developerConnection>scm:svn:https://svn.nightlabs.org/svn/eclipse/trunk/org.nightlabs.jfire.parent</developerConnection>
+		<url>https://svn.nightlabs.org/svn/eclipse/trunk/org.nightlabs.jfire.parent</url>
+-->
+		<connection>scm:svn:https://svn.nightlabs.org/svn/eclipse/trunk/org.nightlabs.eclipse.parent</connection>
+		<developerConnection>scm:svn:https://svn.nightlabs.org/svn/eclipse/trunk/org.nightlabs.eclipse.parent</developerConnection>
+		<url>https://svn.nightlabs.org/svn/eclipse/trunk/org.nightlabs.eclipse.parent</url>
+	</scm>
+
+	<properties>
+	<!-- static dependency - we build all against the RAP platform - see below
+		<swt.groupId>org.eclipse.swt</swt.groupId>
+		<org.nightlabs.eclipse.compatibility.artifactId>org.nightlabs.eclipse.compatibility.rcp</org.nightlabs.eclipse.compatibility.artifactId>
+
+		<client.plaform.linux-gtk-x86_64.swt.artifactId>org.eclipse.swt.gtk.linux.x86_64</client.plaform.linux-gtk-x86_64.swt.artifactId>
+		<client.plaform.linux-gtk-x86.swt.artifactId>org.eclipse.swt.gtk.linux.x86</client.plaform.linux-gtk-x86.swt.artifactId>
+		<client.plaform.win32-win32-x86_64.swt.artifactId>org.eclipse.swt.win32.win32.x86_64</client.plaform.win32-win32-x86_64.swt.artifactId>
+		<client.plaform.win32-win32-x86.swt.artifactId>org.eclipse.swt.win32.win32.x86</client.plaform.win32-win32-x86.swt.artifactId>
+		
+		<client.plaform.rap.swt.groupId>org.eclipse.rap</client.plaform.rap.swt.groupId>
+		<client.plaform.rap.swt.artifactId>org.eclipse.rap.rwt</client.plaform.rap.swt.artifactId>
+		<client.plaform.rap.org.nightlabs.eclipse.compatibility.artifactId>org.nightlabs.eclipse.compatibility.rap</client.plaform.rap.org.nightlabs.eclipse.compatibility.artifactId>
+
+		<swt.groupId>${client.plaform.rap.swt.groupId}</swt.groupId>
+		<swt.artifactId>${client.plaform.rap.swt.artifactId}</swt.artifactId>
+	-->
+
+		<!-- The SWT/RWT dependency is transferred usually via transitive dependencies from this one. Hence, we only
+		need this one property. -->
+		<org.nightlabs.eclipse.compatibility.artifactId>org.nightlabs.eclipse.compatibility.rap</org.nightlabs.eclipse.compatibility.artifactId>
+		
+	</properties>
+
+	<!-- swt impls: org.eclipse.swt.carbon.macosx/ Fri Jul 22 17:26:03 EDT 2011 
+		org.eclipse.swt.cocoa.macosx/ Fri Jul 22 17:26:03 EDT 2011 org.eclipse.swt.cocoa.macosx.x86_64/ 
+		Fri Jul 22 17:26:02 EDT 2011 org.eclipse.swt.gtk.aix.ppc64/ Fri Jul 22 17:26:02 
+		EDT 2011 org.eclipse.swt.gtk.linux.ppc/ Fri Jul 22 17:26:02 EDT 2011 org.eclipse.swt.gtk.linux.ppc64/ 
+		Fri Jul 22 17:26:03 EDT 2011 org.eclipse.swt.gtk.linux.s390/ Fri Jul 22 17:26:02 
+		EDT 2011 org.eclipse.swt.gtk.linux.s390x/ Fri Jul 22 17:26:03 EDT 2011 org.eclipse.swt.gtk.linux.x86/ 
+		Fri Jul 22 17:26:03 EDT 2011 org.eclipse.swt.gtk.linux.x86_64/ Fri Jul 22 
+		17:26:02 EDT 2011 org.eclipse.swt.gtk.solaris.sparc/ Fri Jul 22 17:26:03 
+		EDT 2011 org.eclipse.swt.gtk.solaris.x86/ Fri Jul 22 17:26:03 EDT 2011 org.eclipse.swt.motif.aix.ppc/ 
+		Fri Jul 22 17:26:03 EDT 2011 org.eclipse.swt.motif.hpux.ia64_32/ Fri Jul 
+		22 17:26:02 EDT 2011 org.eclipse.swt.motif.linux.x86/ Fri Jul 22 17:26:03 
+		EDT 2011 org.eclipse.swt.motif.solaris.sparc/ Fri Jul 22 17:26:03 EDT 2011 
+		org.eclipse.swt.photon.qnx.x86/ Fri Jul 22 17:26:03 EDT 2011 org.eclipse.swt.win32.win32.x86/ 
+		Fri Jul 22 17:26:02 EDT 2011 org.eclipse.swt.win32.win32.x86_64/ Fri Jul 
+		22 17:26:03 EDT 2011 -->
+<!--
+We now build against static dependencies and leave the platform-dependent stuff to the assembly only.
+The reason is that all our libraries (except for org.nightlabs.eclipse.compatibility.rap/rcp) are platform-agnostic
+and it makes therefore no sense to compile them 5 or more times. The only reason to do so is that there might be a mistake
+and platform-dependent stuff might be used by error. But this isn't worth the far more complex build configuration and
+the much longer build time (factor 5 at least).
+We now build solely against RAP, because the feature-set of RAP is smaller than the one of RCP. Hence, we don't need (most of)
+the properties anymore.
+Marco :-) 
+
+	<profiles>
+		<!- ### linux gtk x86 ### ->
+		<profile>
+			<id>client.plaform.linux-gtk-x86.by.os</id>
+			<activation>
+				<property>
+					<name>client.platform</name>
+					<value></value>
+				</property>
+				<os>
+					<name>Linux</name>
+					<arch>i386</arch>
+				</os>
+			</activation>
+			<properties>
+				<swt.artifactId>${client.plaform.linux-gtk-x86.swt.artifactId}</swt.artifactId>
+			</properties>
+		</profile>
+		<profile>
+			<id>client.plaform.linux-gtk-x86.by.property</id>
+			<activation>
+				<property>
+					<name>client.platform</name>
+					<value>linux-gtk-x86</value>
+				</property>
+			</activation>
+			<properties>
+				<swt.artifactId>${client.plaform.linux-gtk-x86.swt.artifactId}</swt.artifactId>
+			</properties>
+		</profile>
+		<!- ### linux gtk x86_64 ### ->
+		<profile>
+			<id>client.plaform.linux-gtk-x86_64.by.os</id>
+			<activation>
+				<property>
+					<name>client.platform</name>
+					<value></value>
+				</property>
+				<os>
+					<name>Linux</name>
+					<arch>x86_64</arch>
+				</os>
+			</activation>
+			<properties>
+				<swt.artifactId>${client.plaform.linux-gtk-x86_64.swt.artifactId}</swt.artifactId>
+			</properties>
+		</profile>
+		<profile>
+			<id>client.plaform.linux-gtk-x86_64.by.property</id>
+			<activation>
+				<property>
+					<name>client.platform</name>
+					<value>linux-gtk-x86_64</value>
+				</property>
+			</activation>
+			<properties>
+				<swt.artifactId>${client.plaform.linux-gtk-x86_64.swt.artifactId}</swt.artifactId>
+			</properties>
+		</profile>
+		<!- ### windows x86_64 ### ->
+		<profile>
+			<id>client.plaform.win32-win32-x86_64.by.os</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+				<property>
+					<name>client.platform</name>
+					<value></value>
+				</property>
+				<os>
+					<family>windows</family>
+					<arch>x86_64</arch>
+				</os>
+			</activation>
+			<properties>
+				<swt.artifactId>${client.plaform.win32-win32-x86_64.swt.artifactId}</swt.artifactId>
+			</properties>
+		</profile>
+		<profile>
+			<id>client.plaform.win32-win32-x86_64.by.property</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+				<property>
+					<name>client.platform</name>
+					<value>win32-win32-x86_64</value>
+				</property>
+			</activation>
+			<properties>
+				<swt.artifactId>${client.plaform.win32-win32-x86_64.swt.artifactId}</swt.artifactId>
+			</properties>
+		</profile>
+		<!- ### windows x86 ### ->
+		<profile>
+			<id>client.plaform.win32-win32-x86.by.os</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+				<property>
+					<name>client.platform</name>
+					<value></value>
+				</property>
+				<os>
+					<family>windows</family>
+					<arch>i386</arch>
+				</os>
+			</activation>
+			<properties>
+				<swt.artifactId>${client.plaform.win32-win32-x86.swt.artifactId}</swt.artifactId>
+			</properties>
+		</profile>
+		<profile>
+			<id>client.plaform.win32-win32-x86.by.property</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+				<property>
+					<name>client.platform</name>
+					<value>win32-win32-x86</value>
+				</property>
+			</activation>
+			<properties>
+				<swt.artifactId>${client.plaform.win32-win32-x86.swt.artifactId}</swt.artifactId>
+			</properties>
+		</profile>
+		<!- ### mac carbon ### ->
+		<!- ### mac cocoa 32 ### ->
+		<!- ### mac cocoa 64 ### ->
+		<!- ### rap ### ->
+		<profile>
+			<id>client.platform.rap.by.property</id>
+			<activation>
+				<property>
+					<name>client.platform</name>
+					<value>rap</value>
+				</property>
+			</activation>
+			<properties>
+				<swt.groupId>${client.plaform.rap.swt.groupId}</swt.groupId>
+				<swt.artifactId>${client.plaform.rap.swt.artifactId}</swt.artifactId>
+				<org.nightlabs.eclipse.compatibility.artifactId>${client.plaform.rap.org.nightlabs.eclipse.compatibility.artifactId}</org.nightlabs.eclipse.compatibility.artifactId>
+			</properties>
+		</profile>
+	</profiles>
+-->
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- ##### NIGHTLABS ##### -->
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.base.ui</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.base.ui.errorreport.mantis</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.connection.ui</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.eclipse.compatibility.rap</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.eclipse.compatibility.rcp</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.eclipse.extension</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.eclipse.preference.ui</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.eclipse.ui.control.export</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.eclipse.ui.dialog</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.eclipse.ui.fckeditor</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.eclipse.ui.treestate</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.editor2d.ui</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.editor2d.viewer.ui</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.history.ui</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.jseditor.ui</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.jseditor.ui.rcp</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.jseditor.ui.rap</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.eclipse.ui.pdfviewer.extension</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.eclipse.ui.pdfrenderer</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nightlabs.eclipse</groupId>
+				<artifactId>org.nightlabs.eclipse.ui.pdfviewer</artifactId>
+				<version>${nightlabs.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>net.sf.opencsv</groupId>
+				<artifactId>au.com.bytecode.opencsv</artifactId>
+				<version>2.1.0</version>
+			</dependency>
+			
+			<!-- ##### ECLIPSE :: BEGIN ##### -->
+			<!-- ### ECLIPSE RAP :: BEGIN ### -->
+			<dependency>
+				<groupId>org.eclipse.rap</groupId>
+				<artifactId>org.eclipse.rap.rwt</artifactId>
+				<version>1.4.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.rap</groupId>
+				<artifactId>org.eclipse.rap.jface</artifactId>
+				<version>1.4.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.rap</groupId>
+				<artifactId>org.eclipse.rap.ui</artifactId>
+				<version>1.4.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.rap</groupId>
+				<artifactId>org.eclipse.rap.ui.forms</artifactId>
+				<version>1.4.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.rap</groupId>
+				<artifactId>org.eclipse.rap.ui.views</artifactId>
+				<version>1.4.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.rap</groupId>
+				<artifactId>org.eclipse.rap.ui.workbench</artifactId>
+				<version>1.4.0</version>
+			</dependency>
+			<!-- ### ECLIPSE RAP :: END ### -->
+
+			<!-- ### ECLIPSE RCP :: BEGIN ### -->
+			<dependency>
+				<groupId>org.eclipse.swt</groupId>
+<!--				<artifactId>${client.plaform.linux-gtk-x86.swt.artifactId}</artifactId> -->
+				<artifactId>org.eclipse.swt.gtk.linux.x86</artifactId>
+				<version>[3.6,4.0)</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.swt</groupId>
+<!--				<artifactId>${client.plaform.linux-gtk-x86_64.swt.artifactId}</artifactId> -->
+				<artifactId>org.eclipse.swt.gtk.linux.x86_64</artifactId>
+				<version>[3.6,4.0)</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.swt</groupId>
+<!--				<artifactId>${client.plaform.win32-win32-x86.swt.artifactId}</artifactId> -->
+				<artifactId>org.eclipse.swt.win32.win32.x86</artifactId>
+				<version>[3.6,4.0)</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.swt</groupId>
+<!--				<artifactId>${client.plaform.win32-win32-x86_64.swt.artifactId}</artifactId> -->
+				<artifactId>org.eclipse.swt.win32.win32.x86_64</artifactId>
+				<version>[3.6,4.0)</version>
+			</dependency>
+			<!-- TODO other swt impl (mac etc) -->
+
+			<dependency>
+				<groupId>org.eclipse.ui</groupId>
+				<artifactId>org.eclipse.ui</artifactId>
+				<version>3.6.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.ui</groupId>
+				<artifactId>org.eclipse.ui.forms</artifactId>
+				<version>3.5.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.ui</groupId>
+				<artifactId>org.eclipse.ui.views</artifactId>
+				<version>3.5.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jface</groupId>
+				<artifactId>org.eclipse.jface</artifactId>
+				<version>3.6.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jface</groupId>
+				<artifactId>org.eclipse.jface.text</artifactId>
+				<version>3.6.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.ui</groupId>
+				<artifactId>org.eclipse.ui.workbench</artifactId>
+				<version>3.6.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.update</groupId>
+				<artifactId>org.eclipse.update.ui</artifactId>
+				<version>3.2.300</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.update</groupId>
+				<artifactId>org.eclipse.update.core</artifactId>
+				<version>3.2.402</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.update</groupId>
+				<artifactId>org.eclipse.update.configurator</artifactId>
+				<version>3.3.100</version>
+			</dependency>
+			<!-- ### ECLIPSE RCP :: END ### -->
+			
+			<!-- ### ECLIPSE SHARED :: BEGIN ### -->
+			<dependency>
+				<groupId>org.eclipse</groupId>
+				<artifactId>draw2d</artifactId>
+				<version>3.2.100-v20070529</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.core</groupId>
+				<artifactId>org.eclipse.core.resources</artifactId>
+				<version>3.6.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.core</groupId>
+				<artifactId>org.eclipse.core.runtime</artifactId>
+				<version>3.6.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.core</groupId>
+				<artifactId>org.eclipse.core.jobs</artifactId>
+				<version>3.5.1</version>
+			</dependency>
+			<dependency>
+				<!-- Without this, it tries to use 3.2.0 which references a non-existent parent-pom. Marco :-) -->
+				<groupId>org.eclipse.equinox</groupId>
+				<artifactId>org.eclipse.equinox.common</artifactId>
+				<version>3.6.0</version>
+			</dependency>
+			<dependency>
+				<!-- Without this, it tries to use 3.2.0 which references a non-existent parent-pom. Marco :-) -->
+				<groupId>org.eclipse.equinox</groupId>
+				<artifactId>org.eclipse.equinox.preferences</artifactId>
+				<version>3.3.0</version>
+			</dependency>
+			<dependency>
+				<!-- Without this, it tries to use 3.2.0 which references a non-existent parent-pom. Marco :-) -->
+				<groupId>org.eclipse.core</groupId>
+				<artifactId>org.eclipse.core.expressions</artifactId>
+				<version>3.4.200</version>
+			</dependency>
+			<dependency>
+				<!-- Without this, it tries to use 1.5.0-SNAPSHOT which cannot be downloaded for a reason I don't understand. Marco :-) -->
+				<groupId>org.eclipse.rap</groupId>
+				<artifactId>org.eclipse.rap.rwt.q07</artifactId>
+				<version>1.4.0</version>
+			</dependency>
+			<dependency>
+				<!-- Without this, it tries to use 3.2.0 which references a non-existent parent-pom. Marco :-) -->
+				<groupId>org.eclipse.core</groupId>
+				<artifactId>org.eclipse.core.commands</artifactId>
+				<version>3.6.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.core</groupId>
+				<artifactId>org.eclipse.core.net</artifactId>
+				<version>1.2.100</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.equinox</groupId>
+				<artifactId>org.eclipse.equinox.registry</artifactId>
+				<version>3.5.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.osgi</groupId>
+				<artifactId>org.eclipse.osgi</artifactId>
+				<version>3.6.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.ui</groupId>
+				<artifactId>org.eclipse.ui.intro</artifactId>
+				<version>3.4.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.text</groupId>
+				<artifactId>org.eclipse.text</artifactId>
+				<version>3.5.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.ui</groupId>
+				<artifactId>org.eclipse.ui.editors</artifactId>
+				<version>3.6.1</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.eclipse.ui</groupId>
+						<artifactId>org.eclipse.ui.ide</artifactId>
+					</exclusion>
+<!--
+					<exclusion>
+						<groupId>org.eclipse.equinox</groupId>
+						<artifactId>org.eclipse.equinox.p2.engine</artifactId>
+					</exclusion>
+-->
+				</exclusions>
+			</dependency>
+			<!-- ### ECLIPSE SHARED :: END ### -->
+			<!-- ##### ECLIPSE :: END ##### -->
+
+			<dependency>
+				<groupId>org.holongate</groupId>
+				<artifactId>org.holongate.j2d</artifactId>
+				<version>2.3.0</version>
+			</dependency>
+			
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>.</directory>
+				<includes>
+					<include>plugin.xml</include>
+					<include>plugin*.properties</include>
+					<include>schema/**/*</include>
+					<include>LICENSE.txt</include>
+					<include>schema/**/*</include>
+					<include>icons/**/*</include>
+					<include>img/**/*</include>
+					<include>theme/**/*</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/java</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<configuration>
+					<instructions>
+						<Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
+						<Bundle-Localization>plugin</Bundle-Localization>
+						<Import-Package>
+						!javax.jdo.*,
+						!org.apache.commons.lang.exception.*,
+						!org.apache.commons.lang.time.*,
+						*
+						</Import-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
