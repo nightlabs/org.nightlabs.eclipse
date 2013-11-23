@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Connection Plug-in
+Bundle-SymbolicName: org.nightlabs.connection.ui;singleton:=true
+Bundle-Version: 1.3.3.SNAPSHOT
+Bundle-Activator: org.nightlabs.connection.ui.NightLabsConnectionPlugin
+Bundle-Vendor: NightLabs.org
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.core.runtime,
+ org.nightlabs.config,
+ org.nightlabs.base.ui;visibility:=reexport,
+ org.nightlabs.jfire.base.j2ee;resolution:=optional,
+ org.nightlabs.eclipse.extension;bundle-version="1.0.0",
+ org.nightlabs.eclipse.compatibility
+Eclipse-LazyStart: true
+Bundle-ClassPath: .
+Export-Package: org.nightlabs.connection.ui,
+ org.nightlabs.connection.ui.parallel,
+ org.nightlabs.connection.ui.serial,
+ org.nightlabs.connection.ui.tcp
+Eclipse-RegisterBuddy: org.nightlabs.config,
+ org.nightlabs.jfire.base.j2ee
