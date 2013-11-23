@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>org.nightlabs.eclipse.compatibility.rap</artifactId>
+	<packaging>jar</packaging>
+
+	<parent>
+		<groupId>org.nightlabs.eclipse</groupId>
+		<artifactId>org.nightlabs.eclipse.parent</artifactId>
+		<version>1.3.3-SNAPSHOT</version>
+		<relativePath>../org.nightlabs.eclipse.parent</relativePath>
+	</parent>
+
+	<dependencies>
+		<dependency>
+			<!-- Static dependency onto the RAP stuff, because we always need to build this project against RAP - it is specific. Marco :-) -->
+			<groupId>org.eclipse.rap</groupId>
+			<artifactId>org.eclipse.rap.rwt</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.core</groupId>
+			<artifactId>org.eclipse.core.resources</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.core</groupId>
+			<artifactId>org.eclipse.core.runtime</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.rap</groupId>
+			<artifactId>org.eclipse.rap.jface</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.rap</groupId>
+			<artifactId>org.eclipse.rap.ui</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.rap</groupId>
+			<artifactId>org.eclipse.rap.ui.forms</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.rap</groupId>
+			<artifactId>org.eclipse.rap.ui.views</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.rap</groupId>
+			<artifactId>org.eclipse.rap.ui.workbench</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<outputDirectory>bin</outputDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.1</version>
+				<configuration>
+					<archive>
+						<manifestFile>META-INF/MANIFEST.MF</manifestFile>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>	
+
+	<!-- build>
+		<sourceDirectory>src</sourceDirectory>
+		<outputDirectory>bin</outputDirectory>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<inherited>false</inherited>
+				<configuration>
+					<instructions>
+						<Bundle-SymbolicName>org.nightlabs.eclipse.compatibility</Bundle-SymbolicName>
+						<Export-Package>
+						org.eclipse.core.resources;version="${project.version}";-split-package:=first,
+						org.eclipse.jface.viewers;version="${project.version}";-split-package:=first,
+						org.eclipse.swt.accessibility;version="${project.version}";-split-package:=first,
+						org.eclipse.swt.custom;version="${project.version}";-split-package:=first,
+						org.eclipse.swt.events;version="${project.version}";-split-package:=first,
+						org.eclipse.swt.graphics;version="${project.version}";-split-package:=first,
+						org.eclipse.swt.widgets;version="${project.version}";-split-package:=first,
+						org.eclipse.ui;version="${project.version}";-split-package:=first,
+						org.eclipse.update.ui;version="${project.version}";-split-package:=first,
+						org.nightlabs.base.ui.util;version="${project.version}";-split-package:=first,
+						org.nightlabs.eclipse.compatibility;version="${project.version}";-split-package:=first,
+						org.nightlabs.eclipse.compatibility.treestate;version="${project.version}";-split-package:=first,
+						</Export-Package>
+						<Private-Package>${bundle.namespace}.internal.*</Private-Package>
+						<Bundle-RequiredExecutionEnvironment>JavaSE-1.6</Bundle-RequiredExecutionEnvironment>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build-->
+</project>
