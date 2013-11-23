@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension-point id="contentFileWizard" name="Content File Wizard" schema="schema/contentFileWizard.exsd"/>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.nightlabs.eclipse.ui.fckeditor.FCKEditorEditorPart"
+            contributorClass="org.nightlabs.eclipse.ui.fckeditor.FCKEditorActionBarContributer"
+            id="org.nightlabs.eclipse.ui.fckeditor.FCKEditorEditorPart"
+            icon="icons/document.png"
+            name="FCKeditor">
+      </editor>
+   </extension>
+<!--
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="org.eclipse.ui.examples.rcp.browser.actionSet"
+            label="Test"
+            visible="true">
+         <menu
+               id="testMenu"
+               label="&amp;Test">
+            <separator
+                  name="testGroup">
+            </separator>
+         </menu>
+         <action
+               class="org.nightlabs.eclipse.ui.fckeditor.test.EditorAction"
+               icon="icons/document.png"
+               id="org.nightlabs.eclipse.ui.fckeditor.test.EditorAction"
+               label="&amp;FCKeditor"
+               menubarPath="testMenu/testGroup"
+               toolbarPath="testGroup"
+               tooltip="Open Test FCKeditor">
+         </action>
+         <action
+               class="org.nightlabs.eclipse.ui.fckeditor.test.EditorDialogAction"
+               icon="icons/document.png"
+               id="org.nightlabs.eclipse.ui.fckeditor.test.EditorDialogAction"
+               label="&amp;FCKeditor Dialog"
+               menubarPath="testMenu/testGroup"
+               toolbarPath="testGroup"
+               tooltip="Open Test FCKeditor Dialog">
+         </action>
+         <action
+               class="org.nightlabs.eclipse.ui.fckeditor.test.FileListAction"
+               icon="icons/document.png"
+               id="org.nightlabs.eclipse.ui.fckeditor.test.FileListAction"
+               label="&amp;File List"
+               menubarPath="testMenu/testGroup"
+               toolbarPath="testGroup"
+               tooltip="Open File List">
+         </action>
+      </actionSet>
+   </extension>
+-->
+   <extension-point id="contentFileWizard" name="Content file wizard" schema="schema/contentFileWizard.exsd" />
+   <extension
+         point="org.nightlabs.eclipse.ui.fckeditor.contentFileWizard">
+      <typeBinding
+            mimeType="image/jpeg"
+            priority="-1"
+            wizardClass="org.nightlabs.eclipse.ui.fckeditor.file.image.ContentImageFileWizard">
+      </typeBinding>
+      <typeBinding
+            mimeType="image/png"
+            priority="-1"
+            wizardClass="org.nightlabs.eclipse.ui.fckeditor.file.image.ContentImageFileWizard">
+      </typeBinding>
+      <typeBinding
+            mimeType="image/gif"
+            priority="-1"
+            wizardClass="org.nightlabs.eclipse.ui.fckeditor.file.image.ContentImageFileWizard">
+      </typeBinding>
+      <typeBinding
+            mimeType="image/pcx"
+            priority="-1"
+            wizardClass="org.nightlabs.eclipse.ui.fckeditor.file.image.ContentImageFileWizard">
+      </typeBinding>
+      <typeBinding
+            mimeType="*"
+            priority="-1"
+            wizardClass="org.nightlabs.eclipse.ui.fckeditor.file.ContentFileWizard">
+      </typeBinding>
+   </extension>
+
+</plugin>

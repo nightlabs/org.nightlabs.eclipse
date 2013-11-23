@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>org.nightlabs.eclipse.ui.fckeditor</artifactId>
+	<packaging>bundle</packaging>
+
+	<parent>
+		<groupId>org.nightlabs.eclipse</groupId>
+		<artifactId>org.nightlabs.eclipse.parent</artifactId>
+		<version>1.3.3-SNAPSHOT</version>
+		<relativePath>../org.nightlabs.eclipse.parent/pom.xml</relativePath>
+	</parent>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.nightlabs.eclipse</groupId>
+			<artifactId>org.nightlabs.eclipse.ui.dialog</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.nightlabs</groupId>
+			<artifactId>org.nightlabs.htmlcontent</artifactId>
+			<scope>provided</scope>
+		</dependency>		
+		<dependency>
+			<groupId>org.nightlabs.eclipse</groupId>
+			<artifactId>org.nightlabs.eclipse.compatibility.rcp</artifactId>	<!-- NEEDS to be built against rcp -->
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<outputDirectory>bin</outputDirectory>
+		<!-- Overwrites resource declaration from parent because of serverfiles/**/* -->
+		<resources>
+			<resource>
+				<directory>src</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>.</directory>
+				<includes>
+					<include>plugin.xml</include>
+					<include>plugin*.properties</include>
+					<include>schema/**/*</include>
+					<include>icons/**/*</include>
+					<include>serverfiles/**/*</include>
+					<include>LICENSE.txt</include>
+				</includes>
+			</resource>
+		</resources>
+	</build>
+</project>
