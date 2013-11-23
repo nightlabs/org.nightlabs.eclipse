@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="org.nightlabs.eclipse.ui.dialog.actionSet"
+            label="Test"
+            visible="true">
+         <menu
+               id="testMenu"
+               label="&amp;Test">
+            <separator
+                  name="dialogsGroup">
+            </separator>
+         </menu>
+         <action
+               class="org.nightlabs.eclipse.ui.dialog.test.DialogTest$ChangePasswordDialogTest"
+               id="org.nightlabs.eclipse.ui.dialog.test.DialogTest$ChangePasswordDialogTest"
+               label="&amp;Change Password Dialog"
+               menubarPath="testMenu/dialogsGroup">
+         </action>
+         <action
+               class="org.nightlabs.eclipse.ui.dialog.test.DialogTest$CountdownMessageDialogTest"
+               id="org.nightlabs.eclipse.ui.dialog.test.DialogTest$CountdownMessageDialogTest"
+               label="Countdown &amp;Message Dialog"
+               menubarPath="testMenu/dialogsGroup">
+         </action>
+         <action
+               class="org.nightlabs.eclipse.ui.dialog.test.DialogTest$FullScreenDialogTest"
+               id="org.nightlabs.eclipse.ui.dialog.test.DialogTest$FullScreenDialogTest"
+               label="&amp;Full Screen Dialog"
+               menubarPath="testMenu/dialogsGroup">
+         </action>
+         <action
+               class="org.nightlabs.eclipse.ui.dialog.test.DialogTest$RememberDecisionMessageDialogTest"
+               id="org.nightlabs.eclipse.ui.dialog.test.DialogTest$RememberDecisionMessageDialogTest"
+               label="&amp;Remember Decision Dialog"
+               menubarPath="testMenu/dialogsGroup">
+         </action>
+         <action
+               class="org.nightlabs.eclipse.ui.dialog.test.DialogTest$ExpandableAreaDialogTest"
+               id="org.nightlabs.eclipse.ui.dialog.test.DialogTest$ExpandableAreaDialogTest"
+               label="&amp;Expandable Area Dialog"
+               menubarPath="testMenu/dialogsGroup">
+         </action>
+         <action
+               class="org.nightlabs.eclipse.ui.dialog.test.DialogTest$ResizableTitleAreaDialogTest"
+               id="org.nightlabs.eclipse.ui.dialog.test.DialogTest$ResizableTitleAreaDialogTest"
+               label="&amp;Resizable Title Area Dialog"
+               menubarPath="testMenu/dialogsGroup">
+         </action>
+      </actionSet>
+   </extension>
+</plugin>
