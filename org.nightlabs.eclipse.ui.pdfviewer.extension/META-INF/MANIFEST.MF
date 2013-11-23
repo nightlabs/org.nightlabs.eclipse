@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: PDF Viewer Extension Plug-in
+Bundle-SymbolicName: org.nightlabs.eclipse.ui.pdfviewer.extension;singleton:=true
+Bundle-Version: 1.3.3.SNAPSHOT
+Bundle-Activator: org.nightlabs.eclipse.ui.pdfviewer.extension.PDFViewerExtensionPlugin
+Bundle-Vendor: NightLabs.org
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.nightlabs.config,
+ org.nightlabs.base,
+ org.nightlabs.base.ui;visibility:=reexport,
+ org.nightlabs.eclipse.ui.pdfviewer;visibility:=reexport
+Eclipse-LazyStart: true
+Export-Package: org.nightlabs.eclipse.ui.pdfviewer.extension,
+ org.nightlabs.eclipse.ui.pdfviewer.extension.action,
+ org.nightlabs.eclipse.ui.pdfviewer.extension.action.print,
+ org.nightlabs.eclipse.ui.pdfviewer.extension.action.save,
+ org.nightlabs.eclipse.ui.pdfviewer.extension.action.zoom,
+ org.nightlabs.eclipse.ui.pdfviewer.extension.composite,
+ org.nightlabs.eclipse.ui.pdfviewer.extension.coolbar,
+ org.nightlabs.eclipse.ui.pdfviewer.extension.coolbar.internal;x-internal:=true,
+ org.nightlabs.eclipse.ui.pdfviewer.extension.editor,
+ org.nightlabs.eclipse.ui.pdfviewer.extension.printer
+Bundle-Localization: plugin
+Eclipse-RegisterBuddy: org.nightlabs.config, org.nightlabs.base

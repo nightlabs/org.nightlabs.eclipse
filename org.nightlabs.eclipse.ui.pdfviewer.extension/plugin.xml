@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+   <extension-point id="pdfViewerAction" name="PDF Viewer Action" schema="schema/pdfViewerAction.exsd"/>
+    <extension point="org.eclipse.ui.editors">
+        <editor
+              class="org.nightlabs.eclipse.ui.pdfviewer.extension.editor.PDFViewerEditor"
+              contributorClass="org.nightlabs.eclipse.ui.pdfviewer.extension.editor.PDFViewerEditorActionBarContributor"
+              extensions="pdf"
+              icon="icons/editor/PDFViewerEditor.16x16.png"
+              id="org.nightlabs.eclipse.ui.pdfviewer.extension.editor.PDFViewerEditor"
+              name="%org.nightlabs.eclipse.ui.pdfviewer.extension.editor.PDFViewerEditor.name"/>
+    </extension>
+   <extension
+         point="org.nightlabs.eclipse.ui.pdfviewer.extension.pdfViewerAction">
+         <groupMarker
+               name="org.nightlabs.eclipse.ui.pdfviewer.extension.groupMarker1">
+         </groupMarker>
+         <action
+               class="org.nightlabs.eclipse.ui.pdfviewer.extension.action.zoom.ZoomContributionItem"
+               id="org.nightlabs.eclipse.ui.pdfviewer.extension.action.zoom.ZoomContributionItem"
+               name="%org.nightlabs.eclipse.ui.pdfviewer.extension.action.zoom.ZoomContributionItem.name"
+               toolbarPath="org.nightlabs.eclipse.ui.pdfviewer.extension.groupMarker1"
+               useCase="default">
+         
+         </action>
+         <action
+               class="org.nightlabs.eclipse.ui.pdfviewer.extension.action.save.SaveAsAction"
+               icon="icons/action/save/SaveAsAction.16x16.png"
+               id="org.nightlabs.eclipse.ui.pdfviewer.extension.action.save.SaveAsAction"
+               menubarPath="file/additions"
+               name="%org.nightlabs.eclipse.ui.pdfviewer.extension.action.save.SaveAsAction.name"
+               toolbarPath="org.nightlabs.eclipse.ui.pdfviewer.extension.groupMarker1"
+               useCase="default">
+         </action>
+         <action
+               class="org.nightlabs.eclipse.ui.pdfviewer.extension.action.print.PrintAction"
+               icon="icons/action/print/PrintAction.16x16.png"
+               id="org.nightlabs.eclipse.ui.pdfviewer.extension.action.print.PrintAction"
+               name="%org.nightlabs.eclipse.ui.pdfviewer.extension.action.print.PrintAction.name"
+               toolbarPath="org.nightlabs.eclipse.ui.pdfviewer.extension.groupMarker1"
+               useCase="default">
+         </action>
+   </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+         <startup class="org.nightlabs.eclipse.ui.pdfviewer.extension.printer.PDFPrinterRegistrationStartup"/>         
+   </extension>
+   <extension
+         point="org.nightlabs.base.ui.printerConfiguration">
+      <printerUseCase
+            description="Print PDF files"
+            id="org.nightlabs.eclipse.ui.pdfviewer.extension.printerUseCase"
+            name="Print PDF files">
+      </printerUseCase>
+   </extension>
+</plugin>
