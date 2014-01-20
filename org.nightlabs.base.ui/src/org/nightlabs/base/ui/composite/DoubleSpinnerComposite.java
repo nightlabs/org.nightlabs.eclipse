@@ -27,6 +27,7 @@ package org.nightlabs.base.ui.composite;
 
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Spinner;
@@ -147,6 +148,14 @@ extends XComposite
 	
 	public void removeModifyListener(ModifyListener listener) {
 		spinner.removeModifyListener(listener);
+	}
+	
+	public void addTraverseListener(TraverseListener listener) {
+		spinner.addTraverseListener(listener);
+	}
+	
+	public void removeTraverseListener(TraverseListener listener) {
+		spinner.removeTraverseListener(listener);
 	}
 
 }
