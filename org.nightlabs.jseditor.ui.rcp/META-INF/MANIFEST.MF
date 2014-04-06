@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: JSEditor Plug-in
 Bundle-SymbolicName: org.nightlabs.jseditor.ui.rcp;singleton:=true
-Bundle-Version: 1.3.3.SNAPSHOT
+Bundle-Version: 1.3.3
 Bundle-ClassPath: .
 Bundle-Activator: org.nightlabs.jseditor.ui.rcp.JSEditorPlugin
 Bundle-Localization: plugin
