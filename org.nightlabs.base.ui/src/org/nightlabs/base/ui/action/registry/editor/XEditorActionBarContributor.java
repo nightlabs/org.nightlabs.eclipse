@@ -81,12 +81,18 @@ implements ISelectionChangedListener
 					}
 				}
 				if (actionDescriptor.getAction() instanceof IUpdateActionOrContributionItem) {
-					boolean enabled = ((IUpdateActionOrContributionItem)actionDescriptor.getAction()).calculateEnabled();
+					IUpdateActionOrContributionItem actionItem = (IUpdateActionOrContributionItem)actionDescriptor.getAction();
+					
+					boolean enabled = actionItem.calculateEnabled();
 					actionDescriptor.getAction().setEnabled(enabled);
-//					actionDescriptor.setVisible(((IUpdateAction)actionDescriptor.getAction()).calculateVisible());
+					
+					boolean visible = actionItem.calculateVisible();
+					actionDescriptor.setVisible(visible);
 					
 					if (logger.isDebugEnabled())
-						logger.debug("enabled = "+enabled+" for action "+actionDescriptor.getAction().getId()); //$NON-NLS-1$ //$NON-NLS-2$
+						logger.debug("enabled = " + enabled + //$NON-NLS-1$ 
+									" visible = " + visible + //$NON-NLS-1$ 
+									" for action "+actionDescriptor.getAction().getId()); //$NON-NLS-1$ 
 				}
 			}
 			actionsRegisteredToKeyBindingService = true;
